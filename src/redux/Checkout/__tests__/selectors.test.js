@@ -22,12 +22,13 @@ describe('Redux | Checkout | Selectors', () => {
       selectShippingTimeRangeLabel({
         checkout: {
           restaurants: [],
-          cart: {
-            shippingTimeRange: null,
-          },
+          cart: null,
           carts: {
             '/api/restaurants/1': {
-              cart: { shippingTimeRange: null },
+              cart: {
+                shippingTimeRange: null,
+                shippedAt: null,
+              },
               restaurant: {
                 '@id': '/api/restaurants/1',
               },
@@ -43,12 +44,13 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          cart: {
-            shippingTimeRange: null,
-          },
+          cart: null,
           carts: {
             '/api/restaurants/1': {
-              cart: { shippingTimeRange: null },
+              cart: {
+                shippingTimeRange: null,
+                shippedAt: null,
+              },
               restaurant: {
                 '@id': '/api/restaurants/1',
               },
@@ -69,12 +71,13 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          cart: {
-            shippingTimeRange: null,
-          },
+          cart: null,
           carts: {
             '/api/restaurants/1': {
-              cart: { shippingTimeRange: null },
+              cart: {
+                shippingTimeRange: null,
+                shippedAt: null,
+              },
               restaurant: {
                 '@id': '/api/restaurants/1',
               },
@@ -94,12 +97,13 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          cart: {
-            shippingTimeRange: null,
-          },
+          cart: null,
           carts: {
             '/api/restaurants/1': {
-              cart: { shippingTimeRange: null },
+              cart: {
+                shippingTimeRange: null,
+                shippedAt: null,
+              },
               restaurant: {
                 '@id': '/api/restaurants/1',
               },
@@ -119,12 +123,7 @@ describe('Redux | Checkout | Selectors', () => {
         checkout: {
           restaurants: [],
           restaurant: '/api/restaurants/1',
-          cart: {
-            shippingTimeRange: [
-              '2021-01-26T14:30:00+01:00',
-              '2021-01-26T14:40:00+01:00',
-            ],
-          },
+          cart: null,
           carts: {
             '/api/restaurants/1': {
               cart: {
@@ -132,6 +131,7 @@ describe('Redux | Checkout | Selectors', () => {
                   '2021-01-26T14:30:00+01:00',
                   '2021-01-26T14:40:00+01:00',
                 ],
+                shippedAt: null,
               },
               restaurant: {
                 '@id': '/api/restaurants/1',

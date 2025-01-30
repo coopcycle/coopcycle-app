@@ -408,7 +408,7 @@ export default (state = initialState, action = {}) => {
       };
 
     case DELETE_OPENING_HOURS_SPECIFICATION_SUCCESS: {
-      const { specialOpeningHoursSpecification } = state;
+      const { specialOpeningHoursSpecification } = state.restaurant;
 
       return {
         ...state,
@@ -567,7 +567,10 @@ export default (state = initialState, action = {}) => {
       const printTask = state.ordersToPrint[orderId];
 
       if (!printTask) {
-        return state;
+        return {
+          ...state,
+          printingOrderId: null,
+        };
       }
 
       if (printTask.copiesToPrint > 1) {
@@ -603,7 +606,10 @@ export default (state = initialState, action = {}) => {
       const printTask = state.ordersToPrint[orderId];
 
       if (!printTask) {
-        return state;
+        return {
+          ...state,
+          printingOrderId: null,
+        };
       }
 
       return {

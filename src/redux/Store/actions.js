@@ -13,7 +13,95 @@ export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
 export const LOAD_ADDRESSES_SUCCESS = '@store/LOAD_ADDRESSES_SUCCESS';
 export const INIT_SUCCESS = '@store/INIT_SUCCESS';
+export const LOAD_TIME_SLOTS_SUCCESS = '@store/LOAD_TIME_SLOTS_SUCCESS';
+export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
+  '@store/LOAD_TIME_SLOT_CHOICES_SUCCESS';
+export const LOAD_PACKAGES_SUCCESS = '@store/LOAD_PACKAGES_SUCCESS';
+export const GET_PRICE_SUCCESS = '@store/GET_PRICE_SUCCESS';
+export const GET_PRICE_ERROR = '@store/GET_PRICE_ERROR';
 
+export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
+export const getPriceError = createAction(GET_PRICE_ERROR);
+export function getPrice(delivery) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    dispatch(setLoading(true));
+
+    return httpClient
+      .post(`/api/retail_prices/calculate`, delivery)
+      .then(res => {
+        dispatch(getPriceSuccess(res));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(getPriceError(e));
+        dispatch(setLoading(false));
+      });
+  };
+}
+
+export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
+export function loadPackages(store) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    dispatch(setLoading(true));
+
+    return httpClient
+      .get(`${store['@id']}/packages`)
+      .then(res => {
+        dispatch(loadPackagesSuccess(res['hydra:member']));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+      });
+  };
+}
+export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
+export function loadTimeSlots(store) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    dispatch(setLoading(true));
+
+    return httpClient
+      .get(`${store['@id']}/time_slots`)
+      .then(res => {
+        dispatch(loadTimeSlotsSuccess(res['hydra:member']));
+        dispatch(setLoading(false));
+        // dispatch(loadTimeSlotChoices(res['hydra:member'][0]));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+      });
+  };
+}
+export const loadTimeSlotChoicesSuccess = createAction(
+  LOAD_TIME_SLOT_CHOICES_SUCCESS,
+);
+export function loadTimeSlotChoices(timeSlot) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    dispatch(setLoading(true));
+
+    return httpClient
+      .get(`${timeSlot['@id']}/choices`)
+      .then(res => {
+        dispatch(loadTimeSlotChoicesSuccess(res.choices));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+      });
+  };
+}
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS);
 export const loadDeliveriesSuccess = createAction(
   LOAD_DELIVERIES_SUCCESS,
@@ -136,7 +224,7 @@ export function loadAddresses(store) {
     const { httpClient } = app;
 
     return httpClient
-      .get(`${store['@id']}/addresses?type=dropoff`)
+      .get(`${store['@id']}/addresses`)
       .then(res => {
         dispatch(loadAddressesSuccess(store, res['hydra:member']));
         dispatch(setLoading(false));
@@ -249,7 +337,7 @@ export function init(store) {
 
     Promise.all([
       httpClient.get(`${store['@id']}/deliveries?order[dropoff.before]=desc`),
-      httpClient.get(`${store['@id']}/addresses?type=dropoff`),
+      httpClient.get(`${store['@id']}/addresses`),
     ])
       .then(values => {
         const [deliveries, addresses] = values;

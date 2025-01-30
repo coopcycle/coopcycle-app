@@ -9,7 +9,7 @@ import CartFooterButton from './CartFooterButton';
 
 class CartFooter extends Component {
   render() {
-    const { cart, initLoading } = this.props;
+    const { cart, restaurant, initLoading } = this.props;
 
     return (
       <HStack testID="cartFooter">
@@ -26,6 +26,7 @@ class CartFooter extends Component {
           {!initLoading && (
             <CartFooterButton
               cart={cart}
+              restaurant={restaurant}
               onPress={() => this.props.onSubmit()}
               loading={this.props.isLoading}
               testID={this.props.testID}

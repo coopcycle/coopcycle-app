@@ -8,13 +8,15 @@ import { showLocation } from 'react-native-map-link';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
-  isKnownPaymentMethod,
+  isDisplayPaymentMethodInList,
   loadDescriptionTranslationKey,
   loadIconKey,
 } from '../../../components/PaymentMethodInfo';
+import { formatPrice } from '../../../utils/formatting';
 
 const Detail = ({ item }) => {
   const { iconType, iconName, text, component, onPress } = item;
@@ -90,10 +92,34 @@ const Details = ({ task, t }) => {
     });
   }
 
+  if (task.metadata && task.metadata.has_loopeat_returns) {
+    items.push({
+      iconName: 'recycle',
+      iconType: FontAwesome5,
+      text: t('LOOPEAT_HAS_RETURNS'),
+    });
+  }
+
   if (task.address.description) {
     items.push({
       iconName: 'information-circle',
       text: task.address.description,
+    });
+  }
+
+  if (
+    task.metadata &&
+    task.metadata.payment_method &&
+    isDisplayPaymentMethodInList(task.metadata.payment_method)
+  ) {
+    items.push({
+      iconName: loadIconKey(task.metadata.payment_method),
+      iconType: Foundation,
+      text:
+        t(loadDescriptionTranslationKey(task.metadata.payment_method)) +
+        (task.metadata.order_total
+          ? `: ${formatPrice(task.metadata.order_total)}`
+          : ''),
     });
   }
 
@@ -149,18 +175,6 @@ const Details = ({ task, t }) => {
       iconName: 'scale',
       iconType: MaterialCommunityIcons,
       text: `${(Number(task.weight) / 1000).toFixed(2)} kg`,
-    });
-  }
-
-  if (
-    task.metadata &&
-    task.metadata.payment_method &&
-    isKnownPaymentMethod(task.metadata.payment_method)
-  ) {
-    items.push({
-      iconName: loadIconKey(task.metadata.payment_method),
-      iconType: Foundation,
-      text: t(loadDescriptionTranslationKey(task.metadata.payment_method)),
     });
   }
 

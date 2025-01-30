@@ -1,7 +1,7 @@
+import React, { useMemo } from 'react';
 import { IconMapPin } from '@tabler/icons-react-native';
 import i18next from 'i18next';
 import { Button, Image, Text } from 'native-base';
-import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { RestaurantBadge } from '../../../components/RestaurantBadge';
 import { RestaurantTag } from '../../../components/RestaurantTag';
@@ -11,6 +11,19 @@ import {
   useSecondaryTextColor,
 } from '../../../styles/theme';
 import { TimingBadge } from './RestaurantBadges';
+import DangerAlert from '../../../components/DangerAlert';
+import i18n from '../../../i18n';
+import moment from 'moment/moment';
+import {
+  getNextShippingTime,
+  isRestaurantOrderingAvailable,
+  shouldShowPreOrder,
+} from '../../../utils/checkout';
+import { RestaurantBanner } from '../../../components/RestaurantBanner';
+import {
+  PreOrderBannerOverlay,
+  RestaurantNotAvailableBannerOverlay,
+} from '../../../components/RestaurantBannerOverlay';
 
 const styles = StyleSheet.create({
   profile: {},
@@ -20,7 +33,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   detailsWrapper: {
-    marginTop: -70,
+    marginTop: -74, // logoWrapper height * 64%
     marginBottom: -12,
     display: 'flex',
     flexDirection: 'row',
@@ -57,10 +70,6 @@ const styles = StyleSheet.create({
     aspectRatio: '1',
     width: '100%',
   },
-  banner: {
-    aspectRatio: '16/9',
-    width: '100%',
-  },
   badgesScroll: {
     width: '100%',
     overflow: 'hidden',
@@ -86,22 +95,91 @@ const styles = StyleSheet.create({
   },
 });
 
-function RestaurantProfile({ restaurant, onInfo }) {
+function OpeningHoursWarning({
+  openingHoursSpecification,
+  isOrderingAvailable,
+  showPreOrder,
+  nextShippingTime,
+}) {
+  if (!isOrderingAvailable) {
+    //FIXME: this is based on the regular opening hours
+    // and does not take closing rules ("Holidays") into account
+    const nextOpeningHours = openingHoursSpecification.currentTimeSlot.timeSlot;
+
+    if (!nextOpeningHours) {
+      // when restaurant is disabled it will be shown on the banner
+      // and in the 'timing' section
+      return null;
+    }
+
+    return (
+      <DangerAlert
+        text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
+          datetime: moment(nextOpeningHours[0])
+            .calendar(moment(), {
+              sameElse: 'llll',
+            })
+            .replace(/\s/g, '\u00A0'),
+        })}`}
+      />
+    );
+  }
+
+  if (showPreOrder) {
+    return (
+      <DangerAlert
+        adjustsFontSizeToFit={true}
+        text={`${i18n.t('RESTAURANT_CLOSED_PRE_ORDER', {
+          datetime: moment(nextShippingTime.range[0])
+            .calendar(moment(), {
+              sameElse: 'llll',
+            })
+            .replace(/\s/g, '\u00A0'),
+        })}`}
+      />
+    );
+  }
+
+  // no warnings
+  return null;
+}
+
+function BannerOverlay({ isOrderingAvailable, showPreOrder }) {
+  if (!isOrderingAvailable) {
+    return <RestaurantNotAvailableBannerOverlay />;
+  }
+
+  if (showPreOrder) {
+    return <PreOrderBannerOverlay />;
+  }
+
+  return null;
+}
+
+function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
   const backgroundColor = useBackgroundContainerColor();
   const stroke = useBaseTextColor();
   const textSecondary = useSecondaryTextColor();
 
+  const isOrderingAvailable = useMemo(
+    () => isRestaurantOrderingAvailable(restaurant),
+    [restaurant],
+  );
+  const showPreOrder = useMemo(
+    () => shouldShowPreOrder(restaurant),
+    [restaurant],
+  );
+  const nextShippingTime = useMemo(
+    () => getNextShippingTime(restaurant),
+    [restaurant],
+  );
+
   return (
     <View style={([styles.profile], { backgroundColor })}>
-      <Image
-        style={styles.banner}
-        resizeMode="cover"
-        source={{
-          uri: restaurant.bannerImage
-            ? restaurant.bannerImage
-            : restaurant.image,
-        }}
-        alt="Banner"
+      <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
+      <BannerOverlay
+        isOrderingAvailable={isOrderingAvailable}
+        showPreOrder={showPreOrder}
       />
       <View style={styles.detailsWrapper}>
         <View style={[styles.logoWrapper, { backgroundColor }]}>
@@ -128,6 +206,12 @@ function RestaurantProfile({ restaurant, onInfo }) {
         ) : null}
       </View>
       <View style={styles.content}>
+        <OpeningHoursWarning
+          openingHoursSpecification={openingHoursSpecification}
+          isOrderingAvailable={isOrderingAvailable}
+          showPreOrder={showPreOrder}
+          nextShippingTime={nextShippingTime}
+        />
         <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
           <TimingBadge restaurant={restaurant} />
           <Button size="sm" variant="link" onPress={onInfo}>

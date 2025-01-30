@@ -21,7 +21,8 @@ function makeLabel(range, now) {
     const nowClone = moment(now)
       .set('hour', range.start.get('hour'))
       .set('minute', range.start.get('minute'))
-      .set('second', range.start.get('second'));
+      .set('second', range.start.get('second'))
+      .set('millisecond', range.start.get('millisecond'));
 
     // This will return the key used in moment.calendar()
     // https://momentjs.com/docs/#/displaying/calendar-time/

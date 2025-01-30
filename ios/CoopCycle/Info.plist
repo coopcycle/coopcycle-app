@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.25.2</string>
+	<string>2.29.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -33,11 +33,12 @@
 				<string>fb1303550106471840</string>
 				<string>com.googleusercontent.apps.211552794332-ssbgqhet0vcph05j14kd4eknls3k5q6q</string>
 				<string>com.googleusercontent.apps.211552794332-6ilbu3eod6ru2nt8p606n9706sli27td</string>
+				<string>fr.coopcycle.oauth</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>149</string>
+	<string>151</string>
 	<key>FacebookAppID</key>
 	<string>1303550106471840</string>
 	<key>FacebookClientToken</key>

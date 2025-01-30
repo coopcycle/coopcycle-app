@@ -6,7 +6,7 @@ import Svg, { Path } from 'react-native-svg';
 import { useBaseTextColor } from '../../../styles/theme';
 import {
   getNextShippingTimeAsText,
-  isRestaurantClosed,
+  isRestaurantOrderingAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 
@@ -49,23 +49,25 @@ export const CategoryBadge = ({ label }) => {
 export const TimingBadge = ({ restaurant }) => {
   const color = useBaseTextColor();
 
-  const isClosed = isRestaurantClosed(restaurant);
-  const shippingTime = getNextShippingTimeAsText(restaurant);
+  const isAvailable = isRestaurantOrderingAvailable(restaurant);
   const showPreOrder = shouldShowPreOrder(restaurant);
+  const shippingTime = getNextShippingTimeAsText(restaurant);
 
   return (
     <HStack style={[styles.badge]}>
-      {showPreOrder ? (
-        <IconClock color={color} strokeWidth={2} size={17} />
-      ) : !isClosed ? (
-        <IconBike color={color} />
-      ) : (
+      {!isAvailable ? (
         <IconPlugX size={22} color={color} strokeWidth={1.5} />
+      ) : showPreOrder ? (
+        <IconClock color={color} strokeWidth={2} size={17} />
+      ) : (
+        <IconBike color={color} />
       )}
 
       <Text
         style={
-          showPreOrder || isClosed ? styles.badgeTextPreOrder : styles.badgeText
+          !isAvailable || showPreOrder
+            ? styles.badgeTextPreOrder
+            : styles.badgeText
         }>
         {shippingTime}
       </Text>

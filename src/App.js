@@ -1,6 +1,22 @@
 import React, { createRef, useEffect } from 'react';
 import { LogBox, Platform, useColorScheme } from 'react-native';
 
+import * as Sentry from '@sentry/react-native';
+import Config from 'react-native-config';
+
+if (!__DEV__) {
+  Sentry.init({
+    dsn: Config.SENTRY_DSN,
+  });
+}
+
+import axios from 'axios';
+import { defaultHeaders } from './utils/headers';
+
+for (const [key, value] of Object.entries(defaultHeaders())) {
+  axios.defaults.headers.common[key] = value;
+}
+
 import { NativeBaseProvider } from 'native-base';
 import tracker from './analytics/Tracker';
 
@@ -15,28 +31,7 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import axios from 'axios';
-import VersionNumber from 'react-native-version-number';
-
 import KeyboardManager from 'react-native-keyboard-manager';
-
-import * as Sentry from '@sentry/react-native';
-import Config from 'react-native-config';
-
-if (!__DEV__) {
-  Sentry.init({
-    dsn: Config.SENTRY_DSN,
-  });
-}
-
-if (Platform.OS === 'ios') {
-  KeyboardManager.setEnable(false);
-  KeyboardManager.setEnableAutoToolbar(false);
-  KeyboardManager.setToolbarPreviousNextButtonEnable(false);
-}
-
-axios.defaults.headers.common['X-CoopCycle-App-Version'] =
-  VersionNumber.appVersion;
 
 // import i18n first
 import i18n from './i18n';
@@ -67,6 +62,12 @@ import {
   navigationContainerOnReady,
 } from './Datadog';
 
+if (Platform.OS === 'ios') {
+  KeyboardManager.setEnable(false);
+  KeyboardManager.setEnableAutoToolbar(false);
+  KeyboardManager.setToolbarPreviousNextButtonEnable(false);
+}
+
 if (Config.APP_ENV === 'test') {
   LogBox.ignoreAllLogs(true);
 }
@@ -84,6 +85,8 @@ LogBox.ignoreLogs([
   'Accessing view manager configs directly off UIManager',
   'VirtualizedLists should never be nested',
   'When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.',
+  // https://docs.swmansion.com/react-native-reanimated/docs/guides/troubleshooting/#reduced-motion-setting-is-enabled-on-this-device
+  '[Reanimated] Reduced motion setting is enabled on this device.',
 ]);
 
 const navigationRef = createRef();

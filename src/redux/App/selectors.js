@@ -72,6 +72,9 @@ export const selectIsLoading = createSelector(
   },
 );
 
+export const selectIsCentrifugoConnecting = state =>
+  state.app.isCentrifugoConnecting;
+
 export const selectIsCentrifugoConnected = state =>
   state.app.isCentrifugoConnected;
 
@@ -190,9 +193,6 @@ export const selectIsSpinnerDelayEnabled = createSelector(
   },
 );
 
-export const selectIsIncidentEnabled = state =>
-  state.app.isIncidentEnabled ?? false;
-
 export const selectCurrentRoute = state => state.app.currentRoute;
 
 export const selectNotifications = state => state.app.notifications;
@@ -232,3 +232,4 @@ export const selectNotificationsToDisplay = createSelector(
 export const selectSettingsLatLng = state => state.app.settings.latlng;
 export const selectStripePublishableKey = state =>
   state.app.settings.stripe_publishable_key;
+export const selectShouldNotificationBeDisplayed = state => state.app.shouldNotificationBeDisplayed;

@@ -20,9 +20,12 @@ import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
 import StoreNewDeliveryAddress from './store/NewDeliveryAddress';
 import StoreNewDeliveryForm from './store/NewDeliveryForm';
+import StoreNewDeliveryPickup from './store/NewDeliveryPickup';
+import StoreNewDeliveryPrice from './store/NewDeliveryPrice';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery';
+import CheckoutPaymentMethodEdenred from './checkout/PaymentMethodEdenred';
 
 import AccountAddressesPage from './account/AccountAddressesPage';
 import AccountDetailsPage from './account/AccountDetailsPage';
@@ -40,11 +43,14 @@ import CourierSettings from './courier/Settings';
 import CourierSettingsTags from './courier/Tags';
 import CourierTaskListPage from './courier/TaskListPage';
 import CourierTasksPage from './courier/TasksPage';
+import CourierBarcodePage from './courier/barcode/Barcode';
+import CourierBarcodeReportPage from './courier/barcode/BarcodeReport';
+import CourierBarcodeIncidentPage from './courier/barcode/BarcodeIncident';
 
-import CheckoutPayment from './checkout/Payment';
 import CheckoutLoginRegister from './checkout/CheckoutLoginRegister';
 import CheckoutMercadopago from './checkout/Mercadopago';
 import CheckoutMoreInfos from './checkout/MoreInfos';
+import CheckoutPayment from './checkout/Payment';
 import CheckoutProductDetails from './checkout/ProductDetails';
 import CheckoutSummary from './checkout/Summary';
 
@@ -68,6 +74,7 @@ import RestaurantOrderDelay from './restaurant/OrderDelay';
 import RestaurantOrderRefuse from './restaurant/OrderRefuse';
 import RestaurantPrinter from './restaurant/Printer';
 import RestaurantProducts from './restaurant/Products';
+import RestaurantSearch from './restaurant/Search';
 import RestaurantSettings from './restaurant/Settings';
 
 import Delivery from './delivery/Delivery';
@@ -82,6 +89,7 @@ export default {
   RestaurantOrderDelay,
   RestaurantOrderCancel,
   RestaurantDate,
+  RestaurantSearch,
   RestaurantSettings,
   RestaurantProducts,
   RestaurantOpeningHours,
@@ -95,12 +103,16 @@ export default {
   CheckoutMercadopago,
   CheckoutMoreInfos,
   CourierTasksPage,
+  CourierBarcodePage,
+  CourierBarcodeReportPage,
+  CourierBarcodeIncidentPage,
   CourierTaskListPage,
   CourierSettings,
   CourierSettingsTags,
   CourierDate,
   CheckoutPaymentMethodCard,
   CheckoutPaymentMethodCashOnDelivery,
+  CheckoutPaymentMethodEdenred,
   CheckoutLoopeat,
   AccountHome,
   AccountAddressesPage,
@@ -126,8 +138,10 @@ export default {
   TaskSignature,
   StoreDashboard,
   StoreDelivery,
+  StoreNewDeliveryPickup,
   StoreNewDeliveryAddress,
   StoreNewDeliveryForm,
+  StoreNewDeliveryPrice,
   SearchForm,
   Carts,
   AddressDetails,

@@ -41,6 +41,10 @@ on:
         type: boolean
         required: false
         default: true
+      app_auth_redirect_scheme:
+        type: string
+        required: false
+        default: "fr.coopcycle.oauth"
 jobs:
   FASTLANE:
     name: Release Android app with Fastlane
@@ -61,6 +65,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
+      - uses: mfinelli/setup-imagemagick@v5
       - name: Find Metro cache
         id: metro-cache-dir-path
         uses: actions/github-script@v4
@@ -100,6 +105,7 @@ jobs:
           PRIMARY_COLOR: ${{ inputs.primary_color }}
           SMARTLOOK_PROJECT_KEY: ${{ secrets.SMARTLOOK_PROJECT_KEY }}
           FACEBOOK_CLIENT_TOKEN: ${{ secrets.FACEBOOK_CLIENT_TOKEN }}
+          APP_AUTH_REDIRECT_SCHEME: ${{ inputs.app_auth_redirect_scheme }}
         run: |
           touch .env
           echo COUNTLY_SERVER_URL= >> .env
@@ -119,6 +125,7 @@ jobs:
           echo PRIMARY_COLOR="$PRIMARY_COLOR" >> .env
           echo CHECKOUT_SEARCH_ENABLED="$CHECKOUT_SEARCH_ENABLED" >> .env
           echo SMARTLOOK_PROJECT_KEY="$SMARTLOOK_PROJECT_KEY" >> .env
+          echo APP_AUTH_REDIRECT_SCHEME="$APP_AUTH_REDIRECT_SCHEME" >> .env
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
         with:

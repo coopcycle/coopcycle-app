@@ -338,6 +338,14 @@ const DefaultNav = () => {
         }}
       />
       <RootStack.Screen
+        name="CheckoutPaymentMethodEdenred"
+        component={screens.CheckoutPaymentMethodEdenred}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.edenred'),
+          headerBackTitleVisible: false,
+        }}
+      />
+      <RootStack.Screen
         name="CheckoutLoopeat"
         component={screens.CheckoutLoopeat}
         options={{

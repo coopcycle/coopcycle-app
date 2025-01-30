@@ -42,6 +42,7 @@ export const SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS =
   '@app/SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS';
 export const DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS =
   '@app/DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS';
+export const SHOULD_NOTIFICATION_BE_DISPLAYED = '@app/SHOULD_NOTIFICATION_BE_DISPLAYED';
 
 export const LOGIN = '@app/LOGIN';
 export const SET_LOADING = '@app/SET_LOADING';
@@ -108,8 +109,6 @@ export const LOAD_PRIVACY_POLICY_REQUEST = '@app/LOAD_PRIVACY_POLICY_REQUEST';
 export const LOAD_PRIVACY_POLICY_SUCCESS = '@app/LOAD_PRIVACY_POLICY_SUCCESS';
 export const LOAD_PRIVACY_POLICY_FAILURE = '@app/LOAD_PRIVACY_POLICY_FAILURE';
 
-export const SET_INCIDENT_ENABLED = '@app/SET_IS_INCIDENT_ENABLED';
-
 /*
  * Action Creators
  */
@@ -167,6 +166,9 @@ export const savePushNotificationTokenSuccess = createFsAction(
 export const deletePushNotificationTokenSuccess = createFsAction(
   DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS,
 );
+export const shouldNotificationBeDisplayed = createFsAction(
+  SHOULD_NOTIFICATION_BE_DISPLAYED,
+)
 
 const _loadMyStoresSuccess = createFsAction(LOAD_MY_STORES_SUCCESS);
 
@@ -175,6 +177,8 @@ const loadMyRestaurantsSuccess = createFsAction(LOAD_MY_RESTAURANTS_SUCCESS);
 const loadMyRestaurantsFailure = createFsAction(LOAD_MY_RESTAURANTS_FAILURE);
 
 const setSettings = createFsAction(SET_SETTINGS);
+
+export const appStateChanged = createAction('@app/APP_STATE_CHANGED');
 
 export const setInternetReachable = createFsAction(SET_INTERNET_REACHABLE);
 
@@ -215,7 +219,6 @@ const loginByEmailErrors = createFsAction(LOGIN_BY_EMAIL_ERRORS);
 export const setSpinnerDelayEnabled = createAction(
   '@app/SET_IS_SPINNER_DELAY_ENABLED',
 );
-export const setIncidentEnabled = createFsAction(SET_INCIDENT_ENABLED);
 
 export const startSound = createAction('START_SOUND');
 export const stopSound = createAction('STOP_SOUND');

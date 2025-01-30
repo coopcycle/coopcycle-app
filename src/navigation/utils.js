@@ -1,7 +1,7 @@
 let navigateAfter = null;
 
 export const navigateToTask = (navigation, route, task, tasks = []) => {
-  if (route.name !== 'TaskHome') {
+  if (route !== null && route.name !== 'TaskHome') {
     navigateAfter = route.name;
   }
 

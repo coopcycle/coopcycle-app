@@ -1,5 +1,5 @@
+import React, { useRef, useState } from 'react';
 import _ from 'lodash';
-import moment from 'moment';
 import {
   Box,
   Center,
@@ -11,7 +11,6 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, { useMemo, useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
@@ -31,15 +30,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useQuery } from 'react-query';
 import BottomModal from '../../components/BottomModal';
-import DangerAlert from '../../components/DangerAlert';
 import Markdown from '../../components/Markdown';
 import RestaurantMenuHeader from '../../components/RestaurantMenuHeader';
 import RestaurantMenuItem from '../../components/RestaurantMenuItem';
 import i18n from '../../i18n';
-import {
-  setDate,
-  setFulfillmentMethod,
-} from '../../redux/Checkout/actions';
+import { setDate, setFulfillmentMethod } from '../../redux/Checkout/actions';
 import {
   selectCartFulfillmentMethod,
   selectCartWithHours,
@@ -47,7 +42,6 @@ import {
   selectRestaurantWithHours,
 } from '../../redux/Checkout/selectors';
 import AddressUtils from '../../utils/Address';
-import OpeningHoursSpecification from '../../utils/OpeningHoursSpecification';
 import OpeningHours from './components/OpeningHours';
 import RestaurantProfile from './components/RestaurantProfile';
 
@@ -90,11 +84,6 @@ function Restaurant(props) {
     },
   );
 
-  const currentTimeSlot = useMemo(
-    () => openingHoursSpecification.currentTimeSlot,
-    [openingHoursSpecification],
-  );
-
   //TODO: improve failed view
   if (isError) {
     return (
@@ -117,37 +106,6 @@ function Restaurant(props) {
         : 'rgba(0, 0, 0, 0.1)',
   };
 
-  function renderWarningBanner() {
-    if (currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed) {
-      if (OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)) {
-        return (
-          <DangerAlert
-            text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
-              datetime: moment(currentTimeSlot.timeSlot[0])
-                .calendar(moment(), {
-                  sameElse: 'llll',
-                })
-                .replace(/\s/g, '\u00A0'),
-            })}`}
-          />
-        );
-      } else {
-        return (
-          <DangerAlert
-            adjustsFontSizeToFit={true}
-            text={`${i18n.t('RESTAURANT_CLOSED_BUT_OPENS', {
-              datetime: moment(currentTimeSlot.timeSlot[0])
-                .calendar(moment(), {
-                  sameElse: 'llll',
-                })
-                .replace(/\s/g, '\u00A0'),
-            })}`}
-          />
-        );
-      }
-    }
-  }
-
   let sections = [];
   if (data) {
     _.forEach(data.hasMenuSection, (menuSection, index) => {
@@ -163,6 +121,7 @@ function Restaurant(props) {
     <RestaurantProfile
       onInfo={() => setInfoModal(true)}
       restaurant={restaurant}
+      openingHoursSpecification={openingHoursSpecification}
     />
   );
 
@@ -211,7 +170,6 @@ function Restaurant(props) {
 
   const renderFunctions = [
     renderRestaurantProfile,
-    renderWarningBanner,
     renderRestaurantMenuHeader,
     ...sections.map(section => () => renderSection(section)),
     renderEmptyFooter,
@@ -229,7 +187,7 @@ function Restaurant(props) {
       }}>
       <FlatList
         testID="restaurantData"
-        stickyHeaderIndices={[2]}
+        stickyHeaderIndices={[1]}
         data={Array.from(
           { length: renderFunctions.length },
           (_, index) => index,
@@ -243,6 +201,7 @@ function Restaurant(props) {
         <SafeAreaView edges={['bottom']}>
           <CartFooter
             onSubmit={() => navigate('CheckoutSummary', { restaurant })}
+            restaurant={restaurant}
             cart={props.cart}
             initLoading={props.cartLoading}
             testID="cartSubmit"
@@ -262,7 +221,7 @@ function Restaurant(props) {
             {i18n.t('RESTAURANT_OPENING_HOURS')}
           </Text>
           <OpeningHours
-            openingHoursSpecification={props.openingHoursSpecification}
+            openingHoursSpecification={openingHoursSpecification}
           />
         </Box>
         <Pressable

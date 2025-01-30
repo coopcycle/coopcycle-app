@@ -1,11 +1,15 @@
 import {
   ASSERT_DELIVERY_ERROR,
   CREATE_DELIVERY_SUCCESS,
+  GET_PRICE_ERROR,
+  GET_PRICE_SUCCESS,
   INIT_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
+  LOAD_PACKAGES_SUCCESS,
   LOAD_TASKS_SUCCESS,
-  LOAD_TIME_SLOT_SUCCESS,
+  LOAD_TIME_SLOTS_SUCCESS,
+  LOAD_TIME_SLOT_CHOICES_SUCCESS,
   SET_LOADING_MORE,
   SET_REFRESHING,
 } from './actions';
@@ -15,6 +19,7 @@ import { LOAD_MY_STORES_SUCCESS } from '../App/actions';
 import { composeWithState } from '../../utils/delivery';
 
 import _ from 'lodash';
+import { formatPrice } from '../../utils/formatting';
 
 const initialState = {
   fetchError: null, // Error object describing the error
@@ -29,7 +34,10 @@ const initialState = {
   loadingMore: false,
   refreshing: false,
   timeSlots: [],
+  choices: [],
   assertDeliveryError: null,
+  price: null,
+  priceExcludingTax: null,
 };
 
 const replace = (deliveries, delivery, pickup, dropoff) => {
@@ -69,6 +77,22 @@ export default (state = initialState, action = {}) => {
       }
 
       break;
+    case GET_PRICE_SUCCESS:
+      const { amount, tax } = action.payload;
+
+      return {
+        ...state,
+        price: formatPrice(amount),
+        priceExcludingTax: formatPrice(amount - tax.amount),
+      };
+
+    case GET_PRICE_ERROR:
+      return {
+        ...state,
+        price: null,
+        priceExcludingTax: null,
+      };
+
     case LOAD_DELIVERIES_SUCCESS:
       const { store, deliveries, pagination } = action.payload;
 
@@ -114,13 +138,22 @@ export default (state = initialState, action = {}) => {
 
       return newState;
 
-    case LOAD_TIME_SLOT_SUCCESS:
-      const timeSlots = state.timeSlots.slice();
-      timeSlots.push(action.payload);
-
+    case LOAD_TIME_SLOT_CHOICES_SUCCESS:
       return {
         ...state,
-        timeSlots,
+        choices: action.payload,
+      };
+
+    case LOAD_TIME_SLOTS_SUCCESS:
+      return {
+        ...state,
+        timeSlots: action.payload,
+      };
+
+    case LOAD_PACKAGES_SUCCESS:
+      return {
+        ...state,
+        packages: action.payload,
       };
 
     case LOAD_TASKS_SUCCESS:

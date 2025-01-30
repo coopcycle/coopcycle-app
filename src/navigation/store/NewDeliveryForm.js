@@ -1,152 +1,187 @@
 import { Formik } from 'formik';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
-import _ from 'lodash';
 import moment from 'moment';
-import { Box, Button, HStack, Input, Text, VStack } from 'native-base';
-import React, { Component } from 'react';
+import { Box, Button, HStack, Text, VStack } from 'native-base';
+import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { InteractionManager, Platform, StyleSheet, View } from 'react-native';
+import {
+  InteractionManager,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import ModalSelector from 'react-native-modal-selector';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
-import { createDelivery, loadTimeSlot } from '../../redux/Store/actions';
-import { selectStore, selectTimeSlot } from '../../redux/Store/selectors';
-import { getChoicesWithDates } from '../../utils/time-slots';
+import { IconPackage } from '@tabler/icons-react-native';
+import {
+  loadPackages,
+  loadTimeSlot,
+  loadTimeSlotChoices,
+  loadTimeSlots,
+} from '../../redux/Store/actions';
+import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
+import {
+  useBackgroundContainerColor,
+  usePrimaryColor,
+} from '../../styles/theme';
+import Range from '../checkout/ProductDetails/Range';
+import ModalFormWrapper from './ModalFormWrapper';
+import FormInput from './components/FormInput';
+import TimeSlotSelector from './components/TimeSlotSelector';
 
-class NewDelivery extends Component {
-  constructor(props) {
-    super(props);
+function DeliveryForm(props) {
+  const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const backgroundColor = useBackgroundContainerColor();
+  const primaryColor = usePrimaryColor();
+  const [selectedChoice, setSelectedChoice] = React.useState(null);
+  const [packagesCount, setPackagesCount] = useState([]);
+  const dispatch = useDispatch();
 
-    this.state = {
-      isDateTimePickerVisible: false,
-    };
-  }
+  const {
+    t,
+    store,
+    timeSlots,
+    navigation,
+    hasTimeSlot,
+    route,
+    country,
+    choices,
+    packages,
+  } = props;
 
-  componentDidMount() {
+  useEffect(() => {
+    if (selectedTimeSlot) return;
+    if (store.timeSlot && store.timeSlot.trim() !== '') {
+      setSelectedTimeSlot(store.timeSlot);
+    } else if (timeSlots.length > 0) {
+      setSelectedTimeSlot(timeSlots[0]['@id']);
+    }
+  }, [store.timeSlot, timeSlots, selectedTimeSlot]);
+
+  useEffect(() => {
+    if (!selectedTimeSlot || !timeSlots.length) return;
+    dispatch(
+      loadTimeSlotChoices(timeSlots.find(ts => ts['@id'] === selectedTimeSlot)),
+    );
+  }, [selectedTimeSlot, timeSlots, dispatch]);
+
+  useEffect(() => {
+    if (choices.length) setSelectedChoice(choices[0].value);
+  }, [choices]);
+
+  useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      this.props.loadTimeSlot(this.props.store);
+      dispatch(loadTimeSlots(store));
+      dispatch(loadTimeSlot(store));
+      dispatch(loadPackages(store));
     });
     // This will add a "OK" button above keyboard, to dismiss keyboard
     if (Platform.OS === 'ios') {
       KeyboardManager.setEnable(true);
       KeyboardManager.setEnableAutoToolbar(true);
     }
-  }
 
-  componentWillUnmount() {
-    if (Platform.OS === 'ios') {
-      KeyboardManager.setEnable(false);
-      KeyboardManager.setEnableAutoToolbar(false);
-    }
-  }
+    return () => {
+      if (Platform.OS === 'ios') {
+        KeyboardManager.setEnable(false);
+        KeyboardManager.setEnableAutoToolbar(false);
+      }
+    };
+  }, [store, dispatch]);
 
-  _showDateTimePicker() {
-    this.setState({ isDateTimePickerVisible: true });
-  }
-
-  _hideDateTimePicker() {
-    this.setState({ isDateTimePickerVisible: false });
-  }
-
-  _handleChangeTelephone(value, setFieldValue, setFieldTouched) {
-    setFieldValue(
-      'address.telephone',
-      new AsYouType(this.props.country).input(value),
+  useEffect(() => {
+    if (!packages) return;
+    setPackagesCount(
+      packages.map(item => {
+        return {
+          type: item.name,
+          quantity: 0,
+        };
+      }),
     );
-    setFieldTouched('address.telephone');
+  }, [packages]);
+
+  function incrementQuantity(packageType, setFieldTouched) {
+    setFieldTouched('packages');
+    setPackagesCount(prev => {
+      return prev.map(item => {
+        if (item.type === packageType) {
+          item.quantity += 1;
+        }
+        return item;
+      });
+    });
   }
 
-  _submit(values) {
+  function decrementQuantity(packageType, setFieldTouched) {
+    setFieldTouched('packages');
+    setPackagesCount(prev => {
+      return prev.map(item => {
+        if (item.type === packageType) {
+          item.quantity -= 1;
+        }
+        return item;
+      });
+    });
+  }
+
+  function updateSelectedTimeSlot(timeSlot) {
+    setSelectedTimeSlot(timeSlot['@id']);
+  }
+
+  function showDateTimePicker() {
+    setIsDateTimePickerVisible(true);
+  }
+
+  function hideDateTimePicker() {
+    setIsDateTimePickerVisible(false);
+  }
+
+  function submit(values) {
     const delivery = {
-      store: this.props.store['@id'],
+      store: store['@id'],
+      pickup: route.params?.pickup || undefined,
       dropoff: {
-        ...values,
         address: {
           ...values.address,
-          telephone: parsePhoneNumberFromString(
-            values.address.telephone,
-            this.props.country,
-          ).format('E.164'),
+          telephone: values.telephone,
+          contactName: values.contactName,
+          name: values.businessName.trim() || null,
+          description: values.description.trim() || null,
         },
+        comments: values.comments,
+        weight: values.weight * 1000,
+        packages: packagesCount.filter(item => item.quantity > 0),
+        ...(selectedChoice
+          ? { timeSlot: selectedChoice }
+          : { before: values.before }),
       },
     };
 
-    this.props.createDelivery(delivery, () =>
-      this.props.navigation.navigate('StoreHome'),
-    );
+    navigation.navigate('StoreNewDeliveryPrice', { delivery });
   }
 
-  _validate(values) {
-    let errors = {};
+  function validate(values) {
+    const errors = {};
 
-    if (this.props.hasTimeSlot && _.isEmpty(values.timeSlot)) {
-      errors = {
-        ...errors,
-        timeSlot: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT'),
-      };
+    if (hasTimeSlot && !selectedChoice) {
+      errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
     }
 
-    if (_.isEmpty(values.address.telephone)) {
-      errors.address = {
-        ...errors.address,
-        telephone: this.props.t('STORE_NEW_DELIVERY_ERROR.EMPTY_PHONE_NUMBER'),
-      };
-    } else {
-      const phoneNumber = parsePhoneNumberFromString(
-        _.trim(values.address.telephone),
-        this.props.country,
-      );
-      if (!phoneNumber || !phoneNumber.isValid()) {
-        errors.address = {
-          ...errors.address,
-          telephone: this.props.t('INVALID_PHONE_NUMBER'),
-        };
-      }
+    if (!values.weight && store.weightRequired) {
+      errors.weight = t('STORE_NEW_DELIVERY_ERROR.EMPTY_WEIGHT');
     }
 
-    if (_.isEmpty(values.address.contactName)) {
-      errors.address = {
-        ...errors.address,
-        contactName: this.props.t(
-          'STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME',
-        ),
-      };
+    if (!packagesCount.some(item => item.quantity) && store.packagesRequired) {
+      errors.packages = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PACKAGES');
     }
-
     return errors;
   }
 
-  renderTimeSlotSelector(errors, touched, setFieldValue, setFieldTouched) {
-    return (
-      <View style={[styles.formGroup]}>
-        <Text style={styles.label}>
-          {this.props.t('STORE_NEW_DELIVERY_TIME_SLOT')}
-        </Text>
-        <ModalSelector
-          data={this.props.timeSlotChoices}
-          cancelText={this.props.t('CANCEL')}
-          initValue={this.props.t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT')}
-          accessible={true}
-          // Bug on Android
-          // The component thinks it's a long press while it's a short press
-          enableLongPress={Platform.OS === 'android'}
-          onChange={value => {
-            setFieldValue('timeSlot', value.key);
-            setFieldTouched('timeSlot');
-          }}
-        />
-        {errors.timeSlot && touched.timeSlot && (
-          <Text note style={styles.errorText}>
-            {errors.timeSlot}
-          </Text>
-        )}
-      </View>
-    );
-  }
-
-  renderDateTimePicker(
+  function renderDateTimePicker(
     initialValues,
     values,
     errors,
@@ -158,234 +193,280 @@ class NewDelivery extends Component {
         <HStack justifyContent="space-between">
           <VStack>
             <Text style={styles.label}>
-              {this.props.t('STORE_NEW_DELIVERY_DROPOFF_BEFORE')}
+              {t('STORE_NEW_DELIVERY_DROPOFF_BEFORE')}
             </Text>
             <Text>{moment(values.before).format('LLL')}</Text>
           </VStack>
-          <Button onPress={this._showDateTimePicker.bind(this)}>
-            {this.props.t('EDIT')}
-          </Button>
+          <Button onPress={showDateTimePicker}>{t('EDIT')}</Button>
         </HStack>
         <DateTimePickerModal
-          isVisible={this.state.isDateTimePickerVisible}
+          isVisible={isDateTimePickerVisible}
           mode="datetime"
           onConfirm={value => {
             setFieldValue('before', moment(value).format());
             setFieldTouched('before');
-            this._hideDateTimePicker();
+            hideDateTimePicker();
           }}
-          onCancel={this._hideDateTimePicker.bind(this)}
+          onCancel={hideDateTimePicker}
           minimumDate={moment(initialValues.before).toDate()}
         />
       </Box>
     );
   }
 
-  render() {
-    const address = this.props.route.params?.address;
+  function handleChangeWeight(value, setFieldValue, setFieldTouched) {
+    let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
 
-    let telephone = '';
-    if (address['@id'] && address.telephone) {
-      const phoneNumber = parsePhoneNumberFromString(
-        address.telephone,
-        this.props.country,
-      );
-      if (phoneNumber && phoneNumber.isValid()) {
-        telephone = phoneNumber.formatNational();
-      }
+    const firstDecimalIndex = newValue.indexOf('.');
+    if (firstDecimalIndex === 0) {
+      newValue = `0${newValue}`;
+    } else if (firstDecimalIndex !== -1) {
+      newValue =
+        newValue.substring(0, firstDecimalIndex + 1) +
+        newValue.substring(firstDecimalIndex + 1).replace(/\./g, '');
     }
 
-    let initialValues = {
-      address: {
-        ...address,
-        description: (address['@id'] && address.description) || '',
-        contactName: (address['@id'] && address.contactName) || '',
-        telephone,
-      },
-    };
-
-    if (this.props.hasTimeSlot) {
-      initialValues = {
-        ...initialValues,
-        timeSlot: null,
-      };
-    } else {
-      initialValues = {
-        ...initialValues,
-        before: moment().add(1, 'hours').add(30, 'minutes').format(),
-      };
+    if (newValue.includes('.')) {
+      const decimalIndex = newValue.indexOf('.');
+      newValue =
+        newValue.substring(0, decimalIndex + 1) +
+        newValue.substring(decimalIndex + 1, decimalIndex + 4);
     }
 
-    return (
-      <Formik
-        initialValues={initialValues}
-        validate={this._validate.bind(this)}
-        onSubmit={this._submit.bind(this)}
-        validateOnBlur={false}
-        validateOnChange={false}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          setFieldValue,
-          setFieldTouched,
-        }) => (
-          <VStack flex={1} justifyContent="space-between">
-            <Box p="3">
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {this.props.t('STORE_NEW_DELIVERY_ADDRESS')}
-                </Text>
-                <Input
-                  variant="filled"
-                  style={[styles.textInput]}
-                  value={address.streetAddress}
-                  isReadOnly={true}
-                />
-              </View>
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
-                </Text>
-                <Input
-                  style={[styles.textInput]}
-                  autoCorrect={false}
-                  keyboardType="phone-pad"
-                  returnKeyType="done"
-                  onChangeText={value =>
-                    this._handleChangeTelephone(
-                      value,
-                      setFieldValue,
-                      setFieldTouched,
-                    )
-                  }
-                  onBlur={handleBlur('address.telephone')}
-                  value={values.address.telephone}
-                />
-                {errors.address &&
-                  touched.address &&
-                  errors.address.telephone &&
-                  touched.address.telephone && (
-                    <Text note style={styles.errorText}>
-                      {errors.address.telephone}
-                    </Text>
-                  )}
-              </View>
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {this.props.t('STORE_NEW_DELIVERY_CONTACT_NAME')}
-                </Text>
-                <Input
-                  style={[styles.textInput]}
-                  autoCorrect={false}
-                  returnKeyType="done"
-                  onChangeText={handleChange('address.contactName')}
-                  onBlur={handleBlur('address.contactName')}
-                  value={values.address.contactName}
-                />
-                {errors.address &&
-                  touched.address &&
-                  errors.address.contactName &&
-                  touched.address.contactName && (
-                    <Text note style={styles.errorText}>
-                      {errors.address.contactName}
-                    </Text>
-                  )}
-              </View>
-              <View style={[styles.formGroup]}>
-                <Text style={styles.label}>
-                  {this.props.t('STORE_NEW_DELIVERY_COMMENTS')}
-                </Text>
-                <Input
-                  style={[styles.textInput, styles.textarea]}
-                  autoCorrect={false}
-                  multiline={true}
-                  onChangeText={handleChange('address.description')}
-                  onBlur={handleBlur('address.description')}
-                  value={values.address.description}
-                />
-              </View>
-              {this.props.hasTimeSlot &&
-                this.renderTimeSlotSelector(
-                  errors,
-                  touched,
-                  setFieldValue,
-                  setFieldTouched,
-                )}
-              {!this.props.hasTimeSlot &&
-                this.renderDateTimePicker(
-                  initialValues,
-                  values,
-                  errors,
-                  setFieldValue,
-                  setFieldTouched,
-                )}
-            </Box>
-            <Box p="3">
-              <Button onPress={handleSubmit}>{this.props.t('SUBMIT')}</Button>
-            </Box>
-          </VStack>
-        )}
-      </Formik>
-    );
+    setFieldValue('weight', newValue);
+    setFieldTouched('weight');
   }
+
+  const dropoff = route.params?.dropoff;
+
+  let initialValues = {
+    address: dropoff.address,
+    // set from the first step newDeliveryAddress
+    description: dropoff.description || '',
+    contactName: dropoff.contactName || '',
+    businessName: dropoff.businessName || '',
+    telephone: dropoff.telephone || '',
+    // ----------------
+    weight: null,
+    comments: dropoff.comments || '',
+  };
+
+  if (hasTimeSlot) {
+    initialValues = {
+      ...initialValues,
+      timeSlot: null,
+    };
+  } else {
+    initialValues = {
+      ...initialValues,
+      before: moment().add(1, 'hours').add(30, 'minutes').format(),
+    };
+  }
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validate={validate}
+      onSubmit={submit}
+      validateOnBlur={false}
+      validateOnChange={false}>
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched,
+        setFieldValue,
+        setFieldTouched,
+      }) => (
+        <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
+          <View style={[styles.formGroup, { zIndex: 2 }]}>
+            <View style={[styles.header, styles.label]}>
+              <IconPackage
+                size={24}
+                stroke={primaryColor}
+                color={backgroundColor}
+              />
+              <Text>{t('STORE_NEW_DELIVERY_PACKAGES_TITLE')}</Text>
+            </View>
+            <Text style={styles.optional}>
+              {t('STORE_NEW_DELIVERY_PACKAGES_DESCRIPTION')}
+            </Text>
+          </View>
+          {hasTimeSlot ? (
+            <TimeSlotSelector
+              selectValue={selectedChoice}
+              setSelectValue={setSelectedChoice}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              updateSelectedTimeSlot={updateSelectedTimeSlot}
+              timeSlots={timeSlots}
+              choices={choices}
+              selectedTimeSlot={selectedTimeSlot}
+            />
+          ) : (
+            renderDateTimePicker(
+              initialValues,
+              values,
+              errors,
+              setFieldValue,
+              setFieldTouched,
+            )
+          )}
+
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {t('STORE_NEW_DELIVERY_WEIGHT')}{' '}
+              {!store.weightRequired ? (
+                <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              ) : null}
+            </Text>
+            <FormInput
+              keyboardType="numeric"
+              rightElement={<Text style={styles.weightUnit}>kg</Text>}
+              autoCorrect={false}
+              returnKeyType="done"
+              onChangeText={value =>
+                handleChangeWeight(value, setFieldValue, setFieldTouched)
+              }
+              onBlur={handleBlur('weight')}
+              value={values.weight}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
+            />
+            {errors.weight && touched.weight && (
+              <Text note style={styles.errorText}>
+                {errors.weight}
+              </Text>
+            )}
+          </View>
+
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {t('STORE_NEW_DELIVERY_PACKAGES')}{' '}
+              {!store.packagesRequired ? (
+                <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+              ) : null}
+            </Text>
+            <View
+              style={{
+                gap: 16,
+                marginTop: 4,
+              }}>
+              {packages?.length ? (
+                packagesCount.map(item => {
+                  return (
+                    <View
+                      style={[
+                        {
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          width: '100%',
+                          gap: 16,
+                          backgroundColor,
+                        },
+                      ]}
+                      key={item.type}>
+                      <Range
+                        onPress={() => {}}
+                        onPressIncrement={() =>
+                          incrementQuantity(item.type, setFieldTouched)
+                        }
+                        onPressDecrement={() =>
+                          decrementQuantity(item.type, setFieldTouched)
+                        }
+                        quantity={item.quantity}
+                      />
+                      <TouchableOpacity
+                        style={{
+                          flex: 1,
+                        }}
+                        onPress={() =>
+                          incrementQuantity(item.type, setFieldTouched)
+                        }>
+                        <Text>{item.type}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })
+              ) : (
+                <Text>{t('STORE_NEW_DELIVERY_NO_PACKAGES')}</Text>
+              )}
+            </View>
+            {errors.packages && (
+              <Text note style={styles.errorText}>
+                {errors.packages}
+              </Text>
+            )}
+          </View>
+          <View style={[styles.formGroup]}>
+            <Text style={styles.label}>
+              {t('STORE_NEW_DELIVERY_COMMENTS')}{' '}
+              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
+            </Text>
+            <FormInput
+              style={{
+                height: 80,
+              }}
+              autoCorrect={false}
+              multiline={true}
+              onChangeText={handleChange('comments')}
+              onBlur={handleBlur('comments')}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
+            />
+          </View>
+        </ModalFormWrapper>
+      )}
+    </Formik>
+  );
 }
 
 const styles = StyleSheet.create({
-  message: {
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
+    gap: 5,
   },
   label: {
-    marginBottom: 5,
-    fontWeight: '600',
+    marginBottom: 8,
+    fontWeight: '500',
   },
   formGroup: {
     marginBottom: 10,
-  },
-  textInput: {
-    borderColor: '#b9b9b9',
-    borderRadius: 1,
-    borderWidth: 1,
-    minHeight: 40,
-  },
-  textarea: {
-    minHeight: 25 * 3,
   },
   errorText: {
     paddingVertical: 5,
     color: '#FF4136',
   },
+  weightUnit: {
+    paddingHorizontal: 10,
+  },
+  optional: {
+    fontWeight: '400',
+    opacity: 0.7,
+    fontSize: 12,
+  },
 });
 
-function mapStateToProps(state) {
-  const timeSlot = selectTimeSlot(state);
-  const hasTimeSlot =
-    timeSlot &&
-    (timeSlot.choices.length > 0 ||
-      timeSlot.openingHoursSpecification.length > 0);
-  const timeSlotChoices = hasTimeSlot ? getChoicesWithDates(timeSlot) : [];
+function mapDispatchToProps(state) {
+  const timeSlotChoices = [];
+  const timeSlots = selectTimeSlots(state);
+  const choices = state.store.choices;
+  const hasTimeSlot = timeSlots.length > 0;
+  const packages = state.store.packages;
 
   return {
     country: state.app.settings.country.toUpperCase(),
     store: selectStore(state),
     timeSlotChoices,
-    hasTimeSlot: hasTimeSlot && timeSlotChoices.length > 0,
+    hasTimeSlot,
+    timeSlots,
+    choices,
+    packages,
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    createDelivery: (delivery, onSuccess) =>
-      dispatch(createDelivery(delivery, onSuccess)),
-    loadTimeSlot: store => dispatch(loadTimeSlot(store)),
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(NewDelivery));
+export default connect(mapDispatchToProps)(withTranslation()(DeliveryForm));

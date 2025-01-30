@@ -1,5 +1,6 @@
 import moment from 'moment';
 import i18n from '../i18n';
+import OpeningHoursSpecification from './OpeningHoursSpecification';
 
 // Do not use named capturing groups as it's not supported by Hermes
 // https://github.com/facebook/hermes/issues/46
@@ -10,13 +11,6 @@ function round5(x) {
 }
 
 function timingAsText(timing, now) {
-  // FIXME
-  // This hotfixes a bug on the API
-  // https://github.com/coopcycle/coopcycle-web/issues/2213
-  if (timing.range[0] === timing.range[1]) {
-    return i18n.t('NOT_AVAILABLE_ATM');
-  }
-
   const lower = moment.parseZone(timing.range[0]);
 
   if (timing.fast) {
@@ -42,53 +36,82 @@ function timingAsText(timing, now) {
   return lower.calendar(now);
 }
 
-export function getNextShippingTimeAsText(restaurant, now) {
-  now = now || moment();
+export function getNextShippingTime(restaurant) {
 
-  if (restaurant.timing.delivery) {
-    return timingAsText(restaurant.timing.delivery, now);
+  const timing = restaurant.timing.delivery || restaurant.timing.collection;
+
+  if (!timing) {
+    return null;
   }
 
-  if (restaurant.timing.collection) {
-    return timingAsText(restaurant.timing.collection, now);
-  }
-
-  return i18n.t('NOT_AVAILABLE_ATM');
-}
-
-export function isRestaurantClosed(restaurant) {
   // FIXME
   // This hotfixes a bug on the API
   // https://github.com/coopcycle/coopcycle-web/issues/2213
-  if (
-    (!restaurant.timing.delivery && !restaurant.timing.collection) ||
-    (restaurant.timing.delivery &&
-      restaurant.timing.delivery.range[0] ===
-        restaurant.timing.delivery.range[1])
-  ) {
-    return true;
-  } else {
-    return false;
+  if (!Array.isArray(timing.range)) {
+    return null;
   }
+  if (timing.range[0] === timing.range[1]) {
+    return null;
+  }
+
+  return timing;
+}
+
+
+export function getNextShippingTimeAsText(restaurant, now) {
+  now = now || moment();
+
+  const timing = getNextShippingTime(restaurant);
+
+  if (!timing) {
+    return i18n.t('NOT_AVAILABLE_ATM');
+  }
+
+  return timingAsText(timing, now);
 }
 
 export function getRestaurantCaption(restaurant) {
   return restaurant.description || restaurant.address.streetAddress;
 }
 
-export function shouldShowPreOrder(restaurant) {
-  if (restaurant.timing.delivery) {
-    if (
-      restaurant.timing.delivery.range &&
-      Array.isArray(restaurant.timing.delivery.range)
-    ) {
-      const duration = moment.duration(
-        moment(restaurant.timing.delivery.range[0]).diff(moment()),
-      );
+/**
+ * While the restaurant might be available (for ordering)
+ * it might be either opened or closed at the moment
+ */
+export function isRestaurantOrderingAvailable(restaurant) {
+  const timing = getNextShippingTime(restaurant);
+  return Boolean(timing);
+}
 
-      return duration.asHours() > 0.75;
-    }
+/**
+ * When restaurant is closed
+ * it might be either available for pre-ordering or not
+ */
+export function isRestaurantOpeningSoon(restaurant) {
+  const openingHoursSpecification = new OpeningHoursSpecification();
+  openingHoursSpecification.openingHours = restaurant.openingHoursSpecification;
+
+  const currentTimeSlot = openingHoursSpecification.currentTimeSlot;
+
+  return (
+    currentTimeSlot.state === OpeningHoursSpecification.STATE.Closed &&
+    OpeningHoursSpecification.opensSoon(currentTimeSlot.timeSlot, 60)
+  );
+}
+
+/**
+ * Show a pre-order button to highlight the fact that the restaurant is closed
+ * If the pre-order is soon, we show a regular order button
+ */
+export function shouldShowPreOrder(restaurant) {
+  if (!isRestaurantOrderingAvailable(restaurant)) {
+    return false;
   }
 
-  return false;
+  const timing = getNextShippingTime(restaurant);
+  const duration = moment.duration(
+    moment(timing.range[0]).diff(moment()),
+  );
+
+  return duration.asHours() > 0.75;
 }

@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import {
   doingIconName,
@@ -22,7 +23,7 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { greenColor, redColor, yellowColor } from '../styles/common';
-import { PaymentMethodInfo } from './PaymentMethodInfo';
+import { PaymentMethodInList } from './PaymentMethodInfo';
 import TaskTitle from './TaskTitle';
 
 const styles = StyleSheet.create({
@@ -269,10 +270,12 @@ class TaskListItem extends Component {
                   <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
                 ) : null}
                 {task.metadata && task.metadata.payment_method && (
-                  <PaymentMethodInfo
-                    fullDetail={false}
+                  <PaymentMethodInList
                     paymentMethod={task.metadata.payment_method}
                   />
+                )}
+                {task.metadata && task.metadata.zero_waste && (
+                  <Icon as={FontAwesome5} name="recycle" size="sm" />
                 )}
               </HStack>
               {task.tags && task.tags.length ? (
