@@ -4,6 +4,10 @@ import { StyleSheet } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemSeparator from '../../../components/ItemSeparator';
+import {
+  useBackgroundContainerColor,
+  usePrimaryColor,
+} from '../../../styles/theme';
 import FormInput from './FormInput';
 
 export default function ClientListInput({
@@ -13,6 +17,8 @@ export default function ClientListInput({
 }) {
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [value, setValue] = useState('');
+  const backgroundColor = useBackgroundContainerColor();
+  const primaryColor = usePrimaryColor();
 
   function handleFocus() {
     setHideSuggestions(false);
@@ -113,9 +119,22 @@ export default function ClientListInput({
           borderWidth: 0,
           borderRadius: 4,
         }}
+        listContainerStyle={{
+          backgroundColor,
+        }}
+        containerStyle={{
+          backgroundColor,
+        }}
         // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
         renderResultList={({ data, style }) => (
-          <View style={style}>
+          <View
+            style={[
+              style,
+              {
+                backgroundColor,
+                borderColor: primaryColor,
+              },
+            ]}>
             {data.map((item, index) => (
               <View key={index}>
                 <Pressable>{renderItem({ item })}</Pressable>
@@ -124,7 +143,6 @@ export default function ClientListInput({
             ))}
           </View>
         )}
-        style={{}}
       />
     </View>
   );
