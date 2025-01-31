@@ -352,6 +352,20 @@ const DefaultNav = () => {
           title: i18n.t('ZERO_WASTE'),
         }}
       />
+      <RootStack.Screen
+        name="CheckoutPaygreenReturn"
+        component={screens.CheckoutPaygreenReturn}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <RootStack.Screen
+        name="CheckoutPaygreenCancel"
+        component={screens.CheckoutPaygreenCancel}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
     </RootStack.Navigator>
   );
 };

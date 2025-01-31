@@ -138,6 +138,12 @@ const config = {
         },
       },
     },
+    CheckoutNav: {
+      screens: {
+        CheckoutPaygreenReturn: 'paygreen/return',
+        CheckoutPaygreenCancel: 'paygreen/cancel',
+      },
+    },
   },
 };
 

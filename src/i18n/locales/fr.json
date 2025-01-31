@@ -525,7 +525,7 @@
     "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "Indisponible pour l'instant",
     "EDENRED_ELIGIBLE_AMOUNT": "Montant éligible Ticket Restaurant®",
     "EDENRED_COMPLEMENT": "Complément",
-        "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Tâche déjà assignée",
+    "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Tâche déjà assignée",
     "BARCODE_TASK_ALREADY_ASSIGNED_ANOTHER_MESSAGE": "Cette tâche a déjà été assignée à un autre utilisateur",
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Cette tâche vous a déjà été assignée",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Désassigner",
@@ -543,6 +543,7 @@
     "TASK_DONE": "Fait",
     "TASK_CANCELLED": "Annulée",
     "ASK_TO_START_PICKUP_TITLE": "Tâche de ramassage",
-    "ASK_TO_START_PICKUP_MESSAGE": "La tâche de ramassage n'est pas encore commencée."
+    "ASK_TO_START_PICKUP_MESSAGE": "La tâche de ramassage n'est pas encore commencée.",
+    "PAYGREEN_RETURN_TEXT": "Veuillez patienter pendant que nous traitons votre paiement…"
   }
 }

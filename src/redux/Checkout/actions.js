@@ -1099,7 +1099,8 @@ export function canProceedWithPayment(cart) {
 export function checkout(
   cardholderName,
   savedPaymentMethodId = null,
-  saveCard = false
+  saveCard = false,
+  paygreenPaymentOrderID = null
 ) {
   return async (dispatch, getState) => {
     dispatch(checkoutRequest());
@@ -1111,6 +1112,27 @@ export function checkout(
     const loggedOrderId = cart['@id'];
 
     const httpClient = selectHttpClient(getState());
+
+    if (paygreenPaymentOrderID) {
+      httpClient
+        .put(
+          cart['@id'] + '/pay',
+          {
+            paymentOrderId: paygreenPaymentOrderID
+          },
+          {
+            headers: selectCheckoutAuthorizationHeaders(
+              getState(),
+              cart,
+              token,
+            ),
+          },
+        )
+        .then(o => dispatch(handlePaymentSuccess(o)))
+        .catch(e => dispatch(handlePaymentFailed(e)));
+
+      return;
+    }
 
     if (isFree(cart)) {
       httpClient
@@ -1902,7 +1924,7 @@ export function setPaymentMethod(paymentMethod, cb) {
         // TODO Use the payments returned
         // https://github.com/coopcycle/coopcycle-app/issues/1925
         dispatch(updateCartSuccess(cart));
-        cb()
+        cb(res)
       })
       .catch(e => dispatch(checkoutFailure(e)));
   };
