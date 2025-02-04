@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Center } from 'native-base';
 import { Linking, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -25,30 +25,29 @@ const routesByCardGateway = {
   // 'mercadopago': 'CheckoutMercadopago',
 };
 
-function onPaymentMethodSelected(type, paymentGateway, setPaymentMethod, navigation) {
-
-  const cardRoute = Object.prototype.hasOwnProperty.call(routesByCardGateway, paymentGateway) ?
-    routesByCardGateway[paymentGateway] : 'CheckoutPaymentMethodCard';
-
-  const routesByMethod = {
-    cash_on_delivery: 'CheckoutPaymentMethodCashOnDelivery',
-    card: cardRoute,
-    edenred: 'CheckoutPaymentMethodEdenred',
-    'edenred+card': 'CheckoutPaymentMethodEdenred',
-  };
-
-  setPaymentMethod(type, (result) => {
-    if (result.redirectUrl) {
-      Linking.openURL(result.redirectUrl);
-    } else {
-      navigation.navigate(routesByMethod[type]);
-    }
-  })
-}
-
 const CreditCard = ({ cart, paymentMethods, paymentGateway, loadPaymentMethods, setPaymentMethod }) => {
 
   const navigation = useNavigation();
+
+  const onPaymentMethodSelected = useCallback((type) => {
+    const cardRoute = Object.prototype.hasOwnProperty.call(routesByCardGateway, paymentGateway) ?
+      routesByCardGateway[paymentGateway] : 'CheckoutPaymentMethodCard';
+
+    const routesByMethod = {
+      cash_on_delivery: 'CheckoutPaymentMethodCashOnDelivery',
+      card: cardRoute,
+      edenred: 'CheckoutPaymentMethodEdenred',
+      'edenred+card': 'CheckoutPaymentMethodEdenred',
+    };
+
+    setPaymentMethod(type, (result) => {
+      if (result.redirectUrl) {
+        Linking.openURL(result.redirectUrl);
+      } else {
+        navigation.navigate(routesByMethod[type]);
+      }
+    })
+  }, []);
 
   useEffect(() => {
     loadPaymentMethods();
@@ -84,7 +83,7 @@ const CreditCard = ({ cart, paymentMethods, paymentGateway, loadPaymentMethods, 
     <Center flex={1}>
       <PaymentMethodPicker
         methods={paymentMethods}
-        onSelect={ (type) => onPaymentMethodSelected(type, paymentGateway, setPaymentMethod, navigation) }
+        onSelect={onPaymentMethodSelected}
       />
     </Center>
   );
