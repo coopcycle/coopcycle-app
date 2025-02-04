@@ -1351,6 +1351,8 @@ PODS:
   - RNGoogleSignin (7.0.4):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
+  - RNInAppBrowser (3.7.0):
+    - React-Core
   - RNLocalize (3.0.6):
     - React-Core
   - RNReanimated (3.15.5):
@@ -1530,6 +1532,7 @@ DEPENDENCIES:
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
+  - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -1764,6 +1767,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-google-signin/google-signin"
+  RNInAppBrowser:
+    :path: "../node_modules/react-native-inappbrowser-reborn"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNReanimated:
@@ -1908,6 +1913,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: 28f83084ae8a4b9e6ad128e3a644c28bb5e16007
   RNGestureHandler: 703ad8ac7a8c0999cfb58d5d54809fd4a8ee1c5a
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
+  RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
   RNReanimated: 39e51016ec96da586de4747db982dd032a47ba81
   RNScreens: e5093efe5103f3fd5f4479a0f0281ee5e6d81e11

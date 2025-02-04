@@ -3,6 +3,8 @@ import { Center } from 'native-base';
 import { Linking, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import parseUrl from 'url-parse';
 
 import {
   loadPaymentMethods,
@@ -25,6 +27,8 @@ const routesByCardGateway = {
   // 'mercadopago': 'CheckoutMercadopago',
 };
 
+const inAppBrowserOptions = {}
+
 const CreditCard = ({ cart, paymentMethods, paymentGateway, loadPaymentMethods, setPaymentMethod }) => {
 
   const navigation = useNavigation();
@@ -40,9 +44,27 @@ const CreditCard = ({ cart, paymentMethods, paymentGateway, loadPaymentMethods, 
       'edenred+card': 'CheckoutPaymentMethodEdenred',
     };
 
-    setPaymentMethod(type, (result) => {
+    setPaymentMethod(type, async (result) => {
       if (result.redirectUrl) {
-        Linking.openURL(result.redirectUrl);
+        try {
+          if (await InAppBrowser.isAvailable()) {
+            // https://github.com/proyecto26/react-native-inappbrowser/issues/131#issuecomment-663492025
+            await InAppBrowser.closeAuth();
+            InAppBrowser.openAuth(result.redirectUrl, 'coopcycle://', inAppBrowserOptions)
+              .then((response) => {
+                if (response.type === 'success' && response.url) {
+                  const { hostname, pathname } = parseUrl(response.url, true);
+                  if (hostname === 'paygreen' && (pathname === '/cancel' || pathname === '/return')) {
+                    Linking.openURL(response.url)
+                  }
+                }
+              });
+          } else {
+            Linking.openURL(result.redirectUrl);
+          }
+        } catch (e) {
+          Linking.openURL(result.redirectUrl);
+        }
       } else {
         navigation.navigate(routesByMethod[type]);
       }
