@@ -69,7 +69,7 @@ const CreditCard = ({ cart, paymentMethods, paymentGateway, loadPaymentMethods, 
         navigation.navigate(routesByMethod[type]);
       }
     })
-  }, []);
+  }, [ navigation, paymentGateway, setPaymentMethod ]);
 
   useEffect(() => {
     loadPaymentMethods();
