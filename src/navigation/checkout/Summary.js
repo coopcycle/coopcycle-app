@@ -2,7 +2,6 @@ import _ from 'lodash';
 import {
   Button,
   Center,
-  Checkbox,
   HStack,
   Icon,
   Pressable,
@@ -28,6 +27,7 @@ import { connect, useDispatch } from 'react-redux';
 import DropdownHolder from '../../DropdownHolder';
 import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
+import { default as SimpleCheckbox } from '../../components/Checkbox';
 import {
   checkTimeRange,
   decrementItem,
@@ -519,12 +519,11 @@ class Summary extends Component {
               justifyContent="space-between"
               alignItems="center"
               style={styles.btnGrey}>
-              <Checkbox
+              <SimpleCheckbox
                 testID="reusablePackagingCheckbox"
-                accessibilityLabel={reusablePackagingAction.description}
-                defaultIsChecked={cart.reusablePackagingEnabled}
-                onChange={() => this.toggleReusablePackaging()}
-              />
+                isChecked={ cart.reusablePackagingEnabled }
+                onPress={ () => this.toggleReusablePackaging() }
+                accessibilityLabel={ reusablePackagingAction.description } />
               <Text>{reusablePackagingAction.description}</Text>
             </HStack>
           )}
