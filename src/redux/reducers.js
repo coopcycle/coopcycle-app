@@ -122,6 +122,7 @@ const appPersistConfig = {
     'firstRun',
     'resumeCheckoutAfterActivation',
     'isSpinnerDelayEnabled',
+    'isBarcodeEnabled'
   ],
   migrate: state => {
     if (!state) {

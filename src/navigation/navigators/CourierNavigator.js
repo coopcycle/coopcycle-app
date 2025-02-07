@@ -12,8 +12,12 @@ import i18n from '../../i18n';
 import { useBaseTextColor } from '../../styles/theme';
 import { stackNavigatorScreenOptions } from '../styles';
 import TaskNavigator from './TaskNavigator';
+import { useSelector } from 'react-redux';
+import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
 
 const Tab = createBottomTabNavigator();
+
+
 
 const Tabs = () => (
   <Tab.Navigator
@@ -70,21 +74,25 @@ const ButtonWithIcon = ({ name, onPress }) => {
 
 const MainStack = createStackNavigator();
 
-const headerButtons = nav => (
-  <View style={styles.buttonBar}>
-    <ButtonWithIcon
-      name="barcode-sharp"
-      onPress={() => nav.navigate('CourierBarcode')}
-    />
-    <ButtonWithIcon
-      name="settings-sharp"
-      onPress={() => nav.navigate('CourierSettings')}
-    />
-    <TouchableOpacity style={styles.button}>
-      <TrackingIcon />
-    </TouchableOpacity>
-  </View>
-);
+const headerButtons = nav => {
+  const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled)
+  return (
+    <View style={styles.buttonBar}>
+      {isBarcodeEnabled &&
+        <ButtonWithIcon
+          name="barcode-sharp"
+          onPress={() => nav.navigate('CourierBarcode')}
+        />}
+      <ButtonWithIcon
+        name="settings-sharp"
+        onPress={() => nav.navigate('CourierSettings')}
+      />
+      <TouchableOpacity style={styles.button}>
+        <TrackingIcon />
+      </TouchableOpacity>
+    </View>
+  )
+};
 
 const MainNavigator = () => (
   <MainStack.Navigator screenOptions={stackNavigatorScreenOptions}>

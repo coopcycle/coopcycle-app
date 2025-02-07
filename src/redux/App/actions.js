@@ -220,6 +220,8 @@ export const setSpinnerDelayEnabled = createAction(
   '@app/SET_IS_SPINNER_DELAY_ENABLED',
 );
 
+export const setBarcodeEnabled = createAction('@app/SET_IS_BARCODE_ENABLED');
+
 export const startSound = createAction('START_SOUND');
 export const stopSound = createAction('STOP_SOUND');
 
@@ -373,7 +375,7 @@ function loadAll(getState) {
 }
 
 export function selectServer(server) {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     dispatch(setLoading(true));
     dispatch(_clearSelectServerError());
 
@@ -607,7 +609,7 @@ export function forgotPassword() {
 }
 
 export function guestModeOn() {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     const user = new AppUser(
       null, // username
       null, // email

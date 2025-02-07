@@ -193,6 +193,8 @@ export const selectIsSpinnerDelayEnabled = createSelector(
   },
 );
 
+export const selectIsBarcodeEnabled = state => state.app.isBarcodeEnabled ?? true;
+
 export const selectCurrentRoute = state => state.app.currentRoute;
 
 export const selectNotifications = state => state.app.notifications;

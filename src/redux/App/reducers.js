@@ -57,6 +57,7 @@ import {
   SET_USER,
   appStateChanged,
   setSpinnerDelayEnabled,
+  setBarcodeEnabled,
 } from './actions';
 
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
@@ -114,6 +115,7 @@ const initialState = {
   termsAndConditionsText: '',
   privacyPolicyText: '',
   isSpinnerDelayEnabled: true,
+  isBarcodeEnabled: false,
 };
 
 function updateNotifications(state, event, params) {
@@ -473,6 +475,12 @@ export default (state = initialState, action = {}) => {
         ...state,
         isSpinnerDelayEnabled: action.payload,
       };
+
+    case setBarcodeEnabled.type:
+      return {
+        ...state,
+        isBarcodeEnabled: action.payload,
+      }
 
     case appStateChanged.type:
       return {
