@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ItemSeparator from '../../../components/ItemSeparator';
-import FormInput from './FormInput';
+import FormInput from '../../store/components/FormInput';
 
 export default function StoresListInput({
   stores,

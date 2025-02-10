@@ -4,7 +4,7 @@ import React from 'react'
 import { withTranslation } from 'react-i18next'
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import { connect, useSelector } from 'react-redux'
-import StoreListInput from './components/StoreListInput'
+import StoreListInput from '../dispatch/components/StoreListInput'
 import ModalFormWrapper from './ModalFormWrapper'
 
 const AddDeliveryStoreSelect = (props) => {
@@ -30,7 +30,7 @@ const AddDeliveryStoreSelect = (props) => {
         businessName: values.businessName,
         address,
       };
-  
+
       navigation.navigate('StoreNewDeliveryForm', {
         pickup: route.params?.pickup || undefined,
         dropoff: dropoff,
