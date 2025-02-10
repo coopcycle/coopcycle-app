@@ -4,6 +4,7 @@ import React from 'react'
 import { withTranslation } from 'react-i18next'
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import { connect, useSelector } from 'react-redux'
+import FormInput from './components/FormInput';
 import StoreListInput from '../dispatch/components/StoreListInput'
 import ModalFormWrapper from './ModalFormWrapper'
 
@@ -43,6 +44,7 @@ const AddDeliveryStoreSelect = (props) => {
     console.log(store)
   }
 
+  // TODO: Do we really need a form here? Don't think so
   return (
     <Formik
       initialValues={initialValues}
@@ -54,16 +56,20 @@ const AddDeliveryStoreSelect = (props) => {
         handleSubmit,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
-          <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_SEARCH_STORE')}{' '}
-              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-            </Text>
-            <View style={styles.autocompleteWrapper}>
-              <StoreListInput
-                stores={stores}
-                onSelectStore={onSelectStore}
-              />
-            </View>
+          <FormInput
+            autoCorrect={false}
+            returnKeyType="done"
+            //onChangeText={handleChange('businessName')}
+            //onBlur={handleBlur('businessName')}
+            value=""
+            placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
+          />
+          <View style={styles.storeListContainer}>
+            <StoreListInput
+              stores={stores}
+              onSelectStore={onSelectStore}
+            />
+          </View>
         </ModalFormWrapper>
       )}
     </Formik>
@@ -71,7 +77,7 @@ const AddDeliveryStoreSelect = (props) => {
   }
 
   const styles = StyleSheet.create({
-    autocompleteWrapper: {
+    storeListContainer: {
       height: 40,
       ...Platform.select({
         android: {
