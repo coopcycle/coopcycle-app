@@ -146,7 +146,7 @@ function _loadTaskLists(httpClient, date) {
 }
 
 function _loadStores(httpClient) {
-  return httpClient.get('/api/stores');
+  return httpClient.get('/api/stores?itemsPerPage=100');
 }
 
 function _loadAll(httpClient, date) {
