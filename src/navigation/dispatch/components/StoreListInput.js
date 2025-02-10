@@ -1,131 +1,68 @@
-import { Pressable, Text, View } from 'native-base';
-import { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import Autocomplete from 'react-native-autocomplete-input';
+import { FlatList, StyleSheet } from 'react-native';
+import { Icon, Text, View } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import ItemSeparator from '../../../components/ItemSeparator';
-import FormInput from '../../store/components/FormInput';
+import { useEffect } from 'react';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default function StoresListInput({
+import ItemSeparator from '../../../components/ItemSeparator';
+
+// TODO: rename this component
+export default function StoreListInput({
   stores,
   onSelectStore,
-  placeholder
 }) {
-  const [hideSuggestions, setHideSuggestions] = useState(true);
-  const [value, setValue] = useState('');
 
-  function handleFocus() {
-    setHideSuggestions(false);
-  }
+  // TODO: remove this
+  useEffect(() => {
+    console.log(stores.map(s => s.name))
+  }, [stores])
 
-  function handleBlur() {
-    setHideSuggestions(true);
-  }
+  const styles = StyleSheet.create({
+    item: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 15,
+      paddingHorizontal: 15,
+    },
+    itemLabel: {
+      flex: 1,
+      paddingHorizontal: 10,
+    },
+    storeList: {
+      flex: 1,
+      left: 0,
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      zIndex: 1,
+    },
+  });
 
-  function handleChangeText(text) {
-    if (hideSuggestions) setHideSuggestions(false);
-    setValue(text);
-  }
 
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const RenderedInput = () => {
-      return (
-        <FormInput
-          autoCorrect={false}
-          returnKeyType="done"
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          value={value}
-          onChangeText={handleChangeText}
-          placeholder={placeholder}
-        />
-      );
-    }
-    function selectStore(store) {
-      onSelectStore(store);
-      setHideSuggestions(true);
-      setValue(store.contactName);
-    }
-
-    const renderItem = ({ item }) => (
+  const renderItem = (store) => {
+    return (
       <TouchableOpacity
-        onPress={() => selectStore(item)}
-        style={{
-          padding: 12,
-        }}>
-        <Text
-          style={{
-            fontSize: 14,
-            flex: 1,
-            margin: 0,
-            padding: 0,
-            borderWidth: 0,
-          }}
-          numberOfLines={1}
-          ellipsizeMode="tail">
-          {`${item.name ?? ''} - ${item.contactName ?? ''}`}
+        onPress={onSelectStore}
+        style={styles.item}
+        testID={`dispatch:storeList:${store.id}`}>
+        <Text style={styles.itemLabel}>
+          {store.name}
         </Text>
-        <Text
-          style={{
-            fontSize: 14,
-            flex: 1,
-            margin: 0,
-            padding: 0,
-            borderWidth: 0,
-          }}
-          numberOfLines={1}
-          ellipsizeMode="tail">
-          {`${item.streetAddress}`}
-        </Text>
+        <Icon as={FontAwesome} name="arrow-right" />
       </TouchableOpacity>
     );
+  }
 
   return (
-    <View style={styles.autocompleteContainer}>
-      <Autocomplete
-        hideResults={hideSuggestions}
-        data={
-          value
-            ? stores.filter(({ name, contactName, streetAddress }) =>
-                [name, contactName, streetAddress].some(field =>
-                  field?.toLowerCase().includes(value.toLowerCase()),
-                ),
-              )
-            : stores
-        }
-        renderTextInput={RenderedInput}
-        onChangeText={handleChangeText}
-        clearButtonMode="while-editing"
-        inputContainerStyle={{
-          margin: 0,
-          padding: 0,
-          borderWidth: 0,
-          borderRadius: 4,
-        }}
-        // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
-        renderResultList={({ data, style }) => (
-          <View style={style}>
-            {data.map((item, index) => (
-              <View key={index}>
-                <Pressable>{renderItem({ item })}</Pressable>
-                <ItemSeparator />
-              </View>
-            ))}
-          </View>
-        )}
-        style={{}}
-      />
+    <View style={styles.storeList}>
+        <FlatList
+          data={stores}
+          keyExtractor={(item, index) => item.id}
+          renderItem={({ item }) => renderItem(item)}
+          ItemSeparatorComponent={ItemSeparator}
+        />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  autocompleteContainer: {
-    flex: 1,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 1,
-  },
-});

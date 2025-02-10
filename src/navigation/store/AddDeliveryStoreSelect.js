@@ -35,8 +35,13 @@ const AddDeliveryStoreSelect = (props) => {
         pickup: route.params?.pickup || undefined,
         dropoff: dropoff,
       }); */
-    }
-    const stores = useSelector(state => state.store.myStores);
+  }
+  const stores = useSelector(state => state.dispatch.stores);
+
+  const onSelectStore = (store) => {
+    // TODO: do something more interesting with selected store
+    console.log(store)
+  }
 
   return (
     <Formik
@@ -56,7 +61,7 @@ const AddDeliveryStoreSelect = (props) => {
             <View style={styles.autocompleteWrapper}>
               <StoreListInput
                 stores={stores}
-                placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_STORE')}
+                onSelectStore={onSelectStore}
               />
             </View>
         </ModalFormWrapper>
