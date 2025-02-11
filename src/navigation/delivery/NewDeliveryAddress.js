@@ -27,14 +27,14 @@ function NewDeliveryAddress(props) {
   const primaryColor = usePrimaryColor();
 
   const {
-    store,
-    deliveryError,
     addresses,
     assertDelivery,
-    t,
-    route,
-    navigation,
     country,
+    deliveryError,
+    navigation,
+    route,
+    store,
+    t,
   } = props;
 
   const inputStyles = {
@@ -381,10 +381,10 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(state) {
   return {
+    addresses: state.delivery.addresses,
     country: state.app.settings.country.toUpperCase(),
-    store: selectStore(state),
     deliveryError: state.delivery.assertDeliveryError,
-    addresses: state.store.addresses,
+    store: selectStore(state),
   };
 }
 
