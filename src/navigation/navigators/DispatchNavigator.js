@@ -120,10 +120,10 @@ export default () => (
       }}
     />
     <RootStack.Screen
-      name="DispatchAddTask"
+      name="DispatchNewDelivery"
       component={AddTaskNavigator}
       options={{
-        title: i18n.t('DISPATCH_ADD_TASK'),
+        title: i18n.t('DISPATCH_NEW_DELIVERY'),
       }}
     />
     <RootStack.Screen

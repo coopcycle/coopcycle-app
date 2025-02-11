@@ -1,7 +1,7 @@
-import { FlatList, StyleSheet } from 'react-native';
-import { Icon, Text, View } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Icon, Text } from 'native-base';
 import { useEffect } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import ItemSeparator from '../../../components/ItemSeparator';
@@ -30,14 +30,6 @@ export default function StoreListInput({
       flex: 1,
       paddingHorizontal: 10,
     },
-    storeList: {
-      flex: 1,
-      left: 0,
-      position: 'absolute',
-      right: 0,
-      top: 0,
-      zIndex: 1,
-    },
   });
 
 
@@ -55,14 +47,10 @@ export default function StoreListInput({
     );
   }
 
-  return (
-    <View style={styles.storeList}>
-        <FlatList
+  return <FlatList
           data={stores}
           keyExtractor={(item, index) => item.id}
           renderItem={({ item }) => renderItem(item)}
           ItemSeparatorComponent={ItemSeparator}
         />
-    </View>
-  );
 }

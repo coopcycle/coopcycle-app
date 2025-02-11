@@ -1,9 +1,9 @@
 import {
   authenticateWithCredentials,
-  logout,
-  symfonyConsole,
   connectToLocalInstance,
   connectToSandbox,
+  logout,
+  symfonyConsole,
 } from './support/commands';
 
 const exec = require('child-process-promise').exec;
@@ -30,6 +30,7 @@ describe.skip('Dispatch', () => {
     }
   });
 
+  // TODO flow changed #197 - needs fixing
   it('should be able to create task', async () => {
     await authenticateWithCredentials('admin', 'admin');
 
@@ -37,8 +38,8 @@ describe.skip('Dispatch', () => {
     await element(by.id('menuBtnCourier')).tap();
     await element(by.label('Dispatch')).tap();
 
-    await expect(element(by.id('addTask'))).toBeVisible();
-    await element(by.id('addTask')).tap();
+    await expect(element(by.id('dispatchNewDelivery'))).toBeVisible();
+    await element(by.id('dispatchNewDelivery')).tap();
 
     await waitFor(element(by.id('taskFormTypeahead')))
       .toExist()
