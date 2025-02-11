@@ -50,7 +50,7 @@ jobs:
         run: gem install cocoapods-user-defined-build-types
 
       - name: Cache Pods
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-pods
         with:
           path: ios/Pods
@@ -150,7 +150,7 @@ jobs:
         run: gem install cocoapods-user-defined-build-types
 
       - name: Cache Pods
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-pods
         with:
           path: coopcycle-app-repo/ios/Pods
