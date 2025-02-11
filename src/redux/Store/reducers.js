@@ -35,7 +35,6 @@ const initialState = {
   refreshing: false,
   timeSlots: [],
   choices: [],
-  assertDeliveryError: null,
   price: null,
   priceExcludingTax: null,
 };
@@ -162,12 +161,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         deliveries: replace(state.deliveries, delivery, pickup, dropoff),
-      };
-
-    case ASSERT_DELIVERY_ERROR:
-      return {
-        ...state,
-        assertDeliveryError: action.payload,
       };
 
     case SET_LOADING_MORE:

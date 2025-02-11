@@ -8,7 +8,7 @@ import { withTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { assertDelivery } from '../../redux/Store/actions';
+import { assertDelivery as assertDeliveryAction } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
 import {
   useBackgroundContainerColor,
@@ -383,7 +383,7 @@ function mapDispatchToProps(state) {
   return {
     country: state.app.settings.country.toUpperCase(),
     store: selectStore(state),
-    deliveryError: state.store.assertDeliveryError,
+    deliveryError: state.delivery.assertDeliveryError,
     addresses: state.store.addresses,
   };
 }
@@ -391,7 +391,7 @@ function mapDispatchToProps(state) {
 function mapStateToProps(dispatch) {
   return {
     assertDelivery: (delivery, onSuccess) =>
-      dispatch(assertDelivery(delivery, onSuccess)),
+      dispatch(assertDeliveryAction(delivery, onSuccess)),
   };
 }
 

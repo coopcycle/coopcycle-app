@@ -35,7 +35,7 @@ function NewDeliveryPickup({ navigation }) {
     state.app.settings.country.toUpperCase(),
   );
   const store = useSelector(selectStore);
-  const deliveryError = useSelector(state => state.store.assertDeliveryError);
+  const deliveryError = useSelector(state => state.delivery.assertDeliveryError);
   const addresses = useSelector(state => state.store.addresses);
 
   const inputStyles = {
@@ -401,7 +401,7 @@ function mapDispatchToProps(state) {
   return {
     country: state.app.settings.country.toUpperCase(),
     store: selectStore(state),
-    deliveryError: state.store.assertDeliveryError,
+    deliveryError: state.delivery.assertDeliveryError,
     addresses: state.store.addresses,
   };
 }

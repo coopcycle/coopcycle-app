@@ -1,17 +1,27 @@
-import { SET_RETURN_SCREEN } from "./actions"
+import {
+  ASSERT_DELIVERY_ERROR,
+  SET_RETURN_SCREEN
+} from "./actions"
 
 const initialState = {
-    returnScreen: '',
+  returnScreen: '',
+  assertDeliveryError: null,
 }
 
 export default (state = initialState, action = {}) => {
-    switch (action.type) {
-        case SET_RETURN_SCREEN:
-            return {
-                ...state,
-                returnScreen: action.payload,
-            };
-    }
+  switch (action.type) {
+    case SET_RETURN_SCREEN:
+      return {
+        ...state,
+        returnScreen: action.payload,
+      };
 
-    return state;
+    case ASSERT_DELIVERY_ERROR:
+      return {
+        ...state,
+        assertDeliveryError: action.payload,
+      };
+  }
+
+  return state;
 }

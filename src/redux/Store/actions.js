@@ -8,7 +8,6 @@ export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS';
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS';
 export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS';
-export const ASSERT_DELIVERY_ERROR = '@store/ASSERT_DELIVERY_ERROR';
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
 export const LOAD_ADDRESSES_SUCCESS = '@store/LOAD_ADDRESSES_SUCCESS';
@@ -136,7 +135,6 @@ export const loadTasksSuccess = createAction(
     dropoff,
   }),
 );
-export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
 
 export const setLoadingMore = createAction(SET_LOADING_MORE);
 export const setRefreshing = createAction(SET_REFRESHING);
@@ -167,27 +165,6 @@ export function createDelivery(delivery, onSuccess) {
       })
       .catch(e => {
         dispatch(setLoading(false));
-      });
-  };
-}
-
-export function assertDelivery(delivery, onSuccess) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(assertDeliveryError(null));
-    dispatch(setLoading(true));
-
-    httpClient
-      .post('/api/deliveries/assert', delivery)
-      .then(res => {
-        dispatch(setLoading(false));
-        onSuccess();
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-        dispatch(assertDeliveryError(e['hydra:description']));
       });
   };
 }
