@@ -7,9 +7,25 @@ export const SET_RETURN_SCREEN = '@delivery/SET_RETURN_SCREEN';
 
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 
+export const LOAD_ADDRESSES_SUCCESS = '@delivery/LOAD_ADDRESSES_SUCCESS';
+
+export const SET_REFRESHING = '@delivery/SET_REFRESHING';
+
+
 export const setReturnScreen = createAction(SET_RETURN_SCREEN);
 
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
+
+export const setRefreshing = createAction(SET_REFRESHING);
+
+export const loadAddressesSuccess = createAction(
+  LOAD_ADDRESSES_SUCCESS,
+  (store, addresses) => ({
+    store,
+    addresses,
+  }),
+);
+
 
 export function assertDelivery(delivery, onSuccess) {
   return (dispatch, getState) => {
@@ -31,3 +47,24 @@ export function assertDelivery(delivery, onSuccess) {
       });
   };
 }
+
+
+export function loadAddresses(store) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    return httpClient
+      .get(`${store['@id']}/addresses`)
+      .then(res => {
+        dispatch(loadAddressesSuccess(store, res['hydra:member']));
+        dispatch(setLoading(false));
+        dispatch(setRefreshing(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+        dispatch(setRefreshing(false));
+      });
+  };
+}
+

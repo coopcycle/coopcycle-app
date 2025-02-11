@@ -10,7 +10,6 @@ export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS';
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
-export const LOAD_ADDRESSES_SUCCESS = '@store/LOAD_ADDRESSES_SUCCESS';
 export const INIT_SUCCESS = '@store/INIT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@store/LOAD_TIME_SLOTS_SUCCESS';
 export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
@@ -110,20 +109,12 @@ export const loadDeliveriesSuccess = createAction(
     pagination,
   }),
 );
-export const loadAddressesSuccess = createAction(
-  LOAD_ADDRESSES_SUCCESS,
-  (store, addresses) => ({
-    store,
-    addresses,
-  }),
-);
 export const initSuccess = createAction(
   INIT_SUCCESS,
-  (store, deliveries, pagination, addresses) => ({
+  (store, deliveries, pagination) => ({
     store,
     deliveries,
     pagination,
-    addresses,
   }),
 );
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
@@ -185,25 +176,6 @@ export function loadDeliveries(store, refresh = false) {
             totalItems: res['hydra:totalItems'],
           }),
         );
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
-      });
-  };
-}
-
-export function loadAddresses(store) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    return httpClient
-      .get(`${store['@id']}/addresses`)
-      .then(res => {
-        dispatch(loadAddressesSuccess(store, res['hydra:member']));
         dispatch(setLoading(false));
         dispatch(setRefreshing(false));
       })
@@ -314,10 +286,9 @@ export function init(store) {
 
     Promise.all([
       httpClient.get(`${store['@id']}/deliveries?order[dropoff.before]=desc`),
-      httpClient.get(`${store['@id']}/addresses`),
     ])
       .then(values => {
-        const [deliveries, addresses] = values;
+        const [deliveries] = values;
         dispatch(
           initSuccess(
             store,
@@ -326,7 +297,6 @@ export function init(store) {
               next: deliveries['hydra:view']['hydra:next'],
               totalItems: deliveries['hydra:totalItems'],
             },
-            addresses['hydra:member'],
           ),
         );
         dispatch(setLoading(false));

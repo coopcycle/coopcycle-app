@@ -10,7 +10,6 @@ import variables from '../../../native-base-theme/variables/platform';
 
 import {
   init,
-  loadAddresses,
   loadDeliveries,
   loadMoreDeliveries,
 } from '../../redux/Store/actions';
@@ -74,7 +73,6 @@ function mapDispatchToProps(dispatch) {
   return {
     loadDeliveries: (store, refresh = false) =>
       dispatch(loadDeliveries(store, refresh)),
-    loadAddresses: store => dispatch(loadAddresses(store)),
     init: store => dispatch(init(store)),
     loadMoreDeliveries: () => dispatch(loadMoreDeliveries()),
   };

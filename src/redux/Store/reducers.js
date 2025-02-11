@@ -1,10 +1,8 @@
 import {
-  ASSERT_DELIVERY_ERROR,
   CREATE_DELIVERY_SUCCESS,
   GET_PRICE_ERROR,
   GET_PRICE_SUCCESS,
   INIT_SUCCESS,
-  LOAD_ADDRESSES_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
   LOAD_PACKAGES_SUCCESS,
   LOAD_TASKS_SUCCESS,
@@ -26,7 +24,6 @@ const initialState = {
   myStores: [], // Array of stores
   store: null,
   deliveries: [],
-  addresses: [],
   pagination: {
     next: null,
     totalItems: 0,
@@ -71,7 +68,6 @@ export default (state = initialState, action = {}) => {
             '@id',
           ),
           pagination: action.payload.pagination,
-          addresses: action.payload.addresses,
         };
       }
 
@@ -174,16 +170,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         refreshing: action.payload,
       };
-
-    case LOAD_ADDRESSES_SUCCESS:
-      if (action.payload.store['@id'] === state.store['@id']) {
-        return {
-          ...state,
-          addresses: _.uniqBy(action.payload.addresses, '@id'),
-        };
-      }
-
-      break;
   }
 
   return state;
