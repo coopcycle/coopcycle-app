@@ -14,6 +14,7 @@ function NewDeliveryPrice({ route, navigation }) {
 
   const price = useSelector(state => state.store.price);
   const priceExcludingTax = useSelector(state => state.store.priceExcludingTax);
+  const returnScreen = useSelector(state => state.delivery.returnScreen);
 
   if (!delivery) return null;
 
@@ -23,7 +24,7 @@ function NewDeliveryPrice({ route, navigation }) {
     if (price === null || priceExcludingTax === null) return;
     dispatch(
       createDelivery(values, () => {
-        navigation.navigate('StoreHome');
+        navigation.navigate(returnScreen);
       }),
     );
   }
