@@ -148,7 +148,7 @@ function NewDeliveryAddress(props) {
       address,
     };
 
-    navigation.navigate('StoreNewDeliveryForm', {
+    navigation.navigate('NewDeliveryForm', {
       pickup: route.params?.pickup || undefined,
       dropoff: dropoff,
     });

@@ -149,7 +149,7 @@ function NewDeliveryPickup({ navigation }) {
         }
       : undefined;
 
-    navigation.navigate('StoreNewDeliveryAddress', { pickup });
+    navigation.navigate('NewDeliveryAddress', { pickup });
   }
 
   return (

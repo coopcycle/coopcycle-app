@@ -161,7 +161,7 @@ function DeliveryForm(props) {
       },
     };
 
-    navigation.navigate('StoreNewDeliveryPrice', { delivery });
+    navigation.navigate('NewDeliveryPrice', { delivery });
   }
 
   function validate(values) {
