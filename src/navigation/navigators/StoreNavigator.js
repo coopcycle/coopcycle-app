@@ -1,12 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import screens, { headerLeft } from '..';
-import NavigationHolder from '../../NavigationHolder';
+import { NewDeliveryNavigator } from './NewDeliveryNavigator';
+import { stackNavigatorScreenOptions } from '../styles';
+import HeaderBackButton from '../store/components/HeaderBackButton';
 import HeaderButton from '../../components/HeaderButton';
 import i18n from '../../i18n';
-import HeaderBackButton from '../store/components/HeaderBackButton';
-import { stackNavigatorScreenOptions } from '../styles';
+import NavigationHolder from '../../NavigationHolder';
+import screens, { headerLeft } from '..';
 
 const MainStack = createStackNavigator();
 
@@ -26,7 +27,7 @@ const MainNavigator = () => (
             <HeaderButton
               iconType="FontAwesome"
               iconName="plus"
-              onPress={() => navigation.navigate('StoreNewDelivery')}
+              onPress={() => navigation.navigate('NewDelivery', { screen: 'NewDeliveryPickup' })}
             />
           ),
         };
@@ -50,40 +51,6 @@ const MainNavigator = () => (
   </MainStack.Navigator>
 );
 
-const NewDeliveryStack = createStackNavigator();
-
-const NewDeliveryNavigator = () => (
-  <NewDeliveryStack.Navigator screenOptions={stackNavigatorScreenOptions}>
-    <NewDeliveryStack.Screen
-      name="StoreNewDeliveryPickup"
-      component={screens.StoreNewDeliveryPickup}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <NewDeliveryStack.Screen
-      name="StoreNewDeliveryAddress"
-      component={screens.StoreNewDeliveryAddress}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <NewDeliveryStack.Screen
-      name="StoreNewDeliveryForm"
-      component={screens.StoreNewDeliveryForm}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <NewDeliveryStack.Screen
-      name="StoreNewDeliveryPrice"
-      component={screens.StoreNewDeliveryPrice}
-      options={{
-        headerShown: false,
-      }}
-    />
-  </NewDeliveryStack.Navigator>
-);
 const RootStack = createStackNavigator();
 
 export default () => (
@@ -97,7 +64,7 @@ export default () => (
       }}
     />
     <RootStack.Screen
-      name="StoreNewDelivery"
+      name="NewDelivery"
       component={NewDeliveryNavigator}
       options={{
         title: i18n.t('STORE_NEW_DELIVERY'),
