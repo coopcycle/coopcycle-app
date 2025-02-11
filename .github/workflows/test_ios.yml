@@ -72,7 +72,7 @@ jobs:
       # https://discuss.circleci.com/t/sharing-xcode-derived-data-folder-across-jobs-workflows/31363/5
       # https://medium.com/@bitrise/60-faster-builds-force-xcode-to-use-caching-on-bitrise-af8979ca39a6
       - name: Cache XCode derived data
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-xcode-derived-data
         with:
           path: ios/build
