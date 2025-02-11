@@ -31,7 +31,8 @@ function MainNavigator() {
               'NewDelivery',
               {
                 screen: 'NewDeliveryPickup',
-              })
+              }
+            )
           }
 
           return {
