@@ -29,7 +29,7 @@ import {
 import Range from '../checkout/ProductDetails/Range';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
-import TimeSlotSelector from './components/TimeSlotSelector';
+import TimeSlotSelector from '../store/components/TimeSlotSelector';
 
 function DeliveryForm(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);

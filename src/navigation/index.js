@@ -18,10 +18,11 @@ import TaskHome from './task/Task';
 
 import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
-import StoreNewDeliveryAddress from './store/NewDeliveryAddress';
-import StoreNewDeliveryForm from './store/NewDeliveryForm';
-import StoreNewDeliveryPickup from './store/NewDeliveryPickup';
-import StoreNewDeliveryPrice from './store/NewDeliveryPrice';
+
+import NewDeliveryAddress from './new-delivery/NewDeliveryAddress';
+import NewDeliveryForm from './new-delivery/NewDeliveryForm';
+import NewDeliveryPickup from './new-delivery/NewDeliveryPickup';
+import NewDeliveryPrice from './new-delivery/NewDeliveryPrice';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery';
@@ -136,16 +137,16 @@ export default {
   DispatchDate,
   DispatchAssignTask,
   DispatchEditAddress,
+  NewDeliveryPickup,
+  NewDeliveryAddress,
+  NewDeliveryForm,
+  NewDeliveryPrice,
   TaskHome,
   TaskComplete,
   TaskPhoto,
   TaskSignature,
   StoreDashboard,
   StoreDelivery,
-  StoreNewDeliveryPickup,
-  StoreNewDeliveryAddress,
-  StoreNewDeliveryForm,
-  StoreNewDeliveryPrice,
   SearchForm,
   Carts,
   AddressDetails,
