@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import ItemSeparator from '../../../components/ItemSeparator';
+import KeyboardAdjustView from '../../../components/KeyboardAdjustView';
 
 // TODO: rename this component
 export default function StoreListInput({
@@ -46,11 +47,13 @@ export default function StoreListInput({
       </TouchableOpacity>
     );
   }
-
-  return <FlatList
-          data={stores}
-          keyExtractor={(item, index) => item.id}
-          renderItem={({ item }) => renderItem(item)}
-          ItemSeparatorComponent={ItemSeparator}
-        />
+// TODO KeyboardAdjustView needs more testing on Android
+  return <KeyboardAdjustView style={{ flex: 1 }} androidBehavior={''}>
+            <FlatList
+            data={stores}
+            keyExtractor={(item, index) => item.id}
+            renderItem={({ item }) => renderItem(item)}
+            ItemSeparatorComponent={ItemSeparator}
+          />
+        </KeyboardAdjustView>
 }
