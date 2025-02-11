@@ -9,7 +9,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import AddressAutocomplete from '../../components/AddressAutocomplete';
 import { assertDelivery } from '../../redux/Store/actions';
-import { selectStore } from '../../redux/Store/selectors';
+import { selectStore } from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,

@@ -3,7 +3,8 @@ import _ from 'lodash';
 import {
   ASSERT_DELIVERY_ERROR,
   LOAD_ADDRESSES_SUCCESS,
-  SET_RETURN_SCREEN
+  SET_RETURN_SCREEN,
+  SET_STORE
 } from "./actions"
 
 
@@ -11,6 +12,7 @@ const initialState = {
   addresses: [],
   assertDeliveryError: null,
   returnScreen: '',
+  store: null,
 }
 
 export default (state = initialState, action = {}) => {
@@ -36,6 +38,12 @@ export default (state = initialState, action = {}) => {
       }
 
       break;
+
+    case SET_STORE:
+      return {
+        ...state,
+        store: action.payload,
+      }
   }
 
   return state;

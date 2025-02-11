@@ -2,8 +2,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 import React from 'react';
 
+import { loadAddresses, setReturnScreen, setStore } from '../../redux/Delivery/actions';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
-import { setReturnScreen } from '../../redux/Delivery/actions';
 import { stackNavigatorScreenOptions } from '../styles';
 import HeaderBackButton from '../store/components/HeaderBackButton';
 import HeaderButton from '../../components/HeaderButton';
@@ -25,6 +25,8 @@ function MainNavigator() {
           const store = route.params?.store;
           const title = store ? store.name : '';
           const navigateToDelivery = () => {
+            dispatch(setStore(store));
+            dispatch(loadAddresses(store))
             dispatch(setReturnScreen('StoreHome'));
 
             navigation.navigate(
