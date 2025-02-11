@@ -19,10 +19,10 @@ import TaskHome from './task/Task';
 import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
 
-import NewDeliveryAddress from './new-delivery/NewDeliveryAddress';
-import NewDeliveryForm from './new-delivery/NewDeliveryForm';
-import NewDeliveryPickup from './new-delivery/NewDeliveryPickup';
-import NewDeliveryPrice from './new-delivery/NewDeliveryPrice';
+import NewDeliveryAddress from './delivery/NewDeliveryAddress';
+import NewDeliveryForm from './delivery/NewDeliveryForm';
+import NewDeliveryPickup from './delivery/NewDeliveryPickup';
+import NewDeliveryPrice from './delivery/NewDeliveryPrice';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery';
