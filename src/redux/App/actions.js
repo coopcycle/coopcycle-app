@@ -11,6 +11,7 @@ import NavigationHolder from '../../NavigationHolder';
 import Settings from '../../Settings';
 import i18n from '../../i18n';
 import { setCurrencyCode } from '../../utils/formatting';
+import { sortByName } from '../util';
 import { loadAddresses, loadAddressesSuccess } from '../Account/actions';
 import {
   assignAllCarts,
@@ -351,7 +352,7 @@ function loadAll(getState) {
               const req = httpClient.get('/api/me/stores');
               req
                 .then(res => {
-                  resolve(res['hydra:member']);
+                  resolve(sortByName(res['hydra:member']));
                 })
                 .catch(e => {
                   resolve([]);

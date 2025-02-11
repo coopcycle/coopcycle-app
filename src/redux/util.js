@@ -29,3 +29,7 @@ export function createTaskItemsTransform(now) {
     { whitelist: ['items'] },
   );
 }
+
+export function sortByName(list) {
+  return _.sortBy(list, ['name']);
+}

@@ -23,6 +23,7 @@ import {
 
 import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { isSameDate } from './utils';
+import { sortByName } from '../util';
 
 /*
  * Action Types
@@ -205,7 +206,7 @@ export function initialize() {
         dispatch(loadUsersSuccess(users['hydra:member']));
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
         dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-        dispatch(loadStoresSuccess(stores['hydra:member']));
+        dispatch(loadStoresSuccess(sortByName(stores['hydra:member'])));
         dispatch(connectCentrifugo());
         dispatch(_initialize());
       })
