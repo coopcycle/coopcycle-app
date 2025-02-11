@@ -25,8 +25,10 @@ export const setStore = createAction(SET_STORE);
 export const loadAddressesSuccess = createAction(
   LOAD_ADDRESSES_SUCCESS,
   (store, addresses) => ({
-    store,
-    addresses,
+    payload: {
+        store,
+        addresses,
+    }
   }),
 );
 
