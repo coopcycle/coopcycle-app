@@ -9,13 +9,16 @@ export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 
 export const LOAD_ADDRESSES_SUCCESS = '@delivery/LOAD_ADDRESSES_SUCCESS';
 
+export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
+export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
+
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
 
 export const SET_STORE = '@delivery/SET_STORE';
 
 
-export const GET_PRICE_SUCCESS = '@store/GET_PRICE_SUCCESS';
-export const GET_PRICE_ERROR = '@store/GET_PRICE_ERROR';
+export const GET_PRICE_SUCCESS = '@delivery/GET_PRICE_SUCCESS';
+export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
 
 
 export const setReturnScreen = createAction(SET_RETURN_SCREEN);
@@ -28,6 +31,9 @@ export const setStore = createAction(SET_STORE);
 
 const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
 const getPriceError = createAction(GET_PRICE_ERROR);
+
+const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
+const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 
 
 const loadAddressesSuccess = createAction(

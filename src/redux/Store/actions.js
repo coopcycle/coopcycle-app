@@ -2,16 +2,15 @@ import _ from 'lodash';
 import { createAction } from 'redux-actions';
 
 import { setLoading } from '../App/actions';
-import { selectStore, selectTimeSlots } from './selectors';
+import { selectStore } from './selectors';
+import { selectTimeSlots } from '../Delivery/selectors';
 
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS';
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS';
-export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS';
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
 export const INIT_SUCCESS = '@store/INIT_SUCCESS';
-export const LOAD_TIME_SLOTS_SUCCESS = '@store/LOAD_TIME_SLOTS_SUCCESS';
 export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
   '@store/LOAD_TIME_SLOT_CHOICES_SUCCESS';
 export const LOAD_PACKAGES_SUCCESS = '@store/LOAD_PACKAGES_SUCCESS';
@@ -35,7 +34,7 @@ export function loadPackages(store) {
       });
   };
 }
-export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
+
 export function loadTimeSlots(store) {
   return (dispatch, getState) => {
     const { app } = getState();
@@ -93,7 +92,6 @@ export const initSuccess = createAction(
     pagination,
   }),
 );
-export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const loadTasksSuccess = createAction(
   LOAD_TASKS_SUCCESS,
   (delivery, pickup, dropoff) => ({

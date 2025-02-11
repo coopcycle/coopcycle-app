@@ -27,7 +27,6 @@ const initialState = {
   },
   loadingMore: false,
   refreshing: false,
-  timeSlots: [],
   choices: [],
   price: null,
   priceExcludingTax: null,
@@ -119,12 +118,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         choices: action.payload,
-      };
-
-    case LOAD_TIME_SLOTS_SUCCESS:
-      return {
-        ...state,
-        timeSlots: action.payload,
       };
 
     case LOAD_PACKAGES_SUCCESS:

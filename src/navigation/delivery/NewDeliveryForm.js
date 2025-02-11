@@ -21,8 +21,7 @@ import {
   loadTimeSlotChoices,
   loadTimeSlots,
 } from '../../redux/Store/actions';
-import { selectTimeSlots } from '../../redux/Store/selectors';
-import { selectStore } from '../../redux/Delivery/selectors';
+import { selectStore, selectTimeSlots } from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   usePrimaryColor,

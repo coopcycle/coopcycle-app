@@ -18,6 +18,7 @@ const initialState = {
   priceExcludingTax: null,
   returnScreen: '',
   store: null,
+  timeSlots: [],
 }
 
 export default (state = initialState, action = {}) => {
@@ -53,6 +54,12 @@ export default (state = initialState, action = {}) => {
       }
 
       break;
+
+    case LOAD_TIME_SLOTS_SUCCESS:
+      return {
+        ...state,
+        timeSlots: action.payload,
+      };
 
     case SET_RETURN_SCREEN:
       return {
