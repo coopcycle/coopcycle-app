@@ -14,6 +14,10 @@ export const SET_REFRESHING = '@delivery/SET_REFRESHING';
 export const SET_STORE = '@delivery/SET_STORE';
 
 
+export const GET_PRICE_SUCCESS = '@store/GET_PRICE_SUCCESS';
+export const GET_PRICE_ERROR = '@store/GET_PRICE_ERROR';
+
+
 export const setReturnScreen = createAction(SET_RETURN_SCREEN);
 
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
@@ -22,7 +26,11 @@ export const setRefreshing = createAction(SET_REFRESHING);
 
 export const setStore = createAction(SET_STORE);
 
-export const loadAddressesSuccess = createAction(
+const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
+const getPriceError = createAction(GET_PRICE_ERROR);
+
+
+const loadAddressesSuccess = createAction(
   LOAD_ADDRESSES_SUCCESS,
   (store, addresses) => ({
     payload: {
@@ -74,3 +82,23 @@ export function loadAddresses(store) {
   };
 }
 
+
+export function getPrice(delivery) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    dispatch(setLoading(true));
+
+    return httpClient
+      .post(`/api/retail_prices/calculate`, delivery)
+      .then(res => {
+        dispatch(getPriceSuccess(res));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(getPriceError(e));
+        dispatch(setLoading(false));
+      });
+  };
+}

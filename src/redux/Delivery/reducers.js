@@ -2,31 +2,46 @@ import _ from 'lodash';
 
 import {
   ASSERT_DELIVERY_ERROR,
+  GET_PRICE_ERROR,
+  GET_PRICE_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
   SET_RETURN_SCREEN,
   SET_STORE
 } from "./actions"
+import { formatPrice } from '../../utils/formatting';
 
 
 const initialState = {
   addresses: [],
   assertDeliveryError: null,
+  price: null,
+  priceExcludingTax: null,
   returnScreen: '',
   store: null,
 }
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case SET_RETURN_SCREEN:
-      return {
-        ...state,
-        returnScreen: action.payload,
-      };
-
     case ASSERT_DELIVERY_ERROR:
       return {
         ...state,
         assertDeliveryError: action.payload,
+      };
+
+    case GET_PRICE_SUCCESS:
+      const { amount, tax } = action.payload;
+
+      return {
+        ...state,
+        price: formatPrice(amount),
+        priceExcludingTax: formatPrice(amount - tax.amount),
+      };
+
+    case GET_PRICE_ERROR:
+      return {
+        ...state,
+        price: null,
+        priceExcludingTax: null,
       };
 
     case LOAD_ADDRESSES_SUCCESS:
@@ -38,6 +53,12 @@ export default (state = initialState, action = {}) => {
       }
 
       break;
+
+    case SET_RETURN_SCREEN:
+      return {
+        ...state,
+        returnScreen: action.payload,
+      };
 
     case SET_STORE:
       return {

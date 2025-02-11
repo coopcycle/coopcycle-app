@@ -15,30 +15,6 @@ export const LOAD_TIME_SLOTS_SUCCESS = '@store/LOAD_TIME_SLOTS_SUCCESS';
 export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
   '@store/LOAD_TIME_SLOT_CHOICES_SUCCESS';
 export const LOAD_PACKAGES_SUCCESS = '@store/LOAD_PACKAGES_SUCCESS';
-export const GET_PRICE_SUCCESS = '@store/GET_PRICE_SUCCESS';
-export const GET_PRICE_ERROR = '@store/GET_PRICE_ERROR';
-
-export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
-export const getPriceError = createAction(GET_PRICE_ERROR);
-export function getPrice(delivery) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .post(`/api/retail_prices/calculate`, delivery)
-      .then(res => {
-        dispatch(getPriceSuccess(res));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(getPriceError(e));
-        dispatch(setLoading(false));
-      });
-  };
-}
 
 export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
 export function loadPackages(store) {

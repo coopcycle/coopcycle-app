@@ -1,7 +1,5 @@
 import {
   CREATE_DELIVERY_SUCCESS,
-  GET_PRICE_ERROR,
-  GET_PRICE_SUCCESS,
   INIT_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
   LOAD_PACKAGES_SUCCESS,
@@ -17,7 +15,6 @@ import { LOAD_MY_STORES_SUCCESS } from '../App/actions';
 import { composeWithState } from '../../utils/delivery';
 
 import _ from 'lodash';
-import { formatPrice } from '../../utils/formatting';
 
 const initialState = {
   fetchError: null, // Error object describing the error
@@ -72,21 +69,6 @@ export default (state = initialState, action = {}) => {
       }
 
       break;
-    case GET_PRICE_SUCCESS:
-      const { amount, tax } = action.payload;
-
-      return {
-        ...state,
-        price: formatPrice(amount),
-        priceExcludingTax: formatPrice(amount - tax.amount),
-      };
-
-    case GET_PRICE_ERROR:
-      return {
-        ...state,
-        price: null,
-        priceExcludingTax: null,
-      };
 
     case LOAD_DELIVERIES_SUCCESS:
       const { store, deliveries, pagination } = action.payload;

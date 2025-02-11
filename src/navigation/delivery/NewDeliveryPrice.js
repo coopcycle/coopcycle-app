@@ -3,17 +3,20 @@ import { Text, View } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { createDelivery, getPrice } from '../../redux/Store/actions';
+
+import { createDelivery } from '../../redux/Store/actions';
+import { getPrice } from '../../redux/Delivery/actions';
 import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
+
 
 function NewDeliveryPrice({ route, navigation }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const delivery = route.params?.delivery;
 
-  const price = useSelector(state => state.store.price);
-  const priceExcludingTax = useSelector(state => state.store.priceExcludingTax);
+  const price = useSelector(state => state.delivery.price);
+  const priceExcludingTax = useSelector(state => state.delivery.priceExcludingTax);
   const returnScreen = useSelector(state => state.delivery.returnScreen);
 
   if (!delivery) return null;
