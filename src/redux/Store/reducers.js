@@ -4,7 +4,6 @@ import {
   LOAD_DELIVERIES_SUCCESS,
   LOAD_PACKAGES_SUCCESS,
   LOAD_TASKS_SUCCESS,
-  LOAD_TIME_SLOT_CHOICES_SUCCESS,
   SET_LOADING_MORE,
   SET_REFRESHING,
 } from './actions';
@@ -26,7 +25,6 @@ const initialState = {
   },
   loadingMore: false,
   refreshing: false,
-  choices: [],
   price: null,
   priceExcludingTax: null,
 };
@@ -112,12 +110,6 @@ export default (state = initialState, action = {}) => {
       }
 
       return newState;
-
-    case LOAD_TIME_SLOT_CHOICES_SUCCESS:
-      return {
-        ...state,
-        choices: action.payload,
-      };
 
     case LOAD_PACKAGES_SUCCESS:
       return {

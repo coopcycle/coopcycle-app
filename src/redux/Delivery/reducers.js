@@ -6,6 +6,7 @@ import {
   GET_PRICE_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
+  LOAD_TIME_SLOT_CHOICES_SUCCESS,
   SET_RETURN_SCREEN,
   SET_STORE
 } from "./actions"
@@ -15,6 +16,7 @@ import { formatPrice } from '../../utils/formatting';
 const initialState = {
   addresses: [],
   assertDeliveryError: null,
+  timeSlotChoices: [],
   price: null,
   priceExcludingTax: null,
   returnScreen: '',
@@ -60,6 +62,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         timeSlots: action.payload,
+      };
+
+    case LOAD_TIME_SLOT_CHOICES_SUCCESS:
+      return {
+        ...state,
+        timeSlotChoices: action.payload,
       };
 
     case SET_RETURN_SCREEN:

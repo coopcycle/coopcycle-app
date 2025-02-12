@@ -23,7 +23,11 @@ import {
   loadTimeSlotChoices,
   loadTimeSlots,
 } from '../../redux/Delivery/actions';
-import { selectStore, selectTimeSlots } from '../../redux/Delivery/selectors';
+import {
+  selectStore,
+  selectTimeSlotChoices,
+  selectTimeSlots,
+} from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   usePrimaryColor,
@@ -43,15 +47,14 @@ function DeliveryForm(props) {
   const dispatch = useDispatch();
 
   const {
-    t,
-    store,
-    timeSlots,
-    navigation,
     hasTimeSlot,
-    route,
-    country,
-    choices,
+    navigation,
     packages,
+    route,
+    store,
+    t,
+    timeSlotChoices,
+    timeSlots,
   } = props;
 
   useEffect(() => {
@@ -71,8 +74,8 @@ function DeliveryForm(props) {
   }, [selectedTimeSlot, timeSlots, dispatch]);
 
   useEffect(() => {
-    if (choices.length) setSelectedChoice(choices[0].value);
-  }, [choices]);
+    if (timeSlotChoices.length) setSelectedChoice(timeSlotChoices[0].value);
+  }, [timeSlotChoices]);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -306,7 +309,7 @@ function DeliveryForm(props) {
               setFieldTouched={setFieldTouched}
               updateSelectedTimeSlot={updateSelectedTimeSlot}
               timeSlots={timeSlots}
-              choices={choices}
+              choices={timeSlotChoices}
               selectedTimeSlot={selectedTimeSlot}
             />
           ) : (
@@ -454,9 +457,8 @@ const styles = StyleSheet.create({
 });
 
 function mapDispatchToProps(state) {
-  const timeSlotChoices = [];
   const timeSlots = selectTimeSlots(state);
-  const choices = state.store.choices;
+  const timeSlotChoices = selectTimeSlotChoices(state);
   const hasTimeSlot = timeSlots.length > 0;
   const packages = state.store.packages;
 
@@ -466,7 +468,6 @@ function mapDispatchToProps(state) {
     timeSlotChoices,
     hasTimeSlot,
     timeSlots,
-    choices,
     packages,
   };
 }
