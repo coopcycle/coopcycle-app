@@ -37,7 +37,7 @@ export default function StoreListInput({
   const renderItem = (store) => {
     return (
       <TouchableOpacity
-        onPress={onSelectStore}
+        onPress={() => onSelectStore(store)}
         style={styles.item}
         testID={`dispatch:storeList:${store.id}`}>
         <Text style={styles.itemLabel}>

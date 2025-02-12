@@ -15,8 +15,13 @@ const AddDeliveryStoreSelect = (props) => {
   const stores = useSelector(state => state.dispatch.stores);
 
   const onSelectStore = (store) => {
+    console.log(store);
+    // TODO: Assign the store to `state.store`
+  }
+
+  const onChange = (text) => {
     // TODO: do something more interesting with selected store
-    console.log(store)
+    console.log(text);
   }
 
   // TODO: We should do something about the "KeyboardAdjustView" solution..!
@@ -30,9 +35,7 @@ const AddDeliveryStoreSelect = (props) => {
         <FormInput
           autoCorrect={false}
           returnKeyType="done"
-          //onChangeText={handleChange('businessName')}
-          //onBlur={handleBlur('businessName')}
-          value=""
+          onChangeText={onChange}
           placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
         />
       </Box>
