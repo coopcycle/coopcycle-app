@@ -17,10 +17,12 @@ import { connect, useDispatch } from 'react-redux';
 import { IconPackage } from '@tabler/icons-react-native';
 import {
   loadPackages,
+} from '../../redux/Store/actions';
+import {
   loadTimeSlot,
   loadTimeSlotChoices,
   loadTimeSlots,
-} from '../../redux/Store/actions';
+} from '../../redux/Delivery/actions';
 import { selectStore, selectTimeSlots } from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
