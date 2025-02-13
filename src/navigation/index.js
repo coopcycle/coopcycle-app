@@ -81,7 +81,7 @@ import RestaurantSearch from './restaurant/Search';
 import RestaurantSettings from './restaurant/Settings';
 
 import Delivery from './delivery/Delivery';
-import AddDeliveryStoreSelect from './store/AddDeliveryStoreSelect';
+import NewDeliveryStore from './delivery/NewDeliveryStore';
 
 export default {
   RestaurantsPage,
@@ -137,8 +137,8 @@ export default {
   DispatchAddTask,
   DispatchDate,
   DispatchAssignTask,
-  AddDeliveryStoreSelect,
   DispatchEditAddress,
+  NewDeliveryStore,
   NewDeliveryPickup,
   NewDeliveryAddress,
   NewDeliveryForm,

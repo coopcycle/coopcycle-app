@@ -9,7 +9,7 @@ import FormInput from './components/FormInput'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import _ from 'lodash'
 
-const AddDeliveryStoreSelect = (props) => {
+const NewDeliveryStore = (props) => {
   const {
     t,
   } = props;
@@ -65,4 +65,4 @@ const AddDeliveryStoreSelect = (props) => {
     )
   }
 
-export default connect()(withTranslation()(AddDeliveryStoreSelect))
+export default connect()(withTranslation()(NewDeliveryStore))

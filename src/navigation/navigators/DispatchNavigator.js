@@ -85,7 +85,7 @@ const AddTaskNavigator = () => (
   <AddTask.Navigator screenOptions={stackNavigatorScreenOptions}>
     <AddTask.Screen
       name="DispatchAddTaskHome"
-      component={screens.AddDeliveryStoreSelect}
+      component={screens.NewDeliveryStore}
       options={{
         headerShown: false,
       }}
