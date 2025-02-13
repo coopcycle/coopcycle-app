@@ -18,7 +18,6 @@ function NewDeliveryPrice({ route, navigation }) {
 
   const price = useSelector(state => state.delivery.price);
   const priceExcludingTax = useSelector(state => state.delivery.priceExcludingTax);
-  const returnScreen = useSelector(state => state.delivery.returnScreen); // TODO: remove
 
   const { deliveryCallback } = useDeliveryCallback()
 

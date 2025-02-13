@@ -14,7 +14,6 @@ export const LOAD_TIME_SLOT_CHOICES_SUCCESS = '@delivery/LOAD_TIME_SLOT_CHOICES_
 export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
-export const SET_RETURN_SCREEN = '@delivery/SET_RETURN_SCREEN';
 export const SET_STORE = '@delivery/SET_STORE';
 
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
@@ -25,7 +24,6 @@ export const loadTimeSlotChoicesSuccess = createAction(LOAD_TIME_SLOT_CHOICES_SU
 export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
-export const setReturnScreen = createAction(SET_RETURN_SCREEN);
 export const setStore = createAction(SET_STORE);
 
 const loadAddressesSuccess = createAction(

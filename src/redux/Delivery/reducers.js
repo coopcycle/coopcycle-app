@@ -8,7 +8,6 @@ import {
   LOAD_PACKAGES_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
   LOAD_TIME_SLOT_CHOICES_SUCCESS,
-  SET_RETURN_SCREEN,
   SET_STORE
 } from "./actions"
 import { formatPrice } from '../../utils/formatting';
@@ -20,7 +19,6 @@ const initialState = {
   packages: [],
   price: null,
   priceExcludingTax: null,
-  returnScreen: '',
   store: null,
   timeSlotChoices: [],
   timeSlots: [],
@@ -76,12 +74,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         timeSlotChoices: action.payload,
-      };
-
-    case SET_RETURN_SCREEN:
-      return {
-        ...state,
-        returnScreen: action.payload,
       };
 
     case SET_STORE:
