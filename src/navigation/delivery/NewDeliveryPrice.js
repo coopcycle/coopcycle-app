@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createDelivery } from '../../redux/Store/actions'; // TODO
+import { createDelivery } from '../../redux/Delivery/actions';
 import { getPrice } from '../../redux/Delivery/actions';
-import ModalFormWrapper from './ModalFormWrapper';
+import { useDeliveryCallback } from './contexts/DeliveryCallbackContext';
 import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
 
 
 function NewDeliveryPrice({ route, navigation }) {
@@ -17,7 +18,9 @@ function NewDeliveryPrice({ route, navigation }) {
 
   const price = useSelector(state => state.delivery.price);
   const priceExcludingTax = useSelector(state => state.delivery.priceExcludingTax);
-  const returnScreen = useSelector(state => state.delivery.returnScreen);
+  const returnScreen = useSelector(state => state.delivery.returnScreen); // TODO: remove
+
+  const { deliveryCallback } = useDeliveryCallback()
 
   if (!delivery) return null;
 
@@ -25,14 +28,7 @@ function NewDeliveryPrice({ route, navigation }) {
 
   function submit(values) {
     if (price === null || priceExcludingTax === null) return;
-    dispatch(
-      // TODO: define action's callback as process parameter (not just to navigate to some screen).
-      // In current use it must update deliveries list from Store reducer.
-      // But it should support any other behavior.
-      createDelivery(values, () => {
-        navigation.navigate(returnScreen);
-      }),
-    );
+    dispatch(createDelivery(values, deliveryCallback));
   }
 
   return (

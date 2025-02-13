@@ -2,7 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 import React from 'react';
 
-import { loadAddresses, setReturnScreen, setStore } from '../../redux/Delivery/actions';
+import { createDeliverySuccess } from '../../redux/Store/actions';
+import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
+import { loadAddresses, setStore } from '../../redux/Delivery/actions';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { stackNavigatorScreenOptions } from '../styles';
 import HeaderBackButton from '../store/components/HeaderBackButton';
@@ -26,8 +28,7 @@ function MainNavigator() {
           const title = store ? store.name : '';
           const navigateToDelivery = () => {
             dispatch(setStore(store));
-            dispatch(loadAddresses(store))
-            dispatch(setReturnScreen('StoreHome'));
+            dispatch(loadAddresses(store)); // TODO: move this dispatch to when screen is loading
 
             navigation.navigate(
               'NewDelivery',
@@ -71,28 +72,39 @@ function MainNavigator() {
 
 const RootStack = createStackNavigator();
 
-export default () => (
-  <RootStack.Navigator
-    screenOptions={{ ...stackNavigatorScreenOptions(), presentation: 'modal' }}>
-    <RootStack.Screen
-      name="StoreHome"
-      component={MainNavigator}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <RootStack.Screen
-      name="NewDelivery"
-      component={NewDeliveryNavigator}
-      options={{
-        title: i18n.t('STORE_NEW_DELIVERY'),
-        headerLeft: props => (
-          <HeaderBackButton
-            {...props}
-            onPress={() => NavigationHolder.goBack()}
+export default ({navigation}) => {
+  const dispatch = useDispatch();
+
+  const deliveryCallback = (newDelivery) => {
+    navigation.navigate("StoreHome");
+    dispatch(createDeliverySuccess(newDelivery));
+  }
+
+  return (
+    <DeliveryCallbackProvider callback={deliveryCallback}>
+      <RootStack.Navigator
+        screenOptions={{ ...stackNavigatorScreenOptions(), presentation: 'modal' }}>
+        <RootStack.Screen
+          name="StoreHome"
+          component={MainNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+          <RootStack.Screen
+            name="NewDelivery"
+            component={NewDeliveryNavigator}
+            options={{
+              title: i18n.t('STORE_NEW_DELIVERY'),
+              headerLeft: props => (
+                <HeaderBackButton
+                  {...props}
+                  onPress={() => NavigationHolder.goBack()}
+                />
+              ),
+            }}
           />
-        ),
-      }}
-    />
-  </RootStack.Navigator>
-);
+      </RootStack.Navigator>
+    </DeliveryCallbackProvider>
+  )
+};
