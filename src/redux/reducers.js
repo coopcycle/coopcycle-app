@@ -30,6 +30,7 @@ import accountReducer from './Account/reducers';
 import { appReducer } from './App';
 import checkoutReducer from './Checkout/reducers';
 import { tasksEntityReducer, tasksUiReducer } from './Courier';
+import deliveryReducer from './Delivery/reducers';
 import appDispatchReducer from './Dispatch/reducers';
 import restaurantReducer from './Restaurant/reducers';
 import storeReducer from './Store/reducers';
@@ -169,6 +170,7 @@ export default combineReducers({
   app: persistReducer(appPersistConfig, appReducer),
   [apiSlice.reducerPath]: apiSlice.reducer,
   account: accountReducer,
+  delivery: deliveryReducer,
   restaurant: persistReducer(restaurantPersistConfig, restaurantReducer),
   store: storeReducer,
   checkout: persistReducer(checkoutPersistConfig, checkoutReducer),

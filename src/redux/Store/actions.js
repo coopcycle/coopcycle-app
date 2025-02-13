@@ -2,106 +2,16 @@ import _ from 'lodash';
 import { createAction } from 'redux-actions';
 
 import { setLoading } from '../App/actions';
-import { selectStore, selectTimeSlots } from './selectors';
+import { selectStore } from './selectors';
 
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS';
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS';
-export const LOAD_TIME_SLOT_SUCCESS = '@store/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS';
-export const ASSERT_DELIVERY_ERROR = '@store/ASSERT_DELIVERY_ERROR';
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
-export const LOAD_ADDRESSES_SUCCESS = '@store/LOAD_ADDRESSES_SUCCESS';
 export const INIT_SUCCESS = '@store/INIT_SUCCESS';
-export const LOAD_TIME_SLOTS_SUCCESS = '@store/LOAD_TIME_SLOTS_SUCCESS';
-export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
-  '@store/LOAD_TIME_SLOT_CHOICES_SUCCESS';
-export const LOAD_PACKAGES_SUCCESS = '@store/LOAD_PACKAGES_SUCCESS';
-export const GET_PRICE_SUCCESS = '@store/GET_PRICE_SUCCESS';
-export const GET_PRICE_ERROR = '@store/GET_PRICE_ERROR';
 
-export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
-export const getPriceError = createAction(GET_PRICE_ERROR);
-export function getPrice(delivery) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
 
-    dispatch(setLoading(true));
-
-    return httpClient
-      .post(`/api/retail_prices/calculate`, delivery)
-      .then(res => {
-        dispatch(getPriceSuccess(res));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(getPriceError(e));
-        dispatch(setLoading(false));
-      });
-  };
-}
-
-export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
-export function loadPackages(store) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(`${store['@id']}/packages`)
-      .then(res => {
-        dispatch(loadPackagesSuccess(res['hydra:member']));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
-export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
-export function loadTimeSlots(store) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(`${store['@id']}/time_slots`)
-      .then(res => {
-        dispatch(loadTimeSlotsSuccess(res['hydra:member']));
-        dispatch(setLoading(false));
-        // dispatch(loadTimeSlotChoices(res['hydra:member'][0]));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
-export const loadTimeSlotChoicesSuccess = createAction(
-  LOAD_TIME_SLOT_CHOICES_SUCCESS,
-);
-export function loadTimeSlotChoices(timeSlot) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(`${timeSlot['@id']}/choices`)
-      .then(res => {
-        dispatch(loadTimeSlotChoicesSuccess(res.choices));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS);
 export const loadDeliveriesSuccess = createAction(
   LOAD_DELIVERIES_SUCCESS,
@@ -111,23 +21,14 @@ export const loadDeliveriesSuccess = createAction(
     pagination,
   }),
 );
-export const loadAddressesSuccess = createAction(
-  LOAD_ADDRESSES_SUCCESS,
-  (store, addresses) => ({
-    store,
-    addresses,
-  }),
-);
 export const initSuccess = createAction(
   INIT_SUCCESS,
-  (store, deliveries, pagination, addresses) => ({
+  (store, deliveries, pagination) => ({
     store,
     deliveries,
     pagination,
-    addresses,
   }),
 );
-export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const loadTasksSuccess = createAction(
   LOAD_TASKS_SUCCESS,
   (delivery, pickup, dropoff) => ({
@@ -136,61 +37,9 @@ export const loadTasksSuccess = createAction(
     dropoff,
   }),
 );
-export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
 
 export const setLoadingMore = createAction(SET_LOADING_MORE);
 export const setRefreshing = createAction(SET_REFRESHING);
-
-export function createDelivery(delivery, onSuccess) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    if (delivery.dropoff.address['@id']) {
-      delivery = {
-        ...delivery,
-        dropoff: {
-          ...delivery.dropoff,
-          address: delivery.dropoff.address['@id'],
-        },
-      };
-    }
-
-    dispatch(setLoading(true));
-
-    httpClient
-      .post('/api/deliveries', delivery)
-      .then(res => {
-        dispatch(createDeliverySuccess(res));
-        dispatch(setLoading(false));
-        onSuccess();
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
-
-export function assertDelivery(delivery, onSuccess) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(assertDeliveryError(null));
-    dispatch(setLoading(true));
-
-    httpClient
-      .post('/api/deliveries/assert', delivery)
-      .then(res => {
-        dispatch(setLoading(false));
-        onSuccess();
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-        dispatch(assertDeliveryError(e['hydra:description']));
-      });
-  };
-}
 
 export function loadDeliveries(store, refresh = false) {
   return (dispatch, getState) => {
@@ -208,25 +57,6 @@ export function loadDeliveries(store, refresh = false) {
             totalItems: res['hydra:totalItems'],
           }),
         );
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
-      });
-  };
-}
-
-export function loadAddresses(store) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    return httpClient
-      .get(`${store['@id']}/addresses`)
-      .then(res => {
-        dispatch(loadAddressesSuccess(store, res['hydra:member']));
         dispatch(setLoading(false));
         dispatch(setRefreshing(false));
       })
@@ -297,37 +127,6 @@ export function loadTasks(delivery) {
   };
 }
 
-export function loadTimeSlot(store) {
-  return (dispatch, getState) => {
-    if (!store.timeSlot) {
-      return;
-    }
-
-    const { app } = getState();
-    const { httpClient } = app;
-
-    const timeSlot = _.find(
-      selectTimeSlots(getState()),
-      ts => ts['@id'] === store.timeSlot,
-    );
-    if (timeSlot) {
-      return;
-    }
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(store.timeSlot)
-      .then(res => {
-        dispatch(setLoading(false));
-        dispatch(loadTimeSlotSuccess(res));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
-
 export function init(store) {
   return (dispatch, getState) => {
     const { app } = getState();
@@ -337,10 +136,9 @@ export function init(store) {
 
     Promise.all([
       httpClient.get(`${store['@id']}/deliveries?order[dropoff.before]=desc`),
-      httpClient.get(`${store['@id']}/addresses`),
     ])
       .then(values => {
-        const [deliveries, addresses] = values;
+        const [deliveries] = values;
         dispatch(
           initSuccess(
             store,
@@ -349,7 +147,6 @@ export function init(store) {
               next: deliveries['hydra:view']['hydra:next'],
               totalItems: deliveries['hydra:totalItems'],
             },
-            addresses['hydra:member'],
           ),
         );
         dispatch(setLoading(false));

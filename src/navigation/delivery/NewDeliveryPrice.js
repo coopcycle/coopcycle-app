@@ -3,17 +3,23 @@ import { Text, View } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { createDelivery, getPrice } from '../../redux/Store/actions';
-import ModalFormWrapper from './ModalFormWrapper';
+
+import { createDelivery } from '../../redux/Delivery/actions';
+import { getPrice } from '../../redux/Delivery/actions';
+import { useDeliveryCallback } from './contexts/DeliveryCallbackContext';
 import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
+
 
 function NewDeliveryPrice({ route, navigation }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const delivery = route.params?.delivery;
 
-  const price = useSelector(state => state.store.price);
-  const priceExcludingTax = useSelector(state => state.store.priceExcludingTax);
+  const price = useSelector(state => state.delivery.price);
+  const priceExcludingTax = useSelector(state => state.delivery.priceExcludingTax);
+
+  const { deliveryCallback } = useDeliveryCallback()
 
   if (!delivery) return null;
 
@@ -21,11 +27,7 @@ function NewDeliveryPrice({ route, navigation }) {
 
   function submit(values) {
     if (price === null || priceExcludingTax === null) return;
-    dispatch(
-      createDelivery(values, () => {
-        navigation.navigate('StoreHome');
-      }),
-    );
+    dispatch(createDelivery(values, deliveryCallback));
   }
 
   return (
