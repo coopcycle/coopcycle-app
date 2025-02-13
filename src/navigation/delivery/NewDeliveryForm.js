@@ -20,15 +20,20 @@ import {
   loadTimeSlot,
   loadTimeSlotChoices,
   loadTimeSlots,
-} from '../../redux/Store/actions';
-import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
+} from '../../redux/Delivery/actions';
+import {
+  selectPackages,
+  selectStore,
+  selectTimeSlotChoices,
+  selectTimeSlots,
+} from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import Range from '../checkout/ProductDetails/Range';
-import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
+import Range from '../checkout/ProductDetails/Range';
 import TimeSlotSelector from './components/TimeSlotSelector';
 
 function DeliveryForm(props) {
@@ -41,15 +46,14 @@ function DeliveryForm(props) {
   const dispatch = useDispatch();
 
   const {
-    t,
-    store,
-    timeSlots,
-    navigation,
     hasTimeSlot,
-    route,
-    country,
-    choices,
+    navigation,
     packages,
+    route,
+    store,
+    t,
+    timeSlotChoices,
+    timeSlots,
   } = props;
 
   useEffect(() => {
@@ -69,8 +73,8 @@ function DeliveryForm(props) {
   }, [selectedTimeSlot, timeSlots, dispatch]);
 
   useEffect(() => {
-    if (choices.length) setSelectedChoice(choices[0].value);
-  }, [choices]);
+    if (timeSlotChoices.length) setSelectedChoice(timeSlotChoices[0].value);
+  }, [timeSlotChoices]);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -161,7 +165,7 @@ function DeliveryForm(props) {
       },
     };
 
-    navigation.navigate('StoreNewDeliveryPrice', { delivery });
+    navigation.navigate('NewDeliveryPrice', { delivery });
   }
 
   function validate(values) {
@@ -304,7 +308,7 @@ function DeliveryForm(props) {
               setFieldTouched={setFieldTouched}
               updateSelectedTimeSlot={updateSelectedTimeSlot}
               timeSlots={timeSlots}
-              choices={choices}
+              choices={timeSlotChoices}
               selectedTimeSlot={selectedTimeSlot}
             />
           ) : (
@@ -452,20 +456,18 @@ const styles = StyleSheet.create({
 });
 
 function mapDispatchToProps(state) {
-  const timeSlotChoices = [];
+  const packages = selectPackages(state);
+  const store = selectStore(state);
+  const timeSlotChoices = selectTimeSlotChoices(state);
   const timeSlots = selectTimeSlots(state);
-  const choices = state.store.choices;
   const hasTimeSlot = timeSlots.length > 0;
-  const packages = state.store.packages;
 
   return {
-    country: state.app.settings.country.toUpperCase(),
-    store: selectStore(state),
-    timeSlotChoices,
     hasTimeSlot,
-    timeSlots,
-    choices,
     packages,
+    store,
+    timeSlotChoices,
+    timeSlots,
   };
 }
 
