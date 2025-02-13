@@ -1,23 +1,24 @@
-import { IconCircleArrowDownFilled } from '@tabler/icons-react-native';
-import { Formik } from 'formik';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { Text } from 'native-base';
-import React, { useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
+import { connect, useDispatch } from 'react-redux';
+import { Formik } from 'formik';
+import { IconCircleArrowDownFilled } from '@tabler/icons-react-native';
 import { Platform, StyleSheet, View } from 'react-native';
-import { connect } from 'react-redux';
+import { Text } from 'native-base';
+import { withTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { assertDelivery as assertDeliveryAction } from '../../redux/Store/actions';
+import ClientListInput from './components/ClientListInput';
+import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
+import { assertDelivery } from '../../redux/Delivery/actions';
 import { selectStore } from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import ModalFormWrapper from './ModalFormWrapper';
-import ClientListInput from './components/ClientListInput';
-import FormInput from './components/FormInput';
 
 function NewDeliveryAddress(props) {
   const [validAddress, setValidAddress] = useState(false);
@@ -26,9 +27,10 @@ function NewDeliveryAddress(props) {
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const primaryColor = usePrimaryColor();
 
+  const dispatch = useDispatch();
+
   const {
     addresses,
-    assertDelivery,
     country,
     deliveryError,
     navigation,
@@ -73,9 +75,7 @@ function NewDeliveryAddress(props) {
       },
     };
 
-    assertDelivery(delivery, () => {
-      setValidAddress(true);
-    });
+    dispatch(assertDelivery(delivery, () => setValidAddress(true)));
   }
 
   let autocompleteProps = {
@@ -388,14 +388,4 @@ function mapDispatchToProps(state) {
   };
 }
 
-function mapStateToProps(dispatch) {
-  return {
-    assertDelivery: (delivery, onSuccess) =>
-      dispatch(assertDeliveryAction(delivery, onSuccess)),
-  };
-}
-
-export default connect(
-  mapDispatchToProps,
-  mapStateToProps,
-)(withTranslation()(NewDeliveryAddress));
+export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryAddress));
