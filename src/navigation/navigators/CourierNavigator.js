@@ -74,7 +74,7 @@ const ButtonWithIcon = ({ name, onPress }) => {
 
 const MainStack = createStackNavigator();
 
-const HeaderButtons = nav => {
+function HeaderButtons({ nav }) {
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled)
   return (
     <View style={styles.buttonBar}>
@@ -102,7 +102,7 @@ const MainNavigator = () => (
       options={({ navigation }) => ({
         title: i18n.t('COURIER'),
         headerLeft: headerLeft(navigation, 'menuBtnCourier'),
-        headerRight: () => HeaderButtons(navigation),
+        headerRight: () => <HeaderButtons nav={navigation} />,
       })}
     />
     <MainStack.Screen
