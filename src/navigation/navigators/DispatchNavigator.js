@@ -85,7 +85,7 @@ const AddTaskNavigator = () => (
   <AddTask.Navigator screenOptions={stackNavigatorScreenOptions}>
     <AddTask.Screen
       name="DispatchAddTaskHome"
-      component={screens.DispatchAddTask}
+      component={screens.NewDeliveryStore}
       options={{
         headerShown: false,
       }}
@@ -120,10 +120,10 @@ export default () => (
       }}
     />
     <RootStack.Screen
-      name="DispatchAddTask"
+      name="DispatchNewDelivery"
       component={AddTaskNavigator}
       options={{
-        title: i18n.t('DISPATCH_ADD_TASK'),
+        title: i18n.t('DISPATCH_NEW_DELIVERY'),
       }}
     />
     <RootStack.Screen
