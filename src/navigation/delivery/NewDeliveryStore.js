@@ -1,6 +1,6 @@
 
 import { Box } from 'native-base'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native'
 import { connect, useSelector } from 'react-redux'
@@ -18,25 +18,19 @@ const NewDeliveryStore = (props) => {
   const [storesList, setStoresList] = useState(stores)
 
   const onSelectStore = (store) => {
-    console.log(store);
+    console.log('onSelectStore', JSON.stringify(store));
     // TODO: Assign the store to `state.store`
   }
 
+  const contains = (formattedStoreName, query) => formattedStoreName.includes(query)
   const handleSearch = (query) => {
     setSearchQuery(query)
-    console.log('seachQuery', searchQuery)
     const formattedQuery = query.toLowerCase()
-    const filterderStoresList = _.filter(storesList, (store) => {
-      return contains(store, formattedQuery)
+    const filterderStoresList = _.filter(stores, (store) => {
+      const formattedStoreName = store.name.toLowerCase()
+      return contains(formattedStoreName, formattedQuery)
     })
     setStoresList(filterderStoresList)
-  }
-
-  const contains = ({ name }, query) => {
-    if(name.includes(query)) {
-      return true
-    }
-    return false
   }
 
   // TODO: We should do something about the "KeyboardAdjustView" solution..!
@@ -50,6 +44,7 @@ const NewDeliveryStore = (props) => {
         <FormInput
           value={searchQuery}
           autoCorrect={false}
+          autoCapitalize="none"
           returnKeyType="done"
           onChangeText={(query) => handleSearch(query)}
           placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
