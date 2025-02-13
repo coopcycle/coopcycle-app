@@ -31,10 +31,10 @@ import {
   useBackgroundContainerColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import Range from '../checkout/ProductDetails/Range';
-import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
-import TimeSlotSelector from '../store/components/TimeSlotSelector';
+import ModalFormWrapper from './ModalFormWrapper';
+import Range from '../checkout/ProductDetails/Range';
+import TimeSlotSelector from './components/TimeSlotSelector';
 
 function DeliveryForm(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
