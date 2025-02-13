@@ -59,6 +59,35 @@ export function assertDelivery(delivery, onSuccess) {
   };
 }
 
+export function createDelivery(delivery, onSuccess) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
+
+    if (delivery.dropoff.address['@id']) {
+      delivery = {
+        ...delivery,
+        dropoff: {
+          ...delivery.dropoff,
+          address: delivery.dropoff.address['@id'],
+        },
+      };
+    }
+
+    dispatch(setLoading(true));
+
+    httpClient
+      .post('/api/deliveries', delivery)
+      .then(res => {
+        dispatch(setLoading(false));
+        onSuccess(res);
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+      });
+  };
+}
+
 export function loadAddresses(store) {
   return (dispatch, getState) => {
     const { app } = getState();

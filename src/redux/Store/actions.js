@@ -41,36 +41,6 @@ export const loadTasksSuccess = createAction(
 export const setLoadingMore = createAction(SET_LOADING_MORE);
 export const setRefreshing = createAction(SET_REFRESHING);
 
-export function createDelivery(delivery, onSuccess) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    if (delivery.dropoff.address['@id']) {
-      delivery = {
-        ...delivery,
-        dropoff: {
-          ...delivery.dropoff,
-          address: delivery.dropoff.address['@id'],
-        },
-      };
-    }
-
-    dispatch(setLoading(true));
-
-    httpClient
-      .post('/api/deliveries', delivery)
-      .then(res => {
-        dispatch(createDeliverySuccess(res));
-        dispatch(setLoading(false));
-        onSuccess();
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
-
 export function loadDeliveries(store, refresh = false) {
   return (dispatch, getState) => {
     const { app } = getState();
