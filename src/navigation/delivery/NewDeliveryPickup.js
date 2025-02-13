@@ -1,23 +1,24 @@
-import { IconCircleArrowUpFilled } from '@tabler/icons-react-native';
-import { Formik } from 'formik';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import { Checkbox, Text } from 'native-base';
-import React, { useState } from 'react';
-import { useTranslation, withTranslation } from 'react-i18next';
-import { Platform, StyleSheet, View } from 'react-native';
 import { connect, useDispatch, useSelector } from 'react-redux';
+import { Formik } from 'formik';
+import { IconCircleArrowUpFilled } from '@tabler/icons-react-native';
+import { Platform, StyleSheet, View } from 'react-native';
+import { useTranslation, withTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import { assertDelivery } from '../../redux/Store/actions';
+import ClientListInput from './components/ClientListInput';
+import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
+import { assertDelivery } from '../../redux/Delivery/actions';
 import { selectStore } from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import ModalFormWrapper from './ModalFormWrapper';
-import ClientListInput from './components/ClientListInput';
-import FormInput from './components/FormInput';
 
 function NewDeliveryPickup({ navigation }) {
   const [validAddress, setValidAddress] = useState(false);
@@ -406,14 +407,4 @@ function mapDispatchToProps(state) {
   };
 }
 
-function mapStateToProps(dispatch) {
-  return {
-    assertDelivery: (delivery, onSuccess) =>
-      dispatch(assertDelivery(delivery, onSuccess)),
-  };
-}
-
-export default connect(
-  mapDispatchToProps,
-  mapStateToProps,
-)(withTranslation()(NewDeliveryPickup));
+export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryPickup));
