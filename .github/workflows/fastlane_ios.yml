@@ -48,7 +48,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
       - name: Cache Pods
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-pods
         with:
           path: ios/Pods
