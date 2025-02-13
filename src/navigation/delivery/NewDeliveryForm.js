@@ -17,13 +17,12 @@ import { connect, useDispatch } from 'react-redux';
 import { IconPackage } from '@tabler/icons-react-native';
 import {
   loadPackages,
-} from '../../redux/Store/actions';
-import {
   loadTimeSlot,
   loadTimeSlotChoices,
   loadTimeSlots,
 } from '../../redux/Delivery/actions';
 import {
+  selectPackages,
   selectStore,
   selectTimeSlotChoices,
   selectTimeSlots,
@@ -457,18 +456,18 @@ const styles = StyleSheet.create({
 });
 
 function mapDispatchToProps(state) {
-  const timeSlots = selectTimeSlots(state);
+  const packages = selectPackages(state);
+  const store = selectStore(state);
   const timeSlotChoices = selectTimeSlotChoices(state);
+  const timeSlots = selectTimeSlots(state);
   const hasTimeSlot = timeSlots.length > 0;
-  const packages = state.store.packages;
 
   return {
-    country: state.app.settings.country.toUpperCase(),
-    store: selectStore(state),
-    timeSlotChoices,
     hasTimeSlot,
-    timeSlots,
     packages,
+    store,
+    timeSlotChoices,
+    timeSlots,
   };
 }
 

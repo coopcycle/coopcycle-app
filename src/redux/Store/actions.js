@@ -10,27 +10,7 @@ export const LOAD_TASKS_SUCCESS = '@store/LOAD_TASKS_SUCCESS';
 export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
 export const INIT_SUCCESS = '@store/INIT_SUCCESS';
-export const LOAD_PACKAGES_SUCCESS = '@store/LOAD_PACKAGES_SUCCESS';
 
-export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
-export function loadPackages(store) {
-  return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(`${store['@id']}/packages`)
-      .then(res => {
-        dispatch(loadPackagesSuccess(res['hydra:member']));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
 
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS);
 export const loadDeliveriesSuccess = createAction(

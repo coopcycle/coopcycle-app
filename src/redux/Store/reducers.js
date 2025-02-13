@@ -2,7 +2,6 @@ import {
   CREATE_DELIVERY_SUCCESS,
   INIT_SUCCESS,
   LOAD_DELIVERIES_SUCCESS,
-  LOAD_PACKAGES_SUCCESS,
   LOAD_TASKS_SUCCESS,
   SET_LOADING_MORE,
   SET_REFRESHING,
@@ -110,12 +109,6 @@ export default (state = initialState, action = {}) => {
       }
 
       return newState;
-
-    case LOAD_PACKAGES_SUCCESS:
-      return {
-        ...state,
-        packages: action.payload,
-      };
 
     case LOAD_TASKS_SUCCESS:
       const { delivery, pickup, dropoff } = action.payload;

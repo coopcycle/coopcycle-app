@@ -16,11 +16,12 @@ import { formatPrice } from '../../utils/formatting';
 const initialState = {
   addresses: [],
   assertDeliveryError: null,
-  timeSlotChoices: [],
+  packages: [],
   price: null,
   priceExcludingTax: null,
   returnScreen: '',
   store: null,
+  timeSlotChoices: [],
   timeSlots: [],
 }
 
@@ -57,6 +58,12 @@ export default (state = initialState, action = {}) => {
       }
 
       break;
+
+    case LOAD_PACKAGES_SUCCESS:
+      return {
+        ...state,
+        packages: action.payload,
+      };
 
     case LOAD_TIME_SLOTS_SUCCESS:
       return {

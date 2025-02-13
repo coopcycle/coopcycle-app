@@ -5,40 +5,28 @@ import { setLoading } from '../App/actions';
 import { selectTimeSlots } from "./selectors";
 
 
-export const SET_RETURN_SCREEN = '@delivery/SET_RETURN_SCREEN';
-
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
-
+export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
+export const GET_PRICE_SUCCESS = '@delivery/GET_PRICE_SUCCESS';
 export const LOAD_ADDRESSES_SUCCESS = '@delivery/LOAD_ADDRESSES_SUCCESS';
-
-export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
-export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
+export const LOAD_PACKAGES_SUCCESS = '@delivery/LOAD_PACKAGES_SUCCESS';
 export const LOAD_TIME_SLOT_CHOICES_SUCCESS = '@delivery/LOAD_TIME_SLOT_CHOICES_SUCCESS';
-
+export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
+export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
-
+export const SET_RETURN_SCREEN = '@delivery/SET_RETURN_SCREEN';
 export const SET_STORE = '@delivery/SET_STORE';
 
-
-export const GET_PRICE_SUCCESS = '@delivery/GET_PRICE_SUCCESS';
-export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
-
-
-export const setReturnScreen = createAction(SET_RETURN_SCREEN);
-
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
-
-export const setRefreshing = createAction(SET_REFRESHING);
-
-export const setStore = createAction(SET_STORE);
-
-const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
-const getPriceError = createAction(GET_PRICE_ERROR);
-
-const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
-const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
+export const getPriceError = createAction(GET_PRICE_ERROR);
+export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
+export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
 export const loadTimeSlotChoicesSuccess = createAction(LOAD_TIME_SLOT_CHOICES_SUCCESS);
-
+export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
+export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
+export const setRefreshing = createAction(SET_REFRESHING);
+export const setReturnScreen = createAction(SET_RETURN_SCREEN);
+export const setStore = createAction(SET_STORE);
 
 const loadAddressesSuccess = createAction(
   LOAD_ADDRESSES_SUCCESS,
@@ -49,7 +37,6 @@ const loadAddressesSuccess = createAction(
     }
   }),
 );
-
 
 export function assertDelivery(delivery, onSuccess) {
   return (dispatch, getState) => {
@@ -72,7 +59,6 @@ export function assertDelivery(delivery, onSuccess) {
   };
 }
 
-
 export function loadAddresses(store) {
   return (dispatch, getState) => {
     const { app } = getState();
@@ -92,7 +78,24 @@ export function loadAddresses(store) {
   };
 }
 
+export function loadPackages(store) {
+  return (dispatch, getState) => {
+    const { app } = getState();
+    const { httpClient } = app;
 
+    dispatch(setLoading(true));
+
+    return httpClient
+      .get(`${store['@id']}/packages`)
+      .then(res => {
+        dispatch(loadPackagesSuccess(res['hydra:member']));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+      });
+  };
+}
 
 export function loadTimeSlots(store) {
   return (dispatch, getState) => {
@@ -113,7 +116,6 @@ export function loadTimeSlots(store) {
       });
   };
 }
-
 
 export function loadTimeSlotChoices(timeSlot) {
   return (dispatch, getState) => {
@@ -164,7 +166,6 @@ export function loadTimeSlot(store) {
       });
   };
 }
-
 
 export function getPrice(delivery) {
   return (dispatch, getState) => {
