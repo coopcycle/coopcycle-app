@@ -78,33 +78,7 @@ function AddressAutocomplete(props) {
 
   const fuse = new Fuse(addresses, fuseOptions);
 
-  const newPlacesApiAutocomplete = (text, config) => {
-    return axios.post(
-      'https://places.googleapis.com/v1/places:autocomplete',
-      {
-        input: text,
-        sessionToken: config.sessiontoken,
-        locationRestriction: { "rectangle": {
-          "low" : {
-            "latitude": config.locationrestriction.southWest.split(',')[0],
-            "longitude": config.locationrestriction.southWest.split(',')[1]
-          },
-          "high" : {
-            "latitude": config.locationrestriction.northEast.split(',')[0],
-            "longitude": config.locationrestriction.northEast.split(',')[1]
-          },
-        }},
-        includedPrimaryTypes: ['street_address'],
-        languageCode: config.languageCode
-      },
-      {
-        headers: {"X-Goog-Api-Key": config.key},
-        // signal: controller.signal
-      },
-    )
-  }
-
-  const autocomplete = _.debounce(async (text, query) => {
+  const autocomplete = _.debounce((text, config) => {
     const newController = new AbortController();
     setController(newController);
     const fuseResults = fuse.search(text, { limit: 2 });
@@ -146,41 +120,61 @@ function AddressAutocomplete(props) {
       }
     } else {
 
-      let response
       let normalizedPredictions
 
-      try {
-        response = await newPlacesApiAutocomplete(text, query)
-      } catch (error) {
+      axios.post(
+        'https://places.googleapis.com/v1/places:autocomplete',
+        {
+          input: text,
+          sessionToken: config.sessiontoken,
+          locationRestriction: { "rectangle": {
+            "low" : {
+              "latitude": config.locationrestriction.southWest.split(',')[0],
+              "longitude": config.locationrestriction.southWest.split(',')[1]
+            },
+            "high" : {
+              "latitude": config.locationrestriction.northEast.split(',')[0],
+              "longitude": config.locationrestriction.northEast.split(',')[1]
+            },
+          }},
+          includedPrimaryTypes: ['street_address'],
+          languageCode: config.languageCode
+        },
+        {
+          headers: {"X-Goog-Api-Key": config.key},
+          // signal: controller.signal
+        },
+      ).then(response => {
+        // when there is no response the API returns an empty response
+        const suggestions = response.data.suggestions ? response.data.suggestions  : []
+        
+        normalizedPredictions = suggestions.map(
+          suggestion => ({
+            ...suggestion,
+            description: suggestion.placePrediction.text.text,
+            place_id: suggestion.placePrediction.placeId,
+            type: 'prediction',
+          }),
+        );
+        
+        const normalizedResults = fuseResults.map(fuseResult => ({
+          ...fuseResult.item,
+          type: 'fuse',
+        }));
+
+        let results = normalizedResults.concat(normalizedPredictions);
+
+        if (normalizedResults.length > 0 && results.length > 5) {
+          results = results.slice(0, 5);
+        }
+
+        setResults(results);
+      }).catch(error => {
         console.error('AddressAutocomplete; _autocomplete', error)
-      }
-
-      // when there is no response the API returns an empty response
-      const suggestions = response.data.suggestions ? response.data.suggestions  : []
-      
-      normalizedPredictions = suggestions.map(
-        suggestion => ({
-          ...suggestion,
-          description: suggestion.placePrediction.text.text,
-          place_id: suggestion.placePrediction.placeId,
-          type: 'prediction',
-        }),
-      );
-      
-      const normalizedResults = fuseResults.map(fuseResult => ({
-        ...fuseResult.item,
-        type: 'fuse',
-      }));
-
-      let results = normalizedResults.concat(normalizedPredictions);
-
-      if (normalizedResults.length > 0 && results.length > 5) {
-        results = results.slice(0, 5);
-      }
-
-      setResults(results);
+      })
+    
     }
-  }, 300);
+  }, 400);
 
   function onChangeText(text) {
     if (controller) {
