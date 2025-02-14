@@ -78,7 +78,33 @@ function AddressAutocomplete(props) {
 
   const fuse = new Fuse(addresses, fuseOptions);
 
-  const autocomplete = _.debounce((text, query) => {
+  const newPlacesApiAutocomplete = (text, config) => {
+    return axios.post(
+      'https://places.googleapis.com/v1/places:autocomplete',
+      {
+        input: text,
+        sessionToken: config.sessiontoken,
+        locationRestriction: { "rectangle": {
+          "low" : {
+            "latitude": config.locationrestriction.southWest.split(',')[0],
+            "longitude": config.locationrestriction.southWest.split(',')[1]
+          },
+          "high" : {
+            "latitude": config.locationrestriction.northEast.split(',')[0],
+            "longitude": config.locationrestriction.northEast.split(',')[1]
+          },
+        }},
+        includedPrimaryTypes: ['street_address'],
+        languageCode: config.languageCode
+      },
+      {
+        headers: {"X-Goog-Api-Key": config.key},
+        // signal: controller.signal
+      },
+    )
+  }
+
+  const autocomplete = _.debounce(async (text, query) => {
     const newController = new AbortController();
     setController(newController);
     const fuseResults = fuse.search(text, { limit: 2 });
@@ -119,37 +145,37 @@ function AddressAutocomplete(props) {
         ]);
       }
     } else {
-      axios
-        .get(
-          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-            text,
-          )}&${qs.stringify(query)}`,
-          { signal: newController.signal },
-        )
-        .then(response => {
-          const normalizedResults = fuseResults.map(fuseResult => ({
-            ...fuseResult.item,
-            type: 'fuse',
-          }));
 
-          const normalizedPredictions = response.data.predictions.map(
-            prediction => ({
-              ...prediction,
-              type: 'prediction',
-            }),
-          );
+      let response
+      let normalizedPredictions
 
-          let results = normalizedResults.concat(normalizedPredictions);
+      try {
+        response = await newPlacesApiAutocomplete(text, query)
+      } catch (error) {
+        console.error('AddressAutocomplete; _autocomplete', error)
+      }
+      
+      normalizedPredictions = response.data.suggestions.map(
+        suggestion => ({
+          ...suggestion,
+          description: suggestion.placePrediction.text.text,
+          place_id: suggestion.placePrediction.placeId,
+          type: 'prediction',
+        }),
+      );
+      
+      const normalizedResults = fuseResults.map(fuseResult => ({
+        ...fuseResult.item,
+        type: 'fuse',
+      }));
 
-          if (normalizedResults.length > 0 && results.length > 5) {
-            results = results.slice(0, 5);
-          }
+      let results = normalizedResults.concat(normalizedPredictions);
 
-          setResults(results);
-        })
-        .catch(error => {
-          console.log('AddressAutocomplete; _autocomplete', error);
-        });
+      if (normalizedResults.length > 0 && results.length > 5) {
+        results = results.slice(0, 5);
+      }
+
+      setResults(results);
     }
   }, 300);
 
@@ -178,9 +204,12 @@ function AddressAutocomplete(props) {
     // Construire la requête pour l'autocomplete
     const queryParams = {
       key: Config.GOOGLE_MAPS_BROWSER_KEY,
-      language: localeDetector(),
+      languageCode: localeDetector(),
       types: 'geocode',
-      locationrestriction: `rectangle:${props.southWest}|${props.northEast}`,
+      locationrestriction: {
+        southWest: props.southWest,
+        northEast: props.northEast
+      },
       sessiontoken: newSessionToken,
     };
 
@@ -192,9 +221,8 @@ function AddressAutocomplete(props) {
     if (item.type === 'prediction') {
       const queryParams = {
         key: Config.GOOGLE_MAPS_BROWSER_KEY,
-        language: localeDetector(),
-        placeid: item.place_id,
-        sessiontoken: sessionToken,
+        languageCode: localeDetector(),
+        fields: ['addressComponents', 'location', 'formattedAddress', 'types'].join(',') // need to be specified explictly
       };
 
       // Réinitialiser le sessionToken après la sélection
@@ -202,21 +230,20 @@ function AddressAutocomplete(props) {
 
       // Appel à l'API Google Place Details
       axios
-        .get(
-          `https://maps.googleapis.com/maps/api/place/details/json?${qs.stringify(
-            queryParams,
-          )}`,
-        )
-        .then(response => {
-          setQuery(item.description);
-          setResults([]);
-          props.onSelectAddress(
-            AddressUtils.createAddressFromGoogleDetails(response.data.result),
-          );
-        })
-        .catch(error => {
-          console.log('AddressAutocomplete; _onItemPress', error);
-        });
+      .get(
+        `https://places.googleapis.com/v1/places/${item.place_id}?${qs.stringify(
+          queryParams,
+        )}`
+      )
+      .then(response => {
+        setQuery(item.description);
+        setResults([]);
+        const formattedAddress = AddressUtils.createAddressFromGoogleDetails(response.data)
+        props.onSelectAddress(formattedAddress);
+      })
+      .catch(error => {
+        console.log('AddressAutocomplete; _onItemPress', error);
+      });
     }
 
     if (item.type === 'postcode') {
