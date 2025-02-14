@@ -154,8 +154,11 @@ function AddressAutocomplete(props) {
       } catch (error) {
         console.error('AddressAutocomplete; _autocomplete', error)
       }
+
+      // when there is no response the API returns an empty response
+      const suggestions = response.data.suggestions ? response.data.suggestions  : []
       
-      normalizedPredictions = response.data.suggestions.map(
+      normalizedPredictions = suggestions.map(
         suggestion => ({
           ...suggestion,
           description: suggestion.placePrediction.text.text,
