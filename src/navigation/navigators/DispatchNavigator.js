@@ -8,6 +8,7 @@ import screens, { headerLeft } from '..';
 import i18n from '../../i18n';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
 import { stackNavigatorScreenOptions } from '../styles';
+import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import TaskNavigator from './TaskNavigator';
 
 const Tab = createBottomTabNavigator();
@@ -79,26 +80,6 @@ const MainNavigator = () => (
   </MainStack.Navigator>
 );
 
-const AddTask = createStackNavigator();
-
-const AddTaskNavigator = () => (
-  <AddTask.Navigator screenOptions={stackNavigatorScreenOptions}>
-    <AddTask.Screen
-      name="DispatchAddTaskHome"
-      component={screens.NewDeliveryStore}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <AddTask.Screen
-      name="DispatchEditAddress"
-      component={screens.DispatchEditAddress}
-      options={{
-        headerShown: false,
-      }}
-    />
-  </AddTask.Navigator>
-);
 
 const RootStack = createStackNavigator();
 
@@ -121,7 +102,7 @@ export default () => (
     />
     <RootStack.Screen
       name="DispatchNewDelivery"
-      component={AddTaskNavigator}
+      component={NewDeliveryNavigator}
       options={{
         title: i18n.t('DISPATCH_NEW_DELIVERY'),
       }}

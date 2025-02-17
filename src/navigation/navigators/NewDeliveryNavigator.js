@@ -10,6 +10,13 @@ const NewDeliveryStack = createStackNavigator();
 export const NewDeliveryNavigator = () => (
   <NewDeliveryStack.Navigator screenOptions={stackNavigatorScreenOptions}>
     <NewDeliveryStack.Screen
+      name="NewDeliveryStore"
+      component={screens.NewDeliveryStore}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <NewDeliveryStack.Screen
       name="NewDeliveryPickup"
       component={screens.NewDeliveryPickup}
       options={{
