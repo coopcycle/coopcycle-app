@@ -1,5 +1,7 @@
 {
     "common": {
+        "DISPATCH_NEW_DELIVERY": "Entrega berria",
+        "DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER": "Denda bat bilatu",
         "MY_ADDRESSES": "Nire helbideak",
         "MY_ORDERS": "Nire eskaerak",
         "MY_DETAILS": "Nire xehetasunak",

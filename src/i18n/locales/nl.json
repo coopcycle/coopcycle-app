@@ -1,5 +1,7 @@
 {
   "common": {
+    "DISPATCH_NEW_DELIVERY": "Nieuwe levering",
+    "DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER": "Zoek een winkel",
     "MY_ADDRESSES": "Mijn adressen"
   }
 }
