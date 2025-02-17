@@ -232,6 +232,7 @@ function NewDeliveryAddress(props) {
                 {...autocompleteProps}
                 placeholder={t('ENTER_ADDRESS')}
                 _focus={{ borderColor: primaryColor }}
+                testID="delivery__dropoff__address"
               />
             </View>
             {errors.address && !validAddress && touched.address && (
@@ -270,6 +271,7 @@ function NewDeliveryAddress(props) {
               onBlur={handleBlur('contactName')}
               value={values.contactName}
               placeholder={t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
+              testID="delivery__dropoff__contact_name"
             />
             {errors.contactName && touched.contactName && (
               <Text note style={styles.errorText}>
@@ -291,6 +293,7 @@ function NewDeliveryAddress(props) {
               onBlur={handleBlur('telephone')}
               value={values.telephone}
               placeholder={t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
+              testID="delivery__dropoff__phone"
             />
             {errors.telephone && touched.telephone && (
               <Text note style={styles.errorText}>

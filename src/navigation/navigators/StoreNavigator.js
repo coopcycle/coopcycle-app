@@ -45,6 +45,7 @@ function MainNavigator() {
                 iconType="FontAwesome"
                 iconName="plus"
                 onPress={navigateToDelivery}
+                testID="navigate_to_delivery"
               />
             ),
           };

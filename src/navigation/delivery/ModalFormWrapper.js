@@ -43,7 +43,9 @@ export default function ModalFormWrapper({
             <Button
               onPress={handleSubmit}
               disabled={disabled}
-              style={disabled ? { opacity: 0.5 } : {}}>
+              style={disabled ? { opacity: 0.5 } : {}}
+              testID="delivery__next_button"
+            >
               {buttonLabel}
             </Button>
           </Box>
