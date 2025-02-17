@@ -7,21 +7,27 @@ import { connect, useSelector } from 'react-redux'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 import StoreListInput from '../dispatch/components/StoreListInput'
 import FormInput from './components/FormInput'
+import { loadAddresses, setStore } from '../../redux/Delivery/actions'
+import { useDispatch } from 'react-redux'
 
 const NewDeliveryStore = (props) => {
   const {
     t,
+    navigation,
   } = props;
+  const dispatch = useDispatch();
   const stores = useSelector(state => state.dispatch.stores);
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredStores, setFilteredStores] = useState(stores)
 
   const onSelectStore = (store) => {
     console.log('onSelectStore', JSON.stringify(store));
-    // TODO: Assign the store to `state.store`
+    dispatch(setStore(store))
+    dispatch(loadAddresses(store))
+    navigation.navigate('NewDeliveryPickup')
   }
 
-  // search input
+  // Filter store by name
   const normalizeString = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   const handleSearch = (query) => {
