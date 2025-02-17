@@ -1,13 +1,12 @@
 
 import { Box } from 'native-base'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native'
 import { connect, useSelector } from 'react-redux'
+import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 import StoreListInput from '../dispatch/components/StoreListInput'
 import FormInput from './components/FormInput'
-import KeyboardAdjustView from '../../components/KeyboardAdjustView';
-import _ from 'lodash'
 
 const NewDeliveryStore = (props) => {
   const {
@@ -15,23 +14,26 @@ const NewDeliveryStore = (props) => {
   } = props;
   const stores = useSelector(state => state.dispatch.stores);
   const [searchQuery, setSearchQuery] = useState('')
-  const [storesList, setStoresList] = useState(stores)
+  const [filteredStores, setFilteredStores] = useState(stores)
 
   const onSelectStore = (store) => {
     console.log('onSelectStore', JSON.stringify(store));
     // TODO: Assign the store to `state.store`
   }
 
-  const contains = (formattedStoreName, query) => formattedStoreName.includes(query)
+  // search input
+  const normalizeString = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
   const handleSearch = (query) => {
-    setSearchQuery(query)
-    const formattedQuery = query.toLowerCase()
-    const filterderStoresList = _.filter(stores, (store) => {
-      const formattedStoreName = store.name.toLowerCase()
-      return contains(formattedStoreName, formattedQuery)
-    })
-    setStoresList(filterderStoresList)
-  }
+    setSearchQuery(query);
+    const normalizedQuery = normalizeString(query);
+
+    const filtered = stores.filter(store => 
+      normalizeString(store.name).includes(normalizedQuery)
+    );
+    
+    setFilteredStores(filtered);
+  };
 
   // TODO: We should do something about the "KeyboardAdjustView" solution..!
   return (
@@ -46,13 +48,13 @@ const NewDeliveryStore = (props) => {
           autoCorrect={false}
           autoCapitalize="none"
           returnKeyType="done"
-          onChangeText={(query) => handleSearch(query)}
+          onChangeText={handleSearch}
           placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
           
         />
       </Box>
         <StoreListInput
-          stores={storesList}
+          stores={filteredStores}
           onSelectStore={onSelectStore}
         />
       </SafeAreaView>
