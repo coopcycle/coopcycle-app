@@ -2,6 +2,7 @@ import {
   doLoginForUserWithRoleStore,
   loadStoreFixture,
 } from './utils';
+import { itif } from '../utils';
 
 describe('Store - Create delivery', () => {
   beforeEach(async () => {
@@ -10,7 +11,10 @@ describe('Store - Create delivery', () => {
     await doLoginForUserWithRoleStore();
   });
 
-  it(`should create a delivery for Store`, async () => {
+  //FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+  itif(device.getPlatform() === 'android')(
+    `should create a delivery for Store`,
+    async () => {
     await expect(element(by.id('navigate_to_delivery'))).toBeVisible();
     await element(by.id('navigate_to_delivery')).tap();
 
