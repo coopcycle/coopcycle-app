@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native'
 import { connect, useSelector } from 'react-redux'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
-import StoreListInput from '../dispatch/components/StoreListInput'
+import StoreListSelect from '../dispatch/components/StoreListSelect'
 import FormInput from './components/FormInput'
 import { loadAddresses, setStore } from '../../redux/Delivery/actions'
 import { useDispatch } from 'react-redux'
@@ -59,7 +59,7 @@ const NewDeliveryStore = (props) => {
           
         />
       </Box>
-        <StoreListInput
+        <StoreListSelect
           stores={filteredStores}
           onSelectStore={onSelectStore}
         />
