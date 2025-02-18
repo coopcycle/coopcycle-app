@@ -1,5 +1,4 @@
 import { Icon, Text } from 'native-base';
-import { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -10,12 +9,6 @@ export default function StoreListSelect({
   stores,
   onSelectStore,
 }) {
-
-  // TODO: remove this
-  useEffect(() => {
-    console.log(stores.map(s => s.name))
-  }, [stores])
-
   const styles = StyleSheet.create({
     item: {
       flex: 1,
