@@ -4,7 +4,6 @@ import React from 'react';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
-import { setStore } from '../../redux/Delivery/actions';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { stackNavigatorScreenOptions } from '../styles';
 import HeaderBackButton from '../store/components/HeaderBackButton';
@@ -16,8 +15,6 @@ import screens, { headerLeft } from '..';
 const MainStack = createStackNavigator();
 
 function MainNavigator() {
-  const dispatch = useDispatch();
-
   return (
     <MainStack.Navigator screenOptions={stackNavigatorScreenOptions}>
       <MainStack.Screen
@@ -27,8 +24,6 @@ function MainNavigator() {
           const store = route.params?.store;
           const title = store ? store.name : '';
           const navigateToDelivery = () => {
-            dispatch(setStore(store));
-
             navigation.navigate(
               'NewDelivery',
               {
