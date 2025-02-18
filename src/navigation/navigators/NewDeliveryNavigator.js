@@ -7,8 +7,13 @@ import { stackNavigatorScreenOptions } from '../styles';
 
 const NewDeliveryStack = createStackNavigator();
 
+const newDeliveryNavigatorScreenOptions = {
+  ...stackNavigatorScreenOptions,
+    detachInactiveScreens: false,
+}
+
 export const NewDeliveryNavigator = () => (
-  <NewDeliveryStack.Navigator screenOptions={stackNavigatorScreenOptions}>
+  <NewDeliveryStack.Navigator screenOptions={newDeliveryNavigatorScreenOptions}>
     <NewDeliveryStack.Screen
       name="NewDeliveryPickup"
       component={screens.NewDeliveryPickup}
