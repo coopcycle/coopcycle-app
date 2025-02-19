@@ -20,7 +20,7 @@ import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
 
 import NewDeliveryAddress from './delivery/NewDeliveryAddress';
-import NewDeliveryForm from './delivery/NewDeliveryForm';
+import NewDeliveryDropoffDetails from './delivery/NewDeliveryDropoffDetails';
 import NewDeliveryPickup from './delivery/NewDeliveryPickup';
 import NewDeliveryPrice from './delivery/NewDeliveryPrice';
 
@@ -139,7 +139,7 @@ export default {
   DispatchEditAddress,
   NewDeliveryPickup,
   NewDeliveryAddress,
-  NewDeliveryForm,
+  NewDeliveryDropoffDetails,
   NewDeliveryPrice,
   TaskHome,
   TaskComplete,

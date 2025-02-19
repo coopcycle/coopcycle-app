@@ -29,8 +29,8 @@ export const NewDeliveryNavigator = () => (
       }}
     />
     <NewDeliveryStack.Screen
-      name="NewDeliveryForm"
-      component={screens.NewDeliveryForm}
+      name="NewDeliveryDropoffDetails"
+      component={screens.NewDeliveryDropoffDetails}
       options={{
         headerShown: false,
       }}

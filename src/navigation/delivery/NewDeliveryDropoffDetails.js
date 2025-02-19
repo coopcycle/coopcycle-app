@@ -36,7 +36,7 @@ import ModalFormWrapper from './ModalFormWrapper';
 import Range from '../checkout/ProductDetails/Range';
 import TimeSlotSelector from './components/TimeSlotSelector';
 
-function DeliveryForm(props) {
+function NewDeliveryDropoffDetails(props) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
@@ -471,4 +471,4 @@ function mapDispatchToProps(state) {
   };
 }
 
-export default connect(mapDispatchToProps)(withTranslation()(DeliveryForm));
+export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryDropoffDetails));
