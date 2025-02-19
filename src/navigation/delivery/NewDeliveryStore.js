@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 import { loadAddresses, setStore } from '../../redux/Delivery/actions'
-import StoreListSelect from '../dispatch/components/StoreListSelect'
+import StoreListSelect from './components/StoreListSelect'
 import FormInput from './components/FormInput'
 import { loadStoresRequest } from '../../redux/Dispatch/actions'
 
