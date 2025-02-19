@@ -7,8 +7,13 @@ import { stackNavigatorScreenOptions } from '../styles';
 
 const NewDeliveryStack = createStackNavigator();
 
+const newDeliveryNavigatorScreenOptions = {
+  ...stackNavigatorScreenOptions,
+    detachInactiveScreens: false,
+}
+
 export const NewDeliveryNavigator = () => (
-  <NewDeliveryStack.Navigator screenOptions={stackNavigatorScreenOptions}>
+  <NewDeliveryStack.Navigator screenOptions={newDeliveryNavigatorScreenOptions}>
     <NewDeliveryStack.Screen
       name="NewDeliveryStore"
       component={screens.NewDeliveryStore}
@@ -17,22 +22,22 @@ export const NewDeliveryNavigator = () => (
       }}
     />
     <NewDeliveryStack.Screen
-      name="NewDeliveryPickup"
-      component={screens.NewDeliveryPickup}
+      name="NewDeliveryPickupAddress"
+      component={screens.NewDeliveryPickupAddress}
       options={{
         headerShown: false,
       }}
     />
     <NewDeliveryStack.Screen
-      name="NewDeliveryAddress"
-      component={screens.NewDeliveryAddress}
+      name="NewDeliveryDropoffAddress"
+      component={screens.NewDeliveryDropoffAddress}
       options={{
         headerShown: false,
       }}
     />
     <NewDeliveryStack.Screen
-      name="NewDeliveryForm"
-      component={screens.NewDeliveryForm}
+      name="NewDeliveryDropoffDetails"
+      component={screens.NewDeliveryDropoffDetails}
       options={{
         headerShown: false,
       }}

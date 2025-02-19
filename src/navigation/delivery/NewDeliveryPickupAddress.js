@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import { Checkbox, Text } from 'native-base';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { IconCircleArrowUpFilled } from '@tabler/icons-react-native';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -13,14 +13,19 @@ import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 import { assertDelivery } from '../../redux/Delivery/actions';
-import { selectStore } from '../../redux/Delivery/selectors';
+import {
+  selectAddresses,
+  selectAssertDeliveryError,
+  selectStore,
+} from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../styles/theme';
 
-function NewDeliveryPickup({ navigation }) {
+
+function NewDeliveryPickupAddress({ navigation }) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const [customAddress, setCustomAddress] = useState(false);
@@ -29,15 +34,15 @@ function NewDeliveryPickup({ navigation }) {
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const primaryColor = usePrimaryColor();
 
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-
   const country = useSelector(state =>
     state.app.settings.country.toUpperCase(),
   );
   const store = useSelector(selectStore);
-  const deliveryError = useSelector(state => state.delivery.assertDeliveryError);
-  const addresses = useSelector(state => state.delivery.addresses);
+  const addresses = useSelector(selectAddresses);
+  const deliveryError = useSelector(selectAssertDeliveryError);
+
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const inputStyles = {
     backgroundColor,
@@ -150,7 +155,7 @@ function NewDeliveryPickup({ navigation }) {
         }
       : undefined;
 
-    navigation.navigate('NewDeliveryAddress', { pickup });
+    navigation.navigate('NewDeliveryDropoffAddress', { pickup });
   }
 
   return (
@@ -398,13 +403,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapDispatchToProps(state) {
-  return {
-    country: state.app.settings.country.toUpperCase(),
-    store: selectStore(state),
-    deliveryError: state.delivery.assertDeliveryError,
-    addresses: state.delivery.addresses,
-  };
-}
-
-export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryPickup));
+export default withTranslation()(NewDeliveryPickupAddress);

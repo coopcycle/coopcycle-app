@@ -1,29 +1,31 @@
 import { Formik } from 'formik';
-import { Text, View } from 'native-base';
-import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import { Text, View } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { createDelivery } from '../../redux/Delivery/actions';
 import { getPrice } from '../../redux/Delivery/actions';
+import { selectPrice, selectPriceExcludingTax } from '../../redux/Delivery/selectors';
 import { useDeliveryCallback } from './contexts/DeliveryCallbackContext';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 
 
-function NewDeliveryPrice({ route, navigation }) {
+function NewDeliveryPrice({ route }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const delivery = route.params?.delivery;
 
-  const price = useSelector(state => state.delivery.price);
-  const priceExcludingTax = useSelector(state => state.delivery.priceExcludingTax);
+  const price = useSelector(selectPrice);
+  const priceExcludingTax = useSelector(selectPriceExcludingTax);
 
   const { deliveryCallback } = useDeliveryCallback()
 
-  if (!delivery) return null;
-
-  dispatch(getPrice(delivery));
+  useEffect(() => {
+    dispatch(getPrice(delivery));
+  }, [delivery, dispatch])
 
   function submit(values) {
     if (price === null || priceExcludingTax === null) return;

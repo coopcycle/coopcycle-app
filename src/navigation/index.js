@@ -19,10 +19,11 @@ import TaskHome from './task/Task';
 import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
 
-import NewDeliveryAddress from './delivery/NewDeliveryAddress';
-import NewDeliveryForm from './delivery/NewDeliveryForm';
-import NewDeliveryPickup from './delivery/NewDeliveryPickup';
+import NewDeliveryDropoffAddress from './delivery/NewDeliveryDropoffAddress';
+import NewDeliveryDropoffDetails from './delivery/NewDeliveryDropoffDetails';
+import NewDeliveryPickupAddress from './delivery/NewDeliveryPickupAddress';
 import NewDeliveryPrice from './delivery/NewDeliveryPrice';
+import NewDeliveryStore from './delivery/NewDeliveryStore';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery';
@@ -81,7 +82,6 @@ import RestaurantSearch from './restaurant/Search';
 import RestaurantSettings from './restaurant/Settings';
 
 import Delivery from './delivery/Delivery';
-import NewDeliveryStore from './delivery/NewDeliveryStore';
 
 export default {
   RestaurantsPage,
@@ -138,12 +138,12 @@ export default {
   DispatchAddTask,
   DispatchDate,
   DispatchAssignTask,
-  // DEPRECATED
+  // END DEPRECATED
   DispatchEditAddress,
   NewDeliveryStore,
-  NewDeliveryPickup,
-  NewDeliveryAddress,
-  NewDeliveryForm,
+  NewDeliveryPickupAddress,
+  NewDeliveryDropoffAddress,
+  NewDeliveryDropoffDetails,
   NewDeliveryPrice,
   TaskHome,
   TaskComplete,
