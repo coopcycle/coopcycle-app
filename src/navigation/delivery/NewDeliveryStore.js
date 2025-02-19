@@ -1,14 +1,14 @@
 
 import { Box } from 'native-base'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native'
-import { connect, useSelector } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
+import { loadAddresses, setStore } from '../../redux/Delivery/actions'
 import StoreListSelect from '../dispatch/components/StoreListSelect'
 import FormInput from './components/FormInput'
-import { loadAddresses, setStore } from '../../redux/Delivery/actions'
-import { useDispatch } from 'react-redux'
+import { loadStoresRequest } from '../../redux/Dispatch/actions'
 
 const NewDeliveryStore = (props) => {
   const {
@@ -19,7 +19,25 @@ const NewDeliveryStore = (props) => {
   const stores = useSelector(state => state.dispatch.stores);
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredStores, setFilteredStores] = useState(stores)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
+  useEffect(() => {
+    setFilteredStores(stores)
+    console.log('Stores updated')
+  }, [stores])
+
+  const onRefreshStores = async () => {
+    setIsRefreshing(true) 
+    try {
+      await dispatch(loadStoresRequest())
+      console.log('Stores after refresh') // Add logging to check updates
+    } catch (error) {
+      console.log('Error refreshing stores', error)
+    }
+    setIsRefreshing(false)
+  }
+
+ 
   const onSelectStore = (store) => {
     dispatch(setStore(store))
     dispatch(loadAddresses(store))
@@ -60,6 +78,8 @@ const NewDeliveryStore = (props) => {
         <StoreListSelect
           stores={filteredStores}
           onSelectStore={onSelectStore}
+          isRefreshing={isRefreshing}
+          onRefreshStores={onRefreshStores}
         />
       </SafeAreaView>
     </KeyboardAdjustView>
