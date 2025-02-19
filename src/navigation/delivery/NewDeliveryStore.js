@@ -1,14 +1,17 @@
 
 import { Box } from 'native-base'
-import React, { useState } from 'react'
-import { withTranslation } from 'react-i18next'
+import { connect } from 'react-redux'
 import { SafeAreaView } from 'react-native'
-import { connect, useSelector } from 'react-redux'
-import KeyboardAdjustView from '../../components/KeyboardAdjustView'
-import StoreListSelect from '../dispatch/components/StoreListSelect'
-import FormInput from './components/FormInput'
+import { withTranslation } from 'react-i18next'
+import React, { useEffect, useState } from 'react'
+
 import { loadAddresses, setStore } from '../../redux/Delivery/actions'
 import { useDispatch } from 'react-redux'
+import { useFetchAllRecords } from '../../hooks/useFetchAllRecords'
+import FormInput from './components/FormInput'
+import KeyboardAdjustView from '../../components/KeyboardAdjustView'
+import StoreListSelect from '../dispatch/components/StoreListSelect'
+
 
 const NewDeliveryStore = (props) => {
   const {
@@ -16,14 +19,24 @@ const NewDeliveryStore = (props) => {
     navigation,
   } = props;
   const dispatch = useDispatch();
-  const stores = useSelector(state => state.dispatch.stores);
-  const [searchQuery, setSearchQuery] = useState('')
-  const [filteredStores, setFilteredStores] = useState(stores)
+
+  const {
+    data: stores,
+    error,
+    isLoading,
+  }= useFetchAllRecords('/api/stores', 100);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredStores, setFilteredStores] = useState([]);
+
+  useEffect(() => {
+    setFilteredStores(stores);
+  }, [stores])
 
   const onSelectStore = (store) => {
     dispatch(setStore(store))
     dispatch(loadAddresses(store))
-    navigation.navigate('NewDeliveryPickup')
+    navigation.navigate('NewDeliveryPickupAddress');
   }
 
   // Filter store by name
