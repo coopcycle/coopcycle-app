@@ -1,7 +1,5 @@
-import { Formik } from 'formik';
-import moment from 'moment';
 import { Box, Button, HStack, Text, VStack } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import { Formik } from 'formik';
 import { withTranslation } from 'react-i18next';
 import {
   InteractionManager,
@@ -10,9 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import KeyboardManager from 'react-native-keyboard-manager';
+import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { connect, useDispatch } from 'react-redux';
+import KeyboardManager from 'react-native-keyboard-manager';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 
 import { IconPackage } from '@tabler/icons-react-native';
 import {
@@ -22,6 +22,7 @@ import {
   loadTimeSlots,
 } from '../../redux/Delivery/actions';
 import {
+  selectHasTimeSlot,
   selectPackages,
   selectStore,
   selectTimeSlotChoices,
@@ -36,25 +37,25 @@ import ModalFormWrapper from './ModalFormWrapper';
 import Range from '../checkout/ProductDetails/Range';
 import TimeSlotSelector from './components/TimeSlotSelector';
 
-function NewDeliveryDropoffDetails(props) {
+function NewDeliveryDropoffDetails({
+  navigation,
+  route,
+  t,
+}) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
   const primaryColor = usePrimaryColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packagesCount, setPackagesCount] = useState([]);
-  const dispatch = useDispatch();
 
-  const {
-    hasTimeSlot,
-    navigation,
-    packages,
-    route,
-    store,
-    t,
-    timeSlotChoices,
-    timeSlots,
-  } = props;
+  const packages = useSelector(selectPackages);
+  const store = useSelector(selectStore);
+  const timeSlotChoices = useSelector(selectTimeSlotChoices);
+  const timeSlots = useSelector(selectTimeSlots);
+  const hasTimeSlot = useSelector(selectHasTimeSlot);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedTimeSlot) return;
@@ -455,20 +456,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapDispatchToProps(state) {
-  const packages = selectPackages(state);
-  const store = selectStore(state);
-  const timeSlotChoices = selectTimeSlotChoices(state);
-  const timeSlots = selectTimeSlots(state);
-  const hasTimeSlot = timeSlots.length > 0;
-
-  return {
-    hasTimeSlot,
-    packages,
-    store,
-    timeSlotChoices,
-    timeSlots,
-  };
-}
-
-export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryDropoffDetails));
+export default withTranslation()(NewDeliveryDropoffDetails);

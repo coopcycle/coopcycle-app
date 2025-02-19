@@ -32,14 +32,14 @@ function NewDeliveryDropoffAddress({
   const backgroundHighlightColor = useBackgroundHighlightColor();
   const primaryColor = usePrimaryColor();
 
-  const dispatch = useDispatch();
-
   const country = useSelector(state =>
     state.app.settings.country.toUpperCase(),
   );
   const store = useSelector(selectStore);
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
+
+  const dispatch = useDispatch();
 
   const inputStyles = {
     backgroundColor,
