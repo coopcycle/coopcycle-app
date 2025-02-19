@@ -20,7 +20,8 @@ import {
   usePrimaryColor,
 } from '../../styles/theme';
 
-function NewDeliveryAddress(props) {
+
+function NewDeliveryDropoffAddress(props) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
@@ -391,4 +392,4 @@ function mapDispatchToProps(state) {
   };
 }
 
-export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryAddress));
+export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryDropoffAddress));

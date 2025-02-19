@@ -19,7 +19,7 @@ import TaskHome from './task/Task';
 import StoreDashboard from './store/Dashboard';
 import StoreDelivery from './store/Delivery';
 
-import NewDeliveryAddress from './delivery/NewDeliveryAddress';
+import NewDeliveryDropoffAddress from './delivery/NewDeliveryDropoffAddress';
 import NewDeliveryDropoffDetails from './delivery/NewDeliveryDropoffDetails';
 import NewDeliveryPickup from './delivery/NewDeliveryPickup';
 import NewDeliveryPrice from './delivery/NewDeliveryPrice';
@@ -138,7 +138,7 @@ export default {
   DispatchAssignTask,
   DispatchEditAddress,
   NewDeliveryPickup,
-  NewDeliveryAddress,
+  NewDeliveryDropoffAddress,
   NewDeliveryDropoffDetails,
   NewDeliveryPrice,
   TaskHome,

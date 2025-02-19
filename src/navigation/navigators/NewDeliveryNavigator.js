@@ -22,8 +22,8 @@ export const NewDeliveryNavigator = () => (
       }}
     />
     <NewDeliveryStack.Screen
-      name="NewDeliveryAddress"
-      component={screens.NewDeliveryAddress}
+      name="NewDeliveryDropoffAddress"
+      component={screens.NewDeliveryDropoffAddress}
       options={{
         headerShown: false,
       }}
