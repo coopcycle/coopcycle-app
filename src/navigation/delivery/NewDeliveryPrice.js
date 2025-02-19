@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { createDelivery } from '../../redux/Delivery/actions';
 import { getPrice } from '../../redux/Delivery/actions';
+import { selectPrice, selectPriceExcludingTax } from '../../redux/Delivery/selectors';
 import { useDeliveryCallback } from './contexts/DeliveryCallbackContext';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
@@ -17,8 +18,8 @@ function NewDeliveryPrice({ route }) {
   const { t } = useTranslation();
   const delivery = route.params?.delivery;
 
-  const price = useSelector(state => state.delivery.price);
-  const priceExcludingTax = useSelector(state => state.delivery.priceExcludingTax);
+  const price = useSelector(selectPrice);
+  const priceExcludingTax = useSelector(selectPriceExcludingTax);
 
   const { deliveryCallback } = useDeliveryCallback()
 
