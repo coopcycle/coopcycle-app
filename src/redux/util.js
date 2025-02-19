@@ -33,3 +33,20 @@ export function createTaskItemsTransform(now) {
 export function sortByName(list) {
   return _.sortBy(list, ['name']);
 }
+
+export async function fetchAllRecords(httpClient, url, itemsPerPage) {
+  const fetch = async (page) => httpClient.get(`${url}?itemsPerPage=${itemsPerPage}&page=${page}`);
+  const firstRs = await fetch(1);
+
+  if (!Object.hasOwn(firstRs, 'hydra:totalItems') || firstRs['hydra:totalItems'] <= firstRs['hydra:member'].length) {
+    // Total items were already returned in the 1st request!
+    return firstRs['hydra:member'];
+  }
+
+  // OK more pages are needed to be fetched to get all items..!
+  const totalItems = firstRs['hydra:totalItems'];
+  const maxPage = Math.trunc(totalItems / itemsPerPage) + (totalItems % itemsPerPage === 0 ? 0 : 1);
+
+  return Promise.all([...Array(maxPage+1).keys()].slice(2).map(page => fetch(page)))
+    .then(results => results.reduce((acc, rs) => acc.concat(rs['hydra:member']), firstRs['hydra:member']));
+}

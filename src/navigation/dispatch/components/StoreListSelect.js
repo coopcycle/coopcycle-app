@@ -1,23 +1,14 @@
 import { Icon, Text } from 'native-base';
-import { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import ItemSeparator from '../../../components/ItemSeparator';
-import KeyboardAdjustView from '../../../components/KeyboardAdjustView';
 
-// TODO: rename this component
-export default function StoreListInput({
+export default function StoreListSelect({
   stores,
   onSelectStore,
 }) {
-
-  // TODO: remove this
-  useEffect(() => {
-    console.log(stores.map(s => s.name))
-  }, [stores])
-
   const styles = StyleSheet.create({
     item: {
       flex: 1,
@@ -47,13 +38,10 @@ export default function StoreListInput({
       </TouchableOpacity>
     );
   }
-// TODO KeyboardAdjustView needs more testing on Android
-  return <KeyboardAdjustView style={{ flex: 1 }} androidBehavior={''}>
-            <FlatList
+  return <FlatList
             data={stores}
             keyExtractor={(item, index) => item.id}
             renderItem={({ item }) => renderItem(item)}
             ItemSeparatorComponent={ItemSeparator}
           />
-        </KeyboardAdjustView>
 }

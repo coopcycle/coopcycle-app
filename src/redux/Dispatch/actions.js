@@ -23,7 +23,7 @@ import {
 
 import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { isSameDate } from './utils';
-import { sortByName } from '../util';
+import { fetchAllRecords, sortByName } from '../util';
 
 /*
  * Action Types
@@ -147,7 +147,7 @@ function _loadTaskLists(httpClient, date) {
 }
 
 function _loadStores(httpClient) {
-  return httpClient.get('/api/stores?itemsPerPage=100');
+  return fetchAllRecords(httpClient, '/api/stores', 100)
 }
 
 function _loadAll(httpClient, date) {
@@ -202,11 +202,11 @@ export function initialize() {
 
     _loadAll(httpClient, date)
       .then(values => {
-        const [users, unassignedTasks, taskLists, stores, ] = values;
+        const [users, unassignedTasks, taskLists, stores] = values;
         dispatch(loadUsersSuccess(users['hydra:member']));
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
         dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-        dispatch(loadStoresSuccess(sortByName(stores['hydra:member'])));
+        dispatch(loadStoresSuccess(sortByName(stores)));
         dispatch(connectCentrifugo());
         dispatch(_initialize());
       })

@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native'
 import { connect, useSelector } from 'react-redux'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
-import StoreListInput from '../dispatch/components/StoreListInput'
+import StoreListSelect from '../dispatch/components/StoreListSelect'
 import FormInput from './components/FormInput'
 import { loadAddresses, setStore } from '../../redux/Delivery/actions'
 import { useDispatch } from 'react-redux'
@@ -21,7 +21,6 @@ const NewDeliveryStore = (props) => {
   const [filteredStores, setFilteredStores] = useState(stores)
 
   const onSelectStore = (store) => {
-    console.log('onSelectStore', JSON.stringify(store));
     dispatch(setStore(store))
     dispatch(loadAddresses(store))
     navigation.navigate('NewDeliveryPickup')
@@ -34,10 +33,10 @@ const NewDeliveryStore = (props) => {
     setSearchQuery(query);
     const normalizedQuery = normalizeString(query);
 
-    const filtered = stores.filter(store => 
+    const filtered = stores.filter(store =>
       normalizeString(store.name).includes(normalizedQuery)
     );
-    
+
     setFilteredStores(filtered);
   };
 
@@ -56,10 +55,9 @@ const NewDeliveryStore = (props) => {
           returnKeyType="done"
           onChangeText={handleSearch}
           placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
-          
         />
       </Box>
-        <StoreListInput
+        <StoreListSelect
           stores={filteredStores}
           onSelectStore={onSelectStore}
         />
