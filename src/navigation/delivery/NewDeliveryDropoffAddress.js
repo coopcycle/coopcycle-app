@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { IconCircleArrowDownFilled } from '@tabler/icons-react-native';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -13,7 +13,7 @@ import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 import { assertDelivery } from '../../redux/Delivery/actions';
-import { selectStore } from '../../redux/Delivery/selectors';
+import { selectAddresses, selectAssertDeliveryError, selectStore } from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
@@ -21,7 +21,11 @@ import {
 } from '../../styles/theme';
 
 
-function NewDeliveryDropoffAddress(props) {
+function NewDeliveryDropoffAddress({
+  navigation,
+  route,
+  t,
+}) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
@@ -30,15 +34,12 @@ function NewDeliveryDropoffAddress(props) {
 
   const dispatch = useDispatch();
 
-  const {
-    addresses,
-    country,
-    deliveryError,
-    navigation,
-    route,
-    store,
-    t,
-  } = props;
+  const country = useSelector(state =>
+    state.app.settings.country.toUpperCase(),
+  );
+  const store = useSelector(selectStore);
+  const addresses = useSelector(selectAddresses);
+  const deliveryError = useSelector(selectAssertDeliveryError);
 
   const inputStyles = {
     backgroundColor,
@@ -383,13 +384,5 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapDispatchToProps(state) {
-  return {
-    addresses: state.delivery.addresses,
-    country: state.app.settings.country.toUpperCase(),
-    deliveryError: state.delivery.assertDeliveryError,
-    store: selectStore(state),
-  };
-}
 
-export default connect(mapDispatchToProps)(withTranslation()(NewDeliveryDropoffAddress));
+export default withTranslation()(NewDeliveryDropoffAddress);
