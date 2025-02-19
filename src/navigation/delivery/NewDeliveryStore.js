@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import { useFetchAllRecords } from '../../hooks/useFetchAllRecords'
 import FormInput from './components/FormInput'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
-import StoreListSelect from '../dispatch/components/StoreListSelect'
+import StoreListSelect from './components/StoreListSelect'
 import { loadStoresRequest } from '../../redux/Dispatch/actions'
 
 
@@ -25,7 +25,7 @@ const NewDeliveryStore = (props) => {
     data: stores,
     error,
     isLoading,
-  }= useFetchAllRecords('/api/stores', 100);
+  } = useFetchAllRecords('/api/stores', 100);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredStores, setFilteredStores] = useState([]);
