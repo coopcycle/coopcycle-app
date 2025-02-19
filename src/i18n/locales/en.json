@@ -411,12 +411,12 @@
     "NOTIFICATION_TASKS_REMOVED": "{{ count }} removed",
     "NOT_AVAILABLE_ATM": "Not available at the moment",
     "BACKGROUND_PERMISSION_DISCLOSURE": {
-      "title": "Use your location",
-      "message": "To allow dispatchers to assign jobs accurately, allow CoopCycle to access this device's location even when the app is closed or not in use.\n\nThis data will be uploaded to the CoopCycle instance you are connected to."
+      "title": "Background geolocation tracking",
+      "message": "The CoopCycle app collects and transmits background geolocation data to enable precise geolocation of riders for the tasks dispatcher, when the app is not in use or in the background. Please allow CoopCycle to access this device's location even when the app is closed or not in use. This data will be uploaded to the CoopCycle instance you are connected to."
     },
     "BACKGROUND_PERMISSION_RATIONALE": {
       "title": "Allow {applicationName} to access this device's location even when the app is closed or not in use",
-      "message": "When authenticated as a messenger, this app collects location data to allow dispatchers to assign jobs accurately",
+      "message": "The CoopCycle app collects and transmits background geolocation data to enable precise geolocation of riders for the tasks dispatcher, when the app is not in use or in the background. The background geolocation tracking only starts when you are connected as a rider.",
       "positiveAction": "Change to « {backgroundPermissionOptionLabel} »"
     },
     "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Manage product options",

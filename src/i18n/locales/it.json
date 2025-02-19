@@ -368,13 +368,13 @@
         "ENTER_POSTCODE": "Inserisci il tuo codice postale",
         "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Gestire le opzioni del prodotto",
         "BACKGROUND_PERMISSION_RATIONALE": {
-            "positiveAction": "Cambiare a « {backgroundPermissionOptionLabel} »",
-            "message": "Quando autenticato come corriere, questa app raccoglie dati di localizzazione per permettere ai dispatcher di assegnare gli incarichi in maniera accurata",
-            "title": "Permettere {applicationName} l'accesso alla localizzazione di questo dispositivo anche quando la app è chiusa o non in uso"
+            "positiveAction": "Cambia in « {backgroundPermissionOptionLabel} »",
+            "message": "L'app CoopCycle raccoglie e trasmette dati di geolocalizzazione in background per consentire una localizzazione precisa dei corrieri per il dispatcher dei compiti, anche quando l'app non è in uso o è in esecuzione in background. Il tracciamento della geolocalizzazione in background inizia solo quando sei connesso come corriere.",
+            "title": "Consenti a {applicationName} di accedere alla posizione di questo dispositivo anche quando l'app è chiusa o non in uso"
         },
         "BACKGROUND_PERMISSION_DISCLOSURE": {
-            "message": "Per permettere ai dispatcher di assegnare gli incarichi in maniera precisa, permettere a CoopCycle l'accesso alla localizzazione del dispositivo anche quando la app è chiusa o non in uso.\n\nQuesti dati saranno caricati sul server di CoopCycle al quale sei connesso.",
-            "title": "Usa il tuo indirizzo"
+            "message": "L'app CoopCycle raccoglie e trasmette dati di geolocalizzazione in background per consentire una localizzazione precisa dei corrieri per il dispatcher dei compiti, anche quando l'app non è in uso o è in esecuzione in background. Si prega di consentire a CoopCycle di accedere alla posizione di questo dispositivo anche quando l'app è chiusa o non in uso.\n\nQuesti dati saranno caricati sull'istanza di CoopCycle a cui sei connesso.",
+            "title": "Tracciamento della geolocalizzazione in background"
         },
         "NOT_AVAILABLE_ATM": "Non disponibile al momento",
         "NOTIFICATION_TASKS_REMOVED": "{{ count }} rimosso",
