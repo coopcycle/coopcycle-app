@@ -8,7 +8,7 @@ const HeaderBackButtonWrapper = props => {
 
   let { title, currentRoute, ...otherProps } = props;
 
-  if (currentRoute === 'StoreNewDeliveryPickup') {
+  if (currentRoute === 'NewDeliveryPickupAddress') {
     title = t('CANCEL');
   } else {
     title = 'Back';

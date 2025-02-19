@@ -27,7 +27,7 @@ function MainNavigator() {
             navigation.navigate(
               'NewDelivery',
               {
-                screen: 'NewDeliveryPickup',
+                screen: 'NewDeliveryPickupAddress',
               }
             )
           }

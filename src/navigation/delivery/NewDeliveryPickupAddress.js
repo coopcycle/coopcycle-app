@@ -25,7 +25,7 @@ import {
 } from '../../styles/theme';
 
 
-function NewDeliveryPickup({ navigation }) {
+function NewDeliveryPickupAddress({ navigation }) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const [customAddress, setCustomAddress] = useState(false);
@@ -403,4 +403,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTranslation()(NewDeliveryPickup);
+export default withTranslation()(NewDeliveryPickupAddress);

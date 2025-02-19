@@ -21,7 +21,7 @@ import StoreDelivery from './store/Delivery';
 
 import NewDeliveryDropoffAddress from './delivery/NewDeliveryDropoffAddress';
 import NewDeliveryDropoffDetails from './delivery/NewDeliveryDropoffDetails';
-import NewDeliveryPickup from './delivery/NewDeliveryPickup';
+import NewDeliveryPickupAddress from './delivery/NewDeliveryPickupAddress';
 import NewDeliveryPrice from './delivery/NewDeliveryPrice';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
@@ -137,7 +137,7 @@ export default {
   DispatchDate,
   DispatchAssignTask,
   DispatchEditAddress,
-  NewDeliveryPickup,
+  NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,
   NewDeliveryDropoffDetails,
   NewDeliveryPrice,
