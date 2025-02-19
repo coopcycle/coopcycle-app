@@ -1,5 +1,5 @@
 import { Icon, Text } from 'native-base';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -8,6 +8,8 @@ import ItemSeparator from '../../../components/ItemSeparator';
 export default function StoreListSelect({
   stores,
   onSelectStore,
+  isRefreshing,
+  onRefreshStores
 }) {
   const styles = StyleSheet.create({
     item: {
@@ -43,5 +45,10 @@ export default function StoreListSelect({
             keyExtractor={(item, index) => item.id}
             renderItem={({ item }) => renderItem(item)}
             ItemSeparatorComponent={ItemSeparator}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={onRefreshStores}
+              />}
           />
 }

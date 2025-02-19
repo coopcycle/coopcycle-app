@@ -11,6 +11,7 @@ import { useFetchAllRecords } from '../../hooks/useFetchAllRecords'
 import FormInput from './components/FormInput'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 import StoreListSelect from '../dispatch/components/StoreListSelect'
+import { loadStoresRequest } from '../../redux/Dispatch/actions'
 
 
 const NewDeliveryStore = (props) => {
@@ -28,10 +29,28 @@ const NewDeliveryStore = (props) => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredStores, setFilteredStores] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
     setFilteredStores(stores);
   }, [stores])
+
+  useEffect(() => {
+    setFilteredStores(stores)
+    console.log('Stores updated')
+  }, [stores])
+
+  const onRefreshStores = async () => {
+    setIsRefreshing(true)
+    try {
+      await dispatch(loadStoresRequest())
+      console.log('Stores after refresh') // Add logging to check updates
+    } catch (error) {
+      console.log('Error refreshing stores', error)
+    }
+    setIsRefreshing(false)
+  }
+
 
   const onSelectStore = (store) => {
     dispatch(setStore(store))
@@ -73,6 +92,8 @@ const NewDeliveryStore = (props) => {
         <StoreListSelect
           stores={filteredStores}
           onSelectStore={onSelectStore}
+          isRefreshing={isRefreshing}
+          onRefreshStores={onRefreshStores}
         />
       </SafeAreaView>
     </KeyboardAdjustView>
