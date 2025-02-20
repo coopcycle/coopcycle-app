@@ -32,10 +32,6 @@ const NewDeliveryStore = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
-    setFilteredStores(stores);
-  }, [stores])
-
-  useEffect(() => {
     setFilteredStores(stores)
     console.log('Stores updated')
   }, [stores])
