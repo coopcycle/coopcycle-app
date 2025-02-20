@@ -1,17 +1,16 @@
-
-import { Box } from 'native-base'
-import { connect } from 'react-redux'
-import { SafeAreaView } from 'react-native'
-import { withTranslation } from 'react-i18next'
+import { Box, Text } from 'native-base'
 import React, { useEffect, useState } from 'react'
+import { withTranslation } from 'react-i18next'
+import { ActivityIndicator, SafeAreaView } from 'react-native'
+import { connect } from 'react-redux'
 
-import { loadAddresses, setStore } from '../../redux/Delivery/actions'
 import { useDispatch } from 'react-redux'
-import { useFetchAllRecords } from '../../hooks/useFetchAllRecords'
-import FormInput from './components/FormInput'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
+import { useFetchAllRecords } from '../../hooks/useFetchAllRecords'
+import { loadAddresses, setStore } from '../../redux/Delivery/actions'
+import FormInput from './components/FormInput'
 import StoreListSelect from './components/StoreListSelect'
-import { loadStoresRequest } from '../../redux/Dispatch/actions'
+import { sortByName } from '../../redux/util'
 
 
 const NewDeliveryStore = (props) => {
@@ -25,28 +24,15 @@ const NewDeliveryStore = (props) => {
     data: stores,
     error,
     isLoading,
+    refetch,
   } = useFetchAllRecords('/api/stores', 100);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredStores, setFilteredStores] = useState([]);
-  const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
-    setFilteredStores(stores)
-    console.log('Stores updated')
+    setFilteredStores(sortByName(stores));
   }, [stores])
-
-  const onRefreshStores = async () => {
-    setIsRefreshing(true)
-    try {
-      await dispatch(loadStoresRequest())
-      console.log('Stores after refresh') // Add logging to check updates
-    } catch (error) {
-      console.log('Error refreshing stores', error)
-    }
-    setIsRefreshing(false)
-  }
-
 
   const onSelectStore = (store) => {
     dispatch(setStore(store))
@@ -65,7 +51,7 @@ const NewDeliveryStore = (props) => {
       normalizeString(store.name).includes(normalizedQuery)
     );
 
-    setFilteredStores(filtered);
+    setFilteredStores(sortByName(filtered));
   };
 
   // TODO: We should do something about the "KeyboardAdjustView" solution..!
@@ -85,12 +71,17 @@ const NewDeliveryStore = (props) => {
           placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
         />
       </Box>
+      {isLoading &&  <ActivityIndicator animating={true} size="large" />}
+      {error && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
+      {!isLoading && !error && 
         <StoreListSelect
           stores={filteredStores}
           onSelectStore={onSelectStore}
-          isRefreshing={isRefreshing}
-          onRefreshStores={onRefreshStores}
+          isRefreshing={isLoading}
+          onRefreshStores={refetch}
         />
+      } 
+        
       </SafeAreaView>
     </KeyboardAdjustView>
     )
