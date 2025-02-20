@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { fetchAllRecords, sortByName } from "../redux/util";
+import { fetchAllRecords } from "../redux/util";
 
 
 export function useFetchAllRecords(url, itemsPerPage) {
@@ -14,7 +14,7 @@ export function useFetchAllRecords(url, itemsPerPage) {
   const fetchData = useCallback(async () => {
     setIsLoading(true)
     fetchAllRecords(httpClient, url, itemsPerPage)
-        .then((res) => setData(sortByName(res)))
+        .then(setData)
         .catch(setError)
         .finally(() => setIsLoading(false));
   }, [httpClient, itemsPerPage, url])
