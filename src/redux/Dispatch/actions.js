@@ -23,7 +23,6 @@ import {
 
 import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { isSameDate } from './utils';
-import { fetchAllRecords, sortByName } from '../util';
 
 /*
  * Action Types
@@ -42,10 +41,6 @@ export const LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE';
 export const LOAD_TASK_LISTS_REQUEST = 'LOAD_TASK_LISTS_REQUEST';
 export const LOAD_TASK_LISTS_SUCCESS = 'LOAD_TASK_LISTS_SUCCESS';
 export const LOAD_TASK_LISTS_FAILURE = 'LOAD_TASK_LISTS_FAILURE';
-
-export const LOAD_STORES_REQUEST = 'LOAD_STORES_REQUEST';
-export const LOAD_STORES_SUCCESS = 'LOAD_STORES_SUCCESS';
-export const LOAD_STORES_FAILURE = 'LOAD_STORES_FAILURE';
 
 export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST';
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
@@ -92,10 +87,6 @@ export const loadUsersFailure = createAction(LOAD_USERS_FAILURE);
 export const loadTaskListsRequest = createAction(LOAD_TASK_LISTS_REQUEST);
 export const loadTaskListsSuccess = createAction(LOAD_TASK_LISTS_SUCCESS);
 export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE);
-
-export const loadStoresRequest = createAction(LOAD_STORES_REQUEST);
-export const loadStoresSuccess = createAction(LOAD_STORES_SUCCESS);
-export const loadStoresFailure = createAction(LOAD_STORES_FAILURE);
 
 export const createTaskRequest = createAction(CREATE_TASK_REQUEST);
 export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS);
@@ -146,16 +137,11 @@ function _loadTaskLists(httpClient, date) {
   return httpClient.get(`/api/task_lists?date=${date.format('YYYY-MM-DD')}`);
 }
 
-function _loadStores(httpClient) {
-  return fetchAllRecords(httpClient, '/api/stores', 100)
-}
-
 function _loadAll(httpClient, date) {
   return Promise.all([
     _loadUsers(httpClient),
     _loadUnassignedTasks(httpClient, date),
     _loadTaskLists(httpClient, date),
-    _loadStores(httpClient),
   ]);
 }
 
@@ -198,21 +184,18 @@ export function initialize() {
     const date = selectSelectedDate(getState());
 
     dispatch(loadUnassignedTasksRequest());
-    dispatch(loadStoresRequest())
 
     _loadAll(httpClient, date)
       .then(values => {
-        const [users, unassignedTasks, taskLists, stores] = values;
+        const [users, unassignedTasks, taskLists] = values;
         dispatch(loadUsersSuccess(users['hydra:member']));
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
         dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-        dispatch(loadStoresSuccess(sortByName(stores)));
         dispatch(connectCentrifugo());
         dispatch(_initialize());
       })
       .catch(e => {
         dispatch(loadUnassignedTasksFailure(e));
-        dispatch(loadStoresFailure(e));
       });
   };
 }
