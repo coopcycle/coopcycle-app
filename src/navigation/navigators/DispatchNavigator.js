@@ -13,6 +13,8 @@ import TaskNavigator from './TaskNavigator';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { useDispatch } from 'react-redux';
 import { createDeliverySuccess } from '../../redux/Store/actions';
+import NavigationHolder from '../../NavigationHolder';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 const Tab = createBottomTabNavigator();
 
@@ -116,6 +118,13 @@ export default ({navigation}) => {
         component={NewDeliveryNavigator}
         options={{
           title: i18n.t('DISPATCH_NEW_DELIVERY'),
+          headerBackTitleVisible: false,
+          headerLeft: props => (
+                          <HeaderBackButton
+                            {...props}
+                            onPress={() => NavigationHolder.goBack()}
+                          />
+                        ),
         }}
       />
       <RootStack.Screen
