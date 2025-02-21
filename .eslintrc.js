@@ -17,6 +17,8 @@ module.exports = {
     // Allow inline styles
     'react-native/no-inline-styles': 'off',
 
+    "react/react-in-jsx-scope": "off",
+
     'sort-imports': [
       'warn',
       {
