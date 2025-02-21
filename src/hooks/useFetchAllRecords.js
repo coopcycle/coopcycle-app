@@ -12,21 +12,21 @@ export function useFetchAllRecords(url, itemsPerPage) {
   const [isLoading, setIsLoading] = useState();
 
   const fetchData = useCallback(async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     fetchAllRecords(httpClient, url, itemsPerPage)
         .then(setData)
         .catch(setError)
         .finally(() => setIsLoading(false));
-  }, [httpClient, itemsPerPage, url])
+  }, [httpClient, itemsPerPage, url]);
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    fetchData();
+  }, [fetchData]);
 
   return {
     data,
     error,
     isLoading,
-    refetch: fetchData,
+    refetch: fetchData
   }
 }

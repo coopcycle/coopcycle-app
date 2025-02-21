@@ -1,12 +1,12 @@
 import { Box, Text } from 'native-base'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { withTranslation } from 'react-i18next'
 import { ActivityIndicator, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 
 import { useDispatch } from 'react-redux'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
-import { useFetchAllRecords } from '../../hooks/useFetchAllRecords'
+import { useFetchAllStores } from '../../hooks/useFetchAllFunctions'
 import { loadAddresses, setStore } from '../../redux/Delivery/actions'
 import FormInput from './components/FormInput'
 import StoreListSelect from './components/StoreListSelect'
@@ -20,19 +20,15 @@ const NewDeliveryStore = (props) => {
   } = props;
   const dispatch = useDispatch();
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [storeList, setStoreList] = useState([]);
+
   const {
-    data: stores,
+    stores,
     error,
     isLoading,
-    refetch,
-  } = useFetchAllRecords('/api/stores', 100);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredStores, setFilteredStores] = useState([]);
-
-  useEffect(() => {
-    setFilteredStores(sortByName(stores));
-  }, [stores])
+    refreshStores,
+  } = useFetchAllStores(setStoreList);
 
   const onSelectStore = (store) => {
     dispatch(setStore(store))
@@ -51,7 +47,9 @@ const NewDeliveryStore = (props) => {
       normalizeString(store.name).includes(normalizedQuery)
     );
 
-    setFilteredStores(sortByName(filtered));
+    // TODO: Is there a way to avoid calling "sortByName" here?
+    // It would be nice to delegate it to the "useFetchAllStores" hook since it's already done in there..!
+    setStoreList(sortByName(filtered));
   };
 
   // TODO: We should do something about the "KeyboardAdjustView" solution..!
@@ -73,15 +71,15 @@ const NewDeliveryStore = (props) => {
       </Box>
       {isLoading &&  <ActivityIndicator animating={true} size="large" />}
       {error && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
-      {!isLoading && !error && 
+      {!isLoading && !error &&
         <StoreListSelect
-          stores={filteredStores}
+          stores={storeList}
           onSelectStore={onSelectStore}
           isRefreshing={isLoading}
-          onRefreshStores={refetch}
+          onRefreshStores={refreshStores}
         />
-      } 
-        
+      }
+
       </SafeAreaView>
     </KeyboardAdjustView>
     )
