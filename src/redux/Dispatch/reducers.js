@@ -1,12 +1,10 @@
 import {
   DISPATCH_INITIALIZE,
-  LOAD_STORES_SUCCESS,
   LOAD_USERS_SUCCESS,
 } from './actions';
 
 const initialState = {
   initialized: false,
-  stores: [],
   users: [],
 };
 
@@ -23,12 +21,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         users: action.payload,
       };
-
-    case LOAD_STORES_SUCCESS:
-      return {
-        ...state,
-        stores: action.payload,
-      }
   }
 
   return state;
