@@ -14,7 +14,7 @@ import {
 } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -78,7 +78,7 @@ function AddressAutocomplete(props) {
 
   const fuse = new Fuse(addresses, fuseOptions);
 
-  const autocomplete = _.debounce((text, config) => {
+  const autocomplete = (text, config) => {
     const newController = new AbortController();
     setController(newController);
     const fuseResults = fuse.search(text, { limit: 2 });
@@ -174,7 +174,9 @@ function AddressAutocomplete(props) {
       })
     
     }
-  }, 400);
+  };
+
+  const autoCompleteDebounced = useCallback(_.debounce(autocomplete, 750), []);
 
   function onChangeText(text) {
     if (controller) {
@@ -211,7 +213,7 @@ function AddressAutocomplete(props) {
     };
 
     // Exécuter l'autocomplete
-    autocomplete(text, queryParams);
+    autoCompleteDebounced(text, queryParams);
   }
 
   function onItemPress(item) {
