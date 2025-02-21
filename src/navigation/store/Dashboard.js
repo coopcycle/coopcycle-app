@@ -10,10 +10,10 @@ import variables from '../../../native-base-theme/variables/platform';
 
 import {
   init,
-  loadAddresses,
   loadDeliveries,
   loadMoreDeliveries,
 } from '../../redux/Store/actions';
+import { loadAddresses, setStore } from '../../redux/Delivery/actions';
 
 class StoreDashboard extends Component {
   componentDidMount() {
@@ -74,8 +74,11 @@ function mapDispatchToProps(dispatch) {
   return {
     loadDeliveries: (store, refresh = false) =>
       dispatch(loadDeliveries(store, refresh)),
-    loadAddresses: store => dispatch(loadAddresses(store)),
-    init: store => dispatch(init(store)),
+    init: store => {
+      dispatch(init(store));
+      dispatch(setStore(store));
+      dispatch(loadAddresses(store));
+    },
     loadMoreDeliveries: () => dispatch(loadMoreDeliveries()),
   };
 }

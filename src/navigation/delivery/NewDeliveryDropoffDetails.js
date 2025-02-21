@@ -1,7 +1,5 @@
-import { Formik } from 'formik';
-import moment from 'moment';
 import { Box, Button, HStack, Text, VStack } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import { Formik } from 'formik';
 import { withTranslation } from 'react-i18next';
 import {
   InteractionManager,
@@ -10,9 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import KeyboardManager from 'react-native-keyboard-manager';
+import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { connect, useDispatch } from 'react-redux';
+import KeyboardManager from 'react-native-keyboard-manager';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 
 import { IconPackage } from '@tabler/icons-react-native';
 import {
@@ -20,37 +20,42 @@ import {
   loadTimeSlot,
   loadTimeSlotChoices,
   loadTimeSlots,
-} from '../../redux/Store/actions';
-import { selectStore, selectTimeSlots } from '../../redux/Store/selectors';
+} from '../../redux/Delivery/actions';
+import {
+  selectHasTimeSlot,
+  selectPackages,
+  selectStore,
+  selectTimeSlotChoices,
+  selectTimeSlots,
+} from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import Range from '../checkout/ProductDetails/Range';
-import ModalFormWrapper from './ModalFormWrapper';
 import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
+import Range from '../checkout/ProductDetails/Range';
 import TimeSlotSelector from './components/TimeSlotSelector';
 
-function DeliveryForm(props) {
+function NewDeliveryDropoffDetails({
+  navigation,
+  route,
+  t,
+}) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
   const primaryColor = usePrimaryColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packagesCount, setPackagesCount] = useState([]);
-  const dispatch = useDispatch();
 
-  const {
-    t,
-    store,
-    timeSlots,
-    navigation,
-    hasTimeSlot,
-    route,
-    country,
-    choices,
-    packages,
-  } = props;
+  const packages = useSelector(selectPackages);
+  const store = useSelector(selectStore);
+  const timeSlotChoices = useSelector(selectTimeSlotChoices);
+  const timeSlots = useSelector(selectTimeSlots);
+  const hasTimeSlot = useSelector(selectHasTimeSlot);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedTimeSlot) return;
@@ -69,8 +74,8 @@ function DeliveryForm(props) {
   }, [selectedTimeSlot, timeSlots, dispatch]);
 
   useEffect(() => {
-    if (choices.length) setSelectedChoice(choices[0].value);
-  }, [choices]);
+    if (timeSlotChoices.length) setSelectedChoice(timeSlotChoices[0].value);
+  }, [timeSlotChoices]);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -161,7 +166,7 @@ function DeliveryForm(props) {
       },
     };
 
-    navigation.navigate('StoreNewDeliveryPrice', { delivery });
+    navigation.navigate('NewDeliveryPrice', { delivery });
   }
 
   function validate(values) {
@@ -304,7 +309,7 @@ function DeliveryForm(props) {
               setFieldTouched={setFieldTouched}
               updateSelectedTimeSlot={updateSelectedTimeSlot}
               timeSlots={timeSlots}
-              choices={choices}
+              choices={timeSlotChoices}
               selectedTimeSlot={selectedTimeSlot}
             />
           ) : (
@@ -451,22 +456,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapDispatchToProps(state) {
-  const timeSlotChoices = [];
-  const timeSlots = selectTimeSlots(state);
-  const choices = state.store.choices;
-  const hasTimeSlot = timeSlots.length > 0;
-  const packages = state.store.packages;
-
-  return {
-    country: state.app.settings.country.toUpperCase(),
-    store: selectStore(state),
-    timeSlotChoices,
-    hasTimeSlot,
-    timeSlots,
-    choices,
-    packages,
-  };
-}
-
-export default connect(mapDispatchToProps)(withTranslation()(DeliveryForm));
+export default withTranslation()(NewDeliveryDropoffDetails);

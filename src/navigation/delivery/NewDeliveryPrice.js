@@ -1,31 +1,35 @@
 import { Formik } from 'formik';
-import { Text, View } from 'native-base';
-import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
+import { Text, View } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
-import { createDelivery, getPrice } from '../../redux/Store/actions';
-import ModalFormWrapper from './ModalFormWrapper';
-import FormInput from './components/FormInput';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
-function NewDeliveryPrice({ route, navigation }) {
+import { createDelivery } from '../../redux/Delivery/actions';
+import { getPrice } from '../../redux/Delivery/actions';
+import { selectPrice, selectPriceExcludingTax } from '../../redux/Delivery/selectors';
+import { useDeliveryCallback } from './contexts/DeliveryCallbackContext';
+import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
+
+
+function NewDeliveryPrice({ route }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const delivery = route.params?.delivery;
 
-  const price = useSelector(state => state.store.price);
-  const priceExcludingTax = useSelector(state => state.store.priceExcludingTax);
+  const price = useSelector(selectPrice);
+  const priceExcludingTax = useSelector(selectPriceExcludingTax);
 
-  if (!delivery) return null;
+  const { deliveryCallback } = useDeliveryCallback()
 
-  dispatch(getPrice(delivery));
+  useEffect(() => {
+    dispatch(getPrice(delivery));
+  }, [delivery, dispatch])
 
   function submit(values) {
     if (price === null || priceExcludingTax === null) return;
-    dispatch(
-      createDelivery(values, () => {
-        navigation.navigate('StoreHome');
-      }),
-    );
+    dispatch(createDelivery(values, deliveryCallback));
   }
 
   return (
