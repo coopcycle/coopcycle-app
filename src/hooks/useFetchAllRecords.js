@@ -11,7 +11,7 @@ export function useFetchAllRecords(url, itemsPerPage) {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(() => {
     setIsLoading(true);
     fetchAllRecords(httpClient, url, itemsPerPage)
         .then(setData)

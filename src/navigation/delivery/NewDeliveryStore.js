@@ -35,6 +35,11 @@ const NewDeliveryStore = (props) => {
     navigation.navigate('NewDeliveryPickupAddress');
   }
 
+  const onRefreshStores = () => {
+    setSearchQuery("");
+    refreshStores();
+  }
+
   // Filter store by name
   const normalizeString = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
@@ -75,7 +80,7 @@ const NewDeliveryStore = (props) => {
           stores={storeList}
           onSelectStore={onSelectStore}
           isRefreshing={isLoading}
-          onRefreshStores={refreshStores}
+          onRefreshStores={onRefreshStores}
         />
       }
 

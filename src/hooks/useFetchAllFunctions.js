@@ -11,7 +11,7 @@ export function useFetchAllStores(callback) {
       refetch: refreshStores
     } = useFetchAllRecords('/api/stores', 100);
 
-  const cb = useCallback(async () => {
+  const cb = useCallback(() => {
     callback(sortByName(stores));
   }, [callback, stores]);
 
