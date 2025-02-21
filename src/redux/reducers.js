@@ -119,6 +119,7 @@ const appPersistConfig = {
     'settings',
     'pushNotificationToken',
     'hasDisclosedBackgroundPermission',
+    'didAcceptBackgroundGeolocation',
     'firstRun',
     'resumeCheckoutAfterActivation',
     'isSpinnerDelayEnabled',
