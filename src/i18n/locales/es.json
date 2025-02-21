@@ -385,12 +385,12 @@
         "CARDHOLDER_NAME": "Nombre del titular de la tarjeta",
         "RESTAURANT_ORDER_LIST_PICKED_ORDERS": "Pedidos recogidos ({{count}})",
         "BACKGROUND_PERMISSION_DISCLOSURE": {
-            "title": "Use su ubicación",
-            "message": "Para que los dispatchers puedan asignar las tareas con precisión, permite que CoopCycle acceda a la ubicación de este dispositivo, incluso cuando la aplicación esté cerrada o no se esté usando.\n\nEstos datos serán cargados en el servidor CoopCycle al que esté conectado."
+            "title": "Seguimiento de geolocalización en segundo plano",
+            "message": "La aplicación CoopCycle recopila y transmite datos de geolocalización en segundo plano para permitir una localización precisa de los repartidores para el despachador de tareas, incluso cuando la aplicación no está en uso o se ejecuta en segundo plano. Por favor, permite que CoopCycle acceda a la ubicación de este dispositivo incluso cuando la aplicación esté cerrada o no se esté utilizando.\n\nEstos datos se enviarán a la instancia de CoopCycle a la que estás conectado."
         },
         "BACKGROUND_PERMISSION_RATIONALE": {
-            "title": "Permitir que {applicationName} acceda a la ubicación de este dispositivo incluso cuando la aplicación está cerrada o no se está usando",
-            "message": "Para usuarios conectados como mensajeros, esta aplicación recoge datos de ubicación para que los dispatchers puedan asignar las tareas con precisión",
+            "title": "Permitir que {applicationName} acceda a la ubicación de este dispositivo incluso cuando la aplicación esté cerrada o no se esté utilizando",
+            "message": "La aplicación CoopCycle recopila y transmite datos de geolocalización en segundo plano para permitir una localización precisa de los repartidores para el despachador de tareas, incluso cuando la aplicación no está en uso o se ejecuta en segundo plano. El seguimiento de geolocalización en segundo plano solo comienza cuando estás conectado como repartidor.",
             "positiveAction": "Cambiar a « {backgroundPermissionOptionLabel} »"
         },
         "NOTIFICATION_TASKS_REMOVED": "{{ count }} removida",
