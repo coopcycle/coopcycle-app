@@ -1,17 +1,14 @@
-import _ from 'lodash';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
-import { useDispatch, useSelector } from 'react-redux';
-import { Formik } from 'formik';
 import { IconCircleArrowDownFilled } from '@tabler/icons-react-native';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Formik } from 'formik';
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
+import _ from 'lodash';
 import { Text } from 'native-base';
-import { withTranslation } from 'react-i18next';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Platform, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AddressAutocomplete from '../../components/AddressAutocomplete';
-import ClientListInput from './components/ClientListInput';
-import FormInput from './components/FormInput';
-import ModalFormWrapper from './ModalFormWrapper';
 import { assertDelivery } from '../../redux/Delivery/actions';
 import { selectAddresses, selectAssertDeliveryError, selectStore } from '../../redux/Delivery/selectors';
 import {
@@ -19,12 +16,14 @@ import {
   useBackgroundHighlightColor,
   usePrimaryColor,
 } from '../../styles/theme';
+import ClientListInput from './components/ClientListInput';
+import FormInput from './components/FormInput';
+import ModalFormWrapper from './ModalFormWrapper';
 
 
 function NewDeliveryDropoffAddress({
   navigation,
   route,
-  t,
 }) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
@@ -38,6 +37,7 @@ function NewDeliveryDropoffAddress({
   const store = useSelector(selectStore);
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
+  const { t } = useTranslation()
 
   const dispatch = useDispatch();
 
@@ -385,4 +385,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default withTranslation()(NewDeliveryDropoffAddress);
+export default NewDeliveryDropoffAddress;
