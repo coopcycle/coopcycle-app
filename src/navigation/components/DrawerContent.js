@@ -214,39 +214,51 @@ class DrawerContent extends Component {
               motto={this.props.motto}
               navigate={this.props.showAbout}
             />
-            <HStack
-              w="100%"
-              alignItems="center"
-              justifyContent="space-between"
-              mb="4">
-              {this.props.email && (
-                <Box w="50%" alignItems="center">
-                  <Mailto email={this.props.email}>
-                    <Icon as={AntDesign} name="mail" size="sm" />
-                  </Mailto>
+            {(this.props.email ||this.props.phoneNumber) &&
+              <HStack
+                w="100%"
+                alignItems="left"
+                justifyContent={'space-between'}
+                mb="4"
+              >
+                <Text>{ this.props.t('CONTACT_US') }</Text>
+                <Box w="80px" justifyContent={'space-between'} flexDirection="row">
+                  {this.props.email && (
+                    <Mailto email={this.props.email}>
+                      <Icon as={AntDesign} name="mail" size="sm" />
+                    </Mailto>
+                  )}
+                  {this.props.phoneNumber && (
+                    <TouchableOpacity
+                      ml="10"
+                      mr="10"
+                      onPress={() => phonecall(this.props.phoneNumber, true)}>
+                      <Icon as={AntDesign} name="phone" size="sm" />
+                    </TouchableOpacity>
+                  )}
                 </Box>
-              )}
-              {this.props.phoneNumber && (
-                <Box w="50%" alignItems="center">
-                  <TouchableOpacity
-                    onPress={() => phonecall(this.props.phoneNumber, true)}>
-                    <Icon as={AntDesign} name="phone" size="sm" />
-                  </TouchableOpacity>
-                </Box>
-              )}
-            </HStack>
+              </HStack>
+            } 
             <HStack
-              w="100%"
-              alignItems="center"
-              justifyContent="space-between"
-              mb="4">
-              <Pressable w="50%" onPress={navigateToTerms}>
-                <Text textAlign="left" fontSize="xs">
+                w="100%"
+                alignItems="center"
+                justifyContent="space-between"
+                mb="4"
+              >
+              <Pressable onPress={navigateToTerms}>
+                <Text>
                   {this.props.t('TERMS_OF_SERVICE')}
                 </Text>
               </Pressable>
-              <Pressable w="50%" onPress={navigateToPricacy}>
-                <Text textAlign="right" fontSize="xs">
+            </HStack>
+            <HStack
+                w="100%"
+                alignItems="center"
+                justifyContent="space-between"
+                mb="4"
+              >
+              <Pressable onPress={navigateToPricacy}>
+                <Text>
                   {this.props.t('PRIVACY')}
                 </Text>
               </Pressable>
