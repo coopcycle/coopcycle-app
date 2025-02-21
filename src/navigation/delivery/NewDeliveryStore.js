@@ -1,23 +1,22 @@
 import { Box, Text } from 'native-base'
 import React, { useState } from 'react'
-import { withTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { ActivityIndicator, SafeAreaView } from 'react-native'
-import { connect } from 'react-redux'
 
 import { useDispatch } from 'react-redux'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 import { useFetchAllStores } from '../../hooks/useFetchAllFunctions'
 import { loadAddresses, setStore } from '../../redux/Delivery/actions'
+import { sortByName } from '../../redux/util'
 import FormInput from './components/FormInput'
 import StoreListSelect from './components/StoreListSelect'
-import { sortByName } from '../../redux/util'
 
 
 const NewDeliveryStore = (props) => {
   const {
-    t,
     navigation,
   } = props;
+  const { t } = useTranslation()
   const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -85,4 +84,4 @@ const NewDeliveryStore = (props) => {
     )
   }
 
-export default connect()(withTranslation()(NewDeliveryStore))
+export default NewDeliveryStore
