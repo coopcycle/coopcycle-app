@@ -19,6 +19,7 @@ export const NewDeliveryNavigator = () => (
       component={screens.NewDeliveryStore}
       options={{
         headerShown: false,
+        headerBackTitleVisible: false,
       }}
     />
     <NewDeliveryStack.Screen
