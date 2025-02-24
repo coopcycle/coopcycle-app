@@ -14,7 +14,7 @@ import {
 } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import React, { useCallback, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -76,107 +76,116 @@ function AddressAutocomplete(props) {
   const [sessionToken, setSessionToken] = useState(null);
   const [controller, setController] = useState(null);
 
-  const fuse = new Fuse(addresses, fuseOptions);
+  const fuse = useMemo(() => new Fuse(addresses, fuseOptions), [addresses]);
 
-  const autocomplete = (text, config) => {
-    const newController = new AbortController();
-    setController(newController);
-    const fuseResults = fuse.search(text, { limit: 2 });
+  const autoCompleteDebounced = useMemo(
+    () =>
+      _.debounce((text, config) => {
+        const newController = new AbortController();
+        setController(newController);
+        const fuseResults = fuse.search(text, { limit: 2 });
 
-    if (country === 'gb') {
-      if (!postcode) {
-        axios
-          .get(
-            `https://api.postcodes.io/postcodes/${text.replace(
-              /\s/g,
-              '',
-            )}/autocomplete`,
-            { signal: newController.signal },
-          )
-          .then(response => {
-            if (
-              response.data.status === 200 &&
-              Array.isArray(response.data.result)
-            ) {
-              const normalizedPostcodes = response.data.result.map(
-                postcode => ({
-                  postcode: postcode,
-                  type: 'postcode',
-                }),
-              );
-              setResults(normalizedPostcodes);
-            }
-          })
-          .catch(error => {
-            console.log('AddressAutocomplete; _autocomplete', error);
-          });
-      } else {
-        setResults([
-          {
-            type: 'manual_address',
-            description: text,
-          },
-        ]);
-      }
-    } else {
+        if (country === 'gb') {
+          if (!postcode) {
+            axios
+              .get(
+                `https://api.postcodes.io/postcodes/${text.replace(
+                  /\s/g,
+                  '',
+                )}/autocomplete`,
+                { signal: newController.signal },
+              )
+              .then(response => {
+                if (
+                  response.data.status === 200 &&
+                  Array.isArray(response.data.result)
+                ) {
+                  const normalizedPostcodes = response.data.result.map(
+                    postcode => ({
+                      postcode: postcode,
+                      type: 'postcode',
+                    }),
+                  );
+                  setResults(normalizedPostcodes);
+                }
+              })
+              .catch(error => {
+                console.log('AddressAutocomplete; _autocomplete', error);
+              });
+          } else {
+            setResults([
+              {
+                type: 'manual_address',
+                description: text,
+              },
+            ]);
+          }
+        } else {
+          let normalizedPredictions;
 
-      let normalizedPredictions
+          axios
+            .post(
+              'https://places.googleapis.com/v1/places:autocomplete',
+              {
+                input: text,
+                sessionToken: config.sessiontoken,
+                locationRestriction: {
+                  rectangle: {
+                    low: {
+                      latitude:
+                        config.locationrestriction.southWest.split(',')[0],
+                      longitude:
+                        config.locationrestriction.southWest.split(',')[1],
+                    },
+                    high: {
+                      latitude:
+                        config.locationrestriction.northEast.split(',')[0],
+                      longitude:
+                        config.locationrestriction.northEast.split(',')[1],
+                    },
+                  },
+                },
+                includedPrimaryTypes: ['street_address'],
+                languageCode: config.languageCode,
+              },
+              {
+                headers: { 'X-Goog-Api-Key': config.key },
+                // signal: controller.signal
+              },
+            )
+            .then(response => {
+              // when there is no response the API returns an empty response
+              const suggestions = response.data.suggestions
+                ? response.data.suggestions
+                : [];
 
-      axios.post(
-        'https://places.googleapis.com/v1/places:autocomplete',
-        {
-          input: text,
-          sessionToken: config.sessiontoken,
-          locationRestriction: { "rectangle": {
-            "low" : {
-              "latitude": config.locationrestriction.southWest.split(',')[0],
-              "longitude": config.locationrestriction.southWest.split(',')[1]
-            },
-            "high" : {
-              "latitude": config.locationrestriction.northEast.split(',')[0],
-              "longitude": config.locationrestriction.northEast.split(',')[1]
-            },
-          }},
-          includedPrimaryTypes: ['street_address'],
-          languageCode: config.languageCode
-        },
-        {
-          headers: {"X-Goog-Api-Key": config.key},
-          // signal: controller.signal
-        },
-      ).then(response => {
-        // when there is no response the API returns an empty response
-        const suggestions = response.data.suggestions ? response.data.suggestions  : []
-        
-        normalizedPredictions = suggestions.map(
-          suggestion => ({
-            ...suggestion,
-            description: suggestion.placePrediction.text.text,
-            place_id: suggestion.placePrediction.placeId,
-            type: 'prediction',
-          }),
-        );
-        
-        const normalizedResults = fuseResults.map(fuseResult => ({
-          ...fuseResult.item,
-          type: 'fuse',
-        }));
+              normalizedPredictions = suggestions.map(suggestion => ({
+                ...suggestion,
+                description: suggestion.placePrediction.text.text,
+                place_id: suggestion.placePrediction.placeId,
+                type: 'prediction',
+              }));
 
-        let results = normalizedResults.concat(normalizedPredictions);
+              const normalizedResults = fuseResults.map(fuseResult => ({
+                ...fuseResult.item,
+                type: 'fuse',
+              }));
 
-        if (normalizedResults.length > 0 && results.length > 5) {
-          results = results.slice(0, 5);
+              let results = normalizedResults.concat(normalizedPredictions);
+
+              if (normalizedResults.length > 0 && results.length > 5) {
+                results = results.slice(0, 5);
+              }
+
+              setResults(results);
+            })
+            .catch(error => {
+              console.error('AddressAutocomplete; _autocomplete', error);
+            });
         }
-
-        setResults(results);
-      }).catch(error => {
-        console.error('AddressAutocomplete; _autocomplete', error)
-      })
-    
-    }
-  };
-
-  const autoCompleteDebounced = useCallback(_.debounce(autocomplete, 750), []);
+      }, 750),
+    [country, fuse, postcode],
+  );
 
   function onChangeText(text) {
     if (controller) {
