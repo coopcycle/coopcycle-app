@@ -47,7 +47,7 @@ const NewDeliveryStore = (props) => {
     setSearchQuery(query);
     const normalizedQuery = normalizeString(query);
 
-    const filtered = stores.filter(store =>
+    const filtered = (stores || []).filter(store =>
       normalizeString(store.name).includes(normalizedQuery)
     );
 
