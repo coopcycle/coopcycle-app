@@ -8,7 +8,8 @@ import {
   LOAD_PACKAGES_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
   LOAD_TIME_SLOT_CHOICES_SUCCESS,
-  SET_STORE
+  SET_STORE,
+  SET_STORES
 } from "./actions"
 import { formatPrice } from '../../utils/formatting';
 
@@ -20,6 +21,7 @@ const initialState = {
   price: null,
   priceExcludingTax: null,
   store: null,
+  stores: [],
   timeSlotChoices: [],
   timeSlots: [],
 }
@@ -80,6 +82,12 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         store: action.payload,
+      }
+
+    case SET_STORES:
+      return {
+        ...state,
+        stores: action.payload,
       }
   }
 
