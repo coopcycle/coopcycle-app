@@ -15,7 +15,9 @@ export function useFetchAllStores() {
   } = useFetchAllRecords('/api/stores', 100);
 
   useEffect(() => {
-    setStores(sortByName(data))
+    if(data) {
+      setStores(sortByName(data))
+    }
   }, [data]);
 
   return {
