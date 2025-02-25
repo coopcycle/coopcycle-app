@@ -25,10 +25,8 @@ import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { localeDetector } from '../i18n';
-import { darkGreyColor, whiteColor } from '../styles/common';
 import {
   useBackgroundContainerColor,
-  useBackgroundHighlightColor,
   useBaseTextColor,
   useColorModeToken,
   usePrimaryColor,

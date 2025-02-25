@@ -386,8 +386,7 @@ export default (state = initialState, action = {}) => {
     case BACKGROUND_PERMISSION_DISCLOSED:
       return {
         ...state,
-        hasDisclosedBackgroundPermission: true,
-        didAcceptBackgroundGeolocation: action.payload,
+        hasDisclosedBackgroundPermission: action.payload
       };
 
     case SET_MODAL:

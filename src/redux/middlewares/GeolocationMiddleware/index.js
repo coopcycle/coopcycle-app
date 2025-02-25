@@ -10,7 +10,7 @@ import { selectIsAuthenticated } from '../../App/selectors';
 import { defaultHeaders } from '../../../utils/headers'
 
 // https://github.com/transistorsoft/rn-background-geolocation-demo/blob/1e63c8b5162c123c4961710d339bf9f9507a6893/src/home/HomeView.tsx#L156-L182
-const willDiscloseBackgroundPermission = (hasDisclosedBackgroundPermission, didAcceptBackgroundGeolocation) => {
+const willDiscloseBackgroundPermission = (hasDisclosedBackgroundPermission) => {
   return new Promise((resolve, reject) => {
     // enable automatically geolocation for iOS riders
     if (Platform.OS !== 'android') {
@@ -18,7 +18,7 @@ const willDiscloseBackgroundPermission = (hasDisclosedBackgroundPermission, didA
     }
     // launch the geolocation service if he accepted once
     // otherwise ask him again, as riders most likely want background geolocation to kick in
-    else if (hasDisclosedBackgroundPermission && didAcceptBackgroundGeolocation) {
+    else if (hasDisclosedBackgroundPermission) {
       resolve(true)
     }
 
@@ -118,8 +118,7 @@ export default ({ getState, dispatch }) => {
           dispatch(setBackgroundGeolocationEnabled(bgState.enabled));
 
           willDiscloseBackgroundPermission(
-            state.app.hasDisclosedBackgroundPermission,
-            state.app.didAcceptBackgroundGeolocation
+            state.app.hasDisclosedBackgroundPermission
           ).then((didAcceptBackgroundGeolocation) => {
             // This will be persisted in AsynStorage
             dispatch(backgroundPermissionDisclosed(didAcceptBackgroundGeolocation));
