@@ -63,27 +63,31 @@ const NewDeliveryStore = (props) => {
         style={{
           flex: 1,
         }}>
-      <Box p="5">
-        <FormInput
-          value={searchQuery}
-          autoCorrect={false}
-          autoCapitalize="none"
-          returnKeyType="done"
-          onChangeText={handleSearch}
-          placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
-        />
-      </Box>
-      {isLoading &&  <ActivityIndicator animating={true} size="large" />}
+      {isLoading &&  
+        <Box flex={1} justifyContent="center" alignItems="center">
+          <ActivityIndicator animating={true} size="large" />
+        </Box>}
       {error && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
-      {!isLoading && !error &&
-        <StoreListSelect
-          stores={storeList}
-          onSelectStore={onSelectStore}
-          isRefreshing={isLoading}
-          onRefreshStores={onRefreshStores}
-        />
+      {!isLoading && !error && 
+        <>
+          <Box p="5">
+            <FormInput
+            value={searchQuery}
+            autoCorrect={false}
+            autoCapitalize="none"
+            returnKeyType="done"
+            onChangeText={handleSearch}
+            placeholder={t('DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER')}
+          />
+          </Box>
+          <StoreListSelect
+            stores={storeList}
+            onSelectStore={onSelectStore}
+            isRefreshing={isLoading}
+            onRefreshStores={onRefreshStores}
+          />
+        </>
       }
-
       </SafeAreaView>
     </KeyboardAdjustView>
     )
