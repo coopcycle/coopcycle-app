@@ -19,7 +19,7 @@ describeif(device.getPlatform() === 'android')('Courier', () => {
 
     if (device.getPlatform() === 'android') {
       // dismiss BACKGROUND_PERMISSION_DISCLOSURE alert
-      await element(by.text('CLOSE')).tap();
+      await element(by.text("I accept")).tap();
 
       // dismiss HMS Core alert
       await element(by.text('OK')).tap();
