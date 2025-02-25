@@ -4,7 +4,7 @@ import { useFetchAllRecords } from "./useFetchAllRecords";
 import { sortByName } from "../redux/util";
 
 
-export function useFetchAllStores() {
+export function useFetchAllStores(options = null) {
   const [stores, setStores] = useState();
 
   const {
@@ -12,7 +12,7 @@ export function useFetchAllStores() {
       error,
       isLoading,
       refetch: refreshStores
-  } = useFetchAllRecords('/api/stores', 100);
+  } = useFetchAllRecords('/api/stores', 100, options);
 
   useEffect(() => {
     if(data) {

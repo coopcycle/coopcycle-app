@@ -30,7 +30,9 @@ const NewDeliveryStore = (props) => {
     error,
     isLoading: isLoadingBackendStores,
     refreshStores,
-  } = useFetchAllStores();
+  } = useFetchAllStores({
+    enabled: stores.length === 0,
+  });
 
   useEffect(() => {
     if (backendStores) {
