@@ -9,7 +9,7 @@ export function useFetchAllRecords(url, itemsPerPage) {
 
   const [data, setData] = useState();
   const [error, setError] = useState();
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(() => {
     setIsLoading(true);
