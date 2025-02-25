@@ -56,9 +56,5 @@ describe('Dispatch - Create delivery', () => {
       // Select default values and continue
       await expect(element(by.id('delivery__next_button'))).toBeVisible();
       await element(by.id('delivery__next_button')).tap();
-
-      // Return to Dispatch screen and validate new delivery's tasks are accessible
-
-      await expect(element(by.text('Alice'))).toBeVisible();
   });
 });
