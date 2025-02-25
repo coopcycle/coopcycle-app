@@ -19,7 +19,7 @@ const willDiscloseBackgroundPermission = (hasDisclosedBackgroundPermission) => {
     // launch the geolocation service if he accepted once
     // otherwise ask him again, as riders most likely want background geolocation to kick in
     else if (hasDisclosedBackgroundPermission) {
-      resolve(true)
+      return resolve(true)
     }
 
     // Show Play Store compatibility alert.
