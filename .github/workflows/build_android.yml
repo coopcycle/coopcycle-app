@@ -18,12 +18,7 @@ on:
         description: 'Select apps to build (e.g., "coopcycle, naofood" or "-kooglof, -robinfood")'
         required: false
         type: string
-        default: ''
-      build_all:
-        description: 'Build all apps (overrides app_selection)'
-        required: true
-        type: boolean
-        default: false
+        default: '-robinfood, -eraman, -coopcycle_beta'
 
 jobs:
   filter-matrix:
@@ -146,20 +141,18 @@ jobs:
             const allAppIds = appConfig.map(app => app.id);
             let selectedApps = [...allAppIds];
 
-            if (!${{ inputs.build_all }}) {
-              const selectionInput = '${{ inputs.app_selection }}';
+            const selectionInput = '${{ inputs.app_selection }}';
 
-              if (selectionInput) {
-                const selections = selectionInput.split(',').map(s => s.trim());
+            if (selectionInput) {
+              const selections = selectionInput.split(',').map(s => s.trim());
 
-                const isExclusionMode = selections.every(s => s.startsWith('-'));
+              const isExclusionMode = selections.every(s => s.startsWith('-'));
 
-                if (isExclusionMode) {
-                  const excludeApps = selections.map(s => s.substring(1));
-                  selectedApps = allAppIds.filter(app => !excludeApps.includes(app));
-                } else {
-                  selectedApps = selections.filter(app => allAppIds.includes(app));
-                }
+              if (isExclusionMode) {
+                const excludeApps = selections.map(s => s.substring(1));
+                selectedApps = allAppIds.filter(app => !excludeApps.includes(app));
+              } else {
+                selectedApps = selections.filter(app => allAppIds.includes(app));
               }
             }
 
