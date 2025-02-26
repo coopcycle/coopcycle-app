@@ -2,14 +2,7 @@ name: Build Android
 run-name: >
   ${{ inputs.deploy_google_play && 'Upload to Google Play' || 'Build' }}
   ${{ inputs.tag }}
-  ${{ inputs.build_official && '; CoopCycle' || '' }}
-  ${{ inputs.build_official_beta && '; CoopCycle (Beta)' || '' }}
-  ${{ inputs.build_naofood && '; Naofood' || '' }}
-  ${{ inputs.build_kooglof && '; Kooglof' || '' }}
-  ${{ inputs.build_robinfood && '; RobinFood' || '' }}
-  ${{ inputs.build_coursiers_rennais && '; Les Coursiers Rennais' || '' }}
-  ${{ inputs.build_eraman && '; Eraman' || '' }}
-  ${{ inputs.build_sicklo && '; Sicklo' || '' }}
+  ${{ needs.filter-matrix.outputs.display_names }}
 on:
   workflow_dispatch:
     inputs:
@@ -22,177 +15,183 @@ on:
         required: true
         type: boolean
         default: false
-      build_official:
-        description: 'CoopCycle production app'
+      app_selection:
+        description: 'Select apps to build (e.g., "coopcycle, naofood" or "-kooglof, -robinfood")'
+        required: false
+        type: string
+        default: ''
+      build_all:
+        description: 'Build all apps (overrides app_selection)'
         required: true
         type: boolean
-      build_official_beta:
-        description: 'CoopCycle beta app'
-        required: true
-        type: boolean
-      build_naofood:
-        description: 'Naofood app'
-        required: true
-        type: boolean
-      build_kooglof:
-        description: 'Kooglof app'
-        required: true
-        type: boolean
-      build_robinfood:
-        description: 'RobinFood app'
-        required: true
-        type: boolean
-      build_coursiers_rennais:
-        description: 'LCR app'
-        required: true
-        type: boolean
-      build_eraman:
-        description: 'Eraman app'
-        required: true
-        type: boolean
-      build_sicklo:
-        description: 'Sicklo app'
-        required: true
-        type: boolean
+        default: false
+
 jobs:
-  coopcycle:
-    if: ${{ inputs.build_official }}
-    name: Build CoopCycle production app
+  filter-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      selected_apps: ${{ steps.set-matrix.outputs.selected_apps }}
+      display_names: ${{ steps.set-matrix.outputs.display_names }}
+    steps:
+      - name: Filter apps based on input
+        id: set-matrix
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const appConfig = [
+              {
+                id: 'coopcycle',
+                displayName: 'CoopCycle',
+                params: {
+                  instance: null,
+                  instance_url: null,
+                  app_name: null,
+                  primary_color: null,
+                  package_name: null,
+                  keystore_key_alias: null,
+                  keystore_key_password_secret: null
+                }
+              },
+              {
+                id: 'coopcycle_beta',
+                displayName: 'CoopCycle (Beta)',
+                params: {
+                  instance: 'beta',
+                  app_name: 'CoopCycle (Beta)',
+                  package_name: 'fr.coopcycle.beta',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                }
+              },
+              {
+                id: 'naofood',
+                displayName: 'Naofood',
+                params: {
+                  instance: 'naofood',
+                  instance_url: 'https://naofood.coopcycle.org',
+                  app_name: 'Naofood',
+                  primary_color: '#f8781f',
+                  package_name: 'fr.naofood.client',
+                  keystore_key_alias: 'naofood',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_NAOFOOD'
+                }
+              },
+              {
+                id: 'kooglof',
+                displayName: 'Kooglof',
+                params: {
+                  instance: 'kooglof',
+                  instance_url: 'https://kooglof.coopcycle.org',
+                  app_name: 'Kooglof',
+                  primary_color: '#b4434e',
+                  package_name: 'fr.coopcycle.kooglof',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                }
+              },
+              {
+                id: 'robinfood',
+                displayName: 'RobinFood',
+                params: {
+                  instance: 'robinfood',
+                  instance_url: 'https://robinfood.coopcycle.org',
+                  app_name: 'Robin Food',
+                  primary_color: '#ff0000',
+                  package_name: 'fr.coopcycle.robinfood',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                }
+              },
+              {
+                id: 'coursiers_rennais',
+                displayName: 'Les Coursiers Rennais',
+                params: {
+                  instance: 'lcr',
+                  instance_url: 'https://lcr.coopcycle.org',
+                  app_name: 'Les Coursiers Rennais',
+                  primary_color: '#0A090A',
+                  package_name: 'fr.coopcycle.lcr',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                }
+              },
+              {
+                id: 'eraman',
+                displayName: 'Eraman',
+                params: {
+                  instance: 'eraman',
+                  instance_url: 'https://eramangasteiz.coopcycle.org',
+                  app_name: 'Eraman',
+                  primary_color: '#317764',
+                  package_name: 'fr.coopcycle.eraman',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                }
+              },
+              {
+                id: 'sicklo',
+                displayName: 'Sicklo',
+                params: {
+                  instance: 'sicklo',
+                  instance_url: 'https://sicklo.coopcycle.org',
+                  app_name: 'Sicklo',
+                  primary_color: '#1f2632',
+                  package_name: 'fr.coopcycle.sicklo',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                }
+              }
+              // Add new apps here following the same pattern
+            ];
+
+            const allAppIds = appConfig.map(app => app.id);
+            let selectedApps = [...allAppIds];
+
+            if (!${{ inputs.build_all }}) {
+              const selectionInput = '${{ inputs.app_selection }}';
+
+              if (selectionInput) {
+                const selections = selectionInput.split(',').map(s => s.trim());
+
+                const isExclusionMode = selections.every(s => s.startsWith('-'));
+
+                if (isExclusionMode) {
+                  const excludeApps = selections.map(s => s.substring(1));
+                  selectedApps = allAppIds.filter(app => !excludeApps.includes(app));
+                } else {
+                  selectedApps = selections.filter(app => allAppIds.includes(app));
+                }
+              }
+            }
+
+            const selectedAppConfigs = appConfig.filter(app => selectedApps.includes(app.id));
+
+            const displayNames = selectedAppConfigs
+              .map(app => `; ${app.displayName}`)
+              .join('');
+
+            console.log(`Selected apps: ${selectedApps.join(', ')}`);
+            core.setOutput('selected_apps', JSON.stringify(selectedApps));
+            core.setOutput('matrix', JSON.stringify(selectedAppConfigs));
+            core.setOutput('display_names', displayNames);
+
+  build-apps:
+    needs: filter-matrix
+    name: ${{ matrix.app.displayName }}
+    strategy:
+      matrix:
+        app: ${{ fromJson(needs.filter-matrix.outputs.matrix) }}
+      fail-fast: false
     uses: ./.github/workflows/fastlane_android.yml
-    secrets: inherit
     with:
       tag: ${{ inputs.tag }}
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-  coopcycle_beta:
-    if: ${{ inputs.build_official_beta }}
-    name: Build CoopCycle beta app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: beta
-      app_name: CoopCycle (Beta)
-      package_name: fr.coopcycle.beta
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  naofood:
-    if: ${{ inputs.build_naofood }}
-    name: Build Naofood app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: naofood
-      instance_url: https://naofood.coopcycle.org
-      app_name: Naofood
-      primary_color: "#f8781f"
-      package_name: fr.naofood.client
-      keystore_key_alias: naofood
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_NAOFOOD
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  zampate:
-    if: ${{ inputs.build_zampate }}
-    name: Build Zampate app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: zampate
-      instance_url: https://zampate.coopcycle.org
-      app_name: Zampate
-      primary_color: "#d02e26"
-      package_name: fr.coopcycle.zampate
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  kooglof:
-    if: ${{ inputs.build_kooglof }}
-    name: Build Kooglof app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: kooglof
-      instance_url: https://kooglof.coopcycle.org
-      app_name: Kooglof
-      primary_color: "#b4434e"
-      package_name: fr.coopcycle.kooglof
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  robinfood:
-    if: ${{ inputs.build_robinfood }}
-    name: Build RobinFood app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: robinfood
-      instance_url: https://robinfood.coopcycle.org
-      app_name: Robin Food
-      primary_color: "#ff0000"
-      package_name: fr.coopcycle.robinfood
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  coursiers_montpellier:
-    if: ${{ inputs.build_coursiers_montpellier }}
-    name: Build Coursiers MTP app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: coursiersmontpellier
-      instance_url: https://coursiersmontpellier.coopcycle.org
-      app_name: Coursiers MTP
-      primary_color: "#004e9c"
-      package_name: fr.coopcycle.coursiers_mtp
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  coursiers_rennais:
-    if: ${{ inputs.build_coursiers_rennais }}
-    name: Build LCR app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: lcr
-      instance_url: https://lcr.coopcycle.org
-      app_name: Les Coursiers Rennais
-      primary_color: "#0A090A"
-      package_name: fr.coopcycle.lcr
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  eraman:
-    if: ${{ inputs.build_eraman }}
-    name: Build Eraman app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: eraman
-      instance_url: https://eramangasteiz.coopcycle.org
-      app_name: Eraman
-      primary_color: "#317764"
-      package_name: fr.coopcycle.eraman
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
-      deploy_google_play: ${{ inputs.deploy_google_play }}
-    secrets: inherit
-  sicklo:
-    if: ${{ inputs.build_sicklo }}
-    name: Build Sicklo app
-    uses: ./.github/workflows/fastlane_android.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: sicklo
-      instance_url: https://sicklo.coopcycle.org
-      app_name: Sicklo
-      primary_color: "#1f2632"
-      package_name: fr.coopcycle.sicklo
-      keystore_key_alias: instance
-      keystore_key_password_secret: SIGNING_KEY_PASSWORD_INSTANCE
+      instance: ${{ matrix.app.params.instance }}
+      instance_url: ${{ matrix.app.params.instance_url }}
+      app_name: ${{ matrix.app.params.app_name || matrix.app.displayName }}
+      primary_color: ${{ matrix.app.params.primary_color }}
+      package_name: ${{ matrix.app.params.package_name }}
+      keystore_key_alias: ${{ matrix.app.params.keystore_key_alias }}
+      keystore_key_password_secret: ${{ matrix.app.params.keystore_key_password_secret }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
     secrets: inherit
