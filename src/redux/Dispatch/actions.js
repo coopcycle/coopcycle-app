@@ -183,14 +183,14 @@ export function initialize() {
     const httpClient = getState().app.httpClient;
     const date = selectSelectedDate(getState());
 
-    dispatch(loadUnassignedTasksRequest());
+    /* dispatch(loadUnassignedTasksRequest()); */
 
     _loadAll(httpClient, date)
       .then(values => {
         const [users, unassignedTasks, taskLists] = values;
         dispatch(loadUsersSuccess(users['hydra:member']));
         dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
-        dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
+        /* dispatch(loadTaskListsSuccess(taskLists['hydra:member'])); */
         dispatch(connectCentrifugo());
         dispatch(_initialize());
       })
