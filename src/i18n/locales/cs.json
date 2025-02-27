@@ -1,5 +1,7 @@
 {
   "common": {
+    "DISPATCH_NEW_DELIVERY": "Nové doručení",
+    "DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER": "Hledejte obchod",
     "MY_ADDRESSES": "Mé adresy",
     "MY_ORDERS": "Mé objednávky",
     "MY_DETAILS": "Mé detaily",

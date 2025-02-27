@@ -1,5 +1,7 @@
 {
   "common": {
+    "DISPATCH_NEW_DELIVERY": "නව භාරදීම",
+    "DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER": "කිෝස්ක් එකක් සොයන්න",
     "MY_ADDRESSES": "මාගේ ලිපින",
     "MY_DETAILS": "මාගේ විස්තර",
     "TASK": "කාර්යය",

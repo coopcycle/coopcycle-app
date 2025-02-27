@@ -1,5 +1,7 @@
 {
     "common": {
+        "DISPATCH_NEW_DELIVERY": "Új szállítás",
+        "DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER": "Keress egy boltot",
         "MY_ADDRESSES": "Címeim",
         "MY_ORDERS": "Rendeléseim",
         "MY_DETAILS": "Részletek",

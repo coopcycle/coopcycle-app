@@ -15,6 +15,7 @@ export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
 export const SET_STORE = '@delivery/SET_STORE';
+export const SET_STORES = '@delivery/SET_STORES';
 
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
 export const getPriceError = createAction(GET_PRICE_ERROR);
@@ -25,6 +26,7 @@ export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
 export const setStore = createAction(SET_STORE);
+export const setStores = createAction(SET_STORES);
 
 const loadAddressesSuccess = createAction(
   LOAD_ADDRESSES_SUCCESS,

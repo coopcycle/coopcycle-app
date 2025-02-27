@@ -194,7 +194,9 @@ export function initialize() {
         dispatch(connectCentrifugo());
         dispatch(_initialize());
       })
-      .catch(e => dispatch(loadUnassignedTasksFailure(e)));
+      .catch(e => {
+        dispatch(loadUnassignedTasksFailure(e));
+      });
   };
 }
 

@@ -1,6 +1,8 @@
-import { Box, Button, HStack, Text, VStack } from 'native-base';
 import { Formik } from 'formik';
-import { withTranslation } from 'react-i18next';
+import moment from 'moment';
+import { Box, Button, HStack, Text, VStack } from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   InteractionManager,
   Platform,
@@ -8,11 +10,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import KeyboardManager from 'react-native-keyboard-manager';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { IconPackage } from '@tabler/icons-react-native';
 import {
@@ -32,15 +32,14 @@ import {
   useBackgroundContainerColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import FormInput from './components/FormInput';
-import ModalFormWrapper from './ModalFormWrapper';
 import Range from '../checkout/ProductDetails/Range';
+import FormInput from './components/FormInput';
 import TimeSlotSelector from './components/TimeSlotSelector';
+import ModalFormWrapper from './ModalFormWrapper';
 
 function NewDeliveryDropoffDetails({
   navigation,
   route,
-  t,
 }) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
@@ -48,6 +47,7 @@ function NewDeliveryDropoffDetails({
   const primaryColor = usePrimaryColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packagesCount, setPackagesCount] = useState([]);
+  const { t } = useTranslation()
 
   const packages = useSelector(selectPackages);
   const store = useSelector(selectStore);
@@ -456,4 +456,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTranslation()(NewDeliveryDropoffDetails);
+export default NewDeliveryDropoffDetails;

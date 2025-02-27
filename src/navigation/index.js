@@ -2,10 +2,8 @@ import { DrawerActions } from '@react-navigation/native';
 import React from 'react';
 import HeaderButton from '../components/HeaderButton';
 
-import DispatchAddTask from './dispatch/AddTask';
 import DispatchAssignTask from './dispatch/AssignTask';
 import DispatchDate from './dispatch/Date';
-import DispatchEditAddress from './dispatch/EditAddress';
 import DispatchPickUser from './dispatch/PickUser';
 import DispatchTaskList from './dispatch/TaskList';
 import DispatchTaskLists from './dispatch/TaskLists';
@@ -23,6 +21,7 @@ import NewDeliveryDropoffAddress from './delivery/NewDeliveryDropoffAddress';
 import NewDeliveryDropoffDetails from './delivery/NewDeliveryDropoffDetails';
 import NewDeliveryPickupAddress from './delivery/NewDeliveryPickupAddress';
 import NewDeliveryPrice from './delivery/NewDeliveryPrice';
+import NewDeliveryStore from './delivery/NewDeliveryStore';
 
 import CheckoutPaymentMethodCard from './checkout/PaymentMethodCard';
 import CheckoutPaymentMethodCashOnDelivery from './checkout/PaymentMethodCashOnDelivery';
@@ -133,10 +132,9 @@ export default {
   DispatchTaskLists,
   DispatchTaskList,
   DispatchPickUser,
-  DispatchAddTask,
   DispatchDate,
   DispatchAssignTask,
-  DispatchEditAddress,
+  NewDeliveryStore,
   NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,
   NewDeliveryDropoffDetails,

@@ -1,5 +1,7 @@
 {
   "common": {
+    "DISPATCH_NEW_DELIVERY": "Nueva entrega",
+    "DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER": "Busca una tenda",
     "MY_ADDRESSES": "Las mías adrezas",
     "MY_ORDERS": "Los míos pedius",
     "MY_DETAILS": "Los míos datos personals",

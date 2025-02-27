@@ -1,5 +1,7 @@
 {
   "common": {
+    "DISPATCH_NEW_DELIVERY": "Nova entrega",
+    "DISPATCH_NEW_DELIVERY_FILTER_STORE_PLACEHOLDER": "Busca una botiga",
     "MY_ADDRESSES": "Les meves adreces",
     "MY_ORDERS": "Les meves comandes",
     "MY_DETAILS": "Les meves dades personals",

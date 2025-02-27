@@ -15,6 +15,14 @@ const newDeliveryNavigatorScreenOptions = {
 export const NewDeliveryNavigator = () => (
   <NewDeliveryStack.Navigator screenOptions={newDeliveryNavigatorScreenOptions}>
     <NewDeliveryStack.Screen
+      name="NewDeliveryStore"
+      component={screens.NewDeliveryStore}
+      options={{
+        headerShown: false,
+        headerBackTitleVisible: false,
+      }}
+    />
+    <NewDeliveryStack.Screen
       name="NewDeliveryPickupAddress"
       component={screens.NewDeliveryPickupAddress}
       options={{

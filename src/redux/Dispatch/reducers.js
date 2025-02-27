@@ -1,8 +1,11 @@
-import { DISPATCH_INITIALIZE, LOAD_USERS_SUCCESS } from './actions';
+import {
+  DISPATCH_INITIALIZE,
+  LOAD_USERS_SUCCESS,
+} from './actions';
 
 const initialState = {
-  users: [],
   initialized: false,
+  users: [],
 };
 
 export default (state = initialState, action = {}) => {
