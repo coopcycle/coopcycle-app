@@ -10,16 +10,20 @@ export function useFetchAllRecords(url, itemsPerPage, options = null) {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [force, setForce] = useState(false);
 
   const fetchData = useCallback(() => {
-    if(options?.enabled) {
+    if(options?.enabled || force) {
       setIsLoading(true);
       fetchAllRecords(httpClient, url, itemsPerPage)
           .then(setData)
           .catch(setError)
-          .finally(() => setIsLoading(false));
+          .finally(() => {
+            setIsLoading(false);
+            setForce(false);
+          });
     }
-  }, [httpClient, itemsPerPage, options?.enabled, url]);
+  }, [force, httpClient, itemsPerPage, options?.enabled, url]);
 
   useEffect(() => {
     fetchData();
@@ -29,6 +33,6 @@ export function useFetchAllRecords(url, itemsPerPage, options = null) {
     data,
     error,
     isLoading,
-    refetch: fetchData
+    refetch: () => setForce(true),
   }
 }
