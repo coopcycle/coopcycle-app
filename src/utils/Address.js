@@ -7,23 +7,23 @@ import Config from 'react-native-config';
 
 class AddressUtils {
   static createAddressFromGoogleDetails(details) {
-    let postalCode = _.find(details.address_components, component =>
+    let postalCode = _.find(details.addressComponents, component =>
       _.includes(component.types, 'postal_code'),
     );
-    let locality = _.find(details.address_components, component =>
+    let locality = _.find(details.addressComponents, component =>
       _.includes(component.types, 'locality'),
     );
 
-    postalCode = postalCode ? postalCode.short_name : '';
-    locality = locality ? locality.short_name : '';
+    postalCode = postalCode ? postalCode.shortText : '';
+    locality = locality ? locality.shortText : '';
 
     return {
-      streetAddress: details.formatted_address,
+      streetAddress: details.formattedAddress,
       postalCode,
       addressLocality: locality,
       geo: {
-        latitude: details.geometry.location.lat,
-        longitude: details.geometry.location.lng,
+        latitude: details.location.latitude,
+        longitude: details.location.longitude,
       },
       isPrecise:
         _.includes(details.types, 'street_address') ||

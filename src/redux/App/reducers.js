@@ -386,7 +386,7 @@ export default (state = initialState, action = {}) => {
     case BACKGROUND_PERMISSION_DISCLOSED:
       return {
         ...state,
-        hasDisclosedBackgroundPermission: true,
+        hasDisclosedBackgroundPermission: action.payload
       };
 
     case SET_MODAL:

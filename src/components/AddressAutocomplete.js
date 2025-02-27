@@ -14,7 +14,7 @@ import {
 } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -25,10 +25,8 @@ import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { localeDetector } from '../i18n';
-import { darkGreyColor, whiteColor } from '../styles/common';
 import {
   useBackgroundContainerColor,
-  useBackgroundHighlightColor,
   useBaseTextColor,
   useColorModeToken,
   usePrimaryColor,
@@ -76,82 +74,116 @@ function AddressAutocomplete(props) {
   const [sessionToken, setSessionToken] = useState(null);
   const [controller, setController] = useState(null);
 
-  const fuse = new Fuse(addresses, fuseOptions);
+  const fuse = useMemo(() => new Fuse(addresses, fuseOptions), [addresses]);
 
-  const autocomplete = _.debounce((text, query) => {
-    const newController = new AbortController();
-    setController(newController);
-    const fuseResults = fuse.search(text, { limit: 2 });
+  const autoCompleteDebounced = useMemo(
+    () =>
+      _.debounce((text, config) => {
+        const newController = new AbortController();
+        setController(newController);
+        const fuseResults = fuse.search(text, { limit: 2 });
 
-    if (country === 'gb') {
-      if (!postcode) {
-        axios
-          .get(
-            `https://api.postcodes.io/postcodes/${text.replace(
-              /\s/g,
-              '',
-            )}/autocomplete`,
-            { signal: newController.signal },
-          )
-          .then(response => {
-            if (
-              response.data.status === 200 &&
-              Array.isArray(response.data.result)
-            ) {
-              const normalizedPostcodes = response.data.result.map(
-                postcode => ({
-                  postcode: postcode,
-                  type: 'postcode',
-                }),
-              );
-              setResults(normalizedPostcodes);
-            }
-          })
-          .catch(error => {
-            console.log('AddressAutocomplete; _autocomplete', error);
-          });
-      } else {
-        setResults([
-          {
-            type: 'manual_address',
-            description: text,
-          },
-        ]);
-      }
-    } else {
-      axios
-        .get(
-          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-            text,
-          )}&${qs.stringify(query)}`,
-          { signal: newController.signal },
-        )
-        .then(response => {
-          const normalizedResults = fuseResults.map(fuseResult => ({
-            ...fuseResult.item,
-            type: 'fuse',
-          }));
-
-          const normalizedPredictions = response.data.predictions.map(
-            prediction => ({
-              ...prediction,
-              type: 'prediction',
-            }),
-          );
-
-          let results = normalizedResults.concat(normalizedPredictions);
-
-          if (normalizedResults.length > 0 && results.length > 5) {
-            results = results.slice(0, 5);
+        if (country === 'gb') {
+          if (!postcode) {
+            axios
+              .get(
+                `https://api.postcodes.io/postcodes/${text.replace(
+                  /\s/g,
+                  '',
+                )}/autocomplete`,
+                { signal: newController.signal },
+              )
+              .then(response => {
+                if (
+                  response.data.status === 200 &&
+                  Array.isArray(response.data.result)
+                ) {
+                  const normalizedPostcodes = response.data.result.map(
+                    postcode => ({
+                      postcode: postcode,
+                      type: 'postcode',
+                    }),
+                  );
+                  setResults(normalizedPostcodes);
+                }
+              })
+              .catch(error => {
+                console.log('AddressAutocomplete; _autocomplete', error);
+              });
+          } else {
+            setResults([
+              {
+                type: 'manual_address',
+                description: text,
+              },
+            ]);
           }
+        } else {
+          let normalizedPredictions;
 
-          setResults(results);
-        })
-        .catch(error => {
-          console.log('AddressAutocomplete; _autocomplete', error);
-        });
-    }
-  }, 300);
+          axios
+            .post(
+              'https://places.googleapis.com/v1/places:autocomplete',
+              {
+                input: text,
+                sessionToken: config.sessiontoken,
+                locationRestriction: {
+                  rectangle: {
+                    low: {
+                      latitude:
+                        config.locationrestriction.southWest.split(',')[0],
+                      longitude:
+                        config.locationrestriction.southWest.split(',')[1],
+                    },
+                    high: {
+                      latitude:
+                        config.locationrestriction.northEast.split(',')[0],
+                      longitude:
+                        config.locationrestriction.northEast.split(',')[1],
+                    },
+                  },
+                },
+                includedPrimaryTypes: ['street_address'],
+                languageCode: config.languageCode,
+              },
+              {
+                headers: { 'X-Goog-Api-Key': config.key },
+                // signal: controller.signal
+              },
+            )
+            .then(response => {
+              // when there is no response the API returns an empty response
+              const suggestions = response.data.suggestions
+                ? response.data.suggestions
+                : [];
+
+              normalizedPredictions = suggestions.map(suggestion => ({
+                ...suggestion,
+                description: suggestion.placePrediction.text.text,
+                place_id: suggestion.placePrediction.placeId,
+                type: 'prediction',
+              }));
+
+              const normalizedResults = fuseResults.map(fuseResult => ({
+                ...fuseResult.item,
+                type: 'fuse',
+              }));
+
+              let results = normalizedResults.concat(normalizedPredictions);
+
+              if (normalizedResults.length > 0 && results.length > 5) {
+                results = results.slice(0, 5);
+              }
+
+              setResults(results);
+            })
+            .catch(error => {
+              console.error('AddressAutocomplete; _autocomplete', error);
+            });
+        }
+      }, 750),
+    [country, fuse, postcode],
+  );
 
   function onChangeText(text) {
     if (controller) {
@@ -178,23 +210,25 @@ function AddressAutocomplete(props) {
     // Construire la requête pour l'autocomplete
     const queryParams = {
       key: Config.GOOGLE_MAPS_BROWSER_KEY,
-      language: localeDetector(),
+      languageCode: localeDetector(),
       types: 'geocode',
-      locationrestriction: `rectangle:${props.southWest}|${props.northEast}`,
+      locationrestriction: {
+        southWest: props.southWest,
+        northEast: props.northEast
+      },
       sessiontoken: newSessionToken,
     };
 
     // Exécuter l'autocomplete
-    autocomplete(text, queryParams);
+    autoCompleteDebounced(text, queryParams);
   }
 
   function onItemPress(item) {
     if (item.type === 'prediction') {
       const queryParams = {
         key: Config.GOOGLE_MAPS_BROWSER_KEY,
-        language: localeDetector(),
-        placeid: item.place_id,
-        sessiontoken: sessionToken,
+        languageCode: localeDetector(),
+        fields: ['addressComponents', 'location', 'formattedAddress', 'types'].join(',') // need to be specified explictly
       };
 
       // Réinitialiser le sessionToken après la sélection
@@ -202,21 +236,20 @@ function AddressAutocomplete(props) {
 
       // Appel à l'API Google Place Details
       axios
-        .get(
-          `https://maps.googleapis.com/maps/api/place/details/json?${qs.stringify(
-            queryParams,
-          )}`,
-        )
-        .then(response => {
-          setQuery(item.description);
-          setResults([]);
-          props.onSelectAddress(
-            AddressUtils.createAddressFromGoogleDetails(response.data.result),
-          );
-        })
-        .catch(error => {
-          console.log('AddressAutocomplete; _onItemPress', error);
-        });
+      .get(
+        `https://places.googleapis.com/v1/places/${item.place_id}?${qs.stringify(
+          queryParams,
+        )}`
+      )
+      .then(response => {
+        setQuery(item.description);
+        setResults([]);
+        const formattedAddress = AddressUtils.createAddressFromGoogleDetails(response.data)
+        props.onSelectAddress(formattedAddress);
+      })
+      .catch(error => {
+        console.log('AddressAutocomplete; _onItemPress', error);
+      });
     }
 
     if (item.type === 'postcode') {
