@@ -22,6 +22,32 @@ import AddButton from './components/AddButton';
 import { navigateToTask } from '../../navigation/utils';
 import moment from 'moment';
 import { tasksSort } from '../../shared/src/logistics/redux/taskUtils';
+import { useFetchAllTasks } from '../../hooks/useFetchAllTasks';
+
+
+// hight order component that uses the hook
+function withTasksLoader(WrappedWithTasksComponent) {
+  return function WithTasksLoader(props) {
+    const date = props.date || moment()
+    const {
+      tasks,
+      error,
+      isLoading,
+      refreshTasks
+    } = useFetchAllTasks(date, { enabled: true})
+
+    return (
+      <WrappedWithTasksComponent
+        {...props}
+        tasksFromHook={tasks}
+        tasksError={error}
+        tasksLoading={isLoading}
+        refreshTasks={refreshTasks}
+      />
+    )
+  }
+
+}
 
 class UnassignedTasks extends Component {
   componentDidMount() {
@@ -54,7 +80,8 @@ class UnassignedTasks extends Component {
     const { navigate } = this.props.navigation;
     const isEmpty = this.props.unassignedTasks.length === 0;
 
-    const unassignedTasks = this.props.unassignedTasks.sort(tasksSort)
+    const unassignedTasks = this.props.tasksFromHook?.sort(tasksSort)
+    console.log('unassignedTasks', unassignedTasks)
 
     return (
       <View style={{ flex: 1 }}>
@@ -68,7 +95,7 @@ class UnassignedTasks extends Component {
           </AddButton>
         </View>
         <View style={{ flex: 1 }}>
-          {isEmpty && <TapToRefresh onPress={this.props.loadUnassignedTasks} />}
+          {isEmpty && <TapToRefresh onPress={this.props.refreshTasks} />}
           {!isEmpty && (
             <TaskList
               tasks={unassignedTasks}
@@ -114,7 +141,7 @@ function mapDispatchToProps(dispatch) {
   return {
     assignTask: (task, username) => dispatch(assignTask(task, username)),
     initialize: () => dispatch(initialize()),
-    loadUnassignedTasks: () => dispatch(loadUnassignedTasks()),
+    /* loadUnassignedTasks: () => dispatch(loadUnassignedTasks()), */
     bulkAssignmentTasks: (tasks, username) =>
       dispatch(bulkAssignmentTasks(tasks, username)),
   };
@@ -123,4 +150,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(UnassignedTasks));
+)(withTasksLoader(withTranslation()(UnassignedTasks)));
