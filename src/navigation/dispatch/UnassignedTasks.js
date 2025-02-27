@@ -1,28 +1,27 @@
-import { Text } from 'native-base';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
-import { InteractionManager, View } from 'react-native';
 import { connect } from 'react-redux';
+import { InteractionManager, View } from 'react-native';
+import { Text } from 'native-base';
+import { withTranslation } from 'react-i18next';
+import moment from 'moment';
+import React, { useEffect } from 'react';
 
-import TapToRefresh from '../../components/TapToRefresh';
-import TaskList from '../../components/TaskList';
-import {
-  selectSelectedDate,
-  selectTasksWithColor,
-} from '../../coopcycle-frontend-js/logistics/redux';
 import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
   loadUnassignedTasks,
 } from '../../redux/Dispatch/actions';
-import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
-import AddButton from './components/AddButton';
-
+import {
+  selectSelectedDate,
+  selectTasksWithColor,
+} from '../../coopcycle-frontend-js/logistics/redux';
 import { navigateToTask } from '../../navigation/utils';
-import moment from 'moment';
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import { tasksSort } from '../../shared/src/logistics/redux/taskUtils';
 import { useFetchAllTasks } from '../../hooks/useFetchAllTasks';
+import AddButton from './components/AddButton';
+import TapToRefresh from '../../components/TapToRefresh';
+import TaskList from '../../components/TaskList';
 
 
 // hight order component that uses the hook
@@ -46,91 +45,95 @@ function withTasksLoader(WrappedWithTasksComponent) {
       />
     )
   }
-
 }
 
-class UnassignedTasks extends Component {
-  componentDidMount() {
+function UnassignedTasks({
+  initialize,
+  navigation,
+  assignTask,
+  bulkAssignmentTasks,
+  unassignedTasks,
+  date,
+  refreshTasks,
+  tasksWithColor,
+  route,
+}) {
+  useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      this.props.initialize();
+      initialize();
+    });
+  }, [initialize]);
+
+  const _assignTask = (task, user) => {
+    navigation.navigate('DispatchUnassignedTasks');
+    assignTask(task, user.username);
+  }
+
+  const assignSelectedTasks = (selectedTasks) => {
+    navigation.navigate('DispatchPickUser', {
+      onItemPress: user => _bulkAssign(user, selectedTasks),
     });
   }
 
-  _assignTask(task, user) {
-    this.props.navigation.navigate('DispatchUnassignedTasks');
-    this.props.assignTask(task, user.username);
+  const _bulkAssign = (user, tasks) => {
+    navigation.navigate('DispatchUnassignedTasks');
+    bulkAssignmentTasks(tasks, user.username);
   }
 
-  assignSelectedTasks(selectedTasks) {
-    this.props.navigation.navigate('DispatchPickUser', {
-      onItemPress: user => this._bulkAssign(user, selectedTasks),
-    });
-  }
-
-  _bulkAssign(user, tasks) {
-    this.props.navigation.navigate('DispatchUnassignedTasks');
-    this.props.bulkAssignmentTasks(tasks, user.username);
-  }
-
-  allowToSelect(task) {
+  const allowToSelect = (task) => {
     return task.status !== 'DONE';
   }
 
-  render() {
-    const { navigate } = this.props.navigation;
-    const isEmpty = this.props.unassignedTasks.length === 0;
+  const { navigate } = navigation;
+  const isEmpty = unassignedTasks.length === 0;
 
-    const unassignedTasks = this.props.tasksFromHook?.sort(tasksSort)
-    console.log('unassignedTasks', unassignedTasks)
-
-    return (
-      <View style={{ flex: 1 }}>
-        <View>
-          <AddButton
-            testID="dispatchNewDelivery"
-            onPress={() => this.props.navigation.navigate('DispatchNewDelivery')}>
-            <Text style={{ fontWeight: '700' }}>
-              {this.props.date.format('ll')}
-            </Text>
-          </AddButton>
-        </View>
-        <View style={{ flex: 1 }}>
-          {isEmpty && <TapToRefresh onPress={this.props.refreshTasks} />}
-          {!isEmpty && (
-            <TaskList
-              tasks={unassignedTasks}
-              tasksWithColor={this.props.tasksWithColor}
-              swipeOutLeftEnabled={task => !task.isAssigned}
-              onSwipeLeft={task =>
-                navigate('DispatchPickUser', {
-                  onItemPress: user => this._assignTask(task, user),
-                })
-              }
-              swipeOutLeftIconName="user"
-              onTaskClick={task =>
-                navigateToTask(
-                  this.props.navigation,
-                  this.props.route,
-                  task,
-                  this.props.unassignedTasks,
-                )
-              }
-              allowMultipleSelection={task => this.allowToSelect(task)}
-              multipleSelectionIcon="user"
-              onMultipleSelectionAction={selectedTasks =>
-                this.assignSelectedTasks(selectedTasks)
-              }
-            />
-          )}
-        </View>
+  return (
+    <View style={{ flex: 1 }}>
+      <View>
+        <AddButton
+          testID="dispatchNewDelivery"
+          onPress={() => navigation.navigate('DispatchNewDelivery')}>
+          <Text style={{ fontWeight: '700' }}>
+            {date.format('ll')}
+          </Text>
+        </AddButton>
       </View>
-    );
-  }
+      <View style={{ flex: 1 }}>
+        {isEmpty && <TapToRefresh onPress={refreshTasks} />}
+        {!isEmpty && (
+          <TaskList
+            tasks={unassignedTasks}
+            tasksWithColor={tasksWithColor}
+            swipeOutLeftEnabled={task => !task.isAssigned}
+            onSwipeLeft={task =>
+              navigate('DispatchPickUser', {
+                onItemPress: user => _assignTask(task, user),
+              })
+            }
+            swipeOutLeftIconName="user"
+            onTaskClick={task =>
+              navigateToTask(
+                navigation,
+                route,
+                task,
+                unassignedTasks,
+              )
+            }
+            allowMultipleSelection={task => allowToSelect(task)}
+            multipleSelectionIcon="user"
+            onMultipleSelectionAction={selectedTasks =>
+              assignSelectedTasks(selectedTasks)
+            }
+          />
+        )}
+      </View>
+    </View>
+  );
 }
 
 function mapStateToProps(state) {
   return {
-    unassignedTasks: selectUnassignedTasksNotCancelled(state),
+    unassignedTasks: selectUnassignedTasksNotCancelled(state).sort(tasksSort),
     tasksWithColor: selectTasksWithColor(state),
     date: selectSelectedDate(state),
     user: state.app.user,
