@@ -22,7 +22,6 @@ import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 
 
 function UnassignedTasks({
-  bulkAssignmentTasks,
   navigation,
   tasksWithColor,
   route,
@@ -59,7 +58,7 @@ function UnassignedTasks({
 
   const _bulkAssign = (user, tasks) => {
     navigation.navigate('DispatchUnassignedTasks');
-    bulkAssignmentTasks(tasks, user.username);
+    dispatch(bulkAssignmentTasks(tasks, user.username));
   }
 
   const allowToSelect = (task) => {
@@ -127,8 +126,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    bulkAssignmentTasks: (tasks, username) =>
-      dispatch(bulkAssignmentTasks(tasks, username)),
   };
 }
 
