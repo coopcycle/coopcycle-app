@@ -17,6 +17,7 @@ import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
+  loadUnassignedTasksSuccess,
   /*   loadUnassignedTasks, */
   setUnassignedTasks,
 } from '../../redux/Dispatch/actions';
@@ -54,14 +55,13 @@ function UnassignedTasks({
 
   useEffect(() => {
     if (backendUnassignedTasks && backendUnassignedTasks.length > 0) {
-      dispatch(setUnassignedTasks(backendUnassignedTasks))
+      dispatch(loadUnassignedTasksSuccess(backendUnassignedTasks))
     }
   }, [backendUnassignedTasks, dispatch])
 
   const { t } = useTranslation()
-  // check selectUnassignedTasks, shoud we create a new one on Dispatch/selectors ?
+
   const unassignedTasks = useSelector(selectUnassignedTasks)
-  console.log('unassignedTasks:', unassignedTasks);
 
 
   const _assignTask = (task, user) => {
