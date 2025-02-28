@@ -13,9 +13,9 @@ export default function DateScreen({ navigation }) {
   useLoadAllTasks(selectedDate);
 
   const onDateChange = date => {
-    dispatch(changeDate(date));
-    dispatch(loadTasks(date));
-
+    console.log("AAAAAAAAAA onDateChange COURIER", date);
+    // dispatch(changeDate(date));
+    // dispatch(loadTasks(date));
     navigation.goBack();
   };
 

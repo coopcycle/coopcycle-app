@@ -24,9 +24,11 @@ export function useFetchAllUnassignedTasks(date, options = {}) {
       error,
       isLoading,
       refetch: refreshUnassignedTasks
-  } = useFetchAllRecords('/api/tasks', 100, _options);
+  } = {data: null, error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllUnassignedTasks")}};
+  //} = useFetchAllRecords('/api/tasks', 100, _options);
 
   useEffect(() => {
+    console.log("AAAAAAAAAA setUnassignedTasks");
     if(data) {
       setUnassignedTasks(data.sort(tasksSort))
     }

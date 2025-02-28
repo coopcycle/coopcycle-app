@@ -23,9 +23,11 @@ export function useFetchAllTaskLists(date, options = {}) {
       error,
       isLoading,
       refetch: refreshTaskLists
-  } = useFetchAllRecords('/api/task_lists', 100, _options);
+  } = {data: null, error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllTaskLists")}};
+  //} = useFetchAllRecords('/api/task_lists', 100, _options);
 
   useEffect(() => {
+    console.log("AAAAAAAAAA setTaskLists");
     if(data) {
       setTaskLists(data);
     }

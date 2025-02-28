@@ -39,7 +39,8 @@ function UnassignedTasks({
     error,
     isLoading,
     refreshTasks
-  } = useLoadAllTasks(date, { enabled: true});
+  } = { error: null, isLoading: false, refreshTasks: () => {console.log("AAAAAAAAAA useLoadAllTasks");} };
+  //} = useLoadAllTasks(date, { enabled: true});
 
   const { t } = useTranslation()
 
