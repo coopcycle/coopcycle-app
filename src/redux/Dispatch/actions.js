@@ -116,7 +116,7 @@ export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST);
 export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS);
 export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE);
 
-const _changeDate = createAction(CHANGE_DATE);
+export const changeDate = createAction(CHANGE_DATE);
 const _initialize = createAction(DISPATCH_INITIALIZE);
 
 /**
@@ -127,28 +127,9 @@ function _loadUsers(httpClient) {
   return httpClient.get('/api/users?roles[]=ROLE_COURIER');
 }
 
-function _loadUnassignedTasks(httpClient, date) {
-  return httpClient.get(
-    `/api/tasks?date=${date.format('YYYY-MM-DD')}&assigned=no`,
-  );
-}
-
-function _loadTaskLists(httpClient, date) {
-  return httpClient.get(`/api/task_lists?date=${date.format('YYYY-MM-DD')}`);
-}
-
-function _loadAll(httpClient, date) {
+function _loadAll(httpClient) {
   return Promise.all([
     _loadUsers(httpClient),
-    _loadUnassignedTasks(httpClient, date),
-    _loadTaskLists(httpClient, date),
-  ]);
-}
-
-function _loadTasks(httpClient, date) {
-  return Promise.all([
-    _loadUnassignedTasks(httpClient, date),
-    _loadTaskLists(httpClient, date),
   ]);
 }
 
@@ -181,53 +162,19 @@ export function initialize() {
     }
 
     const httpClient = getState().app.httpClient;
-    const date = selectSelectedDate(getState());
 
     dispatch(loadUnassignedTasksRequest());
 
-    _loadAll(httpClient, date)
+    _loadAll(httpClient)
       .then(values => {
-        const [users, unassignedTasks, taskLists] = values;
+        const [users] = values;
         dispatch(loadUsersSuccess(users['hydra:member']));
-        dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
-        dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
         dispatch(connectCentrifugo());
         dispatch(_initialize());
       })
       .catch(e => {
         dispatch(loadUnassignedTasksFailure(e));
       });
-  };
-}
-
-export function loadUnassignedTasks() {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-    const date = selectSelectedDate(getState());
-
-    dispatch(loadUnassignedTasksRequest());
-
-    _loadUnassignedTasks(httpClient, date)
-      .then(res => dispatch(loadUnassignedTasksSuccess(res['hydra:member'])))
-      .catch(e => dispatch(loadUnassignedTasksFailure(e)));
-  };
-}
-
-export function changeDate(date) {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadUnassignedTasksRequest());
-
-    _loadTasks(httpClient, date)
-      .then(values => {
-        const [unassignedTasks, taskLists] = values;
-        dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
-        dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-      })
-      .catch(e => dispatch(loadUnassignedTasksFailure(e)));
-
-    dispatch(_changeDate(date));
   };
 }
 
@@ -241,19 +188,6 @@ export function loadUsers() {
       .get('/api/users?roles[]=ROLE_COURIER')
       .then(res => dispatch(loadUsersSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadUsersFailure(e)));
-  };
-}
-
-export function loadTaskLists(date) {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadTaskListsRequest());
-
-    return httpClient
-      .get(`/api/task_lists?date=${date.format('YYYY-MM-DD')}`)
-      .then(res => dispatch(loadTaskListsSuccess(res['hydra:member'])))
-      .catch(e => dispatch(loadTaskListsFailure(e)));
   };
 }
 
