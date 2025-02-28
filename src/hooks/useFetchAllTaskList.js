@@ -13,7 +13,10 @@ export function useFetchAllTaskLists(date, options = null) {
       error,
       isLoading,
       refetch: refreshTaskLists
-  } = useFetchAllRecords(`/api/task_lists?date=${date.format(dateFormat)}`, 100, options);
+  } = useFetchAllRecords('/api/task_lists', 100, {
+    ...options,
+    date: date.format(dateFormat),
+  });
 
   useEffect(() => {
     if(data) {

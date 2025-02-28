@@ -5,6 +5,8 @@ import { tasksSort } from "../shared/src/logistics/redux/taskUtils";
 
 
 export function useFetchAllUnassignedTasks(date, options = null) {
+  const dateFormat = 'YYYY-MM-DD';
+
   const [unassignedTasks, setUnassignedTasks] = useState(null);
 
   const {
@@ -12,7 +14,11 @@ export function useFetchAllUnassignedTasks(date, options = null) {
       error,
       isLoading,
       refetch: refreshUnassignedTasks
-  } = useFetchAllRecords(`/api/tasks?date=${date.format('YYYY-MM-DD')}&assigned=no`, 100, options);
+  } = useFetchAllRecords('/api/tasks', 100, {
+    ...options,
+    date: date.format(dateFormat),
+    assigned: 'no',
+  });
 
   useEffect(() => {
     if(data) {

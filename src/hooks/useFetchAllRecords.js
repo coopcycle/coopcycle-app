@@ -15,7 +15,7 @@ export function useFetchAllRecords(url, itemsPerPage, options = null) {
   const fetchData = useCallback(() => {
     if(options?.enabled || force) {
       setIsLoading(true);
-      fetchAllRecords(httpClient, url, itemsPerPage)
+      fetchAllRecords(httpClient, url, itemsPerPage, options.params)
           .then(setData)
           .catch(setError)
           .finally(() => {
@@ -23,7 +23,7 @@ export function useFetchAllRecords(url, itemsPerPage, options = null) {
             setForce(false);
           });
     }
-  }, [force, httpClient, itemsPerPage, options?.enabled, url]);
+  }, [force, httpClient, itemsPerPage, options?.enabled, options.params, url]);
 
   useEffect(() => {
     fetchData();

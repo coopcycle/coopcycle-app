@@ -34,8 +34,11 @@ export function sortByName(list) {
   return _.sortBy(list, ['name']);
 }
 
-export async function fetchAllRecords(httpClient, url, itemsPerPage) {
-  const fetch = async (page) => httpClient.get(`${url}?itemsPerPage=${itemsPerPage}&page=${page}`);
+export async function fetchAllRecords(httpClient, url, itemsPerPage, otherParams = null) {
+  const fetch = async (page) => {
+    const params = URLSearchParams({page, itemsPerPage, ...otherParams});
+    return httpClient.get(`${url}?${params.toString()}`)
+  };
   const firstRs = await fetch(1);
 
   if (!Object.hasOwn(firstRs, 'hydra:totalItems') || firstRs['hydra:totalItems'] <= firstRs['hydra:member'].length) {

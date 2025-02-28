@@ -62,5 +62,7 @@ export function useLoadAllTasks(date) {
       refreshTasks();
       refreshTaskLists();
     },
+    refreshTasks,
+    refreshTaskLists,
   }
 }
