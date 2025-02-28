@@ -121,7 +121,6 @@ function UnassignedTasks({
 function mapStateToProps(state) {
   return {
     tasksWithColor: selectTasksWithColor(state),
-    date: selectSelectedDate(state),
     user: state.app.user,
   };
 }
