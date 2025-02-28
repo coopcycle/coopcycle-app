@@ -3,26 +3,26 @@ import { useEffect, useState } from "react";
 import { useFetchAllRecords } from "./useFetchAllRecords";
 
 
-export function useFetchAllTasks(date, options = null) {
-  const [tasks, setTasks] = useState();
+export function useFetchAllUnassignedTasks(date, options = null) {
+  const [unassignedTasks, setUnassignedTasks] = useState(null);
 
   const {
       data,
       error,
       isLoading,
-      refetch: refreshTasks
+      refetch: refreshUnassignedTasks
   } = useFetchAllRecords(`/api/tasks?date=${date.format('YYYY-MM-DD')}&assigned=no`, 100, options);
 
   useEffect(() => {
     if(data) {
-      setTasks(data)
+      setUnassignedTasks(data)
     }
   }, [data]);
 
   return {
-    tasks,
+    unassignedTasks,
     error,
     isLoading,
-    refreshTasks
+    refreshUnassignedTasks
   }
 }
