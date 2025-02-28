@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useFetchAllRecords } from "./useFetchAllRecords";
+import { tasksSort } from "../shared/src/logistics/redux/taskUtils";
 
 
 export function useFetchAllUnassignedTasks(date, options = null) {
@@ -15,7 +16,7 @@ export function useFetchAllUnassignedTasks(date, options = null) {
 
   useEffect(() => {
     if(data) {
-      setUnassignedTasks(data)
+      setUnassignedTasks(data.sort(tasksSort))
     }
   }, [data]);
 
