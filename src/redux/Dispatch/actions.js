@@ -191,19 +191,6 @@ export function loadUsers() {
   };
 }
 
-export function loadTaskLists(date) {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadTaskListsRequest());
-
-    return httpClient
-      .get(`/api/task_lists?date=${date.format('YYYY-MM-DD')}`)
-      .then(res => dispatch(loadTaskListsSuccess(res['hydra:member'])))
-      .catch(e => dispatch(loadTaskListsFailure(e)));
-  };
-}
-
 export function createTaskList(date, user) {
   return function (dispatch, getState) {
     const httpClient = getState().app.httpClient;
