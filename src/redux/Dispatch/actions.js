@@ -116,7 +116,7 @@ export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST);
 export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS);
 export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE);
 
-const _changeDate = createAction(CHANGE_DATE);
+export const changeDate = createAction(CHANGE_DATE);
 const _initialize = createAction(DISPATCH_INITIALIZE);
 
 /**
@@ -210,24 +210,6 @@ export function loadUnassignedTasks() {
     _loadUnassignedTasks(httpClient, date)
       .then(res => dispatch(loadUnassignedTasksSuccess(res['hydra:member'])))
       .catch(e => dispatch(loadUnassignedTasksFailure(e)));
-  };
-}
-
-export function changeDate(date) {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadUnassignedTasksRequest());
-
-    _loadTasks(httpClient, date)
-      .then(values => {
-        const [unassignedTasks, taskLists] = values;
-        dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
-        dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-      })
-      .catch(e => dispatch(loadUnassignedTasksFailure(e)));
-
-    dispatch(_changeDate(date));
   };
 }
 

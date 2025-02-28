@@ -1,46 +1,31 @@
-import React, { Component } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 
-import { withTranslation } from 'react-i18next';
-
-import { connect } from 'react-redux';
 import { Calendar } from '../../components/Calendar';
-import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux';
 import { changeDate } from '../../redux/Dispatch/actions';
+import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux';
+import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 
-class DateScreen extends Component {
-  onDateChange(date) {
-    this.props.changeDate(date);
-    this.props.navigation.goBack();
-  }
 
-  render() {
-    return (
-      <Calendar
-        initialDate={this.props.date.format('YYYY-MM-DD')}
-        markedDates={{
-          [this.props.date.format('YYYY-MM-DD')]: { selected: true },
-        }}
-        onDateSelect={momentDate => {
-          this.onDateChange(momentDate);
-        }}
-      />
-    );
-  }
-}
+export default function DateScreen({ navigation }) {
+  const selectedDate = useSelector(selectSelectedDate);
+  const dispatch = useDispatch();
 
-function mapStateToProps(state) {
-  return {
-    date: selectSelectedDate(state),
+  useLoadAllTasks(selectedDate);
+
+  const onDateChange = date => {
+    dispatch(changeDate(date));
+    navigation.goBack();
   };
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    changeDate: date => dispatch(changeDate(date)),
-  };
-}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(DateScreen));
+  return (
+    <Calendar
+      initialDate={selectedDate.format('YYYY-MM-DD')}
+      markedDates={{
+        [selectedDate.format('YYYY-MM-DD')]: { selected: true },
+      }}
+      onDateSelect={onDateChange}
+    />
+  );
+}
