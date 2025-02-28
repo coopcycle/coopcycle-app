@@ -39,12 +39,12 @@ jobs:
                 displayName: 'CoopCycle',
                 params: {
                   instance: null,
-                  instance_url: null,
-                  app_name: null,
-                  primary_color: null,
-                  package_name: null,
-                  keystore_key_alias: null,
-                  keystore_key_password_secret: null
+                  instance_url: '',
+                  app_name: 'CoopCycle',
+                  primary_color: '',
+                  package_name: 'fr.coopcycle',
+                  keystore_key_alias: 'coopcycle',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD'
                 }
               },
               {
@@ -52,7 +52,9 @@ jobs:
                 displayName: 'CoopCycle (Beta)',
                 params: {
                   instance: 'beta',
+                  instance_url: '',
                   app_name: 'CoopCycle (Beta)',
+                  primary_color: '',
                   package_name: 'fr.coopcycle.beta',
                   keystore_key_alias: 'instance',
                   keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
@@ -179,7 +181,7 @@ jobs:
       tag: ${{ inputs.tag }}
       instance: ${{ matrix.app.params.instance }}
       instance_url: ${{ matrix.app.params.instance_url }}
-      app_name: ${{ matrix.app.params.app_name || matrix.app.displayName }}
+      app_name: ${{ matrix.app.params.app_name }}
       primary_color: ${{ matrix.app.params.primary_color }}
       package_name: ${{ matrix.app.params.package_name }}
       keystore_key_alias: ${{ matrix.app.params.keystore_key_alias }}
