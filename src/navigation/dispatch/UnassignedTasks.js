@@ -11,62 +11,44 @@ import {
   selectTasksWithColor,
   selectUnassignedTasks,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { useFetchAllUnassignedTasks } from '../../hooks/useFetchAllUnassignedTasks';
 import { navigateToTask } from '../../navigation/utils';
 import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
-  loadUnassignedTasksSuccess,
-  /*   loadUnassignedTasks, */
-  setUnassignedTasks,
 } from '../../redux/Dispatch/actions';
-import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
-import { tasksSort } from '../../shared/src/logistics/redux/taskUtils';
 import AddButton from './components/AddButton';
+import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 
 
 function UnassignedTasks({
-  /* refreshTasks,,
-  initialize,
-  assignTask,
   bulkAssignmentTasks,
-  unassignedTasks, */
-  date,
   navigation,
   tasksWithColor,
   route,
 }) {
+  const dispatch = useDispatch();
+  const date = useSelector(selectSelectedDate);
+
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      initialize();
+      dispatch(initialize());
     });
-  }, [/* initialize */]);
+  }, [dispatch]);
 
   const {
-    unassignedTasks: backendUnassignedTasks,
     error,
     isLoading,
     refreshTasks
-  } = useFetchAllUnassignedTasks(date, { enabled: true})
-
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (backendUnassignedTasks && backendUnassignedTasks.length > 0) {
-      dispatch(loadUnassignedTasksSuccess(backendUnassignedTasks))
-    }
-  }, [backendUnassignedTasks, dispatch])
+  } = useLoadAllTasks(date, { enabled: true});
 
   const { t } = useTranslation()
 
   const unassignedTasks = useSelector(selectUnassignedTasks)
 
-
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
-    assignTask(task, user.username);
+    dispatch(assignTask(task, user.username));
   }
 
   const assignSelectedTasks = (selectedTasks) => {
@@ -138,7 +120,6 @@ function UnassignedTasks({
 
 function mapStateToProps(state) {
   return {
-    unassignedTasks: selectUnassignedTasksNotCancelled(state).sort(tasksSort),
     tasksWithColor: selectTasksWithColor(state),
     date: selectSelectedDate(state),
     user: state.app.user,
@@ -147,9 +128,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    assignTask: (task, username) => dispatch(assignTask(task, username)),
-    initialize: () => dispatch(initialize()),
-/*     loadUnassignedTasks: () => dispatch(loadUnassignedTas()), */
     bulkAssignmentTasks: (tasks, username) =>
       dispatch(bulkAssignmentTasks(tasks, username)),
   };
