@@ -15,7 +15,9 @@ export function useFetchAllTaskLists(date, options = null) {
       refetch: refreshTaskLists
   } = useFetchAllRecords('/api/task_lists', 100, {
     ...options,
-    date: date.format(dateFormat),
+    params: {
+      date: date.format(dateFormat),
+    }
   });
 
   useEffect(() => {

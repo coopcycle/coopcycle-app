@@ -16,8 +16,10 @@ export function useFetchAllUnassignedTasks(date, options = null) {
       refetch: refreshUnassignedTasks
   } = useFetchAllRecords('/api/tasks', 100, {
     ...options,
-    date: date.format(dateFormat),
-    assigned: 'no',
+    params: {
+      date: date.format(dateFormat),
+      assigned: 'no',
+    },
   });
 
   useEffect(() => {
