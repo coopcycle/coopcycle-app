@@ -1,6 +1,8 @@
+import { SET_STORE } from '../Delivery/actions';
 import {
   DISPATCH_INITIALIZE,
   LOAD_USERS_SUCCESS,
+  setUnassignedTasks,
 } from './actions';
 
 const initialState = {
@@ -21,6 +23,12 @@ export default (state = initialState, action = {}) => {
         ...state,
         users: action.payload,
       };
+    
+      case setUnassignedTasks.type:
+        return {
+          ...state,
+          store: action.payload
+        }
   }
 
   return state;
