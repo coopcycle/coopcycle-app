@@ -79,7 +79,6 @@ export const loadUnassignedTasksSuccess = createAction(
 export const loadUnassignedTasksFailure = createAction(
   LOAD_UNASSIGNED_TASKS_FAILURE,
 );
-export const setUnassignedTasks = createAction('@dispatch/SET_UNASSIGNED_TASKS')
 
 export const loadUsersRequest = createAction(LOAD_USERS_REQUEST);
 export const loadUsersSuccess = createAction(LOAD_USERS_SUCCESS);
