@@ -13,20 +13,24 @@ import { useFetchAllTaskLists } from "./useFetchAllTaskList";
 import { useFetchAllUnassignedTasks } from "./useFetchAllUnassignedTasks";
 
 
-export function useLoadAllTasks(date) {
+export function useLoadAllTasks(date, options = {}) {
+  useEffect(() => {
+    console.log("useLoadAllTasks", date)
+  }, [date]);
+
   const {
     unassignedTasks,
     error: errorUnassignedTasks,
     isLoading:isLoadingUnassignedTasks,
     refreshTasks
-  } = useFetchAllUnassignedTasks(date, { enabled: true })
+  } = useFetchAllUnassignedTasks(date, options);
 
   const {
     taskLists,
     error: errorTaskLists,
     isLoading: isLoadingTaskLists,
     refreshTaskLists
-  } = useFetchAllTaskLists(date, { enabled: true })
+  } = useFetchAllTaskLists(date, options);
 
   const dispatch = useDispatch();
 

@@ -4,8 +4,12 @@ import { useSelector } from "react-redux";
 import { fetchAllRecords } from "../redux/util";
 
 
-export function useFetchAllRecords(url, itemsPerPage, options = null) {
+export function useFetchAllRecords(url, itemsPerPage, options = {}) {
   const httpClient = useSelector(state => state.app.httpClient);
+
+  useEffect(() => {
+    console.log(url, itemsPerPage, options)
+  }, [itemsPerPage, options, url]);
 
   const [data, setData] = useState();
   const [error, setError] = useState();
@@ -13,7 +17,7 @@ export function useFetchAllRecords(url, itemsPerPage, options = null) {
   const [force, setForce] = useState(false);
 
   const fetchData = useCallback(() => {
-    if(options?.enabled || force) {
+    if(options.enabled || force) {
       setIsLoading(true);
       fetchAllRecords(httpClient, url, itemsPerPage, options.params)
           .then(setData)
@@ -23,7 +27,7 @@ export function useFetchAllRecords(url, itemsPerPage, options = null) {
             setForce(false);
           });
     }
-  }, [force, httpClient, itemsPerPage, options?.enabled, options.params, url]);
+  }, [force, httpClient, itemsPerPage, options, url]);
 
   useEffect(() => {
     fetchData();

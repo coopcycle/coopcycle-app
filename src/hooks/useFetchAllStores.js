@@ -4,7 +4,7 @@ import { useFetchAllRecords } from "./useFetchAllRecords";
 import { sortByName } from "../redux/util";
 
 
-export function useFetchAllStores(options = null) {
+export function useFetchAllStores(options = {}) {
   const [stores, setStores] = useState();
 
   const {

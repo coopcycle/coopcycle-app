@@ -36,7 +36,8 @@ export function sortByName(list) {
 
 export async function fetchAllRecords(httpClient, url, itemsPerPage, otherParams = null) {
   const fetch = async (page) => {
-    const params = URLSearchParams({page, itemsPerPage, ...otherParams});
+    console.log('fetchAllRecords', url, itemsPerPage, otherParams, (new URLSearchParams({page, itemsPerPage, ...otherParams})).toString())
+    const params = new URLSearchParams({page, itemsPerPage, ...otherParams});
     return httpClient.get(`${url}?${params.toString()}`)
   };
   const firstRs = await fetch(1);

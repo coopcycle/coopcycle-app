@@ -1,24 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useFetchAllRecords } from "./useFetchAllRecords";
 
 
-export function useFetchAllTaskLists(date, options = null) {
+export function useFetchAllTaskLists(date, options = {}) {
   const dateFormat = 'YYYY-MM-DD';
 
   const [taskLists, setTaskLists] = useState(null);
+
+  const _options = useMemo(() => {
+    return {
+      ...options,
+      enabled: options.enabled && date,
+      params: {
+        date: date.format(dateFormat),
+      }
+    }
+  }, [date, options])
 
   const {
       data,
       error,
       isLoading,
       refetch: refreshTaskLists
-  } = useFetchAllRecords('/api/task_lists', 100, {
-    ...options,
-    params: {
-      date: date.format(dateFormat),
-    }
-  });
+  } = useFetchAllRecords('/api/task_lists', 100, _options);
 
   useEffect(() => {
     if(data) {
