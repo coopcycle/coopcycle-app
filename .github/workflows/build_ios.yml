@@ -1,7 +1,6 @@
 name: Build iOS
 run-name: >
   Upload to App Store ${{ inputs.tag }}
-  ${{ needs.filter-matrix.outputs.display_names }}
 on:
   workflow_dispatch:
     inputs:
