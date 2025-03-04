@@ -1,12 +1,7 @@
 name: Build iOS
 run-name: >
   Upload to App Store ${{ inputs.tag }}
-  ${{ inputs.build_official && '; CoopCycle' || '' }}
-  ${{ inputs.build_official_beta && '; CoopCycle (Beta)' || '' }}
-  ${{ inputs.build_naofood && '; Naofood' || '' }}
-  ${{ inputs.build_kooglof && '; Kooglof' || '' }}
-  ${{ inputs.build_robinfood && '; RobinFood' || '' }}
-  ${{ inputs.build_lcr && '; les coursiers Rennais' || '' }}
+  ${{ needs.filter-matrix.outputs.display_names }}
 on:
   workflow_dispatch:
     inputs:
@@ -14,116 +9,167 @@ on:
         type: string
         description: Build a specific git tag
         required: true
-      build_official:
-        description: 'Build CoopCycle production app'
-        required: true
-        type: boolean
-      build_official_beta:
-        description: 'Build CoopCycle beta app (TODO: finish setup)'
-        required: true
-        type: boolean
-      build_naofood:
-        description: 'Build Naofood app'
-        required: true
-        type: boolean
-      build_kooglof:
-        description: 'Build Kooglof app'
-        required: true
-        type: boolean
-      build_robinfood:
-        description: 'Build RobinFood app'
-        required: true
-        type: boolean
-      build_lcr:
-        description: 'Build LCR app'
-        required: true
-        type: boolean
-      build_sicklo:
-        description: 'Build Sicklo app'
-        required: true
-        type: boolean
+      app_selection:
+        description: 'Select apps to build (e.g., "coopcycle, naofood" or "-kooglof, -robinfood")'
+        required: false
+        type: string
+        default: '-coopcycle_beta, -sicklo'
+
 jobs:
-  coopcycle:
-    if: ${{ inputs.build_official }}
-    name: Build CoopCycle production app
+  filter-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      selected_apps: ${{ steps.set-matrix.outputs.selected_apps }}
+      display_names: ${{ steps.set-matrix.outputs.display_names }}
+    steps:
+      - name: Filter apps based on input
+        id: set-matrix
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const appConfig = [
+              {
+                id: 'coopcycle',
+                displayName: 'CoopCycle',
+                params: {
+                  instance: '',
+                  instance_url: '',
+                  app_name: 'CoopCycle',
+                  app_id: 'org.coopcycle',
+                  primary_color: '',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64'
+                }
+              },
+              {
+                id: 'coopcycle_beta',
+                displayName: 'CoopCycle (Beta)',
+                params: {
+                  instance: 'beta',
+                  instance_url: '',
+                  app_name: 'CoopCycle (Beta)',
+                  app_id: 'org.coopcycle.CoopCycleBeta',
+                  primary_color: '',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_BETA'
+                }
+              },
+              {
+                id: 'naofood',
+                displayName: 'Naofood',
+                params: {
+                  instance: 'naofood',
+                  instance_url: 'https://naofood.coopcycle.org',
+                  app_name: 'Naofood',
+                  app_id: 'org.coopcycle.Naofood',
+                  primary_color: '#f8781f',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_NAOFOOD'
+                }
+              },
+              {
+                id: 'kooglof',
+                displayName: 'Kooglof',
+                params: {
+                  instance: 'kooglof',
+                  instance_url: 'https://kooglof.coopcycle.org',
+                  app_name: 'Kooglof',
+                  app_id: 'org.coopcycle.Kooglof',
+                  primary_color: '#b4434e',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_KOOGLOF'
+                }
+              },
+              {
+                id: 'robinfood',
+                displayName: 'RobinFood',
+                params: {
+                  instance: 'robinfood',
+                  instance_url: 'https://robinfood.coopcycle.org',
+                  app_name: 'Robin Food',
+                  app_id: 'org.coopcycle.RobinFood',
+                  primary_color: '#ff0000',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_ROBINFOOD'
+                }
+              },
+              {
+                id: 'coursiers_rennais',
+                displayName: 'Les Coursiers Rennais',
+                params: {
+                  instance: 'lcr',
+                  instance_url: 'https://lcr.coopcycle.org',
+                  app_name: 'Les Coursiers Rennais',
+                  app_id: 'org.coopcycle.LCR',
+                  primary_color: '#0A090A',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_LCR'
+                }
+              },
+              {
+                id: 'sicklo',
+                displayName: 'Sicklo',
+                params: {
+                  instance: 'sicklo',
+                  instance_url: 'https://sicklo.coopcycle.org',
+                  app_name: 'Sicklo',
+                  app_id: 'org.coopcycle.Sicklo',
+                  primary_color: '#1f2632',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_SICKLO'
+                }
+              },
+              {
+                id: 'coursiersmontpellier',
+                displayName: 'Les Coursiers Montpelliérains',
+                params: {
+                  instance: 'coursiersmontpellier',
+                  instance_url: 'https://coursiersmontpellier.coopcycle.org',
+                  app_name: 'Les Coursiers Montpelliérains',
+                  app_id: 'org.coopcycle.CoursiersMTP',
+                  primary_color: '#004D9B',
+                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_MTP'
+                }
+              }
+            ];
+
+            const allAppIds = appConfig.map(app => app.id);
+            let selectedApps = [...allAppIds];
+
+            const selectionInput = '${{ inputs.app_selection }}';
+
+            if (selectionInput) {
+              const selections = selectionInput.split(',').map(s => s.trim());
+
+              const isExclusionMode = selections.every(s => s.startsWith('-'));
+
+              if (isExclusionMode) {
+                const excludeApps = selections.map(s => s.substring(1));
+                selectedApps = allAppIds.filter(app => !excludeApps.includes(app));
+              } else {
+                selectedApps = selections.filter(app => allAppIds.includes(app));
+              }
+            }
+
+            const selectedAppConfigs = appConfig.filter(app => selectedApps.includes(app.id));
+
+            const displayNames = selectedAppConfigs
+              .map(app => `; ${app.displayName}`)
+              .join('');
+
+            console.log(`Selected apps: ${selectedApps.join(', ')}`);
+            core.setOutput('selected_apps', JSON.stringify(selectedApps));
+            core.setOutput('matrix', JSON.stringify(selectedAppConfigs));
+            core.setOutput('display_names', displayNames);
+
+  build-apps:
+    needs: filter-matrix
+    name: ${{ matrix.app.displayName }}
+    strategy:
+      matrix:
+        app: ${{ fromJson(needs.filter-matrix.outputs.matrix) }}
+      fail-fast: false
     uses: ./.github/workflows/fastlane_ios.yml
     with:
       tag: ${{ inputs.tag }}
-      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64
-    secrets: inherit
-  coopcycle_beta:
-    if: ${{ inputs.build_official_beta }}
-    name: Build CoopCycle beta app
-    uses: ./.github/workflows/fastlane_ios.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: beta
-      app_name: CoopCycle (Beta)
-      app_id: org.coopcycle.CoopCycleBeta
-      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_BETA
-    secrets: inherit
-  naofood:
-    if: ${{ inputs.build_naofood }}
-    name: Build Naofood app
-    uses: ./.github/workflows/fastlane_ios.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: naofood
-      instance_url: https://naofood.coopcycle.org
-      app_name: Naofood
-      app_id: org.coopcycle.Naofood
-      primary_color: "#f8781f"
-      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_NAOFOOD
-    secrets: inherit
-  kooglof:
-    if: ${{ inputs.build_kooglof }}
-    name: Build Kooglof app
-    uses: ./.github/workflows/fastlane_ios.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: kooglof
-      instance_url: https://kooglof.coopcycle.org
-      app_name: Kooglof
-      app_id: org.coopcycle.Kooglof
-      primary_color: "#b4434e"
-      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_KOOGLOF
-    secrets: inherit
-  robinfood:
-    if: ${{ inputs.build_robinfood }}
-    name: Build RobinFood app
-    uses: ./.github/workflows/fastlane_ios.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: robinfood
-      instance_url: https://robinfood.coopcycle.org
-      app_name: Robin Food
-      app_id: org.coopcycle.RobinFood
-      primary_color: "#ff0000"
-      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_ROBINFOOD
-    secrets: inherit
-  lcr:
-    if: ${{ inputs.build_lcr }}
-    name: Build les coursiers Rennais app
-    uses: ./.github/workflows/fastlane_ios.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: lcr
-      instance_url: https://lcr.coopcycle.org
-      app_name: Les Coursiers Rennais
-      app_id: org.coopcycle.LCR
-      primary_color: "#0A090A"
-      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_LCR
-    secrets: inherit
-  sicklo:
-    if: ${{ inputs.build_sicklo }}
-    name: Build Sicklo app
-    uses: ./.github/workflows/fastlane_ios.yml
-    with:
-      tag: ${{ inputs.tag }}
-      instance: sicklo
-      instance_url: https://sicklo.coopcycle.org
-      app_name: Sicklo
-      app_id: org.coopcycle.Sicklo
-      primary_color: "#1f2632"
-      google_service_info_plist_base64: GOOGLE_SERVICE_INFO_PLIST_BASE64_SICKLO
+      instance: ${{ matrix.app.params.instance }}
+      instance_url: ${{ matrix.app.params.instance_url }}
+      app_name: ${{ matrix.app.params.app_name }}
+      app_id: ${{ matrix.app.params.app_id }}
+      primary_color: ${{ matrix.app.params.primary_color }}
+      google_service_info_plist_base64: ${{ matrix.app.params.google_service_info_plist_base64 }}
     secrets: inherit
