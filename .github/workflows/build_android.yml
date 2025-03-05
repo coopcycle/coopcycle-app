@@ -148,11 +148,11 @@ jobs:
               },
               {
                 id: 'coursiersmontpellier',
-                displayName: 'Les Coursiers Montpelliérains',
+                displayName: 'Les Coursiers MTP',
                 params: {
                   instance: 'coursiersmontpellier',
                   instance_url: 'https://coursiersmontpellier.coopcycle.org',
-                  app_name: 'Les Coursiers Montpelliérains',
+                  app_name: 'Les Coursiers MTP',
                   primary_color: '#004D9B',
                   package_name: 'fr.coopcycle.coursiersmtp',
                   keystore_key_alias: 'instance',
