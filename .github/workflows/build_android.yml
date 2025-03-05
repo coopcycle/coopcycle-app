@@ -14,6 +14,11 @@ on:
         required: true
         type: boolean
         default: false
+      google_play_track:
+        description: 'Google Play track, e.g. "internal", "production"'
+        required: false
+        type: string
+        default: 'internal'
       app_selection:
         description: 'Select apps to build (e.g., "coopcycle, naofood" or "-kooglof, -robinfood")'
         required: false
@@ -210,4 +215,5 @@ jobs:
       keystore_key_password_secret: ${{ matrix.app.params.keystore_key_password_secret }}
       google_services_json: ${{ matrix.app.params.google_services_json }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
+      google_play_track: ${{ inputs.google_play_track }}
     secrets: inherit
