@@ -14,6 +14,11 @@ on:
         required: true
         type: boolean
         default: false
+      google_play_track:
+        description: 'Google Play track, e.g. "internal", "production"'
+        required: false
+        type: string
+        default: 'internal'
       app_selection:
         description: 'Select apps to build (e.g., "coopcycle, naofood" or "-kooglof, -robinfood")'
         required: false
@@ -39,12 +44,13 @@ jobs:
                 displayName: 'CoopCycle',
                 params: {
                   instance: null,
-                  instance_url: null,
-                  app_name: null,
-                  primary_color: null,
-                  package_name: null,
-                  keystore_key_alias: null,
-                  keystore_key_password_secret: null
+                  instance_url: '',
+                  app_name: 'CoopCycle',
+                  primary_color: '',
+                  package_name: 'fr.coopcycle',
+                  keystore_key_alias: 'coopcycle',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               },
               {
@@ -52,10 +58,13 @@ jobs:
                 displayName: 'CoopCycle (Beta)',
                 params: {
                   instance: 'beta',
+                  instance_url: '',
                   app_name: 'CoopCycle (Beta)',
+                  primary_color: '',
                   package_name: 'fr.coopcycle.beta',
                   keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               },
               {
@@ -68,7 +77,8 @@ jobs:
                   primary_color: '#f8781f',
                   package_name: 'fr.naofood.client',
                   keystore_key_alias: 'naofood',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_NAOFOOD'
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_NAOFOOD',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               },
               {
@@ -81,7 +91,8 @@ jobs:
                   primary_color: '#b4434e',
                   package_name: 'fr.coopcycle.kooglof',
                   keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               },
               {
@@ -94,7 +105,8 @@ jobs:
                   primary_color: '#ff0000',
                   package_name: 'fr.coopcycle.robinfood',
                   keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               },
               {
@@ -107,7 +119,8 @@ jobs:
                   primary_color: '#0A090A',
                   package_name: 'fr.coopcycle.lcr',
                   keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               },
               {
@@ -120,7 +133,8 @@ jobs:
                   primary_color: '#317764',
                   package_name: 'fr.coopcycle.eraman',
                   keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               },
               {
@@ -133,7 +147,22 @@ jobs:
                   primary_color: '#1f2632',
                   package_name: 'fr.coopcycle.sicklo',
                   keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE'
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
+                }
+              },
+              {
+                id: 'coursiersmontpellier',
+                displayName: 'Les Coursiers MTP',
+                params: {
+                  instance: 'coursiersmontpellier',
+                  instance_url: 'https://coursiersmontpellier.coopcycle.org',
+                  app_name: 'Les Coursiers MTP',
+                  primary_color: '#004D9B',
+                  package_name: 'fr.coopcycle.coursiersmtp',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_COURSIERS_MTP_BASE64'
                 }
               }
             ];
@@ -179,10 +208,12 @@ jobs:
       tag: ${{ inputs.tag }}
       instance: ${{ matrix.app.params.instance }}
       instance_url: ${{ matrix.app.params.instance_url }}
-      app_name: ${{ matrix.app.params.app_name || matrix.app.displayName }}
+      app_name: ${{ matrix.app.params.app_name }}
       primary_color: ${{ matrix.app.params.primary_color }}
       package_name: ${{ matrix.app.params.package_name }}
       keystore_key_alias: ${{ matrix.app.params.keystore_key_alias }}
       keystore_key_password_secret: ${{ matrix.app.params.keystore_key_password_secret }}
+      google_services_json: ${{ matrix.app.params.google_services_json }}
       deploy_google_play: ${{ inputs.deploy_google_play }}
+      google_play_track: ${{ inputs.google_play_track }}
     secrets: inherit

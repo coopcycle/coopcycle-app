@@ -45,6 +45,10 @@ on:
         type: string
         required: false
         default: "fr.coopcycle.oauth"
+      google_services_json:
+        type: string
+        required: false
+        default: "GOOGLE_SERVICES_JSON_BASE64"
 jobs:
   FASTLANE:
     name: Release Android app with Fastlane
@@ -143,7 +147,7 @@ jobs:
         with:
           fileDir: "./android/app/"
           fileName: "google-services.json"
-          encodedString: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+          encodedString: ${{ secrets[inputs.google_services_json] }}
       - name: Decode play-store-credentials.json file
         uses: timheuer/base64-to-file@v1.2
         id: android_play_store_credentials

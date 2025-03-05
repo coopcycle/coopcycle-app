@@ -314,7 +314,7 @@ function BarcodePage({
                 ...clientActionsQueue,
                 { action, payload, token: token_action },
                 multi_package_action,
-              ].filter(e => e.action),
+              ].filter(e => e !== null && e.action),
             );
           }}
         />
