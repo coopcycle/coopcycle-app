@@ -119,7 +119,7 @@ jobs:
                   instance: 'coursiersmontpellier',
                   instance_url: 'https://coursiersmontpellier.coopcycle.org',
                   app_name: 'Les Coursiers Montpelliérains',
-                  app_id: 'org.coopcycle.CoursiersMontp',
+                  app_id: 'org.coopcycle.CoursiersMTP',
                   primary_color: '#004D9B',
                   google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_MTP'
                 }
