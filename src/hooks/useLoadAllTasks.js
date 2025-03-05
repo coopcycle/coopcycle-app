@@ -15,7 +15,7 @@ import { useFetchAllUnassignedTasks } from "./useFetchAllUnassignedTasks";
 
 export function useLoadAllTasks(date, options = {}) {
   useEffect(() => {
-    console.log("AAAAAAAAAA useLoadAllTasks", date, JSON.stringify(options));
+    console.log("AAAAAAAAAA useLoadAllTasks useEffect: ", date, JSON.stringify(options));
   }, [date, options]);
 
   const {
@@ -23,7 +23,7 @@ export function useLoadAllTasks(date, options = {}) {
     error: errorUnassignedTasks,
     isLoading:isLoadingUnassignedTasks,
     refreshTasks
-  } = { unassignedTasks: null, error: null, isLoading: false, refreshTasks: () => {console.log("AAAAAAAAAA useLoadAllTasks useFetchAllUnassignedTasks");} };
+  } = { unassignedTasks: [], error: null, isLoading: false, refreshTasks: () => {console.log("AAAAAAAAAA useLoadAllTasks useFetchAllUnassignedTasks refreshTasks");} };
   //} = useFetchAllUnassignedTasks(date, options);
 
   const {
@@ -31,13 +31,14 @@ export function useLoadAllTasks(date, options = {}) {
     error: errorTaskLists,
     isLoading: isLoadingTaskLists,
     refreshTaskLists
-  } = { taskLists: null, error: null, isLoading: false, refreshTaskLists: () => {console.log("AAAAAAAAAA useLoadAllTasks useFetchAllTaskLists");} };
+  } = { taskLists: [], error: null, isLoading: false, refreshTaskLists: () => {console.log("AAAAAAAAAA useLoadAllTasks useFetchAllTaskLists refreshTaskLists");} };
   //} = useFetchAllTaskLists(date, options);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // useEffect(() => {
   //   // TODO: replace this calls to stop using "isFetching" state from uiReducers
+  //   console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingUnassignedTasks: ", isLoadingUnassignedTasks);
   //   if (isLoadingUnassignedTasks) {
   //     loadUnassignedTasksRequest(isLoadingUnassignedTasks);
   //   } else {
@@ -47,6 +48,7 @@ export function useLoadAllTasks(date, options = {}) {
 
   // useEffect(() => {
   //   // TODO: replace this calls to stop using "isFetching" state from uiReducers
+  //   console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingTaskLists: ", isLoadingTaskLists);
   //   if (isLoadingTaskLists) {
   //     loadTaskListsRequest(isLoadingTaskLists);
   //   } else {
@@ -55,6 +57,7 @@ export function useLoadAllTasks(date, options = {}) {
   // }, [isLoadingTaskLists]);
 
   // useEffect(() => {
+  //   console.log("AAAAAAAAAA useLoadAllTasks useEffect dispatchhhhhhhh: ", unassignedTasks && taskLists);
   //   if (unassignedTasks && taskLists) {
   //     dispatch(loadUnassignedTasksSuccess(unassignedTasks));
   //     dispatch(loadTaskListsSuccess(taskLists));

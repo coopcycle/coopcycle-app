@@ -10,11 +10,13 @@ export function useFetchAllUnassignedTasks(date, options = {}) {
   const [unassignedTasks, setUnassignedTasks] = useState(null);
 
   const _options = useMemo(() => {
+    console.log("AAAAAAAAAA useFetchAllUnassignedTasks useMemo: ", JSON.stringify(options));
     return {
       ...options,
       enabled: options.enabled && date,
       params: {
         date: date.format(dateFormat),
+        assigned: "no"
       }
     }
   }, [date, options])
@@ -24,11 +26,11 @@ export function useFetchAllUnassignedTasks(date, options = {}) {
       error,
       isLoading,
       refetch: refreshUnassignedTasks
-  } = {data: null, error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllUnassignedTasks")}};
+  } = {data: [], error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllUnassignedTasks refetch")}};
   //} = useFetchAllRecords('/api/tasks', 100, _options);
 
   useEffect(() => {
-    console.log("AAAAAAAAAA setUnassignedTasks");
+    console.log("AAAAAAAAAA useFetchAllUnassignedTasks useEffect setUnassignedTasks: ", JSON.stringify(data));
     if(data) {
       setUnassignedTasks(data.sort(tasksSort))
     }

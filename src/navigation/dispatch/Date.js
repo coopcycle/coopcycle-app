@@ -15,8 +15,8 @@ export default function DateScreen({ navigation }) {
 
   const onDateChange = date => {
     console.log("AAAAAAAAAA onDateChange DISPATCH", date);
-    // dispatch(changeDate(date));
-    // navigation.goBack();
+    dispatch(changeDate(date));
+    navigation.goBack();
   };
 
 

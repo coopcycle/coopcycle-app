@@ -10,7 +10,7 @@ export default function DateScreen({ navigation }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const dispatch = useDispatch();
 
-  useLoadAllTasks(selectedDate);
+  //useLoadAllTasks(selectedDate);
 
   const onDateChange = date => {
     console.log("AAAAAAAAAA onDateChange COURIER", date);

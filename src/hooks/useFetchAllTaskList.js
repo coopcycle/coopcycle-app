@@ -9,6 +9,7 @@ export function useFetchAllTaskLists(date, options = {}) {
   const [taskLists, setTaskLists] = useState(null);
 
   const _options = useMemo(() => {
+    console.log("AAAAAAAAAA useFetchAllTaskLists useMemo: ", JSON.stringify(options));
     return {
       ...options,
       enabled: options.enabled && date,
@@ -23,11 +24,11 @@ export function useFetchAllTaskLists(date, options = {}) {
       error,
       isLoading,
       refetch: refreshTaskLists
-  } = {data: null, error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllTaskLists")}};
+  } = {data: [], error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllTaskLists refetch")}};
   //} = useFetchAllRecords('/api/task_lists', 100, _options);
 
   useEffect(() => {
-    console.log("AAAAAAAAAA setTaskLists");
+    console.log("AAAAAAAAAA useFetchAllTaskLists useEffect setTaskLists: ", JSON.stringify(data));
     if(data) {
       setTaskLists(data);
     }
