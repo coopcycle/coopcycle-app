@@ -4,28 +4,28 @@ import { useFetchAllRecords } from "./useFetchAllRecords";
 
 
 export function useFetchAllTaskLists(date, options = {}) {
-  const dateFormat = 'YYYY-MM-DD';
-
   const [taskLists, setTaskLists] = useState(null);
 
+  const stableOptions = useMemo(() => JSON.stringify(options), [options])
+
   const _options = useMemo(() => {
-    console.log("AAAAAAAAAA useFetchAllTaskLists useMemo: ", JSON.stringify(options));
+    console.log("AAAAAAAAAA useFetchAllTaskLists useMemo: ", stableOptions);
     return {
-      ...options,
-      enabled: options.enabled && date,
+      ...JSON.parse(stableOptions),
+      enabled: options.enabled && !!date,
       params: {
-        date: date.format(dateFormat),
+        date,
       }
     }
-  }, [date, options])
+  }, [date, stableOptions])
 
   const {
       data,
       error,
       isLoading,
       refetch: refreshTaskLists
-  } = {data: [], error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllTaskLists refetch")}};
-  //} = useFetchAllRecords('/api/task_lists', 100, _options);
+  //} = {data: [], error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllTaskLists refetch")}};
+  } = useFetchAllRecords('/api/task_lists', 100, _options);
 
   useEffect(() => {
     console.log("AAAAAAAAAA useFetchAllTaskLists useEffect setTaskLists: ", JSON.stringify(data));

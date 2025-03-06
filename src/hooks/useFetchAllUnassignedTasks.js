@@ -5,36 +5,37 @@ import { tasksSort } from "../shared/src/logistics/redux/taskUtils";
 
 
 export function useFetchAllUnassignedTasks(date, options = {}) {
-  const dateFormat = 'YYYY-MM-DD';
-
   const [unassignedTasks, setUnassignedTasks] = useState(null);
 
+  const stableOptions = useMemo(() => JSON.stringify(options), [options])
+
   const _options = useMemo(() => {
-    console.log("AAAAAAAAAA useFetchAllUnassignedTasks useMemo: ", JSON.stringify(options));
+    console.log("AAAAAAAAAA useFetchAllUnassignedTasks useMemo: stableOptions ", stableOptions);
     return {
-      ...options,
-      enabled: options.enabled && date,
+      ...JSON.parse(stableOptions),
+      enabled: options.enabled && !!date,
       params: {
-        date: date.format(dateFormat),
+        date,
         assigned: "no"
       }
     }
-  }, [date, options])
+  }, [date, stableOptions])
 
   const {
       data,
       error,
       isLoading,
       refetch: refreshUnassignedTasks
-  } = {data: [], error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllUnassignedTasks refetch")}};
-  //} = useFetchAllRecords('/api/tasks', 100, _options);
+  //} = {data: [], error: null, isLoading: false, refetch: () => {console.log("AAAAAAAAAA useFetchAllUnassignedTasks refetch")}};
+  } = useFetchAllRecords('/api/tasks', 100, _options);
 
   useEffect(() => {
     console.log("AAAAAAAAAA useFetchAllUnassignedTasks useEffect setUnassignedTasks: ", JSON.stringify(data));
+    console.log("AAAAAAAAAA useFetchAllUnassignedTasks error: ", error);
     if(data) {
       setUnassignedTasks(data.sort(tasksSort))
     }
-  }, [data]);
+  }, [data, error]);
 
   return {
     unassignedTasks,
