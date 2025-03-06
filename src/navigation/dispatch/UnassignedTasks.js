@@ -39,12 +39,11 @@ function UnassignedTasks({
     error,
     isLoading,
     refreshTasks
-  } = { error: null, isLoading: false, refreshTasks: () => {console.log("AAAAAAAAAA UnassignedTasks useLoadAllTasks refreshTasks");} };
-  //} = useLoadAllTasks(date, {enabled: true});
+  } = useLoadAllTasks(date, {enabled: true});
 
   const { t } = useTranslation()
 
-  const unassignedTasks = useSelector(selectUnassignedTasks)
+   const unassignedTasks = useSelector(selectUnassignedTasks) 
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
