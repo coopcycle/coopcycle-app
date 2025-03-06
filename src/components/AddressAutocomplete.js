@@ -181,7 +181,7 @@ function AddressAutocomplete(props) {
               console.error('AddressAutocomplete; _autocomplete', error);
             });
         }
-      }, 750),
+      }, 500),
     [country, fuse, postcode],
   );
 
