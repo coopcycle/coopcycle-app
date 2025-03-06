@@ -128,6 +128,7 @@ function Restaurant(props) {
   const renderRestaurantMenuHeader = () => (
     <RestaurantMenuHeader
       activeSection={activeSection}
+      offsetSectionsCount={2}
       sectionRef={sectionListRef}
       sections={sections}
       isLoading={isLoading}
