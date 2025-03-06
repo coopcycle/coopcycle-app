@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import {
   loadTaskListsFailure,
@@ -12,57 +12,51 @@ import {
 import { useFetchAllTaskLists } from "./useFetchAllTaskList";
 import { useFetchAllUnassignedTasks } from "./useFetchAllUnassignedTasks";
 
-
 export function useLoadAllTasks(date, options = {}) {
-  useEffect(() => {
-    console.log("AAAAAAAAAA useLoadAllTasks useEffect: ", date, JSON.stringify(options));
-  }, [date, options]);
+  const dispatch = useDispatch();
+
+  // Convert date to a string to avoid infinite loop
+  const memoizedDate = useMemo(() => date.format("YYYY-MM-DD"), [date]);
 
   const {
     unassignedTasks,
     error: errorUnassignedTasks,
-    isLoading:isLoadingUnassignedTasks,
-    refreshTasks
-  } = { unassignedTasks: [], error: null, isLoading: false, refreshTasks: () => {console.log("AAAAAAAAAA useLoadAllTasks useFetchAllUnassignedTasks refreshTasks");} };
-  //} = useFetchAllUnassignedTasks(date, options);
+    isLoading: isLoadingUnassignedTasks,
+    refreshTasks,
+  } = useFetchAllUnassignedTasks(memoizedDate, options);
 
   const {
     taskLists,
     error: errorTaskLists,
     isLoading: isLoadingTaskLists,
-    refreshTaskLists
-  } = { taskLists: [], error: null, isLoading: false, refreshTaskLists: () => {console.log("AAAAAAAAAA useLoadAllTasks useFetchAllTaskLists refreshTaskLists");} };
-  //} = useFetchAllTaskLists(date, options);
+    refreshTaskLists,
+  } = useFetchAllTaskLists(memoizedDate, options);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingUnassignedTasks: ", isLoadingUnassignedTasks);
+    if (isLoadingUnassignedTasks) {
+      dispatch(loadUnassignedTasksRequest());
+    } else {
+      dispatch(loadUnassignedTasksFailure());
+    }
+  }, [isLoadingUnassignedTasks, dispatch]);
 
-  // useEffect(() => {
-  //   // TODO: replace this calls to stop using "isFetching" state from uiReducers
-  //   console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingUnassignedTasks: ", isLoadingUnassignedTasks);
-  //   if (isLoadingUnassignedTasks) {
-  //     loadUnassignedTasksRequest(isLoadingUnassignedTasks);
-  //   } else {
-  //     loadUnassignedTasksFailure(isLoadingUnassignedTasks);
-  //   }
-  // }, [isLoadingUnassignedTasks]);
+  useEffect(() => {
+    console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingTaskLists: ", isLoadingTaskLists);
+    if (isLoadingTaskLists) {
+      dispatch(loadTaskListsRequest());
+    } else {
+      dispatch(loadTaskListsFailure());
+    }
+  }, [isLoadingTaskLists, dispatch]);
 
-  // useEffect(() => {
-  //   // TODO: replace this calls to stop using "isFetching" state from uiReducers
-  //   console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingTaskLists: ", isLoadingTaskLists);
-  //   if (isLoadingTaskLists) {
-  //     loadTaskListsRequest(isLoadingTaskLists);
-  //   } else {
-  //     loadTaskListsFailure(isLoadingTaskLists);
-  //   }
-  // }, [isLoadingTaskLists]);
-
-  // useEffect(() => {
-  //   console.log("AAAAAAAAAA useLoadAllTasks useEffect dispatchhhhhhhh: ", unassignedTasks && taskLists);
-  //   if (unassignedTasks && taskLists) {
-  //     dispatch(loadUnassignedTasksSuccess(unassignedTasks));
-  //     dispatch(loadTaskListsSuccess(taskLists));
-  //   }
-  // }, [dispatch, taskLists, unassignedTasks]);
+  useEffect(() => {
+    console.log("AAAAAAAAAA useLoadAllTasks useEffect dispatchhhhhhhh: ", unassignedTasks, taskLists);
+    if (unassignedTasks && taskLists) {
+      dispatch(loadUnassignedTasksSuccess(unassignedTasks));
+      dispatch(loadTaskListsSuccess(taskLists));
+    }
+  }, [dispatch, taskLists, unassignedTasks]);
 
   return {
     error: errorUnassignedTasks || errorTaskLists,
@@ -74,5 +68,5 @@ export function useLoadAllTasks(date, options = {}) {
     },
     refreshTasks,
     refreshTaskLists,
-  }
+  };
 }
