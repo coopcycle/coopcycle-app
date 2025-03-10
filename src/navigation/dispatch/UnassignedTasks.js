@@ -9,7 +9,6 @@ import TaskList from '../../components/TaskList';
 import {
   selectSelectedDate,
   selectTasksWithColor,
-  selectUnassignedTasks,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { navigateToTask } from '../../navigation/utils';
 import { useGetUnassignedTasksQuery } from '../../redux/api/slice';
@@ -37,7 +36,7 @@ function UnassignedTasks({
     InteractionManager.runAfterInteractions(() => {
       dispatch(initialize());
     });
-  }, [dispatch, unassignedTasks]);
+  }, [dispatch]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
@@ -71,10 +70,6 @@ function UnassignedTasks({
         </AddButton>
       </View>
       <View style={{ flex: 1 }}>
-        {isLoading &&
-          <Box flex={1} justifyContent="center" alignItems="center">
-            <ActivityIndicator animating={true} size="large" />
-          </Box>}
         {isError && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
         {!unassignedTasks && <TapToRefresh onPress={refetch} />}
         {unassignedTasks && (
@@ -101,6 +96,7 @@ function UnassignedTasks({
             onMultipleSelectionAction={selectedTasks =>
               assignSelectedTasks(selectedTasks)
             }
+            refresh={refetch}
           />
         )}
       </View>
