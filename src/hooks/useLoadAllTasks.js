@@ -1,45 +1,24 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useEffect, useMemo } from "react";
 
 import {
   loadTaskListsFailure,
   loadTaskListsRequest,
-  loadTaskListsSuccess,
-  loadUnassignedTasksFailure,
-  loadUnassignedTasksRequest,
-  loadUnassignedTasksSuccess,
+  loadTaskListsSuccess
 } from "../redux/Dispatch/actions";
 import { useFetchAllTaskLists } from "./useFetchAllTaskList";
-import { useFetchAllUnassignedTasks } from "./useFetchAllUnassignedTasks";
+
 
 export function useLoadAllTasks(date, options = {}) {
   const dispatch = useDispatch();
-
-  // Convert date to a string to avoid infinite loop
-  const memoizedDate = useMemo(() => date.format("YYYY-MM-DD"), [date]);
-
-  const {
-    unassignedTasks,
-    error: errorUnassignedTasks,
-    isLoading: isLoadingUnassignedTasks,
-    refreshTasks,
-  } = useFetchAllUnassignedTasks(memoizedDate, options);
 
   const {
     taskLists,
     error: errorTaskLists,
     isLoading: isLoadingTaskLists,
     refreshTaskLists,
-  } = useFetchAllTaskLists(memoizedDate, options);
+  } = useFetchAllTaskLists(date, options);
 
-  useEffect(() => {
-    console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingUnassignedTasks: ", isLoadingUnassignedTasks);
-    if (isLoadingUnassignedTasks) {
-      dispatch(loadUnassignedTasksRequest());
-    } else {
-      dispatch(loadUnassignedTasksFailure());
-    }
-  }, [isLoadingUnassignedTasks, dispatch]);
 
   useEffect(() => {
     console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingTaskLists: ", isLoadingTaskLists);
@@ -51,22 +30,19 @@ export function useLoadAllTasks(date, options = {}) {
   }, [isLoadingTaskLists, dispatch]);
 
   useEffect(() => {
-    console.log("AAAAAAAAAA useLoadAllTasks useEffect dispatchhhhhhhh: ", unassignedTasks, taskLists);
-    if (unassignedTasks && taskLists) {
-      dispatch(loadUnassignedTasksSuccess(unassignedTasks));
+    console.log("AAAAAAAAAA useLoadAllTasks useEffect dispatchhhhhhhh: ", taskLists);
+    if (taskLists) {
       dispatch(loadTaskListsSuccess(taskLists));
     }
-  }, [dispatch, taskLists, unassignedTasks]);
+  }, [dispatch, taskLists]);
 
   return {
-    error: errorUnassignedTasks || errorTaskLists,
-    isLoading: isLoadingUnassignedTasks || isLoadingTaskLists,
+    error: errorTaskLists,
+    isLoading: isLoadingTaskLists,
     refresh: () => {
       console.log("AAAAAAAAAA useLoadAllTasks refreshhhh");
-      refreshTasks();
       refreshTaskLists();
     },
-    refreshTasks,
     refreshTaskLists,
   };
 }

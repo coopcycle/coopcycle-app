@@ -18,6 +18,9 @@ export const apiSlice = createApi({
         body: {},
       }),
     }),
+    getUnassignedTasks: builder.query({
+      query: date => `/api/tasks?date=${date.format('YYYY-MM-DD')}&assigned=no`
+    }),
     getMyTasks: builder.query({
       query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,
     }),
@@ -40,6 +43,7 @@ export const apiSlice = createApi({
 // Export the auto-generated hook for the query endpoints
 export const {
   useSubscriptionGenerateOrdersMutation,
+  useGetUnassignedTasksQuery,
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
   useUpdateOrderMutation,
