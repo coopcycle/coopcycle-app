@@ -12,13 +12,13 @@ import {
   selectUnassignedTasks,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { navigateToTask } from '../../navigation/utils';
+import { useGetUnassignedTasksQuery } from '../../redux/api/slice';
 import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
 } from '../../redux/Dispatch/actions';
 import AddButton from './components/AddButton';
-import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 
 
 function UnassignedTasks({
@@ -26,24 +26,22 @@ function UnassignedTasks({
   tasksWithColor,
   route,
 }) {
+  const { t } = useTranslation();
+  const { navigate } = navigation;
+
   const dispatch = useDispatch();
-  const date = useSelector(selectSelectedDate);
+  const selectedDate = useSelector(selectSelectedDate);
+  const { isLoading, isError, isEmpty, refetch } = useGetUnassignedTasksQuery(selectedDate, {
+    refetchOnFocus: true,
+  });
+  const unassignedTasks = useSelector(selectUnassignedTasks)
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       dispatch(initialize());
+      console.log('UNSA', unassignedTasks)
     });
-  }, [dispatch]);
-
-  const {
-    error,
-    isLoading,
-    refreshTasks
-  } = useLoadAllTasks(date, {enabled: true});
-
-  const { t } = useTranslation()
-
-   const unassignedTasks = useSelector(selectUnassignedTasks) 
+  }, [dispatch, unassignedTasks]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
@@ -65,9 +63,6 @@ function UnassignedTasks({
     return task.status !== 'DONE';
   }
 
-  const { navigate } = navigation;
-  const isEmpty = unassignedTasks?.length === 0;
-
   return (
     <View style={{ flex: 1 }}>
       <View>
@@ -75,7 +70,7 @@ function UnassignedTasks({
           testID="dispatchNewDelivery"
           onPress={() => navigation.navigate('DispatchNewDelivery')}>
           <Text style={{ fontWeight: '700' }}>
-            {date.format('ll')}
+            {selectedDate.format('ll')}
           </Text>
         </AddButton>
       </View>
@@ -84,8 +79,8 @@ function UnassignedTasks({
           <Box flex={1} justifyContent="center" alignItems="center">
             <ActivityIndicator animating={true} size="large" />
           </Box>}
-        {error && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
-        {isEmpty && <TapToRefresh onPress={refreshTasks} />}
+        {isError && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
+        {isEmpty && <TapToRefresh onPress={refetch} />}
         {!isEmpty && (
           <TaskList
             tasks={unassignedTasks}
