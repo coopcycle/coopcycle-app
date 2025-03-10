@@ -1,8 +1,8 @@
-import { Box, Text } from 'native-base';
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, InteractionManager, View } from 'react-native';
 import { connect, useDispatch, useSelector } from 'react-redux';
+import { InteractionManager, View } from 'react-native';
+import { Text } from 'native-base';
+import { useTranslation } from 'react-i18next';
+import React, { useEffect } from 'react';
 
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
@@ -11,12 +11,12 @@ import {
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { navigateToTask } from '../../navigation/utils';
-import { useGetUnassignedTasksQuery } from '../../redux/api/slice';
 import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
 } from '../../redux/Dispatch/actions';
+import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 import AddButton from './components/AddButton';
 
 
@@ -30,7 +30,12 @@ function UnassignedTasks({
 
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
-  const { data: unassignedTasks, isLoading, isError, refetch } = useGetUnassignedTasksQuery(selectedDate);
+  const {
+    unassignedTasks,
+    taskLists,
+    isError,
+    refetch
+  } = useLoadAllTasks(selectedDate);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {

@@ -1,48 +1,32 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-
 import {
-  loadTaskListsFailure,
-  loadTaskListsRequest,
-  loadTaskListsSuccess
-} from "../redux/Dispatch/actions";
-import { useFetchAllTaskLists } from "./useFetchAllTaskList";
+  useGetTaskListsQuery,
+  useGetUnassignedTasksQuery,
+} from "../redux/api/slice";
 
 
-export function useLoadAllTasks(date, options = {}) {
-  const dispatch = useDispatch();
+export function useLoadAllTasks(date) {
+  const {
+    data: unassignedTasks,
+    isError: isErrorUnassignedTasks,
+    isLoading: isLoadingUnassignedTasks,
+    refetch: refetchUnassignedTasks,
+  } = useGetUnassignedTasksQuery(date);
 
   const {
-    taskLists,
-    error: errorTaskLists,
+    data: taskLists,
+    isError: isErrorTaskLists,
     isLoading: isLoadingTaskLists,
-    refreshTaskLists,
-  } = useFetchAllTaskLists(date, options);
-
-
-  useEffect(() => {
-    console.log("AAAAAAAAAA useLoadAllTasks useEffect isLoadingTaskLists: ", isLoadingTaskLists);
-    if (isLoadingTaskLists) {
-      dispatch(loadTaskListsRequest());
-    } else {
-      dispatch(loadTaskListsFailure());
-    }
-  }, [isLoadingTaskLists, dispatch]);
-
-  useEffect(() => {
-    console.log("AAAAAAAAAA useLoadAllTasks useEffect dispatchhhhhhhh: ", taskLists);
-    if (taskLists) {
-      dispatch(loadTaskListsSuccess(taskLists));
-    }
-  }, [dispatch, taskLists]);
+    refetch: refetchTaskLists,
+  } = useGetTaskListsQuery(date);
 
   return {
-    error: errorTaskLists,
-    isLoading: isLoadingTaskLists,
+    isError: isErrorTaskLists || isErrorUnassignedTasks,
+    isLoading: isLoadingTaskLists || isLoadingUnassignedTasks,
     refresh: () => {
-      console.log("AAAAAAAAAA useLoadAllTasks refreshhhh");
-      refreshTaskLists();
+      refetchUnassignedTasks();
+      refetchTaskLists();
     },
-    refreshTaskLists,
+    unassignedTasks,
+    taskLists,
   };
 }

@@ -33,6 +33,19 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       }
     }),
+    getTaskLists: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsBis(
+          fetchWithBQ,
+          'api/task_lists',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
     getMyTasks: builder.query({
       query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,
     }),
@@ -54,9 +67,10 @@ export const apiSlice = createApi({
 
 // Export the auto-generated hook for the query endpoints
 export const {
-  useSubscriptionGenerateOrdersMutation,
-  useGetUnassignedTasksQuery,
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
+  useGetTaskListsQuery,
+  useGetUnassignedTasksQuery,
+  useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
 } = apiSlice;
