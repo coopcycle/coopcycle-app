@@ -31,15 +31,11 @@ function UnassignedTasks({
 
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
-  const { isLoading, isError, isEmpty, refetch } = useGetUnassignedTasksQuery(selectedDate, {
-    refetchOnFocus: true,
-  });
-  const unassignedTasks = useSelector(selectUnassignedTasks)
+  const { data: unassignedTasks, isLoading, isError, refetch } = useGetUnassignedTasksQuery(selectedDate);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       dispatch(initialize());
-      console.log('UNSA', unassignedTasks)
     });
   }, [dispatch, unassignedTasks]);
 
@@ -80,8 +76,8 @@ function UnassignedTasks({
             <ActivityIndicator animating={true} size="large" />
           </Box>}
         {isError && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
-        {isEmpty && <TapToRefresh onPress={refetch} />}
-        {!isEmpty && (
+        {!unassignedTasks && <TapToRefresh onPress={refetch} />}
+        {unassignedTasks && (
           <TaskList
             tasks={unassignedTasks}
             tasksWithColor={tasksWithColor}

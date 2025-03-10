@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './baseQuery';
+import { fetchAllRecordsBis } from '../util';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -19,7 +20,18 @@ export const apiSlice = createApi({
       }),
     }),
     getUnassignedTasks: builder.query({
-      query: date => `/api/tasks?date=${date.format('YYYY-MM-DD')}&assigned=no`
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsBis(
+          fetchWithBQ,
+          'api/tasks',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
+            assigned: 'no'
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      }
     }),
     getMyTasks: builder.query({
       query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,
