@@ -4,6 +4,7 @@ import { useFetchAllRecords } from "./useFetchAllRecords";
 import { sortByName } from "../redux/util";
 
 
+// TODO: move this logic to api slice
 export function useFetchAllStores(options = {}) {
   const [stores, setStores] = useState();
 
