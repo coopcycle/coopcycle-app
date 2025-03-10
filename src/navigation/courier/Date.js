@@ -4,18 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Calendar } from '../../components/Calendar';
 import { changeDate } from '../../redux/Dispatch/actions';
 import { loadTasks, selectTaskSelectedDate } from '../../redux/Courier';
-import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 
 export default function DateScreen({ navigation }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const dispatch = useDispatch();
 
-  //useLoadAllTasks(selectedDate);
-
   const onDateChange = date => {
-    console.log("AAAAAAAAAA onDateChange COURIER", date);
-    // dispatch(changeDate(date));
-    // dispatch(loadTasks(date));
+    dispatch(changeDate(date));
+    dispatch(loadTasks(date));
     navigation.goBack();
   };
 
