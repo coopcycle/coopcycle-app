@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
 });
 
 const RestaurantMenuHeader = ({
-  sections,
+  sections, // menuSections
   sectionRef,
-  activeSection,
+  activeSection, // activeSection in the parent FlatList
+  offsetSectionsCount, // number of sections in the parent FlatList before the menu
   isLoading,
 }) => {
   const [active, setActive] = useState(0);
@@ -40,16 +41,16 @@ const RestaurantMenuHeader = ({
   const activeBorderBottomColor = usePrimaryColor();
 
   const scrollToSection = index => {
-    sectionRef.current.scrollToIndex({ index: index + 3, viewOffset: 16 });
+    sectionRef.current.scrollToIndex({ index: index + offsetSectionsCount, viewOffset: 16 });
   };
 
   useEffect(() => {
     if (sections.length === 0) return;
-    let scrollTo = activeSection - 3;
-    if (activeSection - 3 >= sections.length) {
+    let scrollTo = activeSection - offsetSectionsCount;
+    if (activeSection - offsetSectionsCount >= sections.length) {
       scrollTo = sections.length - 1;
     }
-    if (activeSection <= 3) {
+    if (activeSection <= offsetSectionsCount) {
       scrollTo = 0;
     }
     setActive(scrollTo);
@@ -57,7 +58,7 @@ const RestaurantMenuHeader = ({
       index: scrollTo,
       viewOffset: 64,
     });
-  }, [activeSection, sections.length]);
+  }, [activeSection, offsetSectionsCount, sections.length]);
 
   const Item = ({ item, index }) => (
     <View
