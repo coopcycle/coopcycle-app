@@ -1,6 +1,6 @@
-import { connect, useDispatch, useSelector } from 'react-redux';
 import { InteractionManager, View } from 'react-native';
 import { Text } from 'native-base';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import React, { useEffect } from 'react';
 
@@ -9,6 +9,7 @@ import {
   bulkAssignmentTasks,
   initialize,
   loadTaskListsSuccess,
+  loadUnassignedTasksRequest,
   loadUsersSuccess,
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
@@ -25,17 +26,19 @@ import TaskList from '../../components/TaskList';
 
 function UnassignedTasks({
   navigation,
-  tasksWithColor,
   route,
 }) {
   const { t } = useTranslation();
   const { navigate } = navigation;
+
+  const tasksWithColor = useSelector(selectTasksWithColor);
 
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
   const {
     unassignedTasks,
     taskLists,
+    isLoading,
     isError,
     refetch
   } = useLoadAllTasks(selectedDate);
@@ -49,6 +52,12 @@ function UnassignedTasks({
       dispatch(initialize());
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    if(isLoading) {
+      dispatch(loadUnassignedTasksRequest());
+    }
+  }, [dispatch, isLoading]);
 
   useEffect(() => {
     if (taskLists) {
@@ -128,19 +137,4 @@ function UnassignedTasks({
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    tasksWithColor: selectTasksWithColor(state),
-    user: state.app.user,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UnassignedTasks);
+export default UnassignedTasks;
