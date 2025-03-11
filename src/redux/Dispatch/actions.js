@@ -119,14 +119,6 @@ export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE);
 export const changeDate = createAction(CHANGE_DATE);
 const _initialize = createAction(DISPATCH_INITIALIZE);
 
-/**
- * Thunk Creators
- */
-
-function _loadAll(httpClient) {
-  return Promise.all([
-  ]);
-}
 
 function showAlert(e) {
   let message = i18n.t('TRY_LATER');
@@ -156,18 +148,9 @@ export function initialize() {
       return;
     }
 
-    const httpClient = getState().app.httpClient;
-
     dispatch(loadUnassignedTasksRequest());
-
-    _loadAll(httpClient)
-      .then(values => {
-        dispatch(connectCentrifugo());
-        dispatch(_initialize());
-      })
-      .catch(e => {
-        dispatch(loadUnassignedTasksFailure(e));
-      });
+    dispatch(connectCentrifugo());
+    dispatch(_initialize());
   };
 }
 
