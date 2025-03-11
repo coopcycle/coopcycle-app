@@ -148,7 +148,6 @@ export function initialize() {
       return;
     }
 
-    dispatch(loadUnassignedTasksRequest());
     dispatch(connectCentrifugo());
     dispatch(_initialize());
   };
