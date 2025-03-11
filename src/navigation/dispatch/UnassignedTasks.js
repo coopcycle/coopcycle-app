@@ -15,6 +15,7 @@ import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
+  loadTaskListsSuccess,
 } from '../../redux/Dispatch/actions';
 import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 import AddButton from './components/AddButton';
@@ -42,6 +43,12 @@ function UnassignedTasks({
       dispatch(initialize());
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (taskLists) {
+      dispatch(loadTaskListsSuccess(taskLists))
+    }
+  }, [dispatch, taskLists]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
