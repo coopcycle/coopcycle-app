@@ -38,10 +38,8 @@ export function sortByKey(list, key) {
   return _.sortBy(list, [key]);
 }
 
-// Deprecated
-export async function fetchAllRecords(httpClient, url, itemsPerPage, otherParams = null) {
+export async function fetchAllRecordsUsingHttpClient(httpClient, url, itemsPerPage, otherParams = null) {
   const fetch = async (page) => {
-    console.log('fetchAllRecords', url, itemsPerPage, otherParams, (new URLSearchParams({page, itemsPerPage, ...otherParams})).toString())
     const params = new URLSearchParams({page, itemsPerPage, ...otherParams});
     return httpClient.get(`${url}?${params.toString()}`)
   };
@@ -65,7 +63,7 @@ export async function fetchAllRecords(httpClient, url, itemsPerPage, otherParams
     .then(results => results.reduce((acc, rs) => acc.concat(rs['hydra:member']), firstRs['hydra:member']));
 }
 
-export async function fetchAllRecordsBis(fetchWithBQ, url, itemsPerPage, otherParams = null) {
+export async function fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, url, itemsPerPage, otherParams = null) {
   const fetch = async (page) => {
     const params = new URLSearchParams({page, itemsPerPage, ...otherParams});
     const result = await fetchWithBQ(`${url}?${params.toString()}`);

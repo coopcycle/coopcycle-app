@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { fetchAllRecords } from "../redux/util";
+import { fetchAllRecordsUsingHttpClient } from "../redux/util";
 
 
 export function useFetchAllRecords(url, itemsPerPage, options = {}) {
@@ -15,13 +15,18 @@ export function useFetchAllRecords(url, itemsPerPage, options = {}) {
   const fetchData = useCallback(() => {
     if(options.enabled || force) {
       setIsLoading(true);
-      fetchAllRecords(httpClient, url, itemsPerPage, options.params)
-          .then(setData)
-          .catch(setError)
-          .finally(() => {
-            setIsLoading(false);
-            setForce(false);
-          });
+      fetchAllRecordsUsingHttpClient(
+        httpClient,
+        url,
+        itemsPerPage,
+        options.params
+      )
+      .then(setData)
+      .catch(setError)
+      .finally(() => {
+        setIsLoading(false);
+        setForce(false);
+      });
     }
   }, [force, httpClient, itemsPerPage, options, url]);
 

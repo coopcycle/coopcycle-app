@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQueryWithReauth } from './baseQuery';
-import { fetchAllRecordsBis, sortByKey } from '../util';
+import { fetchAllRecordsUsingFetchWithBQ, sortByKey } from '../util';
 
 
 // Define our single API slice object
@@ -23,7 +23,7 @@ export const apiSlice = createApi({
     }),
     getUnassignedTasks: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsBis(
+        const result = await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/tasks',
           100,
@@ -37,7 +37,7 @@ export const apiSlice = createApi({
     }),
     getTaskLists: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsBis(
+        const result = await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/task_lists',
           100,
@@ -50,7 +50,7 @@ export const apiSlice = createApi({
     }),
     getCourierUsers: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsBis(
+        const result = await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           '/api/users',
           100,

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { createTaskItemsTransform, fetchAllRecords } from '../util';
+import { createTaskItemsTransform, fetchAllRecordsUsingHttpClient } from '../util';
 
 describe('Redux | util', () => {
   it('TaskItemsTransform | in', () => {
@@ -58,7 +58,7 @@ describe('Redux | util', () => {
     });
   });
 
-  describe('fetchAllRecords', () => {
+  describe('fetchAllRecordsUsingHttpClient', () => {
     const members = [
       {'@id': '/api/stores/1'},
       {'@id': '/api/stores/2'}
@@ -71,7 +71,7 @@ describe('Redux | util', () => {
         'hydra:member': members
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 10);
+      const rs = await fetchAllRecordsUsingHttpClient(httpClient, '/api/stores', 10);
       expect(rs).toEqual(members);
       expect(httpClient.get).toHaveBeenCalledTimes(1);
     });
@@ -83,7 +83,7 @@ describe('Redux | util', () => {
         'hydra:member': members
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 2);
+      const rs = await fetchAllRecordsUsingHttpClient(httpClient, '/api/stores', 2);
       expect(rs).toEqual([...members, ...members, ...members]);
       expect(httpClient.get).toHaveBeenCalledTimes(3);
     });
@@ -95,7 +95,7 @@ describe('Redux | util', () => {
         'hydra:member': members
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 7);
+      const rs = await fetchAllRecordsUsingHttpClient(httpClient, '/api/stores', 7);
       expect(rs).toEqual(members);
       expect(httpClient.get).toHaveBeenCalledTimes(1);
     });
@@ -107,7 +107,7 @@ describe('Redux | util', () => {
         'hydra:member': members
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 1);
+      const rs = await fetchAllRecordsUsingHttpClient(httpClient, '/api/stores', 1);
       expect(rs).toEqual(members);
       expect(httpClient.get).toHaveBeenCalledTimes(1);
     });
