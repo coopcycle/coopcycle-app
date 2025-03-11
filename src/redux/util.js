@@ -34,6 +34,10 @@ export function sortByName(list) {
   return _.sortBy(list, ['name']);
 }
 
+export function sortByKey(list, key) {
+  return _.sortBy(list, [key]);
+}
+
 // Deprecated
 export async function fetchAllRecords(httpClient, url, itemsPerPage, otherParams = null) {
   const fetch = async (page) => {

@@ -123,13 +123,8 @@ const _initialize = createAction(DISPATCH_INITIALIZE);
  * Thunk Creators
  */
 
-function _loadUsers(httpClient) {
-  return httpClient.get('/api/users?roles[]=ROLE_COURIER');
-}
-
 function _loadAll(httpClient) {
   return Promise.all([
-    _loadUsers(httpClient),
   ]);
 }
 
@@ -167,8 +162,6 @@ export function initialize() {
 
     _loadAll(httpClient)
       .then(values => {
-        const [users] = values;
-        dispatch(loadUsersSuccess(users['hydra:member']));
         dispatch(connectCentrifugo());
         dispatch(_initialize());
       })

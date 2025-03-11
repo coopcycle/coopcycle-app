@@ -4,21 +4,23 @@ import { Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import React, { useEffect } from 'react';
 
-import TapToRefresh from '../../components/TapToRefresh';
-import TaskList from '../../components/TaskList';
-import {
-  selectSelectedDate,
-  selectTasksWithColor,
-} from '../../coopcycle-frontend-js/logistics/redux';
-import { navigateToTask } from '../../navigation/utils';
 import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
   loadTaskListsSuccess,
+  loadUsersSuccess,
 } from '../../redux/Dispatch/actions';
+import { navigateToTask } from '../../navigation/utils';
+import {
+  selectSelectedDate,
+  selectTasksWithColor,
+} from '../../coopcycle-frontend-js/logistics/redux';
+import { useGetCourierUsersQuery } from '../../redux/api/slice';
 import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 import AddButton from './components/AddButton';
+import TapToRefresh from '../../components/TapToRefresh';
+import TaskList from '../../components/TaskList';
 
 
 function UnassignedTasks({
@@ -38,6 +40,10 @@ function UnassignedTasks({
     refetch
   } = useLoadAllTasks(selectedDate);
 
+  const {
+    data: courierUsers,
+  } = useGetCourierUsersQuery();
+
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       dispatch(initialize());
@@ -49,6 +55,12 @@ function UnassignedTasks({
       dispatch(loadTaskListsSuccess(taskLists))
     }
   }, [dispatch, taskLists]);
+
+  useEffect(() => {
+    if(courierUsers) {
+      dispatch(loadUsersSuccess(courierUsers))
+    }
+  }, [courierUsers, dispatch]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');

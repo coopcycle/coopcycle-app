@@ -1,6 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+
 import { baseQueryWithReauth } from './baseQuery';
-import { fetchAllRecordsBis } from '../util';
+import { fetchAllRecordsBis, sortByKey } from '../util';
+
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -46,6 +48,24 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       },
     }),
+    getCourierUsers: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsBis(
+          fetchWithBQ,
+          '/api/users',
+          100,
+          {
+            'roles[]': 'ROLE_COURIER'
+          }
+        );
+
+        if (!result) {
+          return { error: "result.error" }
+        }
+
+        return { data: sortByKey(result, 'username') };
+      },
+    }),
     getMyTasks: builder.query({
       query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,
     }),
@@ -67,6 +87,7 @@ export const apiSlice = createApi({
 
 // Export the auto-generated hook for the query endpoints
 export const {
+  useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
   useGetTaskListsQuery,

@@ -74,8 +74,6 @@ function mapStateToProps(state, ownProps) {
     u => _.includes(u.roles, 'ROLE_COURIER') && u.username !== user.username,
   );
 
-  users.sort((a, b) => (a.username < b.username ? -1 : 1));
-
   const withSelfAssignBtn = ownProps.route.params?.withSelfAssignBtn || true;
 
   return {
