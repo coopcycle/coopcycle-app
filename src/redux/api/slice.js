@@ -48,6 +48,19 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       },
     }),
+    getTaskListsV2: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/task_lists/v2',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
     getCourierUsers: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -91,6 +104,7 @@ export const {
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
   useGetTaskListsQuery,
+  useGetTaskListsV2Query,
   useGetUnassignedTasksQuery,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
