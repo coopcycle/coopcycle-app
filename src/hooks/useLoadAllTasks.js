@@ -1,5 +1,5 @@
 import {
-  useGetTaskListsQuery,
+  useGetTaskListsV2Query,
   useGetUnassignedTasksQuery,
 } from "../redux/api/slice";
 
@@ -17,7 +17,7 @@ export function useLoadAllTasks(date) {
     isError: isErrorTaskLists,
     isLoading: isLoadingTaskLists,
     refetch: refetchTaskLists,
-  } = useGetTaskListsQuery(date);
+  } = useGetTaskListsV2Query(date);
 
   return {
     isError: isErrorTaskLists || isErrorUnassignedTasks,
