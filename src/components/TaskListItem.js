@@ -244,8 +244,9 @@ class TaskListItem extends Component {
             <View style={styles.itemIcon}>
               <TaskTypeIcon task={task} />
               <TaskStatusIcon task={task} />
+              <Text>{JSON.stringify(task)}</Text>
             </View>
-            <VStack flex={1} py="3" px="1">
+            {/* <VStack flex={1} py="3" px="1">
               <Text style={textStyle}>
                 <TaskTitle task={task} />
               </Text>
@@ -295,7 +296,7 @@ class TaskListItem extends Component {
                   ))}
                 </HStack>
               ) : null}
-            </VStack>
+            </VStack> */}
             {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
             <Icon as={FontAwesome} name="arrow-right" size="sm" />
           </HStack>
