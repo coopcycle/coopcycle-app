@@ -153,19 +153,6 @@ export function initialize() {
   };
 }
 
-export function loadUsers() {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadUsersRequest());
-
-    return httpClient
-      .get('/api/users?roles[]=ROLE_COURIER')
-      .then(res => dispatch(loadUsersSuccess(res['hydra:member'])))
-      .catch(e => dispatch(loadUsersFailure(e)));
-  };
-}
-
 export function createTaskList(date, user) {
   return function (dispatch, getState) {
     const httpClient = getState().app.httpClient;
