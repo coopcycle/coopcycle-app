@@ -17,7 +17,10 @@ import {
   selectSelectedDate,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { useGetCourierUsersQuery } from '../../redux/api/slice';
+import {
+  useGetCourierUsersQuery,
+  useGetToursQuery,
+} from '../../redux/api/slice';
 import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 import AddButton from './components/AddButton';
 import TapToRefresh from '../../components/TapToRefresh';
