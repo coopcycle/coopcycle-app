@@ -14,6 +14,7 @@ import {
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
 import {
+  loadTours,
   selectSelectedDate,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
@@ -71,6 +72,12 @@ function UnassignedTasks({
       dispatch(loadTaskListsSuccess(taskLists))
     }
   }, [dispatch, taskLists]);
+
+  useEffect(() => {
+    if (tours) {
+      dispatch(loadTours(tours))
+    }
+  }, [dispatch, tours]);
 
   useEffect(() => {
     if(courierUsers) {
