@@ -44,6 +44,10 @@ function UnassignedTasks({
   } = useLoadAllTasks(selectedDate);
 
   const {
+    data: tours,
+  } = useGetToursQuery(selectedDate);
+
+  const {
     data: courierUsers,
   } = useGetCourierUsersQuery();
 

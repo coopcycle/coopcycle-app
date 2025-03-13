@@ -61,6 +61,19 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       },
     }),
+    getTours: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/tours',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
     getCourierUsers: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -105,6 +118,7 @@ export const {
   useGetOrderTimingQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
+  useGetToursQuery,
   useGetUnassignedTasksQuery,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
