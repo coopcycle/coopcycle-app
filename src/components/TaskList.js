@@ -93,7 +93,7 @@ class TaskList extends Component {
   }
 
   render() {
-    const { refreshing,  onRefresh } = this.props;
+    const { refreshing, onRefresh } = this.props;
 
     return (
       <>
