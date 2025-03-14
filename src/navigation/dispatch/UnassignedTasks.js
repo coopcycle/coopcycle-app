@@ -8,20 +8,18 @@ import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
-  loadTaskListsSuccess,
   loadUnassignedTasksRequest,
-  loadUsersSuccess,
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
 import {
   selectSelectedDate,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { useGetCourierUsersQuery } from '../../redux/api/slice';
 import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
 import AddButton from './components/AddButton';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
+import { useLoadUnassignedTasksInfo } from './useLoadUnassignedTasksInfo';
 
 
 function UnassignedTasks({
@@ -37,15 +35,10 @@ function UnassignedTasks({
   const selectedDate = useSelector(selectSelectedDate);
   const {
     unassignedTasks,
-    taskLists,
     isLoading,
     isError,
     refetch
-  } = useLoadAllTasks(selectedDate);
-
-  const {
-    data: courierUsers,
-  } = useGetCourierUsersQuery();
+  } = useLoadUnassignedTasksInfo(selectedDate);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -58,18 +51,6 @@ function UnassignedTasks({
       dispatch(loadUnassignedTasksRequest());
     }
   }, [dispatch, isLoading]);
-
-  useEffect(() => {
-    if (taskLists) {
-      dispatch(loadTaskListsSuccess(taskLists))
-    }
-  }, [dispatch, taskLists]);
-
-  useEffect(() => {
-    if (courierUsers) {
-      dispatch(loadUsersSuccess(courierUsers))
-    }
-  }, [courierUsers, dispatch]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
@@ -129,7 +110,7 @@ function UnassignedTasks({
             onMultipleSelectionAction={selectedTasks =>
               assignSelectedTasks(selectedTasks)
             }
-            refreshing={isFetching}
+            refreshing={isLoading}
             onRefresh={() => refetch()}
           />
         )}
