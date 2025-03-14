@@ -24,7 +24,7 @@ import {
   dateReducer as coreDateReducer,
   taskEntityReducers as coreTaskEntityReducers,
   taskListEntityReducers as coreTaskListEntityReducers,
-  toursEntityReducers as coreTourEntityReducers,
+  tourEntityReducers as coreTourEntityReducers,
   uiReducers as coreUiReducers,
 } from '../coopcycle-frontend-js/logistics/redux';
 import accountReducer from './Account/reducers';
