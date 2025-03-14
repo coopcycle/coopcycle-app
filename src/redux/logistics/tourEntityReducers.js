@@ -2,15 +2,13 @@ import {
   DELETE_TOUR_SUCCESS,
   LOAD_TOURS,
   UPDATE_TOUR,
-} from './actions'
-import {
-  tourAdapter
-} from './adapters'
+  tourAdapter,
+} from "../../shared/logistics/redux";
+
 
 const initialState = tourAdapter.getInitialState()
 
 export default (state = initialState, action) => {
-
   switch (action.type) {
     case LOAD_TOURS:
       return tourAdapter.upsertMany(state, action.payload)
@@ -18,7 +16,7 @@ export default (state = initialState, action) => {
       return tourAdapter.upsertOne(state, action.payload);
     case DELETE_TOUR_SUCCESS:
       return tourAdapter.removeOne(state, action.payload);
+    default:
+      return state;
   }
-
-  return state
 }
