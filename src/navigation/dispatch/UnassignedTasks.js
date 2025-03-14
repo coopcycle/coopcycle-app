@@ -15,11 +15,11 @@ import {
   selectSelectedDate,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { useLoadAllTasks } from '../../hooks/useLoadAllTasks';
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
+import { useLoadUnassignedTasksInfo } from './useLoadUnassignedTasksInfo';
 import AddButton from './components/AddButton';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
-import { useLoadUnassignedTasksInfo } from './useLoadUnassignedTasksInfo';
 
 
 function UnassignedTasks({
@@ -30,11 +30,11 @@ function UnassignedTasks({
   const { navigate } = navigation;
 
   const tasksWithColor = useSelector(selectTasksWithColor);
+  const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
 
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
   const {
-    unassignedTasks,
     isLoading,
     isError,
     refetch

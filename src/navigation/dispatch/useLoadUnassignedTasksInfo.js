@@ -1,11 +1,16 @@
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+import {
+  loadTaskListsSuccess,
+  loadUnassignedTasksSuccess,
+  loadUsersSuccess,
+} from "../../redux/Dispatch/actions";
+import { useGetCourierUsersQuery } from '../../redux/api/slice';
 import {
   useGetTaskListsQuery,
   useGetUnassignedTasksQuery,
 } from "../../redux/api/slice";
-import { loadTaskListsSuccess, loadUsersSuccess } from "../../redux/Dispatch/actions";
-import { useGetCourierUsersQuery } from '../../redux/api/slice';
-import { useEffect } from "react";
 
 
 export function useLoadUnassignedTasksInfo(date) {
@@ -33,6 +38,12 @@ export function useLoadUnassignedTasksInfo(date) {
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
+    if (unassignedTasks) {
+      dispatch(loadUnassignedTasksSuccess(unassignedTasks))
+    }
+  }, [dispatch, unassignedTasks]);
+
+  useEffect(() => {
     if (taskLists) {
       dispatch(loadTaskListsSuccess(taskLists))
     }
@@ -51,6 +62,5 @@ export function useLoadUnassignedTasksInfo(date) {
       refetchUnassignedTasks();
       refetchTaskLists();
     },
-    unassignedTasks,
   };
 }
