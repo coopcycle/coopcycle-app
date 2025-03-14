@@ -40,11 +40,15 @@ export function sortByKey(list, key) {
 
 export async function fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, url, itemsPerPage, otherParams = null) {
   const fetch = async (page) => {
-    const params = new URLSearchParams({page, itemsPerPage, ...otherParams});
+    const params = new URLSearchParams({
+      pagination: true,
+      page,
+      itemsPerPage,
+      ...otherParams,
+    });
     const result = await fetchWithBQ(`${url}?${params.toString()}`);
-    console.log('RESULTTT', result)
     return result.data;
-    
+
   };
   const firstRs = await fetch(1);
 
