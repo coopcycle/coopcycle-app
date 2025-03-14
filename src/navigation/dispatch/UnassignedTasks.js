@@ -110,7 +110,6 @@ function UnassignedTasks({
             onMultipleSelectionAction={selectedTasks =>
               assignSelectedTasks(selectedTasks)
             }
-            refreshing={isFetching}
             onRefresh={() => refetch()}
           />
         )}
