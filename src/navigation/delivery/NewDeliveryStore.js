@@ -7,10 +7,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { loadAddresses, setStore, setStores } from '../../redux/Delivery/actions'
 import { selectStores } from '../../redux/Delivery/selectors'
 import { sortByName } from '../../redux/util'
-import { useFetchAllStores } from '../../hooks/useFetchAllStores'
 import FormInput from './components/FormInput'
 import KeyboardAdjustView from '../../components/KeyboardAdjustView'
 import StoreListSelect from './components/StoreListSelect'
+import { useGetStoresQuery } from '../../redux/api/slice'
 
 
 const NewDeliveryStore = (props) => {
@@ -26,13 +26,13 @@ const NewDeliveryStore = (props) => {
   const stores = useSelector(selectStores)
 
   const {
-    stores: backendStores,
-    error,
+    data: backendStores,
+    isError,
     isLoading: isLoadingBackendStores,
-    refreshStores,
-  } = useFetchAllStores({
+    refetch,
+  } = useGetStoresQuery(/* {
     enabled: stores.length === 0,
-  });
+  } */);
 
   useEffect(() => {
     if (backendStores) {
@@ -54,7 +54,7 @@ const NewDeliveryStore = (props) => {
 
   const onRefreshStores = () => {
     setSearchQuery("");
-    refreshStores();
+    refetch();
   }
 
   // Filter store by name
@@ -86,8 +86,8 @@ const NewDeliveryStore = (props) => {
         <Box flex={1} justifyContent="center" alignItems="center">
           <ActivityIndicator animating={true} size="large" />
         </Box>}
-      {error && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
-      {!isLoading && !error &&
+      {isError && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
+      {!isLoading && !isError &&
         <>
           <Box p="5">
             <FormInput
