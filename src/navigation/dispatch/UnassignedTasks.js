@@ -54,7 +54,7 @@ function UnassignedTasks({
   }, [dispatch]);
 
   useEffect(() => {
-    if(isLoading) {
+    if (isLoading) {
       dispatch(loadUnassignedTasksRequest());
     }
   }, [dispatch, isLoading]);
@@ -66,7 +66,7 @@ function UnassignedTasks({
   }, [dispatch, taskLists]);
 
   useEffect(() => {
-    if(courierUsers) {
+    if (courierUsers) {
       dispatch(loadUsersSuccess(courierUsers))
     }
   }, [courierUsers, dispatch]);
@@ -129,7 +129,8 @@ function UnassignedTasks({
             onMultipleSelectionAction={selectedTasks =>
               assignSelectedTasks(selectedTasks)
             }
-            refresh={refetch}
+            refreshing={isFetching}
+            onRefresh={() => refetch()}
           />
         )}
       </View>
