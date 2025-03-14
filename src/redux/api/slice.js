@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQueryWithReauth } from './baseQuery';
-import { fetchAllRecordsUsingFetchWithBQ, sortByKey } from '../util';
+import { fetchAllRecordsUsingFetchWithBQ, sortByKey, sortByName } from '../util';
 
 
 // Define our single API slice object
@@ -66,6 +66,21 @@ export const apiSlice = createApi({
         return { data: sortByKey(result, 'username') };
       },
     }),
+    getStores: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/stores',
+          100,
+        );
+
+        if(!result) {
+          return { error: "result.error"}
+        }
+
+        return { data: sortByName(result)}
+      }
+    }),
     getMyTasks: builder.query({
       query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,
     }),
@@ -94,4 +109,5 @@ export const {
   useGetUnassignedTasksQuery,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
+  useGetStoresQuery
 } = apiSlice;
