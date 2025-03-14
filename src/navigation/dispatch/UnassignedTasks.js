@@ -35,7 +35,7 @@ function UnassignedTasks({
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
   const {
-    isLoading,
+    isFetching,
     isError,
     refetch
   } = useLoadUnassignedTasksInfo(selectedDate);
@@ -47,10 +47,10 @@ function UnassignedTasks({
   }, [dispatch]);
 
   useEffect(() => {
-    if (isLoading) {
+    if (isFetching) {
       dispatch(loadUnassignedTasksRequest());
     }
-  }, [dispatch, isLoading]);
+  }, [dispatch, isFetching]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
@@ -110,7 +110,7 @@ function UnassignedTasks({
             onMultipleSelectionAction={selectedTasks =>
               assignSelectedTasks(selectedTasks)
             }
-            refreshing={isLoading}
+            refreshing={isFetching}
             onRefresh={() => refetch()}
           />
         )}

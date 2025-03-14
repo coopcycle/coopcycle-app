@@ -20,21 +20,21 @@ export function useLoadUnassignedTasksInfo(date) {
   const {
     data: unassignedTasks,
     isError: isErrorUnassignedTasks,
-    isLoading: isLoadingUnassignedTasks,
+    isFetching: isFetchingUnassignedTasks,
     refetch: refetchUnassignedTasks,
   } = useGetUnassignedTasksQuery(date);
 
   const {
     data: taskLists,
     isError: isErrorTaskLists,
-    isLoading: isLoadingTaskLists,
+    isFetching: isFetchingTaskLists,
     refetch: refetchTaskLists,
   } = useGetTaskListsQuery(date);
 
   const {
     data: courierUsers,
     isError: isErrorCourierUsers,
-    isLoading: isLoadingCourierUsers,
+    isFetching: isFetchingCourierUsers,
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
@@ -57,8 +57,8 @@ export function useLoadUnassignedTasksInfo(date) {
 
   return {
     isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers,
-    isLoading: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers,
-    refresh: () => {
+    isFetching: isFetchingTaskLists || isErrorUnassignedTasks || isFetchingCourierUsers,
+    refetch: () => {
       refetchUnassignedTasks();
       refetchTaskLists();
     },
