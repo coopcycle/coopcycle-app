@@ -21,6 +21,7 @@ export const apiSlice = createApi({
         body: {},
       }),
     }),
+    // todo: rename as getTasks
     getUnassignedTasks: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -29,7 +30,6 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD'),
-            assigned: 'no'
           });
 
         return result ? { data: result } : { error: "result.error" };
