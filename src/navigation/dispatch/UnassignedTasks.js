@@ -12,7 +12,6 @@ import {
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
 import {
-  loadTours,
   selectSelectedDate,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
@@ -40,6 +39,8 @@ function UnassignedTasks({
     isError,
     refetch
   } = useLoadUnassignedTasksInfo(selectedDate);
+
+  
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {

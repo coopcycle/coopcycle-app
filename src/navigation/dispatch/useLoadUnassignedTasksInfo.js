@@ -10,7 +10,9 @@ import { useGetCourierUsersQuery } from '../../redux/api/slice';
 import {
   useGetTaskListsV2Query,
   useGetUnassignedTasksQuery,
+  useGetToursQuery
 } from "../../redux/api/slice";
+import { loadTours } from "../../shared/logistics/redux";
 
 
 export function useLoadUnassignedTasksInfo(date) {
@@ -30,6 +32,13 @@ export function useLoadUnassignedTasksInfo(date) {
     isLoading: isLoadingTaskLists,
     refetch: refetchTaskLists,
   } = useGetTaskListsV2Query(date);
+
+  const {
+    data: tours,
+    isError: isErrorTours,
+    isLoading: isLoadingTours,
+    refetch: refetchTours,
+  } = useGetToursQuery(date);
 
   const {
     data: courierUsers,
@@ -55,9 +64,15 @@ export function useLoadUnassignedTasksInfo(date) {
     }
   }, [courierUsers, dispatch]);
 
+  useEffect(() => {
+    if (tours) {
+      dispatch(loadTours(tours));
+    }
+  })
+
   return {
-    isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers,
-    isFetching: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers,
+    isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers || isErrorTours,
+    isFetching: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers || isLoadingTours,
     refetch: () => {
       refetchUnassignedTasks();
       refetchTaskLists();
