@@ -9,8 +9,8 @@ import {
 import { useGetCourierUsersQuery } from '../../redux/api/slice';
 import {
   useGetTaskListsV2Query,
+  useGetToursQuery,
   useGetUnassignedTasksQuery,
-  useGetToursQuery
 } from "../../redux/api/slice";
 import { loadTours } from "../../shared/logistics/redux";
 
@@ -59,23 +59,24 @@ export function useLoadUnassignedTasksInfo(date) {
   }, [dispatch, taskLists]);
 
   useEffect(() => {
-    if (courierUsers) {
-      dispatch(loadUsersSuccess(courierUsers))
-    }
-  }, [courierUsers, dispatch]);
-
-  useEffect(() => {
     if (tours) {
       dispatch(loadTours(tours));
     }
   })
 
+  useEffect(() => {
+    if (courierUsers) {
+      dispatch(loadUsersSuccess(courierUsers))
+    }
+  }, [courierUsers, dispatch]);
+
   return {
     isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers || isErrorTours,
     isFetching: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers || isLoadingTours,
     refetch: () => {
-      refetchUnassignedTasks();
       refetchTaskLists();
+      refetchTours();
+      refetchUnassignedTasks();
     },
   };
 }

@@ -40,8 +40,6 @@ function UnassignedTasks({
     refetch
   } = useLoadUnassignedTasksInfo(selectedDate);
 
-  
-
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       dispatch(initialize());
