@@ -93,7 +93,7 @@ class TaskList extends Component {
   }
 
   render() {
-    const { refreshing, refresh } = this.props;
+    const { refreshing, onRefresh } = this.props;
 
     return (
       <>
@@ -102,8 +102,7 @@ class TaskList extends Component {
           keyExtractor={(item, index) => item['@id']}
           renderItem={({ item, index }) => this.renderItem(item, index)}
           refreshing={refreshing}
-          // TODO check performance
-          onRefresh={refresh}
+          onRefresh={onRefresh}
           ItemSeparatorComponent={ItemSeparatorComponent}
         />
         <ItemsBulkFabButton
