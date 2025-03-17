@@ -4,7 +4,7 @@ import { createTempTaskList, replaceTasksWithIds } from './taskListUtils';
 function addTaskIdIfMissing(taskIds, taskId) {
   const taskIdIndex = _.findIndex(taskIds, t => t === taskId);
 
-  if (-1 !== taskIdIndex) {
+  if (taskIdIndex !== -1) {
     return taskIds;
   } else {
     return taskIds.concat([taskId]);
@@ -50,7 +50,7 @@ export function addAssignedTask(taskListsById, task) {
       itemIds: addTaskIdIfMissing(targetTaskList.itemIds, task['@id']),
     });
   } else {
-    let newTaskList = createTempTaskList(task.assignedTo, [task]);
+    let newTaskList = createTempTaskList(task.assignedTo, [task['@id']]);
     newTaskList = replaceTasksWithIds(newTaskList);
 
     taskListsToUpdate.push(newTaskList);

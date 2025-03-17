@@ -37,13 +37,13 @@ export const selectTaskLists = createSelector(
         ) // a task with this id may be not loaded yet
         .map(taskId => tasksById[taskId]);
 
-      // const taskListTours = taskList.itemIds
-      //   .filter(itemId =>
-      //     Object.prototype.hasOwnProperty.call(toursById, itemId),
-      //   ) // a task with this id may be not loaded yet
-      //   .map(itemId => toursById[itemId]);
+      const taskListTours = taskList.itemIds
+        .filter(itemId =>
+          Object.prototype.hasOwnProperty.call(toursById, itemId),
+        ) // a task with this id may be not loaded yet
+        .map(itemId => toursById[itemId]);
 
-      const toursTasks = []//_.flatMap(taskListTours, tour => tour.items.map(item => tasksById[item]))
+      const toursTasks = _.flatMap(taskListTours, tour => tour.items.map(item => tasksById[item]))
 
       newTaskList.items = [...taskListTasks, ...toursTasks];
 
@@ -60,11 +60,11 @@ export const selectAssignedTasks = createSelector(selectTaskLists, taskLists =>
 export const selectUnassignedTasks = createSelector(
   selectAllTasks,
   selectAssignedTasks,
-  (allTasks, assignedTasks) =>
+  (allTasks, _assignedTasks) =>
     _.filter(
       allTasks,
       task =>
-        assignedTasks.findIndex(
+        _assignedTasks.findIndex(
           assignedTask => task['@id'] == assignedTask['@id'],
         ) == -1,
     ),
