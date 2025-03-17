@@ -7,7 +7,7 @@ export function replaceTasksWithIds(taskList) {
     ...taskList,
   };
 
-  entity.itemIds = tasksToIds(taskList.items);
+  entity.itemIds = taskList.items;
   delete entity.items;
 
   return entity;
