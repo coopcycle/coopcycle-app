@@ -23,11 +23,11 @@ export const selectSelectedDate = state => state.logistics.date;
 // Replace this with a selectTaskListItemsByUsername selector, used by the <TaskList> component
 // https://redux.js.org/tutorials/essentials/part-6-performance-normalization#memoizing-selector-functions
 export const selectTaskLists = createSelector(
-  taskListSelectors.selectEntities,
+  taskListSelectors.selectAll,
   taskSelectors.selectEntities,
   tourSelectors.selectEntities,
-  (taskListsById, tasksById, toursById) =>
-    Object.values(taskListsById).map(taskList => {
+  (taskLists, tasksById, toursById) =>
+    taskLists.map(taskList => {
       let newTaskList = { ...taskList };
       delete newTaskList.itemIds;
 
@@ -43,7 +43,9 @@ export const selectTaskLists = createSelector(
         ) // a task with this id may be not loaded yet
         .map(itemId => toursById[itemId]);
 
-      const toursTasks = _.flatMap(taskListTours, tour => tour.items.map(item => tasksById[item]))
+      const toursTasks = _.flatMap(
+        taskListTours, tour => tour.items.map(item => tasksById[item])
+      );
 
       newTaskList.items = [...taskListTasks, ...toursTasks];
 
@@ -53,8 +55,9 @@ export const selectTaskLists = createSelector(
 
 export const selectAllTasks = taskSelectors.selectAll;
 
-export const selectAssignedTasks = createSelector(selectTaskLists, taskLists =>
-  assignedTasks(taskLists),
+export const selectAssignedTasks = createSelector(
+  selectTaskLists,
+  taskLists => assignedTasks(taskLists),
 );
 
 export const selectUnassignedTasks = createSelector(

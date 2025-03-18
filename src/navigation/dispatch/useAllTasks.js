@@ -47,12 +47,10 @@ export function useAllTasks(date) {
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
-    console.log("trying to update")
     if (tasks && taskLists && tours) {
-      console.log("updating")
-      dispatch(loadTaskListsSuccess(taskLists))
+      dispatch(loadTaskListsSuccess(taskLists));
       dispatch(loadTours(tours));
-      dispatch(loadTasksSuccess(tasks))
+      dispatch(loadTasksSuccess(tasks));
     }
   }, [dispatch, taskLists, tasks, tours]);
 
