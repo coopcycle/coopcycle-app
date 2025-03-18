@@ -244,33 +244,33 @@ class TaskListItem extends Component {
             <View style={styles.itemIcon}>
               <TaskTypeIcon task={task} />
               <TaskStatusIcon task={task} />
-              <Text>{JSON.stringify(task)}</Text>
             </View>
-            {/* <VStack flex={1} py="3" px="1">
+            <VStack flex={1} py="3" px="1">
               <Text style={textStyle}>
                 <TaskTitle task={task} />
               </Text>
               {task.orgName ? (
                 <Text style={textStyle}>{task.orgName}</Text>
               ) : null}
-              {task.address.contactName ? (
+              
+              {task.address?.contactName ? (
                 <Text style={textStyle}>{task.address.contactName}</Text>
               ) : null}
-              {task.address.name ? (
+              {task.address?.name ? (
                 <Text style={textStyle}>{task.address.name}</Text>
               ) : null}
               <Text numberOfLines={1} style={textStyle}>
-                {task.address.streetAddress}
+                {task.address?.streetAddress}
               </Text>
               <HStack alignItems="center">
                 <Text pr="2" style={textStyle}>
                   {moment(task.doneAfter).format('LT')} -{' '}
                   {moment(task.doneBefore).format('LT')}
                 </Text>
-                {task.address.description && task.address.description.length ? (
+                {task.address?.description && task.address?.description.length ? (
                   <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
                 ) : null}
-                {task.metadata && task.metadata.payment_method && (
+                {task.metadata && task.metadata?.payment_method && (
                   <PaymentMethodInList
                     paymentMethod={task.metadata.payment_method}
                   />
@@ -296,7 +296,7 @@ class TaskListItem extends Component {
                   ))}
                 </HStack>
               ) : null}
-            </VStack> */}
+            </VStack>
             {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
             <Icon as={FontAwesome} name="arrow-right" size="sm" />
           </HStack>
