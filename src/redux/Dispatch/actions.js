@@ -30,9 +30,9 @@ import { isSameDate } from './utils';
 
 export const DISPATCH_INITIALIZE = 'DISPATCH_INITIALIZE';
 
-export const LOAD_TASKS_REQUEST = 'LOAD_TASKS_REQUEST';
-export const LOAD_TASKS_SUCCESS = 'LOAD_TASKS_SUCCESS';
-export const LOAD_TASKS_FAILURE = 'LOAD_TASKS_FAILURE';
+export const LOAD_TASKS_REQUEST = '@dispatch/LOAD_TASKS_REQUEST';
+export const LOAD_TASKS_SUCCESS = '@dispatch/LOAD_TASKS_SUCCESS';
+export const LOAD_TASKS_FAILURE = '@dispatch/LOAD_TASKS_FAILURE';
 
 export const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
 export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
