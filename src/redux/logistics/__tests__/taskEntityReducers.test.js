@@ -27,7 +27,7 @@ describe('taskEntityReducers', () => {
     });
   });
 
-  describe('LOAD_UNASSIGNED_TASKS_SUCCESS', () => {
+  describe('LOAD_TASKS_SUCCESS', () => {
     it('should add items', () => {
       expect(
         taskEntityReducers(
@@ -36,7 +36,7 @@ describe('taskEntityReducers', () => {
             entities: {},
           },
           {
-            type: 'LOAD_UNASSIGNED_TASKS_SUCCESS',
+            type: 'LOAD_TASKS_SUCCESS',
             payload: [
               {
                 '@id': '/api/tasks/1',
@@ -82,7 +82,7 @@ describe('taskEntityReducers', () => {
             },
           },
           {
-            type: 'LOAD_UNASSIGNED_TASKS_SUCCESS',
+            type: 'LOAD_TASKS_SUCCESS',
             payload: [
               {
                 '@id': '/api/tasks/1',

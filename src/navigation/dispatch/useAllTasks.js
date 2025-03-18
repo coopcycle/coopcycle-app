@@ -1,16 +1,16 @@
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import {
   loadTaskListsSuccess,
-  loadUnassignedTasksSuccess,
+  loadTasksSuccess,
   loadUsersSuccess,
 } from "../../redux/Dispatch/actions";
 import { useGetCourierUsersQuery } from '../../redux/api/slice';
 import {
   useGetTaskListsV2Query,
+  useGetTasksQuery,
   useGetToursQuery,
-  useGetUnassignedTasksQuery,
 } from "../../redux/api/slice";
 import { loadTours } from "../../shared/logistics/redux";
 
@@ -20,11 +20,11 @@ export function useAllTasks(date) {
   const dispatch = useDispatch();
 
   const {
-    data: unassignedTasks,
-    isError: isErrorUnassignedTasks,
-    isLoading: isLoadingUnassignedTasks,
-    refetch: refetchUnassignedTasks,
-  } = useGetUnassignedTasksQuery(date);
+    data: tasks,
+    isError: isErrorTasks,
+    isLoading: isLoadingTasks,
+    refetch: refetchTasks,
+  } = useGetTasksQuery(date);
 
   const {
     data: taskLists,
@@ -47,22 +47,14 @@ export function useAllTasks(date) {
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
-    if (unassignedTasks) {
-      dispatch(loadUnassignedTasksSuccess(unassignedTasks))
-    }
-  }, [dispatch, unassignedTasks]);
-
-  useEffect(() => {
-    if (taskLists) {
+    console.log("trying to update")
+    if (tasks && taskLists && tours) {
+      console.log("updating")
       dispatch(loadTaskListsSuccess(taskLists))
-    }
-  }, [dispatch, taskLists]);
-
-  useEffect(() => {
-    if (tours) {
       dispatch(loadTours(tours));
+      dispatch(loadTasksSuccess(tasks))
     }
-  })
+  }, [dispatch, taskLists, tasks, tours]);
 
   useEffect(() => {
     if (courierUsers) {
@@ -70,13 +62,21 @@ export function useAllTasks(date) {
     }
   }, [courierUsers, dispatch]);
 
+  const isError = useMemo(() => {
+    return isErrorCourierUsers || isErrorTaskLists || isErrorTours || isErrorTasks;
+  }, [isErrorCourierUsers, isErrorTaskLists, isErrorTours, isErrorTasks])
+
+  const isFetching = useMemo(() => {
+    return isLoadingCourierUsers || isLoadingTaskLists || isLoadingTours || isLoadingTasks;
+  }, [isLoadingCourierUsers, isLoadingTaskLists, isLoadingTours, isLoadingTasks])
+
   return {
-    isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers || isErrorTours,
-    isFetching: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers || isLoadingTours,
+    isError,
+    isFetching,
     refetch: () => {
       refetchTaskLists();
       refetchTours();
-      refetchUnassignedTasks();
+      refetchTasks();
     },
   };
 }

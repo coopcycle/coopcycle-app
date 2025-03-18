@@ -21,8 +21,7 @@ export const apiSlice = createApi({
         body: {},
       }),
     }),
-    // todo: rename as getTasks
-    getUnassignedTasks: builder.query({
+    getTasks: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
@@ -134,7 +133,7 @@ export const {
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetToursQuery,
-  useGetUnassignedTasksQuery,
+  useGetTasksQuery,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
   useGetStoresQuery
