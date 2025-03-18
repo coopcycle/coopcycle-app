@@ -15,7 +15,7 @@ import {
 import { loadTours } from "../../shared/logistics/redux";
 
 
-export function useLoadUnassignedTasksInfo(date) {
+export function useAllTasks(date) {
 
   const dispatch = useDispatch();
 
