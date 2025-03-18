@@ -16,7 +16,7 @@ import {
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
-import { useLoadUnassignedTasksInfo } from './useLoadUnassignedTasksInfo';
+import { useAllTasks } from './useAllTasks';
 import AddButton from './components/AddButton';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
@@ -38,7 +38,7 @@ function UnassignedTasks({
     isFetching,
     isError,
     refetch
-  } = useLoadUnassignedTasksInfo(selectedDate);
+  } = useAllTasks(selectedDate);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {

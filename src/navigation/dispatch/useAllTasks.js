@@ -13,7 +13,7 @@ import {
 } from "../../redux/api/slice";
 
 
-export function useLoadUnassignedTasksInfo(date) {
+export function useAllTasks(date) {
 
   const dispatch = useDispatch();
 
