@@ -70,15 +70,9 @@ export const CHANGE_DATE = 'CHANGE_DATE';
  * Action Creators
  */
 
-export const loadTasksRequest = createAction(
-  LOAD_TASKS_REQUEST,
-);
-export const loadTasksSuccess = createAction(
-  LOAD_TASKS_SUCCESS,
-);
-export const loadTasksFailure = createAction(
-  LOAD_TASKS_FAILURE,
-);
+export const loadTasksRequest = createAction(LOAD_TASKS_REQUEST);
+export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS);
+export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE);
 
 export const loadUsersRequest = createAction(LOAD_USERS_REQUEST);
 export const loadUsersSuccess = createAction(LOAD_USERS_SUCCESS);
