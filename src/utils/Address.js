@@ -46,6 +46,68 @@ class AddressUtils {
     };
   }
 
+  /**
+   * Create a formatted address object from Google Geocoding API response
+   * This is used for handling map picker selections
+   * @param {Object} geocodingResult - Result from Google Geocoding API
+   * @returns {Object} Formatted address
+   */
+  static createAddressFromGoogleGeocoding(geocodingResult) {
+    if (!geocodingResult || !geocodingResult.address_components) {
+      return {};
+    }
+
+    // Extract common components
+    let postalCode = _.find(geocodingResult.address_components, component =>
+      _.includes(component.types, 'postal_code'),
+    );
+    let locality = _.find(geocodingResult.address_components, component =>
+      _.includes(component.types, 'locality'),
+    );
+    let country = _.find(geocodingResult.address_components, component =>
+      _.includes(component.types, 'country'),
+    );
+    let adminArea1 = _.find(geocodingResult.address_components, component =>
+      _.includes(component.types, 'administrative_area_level_1'),
+    );
+
+    // Format the address
+    return {
+      streetAddress: geocodingResult.formatted_address,
+      postalCode: postalCode ? postalCode.short_name : '',
+      addressLocality: locality ? locality.short_name : '',
+      addressCountry: country ? country.short_name : '',
+      addressRegion: adminArea1 ? adminArea1.short_name : '',
+      geo: {
+        latitude: geocodingResult.geometry.location.lat,
+        longitude: geocodingResult.geometry.location.lng,
+      },
+      isPrecise: true
+    };
+  }
+
+  /**
+   * Create a manual address from map coordinates
+   * This is used when geocoding fails but we still have coordinates
+   * @param {Object} coordinates - {latitude, longitude}
+   * @returns {Object} Basic address with coordinates
+   */
+  static createManualAddressFromCoordinates(coordinates) {
+    const { latitude, longitude } = coordinates;
+
+    return {
+      streetAddress: `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`,
+      postalCode: '',
+      addressLocality: '',
+      geo: {
+        latitude,
+        longitude,
+      },
+      isPrecise: true, // Manual pin placements are considered precise
+      isManuallyPinned: true,
+    };
+  }
+
   static getAddressFromCurrentPosition() {
     return new Promise((resolve, reject) => {
       BackgroundGeolocation.setConfig({
@@ -74,13 +136,30 @@ class AddressUtils {
               response.data.results.length > 0
             ) {
               const firstResult = response.data.results[0];
-              const address = this.createAddressFromGoogleDetails(firstResult);
+              const address = this.createAddressFromGoogleGeocoding(firstResult);
 
               // When using the current position,
               // we see the address as always precise
               resolve({ ...address, isPrecise: true });
+            } else {
+              // If geocoding fails, create a manual address with coordinates
+              resolve(this.createManualAddressFromCoordinates({
+                latitude,
+                longitude,
+              }));
             }
+          })
+          .catch(error => {
+            console.error('Error getting address from position:', error);
+            // Fallback to manual coordinates
+            resolve(this.createManualAddressFromCoordinates({
+              latitude,
+              longitude,
+            }));
           });
+      }).catch(error => {
+        console.error('Error getting current position:', error);
+        reject(error);
       });
     });
   }
