@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   loadTaskListsSuccess,
@@ -16,6 +16,7 @@ import {
 export function useAllTasks(date) {
 
   const dispatch = useDispatch();
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
 
   const {
     data: unassignedTasks,
@@ -38,22 +39,12 @@ export function useAllTasks(date) {
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
-    if (unassignedTasks) {
+    if (unassignedTasks && taskLists && courierUsers) {
       dispatch(loadUnassignedTasksSuccess(unassignedTasks))
-    }
-  }, [dispatch, unassignedTasks]);
-
-  useEffect(() => {
-    if (taskLists) {
       dispatch(loadTaskListsSuccess(taskLists))
-    }
-  }, [dispatch, taskLists]);
-
-  useEffect(() => {
-    if (courierUsers) {
       dispatch(loadUsersSuccess(courierUsers))
     }
-  }, [courierUsers, dispatch]);
+  }, [dispatch, unassignedTasks, taskLists, courierUsers]);
 
   return {
     isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers,
@@ -62,5 +53,7 @@ export function useAllTasks(date) {
       refetchUnassignedTasks();
       refetchTaskLists();
     },
+    isFirstLoad,
+    setIsFirstLoad,
   };
 }
