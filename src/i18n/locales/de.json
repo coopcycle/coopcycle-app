@@ -390,6 +390,10 @@
     "TASK_DONE": "Erledigt",
     "TASK_CANCELLED": "Abgebrochen",
     "ASK_TO_START_PICKUP_TITLE": "Abholaufgabe",
-    "ASK_TO_START_PICKUP_MESSAGE": "Die Abholaufgabe wurde noch nicht gestartet."
+    "ASK_TO_START_PICKUP_MESSAGE": "Die Abholaufgabe wurde noch nicht gestartet.",
+    "CONFIRM_LOCATION": "Standort bestätigen",
+    "ADDRESS_NOT_FOUND": "Adresse nicht gefunden",
+    "LOADING_ADDRESS": "Adresse wird geladen",
+    "TAP_ON_MAP_TO_SELECT_LOCATION": "Tippen Sie auf die Karte, um einen Standort auszuwählen"
   }
 }
