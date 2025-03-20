@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   loadTaskListsSuccess,
@@ -18,6 +18,7 @@ import { loadTours } from "../../shared/logistics/redux";
 export function useAllTasks(date) {
 
   const dispatch = useDispatch();
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
 
   const {
     data: tasks,
@@ -47,18 +48,13 @@ export function useAllTasks(date) {
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
-    if (tasks && taskLists && tours) {
+    if (tasks && taskLists && tours && courierUsers) {
       dispatch(loadTaskListsSuccess(taskLists));
       dispatch(loadTours(tours));
       dispatch(loadTasksSuccess(tasks));
-    }
-  }, [dispatch, taskLists, tasks, tours]);
-
-  useEffect(() => {
-    if (courierUsers) {
       dispatch(loadUsersSuccess(courierUsers))
     }
-  }, [courierUsers, dispatch]);
+  }, [courierUsers, dispatch, taskLists, tasks, tours]);
 
   const isError = useMemo(() => {
     return isErrorCourierUsers || isErrorTaskLists || isErrorTours || isErrorTasks;
@@ -72,9 +68,11 @@ export function useAllTasks(date) {
     isError,
     isFetching,
     refetch: () => {
+      refetchTasks();
       refetchTaskLists();
       refetchTours();
-      refetchTasks();
     },
+    isFirstLoad,
+    setIsFirstLoad,
   };
 }
