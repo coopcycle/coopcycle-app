@@ -11,5 +11,5 @@ export const taskListAdapter = createEntityAdapter({
 });
 
 export const tourAdapter = createEntityAdapter({
-  selectId: (o) => o['@id'],
+  selectId: o => o['@id'],
 })

@@ -5,7 +5,7 @@
  *
  * The `entities` sub-tree is used a little like a NoSQL database to record
  * the main entities the application is concerned with: Tasks, Orders,
- * Restaurants, Couriers, etc.
+ * Restaurants, Couriers, Tours, etc.
  *
  * The `ui` sub-tree stores state fragments related only to the appearance
  * of the UI, and which have no impact or relation to the `entities`.
