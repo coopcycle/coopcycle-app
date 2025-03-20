@@ -31,7 +31,7 @@ export function createTaskItemsTransform(now) {
 }
 
 export function sortByName(list) {
-  return _.sortBy(list, ['name']);
+  return sortByKey(list, 'name');
 }
 
 export function sortByKey(list, key) {
