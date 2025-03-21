@@ -62,8 +62,7 @@ export const apiSlice = createApi({
         if (!result) {
           return { error: "result.error" }
         }
-
-        return { data: sortByKey(result, 'username') };
+        return { data:  sortByKey(result, user => user.username.toLowerCase()) };
       },
     }),
     getStores: builder.query({
