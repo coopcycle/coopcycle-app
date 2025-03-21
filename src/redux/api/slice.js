@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQueryWithReauth } from './baseQuery';
-import { fetchAllRecordsUsingFetchWithBQ, sortByKey, sortByName } from '../util';
+import { fetchAllRecordsUsingFetchWithBQ, sortByName, sortByString } from '../util';
 
 
 // Define our single API slice object
@@ -62,7 +62,7 @@ export const apiSlice = createApi({
         if (!result) {
           return { error: "result.error" }
         }
-        return { data:  sortByKey(result, user => user.username.toLowerCase()) };
+        return { data:  sortByString(result, 'username') };
       },
     }),
     getStores: builder.query({
