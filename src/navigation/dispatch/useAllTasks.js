@@ -6,8 +6,8 @@ import {
   loadUnassignedTasksSuccess,
   loadUsersSuccess,
 } from "../../redux/Dispatch/actions";
-import { useGetCourierUsersQuery } from '../../redux/api/slice';
 import {
+  useGetCourierUsersQuery,
   useGetTaskListsQuery,
   useGetUnassignedTasksQuery,
 } from "../../redux/api/slice";

@@ -15,10 +15,10 @@ export const apiSlice = createApi({
       query: date => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
-          date: date.format('YYYY-MM-DD'),
+          date: date.format('YYYY-MM-DD')
         },
         method: 'POST',
-        body: {},
+        body: {}
       }),
     }),
     getUnassignedTasks: builder.query({
@@ -42,7 +42,7 @@ export const apiSlice = createApi({
           'api/task_lists',
           100,
           {
-            date: date.format('YYYY-MM-DD'),
+            date: date.format('YYYY-MM-DD')
           });
 
         return result ? { data: result } : { error: "result.error" };
@@ -59,10 +59,7 @@ export const apiSlice = createApi({
           }
         );
 
-        if (!result) {
-          return { error: "result.error" }
-        }
-        return { data:  sortByString(result, 'username') };
+        return result ? { data: sortByString(result, 'username') } : { error: "result.error" };
       },
     }),
     getStores: builder.query({
@@ -73,11 +70,7 @@ export const apiSlice = createApi({
           100,
         );
 
-        if(!result) {
-          return { error: "result.error"}
-        }
-
-        return { data: sortByName(result)}
+        return result ? { data: sortByName(result) } : { error: "result.error" };
       }
     }),
     getMyTasks: builder.query({
