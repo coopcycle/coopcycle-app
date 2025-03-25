@@ -8,7 +8,6 @@ import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
-  loadUnassignedTasksFailure,
   loadUnassignedTasksRequest,
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
@@ -50,13 +49,8 @@ function UnassignedTasks({
   useEffect(() => {
     if (isFetching) {
       dispatch(loadUnassignedTasksRequest());
-    } else if (isError) {
-      dispatch(loadUnassignedTasksFailure());
-    } else {
-      // We pass an empty list here and the state will be updated by RTK with `unassignedTasks`
-      dispatch(loadUnassignedTasksSuccess([]));
     }
-  }, [dispatch, isFetching, isError]);
+  }, [dispatch, isFetching]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
@@ -114,7 +108,6 @@ function UnassignedTasks({
             allowMultipleSelection={allowToSelect}
             multipleSelectionIcon="user"
             onMultipleSelectionAction={assignSelectedTasks}
-            // refreshing={isFetching}
             onRefresh={refetch}
           />
         )}
