@@ -9,7 +9,6 @@ import {
   bulkAssignmentTasks,
   initialize,
   loadUnassignedTasksRequest,
-  loadUnassignedTasksSuccess,
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
 import {
@@ -87,7 +86,7 @@ function UnassignedTasks({
       <View style={{ flex: 1 }}>
         {isError && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
         {!unassignedTasks && <TapToRefresh onPress={refetch} />}
-        {unassignedTasks && (
+        {unassignedTasks && !isFetching && (
           <TaskList
             tasks={unassignedTasks}
             tasksWithColor={tasksWithColor}

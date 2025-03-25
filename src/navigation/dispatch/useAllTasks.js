@@ -41,12 +41,14 @@ export function useAllTasks(date) {
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
-    if (unassignedTasks && taskLists && courierUsers) {
+    if ( !(isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers)
+      && (unassignedTasks && taskLists && courierUsers)
+    ) {
       dispatch(loadUnassignedTasksSuccess(unassignedTasks));
       dispatch(loadTaskListsSuccess(taskLists));
       dispatch(loadUsersSuccess(courierUsers));
     }
-  }, [dispatch, unassignedTasks, taskLists, courierUsers]);
+  }, [dispatch, unassignedTasks, taskLists, courierUsers, isFetchingUnassignedTasks, isFetchingTaskLists, isFetchingCourierUsers]);
 
   const isError = useMemo(() => {
     return isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers
