@@ -9,6 +9,7 @@ import {
   bulkAssignmentTasks,
   initialize,
   loadUnassignedTasksRequest,
+  loadUnassignedTasksSuccess,
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
 import {
@@ -35,7 +36,6 @@ function UnassignedTasks({
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
   const {
-    isLoading,
     isFetching,
     isError,
     refetch
@@ -45,11 +45,13 @@ function UnassignedTasks({
     InteractionManager.runAfterInteractions(() => {
       dispatch(initialize());
     });
+  }, [dispatch]);
 
-    if (isLoading) { // Inside this if because of the loading spinner thing
+  useEffect(() => {
+    if (isFetching) { // Inside this if because of the loading spinner thing
       dispatch(loadUnassignedTasksRequest());
     }
-  }, [dispatch, isLoading]);
+  }, [dispatch, isFetching])
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');

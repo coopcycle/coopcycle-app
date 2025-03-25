@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   loadTaskListsSuccess,
@@ -48,10 +48,22 @@ export function useAllTasks(date) {
     }
   }, [dispatch, unassignedTasks, taskLists, courierUsers]);
 
+  const isError = useMemo(() => {
+    return isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers
+  }, [isErrorTaskLists, isErrorUnassignedTasks, isErrorCourierUsers])
+
+  const isLoading = useMemo(() => {
+    return isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers
+  }, [isLoadingTaskLists, isLoadingUnassignedTasks, isLoadingCourierUsers])
+
+  const isFetching = useMemo(() => {
+    return isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers
+  }, [isFetchingUnassignedTasks, isFetchingTaskLists, isFetchingCourierUsers])
+
   return {
-    isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers,
-    isLoading: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers,
-    isFetching: isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers,
+    isError,
+    isLoading,
+    isFetching,
     refetch: () => {
       refetchUnassignedTasks();
       refetchTaskLists();
