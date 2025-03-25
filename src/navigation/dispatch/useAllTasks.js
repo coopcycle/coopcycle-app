@@ -16,44 +16,46 @@ import {
 export function useAllTasks(date) {
 
   const dispatch = useDispatch();
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
 
   const {
     data: unassignedTasks,
     isError: isErrorUnassignedTasks,
     isLoading: isLoadingUnassignedTasks,
-    refetch: refetchUnassignedTasks,
+    isFetching: isFetchingUnassignedTasks,
+    refetch: refetchUnassignedTasks
   } = useGetUnassignedTasksQuery(date);
 
   const {
     data: taskLists,
     isError: isErrorTaskLists,
     isLoading: isLoadingTaskLists,
-    refetch: refetchTaskLists,
+    isFetching: isFetchingTaskLists,
+    refetch: refetchTaskLists
   } = useGetTaskListsQuery(date);
 
   const {
     data: courierUsers,
     isError: isErrorCourierUsers,
     isLoading: isLoadingCourierUsers,
+    isFetching: isFetchingCourierUsers
   } = useGetCourierUsersQuery();
 
   useEffect(() => {
     if (unassignedTasks && taskLists && courierUsers) {
-      dispatch(loadUnassignedTasksSuccess(unassignedTasks))
-      dispatch(loadTaskListsSuccess(taskLists))
-      dispatch(loadUsersSuccess(courierUsers))
+      dispatch(loadUnassignedTasksSuccess(unassignedTasks));
+      dispatch(loadTaskListsSuccess(taskLists));
+      dispatch(loadUsersSuccess(courierUsers));
     }
   }, [dispatch, unassignedTasks, taskLists, courierUsers]);
 
   return {
     isError: isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers,
-    isFetching: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers,
+    isLoading: isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers,
+    isFetching: isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers,
     refetch: () => {
       refetchUnassignedTasks();
       refetchTaskLists();
-    },
-    isFirstLoad,
-    setIsFirstLoad,
+      // Add refetchCourierUsers when needed..!
+    }
   };
 }

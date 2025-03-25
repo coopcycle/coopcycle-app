@@ -35,25 +35,21 @@ function UnassignedTasks({
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
   const {
+    isLoading,
     isFetching,
     isError,
-    refetch,
-    isFirstLoad,
-    setIsFirstLoad
+    refetch
   } = useAllTasks(selectedDate);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       dispatch(initialize());
     });
-  }, [dispatch]);
 
-  useEffect(() => {
-    if (isFetching && isFirstLoad) {
+    if (isLoading) { // Inside this if because of the loading spinner thing
       dispatch(loadUnassignedTasksRequest());
-      setIsFirstLoad(false)
     }
-  }, [dispatch, isFetching, isFirstLoad, setIsFirstLoad]);
+  }, [dispatch, isLoading]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
@@ -108,13 +104,11 @@ function UnassignedTasks({
                 unassignedTasks,
               )
             }
-            allowMultipleSelection={task => allowToSelect(task)}
+            allowMultipleSelection={allowToSelect}
             multipleSelectionIcon="user"
-            onMultipleSelectionAction={selectedTasks =>
-              assignSelectedTasks(selectedTasks)
-            }
-            refreshing={!isFirstLoad ? false : isFetching}
-            onRefresh={() => refetch()}
+            onMultipleSelectionAction={assignSelectedTasks}
+            refreshing={isFetching}
+            onRefresh={refetch}
           />
         )}
       </View>
