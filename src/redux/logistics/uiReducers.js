@@ -1,3 +1,4 @@
+import { LOAD_TOURS_FAILURE, LOAD_TOURS_SUCCESS } from '../../shared/logistics/redux';
 import {
   ASSIGN_TASK_FAILURE,
   ASSIGN_TASK_REQUEST,
@@ -46,6 +47,7 @@ export default (state = initialState, action) => {
     case CREATE_TASK_FAILURE:
     case LOAD_TASK_LISTS_FAILURE:
     case LOAD_TASKS_FAILURE:
+    case LOAD_TOURS_FAILURE:
     case LOAD_USERS_FAILURE:
     case UNASSIGN_TASK_FAILURE:
       return {
@@ -58,6 +60,7 @@ export default (state = initialState, action) => {
     case CREATE_TASK_SUCCESS:
     case LOAD_TASK_LISTS_SUCCESS:
     case LOAD_TASKS_SUCCESS:
+    case LOAD_TOURS_SUCCESS:
     case LOAD_USERS_SUCCESS:
     case UNASSIGN_TASK_SUCCESS:
       return {

@@ -30,9 +30,7 @@ const NewDeliveryStore = (props) => {
     isError,
     isLoading: isLoadingBackendStores,
     refetch,
-  } = useGetStoresQuery(/* {
-    enabled: stores.length === 0,
-  } */);
+  } = useGetStoresQuery();
 
   useEffect(() => {
     if (backendStores) {

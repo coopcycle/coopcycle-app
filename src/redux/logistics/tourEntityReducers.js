@@ -1,7 +1,7 @@
 import { CENTRIFUGO_MESSAGE } from "../middlewares/CentrifugoMiddleware";
 import {
   DELETE_TOUR_SUCCESS,
-  LOAD_TOURS,
+  LOAD_TOURS_SUCCESS,
   UPDATE_TOUR,
   tourAdapter,
 } from "../../shared/logistics/redux";
@@ -15,7 +15,7 @@ export default (state = initialState, action) => {
     case CHANGE_DATE:
       return initialState;
 
-    case LOAD_TOURS:
+    case LOAD_TOURS_SUCCESS:
       return tourAdapter.upsertMany(state, action.payload);
 
     case UPDATE_TOUR:

@@ -38,9 +38,7 @@ function UnassignedTasks({
   const {
     isFetching,
     isError,
-    refetch,
-    isFirstLoad,
-    setIsFirstLoad
+    refetch
   } = useAllTasks(selectedDate);
 
   useEffect(() => {
@@ -50,11 +48,10 @@ function UnassignedTasks({
   }, [dispatch]);
 
   useEffect(() => {
-    if (isFetching && isFirstLoad) {
+    if (isFetching) {
       dispatch(loadTasksRequest());
-      setIsFirstLoad(false)
     }
-  }, [dispatch, isFetching, isFirstLoad, setIsFirstLoad]);
+  }, [dispatch, isFetching]);
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
@@ -90,7 +87,7 @@ function UnassignedTasks({
       <View style={{ flex: 1 }}>
         {isError && <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>}
         {!unassignedTasks && <TapToRefresh onPress={refetch} />}
-        {unassignedTasks && (
+        {unassignedTasks && !isFetching && (
           <TaskList
             tasks={unassignedTasks}
             tasksWithColor={tasksWithColor}
@@ -109,13 +106,10 @@ function UnassignedTasks({
                 unassignedTasks,
               )
             }
-            allowMultipleSelection={task => allowToSelect(task)}
+            allowMultipleSelection={allowToSelect}
             multipleSelectionIcon="user"
-            onMultipleSelectionAction={selectedTasks =>
-              assignSelectedTasks(selectedTasks)
-            }
-            refreshing={!isFirstLoad ? false : isFetching}
-            onRefresh={() => refetch()}
+            onMultipleSelectionAction={assignSelectedTasks}
+            onRefresh={refetch}
           />
         )}
       </View>

@@ -31,11 +31,15 @@ export function createTaskItemsTransform(now) {
 }
 
 export function sortByName(list) {
-  return _.sortBy(list, ['name']);
+  return sortByString(list, 'name');
 }
 
-export function sortByKey(list, key) {
-  return _.sortBy(list, [key]);
+export function sortByString(list, key) {
+  return sortByKey(list, elem => elem[key].toLowerCase());
+}
+
+export function sortByKey(list, key, order='asc') {
+  return _.orderBy(list, [key], [order]);
 }
 
 export async function fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, url, itemsPerPage, otherParams = null) {
