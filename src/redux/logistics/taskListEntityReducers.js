@@ -5,6 +5,7 @@ import {
 } from '../../coopcycle-frontend-js/logistics/redux';
 import {
   ASSIGN_TASK_SUCCESS,
+  CHANGE_DATE,
   CREATE_TASK_SUCCESS,
   LOAD_TASK_LISTS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
@@ -16,6 +17,9 @@ const selectors = taskListAdapter.getSelectors(state => state);
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_DATE:
+      return initialState;
+
     case LOAD_TASK_LISTS_SUCCESS: {
       let entities = action.payload.map(taskList =>
         taskListUtils.replaceTasksWithIds(taskList),

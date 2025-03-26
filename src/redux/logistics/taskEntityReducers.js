@@ -1,6 +1,7 @@
 import {
   ASSIGN_TASK_SUCCESS,
   CANCEL_TASK_SUCCESS,
+  CHANGE_DATE,
   CREATE_TASK_SUCCESS,
   LOAD_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
@@ -20,6 +21,9 @@ const initialState = taskAdapter.getInitialState();
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_DATE:
+      return initialState;
+
     case LOAD_TASKS_SUCCESS: {
       return taskAdapter.upsertMany(state, action.payload);
     }
