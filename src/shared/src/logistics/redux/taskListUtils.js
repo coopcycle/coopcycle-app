@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { tasksToIds } from './taskUtils';
 
 export function replaceTasksWithIds(taskList) {
   let entity = {
