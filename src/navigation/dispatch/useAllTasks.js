@@ -2,8 +2,11 @@ import { useDispatch } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 
 import {
+  loadTaskListsFailure,
   loadTaskListsSuccess,
+  loadUnassignedTasksFailure,
   loadUnassignedTasksSuccess,
+  loadUsersFailure,
   loadUsersSuccess,
 } from "../../redux/Dispatch/actions";
 import {
@@ -14,7 +17,6 @@ import {
 
 
 export function useAllTasks(date) {
-
   const dispatch = useDispatch();
 
   const {
@@ -40,27 +42,33 @@ export function useAllTasks(date) {
     isFetching: isFetchingCourierUsers
   } = useGetCourierUsersQuery();
 
+  const isError = useMemo(() => {
+    return isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers;
+  }, [isErrorTaskLists, isErrorUnassignedTasks, isErrorCourierUsers]);
+
+  const isLoading = useMemo(() => {
+    return isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers;
+  }, [isLoadingTaskLists, isLoadingUnassignedTasks, isLoadingCourierUsers]);
+
+  const isFetching = useMemo(() => {
+    return isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers;
+  }, [isFetchingUnassignedTasks, isFetchingTaskLists, isFetchingCourierUsers]);
+
   useEffect(() => {
-    if ( !(isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers)
-      && (unassignedTasks && taskLists && courierUsers)
-    ) {
+    if (!isFetching && !isError && unassignedTasks && taskLists && courierUsers) {
       dispatch(loadUnassignedTasksSuccess(unassignedTasks));
       dispatch(loadTaskListsSuccess(taskLists));
       dispatch(loadUsersSuccess(courierUsers));
     }
-  }, [dispatch, unassignedTasks, taskLists, courierUsers, isFetchingUnassignedTasks, isFetchingTaskLists, isFetchingCourierUsers]);
+  }, [dispatch, unassignedTasks, taskLists, courierUsers, isFetching, isError]);
 
-  const isError = useMemo(() => {
-    return isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers
-  }, [isErrorTaskLists, isErrorUnassignedTasks, isErrorCourierUsers])
-
-  const isLoading = useMemo(() => {
-    return isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers
-  }, [isLoadingTaskLists, isLoadingUnassignedTasks, isLoadingCourierUsers])
-
-  const isFetching = useMemo(() => {
-    return isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers
-  }, [isFetchingUnassignedTasks, isFetchingTaskLists, isFetchingCourierUsers])
+  useEffect(() => {
+    if(isError) {
+      dispatch(loadUnassignedTasksFailure());
+      dispatch(loadTaskListsFailure());
+      dispatch(loadUsersFailure());
+    }
+  }, [dispatch, isError]);
 
   return {
     isError,
