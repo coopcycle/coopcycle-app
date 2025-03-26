@@ -31,11 +31,29 @@ export function createTaskItemsTransform(now) {
 }
 
 export function sortByName(list) {
-  return _.sortBy(list, ['name']);
+  return sortByString(list, 'name');
 }
 
-export async function fetchAllRecords(httpClient, url, itemsPerPage) {
-  const fetch = async (page) => httpClient.get(`${url}?itemsPerPage=${itemsPerPage}&page=${page}`);
+export function sortByString(list, key) {
+  return sortByKey(list, elem => elem[key].toLowerCase());
+}
+
+export function sortByKey(list, key, order='asc') {
+  return _.orderBy(list, [key], [order]);
+}
+
+export async function fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, url, itemsPerPage, otherParams = null) {
+  const fetch = async (page) => {
+    const params = new URLSearchParams({
+      pagination: true,
+      page,
+      itemsPerPage,
+      ...otherParams,
+    });
+    const result = await fetchWithBQ(`${url}?${params.toString()}`);
+    return result.data;
+
+  };
   const firstRs = await fetch(1);
 
   if (!Object.hasOwn(firstRs, 'hydra:totalItems') || firstRs['hydra:totalItems'] <= firstRs['hydra:member'].length) {
@@ -47,6 +65,11 @@ export async function fetchAllRecords(httpClient, url, itemsPerPage) {
   const totalItems = firstRs['hydra:totalItems'];
   const maxPage = Math.trunc(totalItems / itemsPerPage) + (totalItems % itemsPerPage === 0 ? 0 : 1);
 
-  return Promise.all([...Array(maxPage+1).keys()].slice(2).map(page => fetch(page)))
+  return Promise
+    .all(
+      [...Array(maxPage+1).keys()]
+      .slice(2)
+      .map(page => fetch(page))
+    )
     .then(results => results.reduce((acc, rs) => acc.concat(rs['hydra:member']), firstRs['hydra:member']));
 }

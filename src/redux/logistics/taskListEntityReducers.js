@@ -10,6 +10,7 @@ import {
   LOAD_TASK_LISTS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
 } from '../Dispatch/actions';
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
 
 const initialState = taskListAdapter.getInitialState();
 const selectors = taskListAdapter.getSelectors(state => state);
@@ -18,12 +19,14 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_DATE:
       return initialState;
+
     case LOAD_TASK_LISTS_SUCCESS: {
       let entities = action.payload.map(taskList =>
         taskListUtils.replaceTasksWithIds(taskList),
       );
       return taskListAdapter.upsertMany(state, entities);
     }
+
     case CREATE_TASK_SUCCESS: {
       let task = action.payload;
 
@@ -37,6 +40,7 @@ export default (state = initialState, action) => {
         return state;
       }
     }
+
     case ASSIGN_TASK_SUCCESS: {
       let newItems = taskListEntityUtils.addAssignedTask(
         selectors.selectEntities(state),
@@ -44,6 +48,7 @@ export default (state = initialState, action) => {
       );
       return taskListAdapter.upsertMany(state, newItems);
     }
+
     case UNASSIGN_TASK_SUCCESS: {
       let newItems = taskListEntityUtils.removeUnassignedTask(
         selectors.selectEntities(state),
@@ -51,7 +56,31 @@ export default (state = initialState, action) => {
       );
       return taskListAdapter.upsertMany(state, newItems);
     }
+
+    case CENTRIFUGO_MESSAGE:
+      return processWebsocketMessage(state, action);
+
     default:
       return state;
   }
+};
+
+const processWebsocketMessage = (state, action) => {
+  if (action.payload.name && action.payload.data) {
+    const { name, data } = action.payload;
+
+    switch (name) {
+      case 'v2:task_list:updated':{
+        const { task_list } = data;
+        return taskListAdapter.upsertOne(state, task_list);
+      }
+
+      default:
+        return {
+          ...state,
+        };
+    }
+  }
+
+  return state;
 };

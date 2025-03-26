@@ -27,7 +27,7 @@ describe('taskEntityReducers', () => {
     });
   });
 
-  describe('LOAD_UNASSIGNED_TASKS_SUCCESS', () => {
+  describe('LOAD_TASKS_SUCCESS', () => {
     it('should add items', () => {
       expect(
         taskEntityReducers(
@@ -36,7 +36,7 @@ describe('taskEntityReducers', () => {
             entities: {},
           },
           {
-            type: 'LOAD_UNASSIGNED_TASKS_SUCCESS',
+            type: 'LOAD_TASKS_SUCCESS',
             payload: [
               {
                 '@id': '/api/tasks/1',
@@ -82,7 +82,7 @@ describe('taskEntityReducers', () => {
             },
           },
           {
-            type: 'LOAD_UNASSIGNED_TASKS_SUCCESS',
+            type: 'LOAD_TASKS_SUCCESS',
             payload: [
               {
                 '@id': '/api/tasks/1',
@@ -113,65 +113,6 @@ describe('taskEntityReducers', () => {
             id: 2,
             isAssigned: false,
             comments: 'new comment',
-          },
-        },
-      });
-    });
-  });
-
-  describe('LOAD_TASK_LISTS_SUCCESS', () => {
-    it('should add items', () => {
-      expect(
-        taskEntityReducers(
-          {
-            ids: [],
-            entities: {},
-          },
-          {
-            type: 'LOAD_TASK_LISTS_SUCCESS',
-            payload: [
-              {
-                '@id': '/api/task_lists/1',
-                '@type': 'TaskList',
-                items: [
-                  {
-                    '@id': '/api/tasks/1',
-                    id: 1,
-                    isAssigned: true,
-                    assignedTo: 'bot_1',
-                  },
-                  {
-                    '@id': '/api/tasks/2',
-                    id: 2,
-                    isAssigned: true,
-                    assignedTo: 'bot_1',
-                  },
-                ],
-                username: 'bot_1',
-              },
-              {
-                '@id': '/api/task_lists/31',
-                '@type': 'TaskList',
-                items: [],
-                username: 'bot_12',
-              },
-            ],
-          },
-        ),
-      ).toEqual({
-        ids: ['/api/tasks/1', '/api/tasks/2'],
-        entities: {
-          '/api/tasks/1': {
-            '@id': '/api/tasks/1',
-            id: 1,
-            isAssigned: true,
-            assignedTo: 'bot_1',
-          },
-          '/api/tasks/2': {
-            '@id': '/api/tasks/2',
-            id: 2,
-            isAssigned: true,
-            assignedTo: 'bot_1',
           },
         },
       });

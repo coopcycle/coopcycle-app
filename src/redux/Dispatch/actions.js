@@ -30,9 +30,9 @@ import { isSameDate } from './utils';
 
 export const DISPATCH_INITIALIZE = 'DISPATCH_INITIALIZE';
 
-export const LOAD_UNASSIGNED_TASKS_REQUEST = 'LOAD_UNASSIGNED_TASKS_REQUEST';
-export const LOAD_UNASSIGNED_TASKS_SUCCESS = 'LOAD_UNASSIGNED_TASKS_SUCCESS';
-export const LOAD_UNASSIGNED_TASKS_FAILURE = 'LOAD_UNASSIGNED_TASKS_FAILURE';
+export const LOAD_TASKS_REQUEST = '@dispatch/LOAD_TASKS_REQUEST';
+export const LOAD_TASKS_SUCCESS = '@dispatch/LOAD_TASKS_SUCCESS';
+export const LOAD_TASKS_FAILURE = '@dispatch/LOAD_TASKS_FAILURE';
 
 export const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
 export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
@@ -70,15 +70,9 @@ export const CHANGE_DATE = 'CHANGE_DATE';
  * Action Creators
  */
 
-export const loadUnassignedTasksRequest = createAction(
-  LOAD_UNASSIGNED_TASKS_REQUEST,
-);
-export const loadUnassignedTasksSuccess = createAction(
-  LOAD_UNASSIGNED_TASKS_SUCCESS,
-);
-export const loadUnassignedTasksFailure = createAction(
-  LOAD_UNASSIGNED_TASKS_FAILURE,
-);
+export const loadTasksRequest = createAction(LOAD_TASKS_REQUEST);
+export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS);
+export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE);
 
 export const loadUsersRequest = createAction(LOAD_USERS_REQUEST);
 export const loadUsersSuccess = createAction(LOAD_USERS_SUCCESS);
@@ -116,41 +110,9 @@ export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST);
 export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS);
 export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE);
 
-const _changeDate = createAction(CHANGE_DATE);
+export const changeDate = createAction(CHANGE_DATE);
 const _initialize = createAction(DISPATCH_INITIALIZE);
 
-/**
- * Thunk Creators
- */
-
-function _loadUsers(httpClient) {
-  return httpClient.get('/api/users?roles[]=ROLE_COURIER');
-}
-
-function _loadUnassignedTasks(httpClient, date) {
-  return httpClient.get(
-    `/api/tasks?date=${date.format('YYYY-MM-DD')}&assigned=no`,
-  );
-}
-
-function _loadTaskLists(httpClient, date) {
-  return httpClient.get(`/api/task_lists?date=${date.format('YYYY-MM-DD')}`);
-}
-
-function _loadAll(httpClient, date) {
-  return Promise.all([
-    _loadUsers(httpClient),
-    _loadUnassignedTasks(httpClient, date),
-    _loadTaskLists(httpClient, date),
-  ]);
-}
-
-function _loadTasks(httpClient, date) {
-  return Promise.all([
-    _loadUnassignedTasks(httpClient, date),
-    _loadTaskLists(httpClient, date),
-  ]);
-}
 
 function showAlert(e) {
   let message = i18n.t('TRY_LATER');
@@ -180,80 +142,8 @@ export function initialize() {
       return;
     }
 
-    const httpClient = getState().app.httpClient;
-    const date = selectSelectedDate(getState());
-
-    dispatch(loadUnassignedTasksRequest());
-
-    _loadAll(httpClient, date)
-      .then(values => {
-        const [users, unassignedTasks, taskLists] = values;
-        dispatch(loadUsersSuccess(users['hydra:member']));
-        dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
-        dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-        dispatch(connectCentrifugo());
-        dispatch(_initialize());
-      })
-      .catch(e => {
-        dispatch(loadUnassignedTasksFailure(e));
-      });
-  };
-}
-
-export function loadUnassignedTasks() {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-    const date = selectSelectedDate(getState());
-
-    dispatch(loadUnassignedTasksRequest());
-
-    _loadUnassignedTasks(httpClient, date)
-      .then(res => dispatch(loadUnassignedTasksSuccess(res['hydra:member'])))
-      .catch(e => dispatch(loadUnassignedTasksFailure(e)));
-  };
-}
-
-export function changeDate(date) {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadUnassignedTasksRequest());
-
-    _loadTasks(httpClient, date)
-      .then(values => {
-        const [unassignedTasks, taskLists] = values;
-        dispatch(loadUnassignedTasksSuccess(unassignedTasks['hydra:member']));
-        dispatch(loadTaskListsSuccess(taskLists['hydra:member']));
-      })
-      .catch(e => dispatch(loadUnassignedTasksFailure(e)));
-
-    dispatch(_changeDate(date));
-  };
-}
-
-export function loadUsers() {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadUsersRequest());
-
-    return httpClient
-      .get('/api/users?roles[]=ROLE_COURIER')
-      .then(res => dispatch(loadUsersSuccess(res['hydra:member'])))
-      .catch(e => dispatch(loadUsersFailure(e)));
-  };
-}
-
-export function loadTaskLists(date) {
-  return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    dispatch(loadTaskListsRequest());
-
-    return httpClient
-      .get(`/api/task_lists?date=${date.format('YYYY-MM-DD')}`)
-      .then(res => dispatch(loadTaskListsSuccess(res['hydra:member'])))
-      .catch(e => dispatch(loadTaskListsFailure(e)));
+    dispatch(connectCentrifugo());
+    dispatch(_initialize());
   };
 }
 

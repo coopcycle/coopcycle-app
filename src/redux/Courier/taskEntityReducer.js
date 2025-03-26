@@ -26,12 +26,12 @@ import {
   MARK_TASK_FAILED_FAILURE,
   MARK_TASK_FAILED_REQUEST,
   MARK_TASK_FAILED_SUCCESS,
+  REPORT_INCIDENT_FAILURE,
+  REPORT_INCIDENT_REQUEST,
+  REPORT_INCIDENT_SUCCESS,
   START_TASK_FAILURE,
   START_TASK_REQUEST,
   START_TASK_SUCCESS,
-  REPORT_INCIDENT_REQUEST,
-  REPORT_INCIDENT_SUCCESS,
-  REPORT_INCIDENT_FAILURE,
 } from './taskActions';
 import { apiSlice } from '../api/slice'
 
@@ -338,6 +338,7 @@ const processWsMsg = (state, action) => {
     const { name, data } = action.payload;
 
     switch (name) {
+      // TODO: update to v2
       case 'task_list:updated':
         const taskList = data.task_list;
 

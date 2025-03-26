@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { createTaskItemsTransform, fetchAllRecords } from '../util';
+import { createTaskItemsTransform, fetchAllRecordsUsingFetchWithBQ } from '../util';
 
 describe('Redux | util', () => {
   it('TaskItemsTransform | in', () => {
@@ -58,58 +58,66 @@ describe('Redux | util', () => {
     });
   });
 
-  describe('fetchAllRecords', () => {
+  describe('fetchAllRecordsUsingFetchWithBQ', () => {
     const members = [
       {'@id': '/api/stores/1'},
       {'@id': '/api/stores/2'}
     ];
 
     it('should return all items that fits in the first page', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
+      const fetchWithBQ = jest.fn();
+      fetchWithBQ.mockResolvedValue({
+        data: { 
         'hydra:totalItems': 2,
-        'hydra:member': members
+        'hydra:member': members 
+        }
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 10);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 10);
       expect(rs).toEqual(members);
-      expect(httpClient.get).toHaveBeenCalledTimes(1);
+      expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
 
     it('should return all items from 3 request', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
-        'hydra:totalItems': 6,
-        'hydra:member': members
+      const fetchWithBQ = jest.fn();
+      fetchWithBQ.mockResolvedValue({
+        data: {
+          'hydra:totalItems': 6,
+          'hydra:member': members
+        }
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 2);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 2);
       expect(rs).toEqual([...members, ...members, ...members]);
-      expect(httpClient.get).toHaveBeenCalledTimes(3);
+      expect(fetchWithBQ).toHaveBeenCalledTimes(3);
     });
 
     it('should return all items from 1 request although totalItems is bigger than member.length but itemsPerPage is bigger', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
-        'hydra:totalItems': 5,
-        'hydra:member': members
+      const fetchWithBQ = jest.fn();
+      fetchWithBQ.mockResolvedValue({
+        data: {
+          'hydra:totalItems': 5,
+          'hydra:member': members
+        }
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 7);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 7);
       expect(rs).toEqual(members);
-      expect(httpClient.get).toHaveBeenCalledTimes(1);
+      expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
 
     it('should return all items from 1 request although totalItems is equal to member.length and itemsPerPage is lower', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
-        'hydra:totalItems': 2,
-        'hydra:member': members
+      const fetchWithBQ = jest.fn();
+      fetchWithBQ.mockResolvedValue({
+        data: {
+          'hydra:totalItems': 2,
+          'hydra:member': members
+        }
       });
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 1);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 1);
       expect(rs).toEqual(members);
-      expect(httpClient.get).toHaveBeenCalledTimes(1);
+      expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
   });
 });
