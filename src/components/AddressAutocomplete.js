@@ -67,6 +67,7 @@ function AddressAutocomplete(props) {
     onSelectAddress,
     placeholder,
     onMapPickerPress,
+    location,
     ...otherProps
   } = props;
 
@@ -439,6 +440,7 @@ function AddressAutocomplete(props) {
               props.onSelectAddress(address);
             }}
             onCancel={() => setShowPickerModal(false)}
+            initialRegion={location}
           />
         </View>
       </Modal>
