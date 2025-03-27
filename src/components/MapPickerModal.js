@@ -61,34 +61,34 @@ function MapPickerScreen({
     }
   }, [location]);
 
-  const reverseGeocode = useCallback(
-    //TODO: Move this function elsewhere
-    _.debounce(async location => {
-      try {
-        const { latitude, longitude } = location;
-        const response = await geocodingClient.get(
-          `/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_BROWSER_KEY}&language=${localeDetector()}`,
-        );
+  const reverseGeocode = useMemo(
+    () =>
+      _.debounce(async location => {
+        try {
+          const { latitude, longitude } = location;
+          const response = await geocodingClient.get(
+            `/geocode/json?latlng=${latitude},${longitude}&key=${Config.GOOGLE_MAPS_BROWSER_KEY}&language=${localeDetector()}`,
+          );
 
-        if (response.data.results?.[0]) {
-          const formattedAddress = {
-            ...AddressUtils.createAddressFromGoogleGeocoding(
-              response.data.results[0],
-            ),
-            isPrecise: true, //NOTE: See if forcing isPrecise on map pick is a good idea
-          };
-          setAddress(formattedAddress);
-        } else {
+          if (response.data.results?.[0]) {
+            const formattedAddress = {
+              ...AddressUtils.createAddressFromGoogleGeocoding(
+                response.data.results[0],
+              ),
+              isPrecise: true, //NOTE: See if forcing isPrecise on map pick is a good idea
+            };
+            setAddress(formattedAddress);
+          } else {
+            setAddress(null);
+          }
+        } catch (error) {
+          console.error('Error with reverse geocoding:', error);
           setAddress(null);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        console.error('Error with reverse geocoding:', error);
-        setAddress(null);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 300),
-    [],
+      }, 300),
+    [setAddress, setIsLoading],
   );
 
   useEffect(() => {
@@ -117,7 +117,7 @@ function MapPickerScreen({
       setSelectedLocation(coordinate);
       handleReverseGeocode(coordinate);
     },
-    [handleReverseGeocode],
+    [handleReverseGeocode, setSelectedLocation],
   );
 
   const handleConfirm = useCallback(() => {
