@@ -42,7 +42,6 @@ function MapPickerScreen({
 
   const mapRef = useRef(null);
 
-  // Parse initial map region from location string
   const initialRegion = useMemo(() => {
     if (!location) return null;
 
@@ -63,6 +62,7 @@ function MapPickerScreen({
   }, [location]);
 
   const reverseGeocode = useCallback(
+    //TODO: Move this function elsewhere
     _.debounce(async location => {
       try {
         const { latitude, longitude } = location;
