@@ -12,6 +12,7 @@ import {
   View,
   useColorModeValue,
   IconButton,
+  Box,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
@@ -23,6 +24,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -372,48 +374,48 @@ function AddressAutocomplete(props) {
   }
 
   const renderTextInput = inputProps => (
-    <View style={styles.textInput}>
-      <IconButton
-        icon={<Icon as={FontAwesome5} name="map-marker-alt" />}
-        borderRadius="full"
-        _icon={{
-          color: props.primaryColor,
-          size: 5,
-        }}
-        _pressed={{
-          bg: `${props.primaryColor}:alpha.20`,
-        }}
+    <View style={styles.textInputContainer}>
+      <TouchableOpacity
+        style={styles.mapPickerButton}
         onPress={() => setShowPickerModal(true)}
-        mr={2}
         testID="map-picker-button"
         accessibilityLabel={t('PICK_ON_MAP')}
-      />
-
-      <View style={[styles.textInput, { flex: 1 }]}>
-        <Input
-          {...inputProps}
-          style={[
-            inputProps.style,
-            {
-              backgroundColor: props.backgroundColor,
-            },
-          ]}
-          placeholderTextColor={props.placeholderTextColor}
-          variant="outline"
-          onFocus={onTextInputFocus}
-          onBlur={onTextInputBlur}
+      >
+        <Icon
+          as={Ionicons}
+          name="locate"
+          color="white"
+          size={5}
         />
-        {props.country === 'gb' && postcode && (
-          <PostCodeButton
-            postcode={postcode.postcode}
-            onPress={() => {
-              setQuery('');
-              setResults([]);
-              setPostcode(null);
-            }}
-          />
-        )}
-      </View>
+      </TouchableOpacity>
+      <Input
+        {...inputProps}
+        style={[
+          inputProps.style,
+          styles.inputField,
+        ]}
+        placeholderTextColor={props.placeholderTextColor}
+        variant="unstyled"
+        onFocus={onTextInputFocus}
+        onBlur={onTextInputBlur}
+        fontSize={14}
+        height="40px"
+        flex={1}
+        pl={2}
+        _focus={{
+          borderColor: props.primaryColor,
+        }}
+      />
+      {props.country === 'gb' && postcode && (
+        <PostCodeButton
+          postcode={postcode.postcode}
+          onPress={() => {
+            setQuery('');
+            setResults([]);
+            setPostcode(null);
+          }}
+        />
+      )}
       {props.renderRight && props.renderRight()}
     </View>
   );
@@ -453,12 +455,18 @@ function AddressAutocomplete(props) {
           onChangeText={onChangeText}
           // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
           renderResultList={({ data, listContainerStyle }) => (
-            <View style={listContainerStyle}>
+            <View style={[listContainerStyle, { marginTop: 0 }]}>
               <View
                 style={{
-                  borderTopWidth: 0,
-                  borderWidth: 1,
-                  borderColor: props.primaryColor,
+                  borderWidth: 0,
+                  borderBottomWidth: 1,
+                  borderLeftWidth: 1,
+                  borderRightWidth: 1,
+                  borderColor: '#E0E0E0',
+                  overflow: "hidden",
+                  backgroundColor: 'white',
+                  borderBottomLeftRadius: 4,
+                  borderBottomRightRadius: 4,
                 }}>
                 {data.map((item, index) => (
                   <View key={index}>
@@ -480,15 +488,12 @@ function AddressAutocomplete(props) {
           }}
           inputContainerStyle={{
             borderWidth: 0,
-            // paddingVertical: 8,
             ...inputContainerStyle,
           }}
           listContainerStyle={{
-            backgroundColor: props.backgroundColor,
+            backgroundColor: 'transparent',
             ...listContainerStyle,
           }}
-        //FIXME: avoid using generic `style` prop; use `containerStyle`/`inputContainerStyle`/`listContainerStyle/ etc.
-        // see all available props at https://github.com/byteburgers/react-native-autocomplete-input?tab=readme-ov-file#props
           style={{
             ...style,
           }}
@@ -520,13 +525,26 @@ const styles = StyleSheet.create({
   },
   item: {
     paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
+  },
+  textInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 4,
+    backgroundColor: 'white',
+    marginHorizontal: 0,
   },
   textInput: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  inputField: {
+    fontSize: 14,
   },
   autocompleteContainer: {
     flex: 1,
@@ -535,6 +553,17 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     zIndex: 1,
+  },
+  mapPickerButton: {
+    backgroundColor: 'red',
+    borderRadius: 4,
+    padding: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 36,
+    width: 36,
   },
 });
 
