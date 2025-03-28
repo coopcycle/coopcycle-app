@@ -10,7 +10,7 @@ import {
   selectIsAuthenticated,
   selectShowRestaurantsDrawerItem,
 } from '../../redux/App/selectors';
-import { stackNavigatorScreenOptions } from '../styles';
+import { useStackNavigatorScreenOptions } from '../styles';
 
 import DrawerContent from '../components/DrawerContent';
 
@@ -29,69 +29,85 @@ import StoreNavigator from './StoreNavigator';
 
 const AboutStack = createStackNavigator();
 
-const AboutNavigator = () => (
-  <AboutStack.Navigator screenOptions={stackNavigatorScreenOptions}>
-    <AboutStack.Screen
-      name="AboutHome"
-      component={About}
-      options={({ navigation }) => ({
-        title: i18n.t('ABOUT'),
-        headerLeft: headerLeft(navigation),
-      })}
-    />
-  </AboutStack.Navigator>
-);
+const AboutNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <AboutStack.Navigator screenOptions={screenOptions}>
+      <AboutStack.Screen
+        name="AboutHome"
+        component={About}
+        options={({ navigation }) => ({
+          title: i18n.t('ABOUT'),
+          headerLeft: headerLeft(navigation),
+        })}
+      />
+    </AboutStack.Navigator>
+  );
+};
 
 const TermsStack = createStackNavigator();
 
-const TermsNavigator = () => (
-  <TermsStack.Navigator screenOptions={stackNavigatorScreenOptions}>
-    <TermsStack.Screen
-      name="TermsHome"
-      component={Terms}
-      options={({ navigation }) => ({
-        title: i18n.t('TERMS_OF_SERVICE'),
-        headerLeft: props => (
-          <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
-        ),
-      })}
-    />
-  </TermsStack.Navigator>
-);
+const TermsNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <TermsStack.Navigator screenOptions={screenOptions}>
+      <TermsStack.Screen
+        name="TermsHome"
+        component={Terms}
+        options={({ navigation }) => ({
+          title: i18n.t('TERMS_OF_SERVICE'),
+          headerLeft: props => (
+            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
+          ),
+        })}
+      />
+    </TermsStack.Navigator>
+  );
+};
 
 const PrivacyStack = createStackNavigator();
 
-const PrivacyNavigator = () => (
-  <PrivacyStack.Navigator screenOptions={stackNavigatorScreenOptions}>
-    <PrivacyStack.Screen
-      name="PrivacyHome"
-      component={Privacy}
-      options={({ navigation }) => ({
-        title: i18n.t('PRIVACY'),
-        headerLeft: props => (
-          <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
-        ),
-      })}
-    />
-  </PrivacyStack.Navigator>
-);
+const PrivacyNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <PrivacyStack.Navigator screenOptions={screenOptions}>
+      <PrivacyStack.Screen
+        name="PrivacyHome"
+        component={Privacy}
+        options={({ navigation }) => ({
+          title: i18n.t('PRIVACY'),
+          headerLeft: props => (
+            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
+          ),
+        })}
+      />
+    </PrivacyStack.Navigator>
+  );
+};
 
 const FeatureFlagsStack = createStackNavigator();
 
-const FeatureFlagsNavigator = () => (
-  <FeatureFlagsStack.Navigator screenOptions={stackNavigatorScreenOptions}>
-    <FeatureFlagsStack.Screen
-      name="FeatureFlagsHome"
-      component={FeatureFlags}
-      options={({ navigation }) => ({
-        title: i18n.t('FEATURE_FLAGS'),
-        headerLeft: props => (
-          <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
-        ),
-      })}
-    />
-  </FeatureFlagsStack.Navigator>
-);
+const FeatureFlagsNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <FeatureFlagsStack.Navigator screenOptions={screenOptions}>
+      <FeatureFlagsStack.Screen
+        name="FeatureFlagsHome"
+        component={FeatureFlags}
+        options={({ navigation }) => ({
+          title: i18n.t('FEATURE_FLAGS'),
+          headerLeft: props => (
+            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
+          ),
+        })}
+      />
+    </FeatureFlagsStack.Navigator>
+  );
+};
 
 function mapStateToProps(state) {
   const user = state.app.user;
