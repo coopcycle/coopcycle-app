@@ -28,6 +28,7 @@ export default (state = initialState, action) => {
     case LOAD_UNASSIGNED_TASKS_SUCCESS: {
       return taskAdapter.upsertMany(state, action.payload);
     }
+    // TODO: remove this case on feature/235
     case LOAD_TASK_LISTS_SUCCESS: {
       let assignedTasks = taskListUtils.assignedTasks(action.payload);
       return taskAdapter.upsertMany(state, assignedTasks);

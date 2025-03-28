@@ -14,7 +14,8 @@ export const selectTasksNotCancelled = createSelector(
 );
 
 export const selectIsDispatchFetching = createSelector(
+  state => state.logistics.ui.isBulkAssigning,
   state => state.logistics.ui.isFetching,
   state => state.logistics.ui.taskListsLoading,
-  (isFetching, taskListsLoading) => isFetching || taskListsLoading,
+  (isBulkAssigning, isFetching, taskListsLoading) => isBulkAssigning || isFetching || taskListsLoading,
 );

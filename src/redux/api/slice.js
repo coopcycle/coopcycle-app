@@ -1,5 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+
 import { baseQueryWithReauth } from './baseQuery';
+import { fetchAllRecordsUsingFetchWithBQ, sortByName, sortByString } from '../util';
+
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -12,11 +15,63 @@ export const apiSlice = createApi({
       query: date => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
-          date: date.format('YYYY-MM-DD'),
+          date: date.format('YYYY-MM-DD')
         },
         method: 'POST',
-        body: {},
+        body: {}
       }),
+    }),
+    getUnassignedTasks: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/tasks',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
+            assigned: 'no'
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      }
+    }),
+    getTaskLists: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/task_lists',
+          100,
+          {
+            date: date.format('YYYY-MM-DD')
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
+    getCourierUsers: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/users',
+          100,
+          {
+            'roles[]': 'ROLE_COURIER'
+          }
+        );
+
+        return result ? { data: sortByString(result, 'username') } : { error: "result.error" };
+      },
+    }),
+    getStores: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/stores',
+          100,
+        );
+
+        return result ? { data: sortByName(result) } : { error: "result.error" };
+      }
     }),
     getMyTasks: builder.query({
       query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,
@@ -39,8 +94,12 @@ export const apiSlice = createApi({
 
 // Export the auto-generated hook for the query endpoints
 export const {
-  useSubscriptionGenerateOrdersMutation,
+  useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
+  useGetTaskListsQuery,
+  useGetUnassignedTasksQuery,
+  useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
+  useGetStoresQuery
 } = apiSlice;
