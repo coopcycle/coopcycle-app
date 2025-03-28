@@ -32,13 +32,6 @@ jest.mock('@react-native-firebase/analytics', () => ({
 
 jest.mock('@react-native-firebase/messaging', () => ({}));
 
-jest.mock('countly-sdk-react-native-bridge', () => ({
-  enableParameterTamperingProtection: () => {},
-  init: () => {},
-  start: () => {},
-  recordView: () => {},
-}));
-
 jest.mock('react-native-background-geolocation', () => ({
   DESIRED_ACCURACY_HIGH: -1,
   LOG_LEVEL_VERBOSE: 5,
