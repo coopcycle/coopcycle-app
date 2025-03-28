@@ -95,9 +95,6 @@ jobs:
           FACEBOOK_CLIENT_TOKEN: ${{ secrets.FACEBOOK_CLIENT_TOKEN }}
         run: |
           touch .env
-          echo COUNTLY_SERVER_URL= >> .env
-          echo COUNTLY_APP_KEY= >> .env
-          echo COUNTLY_SALT= >> .env
           echo SENTRY_DSN="$SENTRY_DSN" >> .env
           echo DATADOG_ENABLED="1" >> .env
           echo DATADOG_CLIENT_TOKEN="$DATADOG_CLIENT_TOKEN" >> .env

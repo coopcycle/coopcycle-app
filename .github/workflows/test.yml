@@ -3,9 +3,6 @@ on: [push]
 jobs:
   LINT_AND_TEST:
     env:
-      COUNTLY_SERVER_URL: ''
-      COUNTLY_APP_KEY: ''
-      COUNTLY_SALT: ''
     name: Basic tests
     runs-on: ubuntu-latest
     steps:
