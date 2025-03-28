@@ -44,3 +44,5 @@ export const {
   useGetOrderTimingQuery,
   useUpdateOrderMutation,
 } = apiSlice;
+
+export const clearApiState = apiSlice.util.resetApiState;
