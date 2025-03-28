@@ -5,37 +5,40 @@ import { connect } from 'react-redux';
 import screens from '..';
 import i18n from '../../i18n';
 import { selectSignatureScreenFirst } from '../../redux/Courier';
-import { stackNavigatorScreenOptions } from '../styles';
+import { useStackNavigatorScreenOptions } from '../styles';
 
 const Tab = createMaterialTopTabNavigator();
 
-const TabNavigator = ({ initialRouteName, initialParams }) => (
-  <Tab.Navigator
-    screenOptions={{
-      ...stackNavigatorScreenOptions,
-      // Disable swipe to avoid swiping when signing
-      swipeEnabled: false,
-    }}
-    backBehavior="history"
-    initialRouteName={initialRouteName}>
-    <Tab.Screen
-      name="TaskPhoto"
-      component={screens.TaskPhoto}
-      options={{
-        title: i18n.t('PHOTO'),
-      }}
-      initialParams={initialParams}
-    />
-    <Tab.Screen
-      name="TaskSignature"
-      component={screens.TaskSignature}
-      options={{
-        title: i18n.t('SIGNATURE'),
-      }}
-      initialParams={initialParams}
-    />
-  </Tab.Navigator>
-);
+const TabNavigator = ({ initialRouteName, initialParams }) => {
+  const screenOptions = useStackNavigatorScreenOptions({
+    // Disable swipe to avoid swiping when signing
+    swipeEnabled: false,
+  });
+
+  return (
+    <Tab.Navigator
+      screenOptions={screenOptions}
+      backBehavior="history"
+      initialRouteName={initialRouteName}>
+      <Tab.Screen
+        name="TaskPhoto"
+        component={screens.TaskPhoto}
+        options={{
+          title: i18n.t('PHOTO'),
+        }}
+        initialParams={initialParams}
+      />
+      <Tab.Screen
+        name="TaskSignature"
+        component={screens.TaskSignature}
+        options={{
+          title: i18n.t('SIGNATURE'),
+        }}
+        initialParams={initialParams}
+      />
+    </Tab.Navigator>
+  );
+};
 
 // The params are *NOT* passed to the child tab navigator
 // https://stackoverflow.com/a/68651234/333739

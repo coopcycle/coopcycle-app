@@ -23,7 +23,7 @@ import {
 } from '../../styles/theme';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
-import { stackNavigatorScreenOptions } from '../styles';
+import { useStackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
 
 const MyOrderButton = ({ navigation }) => {
@@ -76,14 +76,13 @@ const Tab = createBottomTabNavigator();
 
 function Tabs({ rootNavigation: navigation }) {
   const primaryColor = usePrimaryColor();
+  const screenOptions = useStackNavigatorScreenOptions({
+    headerShown: false,
+    tabBarActiveTintColor: primaryColor,
+  });
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        ...stackNavigatorScreenOptions,
-        headerShown: false,
-        tabBarActiveTintColor: primaryColor,
-      }}>
+    <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
         name="Home"
         options={{
@@ -135,124 +134,129 @@ function Tabs({ rootNavigation: navigation }) {
 
 const MainStack = createStackNavigator();
 
-const MainNavigator = () => (
-  <MainStack.Navigator screenOptions={stackNavigatorScreenOptions}>
-    <MainStack.Screen
-      name="CheckoutHome"
-      component={Tabs}
-      options={({ navigation, route }) => ({
-        title: i18n.t('RESTAURANTS'),
-        headerLeft: headerLeft(navigation),
-        ...getNestedOptions(navigation, route),
-      })}
-    />
-    <MainStack.Screen
-      name="CheckoutRestaurant"
-      component={screens.CheckoutRestaurant}
-      options={({
-        route: {
-          params: { restaurant },
-        },
-      }) => ({
-        title: restaurant.name,
-      })}
-    />
-    <MainStack.Screen
-      name="CheckoutSummary"
-      component={screens.CheckoutSummary}
-      options={({ navigation, route }) => ({
-        title: i18n.t('CART'),
-        headerRight: () => (
-          <TouchableOpacity
-            style={{ paddingHorizontal: 10 }}
-            onPress={() => {
-              navigation.setParams({ edit: !(route.params?.edit || false) });
-            }}>
-            <Text>
-              {route.params?.edit || false
-                ? i18n.t('FINISHED')
-                : i18n.t('EDIT')}
-            </Text>
-          </TouchableOpacity>
-        ),
-      })}
-    />
-    <MainStack.Screen
-      name="CheckoutPayment"
-      component={screens.CheckoutPayment}
-      options={{
-        title: i18n.t('PAYMENT'),
-      }}
-    />
-    <MainStack.Screen
-      name="CheckoutMercadopago"
-      component={screens.CheckoutMercadopago}
-      options={{
-        title: i18n.t('PAYMENT'),
-      }}
-    />
-    <MainStack.Screen
-      name="AccountOrders"
-      component={screens.AccountOrdersPage}
-      options={{
-        title: i18n.t('MY_ORDERS'),
-        ...TransitionPresets.ModalTransition,
-      }}
-    />
-    {/*FIXME: AccountAddresses and AddressDetails also exist in AccountNavigator, get rid from this duplication */}
-    <MainStack.Screen
-      name="AccountAddresses"
-      component={screens.AccountAddressesPage}
-      options={{
-        title: i18n.t('MY_ADDRESSES'),
-      }}
-    />
-    <MainStack.Screen
-      name="AddressDetails"
-      component={screens.AddressDetails}
-      options={{
-        title: i18n.t('MY_ADDRESSES'),
-      }}
-    />
+const MainNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
 
-    <MainStack.Screen
-      name="AccountOrdersList"
-      component={screens.AccountOrdersPage}
-      options={{
-        title: i18n.t('MY_ORDERS'),
-      }}
-    />
-    <MainStack.Screen
-      name="AccountOrder"
-      component={screens.AccountOrderPage}
-      options={({ route }) => ({
-        title: route.params.order
-          ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
-          : i18n.t('MY_ORDER'),
-        ...TransitionPresets.ModalTransition,
-      })}
-    />
+  return (
+    <MainStack.Navigator screenOptions={screenOptions}>
+      <MainStack.Screen
+        name="CheckoutHome"
+        component={Tabs}
+        options={({ navigation, route }) => ({
+          title: i18n.t('RESTAURANTS'),
+          headerLeft: headerLeft(navigation),
+          ...getNestedOptions(navigation, route),
+        })}
+      />
+      <MainStack.Screen
+        name="CheckoutRestaurant"
+        component={screens.CheckoutRestaurant}
+        options={({
+          route: {
+            params: { restaurant },
+          },
+        }) => ({
+          title: restaurant.name,
+        })}
+      />
+      <MainStack.Screen
+        name="CheckoutSummary"
+        component={screens.CheckoutSummary}
+        options={({ navigation, route }) => ({
+          title: i18n.t('CART'),
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ paddingHorizontal: 10 }}
+              onPress={() => {
+                navigation.setParams({ edit: !(route.params?.edit || false) });
+              }}>
+              <Text>
+                {route.params?.edit || false
+                  ? i18n.t('FINISHED')
+                  : i18n.t('EDIT')}
+              </Text>
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <MainStack.Screen
+        name="CheckoutPayment"
+        component={screens.CheckoutPayment}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <MainStack.Screen
+        name="CheckoutMercadopago"
+        component={screens.CheckoutMercadopago}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <MainStack.Screen
+        name="AccountOrders"
+        component={screens.AccountOrdersPage}
+        options={{
+          title: i18n.t('MY_ORDERS'),
+          ...TransitionPresets.ModalTransition,
+        }}
+      />
+      {/*FIXME: AccountAddresses and AddressDetails also exist in AccountNavigator, get rid from this duplication */}
+      <MainStack.Screen
+        name="AccountAddresses"
+        component={screens.AccountAddressesPage}
+        options={{
+          title: i18n.t('MY_ADDRESSES'),
+        }}
+      />
+      <MainStack.Screen
+        name="AddressDetails"
+        component={screens.AddressDetails}
+        options={{
+          title: i18n.t('MY_ADDRESSES'),
+        }}
+      />
 
-    <MainStack.Screen
-      name="OrderTracking"
-      component={screens.OrderTrackingPage}
-      options={({ route }) => ({
-        title: route.params.order
-          ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
-          : i18n.t('MY_ORDER'),
-      })}
-    />
-  </MainStack.Navigator>
-);
+      <MainStack.Screen
+        name="AccountOrdersList"
+        component={screens.AccountOrdersPage}
+        options={{
+          title: i18n.t('MY_ORDERS'),
+        }}
+      />
+      <MainStack.Screen
+        name="AccountOrder"
+        component={screens.AccountOrderPage}
+        options={({ route }) => ({
+          title: route.params.order
+            ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
+            : i18n.t('MY_ORDER'),
+          ...TransitionPresets.ModalTransition,
+        })}
+      />
+
+      <MainStack.Screen
+        name="OrderTracking"
+        component={screens.OrderTrackingPage}
+        options={({ route }) => ({
+          title: route.params.order
+            ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
+            : i18n.t('MY_ORDER'),
+        })}
+      />
+    </MainStack.Navigator>
+  );
+};
 
 const SubmitOrderStack = createStackNavigator();
 
 const SubmitOrderNavigator = () => {
   const isAuthenticatedUser = useSelector(selectIsAuthenticated);
   const isGuest = useSelector(selectIsGuest);
+  const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <SubmitOrderStack.Navigator screenOptions={stackNavigatorScreenOptions}>
+    <SubmitOrderStack.Navigator screenOptions={screenOptions}>
       {isAuthenticatedUser || isGuest ? (
         <SubmitOrderStack.Screen
           name="CheckoutMoreInfos"
@@ -291,9 +295,12 @@ const RootStack = createStackNavigator();
 
 const DefaultNav = () => {
   const backgroundColor = useBackgroundContainerColor();
+  const screenOptions = useStackNavigatorScreenOptions({
+    presentation: 'modal',
+  });
+
   return (
-    <RootStack.Navigator
-      screenOptions={{ ...stackNavigatorScreenOptions, presentation: 'modal' }}>
+    <RootStack.Navigator screenOptions={screenOptions}>
       <RootStack.Screen
         name="Main"
         component={MainNavigator}
@@ -371,13 +378,14 @@ const DefaultNav = () => {
 };
 
 const CheckoutNav = ({ address }) => {
+  const screenOptions = useStackNavigatorScreenOptions({
+    presentation: 'modal',
+  });
+
   if (!address) {
     return (
       <RootStack.Navigator
-        screenOptions={{
-          ...stackNavigatorScreenOptions,
-          presentation: 'modal',
-        }}
+        screenOptions={screenOptions}
         initialRouteName="CheckoutAskAddress">
         <RootStack.Screen
           name="CheckoutAskAddress"
