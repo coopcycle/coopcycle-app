@@ -27,7 +27,6 @@ export default (state = initialState, action) => {
     case LOAD_TASKS_SUCCESS: {
       return taskAdapter.upsertMany(state, action.payload);
     }
-
     case UPDATE_TASK_SUCCESS:
     case CREATE_TASK_SUCCESS:
     case CANCEL_TASK_SUCCESS:

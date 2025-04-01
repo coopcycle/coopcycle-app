@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
-import { assignedTasks } from './taskListUtils';
 import { mapToColor } from './taskUtils';
 
 const taskSelectors = taskAdapter.getSelectors(
@@ -15,6 +14,18 @@ const tourSelectors = tourAdapter.getSelectors(
 );
 
 export const selectSelectedDate = state => state.logistics.date;
+
+export const selectAllTasks = taskSelectors.selectAll;
+
+export const selectAssignedTasks = createSelector(
+  selectAllTasks,
+  allTasks => allTasks.filter(task => task.isAssigned)
+);
+
+export const selectUnassignedTasks = createSelector(
+  selectAllTasks,
+  allTasks => allTasks.filter(task => !task.isAssigned)
+);
 
 // FIXME
 // This is not optimized
@@ -40,7 +51,7 @@ export const selectTaskLists = createSelector(
       const taskListTours = taskList.itemIds
         .filter(itemId =>
           Object.prototype.hasOwnProperty.call(toursById, itemId),
-        ) // a task with this id may be not loaded yet
+        ) // a tour with this id may be not loaded yet
         .map(itemId => toursById[itemId]);
 
       const toursTasks = _.flatMap(
@@ -51,26 +62,6 @@ export const selectTaskLists = createSelector(
 
       return newTaskList;
     }),
-);
-
-export const selectAllTasks = taskSelectors.selectAll;
-
-export const selectAssignedTasks = createSelector(
-  selectTaskLists,
-  taskLists => assignedTasks(taskLists),
-);
-
-export const selectUnassignedTasks = createSelector(
-  selectAllTasks,
-  selectAssignedTasks,
-  (allTasks, _assignedTasks) =>
-    _.filter(
-      allTasks,
-      task =>
-        _assignedTasks.findIndex(
-          assignedTask => task['@id'] == assignedTask['@id'],
-        ) == -1,
-    ),
 );
 
 export const selectTasksWithColor = createSelector(selectAllTasks, allTasks =>

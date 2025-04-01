@@ -27,6 +27,7 @@ export function createTempTaskList(username, items = []) {
   };
 }
 
+// TODO: remove on feature/235
 export function assignedTasks(taskLists) {
   return _.flatMap(taskLists, taskList => taskList.items);
 }
