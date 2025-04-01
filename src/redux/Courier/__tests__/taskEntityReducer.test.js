@@ -106,10 +106,11 @@ describe('Redux | Tasks | Reducers', () => {
         loadTasksFetchError: true,
         isFetching: true,
       };
-      const date = moment().format('YYYY-MM-DD');
+      const now = moment();
+      const date = now.format('YYYY-MM-DD');
       const newState = tasksEntityReducer(
         prevState,
-        loadTasksSuccess(date, tasks, moment()),
+        loadTasksSuccess(date, tasks, now),
       );
       const fullState = { entities: { tasks: newState } };
 

@@ -24,32 +24,38 @@ describe('Selectors', () => {
               '@id': '/api/tasks/1',
               id: 1,
               next: '/api/tasks/2',
+              isAssigned: true,
             },
             // TaskList 1
             '/api/tasks/2': {
               '@id': '/api/tasks/2',
               id: 2,
               previous: '/api/tasks/1',
+              isAssigned: true,
             },
             // TaskList 2
             '/api/tasks/3': {
               '@id': '/api/tasks/3',
               id: 3,
+              isAssigned: true,
             },
             // TaskList 3
             '/api/tasks/4': {
               '@id': '/api/tasks/4',
               id: 4,
+              isAssigned: true,
             },
             // TaskList 3 - Tour 1
             '/api/tasks/5': {
               '@id': '/api/tasks/5',
               id: 5,
+              isAssigned: true,
             },
             // TaskList 3 - Tour 1
             '/api/tasks/6': {
               '@id': '/api/tasks/6',
               id: 6,
+              isAssigned: true,
             },
             // Tour 2
             '/api/tasks/7': {
@@ -120,11 +126,13 @@ describe('Selectors', () => {
               '@id': '/api/tasks/1',
               id: 1,
               next: '/api/tasks/2',
+              isAssigned: true,
             },
             {
               '@id': '/api/tasks/2',
               id: 2,
               previous: '/api/tasks/1',
+              isAssigned: true,
             },
           ],
         },
@@ -135,6 +143,7 @@ describe('Selectors', () => {
             {
               '@id': '/api/tasks/3',
               id: 3,
+              isAssigned: true,
             },
           ],
         },
@@ -145,14 +154,17 @@ describe('Selectors', () => {
             {
               '@id': '/api/tasks/4',
               id: 4,
+              isAssigned: true,
             },
             {
               '@id': '/api/tasks/5',
               id: 5,
+              isAssigned: true,
             },
             {
               '@id': '/api/tasks/6',
               id: 6,
+              isAssigned: true,
             },
           ],
         },
@@ -170,6 +182,7 @@ describe('Selectors', () => {
                 '/api/tasks/1': {
                   '@id': '/api/tasks/1',
                   id: 1,
+                  isAssigned: true,
                 },
               },
             },
@@ -202,6 +215,7 @@ describe('Selectors', () => {
             {
               '@id': '/api/tasks/1',
               id: 1,
+              isAssigned: true,
             },
           ],
         },
@@ -216,27 +230,33 @@ describe('Selectors', () => {
           '@id': '/api/tasks/1',
           id: 1,
           next: '/api/tasks/2',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/2',
           id: 2,
           previous: '/api/tasks/1',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/3',
           id: 3,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/4',
           id: 4,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/5',
           id: 5,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/6',
           id: 6,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/7',
@@ -257,27 +277,33 @@ describe('Selectors', () => {
           '@id': '/api/tasks/1',
           id: 1,
           next: '/api/tasks/2',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/2',
           id: 2,
           previous: '/api/tasks/1',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/3',
           id: 3,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/4',
           id: 4,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/5',
           id: 5,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/6',
           id: 6,
+          isAssigned: true,
         },
       ]);
     });
