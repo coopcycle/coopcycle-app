@@ -23,15 +23,18 @@ describe('Selectors', () => {
               '@id': '/api/tasks/1',
               id: 1,
               next: '/api/tasks/2',
+              isAssigned: true,
             },
             '/api/tasks/2': {
               '@id': '/api/tasks/2',
               id: 2,
               previous: '/api/tasks/1',
+              isAssigned: true,
             },
             '/api/tasks/3': {
               '@id': '/api/tasks/3',
               id: 3,
+              isAssigned: true,
             },
             '/api/tasks/4': {
               '@id': '/api/tasks/4',
@@ -78,11 +81,13 @@ describe('Selectors', () => {
               '@id': '/api/tasks/1',
               id: 1,
               next: '/api/tasks/2',
+              isAssigned: true,
             },
             {
               '@id': '/api/tasks/2',
               id: 2,
               previous: '/api/tasks/1',
+              isAssigned: true,
             },
           ],
         },
@@ -93,6 +98,7 @@ describe('Selectors', () => {
             {
               '@id': '/api/tasks/3',
               id: 3,
+              isAssigned: true,
             },
           ],
         },
@@ -110,6 +116,7 @@ describe('Selectors', () => {
                 '/api/tasks/1': {
                   '@id': '/api/tasks/1',
                   id: 1,
+                  isAssigned: true,
                 },
               },
             },
@@ -138,6 +145,7 @@ describe('Selectors', () => {
             {
               '@id': '/api/tasks/1',
               id: 1,
+              isAssigned: true,
             },
           ],
         },
@@ -152,15 +160,18 @@ describe('Selectors', () => {
           '@id': '/api/tasks/1',
           id: 1,
           next: '/api/tasks/2',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/2',
           id: 2,
           previous: '/api/tasks/1',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/3',
           id: 3,
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/4',
@@ -177,15 +188,18 @@ describe('Selectors', () => {
           '@id': '/api/tasks/1',
           id: 1,
           next: '/api/tasks/2',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/2',
           id: 2,
           previous: '/api/tasks/1',
+          isAssigned: true,
         },
         {
           '@id': '/api/tasks/3',
           id: 3,
+          isAssigned: true,
         },
       ]);
     });
