@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
     case CHANGE_DATE:
       return initialState;
     case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-      return taskAdapter.upsertMany(state, action.payload);
+      return taskAdapter.setAll(state, action.payload);
     }
     // TODO: remove this case on feature/235
     case LOAD_TASK_LISTS_SUCCESS: {
