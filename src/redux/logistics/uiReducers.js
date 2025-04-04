@@ -4,6 +4,7 @@ import {
   ASSIGN_TASK_SUCCESS,
   BULK_ASSIGNMENT_TASKS_FAILURE,
   BULK_ASSIGNMENT_TASKS_REQUEST,
+  BULK_ASSIGNMENT_TASKS_SUCCESS,
   CANCEL_TASK_SUCCESS,
   CREATE_TASK_FAILURE,
   CREATE_TASK_REQUEST,
@@ -23,8 +24,9 @@ import {
 } from '../Dispatch/actions';
 
 const initialState = {
-  taskListsLoading: false,
+  isBulkAssigning: false,
   isFetching: false,
+  taskListsLoading: false,
 };
 
 export default (state = initialState, action) => {
@@ -35,7 +37,6 @@ export default (state = initialState, action) => {
     case CREATE_TASK_REQUEST:
     case ASSIGN_TASK_REQUEST:
     case UNASSIGN_TASK_REQUEST:
-    case BULK_ASSIGNMENT_TASKS_REQUEST:
       return {
         ...state,
         isFetching: true,
@@ -47,7 +48,6 @@ export default (state = initialState, action) => {
     case CREATE_TASK_FAILURE:
     case ASSIGN_TASK_FAILURE:
     case UNASSIGN_TASK_FAILURE:
-    case BULK_ASSIGNMENT_TASKS_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -64,6 +64,25 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
       };
+
+    case BULK_ASSIGNMENT_TASKS_REQUEST:
+      return {
+        ...state,
+        isBulkAssigning: true,
+      }
+
+    case BULK_ASSIGNMENT_TASKS_FAILURE:
+      return {
+        ...state,
+        isBulkAssigning: false,
+      }
+
+    case BULK_ASSIGNMENT_TASKS_SUCCESS:
+      return {
+        ...state,
+        isBulkAssigning: false,
+      }
+
     default:
       return state;
   }
