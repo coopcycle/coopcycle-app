@@ -6,16 +6,7 @@ describe('taskListUtils', () => {
       let taskList = {
         '@id': '/api/task_lists/1',
         username: 'bot_1',
-        items: [
-          {
-            '@id': '/api/tasks/1',
-            id: 1,
-          },
-          {
-            '@id': '/api/tasks/2',
-            id: 2,
-          },
-        ],
+        items: ['/api/tasks/1', '/api/tasks/2', ],
       };
 
       let result = replaceTasksWithIds(taskList);

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import { taskAdapter, taskListAdapter } from './adapters';
+import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
 import { mapToColor } from './taskUtils';
 
 const taskSelectors = taskAdapter.getSelectors(
@@ -8,6 +8,9 @@ const taskSelectors = taskAdapter.getSelectors(
 );
 const taskListSelectors = taskListAdapter.getSelectors(
   state => state.logistics.entities.taskLists,
+);
+const tourSelectors = tourAdapter.getSelectors(
+  state => state.logistics.entities.tours,
 );
 
 export const selectSelectedDate = state => state.logistics.date;
@@ -31,14 +34,31 @@ export const selectUnassignedTasks = createSelector(
 // Replace this with a selectTaskListItemsByUsername selector, used by the <TaskList> component
 // https://redux.js.org/tutorials/essentials/part-6-performance-normalization#memoizing-selector-functions
 export const selectTaskLists = createSelector(
-  taskListSelectors.selectEntities,
-  selectAssignedTasks,
-  (taskListsById, tasks) =>
-    Object.values(taskListsById).map(taskList => {
+  taskListSelectors.selectAll,
+  taskSelectors.selectEntities,
+  tourSelectors.selectEntities,
+  (taskLists, tasksById, toursById) =>
+    taskLists.map(taskList => {
       let newTaskList = { ...taskList };
       delete newTaskList.itemIds;
 
-      newTaskList.items = tasks.filter(task => taskList.itemIds.includes(task['@id']));
+      const taskListTasks = taskList.itemIds
+        .filter(itemId =>
+          Object.prototype.hasOwnProperty.call(tasksById, itemId),
+        ) // a task with this id may be not loaded yet
+        .map(taskId => tasksById[taskId]);
+
+      const taskListTours = taskList.itemIds
+        .filter(itemId =>
+          Object.prototype.hasOwnProperty.call(toursById, itemId),
+        ) // a tour with this id may be not loaded yet
+        .map(itemId => toursById[itemId]);
+
+      const toursTasks = _.flatMap(
+        taskListTours, tour => tour.items.map(item => tasksById[item])
+      );
+
+      newTaskList.items = [...taskListTasks, ...toursTasks];
 
       return newTaskList;
     }),

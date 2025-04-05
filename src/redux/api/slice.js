@@ -21,7 +21,7 @@ export const apiSlice = createApi({
         body: {}
       }),
     }),
-    getUnassignedTasks: builder.query({
+    getTasks: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
@@ -29,7 +29,6 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD'),
-            assigned: 'no'
           });
 
         return result ? { data: result } : { error: "result.error" };
@@ -43,6 +42,32 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD')
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
+    getTaskListsV2: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/task_lists/v2',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
+    getTours: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/tours',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
           });
 
         return result ? { data: result } : { error: "result.error" };
@@ -98,7 +123,9 @@ export const {
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
   useGetTaskListsQuery,
-  useGetUnassignedTasksQuery,
+  useGetTaskListsV2Query,
+  useGetToursQuery,
+  useGetTasksQuery,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
   useGetStoresQuery

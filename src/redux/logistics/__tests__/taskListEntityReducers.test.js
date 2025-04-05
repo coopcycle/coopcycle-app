@@ -42,20 +42,7 @@ describe('taskListEntityReducers', () => {
                 {
                   '@id': '/api/task_lists/1',
                   '@type': 'TaskList',
-                  items: [
-                    {
-                      '@id': '/api/tasks/1',
-                      id: 1,
-                      isAssigned: true,
-                      assignedTo: 'bot_1',
-                    },
-                    {
-                      '@id': '/api/tasks/2',
-                      id: 2,
-                      isAssigned: true,
-                      assignedTo: 'bot_1',
-                    },
-                  ],
+                  items: ['/api/tasks/1', '/api/tasks/2', ],
                   username: 'bot_1',
                 },
                 {
@@ -114,20 +101,7 @@ describe('taskListEntityReducers', () => {
                 {
                   '@id': '/api/task_lists/1',
                   '@type': 'TaskList',
-                  items: [
-                    {
-                      '@id': '/api/tasks/1',
-                      id: 1,
-                      isAssigned: true,
-                      assignedTo: 'bot_1',
-                    },
-                    {
-                      '@id': '/api/tasks/2',
-                      id: 2,
-                      isAssigned: true,
-                      assignedTo: 'bot_1',
-                    },
-                  ],
+                  items: ['/api/tasks/1', '/api/tasks/2', ],
                   username: 'bot_1',
                 },
                 {
