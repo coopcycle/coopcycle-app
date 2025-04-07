@@ -27,6 +27,9 @@ export function message(payload) {
         case 'task:updated':
           dispatch(updateTask(name, data.task));
           break;
+        case 'v2:task_list:updated':
+          dispatch(updateTaskList(name, data.task_list));
+          break;
         default:
           dispatch(_message(payload));
           break;

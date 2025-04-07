@@ -9,8 +9,8 @@ import {
   CREATE_TASK_SUCCESS,
   LOAD_TASK_LISTS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
+  UPDATE_TASK_LIST_SUCCESS,
 } from '../Dispatch/actions';
-import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
 
 const initialState = taskListAdapter.getInitialState();
 const selectors = taskListAdapter.getSelectors(state => state);
@@ -25,6 +25,10 @@ export default (state = initialState, action) => {
         taskListUtils.replaceTasksWithIds(taskList),
       );
       return taskListAdapter.setAll(state, entities);
+    }
+
+    case UPDATE_TASK_LIST_SUCCESS: {
+      return taskListAdapter.upsertOne(state, action.payload);
     }
 
     case CREATE_TASK_SUCCESS: {
@@ -57,30 +61,7 @@ export default (state = initialState, action) => {
       return taskListAdapter.upsertMany(state, newItems);
     }
 
-    case CENTRIFUGO_MESSAGE:
-      return processWebsocketMessage(state, action);
-
     default:
       return state;
   }
-};
-
-const processWebsocketMessage = (state, action) => {
-  if (action.payload.name && action.payload.data) {
-    const { name, data } = action.payload;
-
-    switch (name) {
-      case 'v2:task_list:updated':{
-        const { task_list } = data;
-        return taskListAdapter.upsertOne(state, task_list);
-      }
-
-      default:
-        return {
-          ...state,
-        };
-    }
-  }
-
-  return state;
 };

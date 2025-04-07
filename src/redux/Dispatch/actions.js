@@ -22,7 +22,7 @@ import {
 } from '../Courier';
 
 import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
-import { isSameDate } from './utils';
+import { isSameDateTask, isSameDateTaskList } from './utils';
 
 /*
  * Action Types
@@ -41,6 +41,8 @@ export const LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE';
 export const LOAD_TASK_LISTS_REQUEST = 'LOAD_TASK_LISTS_REQUEST';
 export const LOAD_TASK_LISTS_SUCCESS = 'LOAD_TASK_LISTS_SUCCESS';
 export const LOAD_TASK_LISTS_FAILURE = 'LOAD_TASK_LISTS_FAILURE';
+
+export const UPDATE_TASK_LIST_SUCCESS = 'UPDATE_TASK_LIST_SUCCESS';
 
 export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST';
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
@@ -81,6 +83,8 @@ export const loadUsersFailure = createAction(LOAD_USERS_FAILURE);
 export const loadTaskListsRequest = createAction(LOAD_TASK_LISTS_REQUEST);
 export const loadTaskListsSuccess = createAction(LOAD_TASK_LISTS_SUCCESS);
 export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE);
+
+export const updateTaskListsSuccess = createAction(UPDATE_TASK_LIST_SUCCESS);
 
 export const createTaskRequest = createAction(CREATE_TASK_REQUEST);
 export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS);
@@ -174,7 +178,7 @@ export function createTask(task) {
       .then(t => {
         let date = selectSelectedDate(getState());
 
-        if (isSameDate(t, date)) {
+        if (isSameDateTask(t, date)) {
           dispatch(createTaskSuccess(t));
         }
 
@@ -273,7 +277,7 @@ export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDate(task, date)) {
+    if (isSameDateTask(task, date)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -302,4 +306,18 @@ export function updateTask(action, task) {
       }
     }
   };
+}
+
+export function updateTaskList(action, taskList) {
+  return function (dispatch, getState) {
+    let date = selectSelectedDate(getState());
+
+    if (isSameDateTaskList(taskList, date)) {
+      switch (action) {
+        case 'v2:task_list:updated':
+          dispatch(updateTaskListsSuccess(taskList));
+          break;
+      }
+    }
+  }
 }
