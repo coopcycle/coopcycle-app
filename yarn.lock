@@ -2957,10 +2957,12 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@datadog/mobile-react-native@^2.4.3":
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-native/-/mobile-react-native-2.4.3.tgz#4e0e1d046b8e98d790a91de289264c5b9039d305"
-  integrity sha512-po+R7JKiFkTS65vWKwfIWAn+aQuWdxeU61C5wc1YYtXVVBpNDCPs3qbDXxQmxJMDxMcjyDnYC0F0tO2EXS62yQ==
+"@datadog/mobile-react-native@^2.6.4":
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-native/-/mobile-react-native-2.6.4.tgz#8d896c0ba42469408eaa08df7c6b3722bbe0e5b3"
+  integrity sha512-GuWE8eqU2/RD9XSH4PxfO5EuE7yoqmDpfLmds1qkXTjoX3hYLnYOQEC1v8jbLXycHrcMFzLCdr6+JNkWo/1G5Q==
+  dependencies:
+    big-integer "^1.6.52"
 
 "@datadog/mobile-react-navigation@^2.4.3":
   version "2.4.3"
@@ -8088,7 +8090,7 @@ better-opn@~3.0.2:
   dependencies:
     open "^8.0.4"
 
-big-integer@1.6.x:
+big-integer@1.6.x, big-integer@^1.6.52:
   version "1.6.52"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.52.tgz#60a887f3047614a8e1bffe5d7173490a97dc8c85"
   integrity sha512-QxD8cf2eVqJOOz63z6JIN9BzvVs/dlySa5HGSBH5xtR8dPteIRQnBxxKqkNTiT6jbDTF6jAfrd4oMcND9RGbQg==
