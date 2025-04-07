@@ -16,8 +16,6 @@ export function message(payload) {
     if (payload.name && payload.data) {
       const { name, data } = payload;
 
-      console.log({name, data})
-
       switch (name) {
         case 'task:created':
         case 'task:cancelled':
