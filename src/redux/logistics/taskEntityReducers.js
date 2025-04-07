@@ -4,7 +4,6 @@ import {
   CHANGE_DATE,
   CREATE_TASK_SUCCESS,
   LOAD_TASKS_SUCCESS,
-  LOAD_UNASSIGNED_TASKS_SUCCESS,
   UNASSIGN_TASK_SUCCESS,
   UPDATE_TASK_SUCCESS,
 } from '../Dispatch/actions';
@@ -26,9 +25,6 @@ export default (state = initialState, action) => {
       return initialState;
 
     case LOAD_TASKS_SUCCESS:
-      return taskAdapter.upsertMany(state, action.payload);
-
-    case LOAD_UNASSIGNED_TASKS_SUCCESS:
       return taskAdapter.setAll(state, action.payload);
 
     case UPDATE_TASK_SUCCESS:
