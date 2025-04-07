@@ -5,6 +5,7 @@ import {
 } from '../../coopcycle-frontend-js/logistics/redux';
 import {
   ASSIGN_TASK_SUCCESS,
+  BULK_ASSIGNMENT_TASKS_SUCCESS,
   CHANGE_DATE,
   CREATE_TASK_SUCCESS,
   LOAD_TASK_LISTS_SUCCESS,
@@ -51,6 +52,14 @@ export default (state = initialState, action) => {
         action.payload,
       );
       return taskListAdapter.upsertMany(state, newItems);
+    }
+
+    case BULK_ASSIGNMENT_TASKS_SUCCESS: {
+      const taskList = taskListEntityUtils.addAssignedTasks(
+        selectors.selectEntities(state),
+        action.payload,
+      )
+      return taskListAdapter.upsertOne(state, taskList);
     }
 
     case UNASSIGN_TASK_SUCCESS: {

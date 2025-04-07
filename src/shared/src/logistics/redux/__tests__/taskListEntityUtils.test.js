@@ -1,5 +1,6 @@
 import {
   addAssignedTask,
+  addAssignedTasks,
   findTaskListByTask,
   findTaskListByUsername,
   removeUnassignedTask,
@@ -224,6 +225,77 @@ describe('taskListEntityUtils', () => {
       expect(result).toEqual(expectedItems);
     });
   });
+
+  describe('addAssignedTasks', () => {
+    it('should add assigned tasks into existing task list', () => {
+      const taskListsById = {
+        bot_1: {
+          '@id': '/api/task_lists/1',
+          username: 'bot_1',
+          itemIds: ['/api/tasks/1', '/api/tasks/2'],
+        },
+        bot_2: {
+          '@id': '/api/task_lists/2',
+          username: 'bot_2',
+          itemIds: ['/api/tasks/3', '/api/tasks/4'],
+        },
+      };
+
+      const tasks = [
+        {
+          '@id': '/api/tasks/5',
+          id: 5,
+          isAssigned: true,
+          assignedTo: 'bot_1',
+        },
+        {
+          '@id': '/api/tasks/6',
+          id: 5,
+          isAssigned: true,
+          assignedTo: 'bot_1',
+        }
+      ];
+
+      const result = addAssignedTasks(taskListsById, tasks);
+
+      const expectedResult = {
+        '@id': '/api/task_lists/1',
+        username: 'bot_1',
+        itemIds: ['/api/tasks/1', '/api/tasks/2', '/api/tasks/5', '/api/tasks/6'],
+      };
+
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should create a new task list when it does not exist', () => {
+      const taskListsById = {
+        bot_1: {
+          '@id': '/api/task_lists/1',
+          username: 'bot_1',
+          itemIds: ['/api/tasks/1', '/api/tasks/2'],
+        },
+      };
+
+      const tasks = [
+        {
+          '@id': '/api/tasks/3',
+          id: 3,
+          isAssigned: true,
+          assignedTo: 'bot_2',
+        },
+        {
+          '@id': '/api/tasks/4',
+          id: 4,
+          isAssigned: true,
+          assignedTo: 'bot_2',
+        },
+      ];
+
+      const result = addAssignedTasks(taskListsById, tasks);
+
+      expect(result.itemIds).toEqual(['/api/tasks/3', '/api/tasks/4']);
+    });
+  })
 
   describe('removeUnassignedTask', () => {
     it('should remove unassigned task', () => {

@@ -59,6 +59,23 @@ export function addAssignedTask(taskListsById, task) {
   return taskListsToUpdate;
 }
 
+export function addAssignedTasks(taskListsById, tasks) {
+  let taskList = addAssignedTask(taskListsById, tasks[0])[0];
+
+  taskList = tasks.slice(1).reduce(
+    (res, task) => {
+      taskList = {
+        ...res,
+        itemIds: addTaskIdIfMissing(res.itemIds, task['@id']),
+      };
+      return taskList;
+    },
+    taskList,
+  );
+
+  return taskList;
+}
+
 export function removeUnassignedTask(taskListsById, task) {
   const taskListsToUpdate = [];
 

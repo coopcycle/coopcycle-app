@@ -33,14 +33,16 @@ export const taskListUtils = {
 
 import {
   addAssignedTask,
+  addAssignedTasks,
   findTaskListByTask,
   findTaskListByUsername,
   removeUnassignedTask,
 } from './taskListEntityUtils';
 
 export const taskListEntityUtils = {
+  addAssignedTask,
+  addAssignedTasks,
   findTaskListByTask,
   findTaskListByUsername,
-  addAssignedTask,
   removeUnassignedTask,
 };
