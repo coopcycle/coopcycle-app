@@ -1,7 +1,7 @@
 import { fontTitleName } from '../styles/common';
 import { useBackgroundContainerColor, useBaseTextColor } from '../styles/theme';
 
-function StackNavigatorScreenOptions() {
+export function useStackNavigatorScreenOptions(props = {}) {
   const backgroundColor = useBackgroundContainerColor();
   const color = useBaseTextColor();
 
@@ -24,6 +24,6 @@ function StackNavigatorScreenOptions() {
     },
     headerTitleAlign: 'center',
     headerBackTitleVisible: false,
+    ...props,
   };
 }
-export { StackNavigatorScreenOptions as stackNavigatorScreenOptions };

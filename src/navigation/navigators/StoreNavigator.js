@@ -5,7 +5,7 @@ import React from 'react';
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
-import { stackNavigatorScreenOptions } from '../styles';
+import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderBackButton from '../store/components/HeaderBackButton';
 import HeaderButton from '../../components/HeaderButton';
 import i18n from '../../i18n';
@@ -15,8 +15,10 @@ import screens, { headerLeft } from '..';
 const MainStack = createStackNavigator();
 
 function MainNavigator() {
+  const screenOptions = useStackNavigatorScreenOptions();
+
   return (
-    <MainStack.Navigator screenOptions={stackNavigatorScreenOptions}>
+    <MainStack.Navigator screenOptions={screenOptions}>
       <MainStack.Screen
         name="StoreDashboard"
         component={screens.StoreDashboard}
@@ -24,13 +26,10 @@ function MainNavigator() {
           const store = route.params?.store;
           const title = store ? store.name : '';
           const navigateToDelivery = () => {
-            navigation.navigate(
-              'NewDelivery',
-              {
-                screen: 'NewDeliveryPickupAddress',
-              }
-            )
-          }
+            navigation.navigate('NewDelivery', {
+              screen: 'NewDeliveryPickupAddress',
+            });
+          };
 
           return {
             title,
@@ -67,18 +66,20 @@ function MainNavigator() {
 
 const RootStack = createStackNavigator();
 
-export default ({navigation}) => {
+export default ({ navigation }) => {
+  const screenOptions = useStackNavigatorScreenOptions({
+    presentation: 'modal',
+  });
   const dispatch = useDispatch();
 
-  const deliveryCallback = (newDelivery) => {
-    navigation.navigate("StoreHome");
+  const deliveryCallback = newDelivery => {
+    navigation.navigate('StoreHome');
     dispatch(createDeliverySuccess(newDelivery));
-  }
+  };
 
   return (
     <DeliveryCallbackProvider callback={deliveryCallback}>
-      <RootStack.Navigator
-        screenOptions={{ ...stackNavigatorScreenOptions(), presentation: 'modal' }}>
+      <RootStack.Navigator screenOptions={screenOptions}>
         <RootStack.Screen
           name="StoreHome"
           component={MainNavigator}
@@ -86,20 +87,20 @@ export default ({navigation}) => {
             headerShown: false,
           }}
         />
-          <RootStack.Screen
-            name="NewDelivery"
-            component={NewDeliveryNavigator}
-            options={{
-              title: i18n.t('STORE_NEW_DELIVERY'),
-              headerLeft: props => (
-                <HeaderBackButton
-                  {...props}
-                  onPress={() => NavigationHolder.goBack()}
-                />
-              ),
-            }}
-          />
+        <RootStack.Screen
+          name="NewDelivery"
+          component={NewDeliveryNavigator}
+          options={{
+            title: i18n.t('STORE_NEW_DELIVERY'),
+            headerLeft: props => (
+              <HeaderBackButton
+                {...props}
+                onPress={() => NavigationHolder.goBack()}
+              />
+            ),
+          }}
+        />
       </RootStack.Navigator>
     </DeliveryCallbackProvider>
-  )
+  );
 };
