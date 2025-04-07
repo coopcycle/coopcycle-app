@@ -7,3 +7,7 @@ export function isSameDateTask(task, date) {
 export function isSameDateTaskList(taskList, date) {
   return moment(taskList.date).isSame(date, 'day');
 }
+
+export function isSameDateTour(tour, date) {
+  return moment(tour.date).isSame(date, 'day');
+}

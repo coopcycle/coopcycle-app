@@ -22,7 +22,7 @@ import {
 } from '../Courier';
 
 import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
-import { isSameDateTask, isSameDateTaskList } from './utils';
+import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
 
 /*
  * Action Types
@@ -65,6 +65,10 @@ export const BULK_ASSIGNMENT_TASKS_FAILURE = 'BULK_ASSIGNMENT_TASKS_FAILURE';
 export const UNASSIGN_TASK_REQUEST = 'UNASSIGN_TASK_REQUEST';
 export const UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
 export const UNASSIGN_TASK_FAILURE = 'UNASSIGN_TASK_FAILURE';
+
+export const CREATE_TOUR_SUCCESS = 'CREATE_TOUR_SUCCESS';
+
+export const UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
 
 export const CHANGE_DATE = 'CHANGE_DATE';
 
@@ -113,6 +117,10 @@ export const bulkAssignmentTasksFailure = createAction(
 export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST);
 export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS);
 export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE);
+
+export const createTourSuccess = createAction(CREATE_TOUR_SUCCESS);
+
+export const updateTourSuccess = createAction(UPDATE_TOUR_SUCCESS);
 
 export const changeDate = createAction(CHANGE_DATE);
 const _initialize = createAction(DISPATCH_INITIALIZE);
@@ -320,4 +328,22 @@ export function updateTaskList(action, taskList) {
       }
     }
   }
+}
+
+export function updateTour(action, tour) {
+  return function (dispatch, getState) {
+    let date = selectSelectedDate(getState());
+
+    if (isSameDateTour(tour, date)) {
+      switch (action) {
+        case 'tour:created':
+          dispatch(createTourSuccess(tour));
+          break;
+        case 'tour:updated':
+          dispatch(updateTourSuccess(tour));
+          break;
+      }
+    }
+  }
+
 }
