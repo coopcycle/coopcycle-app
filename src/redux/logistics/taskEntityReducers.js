@@ -1,5 +1,6 @@
 import {
   ASSIGN_TASK_SUCCESS,
+  BULK_ASSIGNMENT_TASKS_SUCCESS,
   CANCEL_TASK_SUCCESS,
   CHANGE_DATE,
   CREATE_TASK_SUCCESS,
@@ -36,6 +37,9 @@ export default (state = initialState, action) => {
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS:
       return taskAdapter.upsertOne(state, action.payload);
+
+    case BULK_ASSIGNMENT_TASKS_SUCCESS:
+      return taskAdapter.upsertMany(state, action.payload);
 
     default:
       return state;
