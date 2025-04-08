@@ -64,6 +64,25 @@ export const selectTaskLists = createSelector(
     }),
 );
 
+export const selectTasksGroupedByTour = createSelector(
+  tourSelectors.selectAll,
+  (tours) => {
+    const tasksGroupedByTour = tours.map(tour => {
+      const tourIdParts = tour["@id"].split("/");
+      const tourId = tourIdParts[tourIdParts.length - 1];
+      const itemIds = tour.items.map(item => {
+        const itemIdParts = item.split("/");
+        return itemIdParts[itemIdParts.length - 1];
+      });
+      return { key: tourId, items: itemIds };
+    });
+
+    return tasksGroupedByTour
+  }
+);
+
+
+
 export const selectTasksWithColor = createSelector(selectAllTasks, allTasks =>
   mapToColor(allTasks),
 );
