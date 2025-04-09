@@ -1,5 +1,6 @@
-import { CommonActions } from '@react-navigation/native';
 import { Alert } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
+import { createAction } from '@reduxjs/toolkit';
 import { createAction as createFsAction } from 'redux-actions';
 
 import _ from 'lodash';
@@ -30,9 +31,9 @@ import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
 
 export const DISPATCH_INITIALIZE = 'DISPATCH_INITIALIZE';
 
-export const LOAD_TASKS_REQUEST = '@dispatch/LOAD_TASKS_REQUEST';
-export const LOAD_TASKS_SUCCESS = '@dispatch/LOAD_TASKS_SUCCESS';
-export const LOAD_TASKS_FAILURE = '@dispatch/LOAD_TASKS_FAILURE';
+export const DEP_LOAD_TASKS_REQUEST = '@dispatch/LOAD_TASKS_REQUEST';
+export const DEP_LOAD_TASKS_SUCCESS = '@dispatch/LOAD_TASKS_SUCCESS';
+export const DEP_LOAD_TASKS_FAILURE = '@dispatch/LOAD_TASKS_FAILURE';
 
 export const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
 export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
@@ -76,9 +77,9 @@ export const CHANGE_DATE = 'CHANGE_DATE';
  * Action Creators
  */
 
-export const loadTasksRequest = createFsAction(LOAD_TASKS_REQUEST);
-export const loadTasksSuccess = createFsAction(LOAD_TASKS_SUCCESS);
-export const loadTasksFailure = createFsAction(LOAD_TASKS_FAILURE);
+export const loadTasksRequest = createAction('LOAD_TASKS_REQUEST');
+export const loadTasksSuccess = createAction('LOAD_TASKS_SUCCESS');
+export const loadTasksFailure = createAction('LOAD_TASKS_FAILURE');
 
 export const loadUsersRequest = createFsAction(LOAD_USERS_REQUEST);
 export const loadUsersSuccess = createFsAction(LOAD_USERS_SUCCESS);
