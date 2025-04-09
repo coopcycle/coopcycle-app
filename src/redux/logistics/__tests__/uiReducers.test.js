@@ -1,6 +1,9 @@
 import reducer from '../uiReducers';
 
 import {
+  assignTaskFailure,
+  assignTaskRequest,
+  assignTaskSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -30,7 +33,7 @@ describe('uiReducers', () => {
       ['loadUsersRequest', loadUsersRequest],
       ['loadTaskListsRequest', loadTaskListsRequest],
       ['createTaskRequest', createTaskRequest],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['assignTaskRequest', assignTaskRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
@@ -47,7 +50,7 @@ describe('uiReducers', () => {
       ['loadUsersFailure', loadUsersFailure],
       ['loadTaskListsFailure', loadTaskListsFailure],
       ['createTaskFailure', createTaskFailure],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['assignTaskFailure', assignTaskFailure],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
@@ -69,7 +72,7 @@ describe('uiReducers', () => {
       ['loadTaskListsSuccess', loadTaskListsSuccess],
       ['createTaskSuccess', createTaskSuccess],
       ['cancelTaskSuccess', cancelTaskSuccess],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['assignTaskSuccess', assignTaskSuccess],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for success action %s', (actionName, actionCreator) => {

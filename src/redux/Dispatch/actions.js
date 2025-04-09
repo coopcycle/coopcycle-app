@@ -99,9 +99,9 @@ export const cancelTaskRequest = createAction('CANCEL_TASK_REQUEST');
 export const cancelTaskSuccess = createAction('CANCEL_TASK_SUCCESS');
 export const cancelTaskFailure = createAction('CANCEL_TASK_FAILURE');
 
-export const assignTaskRequest = createFsAction(ASSIGN_TASK_REQUEST);
-export const assignTaskSuccess = createFsAction(ASSIGN_TASK_SUCCESS);
-export const assignTaskFailure = createFsAction(ASSIGN_TASK_FAILURE);
+export const assignTaskRequest = createAction('ASSIGN_TASK_REQUEST');
+export const assignTaskSuccess = createAction('ASSIGN_TASK_SUCCESS');
+export const assignTaskFailure = createAction('ASSIGN_TASK_FAILURE');
 
 export const updateTaskSuccess = createFsAction(UPDATE_TASK_SUCCESS);
 

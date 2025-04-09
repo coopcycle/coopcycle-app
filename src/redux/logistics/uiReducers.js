@@ -1,14 +1,14 @@
 import { actionMatchCreator } from '../util';
 import {
-  ASSIGN_TASK_FAILURE,
-  ASSIGN_TASK_REQUEST,
-  ASSIGN_TASK_SUCCESS,
   BULK_ASSIGNMENT_TASKS_FAILURE,
   BULK_ASSIGNMENT_TASKS_REQUEST,
   BULK_ASSIGNMENT_TASKS_SUCCESS,
   UNASSIGN_TASK_FAILURE,
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
+  assignTaskFailure,
+  assignTaskRequest,
+  assignTaskSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -33,6 +33,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
+    assignTaskRequest,
     createTaskRequest,
     loadTaskListsRequest,
     loadTasksRequest,
@@ -46,6 +47,7 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
+    assignTaskFailure,
     createTaskFailure,
     loadTaskListsFailure,
     loadTasksFailure,
@@ -59,6 +61,7 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
+    assignTaskSuccess,
     cancelTaskSuccess,
     createTaskSuccess,
     loadTaskListsSuccess,
@@ -73,14 +76,12 @@ export default (state = initialState, action) => {
   }
 
   switch (action.type) {
-    case ASSIGN_TASK_REQUEST:
     case UNASSIGN_TASK_REQUEST:
       return {
         ...state,
         isFetching: true,
       };
 
-    case ASSIGN_TASK_FAILURE:
     case LOAD_TOURS_FAILURE:
     case UNASSIGN_TASK_FAILURE:
       return {
@@ -88,7 +89,6 @@ export default (state = initialState, action) => {
         isFetching: false,
       };
 
-    case ASSIGN_TASK_SUCCESS:
     case LOAD_TOURS_SUCCESS:
     case UNASSIGN_TASK_SUCCESS:
       return {
