@@ -1,9 +1,10 @@
+import moment from 'moment';
 import { selectTaskLists } from '../selectors';
 
 describe('TaskOrder', () => {
-  
+
     let date = moment().format('YYYY-MM-DD');
-  
+
     let baseState = {
     logistics: {
       date,
