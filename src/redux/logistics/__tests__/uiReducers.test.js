@@ -1,6 +1,9 @@
 import reducer from '../uiReducers';
 
 import {
+  loadTaskListsFailure,
+  loadTaskListsRequest,
+  loadTaskListsSuccess,
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
@@ -21,7 +24,7 @@ describe('uiReducers', () => {
     it.each([
       ['loadTasksRequest', loadTasksRequest],
       ['loadUsersRequest', loadUsersRequest],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['loadTaskListsRequest', loadTaskListsRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
@@ -38,7 +41,7 @@ describe('uiReducers', () => {
     it.each([
       ['loadTasksFailure', loadTasksFailure],
       ['loadUsersSuccess', loadUsersSuccess],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['loadTaskListsFailure', loadTaskListsFailure],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
@@ -59,7 +62,7 @@ describe('uiReducers', () => {
     it.each([
       ['loadTasksSuccess', loadTasksSuccess],
       ['loadUsersFailure', loadUsersFailure],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['loadTaskListsSuccess', loadTaskListsSuccess],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],

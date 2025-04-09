@@ -10,12 +10,12 @@ import {
   CREATE_TASK_FAILURE,
   CREATE_TASK_REQUEST,
   CREATE_TASK_SUCCESS,
-  LOAD_TASK_LISTS_FAILURE,
-  LOAD_TASK_LISTS_REQUEST,
-  LOAD_TASK_LISTS_SUCCESS,
   UNASSIGN_TASK_FAILURE,
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
+  loadTaskListsFailure,
+  loadTaskListsRequest,
+  loadTaskListsSuccess,
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
@@ -35,6 +35,7 @@ export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
     loadTasksRequest,
     loadUsersRequest,
+    loadTaskListsRequest,
   ])
   ) {
     return {
@@ -46,6 +47,7 @@ export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
     loadTasksFailure,
     loadUsersFailure,
+    loadTaskListsFailure,
   ])
   ) {
     return {
@@ -57,6 +59,7 @@ export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
     loadTasksSuccess,
     loadUsersSuccess,
+    loadTaskListsSuccess,
   ])
   ) {
     return {
@@ -68,7 +71,6 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ASSIGN_TASK_REQUEST:
     case CREATE_TASK_REQUEST:
-    case LOAD_TASK_LISTS_REQUEST:
     case UNASSIGN_TASK_REQUEST:
       return {
         ...state,
@@ -77,7 +79,6 @@ export default (state = initialState, action) => {
 
     case ASSIGN_TASK_FAILURE:
     case CREATE_TASK_FAILURE:
-    case LOAD_TASK_LISTS_FAILURE:
     case LOAD_TOURS_FAILURE:
     case UNASSIGN_TASK_FAILURE:
       return {
@@ -88,7 +89,6 @@ export default (state = initialState, action) => {
     case ASSIGN_TASK_SUCCESS:
     case CANCEL_TASK_SUCCESS:
     case CREATE_TASK_SUCCESS:
-    case LOAD_TASK_LISTS_SUCCESS:
     case LOAD_TOURS_SUCCESS:
     case UNASSIGN_TASK_SUCCESS:
       return {

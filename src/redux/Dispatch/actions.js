@@ -85,9 +85,9 @@ export const loadUsersRequest = createAction('LOAD_USERS_REQUEST');
 export const loadUsersSuccess = createAction('LOAD_USERS_SUCCESS');
 export const loadUsersFailure = createAction('LOAD_USERS_FAILURE');
 
-export const loadTaskListsRequest = createFsAction(LOAD_TASK_LISTS_REQUEST);
-export const loadTaskListsSuccess = createFsAction(LOAD_TASK_LISTS_SUCCESS);
-export const loadTaskListsFailure = createFsAction(LOAD_TASK_LISTS_FAILURE);
+export const loadTaskListsRequest = createAction('LOAD_TASK_LISTS_REQUEST');
+export const loadTaskListsSuccess = createAction('LOAD_TASK_LISTS_SUCCESS');
+export const loadTaskListsFailure = createAction('LOAD_TASK_LISTS_FAILURE');
 
 export const updateTaskListsSuccess = createFsAction(UPDATE_TASK_LIST_SUCCESS);
 
