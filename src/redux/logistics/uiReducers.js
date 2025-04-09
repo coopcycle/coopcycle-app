@@ -6,10 +6,10 @@ import {
   BULK_ASSIGNMENT_TASKS_FAILURE,
   BULK_ASSIGNMENT_TASKS_REQUEST,
   BULK_ASSIGNMENT_TASKS_SUCCESS,
-  CANCEL_TASK_SUCCESS,
   UNASSIGN_TASK_FAILURE,
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
+  cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
   createTaskSuccess,
@@ -33,10 +33,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
+    createTaskRequest,
+    loadTaskListsRequest,
     loadTasksRequest,
     loadUsersRequest,
-    loadTaskListsRequest,
-    createTaskRequest,
   ])
   ) {
     return {
@@ -46,10 +46,10 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
+    createTaskFailure,
+    loadTaskListsFailure,
     loadTasksFailure,
     loadUsersFailure,
-    loadTaskListsFailure,
-    createTaskFailure,
   ])
   ) {
     return {
@@ -59,10 +59,11 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
+    cancelTaskSuccess,
+    createTaskSuccess,
+    loadTaskListsSuccess,
     loadTasksSuccess,
     loadUsersSuccess,
-    loadTaskListsSuccess,
-    createTaskSuccess,
   ])
   ) {
     return {
@@ -88,7 +89,6 @@ export default (state = initialState, action) => {
       };
 
     case ASSIGN_TASK_SUCCESS:
-    case CANCEL_TASK_SUCCESS:
     case LOAD_TOURS_SUCCESS:
     case UNASSIGN_TASK_SUCCESS:
       return {

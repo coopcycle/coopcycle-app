@@ -1,6 +1,7 @@
 import reducer from '../uiReducers';
 
 import {
+  cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
   createTaskSuccess,
@@ -67,7 +68,7 @@ describe('uiReducers', () => {
       ['loadUsersSuccess', loadUsersSuccess],
       ['loadTaskListsSuccess', loadTaskListsSuccess],
       ['createTaskSuccess', createTaskSuccess],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['cancelTaskSuccess', cancelTaskSuccess],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
