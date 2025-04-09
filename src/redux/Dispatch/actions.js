@@ -30,8 +30,6 @@ import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
  * Action Types
  */
 
-export const DISPATCH_INITIALIZE = 'DISPATCH_INITIALIZE';
-
 export const DEP_LOAD_TASKS_REQUEST = '@dispatch/LOAD_TASKS_REQUEST';
 export const DEP_LOAD_TASKS_SUCCESS = '@dispatch/LOAD_TASKS_SUCCESS';
 export const DEP_LOAD_TASKS_FAILURE = '@dispatch/LOAD_TASKS_FAILURE';
@@ -125,7 +123,7 @@ export const createTourSuccess = createFsAction(CREATE_TOUR_SUCCESS);
 export const updateTourSuccess = createFsAction(UPDATE_TOUR_SUCCESS);
 
 export const changeDate = createFsAction(CHANGE_DATE);
-const _initialize = createFsAction(DISPATCH_INITIALIZE);
+export const initialized = createAction('DISPATCH_INITIALIZE');
 
 
 function showAlert(e) {
@@ -150,14 +148,14 @@ function showAlert(e) {
 
 export function initialize() {
   return function (dispatch, getState) {
-    const initialized = getState().dispatch.initialized;
+    const stateInitialized = getState().dispatch.initialized;
 
-    if (initialized) {
+    if (stateInitialized) {
       return;
     }
 
     dispatch(connectCentrifugo());
-    dispatch(_initialize());
+    dispatch(initialized());
   };
 }
 
