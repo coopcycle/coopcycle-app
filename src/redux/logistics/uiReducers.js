@@ -23,7 +23,11 @@ import {
   unassignTaskRequest,
   unassignTaskSuccess,
 } from '../Dispatch/actions';
-import { LOAD_TOURS_FAILURE, LOAD_TOURS_SUCCESS } from '../../shared/logistics/redux';
+import {
+  loadToursFailure,
+  loadToursSuccess,
+} from '../../shared/logistics/redux';
+
 
 const initialState = {
   isBulkAssigning: false,
@@ -51,6 +55,7 @@ export default (state = initialState, action) => {
     createTaskFailure,
     loadTaskListsFailure,
     loadTasksFailure,
+    loadToursFailure,
     loadUsersFailure,
     unassignTaskFailure,
   ])) {
@@ -66,6 +71,7 @@ export default (state = initialState, action) => {
     createTaskSuccess,
     loadTaskListsSuccess,
     loadTasksSuccess,
+    loadToursSuccess,
     loadUsersSuccess,
     unassignTaskSuccess,
   ])) {
@@ -102,20 +108,5 @@ export default (state = initialState, action) => {
     };
   }
 
-  switch (action.type) {
-    case LOAD_TOURS_FAILURE:
-      return {
-        ...state,
-        isFetching: false,
-      };
-
-    case LOAD_TOURS_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-      };
-
-    default:
-      return state;
-  }
+  return state;
 };

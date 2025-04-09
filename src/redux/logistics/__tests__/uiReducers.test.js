@@ -1,5 +1,3 @@
-import reducer from '../uiReducers';
-
 import {
   assignTaskFailure,
   assignTaskRequest,
@@ -24,6 +22,11 @@ import {
   unassignTaskRequest,
   unassignTaskSuccess,
 } from "../../Dispatch/actions";
+import {
+  loadToursFailure,
+  loadToursSuccess,
+} from '../../../shared/logistics/redux';
+import reducer from '../uiReducers';
 
 
 describe('uiReducers', () => {
@@ -41,7 +44,6 @@ describe('uiReducers', () => {
       ['loadTasksRequest', loadTasksRequest],
       ['loadUsersRequest', loadUsersRequest],
       ['unassignTaskRequest', unassignTaskRequest],
-      // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to TRUE for load action %s', (actionName, actionCreator) => {
       const action = actionCreator();
 
@@ -57,7 +59,7 @@ describe('uiReducers', () => {
       ['loadTasksFailure', loadTasksFailure],
       ['loadUsersFailure', loadUsersFailure],
       ['unassignTaskFailure', unassignTaskFailure],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['loadToursFailure', loadToursFailure],
     ])('should change isFetching to FALSE for failure action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {
@@ -76,9 +78,9 @@ describe('uiReducers', () => {
       ['createTaskSuccess', createTaskSuccess],
       ['loadTaskListsSuccess', loadTaskListsSuccess],
       ['loadTasksSuccess', loadTasksSuccess],
+      ['loadToursSuccess', loadToursSuccess],
       ['loadUsersSuccess', loadUsersSuccess],
       ['unassignTaskSuccess', unassignTaskSuccess],
-      // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {
