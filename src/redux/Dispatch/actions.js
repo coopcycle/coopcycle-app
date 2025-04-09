@@ -1,9 +1,9 @@
+import _ from 'lodash';
 import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
 import { createAction as createFsAction } from 'redux-actions';
 
-import _ from 'lodash';
 import NavigationHolder from '../../NavigationHolder';
 import i18n from '../../i18n';
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
@@ -91,9 +91,9 @@ export const loadTaskListsFailure = createAction('LOAD_TASK_LISTS_FAILURE');
 
 export const updateTaskListsSuccess = createFsAction(UPDATE_TASK_LIST_SUCCESS);
 
-export const createTaskRequest = createFsAction(CREATE_TASK_REQUEST);
-export const createTaskSuccess = createFsAction(CREATE_TASK_SUCCESS);
-export const createTaskFailure = createFsAction(CREATE_TASK_FAILURE);
+export const createTaskRequest = createAction('CREATE_TASK_REQUEST');
+export const createTaskSuccess = createAction('CREATE_TASK_SUCCESS');
+export const createTaskFailure = createAction('CREATE_TASK_FAILURE');
 
 export const cancelTaskRequest = createFsAction(CANCEL_TASK_REQUEST);
 export const cancelTaskSuccess = createFsAction(CANCEL_TASK_SUCCESS);

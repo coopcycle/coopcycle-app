@@ -7,12 +7,12 @@ import {
   BULK_ASSIGNMENT_TASKS_REQUEST,
   BULK_ASSIGNMENT_TASKS_SUCCESS,
   CANCEL_TASK_SUCCESS,
-  CREATE_TASK_FAILURE,
-  CREATE_TASK_REQUEST,
-  CREATE_TASK_SUCCESS,
   UNASSIGN_TASK_FAILURE,
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
+  createTaskFailure,
+  createTaskRequest,
+  createTaskSuccess,
   loadTaskListsFailure,
   loadTaskListsRequest,
   loadTaskListsSuccess,
@@ -36,6 +36,7 @@ export default (state = initialState, action) => {
     loadTasksRequest,
     loadUsersRequest,
     loadTaskListsRequest,
+    createTaskRequest,
   ])
   ) {
     return {
@@ -48,6 +49,7 @@ export default (state = initialState, action) => {
     loadTasksFailure,
     loadUsersFailure,
     loadTaskListsFailure,
+    createTaskFailure,
   ])
   ) {
     return {
@@ -60,6 +62,7 @@ export default (state = initialState, action) => {
     loadTasksSuccess,
     loadUsersSuccess,
     loadTaskListsSuccess,
+    createTaskSuccess,
   ])
   ) {
     return {
@@ -70,7 +73,6 @@ export default (state = initialState, action) => {
 
   switch (action.type) {
     case ASSIGN_TASK_REQUEST:
-    case CREATE_TASK_REQUEST:
     case UNASSIGN_TASK_REQUEST:
       return {
         ...state,
@@ -78,7 +80,6 @@ export default (state = initialState, action) => {
       };
 
     case ASSIGN_TASK_FAILURE:
-    case CREATE_TASK_FAILURE:
     case LOAD_TOURS_FAILURE:
     case UNASSIGN_TASK_FAILURE:
       return {
@@ -88,7 +89,6 @@ export default (state = initialState, action) => {
 
     case ASSIGN_TASK_SUCCESS:
     case CANCEL_TASK_SUCCESS:
-    case CREATE_TASK_SUCCESS:
     case LOAD_TOURS_SUCCESS:
     case UNASSIGN_TASK_SUCCESS:
       return {
