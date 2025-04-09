@@ -4,6 +4,9 @@ import {
   assignTaskFailure,
   assignTaskRequest,
   assignTaskSuccess,
+  bulkAssignmentTasksFailure,
+  bulkAssignmentTasksRequest,
+  bulkAssignmentTasksSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -32,13 +35,12 @@ describe('uiReducers', () => {
 
   describe('isFetching', () => {
     it.each([
+      ['assignTaskRequest', assignTaskRequest],
+      ['createTaskRequest', createTaskRequest],
+      ['loadTaskListsRequest', loadTaskListsRequest],
       ['loadTasksRequest', loadTasksRequest],
       ['loadUsersRequest', loadUsersRequest],
-      ['loadTaskListsRequest', loadTaskListsRequest],
-      ['createTaskRequest', createTaskRequest],
-      ['assignTaskRequest', assignTaskRequest],
       ['unassignTaskRequest', unassignTaskRequest],
-      // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to TRUE for load action %s', (actionName, actionCreator) => {
       const action = actionCreator();
@@ -49,13 +51,12 @@ describe('uiReducers', () => {
     })
 
     it.each([
+      ['assignTaskFailure', assignTaskFailure],
+      ['createTaskFailure', createTaskFailure],
+      ['loadTaskListsFailure', loadTaskListsFailure],
       ['loadTasksFailure', loadTasksFailure],
       ['loadUsersFailure', loadUsersFailure],
-      ['loadTaskListsFailure', loadTaskListsFailure],
-      ['createTaskFailure', createTaskFailure],
-      ['assignTaskFailure', assignTaskFailure],
-      ['unassignTaskSuccess', unassignTaskSuccess],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['unassignTaskFailure', unassignTaskFailure],
       // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for failure action %s', (actionName, actionCreator) => {
       const action = actionCreator();
@@ -70,13 +71,13 @@ describe('uiReducers', () => {
     })
 
     it.each([
+      ['assignTaskSuccess', assignTaskSuccess],
+      ['cancelTaskSuccess', cancelTaskSuccess],
+      ['createTaskSuccess', createTaskSuccess],
+      ['loadTaskListsSuccess', loadTaskListsSuccess],
       ['loadTasksSuccess', loadTasksSuccess],
       ['loadUsersSuccess', loadUsersSuccess],
-      ['loadTaskListsSuccess', loadTaskListsSuccess],
-      ['createTaskSuccess', createTaskSuccess],
-      ['cancelTaskSuccess', cancelTaskSuccess],
-      ['assignTaskSuccess', assignTaskSuccess],
-      ['unassignTaskFailure', unassignTaskFailure],
+      ['unassignTaskSuccess', unassignTaskSuccess],
       // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
@@ -88,6 +89,46 @@ describe('uiReducers', () => {
       const newState = reducer(state, action);
 
       expect(newState.isFetching).toBeFalsy();
+    })
+  });
+
+  describe('isBulkAssigning', () => {
+    it.each([
+      ['bulkAssignmentTasksRequest', bulkAssignmentTasksRequest],
+    ])('should change isBulkAssigning to TRUE for load action %s', (actionName, actionCreator) => {
+      const action = actionCreator();
+
+      const newState = reducer(initialState, action);
+
+      expect(newState.isBulkAssigning).toBeTruthy();
+    })
+
+    it.each([
+      ['bulkAssignmentTasksFailure', bulkAssignmentTasksFailure],
+    ])('should change isBulkAssigning to FALSE for failure action %s', (actionName, actionCreator) => {
+      const action = actionCreator();
+      const state = {
+        ...initialState,
+        isBulkAssigning: true,
+      }
+
+      const newState = reducer(state, action);
+
+      expect(newState.isBulkAssigning).toBeFalsy();
+    })
+
+    it.each([
+      ['bulkAssignmentTasksSuccess', bulkAssignmentTasksSuccess],
+    ])('should change isBulkAssigning to FALSE for success action %s', (actionName, actionCreator) => {
+      const action = actionCreator();
+      const state = {
+        ...initialState,
+        isBulkAssigning: true,
+      }
+
+      const newState = reducer(state, action);
+
+      expect(newState.isBulkAssigning).toBeFalsy();
     })
   });
 });

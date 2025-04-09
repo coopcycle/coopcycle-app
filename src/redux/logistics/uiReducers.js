@@ -1,11 +1,11 @@
 import { actionMatchCreator } from '../util';
 import {
-  BULK_ASSIGNMENT_TASKS_FAILURE,
-  BULK_ASSIGNMENT_TASKS_REQUEST,
-  BULK_ASSIGNMENT_TASKS_SUCCESS,
   assignTaskFailure,
   assignTaskRequest,
   assignTaskSuccess,
+  bulkAssignmentTasksFailure,
+  bulkAssignmentTasksRequest,
+  bulkAssignmentTasksSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -39,8 +39,7 @@ export default (state = initialState, action) => {
     loadTasksRequest,
     loadUsersRequest,
     unassignTaskRequest,
-  ])
-  ) {
+  ])) {
     return {
       ...state,
       isFetching: true,
@@ -54,8 +53,7 @@ export default (state = initialState, action) => {
     loadTasksFailure,
     loadUsersFailure,
     unassignTaskFailure,
-  ])
-  ) {
+  ])) {
     return {
       ...state,
       isFetching: false,
@@ -70,11 +68,37 @@ export default (state = initialState, action) => {
     loadTasksSuccess,
     loadUsersSuccess,
     unassignTaskSuccess,
-  ])
-  ) {
+  ])) {
     return {
       ...state,
       isFetching: false,
+    };
+  }
+
+  if (actionMatchCreator(action, [
+    bulkAssignmentTasksRequest,
+  ])) {
+    return {
+      ...state,
+      isBulkAssigning: true,
+    };
+  }
+
+  if (actionMatchCreator(action, [
+    bulkAssignmentTasksFailure,
+  ])) {
+    return {
+      ...state,
+      isBulkAssigning: false,
+    };
+  }
+
+  if (actionMatchCreator(action, [
+    bulkAssignmentTasksSuccess,
+  ])) {
+    return {
+      ...state,
+      isBulkAssigning: false,
     };
   }
 
@@ -90,24 +114,6 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
       };
-
-    case BULK_ASSIGNMENT_TASKS_REQUEST:
-      return {
-        ...state,
-        isBulkAssigning: true,
-      }
-
-    case BULK_ASSIGNMENT_TASKS_FAILURE:
-      return {
-        ...state,
-        isBulkAssigning: false,
-      }
-
-    case BULK_ASSIGNMENT_TASKS_SUCCESS:
-      return {
-        ...state,
-        isBulkAssigning: false,
-      }
 
     default:
       return state;

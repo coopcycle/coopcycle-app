@@ -105,14 +105,14 @@ export const assignTaskFailure = createAction('ASSIGN_TASK_FAILURE');
 
 export const updateTaskSuccess = createFsAction(UPDATE_TASK_SUCCESS);
 
-export const bulkAssignmentTasksRequest = createFsAction(
-  BULK_ASSIGNMENT_TASKS_REQUEST,
+export const bulkAssignmentTasksRequest = createAction(
+  'BULK_ASSIGNMENT_TASKS_REQUEST',
 );
-export const bulkAssignmentTasksSuccess = createFsAction(
-  BULK_ASSIGNMENT_TASKS_SUCCESS,
+export const bulkAssignmentTasksSuccess = createAction(
+  'BULK_ASSIGNMENT_TASKS_SUCCESS',
 );
-export const bulkAssignmentTasksFailure = createFsAction(
-  BULK_ASSIGNMENT_TASKS_FAILURE,
+export const bulkAssignmentTasksFailure = createAction(
+  'BULK_ASSIGNMENT_TASKS_FAILURE',
 );
 
 export const unassignTaskRequest = createAction('UNASSIGN_TASK_REQUEST');
