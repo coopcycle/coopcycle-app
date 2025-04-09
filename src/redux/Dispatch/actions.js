@@ -1,6 +1,6 @@
 import { CommonActions } from '@react-navigation/native';
 import { Alert } from 'react-native';
-import { createAction } from 'redux-actions';
+import { createAction as createFsAction } from 'redux-actions';
 
 import _ from 'lodash';
 import NavigationHolder from '../../NavigationHolder';
@@ -76,54 +76,54 @@ export const CHANGE_DATE = 'CHANGE_DATE';
  * Action Creators
  */
 
-export const loadTasksRequest = createAction(LOAD_TASKS_REQUEST);
-export const loadTasksSuccess = createAction(LOAD_TASKS_SUCCESS);
-export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE);
+export const loadTasksRequest = createFsAction(LOAD_TASKS_REQUEST);
+export const loadTasksSuccess = createFsAction(LOAD_TASKS_SUCCESS);
+export const loadTasksFailure = createFsAction(LOAD_TASKS_FAILURE);
 
-export const loadUsersRequest = createAction(LOAD_USERS_REQUEST);
-export const loadUsersSuccess = createAction(LOAD_USERS_SUCCESS);
-export const loadUsersFailure = createAction(LOAD_USERS_FAILURE);
+export const loadUsersRequest = createFsAction(LOAD_USERS_REQUEST);
+export const loadUsersSuccess = createFsAction(LOAD_USERS_SUCCESS);
+export const loadUsersFailure = createFsAction(LOAD_USERS_FAILURE);
 
-export const loadTaskListsRequest = createAction(LOAD_TASK_LISTS_REQUEST);
-export const loadTaskListsSuccess = createAction(LOAD_TASK_LISTS_SUCCESS);
-export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE);
+export const loadTaskListsRequest = createFsAction(LOAD_TASK_LISTS_REQUEST);
+export const loadTaskListsSuccess = createFsAction(LOAD_TASK_LISTS_SUCCESS);
+export const loadTaskListsFailure = createFsAction(LOAD_TASK_LISTS_FAILURE);
 
-export const updateTaskListsSuccess = createAction(UPDATE_TASK_LIST_SUCCESS);
+export const updateTaskListsSuccess = createFsAction(UPDATE_TASK_LIST_SUCCESS);
 
-export const createTaskRequest = createAction(CREATE_TASK_REQUEST);
-export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS);
-export const createTaskFailure = createAction(CREATE_TASK_FAILURE);
+export const createTaskRequest = createFsAction(CREATE_TASK_REQUEST);
+export const createTaskSuccess = createFsAction(CREATE_TASK_SUCCESS);
+export const createTaskFailure = createFsAction(CREATE_TASK_FAILURE);
 
-export const cancelTaskRequest = createAction(CANCEL_TASK_REQUEST);
-export const cancelTaskSuccess = createAction(CANCEL_TASK_SUCCESS);
-export const cancelTaskFailure = createAction(CANCEL_TASK_FAILURE);
+export const cancelTaskRequest = createFsAction(CANCEL_TASK_REQUEST);
+export const cancelTaskSuccess = createFsAction(CANCEL_TASK_SUCCESS);
+export const cancelTaskFailure = createFsAction(CANCEL_TASK_FAILURE);
 
-export const assignTaskRequest = createAction(ASSIGN_TASK_REQUEST);
-export const assignTaskSuccess = createAction(ASSIGN_TASK_SUCCESS);
-export const assignTaskFailure = createAction(ASSIGN_TASK_FAILURE);
+export const assignTaskRequest = createFsAction(ASSIGN_TASK_REQUEST);
+export const assignTaskSuccess = createFsAction(ASSIGN_TASK_SUCCESS);
+export const assignTaskFailure = createFsAction(ASSIGN_TASK_FAILURE);
 
-export const updateTaskSuccess = createAction(UPDATE_TASK_SUCCESS);
+export const updateTaskSuccess = createFsAction(UPDATE_TASK_SUCCESS);
 
-export const bulkAssignmentTasksRequest = createAction(
+export const bulkAssignmentTasksRequest = createFsAction(
   BULK_ASSIGNMENT_TASKS_REQUEST,
 );
-export const bulkAssignmentTasksSuccess = createAction(
+export const bulkAssignmentTasksSuccess = createFsAction(
   BULK_ASSIGNMENT_TASKS_SUCCESS,
 );
-export const bulkAssignmentTasksFailure = createAction(
+export const bulkAssignmentTasksFailure = createFsAction(
   BULK_ASSIGNMENT_TASKS_FAILURE,
 );
 
-export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST);
-export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS);
-export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE);
+export const unassignTaskRequest = createFsAction(UNASSIGN_TASK_REQUEST);
+export const unassignTaskSuccess = createFsAction(UNASSIGN_TASK_SUCCESS);
+export const unassignTaskFailure = createFsAction(UNASSIGN_TASK_FAILURE);
 
-export const createTourSuccess = createAction(CREATE_TOUR_SUCCESS);
+export const createTourSuccess = createFsAction(CREATE_TOUR_SUCCESS);
 
-export const updateTourSuccess = createAction(UPDATE_TOUR_SUCCESS);
+export const updateTourSuccess = createFsAction(UPDATE_TOUR_SUCCESS);
 
-export const changeDate = createAction(CHANGE_DATE);
-const _initialize = createAction(DISPATCH_INITIALIZE);
+export const changeDate = createFsAction(CHANGE_DATE);
+const _initialize = createFsAction(DISPATCH_INITIALIZE);
 
 
 function showAlert(e) {
