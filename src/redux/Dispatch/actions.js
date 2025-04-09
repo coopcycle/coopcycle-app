@@ -29,35 +29,14 @@ import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
 /*
  * Action Types
  */
-
-export const DEP_LOAD_TASK_LISTS_SUCCESS = '@dispatch/LOAD_TASK_LISTS_SUCCESS';
-export const DEP_LOAD_TASK_LISTS_FAILURE = '@dispatch/LOAD_TASK_LISTS_FAILURE';
-
-export const UPDATE_TASK_LIST_SUCCESS = '@dispatch/UPDATE_TASK_LIST_SUCCESS';
-
-export const DEP_CANCEL_TASK_REQUEST = '@dispatch/CANCEL_TASK_REQUEST';
-export const DEP_CANCEL_TASK_SUCCESS = '@dispatch/CANCEL_TASK_SUCCESS';
-export const DEP_CANCEL_TASK_FAILURE = '@dispatch/CANCEL_TASK_FAILURE';
-
-export const DEP_ASSIGN_TASK_REQUEST = '@dispatch/ASSIGN_TASK_REQUEST';
-export const DEP_ASSIGN_TASK_SUCCESS = '@dispatch/ASSIGN_TASK_SUCCESS';
-export const DEP_ASSIGN_TASK_FAILURE = '@dispatch/ASSIGN_TASK_FAILURE';
-
-export const UPDATE_TASK_SUCCESS = '@dispatch/UPDATE_TASK_SUCCESS';
-
-export const DEP_BULK_ASSIGNMENT_TASKS_REQUEST = '@dispatch/BULK_ASSIGNMENT_TASKS_REQUEST';
-export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = '@dispatch/BULK_ASSIGNMENT_TASKS_SUCCESS';
-export const DEP_BULK_ASSIGNMENT_TASKS_FAILURE = '@dispatch/BULK_ASSIGNMENT_TASKS_FAILURE';
-
-export const DEP_UNASSIGN_TASK_REQUEST = '@dispatch/UNASSIGN_TASK_REQUEST';
-export const DEP_UNASSIGN_TASK_SUCCESS = '@dispatch/UNASSIGN_TASK_SUCCESS';
-export const DEP_UNASSIGN_TASK_FAILURE = '@dispatch/UNASSIGN_TASK_FAILURE';
-
 export const CREATE_TOUR_SUCCESS = '@dispatch/CREATE_TOUR_SUCCESS';
-
-export const UPDATE_TOUR_SUCCESS = '@dispatch/UPDATE_TOUR_SUCCESS';
-
+export const DEP_ASSIGN_TASK_SUCCESS = '@dispatch/ASSIGN_TASK_SUCCESS';
+export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = '@dispatch/BULK_ASSIGNMENT_TASKS_SUCCESS';
 export const DEP_CHANGE_DATE = 'CHANGE_DATE';
+export const DEP_UNASSIGN_TASK_SUCCESS = '@dispatch/UNASSIGN_TASK_SUCCESS';
+export const UPDATE_TASK_LIST_SUCCESS = '@dispatch/UPDATE_TASK_LIST_SUCCESS';
+export const UPDATE_TASK_SUCCESS = '@dispatch/UPDATE_TASK_SUCCESS';
+export const UPDATE_TOUR_SUCCESS = '@dispatch/UPDATE_TOUR_SUCCESS';
 
 /*
  * Action Creators

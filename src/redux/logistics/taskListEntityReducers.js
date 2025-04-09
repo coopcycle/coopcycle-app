@@ -1,11 +1,10 @@
-import { actionMatchCreator } from '../util';
 import {
-  DEP_ASSIGN_TASK_SUCCESS,
-  DEP_LOAD_TASK_LISTS_SUCCESS,
-  DEP_UNASSIGN_TASK_SUCCESS,
   UPDATE_TASK_LIST_SUCCESS,
+  assignTaskSuccess,
   changeDate,
   createTaskSuccess,
+  loadTaskListsSuccess,
+  unassignTaskSuccess,
 } from '../Dispatch/actions';
 import {
   taskListAdapter,
@@ -13,19 +12,16 @@ import {
   taskListUtils,
 } from '../../coopcycle-frontend-js/logistics/redux';
 
+
 const initialState = taskListAdapter.getInitialState();
 const selectors = taskListAdapter.getSelectors(state => state);
 
 export default (state = initialState, action) => {
-  if (actionMatchCreator(action, [
-    changeDate,
-  ])) {
+  if (changeDate.match(action)) {
     return initialState;
   }
 
-  if (actionMatchCreator(action, [
-    createTaskSuccess,
-  ])) {
+  if (createTaskSuccess.match(action)) {
     let task = action.payload;
 
     if (task.isAssigned) {
@@ -39,32 +35,32 @@ export default (state = initialState, action) => {
     }
   }
 
-  switch (action.type) {
-    case DEP_LOAD_TASK_LISTS_SUCCESS: {
-      let entities = action.payload.map(taskList =>
-        taskListUtils.replaceTasksWithIds(taskList),
-      );
-      return taskListAdapter.setAll(state, entities);
-    }
+  if (loadTaskListsSuccess.match(action)) {
+    let entities = action.payload.map(taskList =>
+      taskListUtils.replaceTasksWithIds(taskList),
+    );
+    return taskListAdapter.setAll(state, entities);
+  }
 
+  if (assignTaskSuccess.match(action)) {
+    let newItems = taskListEntityUtils.addAssignedTask(
+      selectors.selectEntities(state),
+      action.payload,
+    );
+    return taskListAdapter.upsertMany(state, newItems);
+  }
+
+  if (unassignTaskSuccess.match(action)) {
+    let newItems = taskListEntityUtils.removeUnassignedTask(
+      selectors.selectEntities(state),
+      action.payload,
+    );
+    return taskListAdapter.upsertMany(state, newItems);
+  }
+
+  switch (action.type) {
     case UPDATE_TASK_LIST_SUCCESS: {
       return taskListAdapter.upsertOne(state, action.payload);
-    }
-
-    case DEP_ASSIGN_TASK_SUCCESS: {
-      let newItems = taskListEntityUtils.addAssignedTask(
-        selectors.selectEntities(state),
-        action.payload,
-      );
-      return taskListAdapter.upsertMany(state, newItems);
-    }
-
-    case DEP_UNASSIGN_TASK_SUCCESS: {
-      let newItems = taskListEntityUtils.removeUnassignedTask(
-        selectors.selectEntities(state),
-        action.payload,
-      );
-      return taskListAdapter.upsertMany(state, newItems);
     }
 
     default:
