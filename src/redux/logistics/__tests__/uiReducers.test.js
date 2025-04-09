@@ -4,6 +4,9 @@ import {
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
+  loadUsersFailure,
+  loadUsersRequest,
+  loadUsersSuccess,
 } from "../../Dispatch/actions";
 
 
@@ -17,6 +20,13 @@ describe('uiReducers', () => {
   describe('isFetching', () => {
     it.each([
       ['loadTasksRequest', loadTasksRequest],
+      ['loadUsersRequest', loadUsersRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to TRUE for load action %s', (actionName, actionCreator) => {
       const action = actionCreator();
 
@@ -27,6 +37,13 @@ describe('uiReducers', () => {
 
     it.each([
       ['loadTasksFailure', loadTasksFailure],
+      ['loadUsersSuccess', loadUsersSuccess],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for failure action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {
@@ -41,6 +58,13 @@ describe('uiReducers', () => {
 
     it.each([
       ['loadTasksSuccess', loadTasksSuccess],
+      ['loadUsersFailure', loadUsersFailure],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
+      // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {

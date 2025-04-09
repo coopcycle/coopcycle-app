@@ -13,15 +13,15 @@ import {
   LOAD_TASK_LISTS_FAILURE,
   LOAD_TASK_LISTS_REQUEST,
   LOAD_TASK_LISTS_SUCCESS,
-  LOAD_USERS_FAILURE,
-  LOAD_USERS_REQUEST,
-  LOAD_USERS_SUCCESS,
   UNASSIGN_TASK_FAILURE,
   UNASSIGN_TASK_REQUEST,
   UNASSIGN_TASK_SUCCESS,
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
+  loadUsersFailure,
+  loadUsersRequest,
+  loadUsersSuccess,
 } from '../Dispatch/actions';
 import { LOAD_TOURS_FAILURE, LOAD_TOURS_SUCCESS } from '../../shared/logistics/redux';
 
@@ -34,6 +34,7 @@ const initialState = {
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
     loadTasksRequest,
+    loadUsersRequest,
   ])
   ) {
     return {
@@ -44,6 +45,7 @@ export default (state = initialState, action) => {
 
   if (actionMatchCreator(action, [
     loadTasksFailure,
+    loadUsersFailure,
   ])
   ) {
     return {
@@ -54,6 +56,7 @@ export default (state = initialState, action) => {
 
   if (actionMatchCreator(action, [
     loadTasksSuccess,
+    loadUsersSuccess,
   ])
   ) {
     return {
@@ -66,7 +69,6 @@ export default (state = initialState, action) => {
     case ASSIGN_TASK_REQUEST:
     case CREATE_TASK_REQUEST:
     case LOAD_TASK_LISTS_REQUEST:
-    case LOAD_USERS_REQUEST:
     case UNASSIGN_TASK_REQUEST:
       return {
         ...state,
@@ -77,7 +79,6 @@ export default (state = initialState, action) => {
     case CREATE_TASK_FAILURE:
     case LOAD_TASK_LISTS_FAILURE:
     case LOAD_TOURS_FAILURE:
-    case LOAD_USERS_FAILURE:
     case UNASSIGN_TASK_FAILURE:
       return {
         ...state,
@@ -89,7 +90,6 @@ export default (state = initialState, action) => {
     case CREATE_TASK_SUCCESS:
     case LOAD_TASK_LISTS_SUCCESS:
     case LOAD_TOURS_SUCCESS:
-    case LOAD_USERS_SUCCESS:
     case UNASSIGN_TASK_SUCCESS:
       return {
         ...state,
