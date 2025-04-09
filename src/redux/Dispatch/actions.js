@@ -14,6 +14,7 @@ import {
   createTaskListSuccess,
   selectAllTasks,
   selectSelectedDate,
+  selectToursTasksIndex
 } from '../../coopcycle-frontend-js/logistics/redux';
 
 import {
@@ -206,32 +207,27 @@ export function createTask(task) {
 
 export function assignTask(task, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const state = getState();
+    const httpClient = state.app.httpClient;
 
     const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(getState()));
+    selectToursTasksIndex(getState());
 
     if (linkedTasks.length > 1) {
-      dispatch(bulkAssignmentTasksRequest());
-
-      return httpClient
-        .put('/api/tasks/assign', {
-          username,
-          tasks: linkedTasks.map(t => t['@id']),
-        })
-        .then(res => {
-          dispatch(bulkAssignmentTasksSuccess(res['hydra:member']));
-        })
-        .catch(e => {
-          dispatch(bulkAssignmentTasksFailure(e));
-        });
-    } else {
-      dispatch(assignTaskRequest());
-
-      return httpClient
-        .put(`${task['@id']}/assign`, { username })
-        .then(res => dispatch(assignTaskSuccess(res)))
-        .catch(e => dispatch(assignTaskFailure(e)));
+      // Multiple task assignment => Just use bulk assignment!
+      return bulkAssignmentTasks(linkedTasks, username)(dispatch, getState);
     }
+
+    // Single task assignment
+    dispatch(assignTaskRequest());
+
+    return httpClient
+      .put(`${task['@id']}/assign`, { username })
+      .then(res => {
+        return maybeUpdateTourTasks(state, [task['@id']])
+          .then(_res => dispatch(assignTaskSuccess(res)));
+      })
+      .catch(e => dispatch(assignTaskFailure(e)));
   };
 }
 
@@ -243,7 +239,8 @@ export function assignTask(task, username) {
  */
 export function bulkAssignmentTasks(tasks, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const state = getState();
+    const httpClient = state.app.httpClient;
 
     dispatch(bulkAssignmentTasksRequest());
 
@@ -253,16 +250,28 @@ export function bulkAssignmentTasks(tasks, username) {
       tasksToAssign.push(...withUnassignedLinkedTasks(task, selectAllTasks(getState())))
     });
 
-    const payload = _.uniq(tasksToAssign.map(t => t['@id']));
+    const taskIdsToAssign = _.uniq(tasksToAssign.map(t => t['@id']));
 
     return httpClient
       .put('/api/tasks/assign', {
         username,
-        tasks: payload,
+        tasks: taskIdsToAssign
       })
-      .then(res => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])))
+      .then(res => {
+        return maybeUpdateTourTasks(state, taskIdsToAssign)
+          .then(_res => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])));
+      })
       .catch(e => dispatch(bulkAssignmentTasksFailure(e)));
   };
+}
+
+function maybeUpdateTourTasks(state, taskIdsToAssign) {
+  const index = selectToursTasksIndex(state);
+  // TODO / WIP..!
+  console.log("TOURS/TASKS TO ASSIGN: ", taskIdsToAssign);
+  console.log("TOURS/TASKS INDEX: ", JSON.stringify(index, null, 2));
+  //useUpdateTourMutation
+  return Promise.all([]);
 }
 
 export function unassignTask(task, username) {
