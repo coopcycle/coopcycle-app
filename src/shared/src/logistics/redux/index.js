@@ -11,6 +11,7 @@ export {
   selectSelectedDate,
   selectTaskLists,
   selectTasksWithColor,
+  selectToursTasksIndex,
   selectUnassignedTasks,
 } from './selectors';
 
