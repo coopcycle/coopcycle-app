@@ -1,10 +1,10 @@
 import {
-  UPDATE_TASK_LIST_SUCCESS,
   assignTaskSuccess,
   changeDate,
   createTaskSuccess,
   loadTaskListsSuccess,
   unassignTaskSuccess,
+  updateTaskListsSuccess,
 } from '../Dispatch/actions';
 import {
   taskListAdapter,
@@ -58,12 +58,9 @@ export default (state = initialState, action) => {
     return taskListAdapter.upsertMany(state, newItems);
   }
 
-  switch (action.type) {
-    case UPDATE_TASK_LIST_SUCCESS: {
-      return taskListAdapter.upsertOne(state, action.payload);
-    }
-
-    default:
-      return state;
+  if (updateTaskListsSuccess.match(action)) {
+    return taskListAdapter.upsertOne(state, action.payload);
   }
+
+  return state;
 };
