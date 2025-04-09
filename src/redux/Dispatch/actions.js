@@ -42,54 +42,54 @@ export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
  * Action Creators
  */
 
-export const loadTasksRequest = createAction('LOAD_TASKS_REQUEST');
-export const loadTasksSuccess = createAction('LOAD_TASKS_SUCCESS');
-export const loadTasksFailure = createAction('LOAD_TASKS_FAILURE');
+export const loadTasksRequest = createAction('@dispatch/LOAD_TASKS_REQUEST');
+export const loadTasksSuccess = createAction('@dispatch/LOAD_TASKS_SUCCESS');
+export const loadTasksFailure = createAction('@dispatch/LOAD_TASKS_FAILURE');
 
-export const loadUsersRequest = createAction('LOAD_USERS_REQUEST');
-export const loadUsersSuccess = createAction('LOAD_USERS_SUCCESS');
-export const loadUsersFailure = createAction('LOAD_USERS_FAILURE');
+export const loadUsersRequest = createAction('@dispatch/LOAD_USERS_REQUEST');
+export const loadUsersSuccess = createAction('@dispatch/LOAD_USERS_SUCCESS');
+export const loadUsersFailure = createAction('@dispatch/LOAD_USERS_FAILURE');
 
-export const loadTaskListsRequest = createAction('LOAD_TASK_LISTS_REQUEST');
-export const loadTaskListsSuccess = createAction('LOAD_TASK_LISTS_SUCCESS');
-export const loadTaskListsFailure = createAction('LOAD_TASK_LISTS_FAILURE');
+export const loadTaskListsRequest = createAction('@dispatch/LOAD_TASK_LISTS_REQUEST');
+export const loadTaskListsSuccess = createAction('@dispatch/LOAD_TASK_LISTS_SUCCESS');
+export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAILURE');
 
-export const updateTaskListsSuccess = createAction('UPDATE_TASK_LIST_SUCCESS');
+export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_SUCCESS');
 
-export const createTaskRequest = createAction('CREATE_TASK_REQUEST');
-export const createTaskSuccess = createAction('CREATE_TASK_SUCCESS');
-export const createTaskFailure = createAction('CREATE_TASK_FAILURE');
+export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
+export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');
+export const createTaskFailure = createAction('@dispatch/CREATE_TASK_FAILURE');
 
-export const cancelTaskRequest = createAction('CANCEL_TASK_REQUEST');
-export const cancelTaskSuccess = createAction('CANCEL_TASK_SUCCESS');
-export const cancelTaskFailure = createAction('CANCEL_TASK_FAILURE');
+export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
+export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
+export const cancelTaskFailure = createAction('@dispatch/CANCEL_TASK_FAILURE');
 
-export const assignTaskRequest = createAction('ASSIGN_TASK_REQUEST');
+export const assignTaskRequest = createAction('@dispatch/ASSIGN_TASK_REQUEST');
 export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
-export const assignTaskFailure = createAction('ASSIGN_TASK_FAILURE');
+export const assignTaskFailure = createAction('@dispatch/ASSIGN_TASK_FAILURE');
 
 export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
 
 export const bulkAssignmentTasksRequest = createAction(
-  'BULK_ASSIGNMENT_TASKS_REQUEST',
+  '@dispatch/BULK_ASSIGNMENT_TASKS_REQUEST',
 );
 export const bulkAssignmentTasksSuccess = createAction(
   DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
 );
 export const bulkAssignmentTasksFailure = createAction(
-  'BULK_ASSIGNMENT_TASKS_FAILURE',
+  '@dispatch/BULK_ASSIGNMENT_TASKS_FAILURE',
 );
 
-export const unassignTaskRequest = createAction('UNASSIGN_TASK_REQUEST');
+export const unassignTaskRequest = createAction('@dispatch/UNASSIGN_TASK_REQUEST');
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
-export const unassignTaskFailure = createAction('UNASSIGN_TASK_FAILURE');
+export const unassignTaskFailure = createAction('@dispatch/UNASSIGN_TASK_FAILURE');
 
-export const createTourSuccess = createAction('CREATE_TOUR_SUCCESS');
+export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
 
 export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
 
 export const changeDate = createAction(DEP_CHANGE_DATE);
-export const initialized = createAction('DISPATCH_INITIALIZE');
+export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
 
 function showAlert(e) {
