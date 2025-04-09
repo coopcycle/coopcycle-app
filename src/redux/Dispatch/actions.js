@@ -115,9 +115,9 @@ export const bulkAssignmentTasksFailure = createFsAction(
   BULK_ASSIGNMENT_TASKS_FAILURE,
 );
 
-export const unassignTaskRequest = createFsAction(UNASSIGN_TASK_REQUEST);
-export const unassignTaskSuccess = createFsAction(UNASSIGN_TASK_SUCCESS);
-export const unassignTaskFailure = createFsAction(UNASSIGN_TASK_FAILURE);
+export const unassignTaskRequest = createAction('UNASSIGN_TASK_REQUEST');
+export const unassignTaskSuccess = createAction('UNASSIGN_TASK_SUCCESS');
+export const unassignTaskFailure = createAction('UNASSIGN_TASK_FAILURE');
 
 export const createTourSuccess = createFsAction(CREATE_TOUR_SUCCESS);
 

@@ -17,6 +17,9 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
+  unassignTaskFailure,
+  unassignTaskRequest,
+  unassignTaskSuccess,
 } from "../../Dispatch/actions";
 
 
@@ -34,7 +37,7 @@ describe('uiReducers', () => {
       ['loadTaskListsRequest', loadTaskListsRequest],
       ['createTaskRequest', createTaskRequest],
       ['assignTaskRequest', assignTaskRequest],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['unassignTaskRequest', unassignTaskRequest],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to TRUE for load action %s', (actionName, actionCreator) => {
@@ -51,7 +54,7 @@ describe('uiReducers', () => {
       ['loadTaskListsFailure', loadTaskListsFailure],
       ['createTaskFailure', createTaskFailure],
       ['assignTaskFailure', assignTaskFailure],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['unassignTaskSuccess', unassignTaskSuccess],
       // ['loadTasksRequest', loadTasksRequest],
       // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for failure action %s', (actionName, actionCreator) => {
@@ -73,7 +76,7 @@ describe('uiReducers', () => {
       ['createTaskSuccess', createTaskSuccess],
       ['cancelTaskSuccess', cancelTaskSuccess],
       ['assignTaskSuccess', assignTaskSuccess],
-      // ['loadTasksRequest', loadTasksRequest],
+      ['unassignTaskFailure', unassignTaskFailure],
       // ['loadTasksRequest', loadTasksRequest],
     ])('should change isFetching to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();

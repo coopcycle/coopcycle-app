@@ -3,9 +3,6 @@ import {
   BULK_ASSIGNMENT_TASKS_FAILURE,
   BULK_ASSIGNMENT_TASKS_REQUEST,
   BULK_ASSIGNMENT_TASKS_SUCCESS,
-  UNASSIGN_TASK_FAILURE,
-  UNASSIGN_TASK_REQUEST,
-  UNASSIGN_TASK_SUCCESS,
   assignTaskFailure,
   assignTaskRequest,
   assignTaskSuccess,
@@ -22,6 +19,9 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
+  unassignTaskFailure,
+  unassignTaskRequest,
+  unassignTaskSuccess,
 } from '../Dispatch/actions';
 import { LOAD_TOURS_FAILURE, LOAD_TOURS_SUCCESS } from '../../shared/logistics/redux';
 
@@ -38,6 +38,7 @@ export default (state = initialState, action) => {
     loadTaskListsRequest,
     loadTasksRequest,
     loadUsersRequest,
+    unassignTaskRequest,
   ])
   ) {
     return {
@@ -52,6 +53,7 @@ export default (state = initialState, action) => {
     loadTaskListsFailure,
     loadTasksFailure,
     loadUsersFailure,
+    unassignTaskFailure,
   ])
   ) {
     return {
@@ -67,6 +69,7 @@ export default (state = initialState, action) => {
     loadTaskListsSuccess,
     loadTasksSuccess,
     loadUsersSuccess,
+    unassignTaskSuccess,
   ])
   ) {
     return {
@@ -76,21 +79,13 @@ export default (state = initialState, action) => {
   }
 
   switch (action.type) {
-    case UNASSIGN_TASK_REQUEST:
-      return {
-        ...state,
-        isFetching: true,
-      };
-
     case LOAD_TOURS_FAILURE:
-    case UNASSIGN_TASK_FAILURE:
       return {
         ...state,
         isFetching: false,
       };
 
     case LOAD_TOURS_SUCCESS:
-    case UNASSIGN_TASK_SUCCESS:
       return {
         ...state,
         isFetching: false,
