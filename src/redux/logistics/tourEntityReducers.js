@@ -5,21 +5,25 @@ import {
 } from "../Dispatch/actions";
 import {
   DELETE_TOUR_SUCCESS,
-  LOAD_TOURS_SUCCESS,
   UPDATE_TOUR,
+  loadToursSuccess,
   tourAdapter,
 } from "../../shared/logistics/redux";
+import { actionMatchCreator } from "../util";
 
 
 const initialState = tourAdapter.getInitialState()
 
 export default (state = initialState, action) => {
+  if (actionMatchCreator(action, [
+    loadToursSuccess,
+  ])) {
+    return tourAdapter.upsertMany(state, action.payload);
+  }
+
   switch (action.type) {
     case CHANGE_DATE:
       return initialState;
-
-    case LOAD_TOURS_SUCCESS:
-      return tourAdapter.upsertMany(state, action.payload);
 
     case CREATE_TOUR_SUCCESS:
     case UPDATE_TOUR:
