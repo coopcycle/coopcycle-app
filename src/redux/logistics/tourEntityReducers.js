@@ -1,7 +1,7 @@
 import {
-  CHANGE_DATE,
   CREATE_TOUR_SUCCESS,
   UPDATE_TOUR_SUCCESS,
+  changeDate,
 } from "../Dispatch/actions";
 import {
   DELETE_TOUR_SUCCESS,
@@ -16,15 +16,18 @@ const initialState = tourAdapter.getInitialState()
 
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
+    changeDate,
+  ])) {
+    return initialState;
+  }
+
+  if (actionMatchCreator(action, [
     loadToursSuccess,
   ])) {
     return tourAdapter.upsertMany(state, action.payload);
   }
 
   switch (action.type) {
-    case CHANGE_DATE:
-      return initialState;
-
     case CREATE_TOUR_SUCCESS:
     case UPDATE_TOUR:
     case UPDATE_TOUR_SUCCESS:
