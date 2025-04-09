@@ -1,5 +1,10 @@
 import moment from 'moment';
-import { createTaskItemsTransform, fetchAllRecordsUsingFetchWithBQ } from '../util';
+import { createAction } from '@reduxjs/toolkit';
+import {
+  actionMatchCreator,
+  createTaskItemsTransform,
+  fetchAllRecordsUsingFetchWithBQ,
+} from '../util';
 
 describe('Redux | util', () => {
   it('TaskItemsTransform | in', () => {
@@ -67,9 +72,9 @@ describe('Redux | util', () => {
     it('should return all items that fits in the first page', async () => {
       const fetchWithBQ = jest.fn();
       fetchWithBQ.mockResolvedValue({
-        data: { 
+        data: {
         'hydra:totalItems': 2,
-        'hydra:member': members 
+        'hydra:member': members
         }
       });
 
@@ -119,5 +124,30 @@ describe('Redux | util', () => {
       expect(rs).toEqual(members);
       expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
+  });
+
+  describe('actionMatchCreator', () => {
+    it('should return TRUE if an action matches any action creator', () => {
+      const actionCreator1 = createAction('ACTION_1');
+      const actionCreator2 = createAction('ACTION_2');
+
+      const action = actionCreator1('some value');
+
+      const result = actionMatchCreator(action, [actionCreator1, actionCreator2]);
+
+      expect(result).toBeTruthy();
+    });
+  });
+
+  it('should return FALSE if an action doesnt match any action creator', () => {
+    const actionCreator1 = createAction('ACTION_1');
+    const actionCreator2 = createAction('ACTION_2');
+    const actionCreator3 = createAction('ACTION_3');
+
+    const action = actionCreator1('some value');
+
+    const result = actionMatchCreator(action, [actionCreator2, actionCreator3]);
+
+    expect(result).toBeFalsy();
   });
 });
