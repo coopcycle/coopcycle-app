@@ -231,11 +231,28 @@ export function bulkAssignmentTasks(tasks, username) {
 
 function maybeUpdateTourTasks(state, taskIdsToAssign) {
   const index = selectToursTasksIndex(state);
-  // TODO / WIP..!
+  const httpClient = state.app.httpClient;
+
   console.log("TOURS/TASKS TO ASSIGN: ", taskIdsToAssign);
   console.log("TOURS/TASKS INDEX: ", JSON.stringify(index, null, 2));
-  //useUpdateTourMutation
-  return Promise.all([]);
+
+  return Promise.all(
+    Object.entries(index.tours).map(([tourUrl, tourTasks]) => {
+      console.log("TOURS/TOUR DATA: ", JSON.stringify(tourTasks, null, 2));
+      console.log("TOURS/TASKS UPDATED: ", JSON.stringify(updatedTasks, null, 2));
+
+      const hasTaskToRemove = tourTasks.some(taskId => taskIdsToAssign.includes(taskId));
+      if (!hasTaskToRemove) {
+        return [];
+      }
+
+      const updatedTasks = tourTasks.filter(taskId => !taskIdsToAssign.includes(taskId));
+      console.log(`Updating tour ${tourUrl}, removing tasks:, ${updatedTasks}`);
+      return httpClient.put(tourUrl, {
+        tasks: updatedTasks
+      });
+    })
+  );
 }
 
 export function unassignTask(task, username) {
