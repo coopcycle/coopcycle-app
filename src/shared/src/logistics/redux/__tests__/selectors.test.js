@@ -89,7 +89,7 @@ describe('Selectors', () => {
           },
         },
         tours: {
-          ids: ['/api/tours/1', '/api/tours/2', ],
+          ids: ['/api/tours/1', '/api/tours/2',],
           entities: {
             // TaskList 3
             '/api/tours/1': {
@@ -286,154 +286,220 @@ describe('Selectors', () => {
           ],
         },
       ]);
-     
-      it('should respect the task order even if it does not follow task id order', () => {
-        const state = {
-          ...baseState,
-          logistics: {
-            ...baseState.logistics,
-            entities: {
-              ...baseState.logistics.entities,
-              taskLists: {
-                ...baseState.logistics.entities.taskLists,
-                entities: {
-                  '/api/task_lists/3': {
-                    '@id': '/api/task_lists/3',
-                    items: [
-                      '/api/tasks/6',
-                      '/api/tours/2',
-                      '/api/tours/1',
-                      '/api/tasks/1',
-                    ],
-                  },
-                },
-              },
-              tours: {
-                ...baseState.logistics.entities.tours,
-                entities: {
-                  '/api/tours/1': {
-                    '@id': '/api/tours/1',
-                    tasks: ['/api/tasks/3', '/api/tasks/2'],
-                  },
-                  '/api/tours/2': {
-                    '@id': '/api/tours/2',
-                    tasks: ['/api/tasks/5', '/api/tasks/4'],
-                  },
-                },
-              },
-            },
-          },
-        };
-      
-        const result = selectTaskLists(state);
-        const taskList3 = result.find(tl => tl['@id'] === '/api/task_lists/3');
-      
-        expect(taskList3.items).toEqual([
-          {
-            '@id': '/api/tasks/6',
-            id: 6,
-            isAssigned: true,
-          },
-          {
-            '@id': '/api/tasks/5',
-            id: 5,
-            isAssigned: true,
-          },
-          {
-            '@id': '/api/tasks/4',
-            id: 4,
-            isAssigned: true,
-          },
-          {
-            '@id': '/api/tasks/3',
-            id: 3,
-            isAssigned: true,
-          },
-          {
-            '@id': '/api/tasks/2',
-            id: 2,
-            isAssigned: true,
-          },
-          {
-            '@id': '/api/tasks/1',
-            id: 1,
-            isAssigned: true,
-          },
-        ]);
-      });
+    });
 
-      it('should handle a tour with one task, an individual task, and a tour with two tasks', () => {
-        const customState = {
-          ...baseState,
-          logistics: {
-            ...baseState.logistics,
-            entities: {
-              ...baseState.logistics.entities,
-              taskLists: {
-                ...baseState.logistics.entities.taskLists,
-                ids: [
-                  ...baseState.logistics.entities.taskLists.ids,
-                  '/api/task_lists/4',
-                ],
-                entities: {
-                  ...baseState.logistics.entities.taskLists.entities,
-                  '/api/task_lists/4': {
-                    '@id': '/api/task_lists/4',
-                    username: 'bot_4',
-                    items: [
-                      '/api/tours/1',    // task 1
-                      '/api/tasks/2',    // individual
-                      '/api/tours/2',    // task 3, task 4
-                    ],
-                  },
+    it('should respect the task order even if it does not follow task id order', () => {
+      const state = {
+        ...baseState,
+        logistics: {
+          ...baseState.logistics,
+          entities: {
+            ...baseState.logistics.entities,
+            taskLists: {
+              ...baseState.logistics.entities.taskLists,
+              ids: ['/api/task_lists/3'],
+              entities: {
+                '/api/task_lists/3': {
+                  '@id': '/api/task_lists/3',
+                  itemIds: [
+                    '/api/tasks/6',
+                    '/api/tours/2',
+                    '/api/tours/1',
+                    '/api/tasks/1',
+                  ],
                 },
               },
-              tours: {
-                ...baseState.logistics.entities.tours,
-                ids: ['/api/tours/1', '/api/tours/2'],
-                entities: {
-                  '/api/tours/1': {
-                    '@id': '/api/tours/1',
-                    tasks: ['/api/tasks/1'],
-                  },
-                  '/api/tours/2': {
-                    '@id': '/api/tours/2',
-                    tasks: ['/api/tasks/3', '/api/tasks/4'],
-                  },
+            },
+            tours: {
+              ...baseState.logistics.entities.tours,
+              ids: ['/api/tours/1', '/api/tours/2'],
+              entities: {
+                '/api/tours/1': {
+                  '@id': '/api/tours/1',
+                  items: ['/api/tasks/3', '/api/tasks/2'],
+                },
+                '/api/tours/2': {
+                  '@id': '/api/tours/2',
+                  items: ['/api/tasks/5', '/api/tasks/4'],
                 },
               },
             },
           },
-        };
-      
-        const result = selectTaskLists(customState);
-        const taskList4 = result.find(tl => tl['@id'] === '/api/task_lists/4');
-      
-        expect(taskList4.items).toEqual([
-          {
-            '@id': '/api/tasks/1',
-            id: 1,
-            isAssigned: true,
+        },
+      };
+
+      const result = selectTaskLists(state);
+      const taskList3 = result.find(tl => tl['@id'] === '/api/task_lists/3');
+
+      expect(taskList3.items).toEqual([
+        {
+          '@id': '/api/tasks/6',
+          id: 6,
+          isAssigned: true,
+        },
+        {
+          '@id': '/api/tasks/5',
+          id: 5,
+          isAssigned: true,
+        },
+        {
+          '@id': '/api/tasks/4',
+          id: 4,
+          isAssigned: true,
+        },
+        {
+          '@id': '/api/tasks/3',
+          id: 3,
+          isAssigned: true,
+        },
+        {
+          '@id': '/api/tasks/2',
+          id: 2,
+          isAssigned: true,
+          previous: '/api/tasks/1',
+        },
+        {
+          '@id': '/api/tasks/1',
+          id: 1,
+          isAssigned: true,
+          next: '/api/tasks/2',
+        },
+      ]);
+    });
+
+    it('should handle a tour with one task, an individual task, and a tour with two tasks', () => {
+      const customState = {
+        ...baseState,
+        logistics: {
+          ...baseState.logistics,
+          entities: {
+            ...baseState.logistics.entities,
+            taskLists: {
+              ...baseState.logistics.entities.taskLists,
+              ids: [
+                ...baseState.logistics.entities.taskLists.ids,
+                '/api/task_lists/4',
+              ],
+              entities: {
+                ...baseState.logistics.entities.taskLists.entities,
+                '/api/task_lists/4': {
+                  '@id': '/api/task_lists/4',
+                  username: 'bot_4',
+                  itemIds: [
+                    '/api/tours/1',    // task 1
+                    '/api/tasks/2',    // individual task
+                    '/api/tours/2',    // task 3, task 4
+                  ],
+                },
+              },
+            },
+            tours: {
+              ...baseState.logistics.entities.tours,
+              ids: ['/api/tours/1', '/api/tours/2'],
+              entities: {
+                '/api/tours/1': {
+                  '@id': '/api/tours/1',
+                  items: ['/api/tasks/1'],
+                },
+                '/api/tours/2': {
+                  '@id': '/api/tours/2',
+                  items: ['/api/tasks/3', '/api/tasks/4'],
+                },
+              },
+            },
           },
-          {
-            '@id': '/api/tasks/2',
-            id: 2,
-            isAssigned: true,
+        },
+      };
+
+      const result = selectTaskLists(customState);
+      const taskList4 = result.find(tl => tl['@id'] === '/api/task_lists/4');
+
+      expect(taskList4.items).toEqual([
+        {
+          '@id': '/api/tasks/1',
+          id: 1,
+          isAssigned: true,
+          next: '/api/tasks/2',
+        },
+        {
+          '@id': '/api/tasks/2',
+          id: 2,
+          isAssigned: true,
+          previous: '/api/tasks/1',
+        },
+        {
+          '@id': '/api/tasks/3',
+          id: 3,
+          isAssigned: true,
+        },
+        {
+          '@id': '/api/tasks/4',
+          id: 4,
+          isAssigned: true,
+        },
+      ]);
+    });
+
+    it('should support assigned tours without tasks', () => {
+      const customState = {
+        ...baseState,
+        logistics: {
+          ...baseState.logistics,
+          entities: {
+            ...baseState.logistics.entities,
+            taskLists: {
+              ...baseState.logistics.entities.taskLists,
+              ids: [
+                ...baseState.logistics.entities.taskLists.ids,
+                '/api/task_lists/4',
+              ],
+              entities: {
+                ...baseState.logistics.entities.taskLists.entities,
+                '/api/task_lists/4': {
+                  '@id': '/api/task_lists/4',
+                  username: 'bot_4',
+                  itemIds: [
+                    '/api/tasks/1',
+                    '/api/tours/1',
+                    '/api/tasks/2',
+                  ],
+                },
+              },
+            },
+            tours: {
+              ...baseState.logistics.entities.tours,
+              ids: ['/api/tours/1', '/api/tours/2'],
+              entities: {
+                '/api/tours/1': {
+                  '@id': '/api/tours/1',
+                  items: [],
+                },
+              },
+            },
           },
-          {
-            '@id': '/api/tasks/3',
-            id: 3,
-            isAssigned: true,
-          },
-          {
-            '@id': '/api/tasks/4',
-            id: 4,
-            isAssigned: true,
-          },
-        ]);
-      });
+        },
+      };
+
+      const result = selectTaskLists(customState);
+      const taskList4 = result.find(tl => tl['@id'] === '/api/task_lists/4');
+
+      expect(taskList4.items).toEqual([
+        {
+          '@id': '/api/tasks/1',
+          id: 1,
+          isAssigned: true,
+          next: '/api/tasks/2',
+        },
+        {
+          '@id': '/api/tasks/2',
+          id: 2,
+          isAssigned: true,
+          previous: '/api/tasks/1',
+        },
+      ]);
+    });
   });
-  });
+
   describe('selectAllTasks', () => {
     it('should return all tasks', () => {
       expect(selectAllTasks(baseState)).toEqual([
