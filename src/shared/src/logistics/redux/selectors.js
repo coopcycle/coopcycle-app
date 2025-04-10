@@ -42,24 +42,36 @@ export const selectTaskLists = createSelector(
       let newTaskList = { ...taskList };
       delete newTaskList.itemIds;
 
-      const taskListTasks = taskList.itemIds
-        .filter(itemId =>
-          Object.prototype.hasOwnProperty.call(tasksById, itemId),
-        ) // a task with this id may be not loaded yet
-        .map(taskId => tasksById[taskId]);
+      // const taskListTasks = taskList.itemIds
+      //   .filter(itemId =>
+      //     Object.prototype.hasOwnProperty.call(tasksById, itemId),
+      //   ) // a task with this id may be not loaded yet
+      //   .map(taskId => tasksById[taskId]);
 
-      const taskListTours = taskList.itemIds
-        .filter(itemId =>
-          Object.prototype.hasOwnProperty.call(toursById, itemId),
-        ) // a tour with this id may be not loaded yet
-        .map(itemId => toursById[itemId]);
+      // const taskListTours = taskList.itemIds
+      //   .filter(itemId =>
+      //     Object.prototype.hasOwnProperty.call(toursById, itemId),
+      //   ) // a tour with this id may be not loaded yet
+      //   .map(itemId => toursById[itemId]);
 
-      const toursTasks = _.flatMap(
-        taskListTours, tour => tour.items.map(item => tasksById[item])
-      );
+      // const toursTasks = _.flatMap(
+      //   taskListTours, tour => tour.items.map(item => tasksById[item])
+      // );
 
-      newTaskList.items = [...taskListTasks, ...toursTasks];
+      // newTaskList.items = [...taskListTasks, ...toursTasks];
 
+      const orderedItems = taskList.itemIds.flatMap(itemId => {
+        if (tasksById[itemId]){
+          return [tasksById[itemId]];
+        }else if (toursById[itemId]){
+          const tour = toursById[itemId];
+          return tour.task.map(taskId => tasksById[taskId]);
+        } else {
+          return [];
+        }
+      });
+
+      newTaskList.items = orderedItems;
       return newTaskList;
     }),
 );
