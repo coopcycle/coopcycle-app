@@ -40,9 +40,8 @@ export const selectTaskLists = createSelector(
   (taskLists, tasksById, toursById) =>
     taskLists.map(taskList => {
       let newTaskList = { ...taskList };
-      delete newTaskList.itemIds;
 
-      const taskListTasks = taskList.itemIds.map(itemId => {
+      const orderedItems = taskList.itemIds.flatMap(itemId => {
         const maybeTask = tasksById[itemId];
 
         if (maybeTask) {
@@ -52,13 +51,14 @@ export const selectTaskLists = createSelector(
         const maybeTour = toursById[itemId];
 
         if (maybeTour) {
-          return maybeTour.items.map(item => tasksById[item])
+          return maybeTour.items.map(taskId => tasksById[taskId]);
         }
+
+        return [];
       });
 
-      newTaskList.items = _.flatMap(
-        taskListTasks, i => i
-      )
+      delete newTaskList.itemIds;
+      newTaskList.items = orderedItems;
 
       return newTaskList;
     }),
