@@ -1,8 +1,8 @@
+import _ from 'lodash';
 import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
-import { createAction as createFsAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
 
-import _ from 'lodash';
 import NavigationHolder from '../../NavigationHolder';
 import i18n from '../../i18n';
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
@@ -13,6 +13,7 @@ import {
   createTaskListSuccess,
   selectAllTasks,
   selectSelectedDate,
+  selectToursTasksIndex
 } from '../../coopcycle-frontend-js/logistics/redux';
 
 import {
@@ -28,102 +29,66 @@ import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
  * Action Types
  */
 
-export const DISPATCH_INITIALIZE = 'DISPATCH_INITIALIZE';
+// TODO: Change to createAction declaration from '@reduxjs/toolkit'
+export const DEP_ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
+export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
+export const DEP_CHANGE_DATE = 'CHANGE_DATE';
+export const DEP_UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
+export const DEP_UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
+export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
 
-export const LOAD_TASKS_REQUEST = '@dispatch/LOAD_TASKS_REQUEST';
-export const LOAD_TASKS_SUCCESS = '@dispatch/LOAD_TASKS_SUCCESS';
-export const LOAD_TASKS_FAILURE = '@dispatch/LOAD_TASKS_FAILURE';
-
-export const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
-export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
-export const LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE';
-
-export const LOAD_TASK_LISTS_REQUEST = 'LOAD_TASK_LISTS_REQUEST';
-export const LOAD_TASK_LISTS_SUCCESS = 'LOAD_TASK_LISTS_SUCCESS';
-export const LOAD_TASK_LISTS_FAILURE = 'LOAD_TASK_LISTS_FAILURE';
-
-export const UPDATE_TASK_LIST_SUCCESS = 'UPDATE_TASK_LIST_SUCCESS';
-
-export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST';
-export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
-export const CREATE_TASK_FAILURE = 'CREATE_TASK_FAILURE';
-
-export const CANCEL_TASK_REQUEST = 'CANCEL_TASK_REQUEST';
-export const CANCEL_TASK_SUCCESS = 'CANCEL_TASK_SUCCESS';
-export const CANCEL_TASK_FAILURE = 'CANCEL_TASK_FAILURE';
-
-export const ASSIGN_TASK_REQUEST = 'ASSIGN_TASK_REQUEST';
-export const ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
-export const ASSIGN_TASK_FAILURE = 'ASSIGN_TASK_FAILURE';
-
-export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
-
-export const BULK_ASSIGNMENT_TASKS_REQUEST = 'BULK_ASSIGNMENT_TASKS_REQUEST';
-export const BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
-export const BULK_ASSIGNMENT_TASKS_FAILURE = 'BULK_ASSIGNMENT_TASKS_FAILURE';
-
-export const UNASSIGN_TASK_REQUEST = 'UNASSIGN_TASK_REQUEST';
-export const UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
-export const UNASSIGN_TASK_FAILURE = 'UNASSIGN_TASK_FAILURE';
-
-export const CREATE_TOUR_SUCCESS = 'CREATE_TOUR_SUCCESS';
-
-export const UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
-
-export const CHANGE_DATE = 'CHANGE_DATE';
 
 /*
  * Action Creators
  */
+export const loadTasksRequest = createAction('@dispatch/LOAD_TASKS_REQUEST');
+export const loadTasksSuccess = createAction('@dispatch/LOAD_TASKS_SUCCESS');
+export const loadTasksFailure = createAction('@dispatch/LOAD_TASKS_FAILURE');
 
-export const loadTasksRequest = createFsAction(LOAD_TASKS_REQUEST);
-export const loadTasksSuccess = createFsAction(LOAD_TASKS_SUCCESS);
-export const loadTasksFailure = createFsAction(LOAD_TASKS_FAILURE);
+export const loadUsersRequest = createAction('@dispatch/LOAD_USERS_REQUEST');
+export const loadUsersSuccess = createAction('@dispatch/LOAD_USERS_SUCCESS');
+export const loadUsersFailure = createAction('@dispatch/LOAD_USERS_FAILURE');
 
-export const loadUsersRequest = createFsAction(LOAD_USERS_REQUEST);
-export const loadUsersSuccess = createFsAction(LOAD_USERS_SUCCESS);
-export const loadUsersFailure = createFsAction(LOAD_USERS_FAILURE);
+export const loadTaskListsRequest = createAction('@dispatch/LOAD_TASK_LISTS_REQUEST');
+export const loadTaskListsSuccess = createAction('@dispatch/LOAD_TASK_LISTS_SUCCESS');
+export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAILURE');
 
-export const loadTaskListsRequest = createFsAction(LOAD_TASK_LISTS_REQUEST);
-export const loadTaskListsSuccess = createFsAction(LOAD_TASK_LISTS_SUCCESS);
-export const loadTaskListsFailure = createFsAction(LOAD_TASK_LISTS_FAILURE);
+export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_SUCCESS');
 
-export const updateTaskListsSuccess = createFsAction(UPDATE_TASK_LIST_SUCCESS);
+export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
+export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');
+export const createTaskFailure = createAction('@dispatch/CREATE_TASK_FAILURE');
 
-export const createTaskRequest = createFsAction(CREATE_TASK_REQUEST);
-export const createTaskSuccess = createFsAction(CREATE_TASK_SUCCESS);
-export const createTaskFailure = createFsAction(CREATE_TASK_FAILURE);
+export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
+export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
+export const cancelTaskFailure = createAction('@dispatch/CANCEL_TASK_FAILURE');
 
-export const cancelTaskRequest = createFsAction(CANCEL_TASK_REQUEST);
-export const cancelTaskSuccess = createFsAction(CANCEL_TASK_SUCCESS);
-export const cancelTaskFailure = createFsAction(CANCEL_TASK_FAILURE);
+export const assignTaskRequest = createAction('@dispatch/ASSIGN_TASK_REQUEST');
+export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
+export const assignTaskFailure = createAction('@dispatch/ASSIGN_TASK_FAILURE');
 
-export const assignTaskRequest = createFsAction(ASSIGN_TASK_REQUEST);
-export const assignTaskSuccess = createFsAction(ASSIGN_TASK_SUCCESS);
-export const assignTaskFailure = createFsAction(ASSIGN_TASK_FAILURE);
+export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
 
-export const updateTaskSuccess = createFsAction(UPDATE_TASK_SUCCESS);
-
-export const bulkAssignmentTasksRequest = createFsAction(
-  BULK_ASSIGNMENT_TASKS_REQUEST,
+export const bulkAssignmentTasksRequest = createAction(
+  '@dispatch/BULK_ASSIGNMENT_TASKS_REQUEST',
 );
-export const bulkAssignmentTasksSuccess = createFsAction(
-  BULK_ASSIGNMENT_TASKS_SUCCESS,
+export const bulkAssignmentTasksSuccess = createAction(
+  DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
 );
-export const bulkAssignmentTasksFailure = createFsAction(
-  BULK_ASSIGNMENT_TASKS_FAILURE,
+export const bulkAssignmentTasksFailure = createAction(
+  '@dispatch/BULK_ASSIGNMENT_TASKS_FAILURE',
 );
 
-export const unassignTaskRequest = createFsAction(UNASSIGN_TASK_REQUEST);
-export const unassignTaskSuccess = createFsAction(UNASSIGN_TASK_SUCCESS);
-export const unassignTaskFailure = createFsAction(UNASSIGN_TASK_FAILURE);
+export const unassignTaskRequest = createAction('@dispatch/UNASSIGN_TASK_REQUEST');
+export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
+export const unassignTaskFailure = createAction('@dispatch/UNASSIGN_TASK_FAILURE');
 
-export const createTourSuccess = createFsAction(CREATE_TOUR_SUCCESS);
+export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
 
-export const updateTourSuccess = createFsAction(UPDATE_TOUR_SUCCESS);
+export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
 
-export const changeDate = createFsAction(CHANGE_DATE);
-const _initialize = createFsAction(DISPATCH_INITIALIZE);
+export const changeDate = createAction(DEP_CHANGE_DATE);
+export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
 
 function showAlert(e) {
@@ -148,14 +113,14 @@ function showAlert(e) {
 
 export function initialize() {
   return function (dispatch, getState) {
-    const initialized = getState().dispatch.initialized;
+    const stateInitialized = getState().dispatch.initialized;
 
-    if (initialized) {
+    if (stateInitialized) {
       return;
     }
 
     dispatch(connectCentrifugo());
-    dispatch(_initialize());
+    dispatch(initialized());
   };
 }
 
@@ -205,34 +170,27 @@ export function createTask(task) {
 
 export function assignTask(task, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const state = getState();
+    const httpClient = state.app.httpClient;
 
     const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(getState()));
+    selectToursTasksIndex(getState());
 
     if (linkedTasks.length > 1) {
-      dispatch(bulkAssignmentTasksRequest());
-
-      return httpClient
-        .put('/api/tasks/assign', {
-          username,
-          tasks: linkedTasks.map(t => t['@id']),
-        })
-        .then(res => {
-          dispatch(bulkAssignmentTasksSuccess(res['hydra:member']));
-        })
-        .catch(e => {
-          dispatch(bulkAssignmentTasksFailure(e));
-        });
-    } else {
-      dispatch(assignTaskRequest());
-
-      return httpClient
-        .put(`${task['@id']}/assign`, { username })
-        .then(res => {
-          dispatch(assignTaskSuccess(res));
-        })
-        .catch(e => dispatch(assignTaskFailure(e)));
+      // Multiple task assignment => Just use bulk assignment!
+      return bulkAssignmentTasks(linkedTasks, username)(dispatch, getState);
     }
+
+    // Single task assignment
+    dispatch(assignTaskRequest());
+
+    return httpClient
+      .put(`${task['@id']}/assign`, { username })
+      .then(res => {
+        return maybeUpdateTourTasks(state, [task['@id']])
+          .then(_res => dispatch(assignTaskSuccess(res)));
+      })
+      .catch(e => dispatch(assignTaskFailure(e)));
   };
 }
 
@@ -244,7 +202,8 @@ export function assignTask(task, username) {
  */
 export function bulkAssignmentTasks(tasks, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const state = getState();
+    const httpClient = state.app.httpClient;
 
     dispatch(bulkAssignmentTasksRequest());
 
@@ -254,18 +213,45 @@ export function bulkAssignmentTasks(tasks, username) {
       tasksToAssign.push(...withUnassignedLinkedTasks(task, selectAllTasks(getState())))
     });
 
-    const payload = _.uniq(tasksToAssign.map(t => t['@id']));
+    const taskIdsToAssign = _.uniq(tasksToAssign.map(t => t['@id']));
 
     return httpClient
       .put('/api/tasks/assign', {
         username,
-        tasks: payload,
+        tasks: taskIdsToAssign
       })
       .then(res => {
-        dispatch(bulkAssignmentTasksSuccess(res['hydra:member']));
+        return maybeUpdateTourTasks(state, taskIdsToAssign)
+          .then(_res => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])));
       })
       .catch(e => dispatch(bulkAssignmentTasksFailure(e)));
   };
+}
+
+function maybeUpdateTourTasks(state, taskIdsToAssign) {
+  const index = selectToursTasksIndex(state);
+  const httpClient = state.app.httpClient;
+
+  console.log("TOURS/TASKS TO ASSIGN: ", taskIdsToAssign);
+  console.log("TOURS/TASKS INDEX: ", JSON.stringify(index, null, 2));
+
+  return Promise.all(
+    Object.entries(index.tours).map(([tourUrl, tourTasks]) => {
+      console.log("TOURS/TOUR DATA: ", JSON.stringify(tourTasks, null, 2));
+      console.log("TOURS/TASKS UPDATED: ", JSON.stringify(updatedTasks, null, 2));
+
+      const hasTaskToRemove = tourTasks.some(taskId => taskIdsToAssign.includes(taskId));
+      if (!hasTaskToRemove) {
+        return [];
+      }
+
+      const updatedTasks = tourTasks.filter(taskId => !taskIdsToAssign.includes(taskId));
+      console.log(`Updating tour ${tourUrl}, removing tasks:, ${updatedTasks}`);
+      return httpClient.put(tourUrl, {
+        tasks: updatedTasks
+      });
+    })
+  );
 }
 
 export function unassignTask(task, username) {
@@ -349,5 +335,4 @@ export function updateTour(action, tour) {
       }
     }
   }
-
 }

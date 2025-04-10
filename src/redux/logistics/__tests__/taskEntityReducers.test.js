@@ -1,12 +1,12 @@
 import {
-  CHANGE_DATE,
-  CREATE_TASK_SUCCESS,
-  LOAD_TASKS_SUCCESS,
+  changeDate,
+  createTaskSuccess,
+  loadTasksSuccess,
 } from '../../Dispatch/actions';
 import { default as taskEntityReducers } from '../taskEntityReducers';
 
 describe('taskEntityReducers', () => {
-  describe(CHANGE_DATE, () => {
+  describe('CHANGE_DATE', () => {
     it('should remove old items when the date is selected', () => {
       expect(
         taskEntityReducers(
@@ -20,11 +20,8 @@ describe('taskEntityReducers', () => {
               },
             },
           },
-          {
-            type: CHANGE_DATE,
-            payload: '2020-11-03T23:00:00.000Z',
-          },
-        ),
+          changeDate('2020-11-03T23:00:00.000Z'),
+        )
       ).toEqual({
         ids: [],
         entities: {},
@@ -40,22 +37,19 @@ describe('taskEntityReducers', () => {
             ids: [],
             entities: {},
           },
-          {
-            type: LOAD_TASKS_SUCCESS,
-            payload: [
-              {
-                '@id': '/api/tasks/1',
-                id: 1,
-                isAssigned: false,
-              },
-              {
-                '@id': '/api/tasks/2',
-                id: 2,
-                isAssigned: false,
-              },
-            ],
-          },
-        ),
+          loadTasksSuccess([
+            {
+              '@id': '/api/tasks/1',
+              id: 1,
+              isAssigned: false,
+            },
+            {
+              '@id': '/api/tasks/2',
+              id: 2,
+              isAssigned: false,
+            },
+          ]),
+        )
       ).toEqual({
         ids: ['/api/tasks/1', '/api/tasks/2'],
         entities: {
@@ -86,23 +80,20 @@ describe('taskEntityReducers', () => {
               },
             },
           },
-          {
-            type: LOAD_TASKS_SUCCESS,
-            payload: [
-              {
-                '@id': '/api/tasks/1',
-                id: 1,
-                isAssigned: false,
-                comments: 'new comment',
-              },
-              {
-                '@id': '/api/tasks/2',
-                id: 2,
-                isAssigned: false,
-                comments: 'new comment',
-              },
-            ],
-          },
+          loadTasksSuccess([
+            {
+              '@id': '/api/tasks/1',
+              id: 1,
+              isAssigned: false,
+              comments: 'new comment',
+            },
+            {
+              '@id': '/api/tasks/2',
+              id: 2,
+              isAssigned: false,
+              comments: 'new comment',
+            },
+          ]),
         ),
       ).toEqual({
         ids: ['/api/tasks/1', '/api/tasks/2'],
@@ -132,14 +123,11 @@ describe('taskEntityReducers', () => {
             ids: [],
             entities: {},
           },
-          {
-            type: CREATE_TASK_SUCCESS,
-            payload: {
-              '@id': '/api/tasks/1',
-              id: 1,
-              isAssigned: false,
-            },
-          },
+          createTaskSuccess({
+            '@id': '/api/tasks/1',
+            id: 1,
+            isAssigned: false,
+          }),
         ),
       ).toEqual({
         ids: ['/api/tasks/1'],

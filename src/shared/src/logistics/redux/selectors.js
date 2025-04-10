@@ -64,6 +64,30 @@ export const selectTaskLists = createSelector(
     }),
 );
 
+// Returns a tours/tasks index with the format:
+// {
+//   tours: {tourId1: [taskId1, taskId2, ..], tourId2: [taskId3, ..]},
+//   tasks: {taskId1: tourId1, taskId2: tourId1, taskId3: tourId2, ..}
+// }
+export const selectToursTasksIndex = createSelector(
+  tourSelectors.selectEntities,
+  (tours) => {
+    return Object.values(tours).reduce((acc, tour) => {
+      const tourId = tour['@id'];
+      acc.tours[tourId] = (tour.items || []).map(taskId => {
+        acc.tasks[taskId] = tourId;
+        return taskId;
+      });
+      return acc;
+    }, { // Initial index values
+      tours: {},
+      tasks: {},
+    });
+  }
+);
+
+
+
 export const selectTasksWithColor = createSelector(selectAllTasks, allTasks =>
   mapToColor(allTasks),
 );
