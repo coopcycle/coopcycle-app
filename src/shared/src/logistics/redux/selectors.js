@@ -42,23 +42,23 @@ export const selectTaskLists = createSelector(
       let newTaskList = { ...taskList };
       delete newTaskList.itemIds;
 
-      const taskListTasks = taskList.itemIds
-        .filter(itemId =>
-          Object.prototype.hasOwnProperty.call(tasksById, itemId),
-        ) // a task with this id may be not loaded yet
-        .map(taskId => tasksById[taskId]);
+      const taskListTasks = taskList.itemIds.map(itemId => {
+        const maybeTask = tasksById[itemId];
 
-      const taskListTours = taskList.itemIds
-        .filter(itemId =>
-          Object.prototype.hasOwnProperty.call(toursById, itemId),
-        ) // a tour with this id may be not loaded yet
-        .map(itemId => toursById[itemId]);
+        if (maybeTask) {
+          return [maybeTask];
+        }
 
-      const toursTasks = _.flatMap(
-        taskListTours, tour => tour.items.map(item => tasksById[item])
-      );
+        const maybeTour = toursById[itemId];
 
-      newTaskList.items = [...taskListTasks, ...toursTasks];
+        if (maybeTour) {
+          return maybeTour.items.map(item => tasksById[item])
+        }
+      });
+
+      newTaskList.items = _.flatMap(
+        taskListTasks, i => i
+      )
 
       return newTaskList;
     }),
