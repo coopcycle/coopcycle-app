@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Text } from 'native-base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
@@ -28,7 +28,7 @@ function TaskListScreen({
   const taskLists = useSelector(selectTaskLists)
   const unassignTaskHandler = task => dispatch(unassignTask(task))
 
-  const taskList = route.params?.taskList;
+  const [taskList, setTaskList] = useState(route.params?.taskList);
   const tasks = selectTasksNotCancelled({ tasks: taskList.items });
 
   // TODO check
@@ -40,6 +40,7 @@ function TaskListScreen({
       );
       if (thisTaskList) {
         navigation.setParams({ taskList: thisTaskList });
+        setTaskList(thisTaskList);
       }
     }
   }, [taskLists, taskList?.username, navigation])

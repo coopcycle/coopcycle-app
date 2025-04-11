@@ -1,5 +1,4 @@
 import {
-  assignTaskSuccess,
   changeDate,
   createTaskSuccess,
   loadTaskListsSuccess,
@@ -42,14 +41,6 @@ export default (state = initialState, action) => {
     return taskListAdapter.setAll(state, entities);
   }
 
-  if (assignTaskSuccess.match(action)) {
-    let newItems = taskListEntityUtils.addAssignedTask(
-      selectors.selectEntities(state),
-      action.payload,
-    );
-    return taskListAdapter.upsertMany(state, newItems);
-  }
-
   if (unassignTaskSuccess.match(action)) {
     let newItems = taskListEntityUtils.removeUnassignedTask(
       selectors.selectEntities(state),
@@ -59,7 +50,8 @@ export default (state = initialState, action) => {
   }
 
   if (updateTaskListsSuccess.match(action)) {
-    return taskListAdapter.upsertOne(state, action.payload);
+    const taskList = taskListUtils.replaceTasksWithIds(action.payload);
+    return taskListAdapter.upsertOne(state, taskList);
   }
 
   return state;

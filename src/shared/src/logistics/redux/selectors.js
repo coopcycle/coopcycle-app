@@ -27,6 +27,11 @@ export const selectUnassignedTasks = createSelector(
   allTasks => allTasks.filter(task => !task.isAssigned)
 );
 
+export const selectTasksWithColor = createSelector(
+  selectAllTasks,
+  allTasks => mapToColor(allTasks),
+);
+
 // FIXME
 // This is not optimized
 // Each time any task is updated, the tasks lists are looped over
@@ -84,12 +89,6 @@ export const selectToursTasksIndex = createSelector(
       tasks: {},
     });
   }
-);
-
-
-
-export const selectTasksWithColor = createSelector(selectAllTasks, allTasks =>
-  mapToColor(allTasks),
 );
 
 const selectTaskListByUsername = (state, props) =>
