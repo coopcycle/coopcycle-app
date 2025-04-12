@@ -246,41 +246,46 @@ export function unassignTask(task, username) {
     const state = getState();
     const httpClient = state.app.httpClient;
     const taskIdsToUnassign = withAssignedLinkedTasks(task, selectAllTasks(state)).map(t => t['@id']);
-    let successes = [];
+    let unassignedTaskIds = [];
+    let responses = [];
     let errors = [];
+
+    if (taskIdsToUnassign.length === 0)
+      // We can have an empty list of tasks to unassign (ie. when the task is already unassigned but the tour where it belogs to is not)
+      // TODO: This should be solved and removed somewhere in the near future..
+      return Alert.alert(
+        i18n.t('AN_ERROR_OCCURRED'),
+        i18n.t('TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB'),
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false}
+      );
 
     dispatch(unassignTaskRequest());
 
     // This one needs more work, it should be a "bulkUnssignmentTasks" endpoint
-    // It sometimes fails when unassigning the related tasks (one response with 200, one response with 500)
+    // It sometimes fails when unassigning the related tasks (one response with 200, the other response with 500)
     return Promise.all(
       taskIdsToUnassign.map(taskId => {
         return httpClient.put(`${taskId}/unassign`, { username })
-        .then(rs => successes.push([taskId, rs]))
-        .catch(e => errors.push(e));
+          .then(rs => {
+            unassignedTaskIds.push(taskId);
+            responses.push(rs);
+          })
+          // This catch below makes the Promise.all(..) to never fail
+          .catch(e => errors.push(e));
       })
     )
-    .finally(() => {
-      const [unassignedTaskIds, responses] = successes.reduce((acc, [taskId, rs]) => {
-        acc[0].push(taskId);
-        acc[1].push(rs);
-        return acc
-      }, [[], []]);
-
+    .then(() => {
       return maybeRemoveTourTasks(state, unassignedTaskIds)
         .finally(() => {
           if (errors.length > 0) {
-            dispatch(unassignTaskFailure(JSON.stringify(errors)));
-            responses.forEach(e => {
-              dispatch(unassignTaskFailure(e));
-            });
+            errors.forEach(e => dispatch(unassignTaskFailure(e)));
           }
           if (responses.length > 0) {
-            responses.forEach(rs => {
-              dispatch(unassignTaskSuccess(rs));
-            });
-           ;
+            responses.forEach(rs => dispatch(unassignTaskSuccess(rs)));
           }
+
+          return unassignedTaskIds;
         });
     });
   }
