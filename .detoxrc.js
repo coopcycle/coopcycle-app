@@ -91,5 +91,9 @@ module.exports = {
       device: 'attached',
       app: 'android.release',
     },
+    'android.att.debug': {
+      device: 'attached',
+      app: 'android.debug',
+    },
   },
 };

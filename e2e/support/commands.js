@@ -5,7 +5,7 @@ const os = require('os');
 
 //Make sure to have the correct path to the coopcycle-web repository while running locally
 export const COMMAND_PREFIX =
-  'cd ../coopcycle-web-repo && docker compose exec -T php';
+  'cd ../coopcycle-web && docker compose exec -T php';
 
 export const symfonyConsole = command => {
   const prefix = COMMAND_PREFIX;
@@ -56,7 +56,7 @@ export const connectToSandbox = async () => {
     // We deliberately add "\n" to hide the keyboard
     // The tap below shouldn't be necessary
     await element(by.id('submitCustomServer')).tap();
-  } catch (e) {}
+  } catch (e) { }
 };
 
 const getLocalIpAddress = () => {
@@ -88,7 +88,7 @@ export const connectToLocalInstance = async () => {
     // We deliberately add "\n" to hide the keyboard
     // The tap below shouldn't be necessary
     await element(by.id('submitCustomServer')).tap();
-  } catch (e) {}
+  } catch (e) { }
 };
 
 export const authenticateWithCredentials = async (username, password) => {
@@ -110,7 +110,7 @@ export const authenticateWithCredentials = async (username, password) => {
   // As we are using "\n", the form may have been submitted yet
   try {
     await element(by.id('loginSubmit')).tap();
-  } catch (e) {}
+  } catch (e) { }
 };
 
 export const logout = async (username, password) => {
