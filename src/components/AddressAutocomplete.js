@@ -11,6 +11,7 @@ import {
   Text,
   View,
   useColorModeValue,
+  Button,
   IconButton,
   Box,
 } from 'native-base';
@@ -68,6 +69,7 @@ function AddressAutocomplete(props) {
     placeholder,
     onMapPickerPress,
     location,
+    mapPickerStyle = "small",
     ...otherProps
   } = props;
 
@@ -376,8 +378,11 @@ function AddressAutocomplete(props) {
 
   const renderTextInput = inputProps => (
     <View style={styles.textInputContainer}>
-      <TouchableOpacity
-        style={styles.mapPickerButton}
+      {mapPickerStyle === 'small' && <TouchableOpacity
+        style={{
+          backgroundColor: props.primaryColor,
+          ...styles.mapPickerButton
+        }}
         onPress={() => setShowPickerModal(true)}
         testID="map-picker-button"
         accessibilityLabel={t('PICK_ON_MAP')}
@@ -388,7 +393,7 @@ function AddressAutocomplete(props) {
           color="white"
           size={5}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>}
       <Input
         {...inputProps}
         style={[
@@ -500,6 +505,14 @@ function AddressAutocomplete(props) {
             ...style,
           }}
         />
+        {mapPickerStyle === 'large' && <>
+          <Text style={styles.orText}>Or find myself on the map</Text>
+          <Button backgroundColor={props.primaryColor}
+            onPress={() => setShowPickerModal(true)}
+            testID="map-picker-button"
+            accessibilityLabel={t('PICK_ON_MAP')}
+          >Find me</Button>
+        </>}
       </View>
     </>
   );
@@ -557,7 +570,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   mapPickerButton: {
-    backgroundColor: 'red',
     borderRadius: 4,
     padding: 8,
     marginLeft: 8,
@@ -567,6 +579,10 @@ const styles = StyleSheet.create({
     height: 36,
     width: 36,
   },
+  orText: {
+    marginVertical: 16,
+    textAlign: 'center',
+  }
 });
 
 function mapStateToProps(state) {
