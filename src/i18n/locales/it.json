@@ -423,6 +423,7 @@
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Questa attività è già stata assegnata a te",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Rimuovi assegnazione",
     "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Assegna a me",
+    "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "L'incarico è già stato rimosso ma il tour a cui appartiene no. Risolvi questo problema dall'app web.",
     "TASK_MULTIPLE_PACKAGES": "Più pacchi",
     "X_PACKAGES": "{{count}} pacchi",
     "NO_NEED_TO_SCAN_OTHERS": "Non è necessario scansionare gli altri pacchi.",

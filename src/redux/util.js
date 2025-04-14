@@ -77,3 +77,7 @@ export async function fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, url, itemsPer
 export function actionMatchCreator(action, actionCreators) {
   return actionCreators.some(actionCreator => actionCreator.match(action));
 }
+
+export function idfromUrl(elementUrl) {
+  return (elementUrl.match(/(\d+)/g) || [])[0] || null;
+}

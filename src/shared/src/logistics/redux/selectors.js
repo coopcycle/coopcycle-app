@@ -27,6 +27,11 @@ export const selectUnassignedTasks = createSelector(
   allTasks => allTasks.filter(task => !task.isAssigned)
 );
 
+export const selectTasksWithColor = createSelector(
+  selectAllTasks,
+  allTasks => mapToColor(allTasks),
+);
+
 // FIXME
 // This is not optimized
 // Each time any task is updated, the tasks lists are looped over
@@ -40,25 +45,25 @@ export const selectTaskLists = createSelector(
   (taskLists, tasksById, toursById) =>
     taskLists.map(taskList => {
       let newTaskList = { ...taskList };
+
+      const orderedItems = taskList.itemIds.flatMap(itemId => {
+        const maybeTask = tasksById[itemId];
+
+        if (maybeTask) {
+          return [maybeTask];
+        }
+
+        const maybeTour = toursById[itemId];
+
+        if (maybeTour) {
+          return maybeTour.items.map(taskId => tasksById[taskId]);
+        }
+
+        return [];
+      });
+
       delete newTaskList.itemIds;
-
-      const taskListTasks = taskList.itemIds
-        .filter(itemId =>
-          Object.prototype.hasOwnProperty.call(tasksById, itemId),
-        ) // a task with this id may be not loaded yet
-        .map(taskId => tasksById[taskId]);
-
-      const taskListTours = taskList.itemIds
-        .filter(itemId =>
-          Object.prototype.hasOwnProperty.call(toursById, itemId),
-        ) // a tour with this id may be not loaded yet
-        .map(itemId => toursById[itemId]);
-
-      const toursTasks = _.flatMap(
-        taskListTours, tour => tour.items.map(item => tasksById[item])
-      );
-
-      newTaskList.items = [...taskListTasks, ...toursTasks];
+      newTaskList.items = orderedItems;
 
       return newTaskList;
     }),
@@ -84,12 +89,6 @@ export const selectToursTasksIndex = createSelector(
       tasks: {},
     });
   }
-);
-
-
-
-export const selectTasksWithColor = createSelector(selectAllTasks, allTasks =>
-  mapToColor(allTasks),
 );
 
 const selectTaskListByUsername = (state, props) =>

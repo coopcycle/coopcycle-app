@@ -1,5 +1,4 @@
 import {
-  assignTaskSuccess,
   bulkAssignmentTasksSuccess,
   changeDate,
   createTaskSuccess,
@@ -12,12 +11,13 @@ import {
   taskListEntityUtils,
   taskListUtils,
 } from '../../coopcycle-frontend-js/logistics/redux';
+import { SET_USER } from '../App/actions';
 
 const initialState = taskListAdapter.getInitialState();
 const selectors = taskListAdapter.getSelectors(state => state);
 
 export default (state = initialState, action) => {
-  if (changeDate.match(action)) {
+  if (changeDate.match(action) || action.type === SET_USER) {
     return initialState;
   }
 
@@ -42,14 +42,6 @@ export default (state = initialState, action) => {
     return taskListAdapter.setAll(state, entities);
   }
 
-  if (assignTaskSuccess.match(action)) {
-    let newItems = taskListEntityUtils.addAssignedTask(
-      selectors.selectEntities(state),
-      action.payload,
-    );
-    return taskListAdapter.upsertMany(state, newItems);
-  }
-
   if (unassignTaskSuccess.match(action)) {
     let newItems = taskListEntityUtils.removeUnassignedTask(
       selectors.selectEntities(state),
@@ -59,7 +51,8 @@ export default (state = initialState, action) => {
   }
 
   if (updateTaskListsSuccess.match(action)) {
-    return taskListAdapter.upsertOne(state, action.payload);
+    const taskList = taskListUtils.replaceTasksWithIds(action.payload);
+    return taskListAdapter.upsertOne(state, taskList);
   }
 
   if (bulkAssignmentTasksSuccess.match(action)) {

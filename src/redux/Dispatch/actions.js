@@ -172,9 +172,7 @@ export function assignTask(task, username) {
   return function (dispatch, getState) {
     const state = getState();
     const httpClient = state.app.httpClient;
-
-    const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(getState()));
-    selectToursTasksIndex(getState());
+    const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(state));
 
     if (linkedTasks.length > 1) {
       // Multiple task assignment => Just use bulk assignment!
@@ -186,10 +184,8 @@ export function assignTask(task, username) {
 
     return httpClient
       .put(`${task['@id']}/assign`, { username })
-      .then(res => {
-        return maybeUpdateTourTasks(state, [task['@id']])
-          .then(_res => dispatch(assignTaskSuccess(res)));
-      })
+      .then(res => maybeRemoveTourTasks(state, [task['@id']]).then(_ok => res))
+      .then(res => dispatch(assignTaskSuccess(res)))
       .catch(e => dispatch(assignTaskFailure(e)));
   };
 }
@@ -204,71 +200,94 @@ export function bulkAssignmentTasks(tasks, username) {
   return function (dispatch, getState) {
     const state = getState();
     const httpClient = state.app.httpClient;
+    const taskIdsToAssign = _.uniq(
+      tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, selectAllTasks(state))), [])
+        .map(t => t['@id'])
+    );
 
     dispatch(bulkAssignmentTasksRequest());
-
-    let tasksToAssign = [];
-
-    tasks.forEach((task) => {
-      tasksToAssign.push(...withUnassignedLinkedTasks(task, selectAllTasks(getState())))
-    });
-
-    const taskIdsToAssign = _.uniq(tasksToAssign.map(t => t['@id']));
 
     return httpClient
       .put('/api/tasks/assign', {
         username,
         tasks: taskIdsToAssign
       })
-      .then(res => {
-        return maybeUpdateTourTasks(state, taskIdsToAssign)
-          .then(_res => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])));
-      })
+      .then(res => maybeRemoveTourTasks(state, taskIdsToAssign).then(_ok => res))
+      .then(res => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])))
       .catch(e => dispatch(bulkAssignmentTasksFailure(e)));
   };
 }
 
-function maybeUpdateTourTasks(state, taskIdsToAssign) {
+function maybeRemoveTourTasks(state, taskIdsToRemove) {
   const index = selectToursTasksIndex(state);
   const httpClient = state.app.httpClient;
 
-  console.log("TOURS/TASKS TO ASSIGN: ", taskIdsToAssign);
-  console.log("TOURS/TASKS INDEX: ", JSON.stringify(index, null, 2));
+  const toursToUpdate = taskIdsToRemove.reduce((acc, taskId) => {
+    const tourId = index.tasks[taskId];
+    if (tourId) {
+      // Initialize with all the indexed tour tasks if not already present
+      // and remove the taskId from the tour tasks
+      acc[tourId] = (acc[tourId] || index.tours[tourId]).filter(tourTaskId => tourTaskId !== taskId);
+    }
+    return acc;
+  }
+  , {});
 
   return Promise.all(
-    Object.entries(index.tours).map(([tourUrl, tourTasks]) => {
-      console.log("TOURS/TOUR DATA: ", JSON.stringify(tourTasks, null, 2));
-      console.log("TOURS/TASKS UPDATED: ", JSON.stringify(updatedTasks, null, 2));
-
-      const hasTaskToRemove = tourTasks.some(taskId => taskIdsToAssign.includes(taskId));
-      if (!hasTaskToRemove) {
-        return [];
-      }
-
-      const updatedTasks = tourTasks.filter(taskId => !taskIdsToAssign.includes(taskId));
-      console.log(`Updating tour ${tourUrl}, removing tasks:, ${updatedTasks}`);
-      return httpClient.put(tourUrl, {
-        tasks: updatedTasks
-      });
-    })
+    Object.entries(toursToUpdate).map(([tourUrl, tourTasks]) => httpClient.put(tourUrl, {
+      tasks: tourTasks
+    }))
   );
 }
 
 export function unassignTask(task, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const state = getState();
+    const httpClient = state.app.httpClient;
+    const taskIdsToUnassign = withAssignedLinkedTasks(task, selectAllTasks(state)).map(t => t['@id']);
+    let unassignedTaskIds = [];
+    let responses = [];
+    let errors = [];
+
+    if (taskIdsToUnassign.length === 0)
+      // We can have an empty list of tasks to unassign (ie. when the task is already unassigned but the tour where it belogs to is not)
+      // TODO: This should be solved and removed somewhere in the near future..
+      return Alert.alert(
+        i18n.t('AN_ERROR_OCCURRED'),
+        i18n.t('TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB'),
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false}
+      );
 
     dispatch(unassignTaskRequest());
 
-    const tasks = withAssignedLinkedTasks(task, selectAllTasks(getState()))
+    // This one needs more work, it should be a "bulkUnssignmentTasks" endpoint
+    // It sometimes fails when unassigning the related tasks (one response with 200, the other response with 500)
+    return Promise.all(
+      taskIdsToUnassign.map(taskId => {
+        return httpClient.put(`${taskId}/unassign`, { username })
+          .then(rs => {
+            unassignedTaskIds.push(taskId);
+            responses.push(rs);
+          })
+          // This catch below makes the Promise.all(..) to never fail
+          .catch(e => errors.push(e));
+      })
+    )
+    .then(() => {
+      return maybeRemoveTourTasks(state, unassignedTaskIds)
+        .finally(() => {
+          if (errors.length > 0) {
+            errors.forEach(e => dispatch(unassignTaskFailure(e)));
+          }
+          if (responses.length > 0) {
+            responses.forEach(rs => dispatch(unassignTaskSuccess(rs)));
+          }
 
-    tasks.forEach(t => {
-      return httpClient
-      .put(`${t['@id']}/unassign`, { username })
-      .then(res => dispatch(unassignTaskSuccess(res)))
-      .catch(e => dispatch(unassignTaskFailure(e)))
-    })
-  };
+          return unassignedTaskIds;
+        });
+    });
+  }
 }
 
 export function updateTask(action, task) {

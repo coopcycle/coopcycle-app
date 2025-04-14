@@ -15,6 +15,9 @@ import {
   START_TASK_SUCCESS,
 } from '../Courier';
 import {
+  SET_USER,
+} from '../App/actions';
+import {
   taskAdapter,
 } from '../../coopcycle-frontend-js/logistics/redux';
 
@@ -22,9 +25,7 @@ import {
 const initialState = taskAdapter.getInitialState();
 
 export default (state = initialState, action) => {
-  if (actionMatchCreator(action, [
-    changeDate,
-  ])) {
+  if (changeDate.match(action) || action.type === SET_USER) {
     return initialState;
   }
 
