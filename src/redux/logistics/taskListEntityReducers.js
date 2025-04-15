@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
 
     case LOAD_TASK_LISTS_SUCCESS: {
       let entities = action.payload.map(taskList =>
-        taskListUtils.replaceTasksWithIds(taskList),
+        taskListUtils.replaceItemsWithItemIds(taskList),
       );
       return taskListAdapter.upsertMany(state, entities);
     }
