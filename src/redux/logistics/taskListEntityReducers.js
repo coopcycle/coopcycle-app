@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
 
   if (loadTaskListsSuccess.match(action)) {
     let entities = action.payload.map(taskList =>
-      taskListUtils.replaceTasksWithIds(taskList),
+      taskListUtils.replaceItemsWithItemIds(taskList),
     );
     return taskListAdapter.setAll(state, entities);
   }
@@ -51,7 +51,7 @@ export default (state = initialState, action) => {
   }
 
   if (updateTaskListsSuccess.match(action)) {
-    const taskList = taskListUtils.replaceTasksWithIds(action.payload);
+    const taskList = taskListUtils.replaceItemsWithItemIds(action.payload);
     return taskListAdapter.upsertOne(state, taskList);
   }
 
