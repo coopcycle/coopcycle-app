@@ -25,10 +25,10 @@ export const taskUtils = {
   groupLinkedTasks,
 };
 
-import { assignedTasks, replaceTasksWithIds } from './taskListUtils';
+import { assignedTasks, replaceItemsWithItemIds } from './taskListUtils';
 
 export const taskListUtils = {
-  replaceTasksWithIds,
+  replaceItemsWithItemIds,
   assignedTasks,
 };
 

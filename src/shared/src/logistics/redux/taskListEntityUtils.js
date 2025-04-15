@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { createTempTaskList, replaceTasksWithIds } from './taskListUtils';
+import { createTempTaskList, replaceItemsWithItemIds } from './taskListUtils';
 
 function addTaskIdIfMissing(taskIds, taskId) {
   const taskIdIndex = _.findIndex(taskIds, t => t === taskId);
@@ -51,7 +51,7 @@ export function addAssignedTask(taskListsById, task) {
     });
   } else {
     let newTaskList = createTempTaskList(task.assignedTo, [task['@id']]);
-    newTaskList = replaceTasksWithIds(newTaskList);
+    newTaskList = replaceItemsWithItemIds(newTaskList);
 
     taskListsToUpdate.push(newTaskList);
   }

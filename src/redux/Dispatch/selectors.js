@@ -10,7 +10,7 @@ export const selectUnassignedTasksNotCancelled = createSelector(
 
 export const selectTasksNotCancelled = createSelector(
   state => state.tasks,
-  tasks => _.filter(tasks, task => task.status !== 'CANCELLED'),
+  tasks => _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
 );
 
 export const selectIsDispatchFetching = createSelector(
