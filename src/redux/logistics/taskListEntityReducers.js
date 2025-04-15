@@ -6,11 +6,13 @@ import {
 } from '../Dispatch/actions';
 import {
   taskListAdapter,
+  taskListEntityUtils,
   taskListUtils,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { SET_USER } from '../App/actions';
 
 const initialState = taskListAdapter.getInitialState();
+const selectors = taskListAdapter.getSelectors(state => state);
 
 export default (state = initialState, action) => {
   if (changeDate.match(action) || action.type === SET_USER) {
