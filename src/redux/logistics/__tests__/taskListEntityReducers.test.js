@@ -1,6 +1,5 @@
 import {
   assignTaskSuccess,
-  createTaskSuccess,
   loadTaskListsSuccess,
   unassignTaskSuccess
 } from '../../Dispatch/actions';
@@ -125,78 +124,6 @@ describe('taskListEntityReducers', () => {
                 '@type': 'TaskList',
                 itemIds: [],
                 username: 'bot_12',
-              },
-            },
-          });
-      });
-    });
-  });
-
-  describe('CREATE_TASK_SUCCESS', () => {
-    describe('task is assigned', () => {
-      it('should add a task into a task list', () => {
-        expect(
-          taskListEntityReducers(
-            {
-              ids: ['bot_1'],
-              entities: {
-                bot_1: {
-                  '@id': '/api/task_lists/1',
-                  '@type': 'TaskList',
-                  itemIds: [],
-                  username: 'bot_1',
-                },
-              },
-            },
-            createTaskSuccess({
-              '@id': '/api/tasks/1',
-              id: 1,
-              isAssigned: true,
-              assignedTo: 'bot_1',
-            })
-          )).toEqual({
-            ids: ['bot_1'],
-            entities: {
-              bot_1: {
-                '@id': '/api/task_lists/1',
-                '@type': 'TaskList',
-                itemIds: ['/api/tasks/1'],
-                username: 'bot_1',
-              },
-            },
-          });
-      });
-    });
-
-    describe('task is NOT assigned', () => {
-      it('should ignore action', () => {
-        expect(
-          taskListEntityReducers(
-            {
-              ids: ['bot_1'],
-              entities: {
-                bot_1: {
-                  '@id': '/api/task_lists/1',
-                  '@type': 'TaskList',
-                  itemIds: [],
-                  username: 'bot_1',
-                },
-              },
-            },
-            createTaskSuccess({
-              '@id': '/api/tasks/1',
-              id: 1,
-              isAssigned: false,
-              assignedTo: null,
-            })
-          )).toEqual({
-            ids: ['bot_1'],
-            entities: {
-              bot_1: {
-                '@id': '/api/task_lists/1',
-                '@type': 'TaskList',
-                itemIds: [],
-                username: 'bot_1',
               },
             },
           });
