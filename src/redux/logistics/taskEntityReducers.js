@@ -1,17 +1,21 @@
+import { actionMatchCreator } from '../util';
 import {
-  ASSIGN_TASK_SUCCESS,
-  CANCEL_TASK_SUCCESS,
-  CHANGE_DATE,
-  CREATE_TASK_SUCCESS,
-  LOAD_TASKS_SUCCESS,
-  UNASSIGN_TASK_SUCCESS,
-  UPDATE_TASK_SUCCESS,
+  assignTaskSuccess,
+  cancelTaskSuccess,
+  changeDate,
+  createTaskSuccess,
+  loadTasksSuccess,
+  unassignTaskSuccess,
+  updateTaskSuccess,
 } from '../Dispatch/actions';
 import {
   MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_SUCCESS,
   START_TASK_SUCCESS,
 } from '../Courier';
+import {
+  SET_USER,
+} from '../App/actions';
 import {
   taskAdapter,
 } from '../../coopcycle-frontend-js/logistics/redux';
@@ -20,24 +24,31 @@ import {
 const initialState = taskAdapter.getInitialState();
 
 export default (state = initialState, action) => {
-  switch (action.type) {
-    case CHANGE_DATE:
-      return initialState;
+  if (changeDate.match(action) || action.type === SET_USER) {
+    return initialState;
+  }
 
-    case LOAD_TASKS_SUCCESS: {
-      return taskAdapter.upsertMany(state, action.payload);
-    }
-    case UPDATE_TASK_SUCCESS:
-    case CREATE_TASK_SUCCESS:
-    case CANCEL_TASK_SUCCESS:
-    case ASSIGN_TASK_SUCCESS:
-    case UNASSIGN_TASK_SUCCESS:
+  if (actionMatchCreator(action, [
+    loadTasksSuccess,
+  ])) {
+    return taskAdapter.setAll(state, action.payload);
+  }
+
+  if (actionMatchCreator(action, [
+    assignTaskSuccess,
+    createTaskSuccess,
+    cancelTaskSuccess,
+    unassignTaskSuccess,
+    updateTaskSuccess,
+  ])) {
+    return taskAdapter.upsertOne(state, action.payload);
+  }
+
+  switch (action.type) {
     case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
-    case MARK_TASK_FAILED_SUCCESS: {
-      let task = action.payload;
-      return taskAdapter.upsertOne(state, task);
-    }
+    case MARK_TASK_FAILED_SUCCESS:
+      return taskAdapter.upsertOne(state, action.payload);
 
     default:
       return state;

@@ -1,54 +1,46 @@
-import { CENTRIFUGO_MESSAGE } from "../middlewares/CentrifugoMiddleware";
+import {
+  changeDate,
+  createTourSuccess,
+  updateTourSuccess,
+} from "../Dispatch/actions";
 import {
   DELETE_TOUR_SUCCESS,
-  LOAD_TOURS_SUCCESS,
   UPDATE_TOUR,
+  loadToursSuccess,
   tourAdapter,
 } from "../../shared/logistics/redux";
-import { CHANGE_DATE } from "../Dispatch/actions";
+import { actionMatchCreator } from "../util";
+import { SET_USER } from "../App/actions";
 
 
 const initialState = tourAdapter.getInitialState()
 
 export default (state = initialState, action) => {
+  if (changeDate.match(action) || action.type === SET_USER) {
+    return initialState;
+  }
+
+  if (actionMatchCreator(action, [
+    loadToursSuccess,
+  ])) {
+    return tourAdapter.upsertMany(state, action.payload);
+  }
+
+  if (actionMatchCreator(action, [
+    createTourSuccess,
+    updateTourSuccess,
+  ])) {
+    return tourAdapter.upsertOne(state, action.payload);
+  }
+
   switch (action.type) {
-    case CHANGE_DATE:
-      return initialState;
-
-    case LOAD_TOURS_SUCCESS:
-      return tourAdapter.upsertMany(state, action.payload);
-
     case UPDATE_TOUR:
       return tourAdapter.upsertOne(state, action.payload);
 
     case DELETE_TOUR_SUCCESS:
       return tourAdapter.removeOne(state, action.payload);
 
-    case CENTRIFUGO_MESSAGE:
-      return processWebsocketMessage(state, action);
-
     default:
       return state;
   }
 }
-
-const processWebsocketMessage = (state, action) => {
-  if (action.payload.name && action.payload.data) {
-    const { name, data } = action.payload;
-
-    switch (name) {
-      case 'tour:created':
-      case 'tour:updated': {
-        const { tour } = data;
-        return tourAdapter.upsertOne(state, tour);
-      }
-
-      default:
-        return {
-          ...state,
-        };
-    }
-  }
-
-  return state;
-};
