@@ -33,15 +33,11 @@ export const taskListUtils = {
 };
 
 import {
-  addAssignedTask,
-  addAssignedTasks,
   findTaskListByTask,
   findTaskListByUsername,
 } from './taskListEntityUtils';
 
 export const taskListEntityUtils = {
-  addAssignedTask,
-  addAssignedTasks,
   findTaskListByTask,
   findTaskListByUsername,
 };
