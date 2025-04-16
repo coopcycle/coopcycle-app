@@ -1,5 +1,4 @@
 import {
-  bulkAssignmentTasksSuccess,
   changeDate,
   loadTaskListsSuccess,
   updateTaskListsSuccess,
@@ -26,14 +25,6 @@ export default (state = initialState, action) => {
 
   if (updateTaskListsSuccess.match(action)) {
     const taskList = taskListUtils.replaceItemsWithItemIds(action.payload);
-    return taskListAdapter.upsertOne(state, taskList);
-  }
-
-  if (bulkAssignmentTasksSuccess.match(action)) {
-    const taskList = taskListEntityUtils.addAssignedTasks(
-      selectors.selectEntities(state),
-      action.payload,
-    )
     return taskListAdapter.upsertOne(state, taskList);
   }
 
