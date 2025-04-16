@@ -2957,17 +2957,17 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@datadog/mobile-react-native@^2.6.4":
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-native/-/mobile-react-native-2.6.4.tgz#8d896c0ba42469408eaa08df7c6b3722bbe0e5b3"
-  integrity sha512-GuWE8eqU2/RD9XSH4PxfO5EuE7yoqmDpfLmds1qkXTjoX3hYLnYOQEC1v8jbLXycHrcMFzLCdr6+JNkWo/1G5Q==
+"@datadog/mobile-react-native@^2.6.6":
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-native/-/mobile-react-native-2.6.6.tgz#659727ec8165d885766b33afec0da8ef74c56883"
+  integrity sha512-dvsfhGdFHXV+J/I+n8X/d4Y6ECqHlRhD6s67zp95kfmeM1xXpFqrxdHWa1klSsETze6ouXdFg/ZQHa/Aw35itg==
   dependencies:
     big-integer "^1.6.52"
 
-"@datadog/mobile-react-navigation@^2.4.3":
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-navigation/-/mobile-react-navigation-2.4.3.tgz#0008d5ae70ad892c2e587382baaa51d05e0eefc0"
-  integrity sha512-DcT8GQ2Ne1F5ryR7oM7jaKYn8pJ8r5r1BwbbqnKVkvxNAA2W4HDXn54u2C8ShuYhKs3STIjOo1zCDNxvSRsrgg==
+"@datadog/mobile-react-navigation@^2.6.6":
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-navigation/-/mobile-react-navigation-2.6.6.tgz#d986e449dc6392f932c127ebe8752f9371d74ecc"
+  integrity sha512-j6J5P2Q+8sqkb3mxSyucAa+HD90+obqO3qaOgeQC3rMx6aUubxWCgMT6hIsZaAn9vMqGVw8lSBof5MNHbizFJA==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -4057,10 +4057,9 @@
   resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
   integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
-"@mitsuharu/react-native-sunmi-printer-library@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-2.2.0.tgz#4f020f13c31f2ebc5f67fdaf3fffabdb34fc9931"
-  integrity sha512-0mBWPLp/+mMBxe6Z7V19RVTXE0Eqnli5tS5Pujc8/414EaLDazmy3xDZJdzENtbnD70zA/9ZJmw2PF4Zjqst4g==
+"@mitsuharu/react-native-sunmi-printer-library@link:/home/r0xsh/projects/coopcycle/react-native-sunmi-printer-library":
+  version "0.0.0"
+  uid ""
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"

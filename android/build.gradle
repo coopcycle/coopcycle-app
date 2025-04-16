@@ -6,7 +6,7 @@ buildscript {
         targetSdkVersion = 35
         ndkVersion = "27.1.12297006"
         // NOTE:Should be set to 2.x
-        kotlinVersion = "1.6.10"
+        kotlinVersion = "2.0.21"
 
         playServicesVersion = "18.2.0"
         timberVersion = "4.7.1"
