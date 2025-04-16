@@ -20,7 +20,7 @@ import {
 import { connect } from 'react-redux';
 import { useQuery } from 'react-query';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { CameraView } from 'expo-camera/next';
+import { CameraView } from 'expo-camera';
 import { addPicture, reportIncident } from '../../../redux/Courier/taskActions';
 
 function BarcodeIncident({
