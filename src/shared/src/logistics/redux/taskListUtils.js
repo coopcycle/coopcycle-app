@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-export function replaceTasksWithIds(taskList) {
+export function replaceItemsWithItemIds(taskList) {
   let entity = {
     ...taskList,
   };
@@ -25,9 +25,4 @@ export function createTempTaskList(username, items = []) {
     username,
     items,
   };
-}
-
-// TODO: remove on feature/235
-export function assignedTasks(taskLists) {
-  return _.flatMap(taskLists, taskList => taskList.items);
 }

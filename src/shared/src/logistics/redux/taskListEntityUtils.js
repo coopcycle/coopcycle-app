@@ -1,19 +1,5 @@
 import _ from 'lodash';
-import { createTempTaskList, replaceTasksWithIds } from './taskListUtils';
 
-function addTaskIdIfMissing(taskIds, taskId) {
-  const taskIdIndex = _.findIndex(taskIds, t => t === taskId);
-
-  if (taskIdIndex !== -1) {
-    return taskIds;
-  } else {
-    return taskIds.concat([taskId]);
-  }
-}
-
-function removeTaskId(taskIds, taskId) {
-  return _.filter(taskIds, t => t !== taskId);
-}
 
 export function findTaskListByUsername(taskListsById, username) {
   return _.find(Object.values(taskListsById), t => t.username == username);

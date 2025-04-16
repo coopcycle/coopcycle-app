@@ -25,10 +25,10 @@ export const taskUtils = {
   groupLinkedTasks,
 };
 
-import { assignedTasks, replaceTasksWithIds } from './taskListUtils';
+import { assignedTasks, replaceItemsWithItemIds } from './taskListUtils';
 
 export const taskListUtils = {
-  replaceTasksWithIds,
+  replaceItemsWithItemIds,
   assignedTasks,
 };
 
@@ -37,7 +37,6 @@ import {
   addAssignedTasks,
   findTaskListByTask,
   findTaskListByUsername,
-  removeUnassignedTask,
 } from './taskListEntityUtils';
 
 export const taskListEntityUtils = {
@@ -45,5 +44,4 @@ export const taskListEntityUtils = {
   addAssignedTasks,
   findTaskListByTask,
   findTaskListByUsername,
-  removeUnassignedTask,
 };
