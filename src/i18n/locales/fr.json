@@ -546,6 +546,10 @@
     "TASK_CANCELLED": "Annulée",
     "ASK_TO_START_PICKUP_TITLE": "Tâche de ramassage",
     "ASK_TO_START_PICKUP_MESSAGE": "La tâche de ramassage n'est pas encore commencée.",
-    "PAYGREEN_RETURN_TEXT": "Veuillez patienter pendant que nous traitons votre paiement…"
+    "PAYGREEN_RETURN_TEXT": "Veuillez patienter pendant que nous traitons votre paiement…",
+    "CONFIRM_LOCATION": "Confirmer l'emplacement",
+    "ADDRESS_NOT_FOUND": "Adresse introuvable",
+    "LOADING_ADDRESS": "Chargement de l'adresse",
+    "TAP_ON_MAP_TO_SELECT_LOCATION": "Appuyez sur la carte pour sélectionner l'emplacement"
   }
 }

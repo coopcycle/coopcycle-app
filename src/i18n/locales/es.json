@@ -448,6 +448,10 @@
         "TASK_DONE": "Hecho",
         "TASK_CANCELLED": "Cancelado",
         "ASK_TO_START_PICKUP_TITLE": "Tarea de recogida",
-        "ASK_TO_START_PICKUP_MESSAGE": "La tarea de recogida aún no ha comenzado."
+        "ASK_TO_START_PICKUP_MESSAGE": "La tarea de recogida aún no ha comenzado.",
+        "CONFIRM_LOCATION": "Confirmar ubicación",
+        "ADDRESS_NOT_FOUND": "Dirección no encontrada",
+        "LOADING_ADDRESS": "Cargando dirección",
+        "TAP_ON_MAP_TO_SELECT_LOCATION": "Toca el mapa para seleccionar la ubicación"
     }
 }

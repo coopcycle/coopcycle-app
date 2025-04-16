@@ -11,16 +11,21 @@ import {
   Text,
   View,
   useColorModeValue,
+  Button,
+  IconButton,
+  Box,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import Modal from 'react-native-modal';
 import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -36,6 +41,7 @@ import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
 import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
 import ItemSeparator from './ItemSeparator';
+import MapPickerScreen from './MapPickerModal';
 
 const fuseOptions = {
   shouldSort: true,
@@ -61,6 +67,9 @@ function AddressAutocomplete(props) {
     flatListProps,
     onSelectAddress,
     placeholder,
+    onMapPickerPress,
+    location,
+    mapPickerStyle = "small",
     ...otherProps
   } = props;
 
@@ -73,6 +82,8 @@ function AddressAutocomplete(props) {
   );
   const [sessionToken, setSessionToken] = useState(null);
   const [controller, setController] = useState(null);
+
+  const [showPickerModal, setShowPickerModal] = useState(false);
 
   const fuse = useMemo(() => new Fuse(addresses, fuseOptions), [addresses]);
 
@@ -214,7 +225,7 @@ function AddressAutocomplete(props) {
       types: 'geocode',
       locationrestriction: {
         southWest: props.southWest,
-        northEast: props.northEast
+        northEast: props.northEast,
       },
       sessiontoken: newSessionToken,
     };
@@ -228,7 +239,12 @@ function AddressAutocomplete(props) {
       const queryParams = {
         key: Config.GOOGLE_MAPS_BROWSER_KEY,
         languageCode: localeDetector(),
-        fields: ['addressComponents', 'location', 'formattedAddress', 'types'].join(',') // need to be specified explictly
+        fields: [
+          'addressComponents',
+          'location',
+          'formattedAddress',
+          'types',
+        ].join(','), // need to be specified explictly
       };
 
       // Réinitialiser le sessionToken après la sélection
@@ -236,20 +252,22 @@ function AddressAutocomplete(props) {
 
       // Appel à l'API Google Place Details
       axios
-      .get(
-        `https://places.googleapis.com/v1/places/${item.place_id}?${qs.stringify(
-          queryParams,
-        )}`
-      )
-      .then(response => {
-        setQuery(item.description);
-        setResults([]);
-        const formattedAddress = AddressUtils.createAddressFromGoogleDetails(response.data)
-        props.onSelectAddress(formattedAddress);
-      })
-      .catch(error => {
-        console.log('AddressAutocomplete; _onItemPress', error);
-      });
+        .get(
+          `https://places.googleapis.com/v1/places/${item.place_id}?${qs.stringify(
+            queryParams,
+          )}`,
+        )
+        .then(response => {
+          setQuery(item.description);
+          setResults([]);
+          const formattedAddress = AddressUtils.createAddressFromGoogleDetails(
+            response.data,
+          );
+          props.onSelectAddress(formattedAddress);
+        })
+        .catch(error => {
+          console.log('AddressAutocomplete; _onItemPress', error);
+        });
     }
 
     if (item.type === 'postcode') {
@@ -359,32 +377,51 @@ function AddressAutocomplete(props) {
   }
 
   const renderTextInput = inputProps => (
-    <View style={styles.textInput}>
-      <View style={styles.textInput}>
-        <Input
-          {...inputProps}
-          style={[
-            inputProps.style,
-            {
-              backgroundColor: props.backgroundColor,
-            },
-          ]}
-          placeholderTextColor={props.placeholderTextColor}
-          variant="outline"
-          onFocus={onTextInputFocus}
-          onBlur={onTextInputBlur}
+    <View style={styles.textInputContainer}>
+      {mapPickerStyle === 'small' && <TouchableOpacity
+        style={{
+          backgroundColor: props.primaryColor,
+          ...styles.mapPickerButton
+        }}
+        onPress={() => setShowPickerModal(true)}
+        testID="map-picker-button"
+        accessibilityLabel={t('PICK_ON_MAP')}
+      >
+        <Icon
+          as={Ionicons}
+          name="locate"
+          color="white"
+          size={5}
         />
-        {props.country === 'gb' && postcode && (
-          <PostCodeButton
-            postcode={postcode.postcode}
-            onPress={() => {
-              setQuery('');
-              setResults([]);
-              setPostcode(null);
-            }}
-          />
-        )}
-      </View>
+      </TouchableOpacity>}
+      <Input
+        {...inputProps}
+        style={[
+          inputProps.style,
+          styles.inputField,
+        ]}
+        placeholderTextColor={props.placeholderTextColor}
+        variant="unstyled"
+        onFocus={onTextInputFocus}
+        onBlur={onTextInputBlur}
+        fontSize={14}
+        height="40px"
+        flex={1}
+        pl={2}
+        _focus={{
+          borderColor: props.primaryColor,
+        }}
+      />
+      {props.country === 'gb' && postcode && (
+        <PostCodeButton
+          postcode={postcode.postcode}
+          onPress={() => {
+            setQuery('');
+            setResults([]);
+            setPostcode(null);
+          }}
+        />
+      )}
       {props.renderRight && props.renderRight()}
     </View>
   );
@@ -395,60 +432,89 @@ function AddressAutocomplete(props) {
   }
 
   return (
-    <View style={styles.autocompleteContainer}>
-      <Autocomplete
-        autoCompleteType="off"
-        autoCapitalize="none"
-        autoCorrect={false}
-        clearButtonMode="while-editing"
-        {...otherProps}
-        data={results}
-        value={query}
-        placeholder={finalPlaceholder}
-        onChangeText={onChangeText}
-        // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
-        renderResultList={({ data, listContainerStyle }) => (
-          <View style={listContainerStyle}>
-            <View
-              style={{
-                borderTopWidth: 0,
-                borderWidth: 1,
-                borderColor: props.primaryColor,
-              }}>
-              {data.map((item, index) => (
-                <View key={index}>
-                  <Pressable>{renderItem({ item })}</Pressable>
-                  <ItemSeparator />
-                </View>
-              ))}
-              {props.country === 'gb' ? (
-                <PoweredByIdealPostcodes style={styles.poweredContainer} />
-              ) : (
-                <PoweredByGoogle style={styles.poweredContainer} />
-              )}
+    <>
+      <Modal
+        isVisible={showPickerModal}
+        onBackdropPress={() => setShowPickerModal(false)}
+        onBackButtonPress={() => setShowPickerModal(false)}>
+        <View style={{ flex: 1 }}>
+          <MapPickerScreen
+            primaryColor={props.primaryColor}
+            onSelectLocation={({ address }) => {
+              setShowPickerModal(false);
+              props.onSelectAddress(address);
+            }}
+            onCancel={() => setShowPickerModal(false)}
+            initialRegion={location}
+          />
+        </View>
+      </Modal>
+      <View style={styles.autocompleteContainer}>
+        <Autocomplete
+          autoCompleteType="off"
+          autoCapitalize="none"
+          autoCorrect={false}
+          clearButtonMode="while-editing"
+          {...otherProps}
+          data={results}
+          value={query}
+          placeholder={finalPlaceholder}
+          onChangeText={onChangeText}
+          // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
+          renderResultList={({ data, listContainerStyle }) => (
+            <View style={[listContainerStyle, { marginTop: 0 }]}>
+              <View
+                style={{
+                  borderWidth: 0,
+                  borderBottomWidth: 1,
+                  borderLeftWidth: 1,
+                  borderRightWidth: 1,
+                  borderColor: '#E0E0E0',
+                  overflow: "hidden",
+                  backgroundColor: 'white',
+                  borderBottomLeftRadius: 4,
+                  borderBottomRightRadius: 4,
+                }}>
+                {data.map((item, index) => (
+                  <View key={index}>
+                    <Pressable>{renderItem({ item })}</Pressable>
+                    <ItemSeparator />
+                  </View>
+                ))}
+                {props.country === 'gb' ? (
+                  <PoweredByIdealPostcodes style={styles.poweredContainer} />
+                ) : (
+                  <PoweredByGoogle style={styles.poweredContainer} />
+                )}
+              </View>
             </View>
-          </View>
-        )}
-        renderTextInput={inputProps => renderTextInput(inputProps)}
-        containerStyle={{
-          ...containerStyle,
-        }}
-        inputContainerStyle={{
-          borderWidth: 0,
-          // paddingVertical: 8,
-          ...inputContainerStyle,
-        }}
-        listContainerStyle={{
-          backgroundColor: props.backgroundColor,
-          ...listContainerStyle,
-        }}
-        //FIXME: avoid using generic `style` prop; use `containerStyle`/`inputContainerStyle`/`listContainerStyle/ etc.
-        // see all available props at https://github.com/byteburgers/react-native-autocomplete-input?tab=readme-ov-file#props
-        style={{
-          ...style,
-        }}
-      />
-    </View>
+          )}
+          renderTextInput={inputProps => renderTextInput(inputProps)}
+          containerStyle={{
+            ...containerStyle,
+          }}
+          inputContainerStyle={{
+            borderWidth: 0,
+            ...inputContainerStyle,
+          }}
+          listContainerStyle={{
+            backgroundColor: 'transparent',
+            ...listContainerStyle,
+          }}
+          style={{
+            ...style,
+          }}
+        />
+        {mapPickerStyle === 'large' && <>
+          <Text style={styles.orText}>Or find myself on the map</Text>
+          <Button backgroundColor={props.primaryColor}
+            onPress={() => setShowPickerModal(true)}
+            testID="map-picker-button"
+            accessibilityLabel={t('PICK_ON_MAP')}
+          >Find me</Button>
+        </>}
+      </View>
+    </>
   );
 }
 
@@ -456,12 +522,14 @@ AddressAutocomplete.defaultProps = {
   minChars: 3,
   addresses: [],
   renderRight: () => <View />,
+  onMapPickerPress: null,
 };
 
 AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
   addresses: PropTypes.array,
   renderRight: PropTypes.func,
+  onMapPickerPress: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
@@ -472,13 +540,26 @@ const styles = StyleSheet.create({
   },
   item: {
     paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
+  },
+  textInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 4,
+    backgroundColor: 'white',
+    marginHorizontal: 0,
   },
   textInput: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  inputField: {
+    fontSize: 14,
   },
   autocompleteContainer: {
     flex: 1,
@@ -488,6 +569,20 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 1,
   },
+  mapPickerButton: {
+    borderRadius: 4,
+    padding: 8,
+    marginLeft: 8,
+    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 36,
+    width: 36,
+  },
+  orText: {
+    marginVertical: 16,
+    textAlign: 'center',
+  }
 });
 
 function mapStateToProps(state) {
