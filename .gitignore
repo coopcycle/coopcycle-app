@@ -21,7 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-ios/.xcode.env.local
+**/.xcode.env.local
 
 # Xcode index datastore
 /ios/Index/
@@ -37,6 +37,7 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+.kotlin
 
 # node.js
 #
@@ -65,7 +66,7 @@ coverage
 *.jsbundle
 
 # Ruby / CocoaPods
-/ios/Pods/
+**/Pods/
 /vendor/bundle/
 
 # Temporary files created by Metro to check the health of the file watcher
@@ -94,3 +95,11 @@ ios/*.certSigningRequest
 ios/*.p12
 ios/*.mobileprovision
 .vscode/settings.json
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
