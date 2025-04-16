@@ -8,7 +8,7 @@ import {
   assignTask,
   bulkAssignmentTasks,
   initialize,
-  loadUnassignedTasksRequest,
+  loadTasksRequest,
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
 import {
@@ -34,6 +34,7 @@ function UnassignedTasks({
 
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
+
   const {
     isFetching,
     isError,
@@ -48,7 +49,7 @@ function UnassignedTasks({
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(loadUnassignedTasksRequest());
+      dispatch(loadTasksRequest());
     }
   }, [dispatch, isFetching]);
 

@@ -1,6 +1,7 @@
+import { actionMatchCreator } from '../util';
 import {
-  DISPATCH_INITIALIZE,
-  LOAD_USERS_SUCCESS,
+  initialized,
+  loadUsersSuccess,
 } from './actions';
 
 const initialState = {
@@ -9,18 +10,22 @@ const initialState = {
 };
 
 export default (state = initialState, action = {}) => {
-  switch (action.type) {
-    case DISPATCH_INITIALIZE:
-      return {
-        ...state,
-        initialized: true,
-      };
+  if (actionMatchCreator(action, [
+    initialized,
+  ])) {
+    return {
+      ...state,
+      initialized: true,
+    };
+  }
 
-    case LOAD_USERS_SUCCESS:
-      return {
-        ...state,
-        users: action.payload,
-      };
+  if (actionMatchCreator(action, [
+    loadUsersSuccess,
+  ])) {
+    return {
+      ...state,
+      users: action.payload,
+    };
   }
 
   return state;

@@ -435,6 +435,7 @@
         "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Esta tarea ya te ha sido asignada",
         "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Desasignar",
         "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Asignármela",
+        "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "La tarea ya ha sido desasignada, pero el tour al que pertenece no lo está. Por favor, resuelve esto desde la aplicación web.",
         "TASK_MULTIPLE_PACKAGES": "Varios paquetes",
         "X_PACKAGES": "{{count}} paquetes",
         "NO_NEED_TO_SCAN_OTHERS": "No es necesario escanear los demás paquetes.",

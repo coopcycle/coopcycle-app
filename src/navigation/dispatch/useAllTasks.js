@@ -4,36 +4,22 @@ import { useEffect, useMemo } from "react";
 import {
   loadTaskListsFailure,
   loadTaskListsSuccess,
-  loadUnassignedTasksFailure,
-  loadUnassignedTasksSuccess,
+  loadTasksFailure,
+  loadTasksSuccess,
   loadUsersFailure,
   loadUsersSuccess,
 } from "../../redux/Dispatch/actions";
 import {
   useGetCourierUsersQuery,
-  useGetTaskListsQuery,
-  useGetUnassignedTasksQuery,
+  useGetTaskListsV2Query,
+  useGetTasksQuery,
+  useGetToursQuery,
 } from "../../redux/api/slice";
+import { loadToursFailure, loadToursSuccess } from "../../shared/logistics/redux";
 
 
 export function useAllTasks(date) {
   const dispatch = useDispatch();
-
-  const {
-    data: unassignedTasks,
-    isError: isErrorUnassignedTasks,
-    isLoading: isLoadingUnassignedTasks,
-    isFetching: isFetchingUnassignedTasks,
-    refetch: refetchUnassignedTasks
-  } = useGetUnassignedTasksQuery(date);
-
-  const {
-    data: taskLists,
-    isError: isErrorTaskLists,
-    isLoading: isLoadingTaskLists,
-    isFetching: isFetchingTaskLists,
-    refetch: refetchTaskLists
-  } = useGetTaskListsQuery(date);
 
   const {
     data: courierUsers,
@@ -42,30 +28,56 @@ export function useAllTasks(date) {
     isFetching: isFetchingCourierUsers
   } = useGetCourierUsersQuery();
 
+  const {
+    data: taskLists,
+    isError: isErrorTaskLists,
+    isFetching: isFetchingTaskLists,
+    isLoading: isLoadingTaskLists,
+    refetch: refetchTaskLists,
+  } = useGetTaskListsV2Query(date);
+
+  const {
+    data: tasks,
+    isError: isErrorTasks,
+    isFetching: isFetchingTasks,
+    isLoading: isLoadingTasks,
+    refetch: refetchTasks,
+  } = useGetTasksQuery(date);
+
+  const {
+    data: tours,
+    isError: isErrorTours,
+    isFetching: isFetchingTours,
+    isLoading: isLoadingTours,
+    refetch: refetchTours,
+  } = useGetToursQuery(date);
+
   const isError = useMemo(() => {
-    return isErrorTaskLists || isErrorUnassignedTasks || isErrorCourierUsers;
-  }, [isErrorTaskLists, isErrorUnassignedTasks, isErrorCourierUsers]);
+    return isErrorCourierUsers || isErrorTaskLists || isErrorTasks || isErrorTours;
+  }, [isErrorCourierUsers, isErrorTaskLists, isErrorTasks, isErrorTours]);
 
   const isLoading = useMemo(() => {
-    return isLoadingTaskLists || isLoadingUnassignedTasks || isLoadingCourierUsers;
-  }, [isLoadingTaskLists, isLoadingUnassignedTasks, isLoadingCourierUsers]);
+    return isLoadingCourierUsers || isLoadingTaskLists || isLoadingTasks || isLoadingTours;
+  }, [isLoadingCourierUsers, isLoadingTaskLists, isLoadingTasks, isLoadingTours]);
 
   const isFetching = useMemo(() => {
-    return isFetchingUnassignedTasks || isFetchingTaskLists || isFetchingCourierUsers;
-  }, [isFetchingUnassignedTasks, isFetchingTaskLists, isFetchingCourierUsers]);
+    return isFetchingCourierUsers || isFetchingTaskLists || isFetchingTasks || isFetchingTours;
+  }, [isFetchingCourierUsers, isFetchingTaskLists, isFetchingTasks, isFetchingTours]);
 
   useEffect(() => {
-    if (!isFetching && !isError && unassignedTasks && taskLists && courierUsers) {
-      dispatch(loadUnassignedTasksSuccess(unassignedTasks));
+    if (!isFetching && !isError && courierUsers && taskLists && tasks && tours) {
       dispatch(loadTaskListsSuccess(taskLists));
+      dispatch(loadTasksSuccess(tasks));
+      dispatch(loadToursSuccess(tours));
       dispatch(loadUsersSuccess(courierUsers));
     }
-  }, [dispatch, unassignedTasks, taskLists, courierUsers, isFetching, isError]);
+  }, [courierUsers, dispatch, isError, isFetching, taskLists, tasks, tours]);
 
   useEffect(() => {
     if(isError) {
-      dispatch(loadUnassignedTasksFailure());
+      dispatch(loadTasksFailure());
       dispatch(loadTaskListsFailure());
+      dispatch(loadToursFailure());
       dispatch(loadUsersFailure());
     }
   }, [dispatch, isError]);
@@ -75,9 +87,10 @@ export function useAllTasks(date) {
     isLoading,
     isFetching,
     refetch: () => {
-      refetchUnassignedTasks();
+      refetchTasks();
       refetchTaskLists();
+      refetchTours();
       // Add refetchCourierUsers when needed..!
-    }
+    },
   };
 }

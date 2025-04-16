@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 
+import { areSameDates } from '../../utils/dates';
 import { Calendar } from '../../components/Calendar';
 import { changeDate } from '../../redux/Dispatch/actions';
 import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux';
@@ -11,7 +12,10 @@ export default function DateScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const onDateChange = date => {
-    dispatch(changeDate(date));
+    if(!areSameDates(new Date(date), new Date(selectedDate))) {
+      dispatch(changeDate(date));
+    }
+
     navigation.goBack();
   };
 

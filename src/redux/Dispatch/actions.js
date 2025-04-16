@@ -1,8 +1,8 @@
-import { CommonActions } from '@react-navigation/native';
-import { Alert } from 'react-native';
-import { createAction } from 'redux-actions';
-
 import _ from 'lodash';
+import { Alert } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
+import { createAction } from '@reduxjs/toolkit';
+
 import NavigationHolder from '../../NavigationHolder';
 import i18n from '../../i18n';
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
@@ -13,6 +13,7 @@ import {
   createTaskListSuccess,
   selectAllTasks,
   selectSelectedDate,
+  selectToursTasksIndex
 } from '../../coopcycle-frontend-js/logistics/redux';
 
 import {
@@ -22,102 +23,73 @@ import {
 } from '../Courier';
 
 import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
-import { isSameDate } from './utils';
+import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
 
 /*
  * Action Types
  */
 
-export const DISPATCH_INITIALIZE = 'DISPATCH_INITIALIZE';
+// TODO: Change to createAction declaration from '@reduxjs/toolkit'
+export const DEP_ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
+export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
+export const DEP_CHANGE_DATE = 'CHANGE_DATE';
+export const DEP_UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
+export const DEP_UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
+export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
 
-export const LOAD_UNASSIGNED_TASKS_REQUEST = 'LOAD_UNASSIGNED_TASKS_REQUEST';
-export const LOAD_UNASSIGNED_TASKS_SUCCESS = 'LOAD_UNASSIGNED_TASKS_SUCCESS';
-export const LOAD_UNASSIGNED_TASKS_FAILURE = 'LOAD_UNASSIGNED_TASKS_FAILURE';
-
-export const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
-export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
-export const LOAD_USERS_FAILURE = 'LOAD_USERS_FAILURE';
-
-export const LOAD_TASK_LISTS_REQUEST = 'LOAD_TASK_LISTS_REQUEST';
-export const LOAD_TASK_LISTS_SUCCESS = 'LOAD_TASK_LISTS_SUCCESS';
-export const LOAD_TASK_LISTS_FAILURE = 'LOAD_TASK_LISTS_FAILURE';
-
-export const CREATE_TASK_REQUEST = 'CREATE_TASK_REQUEST';
-export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
-export const CREATE_TASK_FAILURE = 'CREATE_TASK_FAILURE';
-
-export const CANCEL_TASK_REQUEST = 'CANCEL_TASK_REQUEST';
-export const CANCEL_TASK_SUCCESS = 'CANCEL_TASK_SUCCESS';
-export const CANCEL_TASK_FAILURE = 'CANCEL_TASK_FAILURE';
-
-export const ASSIGN_TASK_REQUEST = 'ASSIGN_TASK_REQUEST';
-export const ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
-export const ASSIGN_TASK_FAILURE = 'ASSIGN_TASK_FAILURE';
-
-export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
-
-export const BULK_ASSIGNMENT_TASKS_REQUEST = 'BULK_ASSIGNMENT_TASKS_REQUEST';
-export const BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
-export const BULK_ASSIGNMENT_TASKS_FAILURE = 'BULK_ASSIGNMENT_TASKS_FAILURE';
-
-export const UNASSIGN_TASK_REQUEST = 'UNASSIGN_TASK_REQUEST';
-export const UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
-export const UNASSIGN_TASK_FAILURE = 'UNASSIGN_TASK_FAILURE';
-
-export const CHANGE_DATE = 'CHANGE_DATE';
 
 /*
  * Action Creators
  */
 
-export const loadUnassignedTasksRequest = createAction(
-  LOAD_UNASSIGNED_TASKS_REQUEST,
-);
-export const loadUnassignedTasksSuccess = createAction(
-  LOAD_UNASSIGNED_TASKS_SUCCESS,
-);
-export const loadUnassignedTasksFailure = createAction(
-  LOAD_UNASSIGNED_TASKS_FAILURE,
-);
+export const loadTasksRequest = createAction('@dispatch/LOAD_TASKS_REQUEST');
+export const loadTasksSuccess = createAction('@dispatch/LOAD_TASKS_SUCCESS');
+export const loadTasksFailure = createAction('@dispatch/LOAD_TASKS_FAILURE');
 
-export const loadUsersRequest = createAction(LOAD_USERS_REQUEST);
-export const loadUsersSuccess = createAction(LOAD_USERS_SUCCESS);
-export const loadUsersFailure = createAction(LOAD_USERS_FAILURE);
+export const loadUsersRequest = createAction('@dispatch/LOAD_USERS_REQUEST');
+export const loadUsersSuccess = createAction('@dispatch/LOAD_USERS_SUCCESS');
+export const loadUsersFailure = createAction('@dispatch/LOAD_USERS_FAILURE');
 
-export const loadTaskListsRequest = createAction(LOAD_TASK_LISTS_REQUEST);
-export const loadTaskListsSuccess = createAction(LOAD_TASK_LISTS_SUCCESS);
-export const loadTaskListsFailure = createAction(LOAD_TASK_LISTS_FAILURE);
+export const loadTaskListsRequest = createAction('@dispatch/LOAD_TASK_LISTS_REQUEST');
+export const loadTaskListsSuccess = createAction('@dispatch/LOAD_TASK_LISTS_SUCCESS');
+export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAILURE');
 
-export const createTaskRequest = createAction(CREATE_TASK_REQUEST);
-export const createTaskSuccess = createAction(CREATE_TASK_SUCCESS);
-export const createTaskFailure = createAction(CREATE_TASK_FAILURE);
+export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_SUCCESS');
 
-export const cancelTaskRequest = createAction(CANCEL_TASK_REQUEST);
-export const cancelTaskSuccess = createAction(CANCEL_TASK_SUCCESS);
-export const cancelTaskFailure = createAction(CANCEL_TASK_FAILURE);
+export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
+export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');
+export const createTaskFailure = createAction('@dispatch/CREATE_TASK_FAILURE');
 
-export const assignTaskRequest = createAction(ASSIGN_TASK_REQUEST);
-export const assignTaskSuccess = createAction(ASSIGN_TASK_SUCCESS);
-export const assignTaskFailure = createAction(ASSIGN_TASK_FAILURE);
+export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
+export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
+export const cancelTaskFailure = createAction('@dispatch/CANCEL_TASK_FAILURE');
 
-export const updateTaskSuccess = createAction(UPDATE_TASK_SUCCESS);
+export const assignTaskRequest = createAction('@dispatch/ASSIGN_TASK_REQUEST');
+export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
+export const assignTaskFailure = createAction('@dispatch/ASSIGN_TASK_FAILURE');
+
+export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
 
 export const bulkAssignmentTasksRequest = createAction(
-  BULK_ASSIGNMENT_TASKS_REQUEST,
+  '@dispatch/BULK_ASSIGNMENT_TASKS_REQUEST',
 );
 export const bulkAssignmentTasksSuccess = createAction(
-  BULK_ASSIGNMENT_TASKS_SUCCESS,
+  DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
 );
 export const bulkAssignmentTasksFailure = createAction(
-  BULK_ASSIGNMENT_TASKS_FAILURE,
+  '@dispatch/BULK_ASSIGNMENT_TASKS_FAILURE',
 );
 
-export const unassignTaskRequest = createAction(UNASSIGN_TASK_REQUEST);
-export const unassignTaskSuccess = createAction(UNASSIGN_TASK_SUCCESS);
-export const unassignTaskFailure = createAction(UNASSIGN_TASK_FAILURE);
+export const unassignTaskRequest = createAction('@dispatch/UNASSIGN_TASK_REQUEST');
+export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
+export const unassignTaskFailure = createAction('@dispatch/UNASSIGN_TASK_FAILURE');
 
-export const changeDate = createAction(CHANGE_DATE);
-const _initialize = createAction(DISPATCH_INITIALIZE);
+export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
+
+export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
+
+export const changeDate = createAction(DEP_CHANGE_DATE);
+export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
 
 function showAlert(e) {
@@ -142,14 +114,14 @@ function showAlert(e) {
 
 export function initialize() {
   return function (dispatch, getState) {
-    const initialized = getState().dispatch.initialized;
+    const stateInitialized = getState().dispatch.initialized;
 
-    if (initialized) {
+    if (stateInitialized) {
       return;
     }
 
     dispatch(connectCentrifugo());
-    dispatch(_initialize());
+    dispatch(initialized());
   };
 }
 
@@ -180,7 +152,7 @@ export function createTask(task) {
       .then(t => {
         let date = selectSelectedDate(getState());
 
-        if (isSameDate(t, date)) {
+        if (isSameDateTask(t, date)) {
           dispatch(createTaskSuccess(t));
         }
 
@@ -199,32 +171,23 @@ export function createTask(task) {
 
 export function assignTask(task, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
-
-    const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(getState()));
+    const state = getState();
+    const httpClient = state.app.httpClient;
+    const linkedTasks = withUnassignedLinkedTasks(task, selectAllTasks(state));
 
     if (linkedTasks.length > 1) {
-      dispatch(bulkAssignmentTasksRequest());
-
-      return httpClient
-        .put('/api/tasks/assign', {
-          username,
-          tasks: linkedTasks.map(t => t['@id']),
-        })
-        .then(res => {
-          dispatch(bulkAssignmentTasksSuccess(res['hydra:member']));
-        })
-        .catch(e => {
-          dispatch(bulkAssignmentTasksFailure(e));
-        });
-    } else {
-      dispatch(assignTaskRequest());
-
-      return httpClient
-        .put(`${task['@id']}/assign`, { username })
-        .then(res => dispatch(assignTaskSuccess(res)))
-        .catch(e => dispatch(assignTaskFailure(e)));
+      // Multiple task assignment => Just use bulk assignment!
+      return bulkAssignmentTasks(linkedTasks, username)(dispatch, getState);
     }
+
+    // Single task assignment
+    dispatch(assignTaskRequest());
+
+    return httpClient
+      .put(`${task['@id']}/assign`, { username })
+      .then(res => maybeRemoveTourTasks(state, [task['@id']]).then(_ok => res))
+      .then(res => dispatch(assignTaskSuccess(res)))
+      .catch(e => dispatch(assignTaskFailure(e)));
   };
 }
 
@@ -236,50 +199,103 @@ export function assignTask(task, username) {
  */
 export function bulkAssignmentTasks(tasks, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const state = getState();
+    const httpClient = state.app.httpClient;
+    const taskIdsToAssign = _.uniq(
+      tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, selectAllTasks(state))), [])
+        .map(t => t['@id'])
+    );
 
     dispatch(bulkAssignmentTasksRequest());
-
-    let tasksToAssign = [];
-
-    tasks.forEach((task) => {
-      tasksToAssign.push(...withUnassignedLinkedTasks(task, selectAllTasks(getState())))
-    });
-
-    const payload = _.uniq(tasksToAssign.map(t => t['@id']));
 
     return httpClient
       .put('/api/tasks/assign', {
         username,
-        tasks: payload,
+        tasks: taskIdsToAssign
       })
+      .then(res => maybeRemoveTourTasks(state, taskIdsToAssign).then(_ok => res))
       .then(res => dispatch(bulkAssignmentTasksSuccess(res['hydra:member'])))
       .catch(e => dispatch(bulkAssignmentTasksFailure(e)));
   };
 }
 
+function maybeRemoveTourTasks(state, taskIdsToRemove) {
+  const index = selectToursTasksIndex(state);
+  const httpClient = state.app.httpClient;
+
+  const toursToUpdate = taskIdsToRemove.reduce((acc, taskId) => {
+    const tourId = index.tasks[taskId];
+    if (tourId) {
+      // Initialize with all the indexed tour tasks if not already present
+      // and remove the taskId from the tour tasks
+      acc[tourId] = (acc[tourId] || index.tours[tourId]).filter(tourTaskId => tourTaskId !== taskId);
+    }
+    return acc;
+  }
+  , {});
+
+  return Promise.all(
+    Object.entries(toursToUpdate).map(([tourUrl, tourTasks]) => httpClient.put(tourUrl, {
+      tasks: tourTasks
+    }))
+  );
+}
+
 export function unassignTask(task, username) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const state = getState();
+    const httpClient = state.app.httpClient;
+    const taskIdsToUnassign = withAssignedLinkedTasks(task, selectAllTasks(state)).map(t => t['@id']);
+    let unassignedTaskIds = [];
+    let responses = [];
+    let errors = [];
+
+    if (taskIdsToUnassign.length === 0)
+      // We can have an empty list of tasks to unassign (ie. when the task is already unassigned but the tour where it belogs to is not)
+      // TODO: This should be solved and removed somewhere in the near future..
+      return Alert.alert(
+        i18n.t('AN_ERROR_OCCURRED'),
+        i18n.t('TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB'),
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false}
+      );
 
     dispatch(unassignTaskRequest());
 
-    const tasks = withAssignedLinkedTasks(task, selectAllTasks(getState()))
+    // This one needs more work, it should be a "bulkUnssignmentTasks" endpoint
+    // It sometimes fails when unassigning the related tasks (one response with 200, the other response with 500)
+    return Promise.all(
+      taskIdsToUnassign.map(taskId => {
+        return httpClient.put(`${taskId}/unassign`, { username })
+          .then(rs => {
+            unassignedTaskIds.push(taskId);
+            responses.push(rs);
+          })
+          // This catch below makes the Promise.all(..) to never fail
+          .catch(e => errors.push(e));
+      })
+    )
+    .then(() => {
+      return maybeRemoveTourTasks(state, unassignedTaskIds)
+        .finally(() => {
+          if (errors.length > 0) {
+            errors.forEach(e => dispatch(unassignTaskFailure(e)));
+          }
+          if (responses.length > 0) {
+            responses.forEach(rs => dispatch(unassignTaskSuccess(rs)));
+          }
 
-    tasks.forEach(t => {
-      return httpClient
-      .put(`${t['@id']}/unassign`, { username })
-      .then(res => dispatch(unassignTaskSuccess(res)))
-      .catch(e => dispatch(unassignTaskFailure(e)))
-    })
-  };
+          return unassignedTaskIds;
+        });
+    });
+  }
 }
 
 export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDate(task, date)) {
+    if (isSameDateTask(task, date)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -308,4 +324,35 @@ export function updateTask(action, task) {
       }
     }
   };
+}
+
+export function updateTaskList(action, taskList) {
+  return function (dispatch, getState) {
+    let date = selectSelectedDate(getState());
+
+    if (isSameDateTaskList(taskList, date)) {
+      switch (action) {
+        case 'v2:task_list:updated':
+          dispatch(updateTaskListsSuccess(taskList));
+          break;
+      }
+    }
+  }
+}
+
+export function updateTour(action, tour) {
+  return function (dispatch, getState) {
+    let date = selectSelectedDate(getState());
+
+    if (isSameDateTour(tour, date)) {
+      switch (action) {
+        case 'tour:created':
+          dispatch(createTourSuccess(tour));
+          break;
+        case 'tour:updated':
+          dispatch(updateTourSuccess(tour));
+          break;
+      }
+    }
+  }
 }
