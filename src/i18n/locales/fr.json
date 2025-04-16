@@ -532,6 +532,7 @@
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Cette tâche vous a déjà été assignée",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Désassigner",
     "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "M'assigner",
+    "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "La tâche a déjà été désassignée mais la tournée à laquelle elle appartient ne l'est pas. Veuillez résoudre cela depuis l'application web.",
     "TASK_MULTIPLE_PACKAGES": "Plusieurs colis",
     "X_PACKAGES": "{{count}} colis",
     "NO_NEED_TO_SCAN_OTHERS": "Pas besoin de scanner les autres colis.",

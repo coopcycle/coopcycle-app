@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import { Text } from 'native-base';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
 
 import TaskList from '../../components/TaskList';
 import {
@@ -15,48 +14,58 @@ import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import AddButton from './components/AddButton';
 
 import { navigateToTask } from '../../navigation/utils';
+import { useDispatch, useSelector } from 'react-redux';
 
-class TaskListScreen extends Component {
-  componentDidUpdate(prevProps) {
-    if (this.props.taskLists !== prevProps.taskLists) {
-      const { taskList } = this.props.route.params;
+function TaskListScreen({
+  navigation,
+  route,
+}) {
+  const { t } = useTranslation();
+  const { navigate } = navigation;
+  const dispatch = useDispatch()
+
+  const tasksWithColor = useSelector(selectTasksWithColor)
+  const taskLists = useSelector(selectTaskLists)
+  const unassignTaskHandler = task => dispatch(unassignTask(task))
+
+  const [taskList, setTaskList] = useState(route.params?.taskList);
+  const tasks = selectTasksNotCancelled({ tasks: taskList.items });
+
+  // TODO check
+   useEffect(() => {
+    if (taskLists) {
       const thisTaskList = _.find(
-        this.props.taskLists,
+        taskLists,
         aTaskList => aTaskList.username === taskList.username,
       );
       if (thisTaskList) {
-        this.props.navigation.setParams({ taskList: thisTaskList });
+        navigation.setParams({ taskList: thisTaskList });
+        setTaskList(thisTaskList);
       }
     }
-  }
+  }, [taskLists, taskList?.username, navigation])
 
-  render() {
-    const taskList = this.props.route.params?.taskList;
-    const { navigate } = this.props.navigation;
-
-    const tasks = selectTasksNotCancelled({ tasks: taskList.items });
-
-    return (
+  return (
       <View style={{ flex: 1 }}>
         <View>
           <AddButton
             onPress={() =>
               navigate('DispatchAssignTask', { username: taskList.username })
             }>
-            <Text>{this.props.t('DISPATCH_ASSIGN_TASK')}</Text>
+            <Text>{t('DISPATCH_ASSIGN_TASK')}</Text>
           </AddButton>
         </View>
         <View style={{ flex: 1 }}>
           <TaskList
             tasks={tasks}
-            tasksWithColor={this.props.tasksWithColor}
-            onSwipeRight={task => this.props.unassignTask(task)}
+            tasksWithColor={tasksWithColor}
+            onSwipeRight={unassignTaskHandler}
             swipeOutRightEnabled={task => task.status !== 'DONE'}
             swipeOutRightIconName="close"
             onTaskClick={task =>
               navigateToTask(
-                this.props.navigation,
-                this.props.route,
+                navigation,
+                route,
                 task,
                 tasks,
               )
@@ -66,22 +75,5 @@ class TaskListScreen extends Component {
       </View>
     );
   }
-}
 
-function mapStateToProps(state) {
-  return {
-    taskLists: selectTaskLists(state),
-    tasksWithColor: selectTasksWithColor(state),
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    unassignTask: task => dispatch(unassignTask(task)),
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(TaskListScreen));
+export default TaskListScreen

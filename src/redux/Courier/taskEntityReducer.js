@@ -2,10 +2,10 @@ import _ from 'lodash';
 import moment from 'moment';
 import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 import {
-  ASSIGN_TASK_SUCCESS,
-  BULK_ASSIGNMENT_TASKS_SUCCESS,
-  UNASSIGN_TASK_SUCCESS,
-  UPDATE_TASK_SUCCESS,
+  DEP_ASSIGN_TASK_SUCCESS,
+  DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
+  DEP_UNASSIGN_TASK_SUCCESS,
+  DEP_UPDATE_TASK_SUCCESS,
 } from '../Dispatch/actions';
 import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
 import {
@@ -26,12 +26,12 @@ import {
   MARK_TASK_FAILED_FAILURE,
   MARK_TASK_FAILED_REQUEST,
   MARK_TASK_FAILED_SUCCESS,
+  REPORT_INCIDENT_FAILURE,
+  REPORT_INCIDENT_REQUEST,
+  REPORT_INCIDENT_SUCCESS,
   START_TASK_FAILURE,
   START_TASK_REQUEST,
   START_TASK_SUCCESS,
-  REPORT_INCIDENT_REQUEST,
-  REPORT_INCIDENT_SUCCESS,
-  REPORT_INCIDENT_FAILURE,
 } from './taskActions';
 import { apiSlice } from '../api/slice'
 
@@ -151,7 +151,7 @@ export const tasksEntityReducer = (
     case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS:
-    case UPDATE_TASK_SUCCESS:
+    case DEP_UPDATE_TASK_SUCCESS:
       return {
         ...state,
         isFetching: false,
@@ -169,7 +169,7 @@ export const tasksEntityReducer = (
         ),
       };
 
-    case ASSIGN_TASK_SUCCESS:
+    case DEP_ASSIGN_TASK_SUCCESS:
       if (action.payload.assignedTo === state.username) {
         return {
           ...state,
@@ -180,7 +180,7 @@ export const tasksEntityReducer = (
       }
       return state;
 
-    case BULK_ASSIGNMENT_TASKS_SUCCESS:
+    case DEP_BULK_ASSIGNMENT_TASKS_SUCCESS:
       if (action.payload[0].assignedTo === state.username) {
         return {
           ...state,
@@ -191,7 +191,7 @@ export const tasksEntityReducer = (
       }
       return state;
 
-    case UNASSIGN_TASK_SUCCESS:
+    case DEP_UNASSIGN_TASK_SUCCESS:
       let task = _.find(
         state.items,
         item => item['@id'] === action.payload['@id'],
@@ -338,6 +338,7 @@ const processWsMsg = (state, action) => {
     const { name, data } = action.payload;
 
     switch (name) {
+      // TODO: update to v2
       case 'task_list:updated':
         const taskList = data.task_list;
 

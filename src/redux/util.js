@@ -73,3 +73,11 @@ export async function fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, url, itemsPer
     )
     .then(results => results.reduce((acc, rs) => acc.concat(rs['hydra:member']), firstRs['hydra:member']));
 }
+
+export function actionMatchCreator(action, actionCreators) {
+  return actionCreators.some(actionCreator => actionCreator.match(action));
+}
+
+export function idfromUrl(elementUrl) {
+  return (elementUrl.match(/(\d+)/g) || [])[0] || null;
+}
