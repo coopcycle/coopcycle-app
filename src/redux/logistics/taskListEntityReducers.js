@@ -1,4 +1,5 @@
 import {
+  assignTaskSuccess,
   bulkAssignmentTasksSuccess,
   changeDate,
   createTaskSuccess,
@@ -45,6 +46,14 @@ export default (state = initialState, action) => {
     } else {
       return state;
     }
+  }
+
+  if (assignTaskSuccess.match(action)) {
+    let taskList = taskListEntityUtils.addAssignedTask(
+      selectors.selectEntities(state),
+      action.payload,
+    );
+    return taskListAdapter.upsertMany(state, taskList);
   }
 
   if (bulkAssignmentTasksSuccess.match(action)) {
