@@ -1,4 +1,6 @@
 import React, { createRef, useEffect } from 'react';
+import "../global.css";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { LogBox, Platform, useColorScheme } from 'react-native';
 
 import * as Sentry from '@sentry/react-native';
@@ -152,7 +154,7 @@ const linking = {
   config,
 };
 
-const App = () => {
+export default function App() {
   const colorScheme = useColorScheme();
 
   const queryClient = new QueryClient();
@@ -169,40 +171,40 @@ const App = () => {
   return (
     <DatadogWrapper>
       <NativeBaseProvider theme={nativeBaseTheme}>
-        <RootView>
-          <Provider store={store}>
-            <PersistGate
-              loading={
-                <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
-              }
-              persistor={persistor}>
-              <I18nextProvider i18n={i18n}>
-                <QueryClientProvider client={queryClient}>
-                  <SafeAreaProvider>
-                    <Spinner />
-                    <NavigationContainer
-                      ref={navigationRef}
-                      linking={linking}
-                      onReady={onReady}
-                      onStateChange={onNavigationStateChange}
-                      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                      <Root />
-                    </NavigationContainer>
-                    <DropdownAlert
-                      ref={ref => {
-                        DropdownHolder.setDropdown(ref);
-                      }}
-                    />
-                    <NotificationHandler />
-                  </SafeAreaProvider>
-                </QueryClientProvider>
-              </I18nextProvider>
-            </PersistGate>
-          </Provider>
-        </RootView>
+        <GluestackUIProvider mode="light">
+          <RootView>
+            <Provider store={store}>
+              <PersistGate
+                loading={
+                  <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
+                }
+                persistor={persistor}>
+                <I18nextProvider i18n={i18n}>
+                  <QueryClientProvider client={queryClient}>
+                    <SafeAreaProvider>
+                      <Spinner />
+                      <NavigationContainer
+                        ref={navigationRef}
+                        linking={linking}
+                        onReady={onReady}
+                        onStateChange={onNavigationStateChange}
+                        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                        <Root />
+                      </NavigationContainer>
+                      <DropdownAlert
+                        ref={ref => {
+                          DropdownHolder.setDropdown(ref);
+                        }}
+                      />
+                      <NotificationHandler />
+                    </SafeAreaProvider>
+                  </QueryClientProvider>
+                </I18nextProvider>
+              </PersistGate>
+            </Provider>
+          </RootView>
+        </GluestackUIProvider>
       </NativeBaseProvider>
     </DatadogWrapper>
   );
 };
-
-export default App;

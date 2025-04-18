@@ -1,4 +1,5 @@
-import { Box, Heading, Text } from 'native-base';
+import { Text, Heading, Box } from "../../UI"
+
 import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';

@@ -1,4 +1,5 @@
-import { Button, Text } from 'native-base';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
@@ -38,7 +39,7 @@ class ConfigureServer extends Component {
               <Button
                 onPress={_ => this.props.navigation.navigate('HomeChooseCity')}
                 testID="chooseCityBtn">
-                {this.props.t('CHOOSE_CITY')}
+                <Button.Text>{this.props.t('CHOOSE_CITY')}</Button.Text>
               </Button>
             </View>
             <View style={{ paddingVertical: 10 }}>

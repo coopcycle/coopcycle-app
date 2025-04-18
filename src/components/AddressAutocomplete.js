@@ -4,14 +4,9 @@ import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import {
-  Icon,
-  Input,
-  Pressable,
-  Text,
-  View,
-  useColorModeValue,
-} from 'native-base';
+
+import { Text, Icon, View, Input, InputField, Pressable } from "../UI.js"
+
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useMemo, useState } from 'react';
@@ -53,7 +48,7 @@ function AddressAutocomplete(props) {
     country,
     t,
     value,
-    addresses,
+    addresses = [],
     containerStyle,
     inputContainerStyle,
     listContainerStyle,
@@ -61,6 +56,8 @@ function AddressAutocomplete(props) {
     flatListProps,
     onSelectAddress,
     placeholder,
+    minChars = 3,
+    renderRight = () => <View />,
     ...otherProps
   } = props;
 
@@ -171,6 +168,7 @@ function AddressAutocomplete(props) {
 
               let results = normalizedResults.concat(normalizedPredictions);
 
+              console.log({ normalizedResults, results });
               if (normalizedResults.length > 0 && results.length > 5) {
                 results = results.slice(0, 5);
               }
@@ -202,7 +200,8 @@ function AddressAutocomplete(props) {
       props.onChangeText(text);
     }
 
-    if (text.length < props.minChars) {
+    console.log({ text })
+    if (text.length < minChars) {
       setResults([]);
       return;
     }
@@ -236,20 +235,20 @@ function AddressAutocomplete(props) {
 
       // Appel à l'API Google Place Details
       axios
-      .get(
-        `https://places.googleapis.com/v1/places/${item.place_id}?${qs.stringify(
-          queryParams,
-        )}`
-      )
-      .then(response => {
-        setQuery(item.description);
-        setResults([]);
-        const formattedAddress = AddressUtils.createAddressFromGoogleDetails(response.data)
-        props.onSelectAddress(formattedAddress);
-      })
-      .catch(error => {
-        console.log('AddressAutocomplete; _onItemPress', error);
-      });
+        .get(
+          `https://places.googleapis.com/v1/places/${item.place_id}?${qs.stringify(
+            queryParams,
+          )}`
+        )
+        .then(response => {
+          setQuery(item.description);
+          setResults([]);
+          const formattedAddress = AddressUtils.createAddressFromGoogleDetails(response.data)
+          props.onSelectAddress(formattedAddress);
+        })
+        .catch(error => {
+          console.log('AddressAutocomplete; _onItemPress', error);
+        });
     }
 
     if (item.type === 'postcode') {
@@ -286,6 +285,7 @@ function AddressAutocomplete(props) {
 
     if (item.type === 'fuse') {
       const parts = [item.streetAddress];
+      console.log({ item })
       if (item.contactName && item.contactName.length > 0) {
         parts.unshift(item.contactName);
       }
@@ -338,6 +338,7 @@ function AddressAutocomplete(props) {
   }
 
   function onTextInputFocus(e) {
+    console.log({ addresses })
     if (addresses.length > 0) {
       setResults(
         addresses.map(address => ({
@@ -362,18 +363,15 @@ function AddressAutocomplete(props) {
     <View style={styles.textInput}>
       <View style={styles.textInput}>
         <Input
-          {...inputProps}
-          style={[
-            inputProps.style,
-            {
-              backgroundColor: props.backgroundColor,
-            },
-          ]}
-          placeholderTextColor={props.placeholderTextColor}
           variant="outline"
-          onFocus={onTextInputFocus}
-          onBlur={onTextInputBlur}
-        />
+          size="md"
+          style={{ width: '100%' }}
+        >
+          <InputField           {...inputProps}
+            placeholderTextColor={props.placeholderTextColor}
+            onFocus={onTextInputFocus}
+            onBlur={onTextInputBlur} />
+        </Input>
         {props.country === 'gb' && postcode && (
           <PostCodeButton
             postcode={postcode.postcode}
@@ -385,7 +383,6 @@ function AddressAutocomplete(props) {
           />
         )}
       </View>
-      {props.renderRight && props.renderRight()}
     </View>
   );
 
@@ -514,7 +511,8 @@ function withHooks(ClassComponent) {
     const baseTextColor = useBaseTextColor();
     const placeholderTextColor = useColorModeToken('text.400', 'text.400');
 
-    const itemTextColor = useColorModeValue('#856404', baseTextColor);
+    // const itemTextColor = useColorModeValue('#856404', baseTextColor);
+    const itemTextColor = '#856404'
 
     const backgroundColor = useBackgroundContainerColor();
     const primaryColor = usePrimaryColor();

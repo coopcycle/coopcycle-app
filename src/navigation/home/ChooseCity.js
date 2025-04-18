@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Text } from 'native-base';
+import { Box, Button, Icon, Text } from '../../UI.js';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
