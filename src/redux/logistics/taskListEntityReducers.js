@@ -55,7 +55,8 @@ export default (state = initialState, action) => {
       selectors.selectEntities(state),
       action.payload,
     )
-    return taskListAdapter.upsertMany(state, taskList);
+    // We use upsertOne because we only update one task list object
+    return taskListAdapter.upsertOne(state, taskList);
   }
 
   if (unassignTaskSuccess.match(action)) {
