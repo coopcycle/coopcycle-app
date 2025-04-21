@@ -60,6 +60,17 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       },
     }),
+    bulkAssignTasks: builder.mutation({
+      query: ({ tasks, username, date }) => {
+        console.log('>>> RTK Query customBodyString:', { items: tasks});
+  
+        return {
+          url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
+          method: 'PUT',
+          body: { items: tasks }
+        };
+      },
+    }),
     getTours: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -124,6 +135,7 @@ export const {
   useGetOrderTimingQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
+  useBulkAssignTasksMutation,
   useGetToursQuery,
   useGetTasksQuery,
   useSubscriptionGenerateOrdersMutation,
