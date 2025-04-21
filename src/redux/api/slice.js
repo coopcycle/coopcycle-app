@@ -62,13 +62,16 @@ export const apiSlice = createApi({
     }),
     bulkAssignTasks: builder.mutation({
       query: ({ tasks, username, date }) => {
-        console.log('>>> RTK Query customBodyString:', { items: tasks});
-  
-        return {
+        const mutation = {
           url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
           method: 'PUT',
-          body: { items: tasks }
+          headers: {
+            'Content-Type': 'application/ld+json',
+          },
+          body: JSON.stringify({ items: tasks })
         };
+
+        return mutation;
       },
     }),
     getTours: builder.query({
