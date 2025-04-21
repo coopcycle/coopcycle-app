@@ -1,25 +1,28 @@
-import { InteractionManager, View } from 'react-native';
+import _ from 'lodash';
 import { Text } from 'native-base';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { InteractionManager, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
+import TapToRefresh from '../../components/TapToRefresh';
+import TaskList from '../../components/TaskList';
 import {
-  assignTask,
-  bulkAssignmentTasks,
-  initialize,
-  loadTasksRequest,
-} from '../../redux/Dispatch/actions';
-import { navigateToTask } from '../../navigation/utils';
-import {
+  selectAllTasks,
   selectSelectedDate,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
+import { navigateToTask } from '../../navigation/utils';
+import {
+  assignTask,
+  initialize,
+  loadTasksRequest,
+} from '../../redux/Dispatch/actions';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
-import { useAllTasks } from './useAllTasks';
+import { useBulkAssignTasksMutation } from '../../redux/api/slice';
 import AddButton from './components/AddButton';
-import TapToRefresh from '../../components/TapToRefresh';
-import TaskList from '../../components/TaskList';
+import { useAllTasks } from './useAllTasks';
+import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 
 
 function UnassignedTasks({
@@ -34,6 +37,10 @@ function UnassignedTasks({
 
   const dispatch = useDispatch();
   const selectedDate = useSelector(selectSelectedDate);
+
+  // USING SLICE
+  const [bulkAssignTasks, { isLoading }] = useBulkAssignTasksMutation();
+  const allTasks = useSelector(selectAllTasks); 
 
   const {
     isFetching,
@@ -64,9 +71,28 @@ function UnassignedTasks({
     });
   }
 
+  // DEP
+  // const _bulkAssign = (user, tasks) => {
+  //  navigation.navigate('DispatchUnassignedTasks');
+  //  dispatch(bulkAssignmentTasks(tasks, user.username, selectedDate));
+  //} 
+
   const _bulkAssign = (user, tasks) => {
     navigation.navigate('DispatchUnassignedTasks');
-    dispatch(bulkAssignmentTasks(tasks, user.username));
+    const taskIdsToAssign = _.uniq(
+          tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, allTasks)), [])
+            .map(task => task['@id'])
+        );
+        console.log('Full payload:', {
+          url: `/api/task_lists/set_items/${selectedDate.format('YYYY-MM-DD')}/${user.username}`,
+          method: 'PUT',
+          body: { items: taskIdsToAssign }
+        });
+    bulkAssignTasks({
+      tasks: taskIdsToAssign,
+      username: user.username,
+      date: selectedDate
+    });
   }
 
   const allowToSelect = (task) => {
