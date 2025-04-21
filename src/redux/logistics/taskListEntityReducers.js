@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
   }
 
   if (loadTaskListsSuccess.match(action)) {
-    let entities = action.payload.map(taskList =>
+    const entities = action.payload.map(taskList =>
       taskListUtils.replaceItemsWithItemIds(taskList),
     );
     return taskListAdapter.setAll(state, entities);
@@ -34,22 +34,16 @@ export default (state = initialState, action) => {
     return taskListAdapter.upsertOne(state, taskList);
   }
 
-  if (createTaskSuccess.match(action)) {
-    let task = action.payload;
-
-    if (task.isAssigned) {
-      let newItems = taskListEntityUtils.addAssignedTask(
-        selectors.selectEntities(state),
-        task,
-      );
-      return taskListAdapter.upsertMany(state, newItems);
-    } else {
-      return state;
-    }
+  if (createTaskSuccess.match(action) && action.payload.isAssigned) {
+    const newItems = taskListEntityUtils.addAssignedTask(
+      selectors.selectEntities(state),
+      action.payload,
+    );
+    return taskListAdapter.upsertMany(state, newItems);
   }
 
   if (assignTaskSuccess.match(action)) {
-    let taskList = taskListEntityUtils.addAssignedTask(
+    const taskList = taskListEntityUtils.addAssignedTask(
       selectors.selectEntities(state),
       action.payload,
     );
@@ -61,17 +55,17 @@ export default (state = initialState, action) => {
       selectors.selectEntities(state),
       action.payload,
     )
+    // We use upsertOne because we only update one task list object
     return taskListAdapter.upsertOne(state, taskList);
   }
 
   if (unassignTaskSuccess.match(action)) {
-    let newItems = taskListEntityUtils.removeUnassignedTask(
+    const newItems = taskListEntityUtils.removeUnassignedTask(
       selectors.selectEntities(state),
       action.payload,
     );
     return taskListAdapter.upsertMany(state, newItems);
   }
-
 
   return state;
 };

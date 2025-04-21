@@ -23,7 +23,7 @@ import {
 } from '../Courier';
 
 import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
-import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
+import { isSameDayTask, isSameDayTaskList, isSameDayTour } from './utils';
 
 /*
  * Action Types
@@ -91,23 +91,20 @@ export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
 
-function showAlert(e) {
+function showAlert(error, title=i18n.t('FAILED')) {
   let message = i18n.t('TRY_LATER');
 
-  if (e.hasOwnProperty('hydra:description')) {
-    message = e['hydra:description'];
+  if (error.hasOwnProperty('hydra:description')) {
+    message = error['hydra:description'];
+  } else if (typeof error === 'string') {
+    message = error;
   }
 
-  Alert.alert(
-    i18n.t('FAILED'),
+  return Alert.alert(
+    title,
     message,
-    [
-      {
-        text: 'OK',
-        onPress: () => {},
-      },
-    ],
-    { cancelable: false },
+    [{text: 'OK', onPress: () => {}}],
+    {cancelable: false}
   );
 }
 
@@ -151,7 +148,7 @@ export function createTask(task) {
       .then(t => {
         let date = selectSelectedDate(getState());
 
-        if (isSameDateTask(t, date)) {
+        if (isSameDayTask(t, date)) {
           dispatch(createTaskSuccess(t));
         }
 
@@ -252,11 +249,9 @@ export function unassignTask(task, username) {
     if (taskIdsToUnassign.length === 0)
       // We can have an empty list of tasks to unassign (ie. when the task is already unassigned but the tour where it belogs to is not)
       // TODO: This should be solved and removed somewhere in the near future..
-      return Alert.alert(
-        i18n.t('AN_ERROR_OCCURRED'),
+      return showAlert(
         i18n.t('TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB'),
-        [{text: 'OK', onPress: () => {}}],
-        {cancelable: false}
+        i18n.t('AN_ERROR_OCCURRED')
       );
 
     dispatch(unassignTaskRequest());
@@ -294,7 +289,7 @@ export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTask(task, date)) {
+    if (isSameDayTask(task, date)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -329,7 +324,7 @@ export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTaskList(taskList, date)) {
+    if (isSameDayTaskList(taskList, date)) {
       switch (action) {
         case 'v2:task_list:updated':
           dispatch(updateTaskListsSuccess(taskList));
@@ -343,7 +338,7 @@ export function updateTour(action, tour) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTour(tour, date)) {
+    if (isSameDayTour(tour, date)) {
       switch (action) {
         case 'tour:created':
           dispatch(createTourSuccess(tour));
