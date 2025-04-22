@@ -1,4 +1,4 @@
-import { Text } from "native-base";
+import { Box, Text } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 
 import { navigateToTask } from '../../../navigation/utils';
@@ -9,10 +9,11 @@ import TaskList from "../../../components/TaskList";
 
 
 export default function GroupedTasks({
-  tasks,
-  title,
+  color,
   navigation,
   route,
+  tasks,
+  title,
 }) {
   const dispatch = useDispatch();
 
@@ -22,8 +23,15 @@ export default function GroupedTasks({
   const unassignTaskHandler = task => dispatch(unassignTask(task))
 
   return (
-    <>
-      <Text>{title}</Text>
+    <Box marginBottom={4}>
+      <Box backgroundColor={color}>
+        <Text
+          color={'white'}
+          padding={4}
+        >
+            {title}
+        </Text>
+      </Box>
       <TaskList
         tasks={tasks}
         tasksWithColor={tasksWithColor}
@@ -39,5 +47,5 @@ export default function GroupedTasks({
           )
         }
       />
-    </>)
+    </Box>)
 }

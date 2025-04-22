@@ -35,22 +35,25 @@ export default function AllTasks({
     });
   }, [dispatch]);
 
-
   return (
     <ScrollView style={{ flex: 1 }}>
       <GroupedTasks
-          tasks={unassignedTasks}
-          title={'New orders'}
+          color={'#000000'}
           navigation
           route
+          tasks={unassignedTasks}
+          title={t('New orders')}
       />
 
-      {taskLists.map(taskList => (
+      {taskLists
+        .filter(taskList => taskList.items.length > 0)
+        .map(taskList => (
         <GroupedTasks
-            tasks={taskList.items}
-            title={taskList.username}
+            color={taskList.color}
             navigation
             route
+            tasks={taskList.items}
+            title={taskList.username}
         />
       ))}
     </ScrollView>
