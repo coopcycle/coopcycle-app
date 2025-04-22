@@ -16,6 +16,8 @@ import { createDeliverySuccess } from '../../redux/Store/actions';
 import NavigationHolder from '../../NavigationHolder';
 import { HeaderBackButton } from '@react-navigation/elements';
 
+
+// TODO: remove Tabs
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => (
@@ -58,7 +60,7 @@ const MainNavigator = () => {
     <MainStack.Navigator screenOptions={screenOptions}>
       <MainStack.Screen
         name="DispatchHome"
-        component={Tabs}
+        component={screens.DispatchAllTasks}
         options={({ navigation }) => ({
           title: i18n.t('DISPATCH'),
           headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
