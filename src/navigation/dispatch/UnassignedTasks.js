@@ -39,7 +39,7 @@ function UnassignedTasks({
   const selectedDate = useSelector(selectSelectedDate);
 
   // USING SLICE
-  const [bulkAssignTasks, { isLoading }] = useBulkAssignTasksMutation();
+  const [bulkAssignTasks] = useBulkAssignTasksMutation();
   const allTasks = useSelector(selectAllTasks); 
 
   const {
@@ -62,7 +62,14 @@ function UnassignedTasks({
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
-    dispatch(assignTask(task, user.username));
+    // dispatch(assignTask(task, user.username));
+    const taskIdToAssign = withUnassignedLinkedTasks(task, allTasks)
+      .map(item => item['@id']);
+    bulkAssignTasks({
+      tasks: taskIdToAssign,
+      username: user.username,
+      date: selectedDate
+    })
   }
 
   const assignSelectedTasks = (selectedTasks) => {
@@ -71,23 +78,13 @@ function UnassignedTasks({
     });
   }
 
-  // DEP
-  // const _bulkAssign = (user, tasks) => {
-  //  navigation.navigate('DispatchUnassignedTasks');
-  //  dispatch(bulkAssignmentTasks(tasks, user.username, selectedDate));
-  //} 
-
   const _bulkAssign = (user, tasks) => {
     navigation.navigate('DispatchUnassignedTasks');
+    //  dispatch(bulkAssignmentTasks(tasks, user.username, selectedDate));
     const taskIdsToAssign = _.uniq(
           tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, allTasks)), [])
             .map(task => task['@id'])
         );
-        console.log('Full payload:', {
-          url: `/api/task_lists/set_items/${selectedDate.format('YYYY-MM-DD')}/${user.username}`,
-          method: 'PUT',
-          body: { items: taskIdsToAssign }
-        });
     bulkAssignTasks({
       tasks: taskIdsToAssign,
       username: user.username,
