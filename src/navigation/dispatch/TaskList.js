@@ -6,6 +6,8 @@ import { View } from 'react-native';
 
 import TaskList from '../../components/TaskList';
 import {
+  selectAllTasks,
+  selectSelectedDate,
   selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
@@ -15,6 +17,8 @@ import AddButton from './components/AddButton';
 
 import { navigateToTask } from '../../navigation/utils';
 import { useDispatch, useSelector } from 'react-redux';
+import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { useBulkAssignTasksMutation } from '../../redux/api/slice';
 
 function TaskListScreen({
   navigation,
@@ -26,7 +30,22 @@ function TaskListScreen({
 
   const tasksWithColor = useSelector(selectTasksWithColor)
   const taskLists = useSelector(selectTaskLists)
-  const unassignTaskHandler = task => dispatch(unassignTask(task))
+  // const unassignTaskHandler = task => dispatch(unassignTask(task))
+
+  // USING SLICE
+    const [bulkAssignTasks] = useBulkAssignTasksMutation();
+    const allTasks = useSelector(selectAllTasks); 
+    const selectedDate = useSelector(selectSelectedDate);
+
+  const unassignTaskHandler = (task) => {
+      const taskIdToUnassign = withUnassignedLinkedTasks(task, allTasks)
+        .map(item => item['@id']);
+      bulkAssignTasks({
+        tasks: taskIdToUnassign,
+        username: taskList.username,
+        date: selectedDate
+      })
+    }
 
   const [taskList, setTaskList] = useState(route.params?.taskList);
   const tasks = selectTasksNotCancelled({ tasks: taskList.items });
