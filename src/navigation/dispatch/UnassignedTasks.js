@@ -14,7 +14,6 @@ import {
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { navigateToTask } from '../../navigation/utils';
 import {
-  assignTask,
   initialize,
   loadTasksRequest,
 } from '../../redux/Dispatch/actions';
