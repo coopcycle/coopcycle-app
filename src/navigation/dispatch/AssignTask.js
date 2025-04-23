@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import TaskList from '../../components/TaskList';
 import { selectAllTasks, selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux';
-import { useBulkAssignTasksMutation } from '../../redux/api/slice';
+import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
 import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
 
@@ -26,14 +26,14 @@ export default function AssignTask({ route }) {
     }
 
    // USING SLICE
-   const [bulkAssignTasks] = useBulkAssignTasksMutation();
+   const [setTaskListsItems] = useSetTaskListsItemsMutation();
    const allTasks = useSelector(selectAllTasks); 
 
  const assignTask = (task) => {
   const username = route.params.username
   const taskIdToAssign = withUnassignedLinkedTasks(task, allTasks)
         .map(item => item['@id']);
-        bulkAssignTasks({
+        setTaskListsItems({
         tasks: taskIdToAssign,
         username: username,
         date: selectedDate

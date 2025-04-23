@@ -18,7 +18,7 @@ import {
   loadTasksRequest,
 } from '../../redux/Dispatch/actions';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
-import { useBulkAssignTasksMutation } from '../../redux/api/slice';
+import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
 import AddButton from './components/AddButton';
 import { useAllTasks } from './useAllTasks';
 import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
@@ -38,7 +38,7 @@ function UnassignedTasks({
   const selectedDate = useSelector(selectSelectedDate);
 
   // USING SLICE
-  const [bulkAssignTasks] = useBulkAssignTasksMutation();
+  const [setTaskListsItems] = useSetTaskListsItemsMutation();
   const allTasks = useSelector(selectAllTasks); 
 
   const {
@@ -63,7 +63,7 @@ function UnassignedTasks({
     navigation.navigate('DispatchUnassignedTasks');
     const taskIdToAssign = withUnassignedLinkedTasks(task, allTasks)
       .map(item => item['@id']);
-    bulkAssignTasks({
+      setTaskListsItems({
       tasks: taskIdToAssign,
       username: user.username,
       date: selectedDate
@@ -82,7 +82,7 @@ function UnassignedTasks({
           tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, allTasks)), [])
             .map(task => task['@id'])
         );
-    bulkAssignTasks({
+        setTaskListsItems({
       tasks: taskIdsToAssign,
       username: user.username,
       date: selectedDate

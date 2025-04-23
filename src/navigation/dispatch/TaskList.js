@@ -18,7 +18,7 @@ import AddButton from './components/AddButton';
 import { navigateToTask } from '../../navigation/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
-import { useBulkAssignTasksMutation } from '../../redux/api/slice';
+import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
 
 function TaskListScreen({
   navigation,
@@ -33,14 +33,14 @@ function TaskListScreen({
   // const unassignTaskHandler = task => dispatch(unassignTask(task))
 
   // USING SLICE
-    const [bulkAssignTasks] = useBulkAssignTasksMutation();
+    const [setTaskListsItems] = useSetTaskListsItemsMutation();
     const allTasks = useSelector(selectAllTasks); 
     const selectedDate = useSelector(selectSelectedDate);
 
   const unassignTaskHandler = (task) => {
       const taskIdToUnassign = withUnassignedLinkedTasks(task, allTasks)
         .map(item => item['@id']);
-      bulkAssignTasks({
+        setTaskListsItems({
         tasks: taskIdToUnassign,
         username: taskList.username,
         date: selectedDate

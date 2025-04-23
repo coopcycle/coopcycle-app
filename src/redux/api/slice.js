@@ -60,7 +60,7 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       },
     }),
-    bulkAssignTasks: builder.mutation({
+    setTaskListsItems: builder.mutation({
       query: ({ tasks, username, date }) => {
         const mutation = {
           url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
@@ -138,7 +138,7 @@ export const {
   useGetOrderTimingQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
-  useBulkAssignTasksMutation,
+  useSetTaskListsItemsMutation,
   useGetToursQuery,
   useGetTasksQuery,
   useSubscriptionGenerateOrdersMutation,
