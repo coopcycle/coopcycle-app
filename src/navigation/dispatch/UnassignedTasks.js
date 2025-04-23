@@ -61,7 +61,6 @@ function UnassignedTasks({
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
-    // dispatch(assignTask(task, user.username));
     const taskIdToAssign = withUnassignedLinkedTasks(task, allTasks)
       .map(item => item['@id']);
     bulkAssignTasks({
@@ -79,7 +78,6 @@ function UnassignedTasks({
 
   const _bulkAssign = (user, tasks) => {
     navigation.navigate('DispatchUnassignedTasks');
-    //  dispatch(bulkAssignmentTasks(tasks, user.username, selectedDate));
     const taskIdsToAssign = _.uniq(
           tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, allTasks)), [])
             .map(task => task['@id'])
