@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Text } from 'native-base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InteractionManager, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import TaskList from '../../components/TaskList';
 import {
   selectAllTasks,
   selectSelectedDate,
+  selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { navigateToTask } from '../../navigation/utils';
@@ -21,12 +22,13 @@ import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selector
 import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
 import AddButton from './components/AddButton';
 import { useAllTasks } from './useAllTasks';
-import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { getTasksForUser, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 
 
 function UnassignedTasks({
   navigation,
   route,
+  state
 }) {
   const { t } = useTranslation();
   const { navigate } = navigation;
@@ -39,7 +41,9 @@ function UnassignedTasks({
 
   // USING SLICE
   const [setTaskListsItems] = useSetTaskListsItemsMutation();
-  const allTasks = useSelector(selectAllTasks); 
+  const allTasks = useSelector(selectAllTasks);
+  const allTaskLists = useSelector(selectTaskLists);
+  
 
   const {
     isFetching,
@@ -58,13 +62,16 @@ function UnassignedTasks({
       dispatch(loadTasksRequest());
     }
   }, [dispatch, isFetching]);
-
+  
+  
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
-    const taskIdToAssign = withUnassignedLinkedTasks(task, allTasks)
+    const existingTaskIds = getTasksForUser(user.username, allTaskLists)
+    const taskIdsToAssign = withUnassignedLinkedTasks(task, allTasks)
       .map(item => item['@id']);
-      setTaskListsItems({
-      tasks: taskIdToAssign,
+   const allTaskIds = [...existingTaskIds, ...taskIdsToAssign];
+    setTaskListsItems({
+      tasks: allTaskIds,
       username: user.username,
       date: selectedDate
     })
@@ -78,12 +85,15 @@ function UnassignedTasks({
 
   const _bulkAssign = (user, tasks) => {
     navigation.navigate('DispatchUnassignedTasks');
+    const existingTaskIds = getTasksForUser(user.username, allTaskLists)
     const taskIdsToAssign = _.uniq(
           tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, allTasks)), [])
             .map(task => task['@id'])
         );
-        setTaskListsItems({
-      tasks: taskIdsToAssign,
+    
+    const allTaskIds = [...existingTaskIds, ...taskIdsToAssign];
+    setTaskListsItems({
+      tasks: allTaskIds,
       username: user.username,
       date: selectedDate
     });

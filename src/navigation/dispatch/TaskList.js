@@ -11,14 +11,13 @@ import {
   selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { unassignTask } from '../../redux/Dispatch/actions';
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import AddButton from './components/AddButton';
 
+import { useSelector } from 'react-redux';
 import { navigateToTask } from '../../navigation/utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
+import { getTasksForUser, withAssignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 
 function TaskListScreen({
   navigation,
@@ -26,29 +25,31 @@ function TaskListScreen({
 }) {
   const { t } = useTranslation();
   const { navigate } = navigation;
-  const dispatch = useDispatch()
 
   const tasksWithColor = useSelector(selectTasksWithColor)
   const taskLists = useSelector(selectTaskLists)
-  // const unassignTaskHandler = task => dispatch(unassignTask(task))
 
   // USING SLICE
     const [setTaskListsItems] = useSetTaskListsItemsMutation();
     const allTasks = useSelector(selectAllTasks); 
+    const allTaskLists = useSelector(selectTaskLists);
     const selectedDate = useSelector(selectSelectedDate);
 
+    const [taskList, setTaskList] = useState(route.params?.taskList);
+  const tasks = selectTasksNotCancelled({ tasks: taskList.items });
+
   const unassignTaskHandler = (task) => {
-      const taskIdToUnassign = withUnassignedLinkedTasks(task, allTasks)
+    const user = taskList.username
+    const existingTaskIds = getTasksForUser(user, allTaskLists)
+      const taskIdsToUnassign = withAssignedLinkedTasks(task, allTasks)
         .map(item => item['@id']);
-        setTaskListsItems({
-        tasks: taskIdToUnassign,
+      const updatedTaskIds = existingTaskIds.filter(id => !taskIdsToUnassign.includes(id));   
+    setTaskListsItems({
+        tasks: updatedTaskIds,
         username: taskList.username,
         date: selectedDate
       })
     }
-
-  const [taskList, setTaskList] = useState(route.params?.taskList);
-  const tasks = selectTasksNotCancelled({ tasks: taskList.items });
 
   // TODO check
    useEffect(() => {

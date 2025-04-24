@@ -5,9 +5,9 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import TaskList from '../../components/TaskList';
-import { selectAllTasks, selectSelectedDate, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux';
+import { selectAllTasks, selectSelectedDate, selectTaskLists, selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux';
 import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
-import { withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { getTasksForUser, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
 
 export default function AssignTask({ route }) {
@@ -28,13 +28,16 @@ export default function AssignTask({ route }) {
    // USING SLICE
    const [setTaskListsItems] = useSetTaskListsItemsMutation();
    const allTasks = useSelector(selectAllTasks); 
+   const allTaskLists = useSelector(selectTaskLists);
 
  const assignTask = (task) => {
   const username = route.params.username
-  const taskIdToAssign = withUnassignedLinkedTasks(task, allTasks)
+  const existingTaskIds = getTasksForUser(username, allTaskLists)
+  const taskIdsToAssign = withUnassignedLinkedTasks(task, allTasks)
         .map(item => item['@id']);
+  const allTaskIds = [...existingTaskIds, ...taskIdsToAssign];
         setTaskListsItems({
-        tasks: taskIdToAssign,
+        tasks: allTaskIds,
         username: username,
         date: selectedDate
       })
