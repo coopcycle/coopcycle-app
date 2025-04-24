@@ -91,3 +91,8 @@ export function tasksToIds(tasks) {
     item['@type'] === 'TaskCollectionItem' ? item.task : item['@id'],
   );
 }
+
+export function getTasksForUser(username, allTaskLists) {
+  const userTaskList = allTaskLists.find(taskList => taskList.username === username);
+  return (userTaskList.items || []).map(task => task['@id']);
+}
