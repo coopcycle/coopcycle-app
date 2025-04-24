@@ -130,3 +130,5 @@ export const {
   useUpdateOrderMutation,
   useGetStoresQuery
 } = apiSlice;
+
+export const clearApiState = apiSlice.util.resetApiState;

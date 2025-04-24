@@ -22,6 +22,7 @@ import { apiSlice } from './api/slice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { setupListenersReactNative } from './setupListenersReactNative';
 import AppStateMiddleware from './middlewares/AppStateMiddleware';
+import { ApiStateMiddleware } from './api/stateMiddleware';
 
 const middlewares = [
   thunk,
@@ -30,6 +31,7 @@ const middlewares = [
   AppStateMiddleware,
   HttpMiddleware,
   apiSlice.middleware,
+  ApiStateMiddleware,
   PushNotificationMiddleware,
   CentrifugoMiddleware,
   SentryMiddleware,
