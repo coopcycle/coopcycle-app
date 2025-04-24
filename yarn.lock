@@ -5103,10 +5103,11 @@
     wonka "^6.3.2"
 
 "@wix-pilot/core@^3.2.2":
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.2.4.tgz#049033436b39acfedef54e140e6b964afd41d938"
-  integrity sha512-OOzR9QnYTYv/wJtfdni/7gAPeTGcvFDvnUquTO/ZdmrffBiRxwuHHEd31zyioG6zQH0BflR9uHt57Bfr9KB6mA==
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.2.6.tgz#9d566c90b121d7e8ab78436a8496f3a2121f3b2e"
+  integrity sha512-iGjHOOpO13ZNfP3CZDlYhBZ7R6ZqO+1R38nDv5BCIOecD4A4z5/WpEyapvw+ZFsECjFZLWhuKNV0KTJoQAvxYw==
   dependencies:
+    chalk "^4.1.0"
     pngjs "^7.0.0"
     winston "^3.17.0"
 
@@ -6750,9 +6751,9 @@ detect-node@^2.0.4, detect-node@^2.1.0:
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
 
 detox@^20.27.6:
-  version "20.36.5"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-20.36.5.tgz#9dd7b7aeb994b277720bd0ad737e6a8eb4eab38b"
-  integrity sha512-MYatYo0H5sohafRA3lh7ss0BQGPdKtgswuwj7X7GjuB9o9FAs/8bSqfkKrKaCAbhpP56AxL0LkHvFgif5CNw6Q==
+  version "20.37.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-20.37.0.tgz#34fb32782caf1db5147c833ccb4c168e31820c45"
+  integrity sha512-OUI2p3z31Yku1USBia0jrlwoQoa6rANvVWuUSJyjBlRRKDSeOf/DG/ivk+R5FO+lYZZtA3pIbl6LSql/Bf6DpQ==
   dependencies:
     "@wix-pilot/core" "^3.2.2"
     "@wix-pilot/detox" "^1.0.11"
