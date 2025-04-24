@@ -64,6 +64,7 @@ export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
 export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
 export const cancelTaskFailure = createAction('@dispatch/CANCEL_TASK_FAILURE');
 
+// DEPRECATED
 export const assignTaskRequest = createAction('@dispatch/ASSIGN_TASK_REQUEST');
 export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
 export const assignTaskFailure = createAction('@dispatch/ASSIGN_TASK_FAILURE');
@@ -80,6 +81,7 @@ export const bulkAssignmentTasksFailure = createAction(
   '@dispatch/BULK_ASSIGNMENT_TASKS_FAILURE',
 );
 
+// DEPRECATED
 export const unassignTaskRequest = createAction('@dispatch/UNASSIGN_TASK_REQUEST');
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 export const unassignTaskFailure = createAction('@dispatch/UNASSIGN_TASK_FAILURE');
@@ -169,6 +171,7 @@ export function createTask(task) {
   };
 }
 
+// DEPRECATED
 export function assignTask(task, username) {
   return function (dispatch, getState) {
     const state = getState();
@@ -197,6 +200,8 @@ export function assignTask(task, username) {
  * @param {string} username - Username of the rider to which we assign
  *
  */
+
+// DEPRECATED ???
 export function bulkAssignmentTasks(tasks, username) {
   return function (dispatch, getState) {
     const state = getState();
@@ -219,6 +224,7 @@ export function bulkAssignmentTasks(tasks, username) {
   };
 }
 
+// DEPRECATED
 function maybeRemoveTourTasks(state, taskIdsToRemove) {
   const index = selectToursTasksIndex(state);
   const httpClient = state.app.httpClient;
@@ -241,6 +247,7 @@ function maybeRemoveTourTasks(state, taskIdsToRemove) {
   );
 }
 
+// DEPRECATED
 export function unassignTask(task, username) {
   return function (dispatch, getState) {
     const state = getState();
