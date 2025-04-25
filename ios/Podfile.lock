@@ -2031,7 +2031,7 @@ PODS:
   - RNBackgroundGeolocation (4.18.6):
     - CocoaLumberjack (~> 3.8.5)
     - React-Core
-  - RNCAsyncStorage (1.23.1):
+  - RNCAsyncStorage (2.1.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2975,7 +2975,7 @@ SPEC CHECKSUMS:
   RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
   RNBackgroundFetch: 005d4742a64a511ea54cf2929ace9f0804a7c511
   RNBackgroundGeolocation: 487a18057a109cb72e9bf83c469db57ba82b5b23
-  RNCAsyncStorage: 9ff617df4a485f2efba57bdf4face05a41767390
+  RNCAsyncStorage: b3520cd01fc00fd0e7c633812c23708c95ef1b2b
   RNCMaskedView: a718ad5339985073c3419c6b2406182d674e4a77
   RNCPicker: 2a41d02bcc3467f84b9f5c77a4d54583f16f6430
   RNCPushNotificationIOS: 6c4ca3388c7434e4a662b92e4dfeeee858e6f440
