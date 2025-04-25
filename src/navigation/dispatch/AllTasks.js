@@ -1,7 +1,7 @@
 import { ScrollView } from 'native-base';
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { InteractionManager, RefreshControl, StyleSheet } from "react-native";
+import { InteractionManager, RefreshControl } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { initialize } from "../../redux/Dispatch/actions";
@@ -17,52 +17,10 @@ import {
 } from 'native-base';
 
 import {
-  dateSelectHeaderHeight,
-  headerFontSize,
   primaryColor,
-  whiteColor,
+  whiteColor
 } from '../../styles/common';
-
-let styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  dateHeader: {
-    backgroundColor: primaryColor,
-    height: dateSelectHeaderHeight,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  dateHeaderText: {
-    color: whiteColor,
-    paddingHorizontal: 15,
-    fontSize: headerFontSize,
-  },
-  icon: {
-    color: whiteColor,
-    fontSize: 32,
-  },
-  body: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  todayContainer: {
-    backgroundColor: whiteColor,
-    alignItems: 'center',
-    paddingVertical: 12,
-    marginBottom: 4,
-  },
-  todayButton: {
-    color: primaryColor,
-    fontSize: 18,
-    fontWeight: '300',
-  },
-});
-
+import { useColorModeToken } from '../../styles/theme';
 
 export default function AllTasks({
   navigation,
@@ -76,6 +34,7 @@ export default function AllTasks({
 
   const dispatch = useDispatch();
 
+  const screenBackgroundColor = useColorModeToken('#E6E2E2', '#131313');
   const {
     isFetching,
     isError,
@@ -99,7 +58,7 @@ export default function AllTasks({
 
   return (
     <ScrollView 
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: screenBackgroundColor }}
       refreshControl={
         <RefreshControl refreshing={isFetching} onRefresh={refetch} />
       }
