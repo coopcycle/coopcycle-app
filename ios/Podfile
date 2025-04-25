@@ -27,7 +27,7 @@ $ExpoUseSources = [
   'expo-file-system'
 ]
 
-target 'CoopCycleApp' do
+target 'CoopCycle' do
   use_expo_modules!
   post_integrate do |installer|
     begin
@@ -48,7 +48,7 @@ target 'CoopCycleApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'CoopCycleAppTests' do
+  target 'CoopCycleTests' do
     inherit! :complete
     # Pods for testing
   end
