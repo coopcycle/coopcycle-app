@@ -1,4 +1,4 @@
-import { InteractionManager } from "react-native";
+import { InteractionManager, RefreshControl } from "react-native";
 import { ScrollView } from 'native-base';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -36,7 +36,12 @@ export default function AllTasks({
   }, [dispatch]);
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView 
+      style={{ flex: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+      }
+      >
       <GroupedTasks
           color={'#000000'}
           navigation
