@@ -39,6 +39,8 @@ target 'CoopCycle' do
   config = use_native_modules!
 
   pod 'GoogleSignIn', '~> 6.0.2'
+  # Add temporary IQKeyboardManagerSwift fork to solve problems with PrivacyInfo.xcprivacy
+  pod 'IQKeyboardManagerSwift', :git => 'https://github.com/douglasjunior/IQKeyboardManager.git', :branch => 'react-native-keyboard-manager'
 
   use_frameworks! :linkage => :static
 
