@@ -1,119 +1,90 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 import ItemSeparatorComponent from './ItemSeparator';
 import ItemsBulkFabButton from './ItemsBulkFabButton';
 import TaskListItem from './TaskListItem';
 
-class TaskList extends Component {
-  constructor(props) {
-    super(props);
+const TaskList = ({
+  tasks,
+  tasksType,
+  tasksWithColor,
+  onTaskClick,
+  onSwipeLeft,
+  onSwipeRight,
+  swipeOutLeftEnabled,
+  swipeOutRightEnabled,
+  swipeOutLeftIconName,
+  swipeOutRightIconName,
+  multipleSelectionIcon,
+  onMultipleSelectionAction,
+}) => {
+  const bulkFabButton = useRef(null);
 
-    this.state = {
-      selectedTasks: [],
-    };
-
-    this.bulkFabButton = React.createRef();
-
-    this.onFabButtonPressed = this.onFabButtonPressed.bind(this);
-  }
-
-  _onTaskClick(task) {
-    if (this.props.refreshing) {
-      return;
-    }
-    this.props.onTaskClick(task);
-  }
-
-  taskColor(task) {
-    let tasksWithColor = this.props.tasksWithColor ?? [];
-
-    return Object.prototype.hasOwnProperty.call(tasksWithColor, task['@id'])
-      ? this.props.tasksWithColor[task['@id']]
+  const taskColor = (task) => {
+    let tasksWithColorSafe = tasksWithColor ?? [];
+    return Object.prototype.hasOwnProperty.call(tasksWithColorSafe, task['@id'])
+      ? tasksWithColor[task['@id']]
       : '#ffffff';
-  }
+  };
 
-  _handleSwipeToLeft(task) {
-    this.bulkFabButton.current?.addItem(task);
-  }
+  const _handleSwipeToLeft = useCallback((task) => {
+    bulkFabButton.current?.addItem(task);
+  }, []);
 
-  _handleSwipeClosed(task) {
-    this.bulkFabButton.current?.removeItem(task);
-  }
+  const _handleSwipeClosed = useCallback((task) => {
+    bulkFabButton.current?.removeItem(task);
+  }, []);
 
-  componentDidUpdate() {
-    const { tasks } = this.props;
+  const onFabButtonPressed = useCallback(() => {
+    onMultipleSelectionAction(tasks);
+  }, [tasks, onMultipleSelectionAction]);
+
+  // check this filter
+  useEffect(() => {
     const doneTasks = tasks.filter(t => t.status !== 'DONE');
+    bulkFabButton.current?.updateItems(doneTasks);
+  }, [tasks]);
 
-    // Fab button shouldn't handle DONE tasks
-    this.bulkFabButton.current?.updateItems(doneTasks);
-  }
-
-  renderItem(task, index) {
-    let swipeOutRightEnabled = true;
-    if (typeof this.props.swipeOutRightEnabled === 'function') {
-      swipeOutRightEnabled = this.props.swipeOutRightEnabled(task);
-    }
-
-    let swipeOutLeftEnabled = false;
-    if (typeof this.props.swipeOutLeftEnabled === 'function') {
-      swipeOutLeftEnabled = this.props.swipeOutLeftEnabled(task);
-    }
-
-    const hasOnSwipeLeft =
-      typeof this.props.onSwipeLeft === 'function' && swipeOutLeftEnabled;
-    const hasOnSwipeRight =
-      typeof this.props.onSwipeRight === 'function' && swipeOutRightEnabled;
-
+  const renderItem = ({ item, index }) => {
     return (
       <TaskListItem
-        task={task}
+        task={item}
         index={index}
-        color={this.taskColor(task)}
-        onPress={() => this._onTaskClick(task)}
-        onPressLeft={() => {
-          this.props.onSwipeLeft(task);
-        }}
-        onPressRight={() => {
-          this.props.onSwipeRight(task);
-        }}
-        onSwipedToLeft={() => this._handleSwipeToLeft(task)}
-        onSwipeClosed={() => this._handleSwipeClosed(task)}
-        disableRightSwipe={!hasOnSwipeLeft}
-        disableLeftSwipe={!hasOnSwipeRight}
-        swipeOutLeftIconName={this.props.swipeOutLeftIconName}
-        swipeOutRightIconName={this.props.swipeOutRightIconName}
+        color={taskColor(item)}
+        onPress={() => onTaskClick(item)}
+        onPressLeft={() => onSwipeLeft(item)}
+        onPressRight={() => onSwipeRight(item)}
+        onSwipedToLeft={() => _handleSwipeToLeft(item)}
+        onSwipeClosed={() => _handleSwipeClosed(item)}
+        disableRightSwipe={tasksType === 'taskList'}
+        disableLeftSwipe={tasksType === 'unassignedTasks'}
+        swipeOutLeftIconName={swipeOutLeftIconName}
+        swipeOutRightIconName={swipeOutRightIconName}
       />
     );
-  }
+  };
 
-  onFabButtonPressed(tasks) {
-    this.props.onMultipleSelectionAction(tasks);
-  }
-
-  render() {
-    const { refreshing, onRefresh } = this.props;
-
-    return (
-      <>
-        <SwipeListView
-          data={this.props.tasks}
-          keyExtractor={(item, index) => item['@id']}
-          renderItem={({ item, index }) => this.renderItem(item, index)}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          ItemSeparatorComponent={ItemSeparatorComponent}
-        />
-        <ItemsBulkFabButton
-          iconName={this.props.multipleSelectionIcon}
-          onPressed={items => this.onFabButtonPressed(items)}
-          ref={this.bulkFabButton}
-        />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <SwipeListView
+        data={tasks}
+        keyExtractor={(item, index) => item['@id']}
+        renderItem={renderItem}
+        // handled globally
+        // refreshing={refreshing}
+        // onRefresh={onRefresh}
+        ItemSeparatorComponent={ItemSeparatorComponent}
+      />
+      <ItemsBulkFabButton
+        iconName={multipleSelectionIcon}
+        onPressed={(items) => onFabButtonPressed(items)}
+        ref={bulkFabButton}
+      />
+    </>
+  );
+};
 
 TaskList.defaultProps = {
   refreshing: false,
@@ -121,9 +92,17 @@ TaskList.defaultProps = {
 };
 
 TaskList.propTypes = {
+  tasks: PropTypes.array.isRequired,
+  tasksWithColor: PropTypes.object,
   onTaskClick: PropTypes.func.isRequired,
-  refreshing: PropTypes.bool,
-  onRefresh: PropTypes.func,
+  onSwipeLeft: PropTypes.func,
+  onSwipeRight: PropTypes.func,
+  swipeOutLeftEnabled: PropTypes.func,
+  swipeOutRightEnabled: PropTypes.func,
+  swipeOutLeftIconName: PropTypes.string,
+  swipeOutRightIconName: PropTypes.string,
+  multipleSelectionIcon: PropTypes.string,
+  onMultipleSelectionAction: PropTypes.func.isRequired,
 };
 
 export default TaskList;
