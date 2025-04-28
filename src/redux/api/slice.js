@@ -74,6 +74,20 @@ export const apiSlice = createApi({
         return mutation;
       },
     }),
+    setTourItems: builder.mutation({
+      query: ({ tourUrl, tourTasks }) => {
+        const mutation = {
+          url: tourUrl,
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/ld+json',
+          },
+          body: JSON.stringify({ tasks: tourTasks })
+        };
+
+        return mutation;
+      },
+    }),
     getTours: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -136,12 +150,13 @@ export const {
   useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
+  useGetStoresQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
-  useSetTaskListsItemsMutation,
-  useGetToursQuery,
   useGetTasksQuery,
+  useGetToursQuery,
+  useSetTourItemsMutation,
+  useSetTaskListsItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
-  useGetStoresQuery
 } = apiSlice;
