@@ -61,6 +61,7 @@ async function _assignTask(httpClient, task_id, token) {
   }
 }
 
+// TODO: implement this using useSetTaskListsItems
 async function _unassignTask(httpClient, task_id, token) {
   if (task_id) {
     return await httpClient.put(
