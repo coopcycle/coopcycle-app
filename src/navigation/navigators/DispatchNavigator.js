@@ -18,6 +18,7 @@ import { HeaderBackButton } from '@react-navigation/elements';
 
 
 // TODO: remove Tabs
+// deprecated for the moment. Leaving because we might be using tabs for filters
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => (
