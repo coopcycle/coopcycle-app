@@ -1,23 +1,19 @@
 import _ from 'lodash';
 import { Text } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
-import TaskList from '../../components/TaskList';
+import { navigateToTask } from '../../navigation/utils';
 import {
-  selectAllTasks,
-  selectSelectedDate,
   selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import AddButton from './components/AddButton';
-
-import { useSelector } from 'react-redux';
-import { navigateToTask } from '../../navigation/utils';
-import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
-import { getUserTasks, withAssignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import TaskList from '../../components/TaskList';
+import useSetTaskListsItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 function TaskListScreen({
   navigation,
@@ -29,27 +25,17 @@ function TaskListScreen({
   const tasksWithColor = useSelector(selectTasksWithColor)
   const taskLists = useSelector(selectTaskLists)
 
-  // USING SLICE
-    const [setTaskListsItems] = useSetTaskListsItemsMutation();
-    const allTasks = useSelector(selectAllTasks);
-    const allTaskLists = useSelector(selectTaskLists);
-    const selectedDate = useSelector(selectSelectedDate);
+  const {
+    unassignTask,
+  } = useSetTaskListsItems();
 
-    const [taskList, setTaskList] = useState(route.params?.taskList);
+  const [taskList, setTaskList] = useState(route.params?.taskList);
   const tasks = selectTasksNotCancelled({ tasks: taskList.items });
 
   const unassignTaskHandler = (task) => {
-    const user = taskList.username
-    const existingTaskIds = getUserTasks(user, allTaskLists).map(item => item['@id']);
-    const taskIdsToUnassign = withAssignedLinkedTasks(task, allTasks)
-      .map(item => item['@id']);
-    const updatedTaskIds = existingTaskIds.filter(id => !taskIdsToUnassign.includes(id));
-    setTaskListsItems({
-        tasks: updatedTaskIds,
-        username: taskList.username,
-        date: selectedDate
-      })
-    }
+    const user = {username: taskList.username};
+    unassignTask(task, user);
+  }
 
   // TODO check
    useEffect(() => {
