@@ -158,6 +158,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+
       - run: sudo apt-get install libpulse0
 
       - name: Gradle cache
@@ -196,7 +197,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.EMULATOR_API_LEVEL }}
-          target: default
+          target: playstore
           arch: x86_64
           profile: pixel_6
           force-avd-creation: false
