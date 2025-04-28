@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo } from 'react';
 
-import { assignTaskSuccess, unassignTaskSuccess, updateTaskListsSuccess } from '../../../../../redux/Dispatch/actions';
+import { assignTaskSuccess, unassignTaskSuccess, updateTaskListTasksFailure, updateTaskListTasksRequest, updateTaskListTasksSuccess, updateTaskListsSuccess, updateTourSuccess } from '../../../../../redux/Dispatch/actions';
 import { getAssignedTask, getUserTasks, withAssignedLinkedTasks, withUnassignedLinkedTasks } from "../taskUtils";
 import { selectAllTasks, selectSelectedDate, selectTaskLists, selectToursTasksIndex } from "../selectors";
 import { useSetTaskListsItemsMutation, useSetTourItemsMutation } from "../../../../../redux/api/slice";
@@ -34,6 +35,39 @@ export default function useSetTaskListsItems(
     }
   ] = useSetTourItemsMutation();
 
+  const isLoading = useMemo(
+    () => isLoadingSetTaskListItems || isLoadingSetTourItems,
+    [isLoadingSetTaskListItems, isLoadingSetTourItems]
+  );
+
+  const isSuccess = useMemo(
+    () => isSuccessSetTaskListItems || isSuccessSetTourItems,
+    [isSuccessSetTaskListItems, isSuccessSetTourItems]
+  );
+
+  const isError = useMemo(
+    () => isErrorSetTaskListItems || isErrorSetTourItems,
+    [isErrorSetTaskListItems, isErrorSetTourItems]
+  );
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(updateTaskListTasksRequest());
+    }
+  }, [dispatch, isLoading]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(updateTaskListTasksSuccess());
+    }
+  }, [dispatch, isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      dispatch(updateTaskListTasksFailure());
+    }
+  }, [dispatch, isError]);
+
   /**
    * Assign just one task to rider
    * @param {Task} task - Task to be assigned
@@ -43,7 +77,7 @@ export default function useSetTaskListsItems(
     const userTasks = getUserTasks(user.username, allTaskLists);
     const allTasksToAssign = [...userTasks, task];
 
-    return updateAssignedTasks(allTasksToAssign, user);
+    return _updateAssignedTasks(allTasksToAssign, user);
   }
 
   /**
@@ -56,7 +90,7 @@ export default function useSetTaskListsItems(
     const linkedTasks = withUnassignedLinkedTasks(task, allTasks);
     const allTasksToAssign = [...userTasks, ...linkedTasks];
 
-    return updateAssignedTasks(allTasksToAssign, user);
+    return _updateAssignedTasks(allTasksToAssign, user);
   }
 
   /**
@@ -72,7 +106,7 @@ export default function useSetTaskListsItems(
     );
     const allTasksToAssign = [...userTasks, ...tasksWithLinkedTasks];
 
-    return updateAssignedTasks(allTasksToAssign, user);
+    return _updateAssignedTasks(allTasksToAssign, user);
   }
 
   /**
@@ -86,15 +120,13 @@ export default function useSetTaskListsItems(
     const tasksToUnassign = new Set(linkedTasks.map(t => t['@id']));
     const allTasksToAssign = userTasks.filter(userTask => !tasksToUnassign.has(userTask['@id']));
 
-    const onSuccess = () => {
+    return _updateAssignedTasks(allTasksToAssign, user).then(() => {
       const unassignedTasks = linkedTasks.map(_task => getAssignedTask(_task));
       unassignedTasks.forEach(unassignedTask => dispatch(unassignTaskSuccess(unassignedTask)));
-    }
-
-    return updateAssignedTasks(allTasksToAssign, user, onSuccess);
+    });
   }
 
-  const updateAssignedTasks = (tasks, user, onSuccess = () => {}, onError = () => {}) => {
+  const _updateAssignedTasks = (tasks, user) => {
     const tasksIds = tasks.map(task => task['@id']);
 
     return setTaskListsItems({
@@ -102,20 +134,16 @@ export default function useSetTaskListsItems(
         username: user.username,
         date: selectedDate
       })
-      .then(res => maybeRemoveTourTasks(tasksIds).then(_res => res))
+      .then(res => _maybeRemoveTourTasks(tasksIds).then(_res => res))
       .then(({data: taskList}) => {
         dispatch(updateTaskListsSuccess(taskList));
 
         const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
         newUserTasks.forEach(task => dispatch(assignTaskSuccess(task)));
-        onSuccess();
-      })
-      .catch(error => {
-        onError();
       });
   }
 
-  function maybeRemoveTourTasks(taskIdsToRemove) {
+  function _maybeRemoveTourTasks(taskIdsToRemove) {
     const toursToUpdate = taskIdsToRemove.reduce((acc, taskId) => {
       const tourId = toursIndexes.tasks[taskId];
       if (tourId) {
@@ -129,13 +157,25 @@ export default function useSetTaskListsItems(
 
     return Promise.all(
       Object.entries(toursToUpdate).map(([tourUrl, tourTasks]) => setTourItems({tourUrl, tourTasks}))
-    );
+    ).then(() => {
+      Object.entries(toursToUpdate).forEach(([tourId, tourTasks]) => {
+        const tour = toursIndexes.tours[tourId];
+        const updatedTour = {
+          ...tour,
+          items: tourTasks,
+        }
+        dispatch(updateTourSuccess(updatedTour));
+      })
+    });
   }
 
   return {
     assignTask,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
+    isError,
+    isLoading,
+    isSuccess,
     unassignTaskWithRelatedTasks,
   };
 }
