@@ -91,6 +91,10 @@ export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
+export const updateTaskListTasksRequest = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_REQUEST');
+export const updateTaskListTasksSuccess = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_SUCCESS');
+export const updateTaskListTasksFailure = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_FAILURE');
+
 
 function showAlert(e) {
   let message = i18n.t('TRY_LATER');
