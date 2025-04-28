@@ -74,7 +74,8 @@ export default function AllTasks({
             title={t('UNASSIGNED_TASKS')}
         />
       {taskLists
-        .filter(taskList => taskList.items.length > 0)
+        // commented this to show even if empty
+        // .filter(taskList => taskList.items.length > 0)
         .map(taskList => (
         <GroupedTasks
             backgroundColor={taskList.color}
