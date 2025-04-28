@@ -11,9 +11,7 @@ import {
 } from '../../redux/Dispatch/actions';
 import { navigateToTask } from '../../navigation/utils';
 import {
-  selectAllTasks,
   selectSelectedDate,
-  selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
@@ -46,6 +44,7 @@ function UnassignedTasks({
 
   const {
     assignTaskWithRelatedTasks,
+    bulkAssignTasksWithRelatedTasks,
   } = useSetTaskListsItems();
 
   useEffect(() => {
@@ -73,18 +72,7 @@ function UnassignedTasks({
 
   const _bulkAssign = (user, tasks) => {
     navigation.navigate('DispatchUnassignedTasks');
-    const existingTaskIds = getTasksForUser(user.username, allTaskLists)
-    const taskIdsToAssign = _.uniq(
-          tasks.reduce((acc, task) => acc.concat(withUnassignedLinkedTasks(task, allTasks)), [])
-            .map(task => task['@id'])
-        );
-    
-    const allTaskIds = [...existingTaskIds, ...taskIdsToAssign];
-    setTaskListsItems({
-      tasks: allTaskIds,
-      username: user.username,
-      date: selectedDate
-    });
+    bulkAssignTasksWithRelatedTasks(tasks, user);
   }
 
   const allowToSelect = (task) => {

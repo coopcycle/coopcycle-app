@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { useSelector } from "react-redux";
 
 import { useSetTaskListsItemsMutation, useSetTourItemsMutation } from "../../../../../redux/api/slice";
@@ -44,29 +45,56 @@ export default function useSetTaskListsItems(
   //   })
   // }
 
-  const assignTask = (task, user, callback = () => {}) => {
+
+  /**
+   * Assign just one task to rider
+   * @param {Task} task - Task to be assigned
+   * @param {string} username - Username of the rider to which we assign
+   */
+  const assignTask = (task, user) => {
     const userTasks = getUserTasks(user.username, allTaskLists);
     const allTasksToAssign = [...userTasks, task];
 
-    return updateAssignedTasks(allTasksToAssign, user, callback);
+    return updateAssignedTasks(allTasksToAssign, user);
   }
 
-  const assignTaskWithRelatedTasks = (task, user, callback = () => {}) => {
+  /**
+   * Assign a task and its related tasks to rider
+   * @param {Task} task - Task to be assigned
+   * @param {string} username - Username of the rider to which we assign
+   */
+  const assignTaskWithRelatedTasks = (task, user) => {
     const userTasks = getUserTasks(user.username, allTaskLists);
     const linkedTasks = withUnassignedLinkedTasks(task, allTasks);
     const allTasksToAssign = [...userTasks, ...linkedTasks];
 
-    return updateAssignedTasks(allTasksToAssign, user, callback);
+    return updateAssignedTasks(allTasksToAssign, user);
   }
 
-  const unassignTask = (task, user, callback = () => {}) => {
+  /**
+   * Assign several tasks at once (and add the linked tasks)
+   * @param {Array.Objects} tasks - Task to be assigned
+   * @param {string} username - Username of the rider to which we assign
+   */
+  const bulkAssignTasksWithRelatedTasks = (tasks, user) => {
+    const userTasks = getUserTasks(user.username, allTaskLists);
+    const tasksWithLinkedTasks = _.uniqBy(
+      _.flatMap(tasks.map(task => withUnassignedLinkedTasks(task, allTasks))),
+      '@id',
+    );
+    const allTasksToAssign = [...userTasks, ...tasksWithLinkedTasks];
+
+    return updateAssignedTasks(allTasksToAssign, user);
+  }
+
+  const unassignTask = (task, user) => {
     const userTasks = getUserTasks(user.username, allTaskLists);
     const allTasksToAssign = userTasks.filter(userTask => userTask['@id'] !== task['@id']);
 
-    return updateAssignedTasks(allTasksToAssign, user, callback);
+    return updateAssignedTasks(allTasksToAssign, user);
   }
 
-  const updateAssignedTasks = (tasks, user, callback = () => {}) => {
+  const updateAssignedTasks = (tasks, user) => {
     const tasksIds = tasks.map(item => item['@id']);
 
     return setTaskListsItems({
@@ -74,8 +102,10 @@ export default function useSetTaskListsItems(
         username: user.username,
         date: selectedDate
       })
-      .then(() => maybeRemoveTourTasks(tasksIds))
-      .finally(() => callback());
+      .then(res => maybeRemoveTourTasks(tasksIds).then(_res => res))
+      .finally(res => {
+        // dispatch res, update tasklist
+      });
   }
 
   function maybeRemoveTourTasks(taskIdsToRemove) {
@@ -98,6 +128,7 @@ export default function useSetTaskListsItems(
   return {
     assignTask,
     assignTaskWithRelatedTasks,
+    bulkAssignTasksWithRelatedTasks,
     unassignTask,
   };
 }
