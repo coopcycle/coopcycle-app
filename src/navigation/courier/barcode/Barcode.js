@@ -46,6 +46,7 @@ async function _startTask(httpClient, task_id) {
   }
 }
 
+// TODO: implement this using useSetTaskListsItems
 async function _assignTask(httpClient, task_id, token) {
   if (task_id) {
     return await httpClient.put(
