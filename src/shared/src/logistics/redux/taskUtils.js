@@ -92,7 +92,6 @@ export function tasksToIds(tasks) {
   );
 }
 
-export function getTasksForUser(username, allTaskLists) {
-  const userTaskList = allTaskLists.find(taskList => taskList.username === username);
-  return (userTaskList.items || []).map(task => task['@id']);
+export function getUserTasks(username, allTaskLists) {
+  return allTaskLists.filter(taskList => taskList.username === username);
 }

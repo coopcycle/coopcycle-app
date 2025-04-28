@@ -17,7 +17,7 @@ import AddButton from './components/AddButton';
 import { useSelector } from 'react-redux';
 import { navigateToTask } from '../../navigation/utils';
 import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
-import { getTasksForUser, withAssignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import { getUserTasks, withAssignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
 
 function TaskListScreen({
   navigation,
@@ -31,7 +31,7 @@ function TaskListScreen({
 
   // USING SLICE
     const [setTaskListsItems] = useSetTaskListsItemsMutation();
-    const allTasks = useSelector(selectAllTasks); 
+    const allTasks = useSelector(selectAllTasks);
     const allTaskLists = useSelector(selectTaskLists);
     const selectedDate = useSelector(selectSelectedDate);
 
@@ -40,10 +40,10 @@ function TaskListScreen({
 
   const unassignTaskHandler = (task) => {
     const user = taskList.username
-    const existingTaskIds = getTasksForUser(user, allTaskLists)
-      const taskIdsToUnassign = withAssignedLinkedTasks(task, allTasks)
-        .map(item => item['@id']);
-      const updatedTaskIds = existingTaskIds.filter(id => !taskIdsToUnassign.includes(id));   
+    const existingTaskIds = getUserTasks(user, allTaskLists).map(item => item['@id']);
+    const taskIdsToUnassign = withAssignedLinkedTasks(task, allTasks)
+      .map(item => item['@id']);
+    const updatedTaskIds = existingTaskIds.filter(id => !taskIdsToUnassign.includes(id));
     setTaskListsItems({
         tasks: updatedTaskIds,
         username: taskList.username,
