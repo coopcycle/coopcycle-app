@@ -26,7 +26,7 @@ function TaskListScreen({
   const taskLists = useSelector(selectTaskLists)
 
   const {
-    unassignTask,
+    unassignTaskWithRelatedTasks,
   } = useSetTaskListsItems();
 
   const [taskList, setTaskList] = useState(route.params?.taskList);
@@ -34,7 +34,7 @@ function TaskListScreen({
 
   const unassignTaskHandler = (task) => {
     const user = {username: taskList.username};
-    unassignTask(task, user);
+    unassignTaskWithRelatedTasks(task, user);
   }
 
   // TODO check

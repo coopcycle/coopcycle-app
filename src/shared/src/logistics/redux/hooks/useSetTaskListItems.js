@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { useDispatch, useSelector } from "react-redux";
 
 import { assignTaskSuccess, unassignTaskSuccess, updateTaskListsSuccess } from '../../../../../redux/Dispatch/actions';
-import { getUserTasks, withUnassignedLinkedTasks } from "../taskUtils";
+import { getAssignedTask, getUserTasks, withAssignedLinkedTasks, withUnassignedLinkedTasks } from "../taskUtils";
 import { selectAllTasks, selectSelectedDate, selectTaskLists, selectToursTasksIndex } from "../selectors";
 import { useSetTaskListsItemsMutation, useSetTourItemsMutation } from "../../../../../redux/api/slice";
 
@@ -34,25 +34,10 @@ export default function useSetTaskListsItems(
     }
   ] = useSetTourItemsMutation();
 
-
-  // const _assignTask = (task, user) => {
-  //   navigation.navigate('DispatchUnassignedTasks');
-  //   const existingTaskIds = getTasksForUser(user.username, allTaskLists)
-  //   const taskIdsToAssign = withUnassignedLinkedTasks(task, allTasks)
-  //     .map(item => item['@id']);
-  //   const allTaskIds = [...existingTaskIds, ...taskIdsToAssign];
-  //   setTaskListsItems({
-  //     tasks: allTaskIds,
-  //     username: user.username,
-  //     date: selectedDate
-  //   })
-  // }
-
-
   /**
    * Assign just one task to rider
    * @param {Task} task - Task to be assigned
-   * @param {string} username - Username of the rider to which we assign
+   * @param {User} user - User of the rider to which we assign
    */
   const assignTask = (task, user) => {
     const userTasks = getUserTasks(user.username, allTaskLists);
@@ -64,7 +49,7 @@ export default function useSetTaskListsItems(
   /**
    * Assign a task and its related tasks to rider
    * @param {Task} task - Task to be assigned
-   * @param {string} username - Username of the rider to which we assign
+   * @param {User} user - User of the rider to which we assign
    */
   const assignTaskWithRelatedTasks = (task, user) => {
     const userTasks = getUserTasks(user.username, allTaskLists);
@@ -75,9 +60,9 @@ export default function useSetTaskListsItems(
   }
 
   /**
-   * Assign several tasks at once (and add the linked tasks)
+   * Assign several tasks at once (and also the linked tasks)
    * @param {Array.Objects} tasks - Task to be assigned
-   * @param {string} username - Username of the rider to which we assign
+   * @param {User} user - User of the rider to which we assign
    */
   const bulkAssignTasksWithRelatedTasks = (tasks, user) => {
     const userTasks = getUserTasks(user.username, allTaskLists);
@@ -90,21 +75,26 @@ export default function useSetTaskListsItems(
     return updateAssignedTasks(allTasksToAssign, user);
   }
 
-  const unassignTask = (task, user) => {
+  /**
+   * Unassign a task and its related tasks to rider
+   * @param {Task} task - Task to be unassigned
+   * @param {User} user - User of the rider to which we assign
+   */
+  const unassignTaskWithRelatedTasks = (task, user) => {
     const userTasks = getUserTasks(user.username, allTaskLists);
-    const allTasksToAssign = userTasks.filter(userTask => userTask['@id'] !== task['@id']);
+    const linkedTasks = withAssignedLinkedTasks(task, allTasks);
+    const tasksToUnassign = new Set(linkedTasks.map(t => t['@id']));
+    const allTasksToAssign = userTasks.filter(userTask => !tasksToUnassign.has(userTask['@id']));
 
-    return updateAssignedTasks(allTasksToAssign, user).then(() => {
-      const unassignedTask = {
-        ...task,
-        isAssigned: false,
-        assignedTo: undefined,
-      };
-      dispatch(unassignTaskSuccess(unassignedTask));
-    });
+    const onSuccess = () => {
+      const unassignedTasks = linkedTasks.map(_task => getAssignedTask(_task));
+      unassignedTasks.forEach(unassignedTask => dispatch(unassignTaskSuccess(unassignedTask)));
+    }
+
+    return updateAssignedTasks(allTasksToAssign, user, onSuccess);
   }
 
-  const updateAssignedTasks = (tasks, user) => {
+  const updateAssignedTasks = (tasks, user, onSuccess = () => {}, onError = () => {}) => {
     const tasksIds = tasks.map(task => task['@id']);
 
     return setTaskListsItems({
@@ -116,12 +106,12 @@ export default function useSetTaskListsItems(
       .then(({data: taskList}) => {
         dispatch(updateTaskListsSuccess(taskList));
 
-        const newUserTasks = tasks.map(task => ({
-          ...task,
-          isAssigned: true,
-          assignedTo: user.username,
-        }));
+        const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
         newUserTasks.forEach(task => dispatch(assignTaskSuccess(task)));
+        onSuccess();
+      })
+      .catch(error => {
+        onError();
       });
   }
 
@@ -146,6 +136,6 @@ export default function useSetTaskListsItems(
     assignTask,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
-    unassignTask,
+    unassignTaskWithRelatedTasks,
   };
 }
