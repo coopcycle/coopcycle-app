@@ -13,8 +13,6 @@ const TaskList = ({
   onTaskClick,
   onSwipeLeft,
   onSwipeRight,
-  swipeOutLeftEnabled,
-  swipeOutRightEnabled,
   swipeOutLeftIconName,
   swipeOutRightIconName,
   multipleSelectionIcon,
