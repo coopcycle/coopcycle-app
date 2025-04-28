@@ -1,8 +1,5 @@
 import { actionMatchCreator } from '../util';
 import {
-  assignTaskFailure,
-  assignTaskRequest,
-  assignTaskSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -16,9 +13,6 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
-  unassignTaskFailure,
-  unassignTaskRequest,
-  unassignTaskSuccess,
   updateTaskListTasksFailure,
   updateTaskListTasksRequest,
   updateTaskListTasksSuccess,
@@ -37,12 +31,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
-    assignTaskRequest,
     createTaskRequest,
     loadTaskListsRequest,
     loadTasksRequest,
     loadUsersRequest,
-    unassignTaskRequest,
   ])) {
     return {
       ...state,
@@ -51,13 +43,11 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    assignTaskFailure,
     createTaskFailure,
     loadTaskListsFailure,
     loadTasksFailure,
     loadToursFailure,
     loadUsersFailure,
-    unassignTaskFailure,
   ])) {
     return {
       ...state,
@@ -66,14 +56,12 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    assignTaskSuccess,
     cancelTaskSuccess,
     createTaskSuccess,
     loadTaskListsSuccess,
     loadTasksSuccess,
     loadToursSuccess,
     loadUsersSuccess,
-    unassignTaskSuccess,
   ])) {
     return {
       ...state,

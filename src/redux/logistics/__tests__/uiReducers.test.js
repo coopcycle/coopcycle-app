@@ -1,7 +1,4 @@
 import {
-  assignTaskFailure,
-  assignTaskRequest,
-  assignTaskSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -15,9 +12,6 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
-  unassignTaskFailure,
-  unassignTaskRequest,
-  unassignTaskSuccess,
   updateTaskListTasksFailure,
   updateTaskListTasksRequest,
   updateTaskListTasksSuccess,
@@ -38,12 +32,10 @@ describe('uiReducers', () => {
 
   describe('isFetching', () => {
     it.each([
-      ['assignTaskRequest', assignTaskRequest],
       ['createTaskRequest', createTaskRequest],
       ['loadTaskListsRequest', loadTaskListsRequest],
       ['loadTasksRequest', loadTasksRequest],
       ['loadUsersRequest', loadUsersRequest],
-      ['unassignTaskRequest', unassignTaskRequest],
     ])('should change isFetching to TRUE for load action %s', (actionName, actionCreator) => {
       const action = actionCreator();
 
@@ -53,12 +45,10 @@ describe('uiReducers', () => {
     })
 
     it.each([
-      ['assignTaskFailure', assignTaskFailure],
       ['createTaskFailure', createTaskFailure],
       ['loadTaskListsFailure', loadTaskListsFailure],
       ['loadTasksFailure', loadTasksFailure],
       ['loadUsersFailure', loadUsersFailure],
-      ['unassignTaskFailure', unassignTaskFailure],
       ['loadToursFailure', loadToursFailure],
     ])('should change isFetching to FALSE for failure action %s', (actionName, actionCreator) => {
       const action = actionCreator();
@@ -73,14 +63,12 @@ describe('uiReducers', () => {
     })
 
     it.each([
-      ['assignTaskSuccess', assignTaskSuccess],
       ['cancelTaskSuccess', cancelTaskSuccess],
       ['createTaskSuccess', createTaskSuccess],
       ['loadTaskListsSuccess', loadTaskListsSuccess],
       ['loadTasksSuccess', loadTasksSuccess],
       ['loadToursSuccess', loadToursSuccess],
       ['loadUsersSuccess', loadUsersSuccess],
-      ['unassignTaskSuccess', unassignTaskSuccess],
     ])('should change isFetching to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {
