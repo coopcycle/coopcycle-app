@@ -1,4 +1,4 @@
-import { ScrollView } from 'native-base';
+import { ScrollView, View } from 'native-base';
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { InteractionManager, RefreshControl } from "react-native";
@@ -21,6 +21,7 @@ import {
   whiteColor
 } from '../../styles/common';
 import { useColorModeToken } from '../../styles/theme';
+import AddButton from './components/AddButton';
 
 export default function AllTasks({
   navigation,
@@ -65,12 +66,22 @@ export default function AllTasks({
       >
       {!isFetching &&
       <>
+        <View>
+          <AddButton
+            testID="dispatchNewDelivery"
+            onPress={() => navigation.navigate('DispatchNewDelivery')}>
+            <Text style={{ fontWeight: '700' }}>
+              {selectedDate.format('ll')}
+            </Text>
+          </AddButton>
+        </View>
         <GroupedTasks
             backgroundColor={whiteColor}
             textColor={primaryColor}
             navigation
             route
             tasks={unassignedTasks}
+            tasksType='unassignedTasks'
             title={t('UNASSIGNED_TASKS')}
         />
       {taskLists
@@ -83,7 +94,8 @@ export default function AllTasks({
             navigation
             route
             tasks={taskList.items}
-            title={taskList.username}
+            tasksType='taskList'
+            title={`${taskList.username} (${taskList.items.length})`}
         />
       ))}
       </>}
