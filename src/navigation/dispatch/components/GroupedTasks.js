@@ -32,12 +32,10 @@ export default function GroupedTasks({
 
   // todo update to use slice when mergin branch 313
   const _assignTask = (task, user) => {
-    navigation.navigate('DispatchUnassignedTasks');
     dispatch(assignTask(task, user.username));
   }
 
   const _bulkAssign = (user) => {
-      navigation.navigate('DispatchUnassignedTasks');
       dispatch(bulkAssignmentTasks(tasks, user.username));
     }
 
