@@ -1,9 +1,10 @@
 import _ from 'lodash';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSetTaskListsItemsMutation, useSetTourItemsMutation } from "../../../../../redux/api/slice";
+import { assignTaskSuccess, unassignTaskSuccess, updateTaskListsSuccess } from '../../../../../redux/Dispatch/actions';
 import { getUserTasks, withUnassignedLinkedTasks } from "../taskUtils";
 import { selectAllTasks, selectSelectedDate, selectTaskLists, selectToursTasksIndex } from "../selectors";
+import { useSetTaskListsItemsMutation, useSetTourItemsMutation } from "../../../../../redux/api/slice";
 
 
 export default function useSetTaskListsItems(
@@ -13,6 +14,8 @@ export default function useSetTaskListsItems(
   const allTaskLists = useSelector(selectTaskLists);
   const toursIndexes = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
+
+  const dispatch = useDispatch();
 
   const [
     setTaskListsItems,
@@ -91,11 +94,18 @@ export default function useSetTaskListsItems(
     const userTasks = getUserTasks(user.username, allTaskLists);
     const allTasksToAssign = userTasks.filter(userTask => userTask['@id'] !== task['@id']);
 
-    return updateAssignedTasks(allTasksToAssign, user);
+    return updateAssignedTasks(allTasksToAssign, user).then(() => {
+      const unassignedTask = {
+        ...task,
+        isAssigned: false,
+        assignedTo: undefined,
+      };
+      dispatch(unassignTaskSuccess(unassignedTask));
+    });
   }
 
   const updateAssignedTasks = (tasks, user) => {
-    const tasksIds = tasks.map(item => item['@id']);
+    const tasksIds = tasks.map(task => task['@id']);
 
     return setTaskListsItems({
         tasks: tasksIds,
@@ -103,8 +113,15 @@ export default function useSetTaskListsItems(
         date: selectedDate
       })
       .then(res => maybeRemoveTourTasks(tasksIds).then(_res => res))
-      .finally(res => {
-        // dispatch res, update tasklist
+      .then(({data: taskList}) => {
+        dispatch(updateTaskListsSuccess(taskList));
+
+        const newUserTasks = tasks.map(task => ({
+          ...task,
+          isAssigned: true,
+          assignedTo: user.username,
+        }));
+        newUserTasks.forEach(task => dispatch(assignTaskSuccess(task)));
       });
   }
 
