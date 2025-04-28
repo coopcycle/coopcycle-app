@@ -3,26 +3,49 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TaskList from "../../../components/TaskList";
 import { navigateToTask } from '../../../navigation/utils';
-import { unassignTask } from "../../../redux/Dispatch/actions";
+import { assignTask, bulkAssignmentTasks, unassignTask } from "../../../redux/Dispatch/actions";
 import { selectUnassignedTasksNotCancelled } from "../../../redux/Dispatch/selectors";
 import { selectTasksWithColor } from "../../../shared/logistics/redux";
 import { headerFontSize } from "../../../styles/common";
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function GroupedTasks({
   backgroundColor,
   textColor,
-  navigation,
   route,
   tasks,
+  tasksType,
   title,
 }) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
 
   const unassignTaskHandler = task => dispatch(unassignTask(task))
+
+  const allowToSelect = (task) => {
+    return task.status !== 'DONE';
+  }
+
+  // todo update to use slice when mergin branch 313
+  const _assignTask = (task, user) => {
+    navigation.navigate('DispatchUnassignedTasks');
+    dispatch(assignTask(task, user.username));
+  }
+
+  const _bulkAssign = (user) => {
+      navigation.navigate('DispatchUnassignedTasks');
+      dispatch(bulkAssignmentTasks(tasks, user.username));
+    }
+
+  const assignSelectedTasks = (selectedTasks) => {
+    navigation.navigate('DispatchPickUser', {
+      onItemPress: user => _bulkAssign(user, selectedTasks),
+    });
+  }
 
   return (
     <Box marginBottom={4}>
@@ -38,11 +61,18 @@ export default function GroupedTasks({
       <Box paddingHorizontal={8}>
         <TaskList
           tasks={tasks}
+          tasksType={tasksType}
           tasksWithColor={tasksWithColor}
           onSwipeRight={unassignTaskHandler}
           swipeOutRightEnabled={task => task.status !== 'DONE'}
           swipeOutRightIconName="close"
-          swipeOutLeftEnabled={task => task.assignedTo === null}
+          swipeOutLeftEnabled={task => !task.isAssigned}
+          onSwipeLeft={task =>
+            navigation.navigate('DispatchPickUser', {
+              onItemPress: user => _assignTask(task, user),
+            })
+          }
+          swipeOutLeftIconName="user"
           onTaskClick={task =>
             navigateToTask(
               navigation,
@@ -51,6 +81,9 @@ export default function GroupedTasks({
               unassignedTasks,
             )
           }
+          allowMultipleSelection={allowToSelect}
+          multipleSelectionIcon="user"
+          onMultipleSelectionAction={assignSelectedTasks}
         />
       </Box>
     </Box>)
