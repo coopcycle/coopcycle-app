@@ -1,28 +1,27 @@
 import _ from 'lodash';
 import { Text } from 'native-base';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InteractionManager, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import TapToRefresh from '../../components/TapToRefresh';
-import TaskList from '../../components/TaskList';
+import {
+  initialize,
+  loadTasksRequest,
+} from '../../redux/Dispatch/actions';
+import { navigateToTask } from '../../navigation/utils';
 import {
   selectAllTasks,
   selectSelectedDate,
   selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { navigateToTask } from '../../navigation/utils';
-import {
-  initialize,
-  loadTasksRequest,
-} from '../../redux/Dispatch/actions';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
-import { useSetTaskListsItemsMutation } from '../../redux/api/slice';
-import AddButton from './components/AddButton';
 import { useAllTasks } from './useAllTasks';
-import { getTasksForUser, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
+import AddButton from './components/AddButton';
+import TapToRefresh from '../../components/TapToRefresh';
+import TaskList from '../../components/TaskList';
+import useSetTaskListsItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 
 function UnassignedTasks({
@@ -33,23 +32,21 @@ function UnassignedTasks({
   const { t } = useTranslation();
   const { navigate } = navigation;
 
+  const selectedDate = useSelector(selectSelectedDate);
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
 
   const dispatch = useDispatch();
-  const selectedDate = useSelector(selectSelectedDate);
-
-  // USING SLICE
-  const [setTaskListsItems] = useSetTaskListsItemsMutation();
-  const allTasks = useSelector(selectAllTasks);
-  const allTaskLists = useSelector(selectTaskLists);
-  
 
   const {
     isFetching,
     isError,
     refetch
   } = useAllTasks(selectedDate);
+
+  const {
+    assignTaskWithRelatedTasks,
+  } = useSetTaskListsItems();
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -62,19 +59,10 @@ function UnassignedTasks({
       dispatch(loadTasksRequest());
     }
   }, [dispatch, isFetching]);
-  
-  
+
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchUnassignedTasks');
-    const existingTaskIds = getTasksForUser(user.username, allTaskLists)
-    const taskIdsToAssign = withUnassignedLinkedTasks(task, allTasks)
-      .map(item => item['@id']);
-   const allTaskIds = [...existingTaskIds, ...taskIdsToAssign];
-    setTaskListsItems({
-      tasks: allTaskIds,
-      username: user.username,
-      date: selectedDate
-    })
+    assignTaskWithRelatedTasks(task, user);
   }
 
   const assignSelectedTasks = (selectedTasks) => {
