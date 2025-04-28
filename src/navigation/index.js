@@ -7,8 +7,6 @@ import DispatchAssignTask from './dispatch/AssignTask';
 import DispatchDate from './dispatch/Date';
 import DispatchPickUser from './dispatch/PickUser';
 import DispatchTaskList from './dispatch/TaskList';
-import DispatchTaskLists from './dispatch/TaskLists';
-import DispatchUnassignedTasks from './dispatch/UnassignedTasks';
 
 import TaskComplete from './task/Complete';
 import TaskPhoto from './task/Photo';
@@ -134,8 +132,6 @@ export default {
   DispatchDate,
   DispatchPickUser,
   DispatchTaskList,
-  DispatchTaskLists,
-  DispatchUnassignedTasks,
   NewDeliveryStore,
   NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,
