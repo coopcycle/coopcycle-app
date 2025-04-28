@@ -97,3 +97,11 @@ export function getUserTasks(username, allTaskLists) {
 
   return userTaskList ? userTaskList.items : [];
 }
+
+export function getAssignedTask(task, username) {
+  return {
+    ...task,
+    isAssigned: !!username,
+    assignedTo: username,
+  };
+}

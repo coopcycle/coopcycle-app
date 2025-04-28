@@ -1,4 +1,4 @@
-import { groupLinkedTasks, tasksToIds } from '../taskUtils.js';
+import { getAssignedTask, groupLinkedTasks, tasksToIds } from '../taskUtils.js';
 
 describe('taskUtils', () => {
   describe('groupLinkedTasks', () => {
@@ -217,6 +217,76 @@ describe('taskUtils', () => {
       let ids = tasksToIds(tasks);
 
       expect(ids).toEqual(['/api/tasks/1', '/api/tasks/2']);
+    });
+  });
+
+  describe('getAssignedTask', () => {
+    it('should assign user for a task unassigned', () => {
+      const task = {
+        '@id': '/api/tasks/1',
+        id: 1,
+        isAssigned: false,
+        assignedTo: undefined,
+      };
+
+      const result = getAssignedTask(task, 'some username');
+
+      expect(result).toEqual({
+        ...task,
+        isAssigned: true,
+        assignedTo: 'some username',
+      });
+    });
+
+    it('should assign user for a task assigned', () => {
+      const task = {
+        '@id': '/api/tasks/1',
+        id: 1,
+        isAssigned: true,
+        assignedTo: 'some username',
+      };
+
+      const result = getAssignedTask(task, 'other username');
+
+      expect(result).toEqual({
+        ...task,
+        isAssigned: true,
+        assignedTo: 'other username',
+      });
+    });
+
+    it('should unassign user for a task unassigned', () => {
+      const task = {
+        '@id': '/api/tasks/1',
+        id: 1,
+        isAssigned: false,
+        assignedTo: undefined,
+      };
+
+      const result = getAssignedTask(task);
+
+      expect(result).toEqual({
+        ...task,
+        isAssigned: false,
+        assignedTo: undefined,
+      });
+    });
+
+    it('should unassign user for a task assigned', () => {
+      const task = {
+        '@id': '/api/tasks/1',
+        id: 1,
+        isAssigned: true,
+        assignedTo: 'some username',
+      };
+
+      const result = getAssignedTask(task);
+
+      expect(result).toEqual({
+        ...task,
+        isAssigned: false,
+        assignedTo: undefined,
+      });
     });
   });
 });
