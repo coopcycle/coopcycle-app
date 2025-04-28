@@ -3,9 +3,6 @@ import {
   assignTaskFailure,
   assignTaskRequest,
   assignTaskSuccess,
-  bulkAssignmentTasksFailure,
-  bulkAssignmentTasksRequest,
-  bulkAssignmentTasksSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -22,6 +19,9 @@ import {
   unassignTaskFailure,
   unassignTaskRequest,
   unassignTaskSuccess,
+  updateTaskListTasksFailure,
+  updateTaskListTasksRequest,
+  updateTaskListTasksSuccess,
 } from '../Dispatch/actions';
 import {
   loadToursFailure,
@@ -30,7 +30,7 @@ import {
 
 
 const initialState = {
-  isBulkAssigning: false,
+  isAssigningTasks: false,
   isFetching: false,
   taskListsLoading: false,
 };
@@ -82,29 +82,29 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    bulkAssignmentTasksRequest,
+    updateTaskListTasksRequest,
   ])) {
     return {
       ...state,
-      isBulkAssigning: true,
+      isAssigningTasks: true,
     };
   }
 
   if (actionMatchCreator(action, [
-    bulkAssignmentTasksFailure,
+    updateTaskListTasksFailure,
   ])) {
     return {
       ...state,
-      isBulkAssigning: false,
+      isAssigningTasks: false,
     };
   }
 
   if (actionMatchCreator(action, [
-    bulkAssignmentTasksSuccess,
+    updateTaskListTasksSuccess,
   ])) {
     return {
       ...state,
-      isBulkAssigning: false,
+      isAssigningTasks: false,
     };
   }
 

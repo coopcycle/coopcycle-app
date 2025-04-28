@@ -64,7 +64,6 @@ export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
 export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
 export const cancelTaskFailure = createAction('@dispatch/CANCEL_TASK_FAILURE');
 
-// DEPRECATED
 export const assignTaskRequest = createAction('@dispatch/ASSIGN_TASK_REQUEST');
 export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
 export const assignTaskFailure = createAction('@dispatch/ASSIGN_TASK_FAILURE');
@@ -81,7 +80,6 @@ export const bulkAssignmentTasksFailure = createAction(
   '@dispatch/BULK_ASSIGNMENT_TASKS_FAILURE',
 );
 
-// DEPRECATED
 export const unassignTaskRequest = createAction('@dispatch/UNASSIGN_TASK_REQUEST');
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 export const unassignTaskFailure = createAction('@dispatch/UNASSIGN_TASK_FAILURE');
