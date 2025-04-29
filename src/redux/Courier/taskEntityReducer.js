@@ -342,6 +342,10 @@ const processWsMsg = (state, action) => {
       case 'task_list:updated':
         const taskList = data.task_list;
 
+        if (taskList.username !== state.username) {
+          break;
+        }
+
         return {
           ...state,
           items: {

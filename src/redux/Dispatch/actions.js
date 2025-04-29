@@ -4,14 +4,17 @@ import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
 
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
-
 import {
   createTaskListFailure,
   createTaskListRequest,
   createTaskListSuccess,
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
+import {
+  isSameDayTask,
+  isSameDayTaskList,
+  isSameDayTour,
+} from './utils';
 import {
   markTaskDoneSuccess,
   markTaskFailedSuccess,
@@ -36,7 +39,6 @@ export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
 /*
  * Action Creators
  */
-
 export const loadTasksRequest = createAction('@dispatch/LOAD_TASKS_REQUEST');
 export const loadTasksSuccess = createAction('@dispatch/LOAD_TASKS_SUCCESS');
 export const loadTasksFailure = createAction('@dispatch/LOAD_TASKS_FAILURE');
@@ -77,25 +79,9 @@ export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
 
-function showAlert(e) {
-  let message = i18n.t('TRY_LATER');
-
-  if (e.hasOwnProperty('hydra:description')) {
-    message = e['hydra:description'];
-  }
-
-  Alert.alert(
-    i18n.t('FAILED'),
-    message,
-    [
-      {
-        text: 'OK',
-        onPress: () => {},
-      },
-    ],
-    { cancelable: false },
-  );
-}
+/*
+ * Custom actions
+ */
 
 export function initialize() {
   return function (dispatch, getState) {
@@ -137,7 +123,7 @@ export function createTask(task) {
       .then(t => {
         let date = selectSelectedDate(getState());
 
-        if (isSameDateTask(t, date)) {
+        if (isSameDayTask(t, date)) {
           dispatch(createTaskSuccess(t));
         }
 
@@ -158,7 +144,7 @@ export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTask(task, date)) {
+    if (isSameDayTask(task, date)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -193,7 +179,7 @@ export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTaskList(taskList, date)) {
+    if (isSameDayTaskList(taskList, date)) {
       switch (action) {
         case 'v2:task_list:updated':
           dispatch(updateTaskListsSuccess(taskList));
@@ -207,7 +193,7 @@ export function updateTour(action, tour) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTour(tour, date)) {
+    if (isSameDayTour(tour, date)) {
       switch (action) {
         case 'tour:created':
           dispatch(createTourSuccess(tour));
@@ -218,4 +204,26 @@ export function updateTour(action, tour) {
       }
     }
   }
+}
+
+
+/*
+ * Auxiliary functions
+ */
+
+function showAlert(error, title=i18n.t('FAILED')) {
+  let message = i18n.t('TRY_LATER');
+
+  if (error.hasOwnProperty('hydra:description')) {
+    message = error['hydra:description'];
+  } else if (typeof error === 'string') {
+    message = error;
+  }
+
+  return Alert.alert(
+    title,
+    message,
+    [{text: 'OK', onPress: () => {}}],
+    {cancelable: false}
+  );
 }
