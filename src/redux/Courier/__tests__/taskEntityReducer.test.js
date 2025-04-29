@@ -185,6 +185,7 @@ describe('Redux | Tasks | Reducers', () => {
 
     test(`${_message} | task_list:updated`, () => {
       const date = moment().format('YYYY-MM-DD');
+      const username = 'some_username';
 
       const oldTasks = [{ '@id': '/api/tasks/1' }, { '@id': '/api/tasks/2' }];
       const newTasks = [
@@ -200,6 +201,7 @@ describe('Redux | Tasks | Reducers', () => {
             items: newTasks,
           },
         },
+        username,
       };
 
       const prevState = {
@@ -208,6 +210,7 @@ describe('Redux | Tasks | Reducers', () => {
         items: {
           [date]: oldTasks,
         },
+        username,
       };
 
       const newState = tasksEntityReducer(prevState, _message(wsMsg));
