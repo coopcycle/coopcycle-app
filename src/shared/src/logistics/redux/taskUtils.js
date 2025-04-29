@@ -91,3 +91,17 @@ export function tasksToIds(tasks) {
     item['@type'] === 'TaskCollectionItem' ? item.task : item['@id'],
   );
 }
+
+export function getUserTasks(username, allTaskLists) {
+  const userTaskList = allTaskLists.find(taskList => taskList.username === username);
+
+  return userTaskList ? userTaskList.items : [];
+}
+
+export function getAssignedTask(task, username) {
+  return {
+    ...task,
+    isAssigned: !!username,
+    assignedTo: username,
+  };
+}
