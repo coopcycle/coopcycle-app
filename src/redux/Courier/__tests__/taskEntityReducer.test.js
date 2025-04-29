@@ -200,8 +200,8 @@ describe('Redux | Tasks | Reducers', () => {
             date,
             items: newTasks,
           },
+          username,
         },
-        username,
       };
 
       const prevState = {
