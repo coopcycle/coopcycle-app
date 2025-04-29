@@ -3,27 +3,22 @@ import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
 
-import NavigationHolder from '../../NavigationHolder';
-import i18n from '../../i18n';
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 
 import {
   createTaskListFailure,
   createTaskListRequest,
   createTaskListSuccess,
-  selectAllTasks,
   selectSelectedDate,
-  selectToursTasksIndex
 } from '../../coopcycle-frontend-js/logistics/redux';
-
+import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
 import {
   markTaskDoneSuccess,
   markTaskFailedSuccess,
   startTaskSuccess,
 } from '../Courier';
-
-import { withAssignedLinkedTasks, withUnassignedLinkedTasks } from '../../shared/src/logistics/redux/taskUtils';
-import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
+import i18n from '../../i18n';
+import NavigationHolder from '../../NavigationHolder';
 
 /*
  * Action Types
