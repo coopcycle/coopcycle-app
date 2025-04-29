@@ -4,7 +4,6 @@ import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
 
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
-
 import {
   createTaskListFailure,
   createTaskListRequest,
