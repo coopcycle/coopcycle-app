@@ -199,8 +199,8 @@ describe('Redux | Tasks | Reducers', () => {
           task_list: {
             date,
             items: newTasks,
+            username,
           },
-          username,
         },
       };
 
