@@ -9,11 +9,7 @@ import {
   createTaskListSuccess,
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import {
-  isSameDayTask,
-  isSameDayTaskList,
-  isSameDayTour,
-} from './utils';
+import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
 import {
   markTaskDoneSuccess,
   markTaskFailedSuccess,
@@ -38,6 +34,7 @@ export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
 /*
  * Action Creators
  */
+
 export const loadTasksRequest = createAction('@dispatch/LOAD_TASKS_REQUEST');
 export const loadTasksSuccess = createAction('@dispatch/LOAD_TASKS_SUCCESS');
 export const loadTasksFailure = createAction('@dispatch/LOAD_TASKS_FAILURE');
@@ -77,10 +74,6 @@ export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
-
-/*
- * Custom actions
- */
 
 export function initialize() {
   return function (dispatch, getState) {
@@ -122,7 +115,7 @@ export function createTask(task) {
       .then(t => {
         let date = selectSelectedDate(getState());
 
-        if (isSameDayTask(t, date)) {
+        if (isSameDateTask(t, date)) {
           dispatch(createTaskSuccess(t));
         }
 
@@ -143,7 +136,7 @@ export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDayTask(task, date)) {
+    if (isSameDateTask(task, date)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -178,7 +171,7 @@ export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDayTaskList(taskList, date)) {
+    if (isSameDateTaskList(taskList, date)) {
       switch (action) {
         case 'v2:task_list:updated':
           dispatch(updateTaskListsSuccess(taskList));
@@ -192,7 +185,7 @@ export function updateTour(action, tour) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDayTour(tour, date)) {
+    if (isSameDateTour(tour, date)) {
       switch (action) {
         case 'tour:created':
           dispatch(createTourSuccess(tour));
