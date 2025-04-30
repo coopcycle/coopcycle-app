@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from 'react';
 
 import {
-  assignTaskSuccess,
   assignTasksFailure,
   assignTasksRequest,
   assignTasksSuccess,
@@ -145,13 +144,15 @@ export default function useSetTaskListsItems(
 
   const _updateAssigningTasks = (tasks, user) => {
     return _updateAssignedTasks(tasks, user)
-      .then(({ data: taskList }) => _updateTaskAndTaskList(tasks, user, taskList));
+      .then(({ data: taskList }) => _updateTaskList(taskList))
+      .then(() => _updateTasks(tasks, user));
   }
 
   const _updateUnassigningTasks = (tasks, user, removedTasks) => {
     return _updateAssignedTasks(tasks, user)
       .then(res => _maybeRemoveTourTasks(tasks).then(_res => res))
-      .then(({ data: taskList }) => _updateTaskAndTaskList(tasks, user, taskList))
+      .then(({ data: taskList }) => _updateTaskList(taskList))
+      .then(() => _updateTasks(tasks, user))
       .then(() => _updateRemovedTasks(removedTasks));
   }
 
@@ -193,16 +194,18 @@ export default function useSetTaskListsItems(
     });
   }
 
-  const _updateTaskAndTaskList = (tasks, user, taskList) => {
+  const _updateTaskList = (taskList) => {
     dispatch(updateTaskListsSuccess(taskList));
+  }
 
+  const _updateTasks = (tasks, user) => {
     const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
-    newUserTasks.forEach(task => dispatch(assignTaskSuccess(task)));
+    dispatch(assignTasksSuccess(newUserTasks));
   }
 
   const _updateRemovedTasks = (removedTasks) => {
-    const unassignedTasks = removedTasks.map(_task => getAssignedTask(_task));
-    unassignedTasks.forEach(unassignedTask => dispatch(unassignTaskSuccess(unassignedTask)));
+    const unassignedTasks = removedTasks.map(task => getAssignedTask(task));
+    dispatch(assignTasksSuccess(unassignedTasks));
   }
 
   return {

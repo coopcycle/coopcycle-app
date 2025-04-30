@@ -1,6 +1,7 @@
 import { actionMatchCreator } from '../util';
 import {
   assignTaskSuccess,
+  assignTasksSuccess,
   cancelTaskSuccess,
   changeDate,
   createTaskSuccess,
@@ -42,6 +43,14 @@ export default (state = initialState, action) => {
     updateTaskSuccess,
   ])) {
     return taskAdapter.upsertOne(state, action.payload);
+  }
+
+  if (actionMatchCreator(action, [
+    assignTasksSuccess,
+  ])) {
+    if (action.payload) {
+      return taskAdapter.upsertMany(state, action.payload);
+    }
   }
 
   switch (action.type) {
