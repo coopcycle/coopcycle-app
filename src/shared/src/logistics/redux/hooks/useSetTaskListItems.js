@@ -4,10 +4,10 @@ import { useEffect, useMemo } from 'react';
 
 import {
   assignTaskSuccess,
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksSuccess,
   unassignTaskSuccess,
-  updateTaskListTasksFailure,
-  updateTaskListTasksRequest,
-  updateTaskListTasksSuccess,
   updateTaskListsSuccess,
   updateTourSuccess,
 } from '../../../../../redux/Dispatch/actions';
@@ -72,19 +72,19 @@ export default function useSetTaskListsItems(
 
   useEffect(() => {
     if (isLoading) {
-      dispatch(updateTaskListTasksRequest());
+      dispatch(assignTasksRequest());
     }
   }, [dispatch, isLoading]);
 
   useEffect(() => {
     if (isSuccess) {
-      dispatch(updateTaskListTasksSuccess());
+      dispatch(assignTasksSuccess());
     }
   }, [dispatch, isSuccess]);
 
   useEffect(() => {
     if (isError) {
-      dispatch(updateTaskListTasksFailure());
+      dispatch(assignTasksFailure());
     }
   }, [dispatch, isError]);
 

@@ -52,9 +52,9 @@ export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAIL
 
 export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_SUCCESS');
 
-export const updateTaskListTasksRequest = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_REQUEST');
-export const updateTaskListTasksSuccess = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_SUCCESS');
-export const updateTaskListTasksFailure = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_FAILURE');
+export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST');
+export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
+export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
 
 export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
 export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');

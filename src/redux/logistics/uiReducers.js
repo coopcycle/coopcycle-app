@@ -1,5 +1,8 @@
 import { actionMatchCreator } from '../util';
 import {
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -13,9 +16,6 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
-  updateTaskListTasksFailure,
-  updateTaskListTasksRequest,
-  updateTaskListTasksSuccess,
 } from '../Dispatch/actions';
 import {
   loadToursFailure,
@@ -70,7 +70,7 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    updateTaskListTasksRequest,
+    assignTasksRequest,
   ])) {
     return {
       ...state,
@@ -79,7 +79,7 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    updateTaskListTasksFailure,
+    assignTasksFailure,
   ])) {
     return {
       ...state,
@@ -88,7 +88,7 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    updateTaskListTasksSuccess,
+    assignTasksSuccess,
   ])) {
     return {
       ...state,
