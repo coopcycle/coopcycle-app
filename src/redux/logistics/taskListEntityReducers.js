@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
   }
 
   if (loadTaskListsSuccess.match(action)) {
-    let entities = action.payload.map(taskList =>
+    const entities = action.payload.map(taskList =>
       taskListUtils.replaceItemsWithItemIds(taskList),
     );
     return taskListAdapter.setAll(state, entities);
