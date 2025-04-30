@@ -9,9 +9,9 @@ import {
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import {
-  isSameDateTask,
-  isSameDateTaskList,
-  isSameDateTour,
+  isSameDayTask,
+  isSameDayTaskList,
+  isSameDayTour,
 } from './utils';
 import {
   markTaskDoneSuccess,
@@ -118,7 +118,7 @@ export function createTask(task) {
       .then(t => {
         let date = selectSelectedDate(getState());
 
-        if (isSameDateTask(t, date)) {
+        if (isSameDayTask(t, date)) {
           dispatch(createTaskSuccess(t));
         }
 
@@ -139,7 +139,7 @@ export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTask(task, date)) {
+    if (isSameDayTask(task, date)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -174,7 +174,7 @@ export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTaskList(taskList, date)) {
+    if (isSameDayTaskList(taskList, date)) {
       switch (action) {
         case 'v2:task_list:updated':
           dispatch(updateTaskListsSuccess(taskList));
@@ -188,7 +188,7 @@ export function updateTour(action, tour) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTour(tour, date)) {
+    if (isSameDayTour(tour, date)) {
       switch (action) {
         case 'tour:created':
           dispatch(createTourSuccess(tour));
