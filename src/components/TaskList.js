@@ -20,6 +20,7 @@ const TaskList = ({
 }) => {
   const bulkFabButton = useRef(null);
 
+
   const taskColor = (task) => {
     let tasksWithColorSafe = tasksWithColor ?? [];
     return Object.prototype.hasOwnProperty.call(tasksWithColorSafe, task['@id'])
@@ -35,9 +36,9 @@ const TaskList = ({
     bulkFabButton.current?.removeItem(task);
   }, []);
 
-  const onFabButtonPressed = useCallback(() => {
-    onMultipleSelectionAction(tasks);
-  }, [tasks, onMultipleSelectionAction]);
+  const onFabButtonPressed = (items) => {
+    onMultipleSelectionAction(items);
+  } 
 
   // check this filter
   useEffect(() => {
