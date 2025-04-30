@@ -1,12 +1,12 @@
 import { Box, Text } from "native-base";
 import { useSelector } from "react-redux";
 
-import { headerFontSize } from "../../../styles/common";
-import { navigateToTask } from '../../../navigation/utils';
-import { selectTasksWithColor } from "../../../shared/logistics/redux";
-import { selectUnassignedTasksNotCancelled } from "../../../redux/Dispatch/selectors";
-import { useNavigation } from '@react-navigation/native';
 import TaskList from "../../../components/TaskList";
+import { navigateToTask } from '../../../navigation/utils';
+import { selectUnassignedTasksNotCancelled } from "../../../redux/Dispatch/selectors";
+import { selectTasksWithColor } from "../../../shared/logistics/redux";
+import { headerFontSize } from "../../../styles/common";
+import { useNavigation } from '@react-navigation/native';
 import useSetTaskListsItems from "../../../shared/src/logistics/redux/hooks/useSetTaskListItems";
 
 
@@ -23,34 +23,33 @@ export default function GroupedTasks({
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
 
-  const {
-    assignTaskWithRelatedTasks,
-    bulkAssignTasksWithRelatedTasks,
+  const { 
     unassignTaskWithRelatedTasks,
-  } = useSetTaskListsItems();
+    assignTaskWithRelatedTasks,
+    bulkAssignTasksWithRelatedTasks
+   } = useSetTaskListsItems()
+
+  const unassignTaskHandler = task => unassignTaskWithRelatedTasks(task)
 
   const allowToSelect = (task) => {
     return task.status !== 'DONE';
   }
 
-  const unassignTaskHandler = (task) => {
-    unassignTaskWithRelatedTasks(task)
-  }
-
   const _assignTask = (task, user) => {
-    navigation.navigate('DispatchHome');
     assignTaskWithRelatedTasks(task, user);
   }
 
-  const _bulkAssign = (user) => {
-    navigation.navigate('DispatchHome');
-    bulkAssignTasksWithRelatedTasks(tasks, user);
-  }
-
+  
   const assignSelectedTasks = (selectedTasks) => {
+    const selectedTasksIds = selectedTasks.map((task) => task['@id'])
+    console.log('selectedTasks', selectedTasksIds)
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _bulkAssign(user, selectedTasks),
     });
+  }
+
+  const _bulkAssign = (user, selectedTasks) => {
+    bulkAssignTasksWithRelatedTasks(selectedTasks, user);
   }
 
   return (
@@ -61,7 +60,7 @@ export default function GroupedTasks({
           fontSize={headerFontSize}
           padding={4}
         >
-          {title}
+            {title}
         </Text>
       </Box>
       <Box paddingHorizontal={8}>
@@ -89,7 +88,9 @@ export default function GroupedTasks({
           }
           allowMultipleSelection={allowToSelect}
           multipleSelectionIcon="user"
-          onMultipleSelectionAction={assignSelectedTasks}
+          onMultipleSelectionAction={selectedTasks =>
+            assignSelectedTasks(selectedTasks)
+          }
         />
       </Box>
     </Box>)
