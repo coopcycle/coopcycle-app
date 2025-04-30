@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
 
@@ -9,13 +8,17 @@ import {
   createTaskListSuccess,
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
+import {
+  isSameDateTask,
+  isSameDateTaskList,
+  isSameDateTour,
+} from './utils';
 import {
   markTaskDoneSuccess,
   markTaskFailedSuccess,
   startTaskSuccess,
 } from '../Courier';
-import i18n from '../../i18n';
+import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
 
 /*
@@ -196,27 +199,4 @@ export function updateTour(action, tour) {
       }
     }
   }
-}
-
-
-/*
- * Auxiliary functions
- */
-
-function showAlert(error, title=i18n.t('FAILED')) {
-  let message = i18n.t('TRY_LATER');
-
-  // eslint-disable-next-line no-prototype-builtins
-  if (error.hasOwnProperty('hydra:description')) {
-    message = error['hydra:description'];
-  } else if (typeof error === 'string') {
-    message = error;
-  }
-
-  return Alert.alert(
-    title,
-    message,
-    [{text: 'OK', onPress: () => {}}],
-    {cancelable: false}
-  );
 }
