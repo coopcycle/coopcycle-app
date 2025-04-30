@@ -1,8 +1,8 @@
 import { Text } from 'native-base';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import React from 'react';
 
 import { selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
@@ -13,7 +13,7 @@ import useSetTaskListsItems from '../../shared/src/logistics/redux/hooks/useSetT
 export default function AssignTask({ route }) {
   const { t } = useTranslation()
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
-  const isEmpty = unassignedTasks.length === 0;
+  const isEmpty = useMemo(() => unassignedTasks.length === 0, [unassignedTasks.length]);
   const tasksWithColor = useSelector(selectTasksWithColor);
 
   let contentProps = {};
