@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
@@ -75,26 +74,6 @@ export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
-
-function showAlert(e) {
-  let message = i18n.t('TRY_LATER');
-
-  if (e.hasOwnProperty('hydra:description')) {
-    message = e['hydra:description'];
-  }
-
-  Alert.alert(
-    i18n.t('FAILED'),
-    message,
-    [
-      {
-        text: 'OK',
-        onPress: () => {},
-      },
-    ],
-    { cancelable: false },
-  );
-}
 
 export function initialize() {
   return function (dispatch, getState) {
@@ -217,4 +196,27 @@ export function updateTour(action, tour) {
       }
     }
   }
+}
+
+
+/*
+ * Auxiliary functions
+ */
+
+function showAlert(error, title=i18n.t('FAILED')) {
+  let message = i18n.t('TRY_LATER');
+
+  // eslint-disable-next-line no-prototype-builtins
+  if (error.hasOwnProperty('hydra:description')) {
+    message = error['hydra:description'];
+  } else if (typeof error === 'string') {
+    message = error;
+  }
+
+  return Alert.alert(
+    title,
+    message,
+    [{text: 'OK', onPress: () => {}}],
+    {cancelable: false}
+  );
 }

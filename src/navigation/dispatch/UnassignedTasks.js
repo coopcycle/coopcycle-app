@@ -25,7 +25,6 @@ import useSetTaskListsItems from '../../shared/src/logistics/redux/hooks/useSetT
 function UnassignedTasks({
   navigation,
   route,
-  state
 }) {
   const { t } = useTranslation();
   const { navigate } = navigation;
