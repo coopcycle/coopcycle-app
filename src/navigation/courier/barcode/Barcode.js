@@ -46,7 +46,7 @@ async function _startTask(httpClient, task_id) {
   }
 }
 
-// TODO: implement this using useSetTaskListsItems
+// TODO: implement this using useSetTaskListItems
 async function _assignTask(httpClient, task_id, token) {
   if (task_id) {
     return await httpClient.put(
@@ -61,7 +61,7 @@ async function _assignTask(httpClient, task_id, token) {
   }
 }
 
-// TODO: implement this using useSetTaskListsItems
+// TODO: implement this using useSetTaskListItems
 async function _unassignTask(httpClient, task_id, token) {
   if (task_id) {
     return await httpClient.put(

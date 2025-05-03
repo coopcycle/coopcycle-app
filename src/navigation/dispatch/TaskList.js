@@ -13,7 +13,7 @@ import {
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import AddButton from './components/AddButton';
 import TaskList from '../../components/TaskList';
-import useSetTaskListsItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import useSetTaskListItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 function TaskListScreen({
   navigation,
@@ -27,7 +27,7 @@ function TaskListScreen({
 
   const {
     unassignTaskWithRelatedTasks,
-  } = useSetTaskListsItems();
+  } = useSetTaskListItems();
 
   const [taskList, setTaskList] = useState(route.params?.taskList);
   const tasks = selectTasksNotCancelled({ tasks: taskList.items });

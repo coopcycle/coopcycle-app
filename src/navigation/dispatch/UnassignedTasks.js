@@ -19,7 +19,7 @@ import { useAllTasks } from './useAllTasks';
 import AddButton from './components/AddButton';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
-import useSetTaskListsItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import useSetTaskListItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 
 function UnassignedTasks({
@@ -44,7 +44,7 @@ function UnassignedTasks({
   const {
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
-  } = useSetTaskListsItems();
+  } = useSetTaskListItems();
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {

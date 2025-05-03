@@ -60,7 +60,7 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       },
     }),
-    setTaskListsItems: builder.mutation({
+    setTaskListItems: builder.mutation({
       query: ({ tasks, username, date }) => {
         const mutation = {
           url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
@@ -156,7 +156,7 @@ export const {
   useGetTasksQuery,
   useGetToursQuery,
   useSetTourItemsMutation,
-  useSetTaskListsItemsMutation,
+  useSetTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
 } = apiSlice;

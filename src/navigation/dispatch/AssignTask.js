@@ -7,7 +7,7 @@ import { View } from 'react-native';
 import { selectTasksWithColor } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import TaskList from '../../components/TaskList';
-import useSetTaskListsItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import useSetTaskListItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 
 export default function AssignTask({ route }) {
@@ -26,7 +26,7 @@ export default function AssignTask({ route }) {
 
   const {
     assignTaskWithRelatedTasks,
-  } = useSetTaskListsItems();
+  } = useSetTaskListItems();
 
   const assignTask = (task) => {
     const user = {username: route.params.username};

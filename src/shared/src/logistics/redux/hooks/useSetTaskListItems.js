@@ -22,12 +22,12 @@ import {
   selectTaskLists, selectToursTasksIndex
 } from "../selectors";
 import {
-  useSetTaskListsItemsMutation,
+  useSetTaskListItemsMutation,
   useSetTourItemsMutation,
 } from "../../../../../redux/api/slice";
 
 
-export default function useSetTaskListsItems(
+export default function useSetTaskListItems(
   navigation,
 ) {
   const allTasks = useSelector(selectAllTasks);
@@ -38,13 +38,13 @@ export default function useSetTaskListsItems(
   const dispatch = useDispatch();
 
   const [
-    setTaskListsItems,
+    setTaskListItems,
     {
       isError: isErrorSetTaskListItems,
       isLoading: isLoadingSetTaskListItems,
       isSuccess: isSuccessSetTaskListItems,
     }
-  ] = useSetTaskListsItemsMutation();
+  ] = useSetTaskListItemsMutation();
   const [
     setTourItems,
     {
@@ -159,7 +159,7 @@ export default function useSetTaskListsItems(
   const _updateAssignedTasks = (tasks, user) => {
     const tasksIds = tasks.map(task => task['@id']);
 
-    return setTaskListsItems({
+    return setTaskListItems({
       tasks: tasksIds,
       username: user.username,
       date: selectedDate
@@ -205,7 +205,7 @@ export default function useSetTaskListsItems(
 
   const _updateRemovedTasks = (removedTasks) => {
     const unassignedTasks = removedTasks.map(task => getAssignedTask(task));
-    dispatch(assignTasksSuccess(unassignedTasks));
+    dispatch(unassignTaskSuccess(unassignedTasks));
   }
 
   return {
