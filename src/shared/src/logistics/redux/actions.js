@@ -1,10 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import {
-  markTaskDoneSuccess,
-  markTaskFailedSuccess,
-  startTaskSuccess,
-} from '../../../../redux/Courier';;
 import { selectSelectedDate } from './selectors';
 import {
   DEP_ASSIGN_TASK_SUCCESS,
@@ -28,12 +23,13 @@ export const createTaskSuccess = createAction('@logistics/CREATE_TASK_SUCCESS');
 export const createTaskFailure = createAction('@logistics/CREATE_TASK_FAILURE');
 
 export const cancelTaskSuccess = createAction('@logistics/CANCEL_TASK_SUCCESS');
-
 export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
-
 export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
-
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
+
+export const markTaskDoneSuccess = createAction('@logistics/MARK_TASK_DONE_SUCCESS');
+export const markTaskFailedSuccess = createAction('@logistics/MARK_TASK_FAILED_SUCCESS');
+export const startTaskSuccess = createAction('@logistics/START_TASK_SUCCESS');
 
 export const createTaskListRequest = createAction(CREATE_TASK_LIST_REQUEST);
 export const createTaskListSuccess = createAction(CREATE_TASK_LIST_SUCCESS);
