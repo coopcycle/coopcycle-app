@@ -50,12 +50,6 @@ export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST')
 export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
 export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
 
-export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
-
-export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
-
-export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
-
 export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
 
 export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);

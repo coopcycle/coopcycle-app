@@ -2,16 +2,21 @@ import { createAction } from '@reduxjs/toolkit';
 import { createAction as createFsAction } from 'redux-actions';
 
 import {
-  isSameDayTask,
-  isSameDayTaskList,
-  isSameDayTour,
-} from './utils';
-import {
   markTaskDoneSuccess,
   markTaskFailedSuccess,
   startTaskSuccess,
-} from '../Courier';
+} from '../../../../redux/Courier';;
 import { selectSelectedDate } from './selectors';
+import {
+  DEP_ASSIGN_TASK_SUCCESS,
+  DEP_UNASSIGN_TASK_SUCCESS,
+  DEP_UPDATE_TASK_SUCCESS,
+} from '../../../../redux/Dispatch/actions';
+import {
+  isSameDayTask,
+  isSameDayTaskList,
+  isSameDayTour,
+} from '../../../../redux/Dispatch/utils';
 
 
 export const CREATE_TASK_LIST_REQUEST = 'CREATE_TASK_LIST_REQUEST';
@@ -27,6 +32,12 @@ export const createTaskSuccess = createFsAction('@logistics/CREATE_TASK_SUCCESS'
 export const createTaskFailure = createFsAction('@logistics/CREATE_TASK_FAILURE');
 
 export const cancelTaskSuccess = createFsAction('@logistics/CANCEL_TASK_SUCCESS');
+
+export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
+
+export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
+
+export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 
 export const createTaskListRequest = createFsAction(CREATE_TASK_LIST_REQUEST);
 export const createTaskListSuccess = createFsAction(CREATE_TASK_LIST_SUCCESS);

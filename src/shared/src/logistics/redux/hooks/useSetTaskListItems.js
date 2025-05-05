@@ -6,7 +6,6 @@ import {
   assignTasksFailure,
   assignTasksRequest,
   assignTasksSuccess,
-  unassignTaskSuccess,
   updateTaskListsSuccess,
   updateTourSuccess,
 } from '../../../../../redux/Dispatch/actions';
@@ -25,6 +24,7 @@ import {
   useSetTaskListItemsMutation,
   useSetTourItemsMutation,
 } from "../../../../../redux/api/slice";
+import { unassignTaskSuccess } from '../actions';
 
 
 export default function useSetTaskListItems(
