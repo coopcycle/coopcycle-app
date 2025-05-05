@@ -2,9 +2,8 @@ import {
   changeDate,
 } from "../Dispatch/actions";
 import {
-  DELETE_TOUR_SUCCESS,
-  UPDATE_TOUR,
   createTourSuccess,
+  deleteTourSuccess,
   loadToursSuccess,
   tourAdapter,
   updateTourSuccess,
@@ -33,14 +32,9 @@ export default (state = initialState, action) => {
     return tourAdapter.upsertOne(state, action.payload);
   }
 
-  switch (action.type) {
-    case UPDATE_TOUR:
-      return tourAdapter.upsertOne(state, action.payload);
-
-    case DELETE_TOUR_SUCCESS:
-      return tourAdapter.removeOne(state, action.payload);
-
-    default:
-      return state;
+  if (deleteTourSuccess.match(action)) {
+    return tourAdapter.removeOne(state, action.payload);
   }
+
+  return state;
 }
