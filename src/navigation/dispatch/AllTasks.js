@@ -17,6 +17,7 @@ import {
 } from 'native-base';
 
 import {
+  darkGreyColor,
   primaryColor,
   whiteColor
 } from '../../styles/common';
@@ -35,6 +36,7 @@ export default function AllTasks({
 
   const dispatch = useDispatch();
 
+  // TODO check blackMode
   const screenBackgroundColor = useColorModeToken('#E6E2E2', '#131313');
   const {
     isFetching,
@@ -48,6 +50,25 @@ export default function AllTasks({
     });
   }, [dispatch]);
 
+   // Combine unassigned tasks and task lists into a single grouped data structure
+    const sections = [
+      {
+        // TODO add translations
+        title: t('NEW_ORDER'),
+        data: unassignedTasks,
+        backgroundColor: whiteColor,
+        textColor: darkGreyColor,
+        tasksType: 'unassignedTasks'
+      },
+      ...taskLists.map(taskList => ({
+        title: `${taskList.username} (${taskList.items.length})`,
+        data: taskList.items,
+        backgroundColor: taskList.color ? taskList.color : darkGreyColor,
+        textColor: whiteColor,
+        tasksType: 'taskList'
+      })),
+    ];
+
   if (isError) {
     return (
       <Center w="95%" h="80%">
@@ -58,13 +79,7 @@ export default function AllTasks({
   }
 
   return (
-    <ScrollView 
-      style={{ flex: 1, backgroundColor: screenBackgroundColor }}
-      refreshControl={
-        <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-      }
-      >
-      {!isFetching &&
+    // TODO check safe area
       <>
         <View>
           <AddButton
@@ -75,30 +90,14 @@ export default function AllTasks({
             </Text>
           </AddButton>
         </View>
+        {!isFetching &&
         <GroupedTasks
-            backgroundColor={whiteColor}
-            textColor={primaryColor}
+            sections={sections}
             navigation
             route
-            tasks={unassignedTasks}
-            tasksType='unassignedTasks'
-            title={t('UNASSIGNED_TASKS')}
-        />
-      {taskLists
-        // commented this to show even if empty
-        // .filter(taskList => taskList.items.length > 0)
-        .map(taskList => (
-        <GroupedTasks
-            backgroundColor={taskList.color}
-            textColor={'#000'}
-            navigation
-            route
-            tasks={taskList.items}
-            tasksType='taskList'
-            title={`${taskList.username} (${taskList.items.length})`}
-        />
-      ))}
-      </>}
-    </ScrollView>
+            isFetching={isFetching}
+            refetch={refetch}
+        />}
+      </>
   );
 }
