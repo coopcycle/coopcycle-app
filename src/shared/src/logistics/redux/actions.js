@@ -11,6 +11,7 @@ import {
   DEP_ASSIGN_TASK_SUCCESS,
   DEP_UNASSIGN_TASK_SUCCESS,
   DEP_UPDATE_TASK_SUCCESS,
+  DEP_UPDATE_TOUR_SUCCESS,
 } from '../../../../redux/Dispatch/actions';
 import {
   isSameDayTask,
@@ -45,6 +46,8 @@ export const createTaskListFailure = createFsAction(CREATE_TASK_LIST_FAILURE);
 
 export const updateTaskListsSuccess = createFsAction('@logistics/UPDATE_TASK_LIST_SUCCESS');
 
+export const createTourSuccess = createFsAction('@dispatch/CREATE_TOUR_SUCCESS');
+export const updateTourSuccess = createFsAction(DEP_UPDATE_TOUR_SUCCESS);
 export const deleteTourSuccess = createFsAction(DELETE_TOUR_SUCCESS);
 export const loadToursSuccess = createAction('LOAD_TOURS_SUCCESS');
 export const loadToursFailure = createAction('LOAD_TOURS_FAILURE');

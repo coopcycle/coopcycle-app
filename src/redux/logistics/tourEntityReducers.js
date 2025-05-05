@@ -1,13 +1,13 @@
 import {
   changeDate,
-  createTourSuccess,
-  updateTourSuccess,
 } from "../Dispatch/actions";
 import {
   DELETE_TOUR_SUCCESS,
   UPDATE_TOUR,
+  createTourSuccess,
   loadToursSuccess,
   tourAdapter,
+  updateTourSuccess,
 } from "../../shared/logistics/redux";
 import { actionMatchCreator } from "../util";
 import { SET_USER } from "../App/actions";
