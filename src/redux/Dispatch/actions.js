@@ -3,21 +3,15 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 import {
+  createTaskFailure,
   createTaskListFailure,
   createTaskListRequest,
   createTaskListSuccess,
+  createTaskRequest,
+  createTaskSuccess,
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import {
-  isSameDayTask,
-  isSameDayTaskList,
-  isSameDayTour,
-} from './utils';
-import {
-  markTaskDoneSuccess,
-  markTaskFailedSuccess,
-  startTaskSuccess,
-} from '../Courier';
+import { isSameDayTask } from './utils';
 import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
 
@@ -55,10 +49,6 @@ export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_S
 export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST');
 export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
 export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
-
-export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
-export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');
-export const createTaskFailure = createAction('@dispatch/CREATE_TASK_FAILURE');
 
 export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
 export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
@@ -133,70 +123,4 @@ export function createTask(task) {
         setTimeout(() => showAlert(e), 100);
       });
   };
-}
-
-export function updateTask(action, task) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTask(task, date)) {
-      switch (action) {
-        case 'task:created':
-          dispatch(createTaskSuccess(task));
-          break;
-        case 'task:cancelled':
-          dispatch(cancelTaskSuccess(task));
-          break;
-        case 'task:assigned':
-          dispatch(assignTaskSuccess(task));
-          break;
-        case 'task:unassigned':
-          dispatch(unassignTaskSuccess(task));
-          break;
-        case 'task:started':
-          dispatch(startTaskSuccess(task));
-          break;
-        case 'task:done':
-          dispatch(markTaskDoneSuccess(task));
-          break;
-        case 'task:updated':
-          dispatch(updateTaskSuccess(task));
-          break;
-        case 'task:failed':
-          dispatch(markTaskFailedSuccess(task));
-          break;
-      }
-    }
-  };
-}
-
-export function updateTaskList(action, taskList) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTaskList(taskList, date)) {
-      switch (action) {
-        case 'v2:task_list:updated':
-          dispatch(updateTaskListsSuccess(taskList));
-          break;
-      }
-    }
-  }
-}
-
-export function updateTour(action, tour) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTour(tour, date)) {
-      switch (action) {
-        case 'tour:created':
-          dispatch(createTourSuccess(tour));
-          break;
-        case 'tour:updated':
-          dispatch(updateTourSuccess(tour));
-          break;
-      }
-    }
-  }
 }

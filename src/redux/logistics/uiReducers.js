@@ -4,9 +4,6 @@ import {
   assignTasksRequest,
   assignTasksSuccess,
   cancelTaskSuccess,
-  createTaskFailure,
-  createTaskRequest,
-  createTaskSuccess,
   loadTaskListsFailure,
   loadTaskListsRequest,
   loadTaskListsSuccess,
@@ -18,6 +15,9 @@ import {
   loadUsersSuccess,
 } from '../Dispatch/actions';
 import {
+  createTaskFailure,
+  createTaskRequest,
+  createTaskSuccess,
   loadToursFailure,
   loadToursSuccess,
 } from '../../shared/logistics/redux';

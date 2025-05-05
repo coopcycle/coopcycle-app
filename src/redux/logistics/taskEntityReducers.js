@@ -4,7 +4,6 @@ import {
   assignTasksSuccess,
   cancelTaskSuccess,
   changeDate,
-  createTaskSuccess,
   loadTasksSuccess,
   unassignTaskSuccess,
   updateTaskSuccess,
@@ -18,6 +17,7 @@ import {
   SET_USER,
 } from '../App/actions';
 import {
+  createTaskSuccess,
   taskAdapter,
 } from '../../coopcycle-frontend-js/logistics/redux';
 
