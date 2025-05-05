@@ -33,15 +33,17 @@ export const createTaskFailure = createFsAction('@logistics/CREATE_TASK_FAILURE'
 
 export const cancelTaskSuccess = createFsAction('@logistics/CANCEL_TASK_SUCCESS');
 
-export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
+export const assignTaskSuccess = createFsAction(DEP_ASSIGN_TASK_SUCCESS);
 
-export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
+export const updateTaskSuccess = createFsAction(DEP_UPDATE_TASK_SUCCESS);
 
-export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
+export const unassignTaskSuccess = createFsAction(DEP_UNASSIGN_TASK_SUCCESS);
 
 export const createTaskListRequest = createFsAction(CREATE_TASK_LIST_REQUEST);
 export const createTaskListSuccess = createFsAction(CREATE_TASK_LIST_SUCCESS);
 export const createTaskListFailure = createFsAction(CREATE_TASK_LIST_FAILURE);
+
+export const updateTaskListsSuccess = createFsAction('@logistics/UPDATE_TASK_LIST_SUCCESS');
 
 export const deleteTourSuccess = createFsAction(DELETE_TOUR_SUCCESS);
 export const loadToursSuccess = createAction('LOAD_TOURS_SUCCESS');
