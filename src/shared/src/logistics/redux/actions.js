@@ -5,7 +5,7 @@ import {
   isSameDayTask,
   isSameDayTaskList,
   isSameDayTour,
-} from '../../../../redux/Dispatch/utils';
+} from '../../utils';
 
 
 /*

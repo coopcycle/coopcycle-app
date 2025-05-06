@@ -12,7 +12,7 @@ import {
   createTaskSuccess,
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { isSameDayTask } from './utils';
+import { isSameDayTask } from '../../shared/src/utils';
 import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
 
