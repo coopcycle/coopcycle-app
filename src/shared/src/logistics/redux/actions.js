@@ -19,10 +19,6 @@ export const DEP_CHANGE_DATE = 'CHANGE_DATE';
 export const DEP_UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
 export const DEP_UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 
-export const CREATE_TASK_LIST_REQUEST = 'CREATE_TASK_LIST_REQUEST';
-export const CREATE_TASK_LIST_SUCCESS = 'CREATE_TASK_LIST_SUCCESS';
-export const CREATE_TASK_LIST_FAILURE = 'CREATE_TASK_LIST_FAILURE';
-
 export const createTaskRequest = createAction('@logistics/CREATE_TASK_REQUEST');
 export const createTaskSuccess = createAction('@logistics/CREATE_TASK_SUCCESS');
 export const createTaskFailure = createAction('@logistics/CREATE_TASK_FAILURE');
@@ -36,9 +32,9 @@ export const markTaskDoneSuccess = createAction('@logistics/MARK_TASK_DONE_SUCCE
 export const markTaskFailedSuccess = createAction('@logistics/MARK_TASK_FAILED_SUCCESS');
 export const startTaskSuccess = createAction('@logistics/START_TASK_SUCCESS');
 
-export const createTaskListRequest = createAction(CREATE_TASK_LIST_REQUEST);
-export const createTaskListSuccess = createAction(CREATE_TASK_LIST_SUCCESS);
-export const createTaskListFailure = createAction(CREATE_TASK_LIST_FAILURE);
+export const createTaskListRequest = createAction('@logistics/CREATE_TASK_LIST_REQUEST');
+export const createTaskListSuccess = createAction('@logistics/CREATE_TASK_LIST_SUCCESS');
+export const createTaskListFailure = createAction('@logistics/CREATE_TASK_LIST_FAILURE');
 
 export const updateTaskListsSuccess = createAction('@logistics/UPDATE_TASK_LIST_SUCCESS');
 
