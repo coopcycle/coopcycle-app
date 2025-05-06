@@ -1,6 +1,7 @@
 import { moment } from '../../coopcycle-frontend-js';
+import { DEP_CHANGE_DATE } from '../../shared/logistics/redux';
 
-import { DEP_CHANGE_DATE, changeDate } from '../Dispatch/actions';
+import { changeDate } from '../Dispatch/actions';
 import { actionMatchCreator } from '../util';
 
 const initialState = moment();

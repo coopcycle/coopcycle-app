@@ -2,17 +2,22 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { selectSelectedDate } from './selectors';
 import {
-  DEP_ASSIGN_TASK_SUCCESS,
-  DEP_UNASSIGN_TASK_SUCCESS,
-  DEP_UPDATE_TASK_SUCCESS,
-  DEP_UPDATE_TOUR_SUCCESS,
-} from '../../../../redux/Dispatch/actions';
-import {
   isSameDayTask,
   isSameDayTaskList,
   isSameDayTour,
 } from '../../../../redux/Dispatch/utils';
 
+
+/*
+ * Action Types
+ */
+
+// TODO: Change to createAction declaration from '@reduxjs/toolkit'
+export const DEP_ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
+export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
+export const DEP_CHANGE_DATE = 'CHANGE_DATE';
+export const DEP_UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
+export const DEP_UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 
 export const CREATE_TASK_LIST_REQUEST = 'CREATE_TASK_LIST_REQUEST';
 export const CREATE_TASK_LIST_SUCCESS = 'CREATE_TASK_LIST_SUCCESS';
@@ -37,13 +42,11 @@ export const createTaskListFailure = createAction(CREATE_TASK_LIST_FAILURE);
 
 export const updateTaskListsSuccess = createAction('@logistics/UPDATE_TASK_LIST_SUCCESS');
 
-export const loadToursSuccess = createAction('logistics/LOAD_TOURS_SUCCESS');
-export const loadToursFailure = createAction('logistics/LOAD_TOURS_FAILURE');
-
 export const createTourSuccess = createAction('@logistics/CREATE_TOUR_SUCCESS');
-export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
-// For future integration with web socket
-export const deleteTourSuccess = createAction('@logistics/DELETE_TOUR_SUCCESS');
+export const deleteTourSuccess = createAction('@logistics/DELETE_TOUR_SUCCESS'); // For future integration with web socket
+export const loadToursFailure = createAction('logistics/LOAD_TOURS_FAILURE');
+export const loadToursSuccess = createAction('logistics/LOAD_TOURS_SUCCESS');
+export const updateTourSuccess = createAction('@logistics/UPDATE_TOUR_SUCCESS');
 
 export function updateTask(action, task) {
   return function (dispatch, getState) {

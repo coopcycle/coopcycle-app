@@ -1,13 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
-import {
-  DEP_ASSIGN_TASK_SUCCESS,
-  DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
-  DEP_UNASSIGN_TASK_SUCCESS,
-  DEP_UPDATE_TASK_SUCCESS,
-} from '../Dispatch/actions';
-import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
+
 import {
   ADD_PICTURE,
   ADD_SIGNATURE,
@@ -34,6 +27,14 @@ import {
   START_TASK_SUCCESS,
 } from './taskActions';
 import { apiSlice } from '../api/slice'
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
+import {
+  DEP_ASSIGN_TASK_SUCCESS,
+  DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
+  DEP_UNASSIGN_TASK_SUCCESS,
+  DEP_UPDATE_TASK_SUCCESS,
+} from '../../shared/logistics/redux';
+import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 
 /*
  * Intital state shape for the task entity reducer

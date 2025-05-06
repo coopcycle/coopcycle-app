@@ -3,6 +3,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 import {
+  DEP_CHANGE_DATE,
   createTaskFailure,
   createTaskListFailure,
   createTaskListRequest,
@@ -14,18 +15,6 @@ import {
 import { isSameDayTask } from './utils';
 import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
-
-/*
- * Action Types
- */
-
-// TODO: Change to createAction declaration from '@reduxjs/toolkit'
-export const DEP_ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
-export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
-export const DEP_CHANGE_DATE = 'CHANGE_DATE';
-export const DEP_UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
-export const DEP_UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
-export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
 
 
 /*
