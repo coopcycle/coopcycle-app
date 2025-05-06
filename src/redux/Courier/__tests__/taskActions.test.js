@@ -6,9 +6,6 @@ import {
   LOAD_TASKS_FAILURE,
   LOAD_TASKS_REQUEST,
   LOAD_TASKS_SUCCESS,
-  MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST,
-  MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_FAILURE,
   MARK_TASK_FAILED_REQUEST,
   MARK_TASK_FAILED_SUCCESS,
@@ -50,21 +47,6 @@ describe('Redux | Tasks | Actions', () => {
     {
       actionCreator: loadTasksSuccess,
       actionType: LOAD_TASKS_SUCCESS,
-    },
-
-    {
-      actionCreator: markTaskDoneRequest,
-      actionType: MARK_TASK_DONE_REQUEST,
-    },
-
-    {
-      actionCreator: markTaskDoneFailure,
-      actionType: MARK_TASK_DONE_FAILURE,
-    },
-
-    {
-      actionCreator: markTaskDoneSuccess,
-      actionType: MARK_TASK_DONE_SUCCESS,
     },
 
     {

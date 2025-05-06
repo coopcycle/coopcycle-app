@@ -11,6 +11,9 @@ import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
 import { selectCurrentRoute, selectHttpClient } from '../App/selectors';
 import {
+  markTaskDoneFailure,
+  markTaskDoneRequest,
+  markTaskDoneSuccess,
   startTaskFailure,
   startTaskRequest,
   startTaskSuccess,
@@ -22,9 +25,6 @@ import {
 export const LOAD_TASKS_REQUEST = 'LOAD_TASKS_REQUEST';
 export const LOAD_TASKS_SUCCESS = 'LOAD_TASKS_SUCCESS';
 export const LOAD_TASKS_FAILURE = 'LOAD_TASKS_FAILURE';
-export const MARK_TASK_DONE_REQUEST = 'MARK_TASK_DONE_REQUEST';
-export const MARK_TASK_DONE_SUCCESS = 'MARK_TASK_DONE_SUCCESS';
-export const MARK_TASK_DONE_FAILURE = 'MARK_TASK_DONE_FAILURE';
 export const MARK_TASKS_DONE_REQUEST = 'MARK_TASKS_DONE_REQUEST';
 export const MARK_TASKS_DONE_SUCCESS = 'MARK_TASKS_DONE_SUCCESS';
 export const MARK_TASKS_DONE_FAILURE = 'MARK_TASKS_DONE_FAILURE';
@@ -63,9 +63,6 @@ export const loadTasksSuccess = createAction(
   (date, items, updatedAt) => ({ date, items, updatedAt }),
 );
 export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE);
-export const markTaskDoneRequest = createAction(MARK_TASK_DONE_REQUEST);
-export const markTaskDoneSuccess = createAction(MARK_TASK_DONE_SUCCESS);
-export const markTaskDoneFailure = createAction(MARK_TASK_DONE_FAILURE);
 export const markTasksDoneRequest = createAction(MARK_TASKS_DONE_REQUEST);
 export const markTasksDoneSuccess = createAction(MARK_TASKS_DONE_SUCCESS);
 export const markTasksDoneFailure = createAction(MARK_TASKS_DONE_FAILURE);
