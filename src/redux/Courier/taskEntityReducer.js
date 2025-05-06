@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 
+import { actionMatchCreator } from '../util';
 import {
   ADD_PICTURE,
   ADD_SIGNATURE,
@@ -22,9 +23,6 @@ import {
   REPORT_INCIDENT_FAILURE,
   REPORT_INCIDENT_REQUEST,
   REPORT_INCIDENT_SUCCESS,
-  START_TASK_FAILURE,
-  START_TASK_REQUEST,
-  START_TASK_SUCCESS,
 } from './taskActions';
 import { apiSlice } from '../api/slice'
 import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
@@ -33,6 +31,9 @@ import {
   DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
   DEP_UNASSIGN_TASK_SUCCESS,
   DEP_UPDATE_TASK_SUCCESS,
+  startTaskFailure,
+  startTaskRequest,
+  startTaskSuccess,
 } from '../../shared/logistics/redux';
 import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 
@@ -111,8 +112,40 @@ export const tasksEntityReducer = (
   state = tasksEntityInitialState,
   action = {},
 ) => {
+  if (actionMatchCreator(action, [
+    startTaskRequest,
+  ])) {
+    return {
+      ...state,
+      loadTasksFetchError: false,
+      completeTaskFetchError: false,
+      isFetching: true,
+    };
+  }
+
+  if (actionMatchCreator(action, [
+    startTaskSuccess,
+  ])) {
+    return {
+      ...state,
+      isFetching: false,
+      items: _.mapValues(state.items, tasks =>
+        replaceItem(tasks, action.payload),
+      ),
+    };
+  }
+
+  if (actionMatchCreator(action, [
+    startTaskFailure,
+  ])) {
+    return {
+      ...state,
+      completeTaskFetchError: action.payload || action.error,
+      isFetching: false,
+    };
+  }
+
   switch (action.type) {
-    case START_TASK_REQUEST:
     case MARK_TASK_DONE_REQUEST:
     case MARK_TASK_FAILED_REQUEST:
     case MARK_TASKS_DONE_REQUEST:
@@ -124,7 +157,6 @@ export const tasksEntityReducer = (
         isFetching: true,
       };
 
-    case START_TASK_FAILURE:
     case MARK_TASK_DONE_FAILURE:
     case MARK_TASK_FAILED_FAILURE:
       return {
@@ -149,7 +181,6 @@ export const tasksEntityReducer = (
         ),
       }
 
-    case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS:
     case DEP_UPDATE_TASK_SUCCESS:

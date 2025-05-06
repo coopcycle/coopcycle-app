@@ -30,7 +30,10 @@ export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 
 export const markTaskDoneSuccess = createAction('@logistics/MARK_TASK_DONE_SUCCESS');
 export const markTaskFailedSuccess = createAction('@logistics/MARK_TASK_FAILED_SUCCESS');
+
+export const startTaskRequest = createAction('@logistics/START_TASK_REQUEST');
 export const startTaskSuccess = createAction('@logistics/START_TASK_SUCCESS');
+export const startTaskFailure = createAction('@logistics/START_TASK_FAILURE');
 
 export const createTaskListRequest = createAction('@logistics/CREATE_TASK_LIST_REQUEST');
 export const createTaskListSuccess = createAction('@logistics/CREATE_TASK_LIST_SUCCESS');

@@ -7,7 +7,6 @@ import {
 import {
   MARK_TASK_DONE_SUCCESS,
   MARK_TASK_FAILED_SUCCESS,
-  START_TASK_SUCCESS,
 } from '../Courier';
 import {
   SET_USER,
@@ -16,6 +15,7 @@ import {
   assignTaskSuccess,
   cancelTaskSuccess,
   createTaskSuccess,
+  startTaskSuccess,
   taskAdapter,
   unassignTaskSuccess,
   updateTaskSuccess,
@@ -41,6 +41,7 @@ export default (state = initialState, action) => {
     cancelTaskSuccess,
     unassignTaskSuccess,
     updateTaskSuccess,
+    startTaskSuccess,
   ])) {
     return taskAdapter.upsertOne(state, action.payload);
   }
@@ -54,7 +55,6 @@ export default (state = initialState, action) => {
   }
 
   switch (action.type) {
-    case START_TASK_SUCCESS:
     case MARK_TASK_DONE_SUCCESS:
     case MARK_TASK_FAILED_SUCCESS:
       return taskAdapter.upsertOne(state, action.payload);
