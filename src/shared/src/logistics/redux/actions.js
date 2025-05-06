@@ -28,6 +28,8 @@ export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
 export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 
+export const unassignTasksSuccess = createAction('@logistics/UNASSIGN_TASKS_SUCCESS');
+
 export const startTaskRequest = createAction('@logistics/START_TASK_REQUEST');
 export const startTaskSuccess = createAction('@logistics/START_TASK_SUCCESS');
 export const startTaskFailure = createAction('@logistics/START_TASK_FAILURE');

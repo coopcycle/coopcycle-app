@@ -19,6 +19,7 @@ import {
   createTaskSuccess,
   loadToursFailure,
   loadToursSuccess,
+  unassignTasksSuccess,
 } from '../../../shared/logistics/redux';
 import reducer from '../uiReducers';
 
@@ -109,6 +110,7 @@ describe('uiReducers', () => {
 
     it.each([
       ['assignTasksSuccess', assignTasksSuccess],
+      ['unassignTasksSuccess', unassignTasksSuccess],
     ])('should change isAssigningTasks to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {

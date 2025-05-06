@@ -24,6 +24,7 @@ import {
 } from "../../../../../redux/api/slice";
 import {
   unassignTaskSuccess,
+  unassignTasksSuccess,
   updateTaskListsSuccess,
   updateTourSuccess,
 } from '../actions';
@@ -207,7 +208,7 @@ export default function useSetTaskListItems(
 
   const _updateRemovedTasks = (removedTasks) => {
     const unassignedTasks = removedTasks.map(task => getAssignedTask(task));
-    dispatch(unassignTaskSuccess(unassignedTasks));
+    dispatch(unassignTasksSuccess(unassignedTasks));
   }
 
   return {

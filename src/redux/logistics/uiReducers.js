@@ -20,6 +20,7 @@ import {
   createTaskSuccess,
   loadToursFailure,
   loadToursSuccess,
+  unassignTasksSuccess,
 } from '../../shared/logistics/redux';
 
 
@@ -89,6 +90,7 @@ export default (state = initialState, action) => {
 
   if (actionMatchCreator(action, [
     assignTasksSuccess,
+    unassignTasksSuccess,
   ])) {
     return {
       ...state,
