@@ -200,7 +200,9 @@ class TaskListItem extends Component {
         stopRightSwipe={(buttonWidth + 25) * -1}
         onRowOpen={toValue => this._onRowOpen(toValue)}
         onRowClose={this._onRowClose}
-        ref={this.swipeRow}>
+        ref={this.swipeRow}
+        testID={`taskListItem-${index}`}
+      >
         <View style={styles.rowBack}>
           <SwipeButtonContainer
             left
@@ -252,7 +254,7 @@ class TaskListItem extends Component {
               {task.orgName ? (
                 <Text style={textStyle}>{task.orgName}</Text>
               ) : null}
-              
+
               {task.address?.contactName ? (
                 <Text style={textStyle}>{task.address.contactName}</Text>
               ) : null}

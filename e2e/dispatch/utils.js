@@ -21,3 +21,11 @@ export async function loadDispatchFixture() {
 export async function doLoginForUserWithRoleDispatcher() {
   await authenticateWithCredentials('dispatcher', 'dispatcher');
 }
+
+export async function assignTaskToUser() {
+  await expect(element(by.id('task:0'))).toBeVisible();
+  await element(by.id('task:0')).swipe('right');
+
+  await expect(element(by.id('task:0:assign'))).toBeVisible();
+  await element(by.id('task:0:assign')).tap();
+}
