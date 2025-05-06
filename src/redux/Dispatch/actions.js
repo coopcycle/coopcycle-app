@@ -12,7 +12,7 @@ import {
   isSameDayTask,
   isSameDayTaskList,
   isSameDayTour,
-} from './utils';
+} from '../../shared/src/logistics/redux/utils';
 import {
   markTaskDoneSuccess,
   markTaskFailedSuccess,
