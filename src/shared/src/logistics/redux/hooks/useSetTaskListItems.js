@@ -8,7 +8,6 @@ import {
   assignTasksSuccess,
   unassignTaskSuccess,
   updateTaskListsSuccess,
-  updateTourSuccess,
 } from '../../../../../redux/Dispatch/actions';
 import {
   getAssignedTask,
@@ -21,6 +20,9 @@ import {
   selectSelectedDate,
   selectTaskLists, selectToursTasksIndex
 } from "../selectors";
+import {
+  updateTourSuccess,
+} from '../actions';
 import {
   useSetTaskListItemsMutation,
   useSetTourItemsMutation,

@@ -11,7 +11,6 @@ import {
 import {
   isSameDayTask,
   isSameDayTaskList,
-  isSameDayTour,
 } from '../../shared/src/logistics/redux/utils';
 import {
   markTaskDoneSuccess,
@@ -31,8 +30,6 @@ export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS'
 export const DEP_CHANGE_DATE = 'CHANGE_DATE';
 export const DEP_UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
 export const DEP_UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
-export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
-
 
 /*
  * Action Creators
@@ -71,8 +68,6 @@ export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 
 export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
-
-export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
 
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
@@ -178,23 +173,6 @@ export function updateTaskList(action, taskList) {
       switch (action) {
         case 'v2:task_list:updated':
           dispatch(updateTaskListsSuccess(taskList));
-          break;
-      }
-    }
-  }
-}
-
-export function updateTour(action, tour) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTour(tour, date)) {
-      switch (action) {
-        case 'tour:created':
-          dispatch(createTourSuccess(tour));
-          break;
-        case 'tour:updated':
-          dispatch(updateTourSuccess(tour));
           break;
       }
     }
