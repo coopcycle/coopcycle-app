@@ -15,6 +15,7 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
+  unassignTasksSuccess,
 } from "../../Dispatch/actions";
 import {
   loadToursFailure,
@@ -109,6 +110,7 @@ describe('uiReducers', () => {
 
     it.each([
       ['assignTasksSuccess', assignTasksSuccess],
+      ['unassignTasksSuccess', unassignTasksSuccess],
     ])('should change isAssigningTasks to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {

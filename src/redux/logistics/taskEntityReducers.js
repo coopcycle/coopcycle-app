@@ -7,6 +7,7 @@ import {
   createTaskSuccess,
   loadTasksSuccess,
   unassignTaskSuccess,
+  unassignTasksSuccess,
   updateTaskSuccess,
 } from '../Dispatch/actions';
 import {
@@ -47,6 +48,7 @@ export default (state = initialState, action) => {
 
   if (actionMatchCreator(action, [
     assignTasksSuccess,
+    unassignTasksSuccess,
   ])) {
     if (action.payload) {
       return taskAdapter.upsertMany(state, action.payload);

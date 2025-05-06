@@ -16,6 +16,7 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
+  unassignTasksSuccess,
 } from '../Dispatch/actions';
 import {
   loadToursFailure,
@@ -89,6 +90,7 @@ export default (state = initialState, action) => {
 
   if (actionMatchCreator(action, [
     assignTasksSuccess,
+    unassignTasksSuccess,
   ])) {
     return {
       ...state,

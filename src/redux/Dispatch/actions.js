@@ -73,6 +73,7 @@ export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
 
 export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
+export const unassignTasksSuccess = createAction('@dispatch/UNASSIGN_TASKS_SUCCESS');
 
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
