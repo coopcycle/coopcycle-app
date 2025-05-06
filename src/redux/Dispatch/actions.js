@@ -3,14 +3,16 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 import {
+  createTaskFailure,
   createTaskListFailure,
   createTaskListRequest,
   createTaskListSuccess,
+  createTaskRequest,
+  createTaskSuccess,
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import {
   isSameDayTask,
-  isSameDayTaskList,
 } from '../../shared/src/logistics/redux/utils';
 import {
   markTaskDoneSuccess,
@@ -50,10 +52,6 @@ export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAIL
 export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST');
 export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
 export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
-
-export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
-export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');
-export const createTaskFailure = createAction('@dispatch/CREATE_TASK_FAILURE');
 
 export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
 export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');

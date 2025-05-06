@@ -16,6 +16,10 @@ export const CREATE_TASK_LIST_REQUEST = 'CREATE_TASK_LIST_REQUEST';
 export const CREATE_TASK_LIST_SUCCESS = 'CREATE_TASK_LIST_SUCCESS';
 export const CREATE_TASK_LIST_FAILURE = 'CREATE_TASK_LIST_FAILURE';
 
+export const createTaskRequest = createAction('@logistics/CREATE_TASK_REQUEST');
+export const createTaskSuccess = createAction('@logistics/CREATE_TASK_SUCCESS');
+export const createTaskFailure = createAction('@logistics/CREATE_TASK_FAILURE');
+
 export const createTaskListRequest = createFsAction(CREATE_TASK_LIST_REQUEST);
 export const createTaskListSuccess = createFsAction(CREATE_TASK_LIST_SUCCESS);
 export const createTaskListFailure = createFsAction(CREATE_TASK_LIST_FAILURE);
