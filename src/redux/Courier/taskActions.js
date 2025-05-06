@@ -430,7 +430,7 @@ export function startTask(task, cb) {
     httpClient
       .put(task['@id'] + '/start', {})
       .then(savedTask => {
-        dispatch(startTaskSuccess(task));
+        dispatch(startTaskSuccess(savedTask));
         if (typeof cb === 'function') {
           setTimeout(() => cb(), 100);
         }
