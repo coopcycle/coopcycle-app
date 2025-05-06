@@ -12,14 +12,16 @@ import {
   loadTasksRequest,
   loadTasksSuccess,
   markTaskDone,
+  markTaskFailed,
+} from '../taskActions';
+import {
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
-  markTaskFailed,
   markTaskFailedFailure,
   markTaskFailedRequest,
   markTaskFailedSuccess,
-} from '../taskActions';
+} from '../../../shared/logistics/redux';
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
