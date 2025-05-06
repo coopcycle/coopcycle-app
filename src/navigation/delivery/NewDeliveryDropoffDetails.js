@@ -37,17 +37,14 @@ import FormInput from './components/FormInput';
 import TimeSlotSelector from './components/TimeSlotSelector';
 import ModalFormWrapper from './ModalFormWrapper';
 
-function NewDeliveryDropoffDetails({
-  navigation,
-  route,
-}) {
+function NewDeliveryDropoffDetails({ navigation, route }) {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
   const primaryColor = usePrimaryColor();
   const [selectedChoice, setSelectedChoice] = React.useState(null);
   const [packagesCount, setPackagesCount] = useState([]);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const packages = useSelector(selectPackages);
   const store = useSelector(selectStore);
@@ -161,7 +158,10 @@ function NewDeliveryDropoffDetails({
         weight: values.weight * 1000,
         packages: packagesCount.filter(item => item.quantity > 0),
         ...(selectedChoice
-          ? { timeSlot: selectedChoice }
+          ? {
+              timeSlotUrl: selectedTimeSlot,
+              timeSlot: selectedChoice,
+            }
           : { before: values.before }),
       },
     };
@@ -259,6 +259,7 @@ function NewDeliveryDropoffDetails({
   if (hasTimeSlot) {
     initialValues = {
       ...initialValues,
+      timeSlotUrl: null,
       timeSlot: null,
     };
   } else {
