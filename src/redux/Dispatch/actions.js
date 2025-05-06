@@ -3,6 +3,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
 import {
+  cancelTaskSuccess,
   createTaskFailure,
   createTaskListFailure,
   createTaskListRequest,
@@ -52,10 +53,6 @@ export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAIL
 export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST');
 export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
 export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
-
-export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
-export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
-export const cancelTaskFailure = createAction('@dispatch/CANCEL_TASK_FAILURE');
 
 export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
 

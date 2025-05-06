@@ -2,7 +2,6 @@ import { actionMatchCreator } from '../util';
 import {
   assignTaskSuccess,
   assignTasksSuccess,
-  cancelTaskSuccess,
   changeDate,
   loadTasksSuccess,
   unassignTaskSuccess,
@@ -17,6 +16,7 @@ import {
   SET_USER,
 } from '../App/actions';
 import {
+  cancelTaskSuccess,
   createTaskSuccess,
   taskAdapter,
 } from '../../coopcycle-frontend-js/logistics/redux';
