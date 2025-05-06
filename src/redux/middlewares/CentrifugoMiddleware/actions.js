@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { updateTask, updateTaskList } from '../../Dispatch/actions';
+import { updateTask } from '../../Dispatch/actions';
 import {
+  updateTaskList,
   updateTour,
 } from '../../../shared/logistics/redux';
 

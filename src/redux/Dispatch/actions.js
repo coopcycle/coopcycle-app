@@ -47,8 +47,6 @@ export const loadTaskListsRequest = createAction('@dispatch/LOAD_TASK_LISTS_REQU
 export const loadTaskListsSuccess = createAction('@dispatch/LOAD_TASK_LISTS_SUCCESS');
 export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAILURE');
 
-export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_SUCCESS');
-
 export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST');
 export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
 export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
@@ -163,18 +161,4 @@ export function updateTask(action, task) {
       }
     }
   };
-}
-
-export function updateTaskList(action, taskList) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTaskList(taskList, date)) {
-      switch (action) {
-        case 'v2:task_list:updated':
-          dispatch(updateTaskListsSuccess(taskList));
-          break;
-      }
-    }
-  }
 }
