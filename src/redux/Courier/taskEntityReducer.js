@@ -14,9 +14,6 @@ import {
   MARK_TASKS_DONE_FAILURE,
   MARK_TASKS_DONE_REQUEST,
   MARK_TASKS_DONE_SUCCESS,
-  MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST,
-  MARK_TASK_FAILED_SUCCESS,
   REPORT_INCIDENT_FAILURE,
   REPORT_INCIDENT_REQUEST,
   REPORT_INCIDENT_SUCCESS,
@@ -31,6 +28,9 @@ import {
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
+  markTaskFailedFailure,
+  markTaskFailedRequest,
+  markTaskFailedSuccess,
   startTaskFailure,
   startTaskRequest,
   startTaskSuccess,
@@ -115,6 +115,7 @@ export const tasksEntityReducer = (
   if (actionMatchCreator(action, [
     startTaskRequest,
     markTaskDoneRequest,
+    markTaskFailedRequest,
   ])) {
     return {
       ...state,
@@ -127,6 +128,7 @@ export const tasksEntityReducer = (
   if (actionMatchCreator(action, [
     startTaskSuccess,
     markTaskDoneSuccess,
+    markTaskFailedSuccess,
   ])) {
     return {
       ...state,
@@ -140,6 +142,7 @@ export const tasksEntityReducer = (
   if (actionMatchCreator(action, [
     startTaskFailure,
     markTaskDoneFailure,
+    markTaskFailedFailure,
   ])) {
     return {
       ...state,
@@ -149,7 +152,6 @@ export const tasksEntityReducer = (
   }
 
   switch (action.type) {
-    case MARK_TASK_FAILED_REQUEST:
     case MARK_TASKS_DONE_REQUEST:
     case REPORT_INCIDENT_REQUEST:
       return {
@@ -157,13 +159,6 @@ export const tasksEntityReducer = (
         loadTasksFetchError: false,
         completeTaskFetchError: false,
         isFetching: true,
-      };
-
-    case MARK_TASK_FAILED_FAILURE:
-      return {
-        ...state,
-        completeTaskFetchError: action.payload || action.error,
-        isFetching: false,
       };
 
     case MARK_TASKS_DONE_FAILURE:
@@ -182,7 +177,7 @@ export const tasksEntityReducer = (
         ),
       }
 
-    case MARK_TASK_FAILED_SUCCESS:
+
     case DEP_UPDATE_TASK_SUCCESS:
       return {
         ...state,

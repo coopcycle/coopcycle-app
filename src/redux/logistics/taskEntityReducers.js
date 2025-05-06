@@ -5,9 +5,6 @@ import {
   loadTasksSuccess,
 } from '../Dispatch/actions';
 import {
-  MARK_TASK_FAILED_SUCCESS,
-} from '../Courier';
-import {
   SET_USER,
 } from '../App/actions';
 import {
@@ -15,6 +12,7 @@ import {
   cancelTaskSuccess,
   createTaskSuccess,
   markTaskDoneSuccess,
+  markTaskFailedSuccess,
   startTaskSuccess,
   taskAdapter,
   unassignTaskSuccess,
@@ -37,12 +35,13 @@ export default (state = initialState, action) => {
 
   if (actionMatchCreator(action, [
     assignTaskSuccess,
-    createTaskSuccess,
     cancelTaskSuccess,
+    createTaskSuccess,
+    markTaskDoneSuccess,
+    markTaskFailedSuccess,
+    startTaskSuccess,
     unassignTaskSuccess,
     updateTaskSuccess,
-    startTaskSuccess,
-    markTaskDoneSuccess,
   ])) {
     return taskAdapter.upsertOne(state, action.payload);
   }
@@ -55,11 +54,5 @@ export default (state = initialState, action) => {
     }
   }
 
-  switch (action.type) {
-    case MARK_TASK_FAILED_SUCCESS:
-      return taskAdapter.upsertOne(state, action.payload);
-
-    default:
-      return state;
-  }
+  return state;
 };

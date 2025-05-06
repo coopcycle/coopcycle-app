@@ -14,6 +14,9 @@ import {
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
+  markTaskFailedFailure,
+  markTaskFailedRequest,
+  markTaskFailedSuccess,
   startTaskFailure,
   startTaskRequest,
   startTaskSuccess,
@@ -28,9 +31,6 @@ export const LOAD_TASKS_FAILURE = 'LOAD_TASKS_FAILURE';
 export const MARK_TASKS_DONE_REQUEST = 'MARK_TASKS_DONE_REQUEST';
 export const MARK_TASKS_DONE_SUCCESS = 'MARK_TASKS_DONE_SUCCESS';
 export const MARK_TASKS_DONE_FAILURE = 'MARK_TASKS_DONE_FAILURE';
-export const MARK_TASK_FAILED_REQUEST = 'MARK_TASK_FAILED_REQUEST';
-export const MARK_TASK_FAILED_SUCCESS = 'MARK_TASK_FAILED_SUCCESS';
-export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE';
 export const REPORT_INCIDENT_REQUEST = 'REPORT_INCIDENT_REQUEST';
 export const REPORT_INCIDENT_SUCCESS = 'REPORT_INCIDENT_SUCCESS';
 export const REPORT_INCIDENT_FAILURE = 'REPORT_INCIDENT_FAILURE';
@@ -66,9 +66,6 @@ export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE);
 export const markTasksDoneRequest = createAction(MARK_TASKS_DONE_REQUEST);
 export const markTasksDoneSuccess = createAction(MARK_TASKS_DONE_SUCCESS);
 export const markTasksDoneFailure = createAction(MARK_TASKS_DONE_FAILURE);
-export const markTaskFailedRequest = createAction(MARK_TASK_FAILED_REQUEST);
-export const markTaskFailedSuccess = createAction(MARK_TASK_FAILED_SUCCESS);
-export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE);
 export const reportIncidentRequest = createAction(REPORT_INCIDENT_REQUEST);
 export const reportIncidentSuccess = createAction(REPORT_INCIDENT_SUCCESS);
 export const reportIncidentFailure = createAction(REPORT_INCIDENT_FAILURE);

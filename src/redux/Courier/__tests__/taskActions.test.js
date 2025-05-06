@@ -6,9 +6,6 @@ import {
   LOAD_TASKS_FAILURE,
   LOAD_TASKS_REQUEST,
   LOAD_TASKS_SUCCESS,
-  MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST,
-  MARK_TASK_FAILED_SUCCESS,
   clearFiles,
   loadTasks,
   loadTasksFailure,
@@ -47,21 +44,6 @@ describe('Redux | Tasks | Actions', () => {
     {
       actionCreator: loadTasksSuccess,
       actionType: LOAD_TASKS_SUCCESS,
-    },
-
-    {
-      actionCreator: markTaskFailedRequest,
-      actionType: MARK_TASK_FAILED_REQUEST,
-    },
-
-    {
-      actionCreator: markTaskFailedFailure,
-      actionType: MARK_TASK_FAILED_FAILURE,
-    },
-
-    {
-      actionCreator: markTaskFailedSuccess,
-      actionType: MARK_TASK_FAILED_SUCCESS,
     },
   ].forEach(({ actionCreator, actionType }) => {
     test(`${actionType}`, () => {
