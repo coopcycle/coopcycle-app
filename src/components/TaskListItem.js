@@ -252,7 +252,6 @@ class TaskListItem extends Component {
               {task.orgName ? (
                 <Text style={textStyle}>{task.orgName}</Text>
               ) : null}
-              
               {task.address?.contactName ? (
                 <Text style={textStyle}>{task.address.contactName}</Text>
               ) : null}
@@ -283,7 +282,7 @@ class TaskListItem extends Component {
                 <HStack style={styles.tagsWrapper}>
                   {task.tags.map(tag => (
                     <Text
-                      key={tag}
+                      key={tag.slug}
                       style={[
                         textStyle,
                         styles.tag,
