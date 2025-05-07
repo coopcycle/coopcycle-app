@@ -1,7 +1,7 @@
-import { ScrollView, View } from 'native-base';
+import { View } from 'native-base';
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { InteractionManager, RefreshControl } from "react-native";
+import { InteractionManager } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { initialize } from "../../redux/Dispatch/actions";
@@ -16,9 +16,9 @@ import {
   Text
 } from 'native-base';
 
+import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import {
   darkGreyColor,
-  primaryColor,
   whiteColor
 } from '../../styles/common';
 import { useColorModeToken } from '../../styles/theme';
@@ -50,7 +50,7 @@ export default function AllTasks({
     });
   }, [dispatch]);
 
-   // Combine unassigned tasks and task lists into a single grouped data structure
+   // Combine unassigned tasks and task lists to use in SectionList
     const sections = [
       {
         // TODO add translations
@@ -79,8 +79,7 @@ export default function AllTasks({
   }
 
   return (
-    // TODO check safe area
-      <>
+    <BasicSafeAreaView>
         <View>
           <AddButton
             testID="dispatchNewDelivery"
@@ -98,6 +97,6 @@ export default function AllTasks({
             isFetching={isFetching}
             refetch={refetch}
         />}
-      </>
+      </BasicSafeAreaView>
   );
 }
