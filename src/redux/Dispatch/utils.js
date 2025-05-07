@@ -1,13 +1,13 @@
 import moment from 'moment';
 
-export function isSameDateTask(task, date) {
+export function isSameDayTask(task, date) {
   return moment(task.doneBefore).isSame(date, 'day');
 }
 
-export function isSameDateTaskList(taskList, date) {
+export function isSameDayTaskList(taskList, date) {
   return moment(taskList.date).isSame(date, 'day');
 }
 
-export function isSameDateTour(tour, date) {
+export function isSameDayTour(tour, date) {
   return moment(tour.date).isSame(date, 'day');
 }

@@ -1,4 +1,7 @@
 import {
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
@@ -12,9 +15,7 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
-  updateTaskListTasksFailure,
-  updateTaskListTasksRequest,
-  updateTaskListTasksSuccess,
+  unassignTasksSuccess,
 } from "../../Dispatch/actions";
 import {
   loadToursFailure,
@@ -84,7 +85,7 @@ describe('uiReducers', () => {
 
   describe('isAssigningTasks', () => {
     it.each([
-      ['updateTaskListTasksRequest', updateTaskListTasksRequest],
+      ['assignTasksRequest', assignTasksRequest],
     ])('should change isAssigningTasks to TRUE for load action %s', (actionName, actionCreator) => {
       const action = actionCreator();
 
@@ -94,7 +95,7 @@ describe('uiReducers', () => {
     })
 
     it.each([
-      ['updateTaskListTasksFailure', updateTaskListTasksFailure],
+      ['assignTasksFailure', assignTasksFailure],
     ])('should change isAssigningTasks to FALSE for failure action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {
@@ -108,7 +109,8 @@ describe('uiReducers', () => {
     })
 
     it.each([
-      ['updateTaskListTasksSuccess', updateTaskListTasksSuccess],
+      ['assignTasksSuccess', assignTasksSuccess],
+      ['unassignTasksSuccess', unassignTasksSuccess],
     ])('should change isAssigningTasks to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {

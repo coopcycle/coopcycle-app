@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
 
@@ -9,13 +8,17 @@ import {
   createTaskListSuccess,
   selectSelectedDate,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { isSameDateTask, isSameDateTaskList, isSameDateTour } from './utils';
+import {
+  isSameDayTask,
+  isSameDayTaskList,
+  isSameDayTour,
+} from './utils';
 import {
   markTaskDoneSuccess,
   markTaskFailedSuccess,
   startTaskSuccess,
 } from '../Courier';
-import i18n from '../../i18n';
+import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
 
 /*
@@ -49,9 +52,9 @@ export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAIL
 
 export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_SUCCESS');
 
-export const updateTaskListTasksRequest = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_REQUEST');
-export const updateTaskListTasksSuccess = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_SUCCESS');
-export const updateTaskListTasksFailure = createAction('@dispatch/UPDATE_TASK_LIST_TASKS_FAILURE');
+export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST');
+export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
+export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
 
 export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
 export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');
@@ -70,6 +73,7 @@ export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
 
 export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
+export const unassignTasksSuccess = createAction('@dispatch/UNASSIGN_TASKS_SUCCESS');
 
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
@@ -115,7 +119,7 @@ export function createTask(task) {
       .then(t => {
         let date = selectSelectedDate(getState());
 
-        if (isSameDateTask(t, date)) {
+        if (isSameDayTask(t, date)) {
           dispatch(createTaskSuccess(t));
         }
 
@@ -136,7 +140,7 @@ export function updateTask(action, task) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTask(task, date)) {
+    if (isSameDayTask(task, date)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -171,7 +175,7 @@ export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTaskList(taskList, date)) {
+    if (isSameDayTaskList(taskList, date)) {
       switch (action) {
         case 'v2:task_list:updated':
           dispatch(updateTaskListsSuccess(taskList));
@@ -185,7 +189,7 @@ export function updateTour(action, tour) {
   return function (dispatch, getState) {
     let date = selectSelectedDate(getState());
 
-    if (isSameDateTour(tour, date)) {
+    if (isSameDayTour(tour, date)) {
       switch (action) {
         case 'tour:created':
           dispatch(createTourSuccess(tour));
@@ -196,27 +200,4 @@ export function updateTour(action, tour) {
       }
     }
   }
-}
-
-
-/*
- * Auxiliary functions
- */
-
-function showAlert(error, title=i18n.t('FAILED')) {
-  let message = i18n.t('TRY_LATER');
-
-  // eslint-disable-next-line no-prototype-builtins
-  if (error.hasOwnProperty('hydra:description')) {
-    message = error['hydra:description'];
-  } else if (typeof error === 'string') {
-    message = error;
-  }
-
-  return Alert.alert(
-    title,
-    message,
-    [{text: 'OK', onPress: () => {}}],
-    {cancelable: false}
-  );
 }

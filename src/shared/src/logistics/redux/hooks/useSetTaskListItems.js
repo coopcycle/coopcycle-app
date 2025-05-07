@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from 'react';
 
 import {
-  assignTaskSuccess,
-  unassignTaskSuccess,
-  updateTaskListTasksFailure,
-  updateTaskListTasksRequest,
-  updateTaskListTasksSuccess,
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksSuccess,
+  unassignTasksSuccess,
   updateTaskListsSuccess,
   updateTourSuccess,
 } from '../../../../../redux/Dispatch/actions';
@@ -23,12 +22,12 @@ import {
   selectTaskLists, selectToursTasksIndex
 } from "../selectors";
 import {
-  useSetTaskListsItemsMutation,
+  useSetTaskListItemsMutation,
   useSetTourItemsMutation,
 } from "../../../../../redux/api/slice";
 
 
-export default function useSetTaskListsItems(
+export default function useSetTaskListItems(
   navigation,
 ) {
   const allTasks = useSelector(selectAllTasks);
@@ -39,13 +38,13 @@ export default function useSetTaskListsItems(
   const dispatch = useDispatch();
 
   const [
-    setTaskListsItems,
+    setTaskListItems,
     {
       isError: isErrorSetTaskListItems,
       isLoading: isLoadingSetTaskListItems,
       isSuccess: isSuccessSetTaskListItems,
     }
-  ] = useSetTaskListsItemsMutation();
+  ] = useSetTaskListItemsMutation();
   const [
     setTourItems,
     {
@@ -72,19 +71,19 @@ export default function useSetTaskListsItems(
 
   useEffect(() => {
     if (isLoading) {
-      dispatch(updateTaskListTasksRequest());
+      dispatch(assignTasksRequest());
     }
   }, [dispatch, isLoading]);
 
   useEffect(() => {
     if (isSuccess) {
-      dispatch(updateTaskListTasksSuccess());
+      dispatch(assignTasksSuccess());
     }
   }, [dispatch, isSuccess]);
 
   useEffect(() => {
     if (isError) {
-      dispatch(updateTaskListTasksFailure());
+      dispatch(assignTasksFailure());
     }
   }, [dispatch, isError]);
 
@@ -145,20 +144,22 @@ export default function useSetTaskListsItems(
 
   const _updateAssigningTasks = (tasks, user) => {
     return _updateAssignedTasks(tasks, user)
-      .then(({ data: taskList }) => _updateTaskAndTaskList(tasks, user, taskList));
+      .then(({ data: taskList }) => _updateTaskList(taskList))
+      .then(() => _updateTasks(tasks, user));
   }
 
   const _updateUnassigningTasks = (tasks, user, removedTasks) => {
     return _updateAssignedTasks(tasks, user)
       .then(res => _maybeRemoveTourTasks(tasks).then(_res => res))
-      .then(({ data: taskList }) => _updateTaskAndTaskList(tasks, user, taskList))
+      .then(({ data: taskList }) => _updateTaskList(taskList))
+      .then(() => _updateTasks(tasks, user))
       .then(() => _updateRemovedTasks(removedTasks));
   }
 
   const _updateAssignedTasks = (tasks, user) => {
     const tasksIds = tasks.map(task => task['@id']);
 
-    return setTaskListsItems({
+    return setTaskListItems({
       tasks: tasksIds,
       username: user.username,
       date: selectedDate
@@ -193,16 +194,18 @@ export default function useSetTaskListsItems(
     });
   }
 
-  const _updateTaskAndTaskList = (tasks, user, taskList) => {
+  const _updateTaskList = (taskList) => {
     dispatch(updateTaskListsSuccess(taskList));
+  }
 
+  const _updateTasks = (tasks, user) => {
     const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
-    newUserTasks.forEach(task => dispatch(assignTaskSuccess(task)));
+    dispatch(assignTasksSuccess(newUserTasks));
   }
 
   const _updateRemovedTasks = (removedTasks) => {
-    const unassignedTasks = removedTasks.map(_task => getAssignedTask(_task));
-    unassignedTasks.forEach(unassignedTask => dispatch(unassignTaskSuccess(unassignedTask)));
+    const unassignedTasks = removedTasks.map(task => getAssignedTask(task));
+    dispatch(unassignTasksSuccess(unassignedTasks));
   }
 
   return {
