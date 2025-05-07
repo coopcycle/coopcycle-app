@@ -2,7 +2,7 @@ import { Text } from 'native-base';
 import { useSelector } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
-import { RefreshControl, SectionList } from 'react-native';
+import { SectionList } from 'react-native';
 import TaskList from '../../../components/TaskList';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
@@ -12,11 +12,10 @@ import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useS
 export default function GroupedTasks({
   sections,
   route,
-  refetch,
   isFetching,
+  refetch
 }) {
   const navigation = useNavigation();
-
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
 
@@ -55,7 +54,7 @@ export default function GroupedTasks({
         keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
         renderItem={({ section, index }) => {
           // TODO check why lists are repeating, is this necessary?
-          if (index === 0) {
+          if (index === 0 && !isFetching) {
             return (
               <TaskList
                 tasks={section.data}
@@ -93,13 +92,9 @@ export default function GroupedTasks({
             {section.title}
           </Text>
         )}
-        onRefresh={refetch}
-        refreshing={isFetching}
-        // TODO loader disappears
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        } 
         stickySectionHeadersEnabled={true}
+        refreshing={isFetching}
+        onRefresh={refetch}
       />
     </>
   );

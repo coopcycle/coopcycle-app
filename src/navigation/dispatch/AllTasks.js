@@ -1,7 +1,7 @@
 import { View } from 'native-base';
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { InteractionManager } from "react-native";
+import { ActivityIndicator, InteractionManager } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { initialize } from "../../redux/Dispatch/actions";
@@ -78,6 +78,14 @@ export default function AllTasks({
     );
   }
 
+  if (isFetching) {
+    return (
+      <Center w="95%" h="80%">
+        <ActivityIndicator animating={true} size="large" />
+      </Center>
+    )
+  }
+
   return (
     <BasicSafeAreaView>
         <View>
@@ -89,14 +97,13 @@ export default function AllTasks({
             </Text>
           </AddButton>
         </View>
-        {!isFetching &&
         <GroupedTasks
             sections={sections}
             navigation
             route
             isFetching={isFetching}
             refetch={refetch}
-        />}
+        />
       </BasicSafeAreaView>
   );
 }
