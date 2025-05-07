@@ -92,10 +92,10 @@ export function tasksToIds(tasks) {
   );
 }
 
-export function getUserTasks(username, allTaskLists) {
+export function getTaskListItemsIds(username, allTaskLists) {
   const userTaskList = allTaskLists.find(taskList => taskList.username === username);
 
-  return userTaskList ? userTaskList.items : [];
+  return userTaskList ? userTaskList.itemIds : [];
 }
 
 export function getAssignedTask(task, username) {

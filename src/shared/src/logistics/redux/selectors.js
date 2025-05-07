@@ -62,7 +62,6 @@ export const selectTaskLists = createSelector(
         return [];
       });
 
-      delete newTaskList.itemIds;
       newTaskList.items = _.uniqBy(orderedItems, '@id');
 
       return newTaskList;
