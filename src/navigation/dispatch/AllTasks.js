@@ -54,7 +54,7 @@ export default function AllTasks({
     const sections = [
       {
         // TODO add translations
-        title: t('NEW_ORDER'),
+        title: t('DISPATCH_UNASSIGNED_TASKS'),
         data: unassignedTasks,
         backgroundColor: whiteColor,
         textColor: darkGreyColor,
