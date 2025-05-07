@@ -60,7 +60,7 @@ const MainNavigator = () => {
   return (
     <MainStack.Navigator screenOptions={screenOptions}>
       <MainStack.Screen
-        name="DispatchHome"
+        name="DispatchAllTasks"
         component={screens.DispatchAllTasks}
         options={({ navigation }) => ({
           title: i18n.t('DISPATCH'),

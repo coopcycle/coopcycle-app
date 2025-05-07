@@ -33,6 +33,7 @@ export default function GroupedTasks({
   };
 
   const _assignTask = (task, user) => {
+    navigation.navigate('DispatchAllTasks');
     assignTaskWithRelatedTasks(task, user);
   };
 
@@ -43,6 +44,7 @@ export default function GroupedTasks({
   };
 
   const _bulkAssign = (user, selectedTasks) => {
+    navigation.navigate('DispatchAllTasks');
     bulkAssignTasksWithRelatedTasks(selectedTasks, user);
   };
 
