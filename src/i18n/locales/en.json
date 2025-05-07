@@ -239,7 +239,7 @@
     "NOTIFICATION_ORDER_CREATED_DESC": "A new order for {{date}} has been created",
     "NOTIFICATION_CLOSES_SOON": "Hop hop hop ! Hurry up, it remains {{diff}} until closing !",
     "UNASSIGNED_TASKS": "Unassigned",
-    "DISPATCH_UNASSIGNED_TASKS": "Unassigned",
+    "DISPATCH_UNASSIGNED_TASKS": "New orders",
     "DISPATCH_TASK_LISTS": "Assigned",
     "DISPATCH_TASK_LIST": "Assigned to {{username}}",
     "DISPATCH_ADD_TASK_LIST": "Add user",
