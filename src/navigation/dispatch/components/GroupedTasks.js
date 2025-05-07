@@ -37,8 +37,6 @@ export default function GroupedTasks({
   };
 
   const assignSelectedTasks = selectedTasks => {
-    const selectedTasksIds = selectedTasks.map(task => task['@id']);
-    console.log('selectedTasks', selectedTasksIds);
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _bulkAssign(user, selectedTasks),
     });
