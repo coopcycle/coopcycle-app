@@ -4,6 +4,7 @@ import {
   connectToSandbox,
   symfonyConsole
 } from "../support/commands";
+import { swipeRight, tap } from "../utils";
 
 
 export async function loadDispatchFixture() {
@@ -23,12 +24,13 @@ export async function doLoginForUserWithRoleDispatcher() {
 }
 
 export async function assignTaskToUser() {
-  await expect(element(by.id('task:0'))).toBeVisible();
-  await element(by.id('task:0')).swipe('right');
+  const username = 'jane';
 
-  await expect(element(by.id('task:0:assign'))).toBeVisible();
-  await element(by.id('task:0:assign')).tap();
+  await swipeRight('task:0');
 
-  await expect(element(by.id('assignTo:jane'))).toBeVisible();
-  await element(by.id('assignTo:jane')).tap();
+  await tap('task:0:assign');
+
+  await tap(`assignTo:${username}`);
+
+  await tap(`dispatch:taskLists:${username}`);
 }
