@@ -60,7 +60,7 @@ export default function useSetTaskListItems(
   );
 
   const isSuccess = useMemo(
-    () => isSuccessSetTaskListItems || isSuccessSetTourItems,
+    () => isSuccessSetTaskListItems && isSuccessSetTourItems,
     [isSuccessSetTaskListItems, isSuccessSetTourItems]
   );
 
@@ -114,7 +114,7 @@ export default function useSetTaskListItems(
   }
 
   /**
-   * Assign several tasks at once (and also the linked tasks)
+   * Assign several tasks at once (and also their linked tasks)
    * @param {Array.Objects} tasks - Task to be assigned
    * @param {User} user - User of the rider to which we assign
    */
@@ -138,23 +138,23 @@ export default function useSetTaskListItems(
     const user = { username: task.assignedTo };
     const userItemsIds = getTaskListItemsIds(user.username, allTaskLists);
     const taskToUnassign = withAssignedLinkedTasks(task, allTasks);
-    const itemsIdsToUnassign = taskToUnassign.map(t => t['@id']);
-    const itemsIdsToUnassignSet = new Set(itemsIdsToUnassign);
-    const allItemsIdsToAssign = userItemsIds.filter(itemId => !itemsIdsToUnassignSet.has(itemId));
+    const itemsToUnassignIds = taskToUnassign.map(t => t['@id']);
+    const itemsToUnassignSetIds = new Set(itemsToUnassignIds);
+    const allItemsIdsToAssign = userItemsIds.filter(itemId => !itemsToUnassignSetIds.has(itemId));
 
-    return _updateUnassigningTasks(allItemsIdsToAssign, user, itemsIdsToUnassign);
+    return _updateUnassigningTasks(allItemsIdsToAssign, user, itemsToUnassignIds);
   }
 
   const _updateAssigningItems = (itemsIds, user) => {
     return _updateAssignedTasks(itemsIds, user)
-      .then((previousToursIndexes) => _maybeRemoveTourTasks(itemsIds, previousToursIndexes))
+      .then(([res, previousToursIndexes]) => _maybeRemoveTourTasks(itemsIds, previousToursIndexes).then(_res => res))
       .then(({ data: taskList }) => _updateTaskList(taskList))
       .then(() => _updateTasks(itemsIds, user));
   }
 
   const _updateUnassigningTasks = (itemsIds, user, removedItemsIds) => {
     return _updateAssignedTasks(itemsIds, user)
-      .then((previousToursIndexes) => _maybeRemoveTourTasks(removedItemsIds, previousToursIndexes))
+      .then(([res, previousToursIndexes]) => _maybeRemoveTourTasks(removedItemsIds, previousToursIndexes).then(_res => res))
       .then(({ data: taskList }) => _updateTaskList(taskList))
       .then(() => _updateTasks(itemsIds, user))
       .then(() => _updateRemovedTasks(removedItemsIds));
@@ -168,25 +168,17 @@ export default function useSetTaskListItems(
       username: user.username,
       date: selectedDate
     })
-    .then(() => previousToursIndexes);
+    .then((res) => [res, previousToursIndexes]);
   }
 
   function _maybeRemoveTourTasks(itemsIds, previousToursIndexes) {
-    const toursToUpdate = itemsIds.reduce((acc, taskId) => {
-      const tourId = previousToursIndexes.tasks[taskId];
-      if (tourId) {
-        // Initialize with all the indexed tour tasks if not already present
-        // and remove the taskId from the tour tasks
-        acc[tourId] = (acc[tourId] || previousToursIndexes.tours[tourId]).filter(tourTaskId => tourTaskId !== taskId);
-      }
-      return acc;
-    }, {});
+    const toursToUpdate = getToursToUpdate(itemsIds, previousToursIndexes);
 
     return Promise.all(
       Object.entries(toursToUpdate).map(([tourUrl, tourTasks]) => setTourItems({ tourUrl, tourTasks }))
     ).then(() => {
       Object.entries(toursToUpdate).forEach(([tourId, tourTasks]) => {
-        const tour = previousToursIndexes.tours[tourId];
+        const tour = allTours.find(_tour => _tour['@id'] === tourId);
         const updatedTour = {
           ...tour,
           items: tourTasks,

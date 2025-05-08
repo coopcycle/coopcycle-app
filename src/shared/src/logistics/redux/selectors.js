@@ -17,6 +17,8 @@ export const selectSelectedDate = state => state.logistics.date;
 
 export const selectAllTasks = taskSelectors.selectAll;
 
+export const selectAllTours = tourSelectors.selectAll;
+
 export const selectAssignedTasks = createSelector(
   selectAllTasks,
   allTasks => allTasks.filter(task => task.isAssigned)
