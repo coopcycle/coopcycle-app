@@ -4,7 +4,7 @@ import {
   loadDispatchFixture,
 } from './utils';
 import {
-  itif,
+  describeif,
   swipeRight,
   tapById,
   tapByText,
@@ -12,18 +12,20 @@ import {
 
 const USERNAME = 'jane';
 
-describe('Dispatch - Task lifecycle', () => {
-  beforeEach(async () => {
+//FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+describeif(device.getPlatform() === 'android')('Dispatch - Task lifecycle', () => {
+
+  beforeAll(async () => {
     await device.reloadReactNative();
     await loadDispatchFixture();
     await doLoginForUserWithRoleDispatcher();
     await assignTaskToUser(USERNAME);
+  })
+
+  beforeEach(async () => {
   });
 
-  //FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-  itif(device.getPlatform() === 'android')(
-    `should mark a task as started`,
-    async () => {
+  it('should mark a task as started', async () => {
       // Open jane's task list
       await tapById('dispatch:assignedTab');
       await tapById(`dispatch:taskLists:${USERNAME}`);
@@ -38,6 +40,27 @@ describe('Dispatch - Task lifecycle', () => {
 
       // Go back to jane's task list
       await device.pressBack();
+
+      // Verify task has status "DOING"
+      await expect(element(by.id('taskListItemIcon-DOING'))).toBeVisible();
+  });
+
+  // TODO: move to specific file
+  it('should mark a task as done', async () => {
+      // Open jane's task list
+      await tapById('dispatch:assignedTab');
+      await tapById(`dispatch:taskLists:${USERNAME}`);
+
+      // Open assigned task
+      await tapById('task:0:assign');
+
+      // Swipe complete button, tap ok and press 'Complete'
+      await swipeRight('task:completeButton');
+      await tapById('task:completeSuccessButton');
+      await tapByText('✓ Complete');
+
+      // Press task's complete button
+      await tapById('completeTaskButton');
 
       // Verify task has status "DOING"
       await expect(element(by.id('taskListItemIcon-DOING'))).toBeVisible();
