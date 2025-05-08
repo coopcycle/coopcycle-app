@@ -88,15 +88,30 @@ const TaskStatusIcon = ({ task }) => {
   switch (task.status) {
     case 'DOING':
       return (
-        <Icon as={FontAwesome} name={doingIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doingIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DOING'
+        />
       );
     case 'DONE':
       return (
-        <Icon as={FontAwesome} name={doneIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doneIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DONE'
+        />
       );
     case 'FAILED':
       return (
-        <Icon as={FontAwesome} name={failedIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={failedIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-FAILED'
+        />
       );
     default:
       return <View />;
