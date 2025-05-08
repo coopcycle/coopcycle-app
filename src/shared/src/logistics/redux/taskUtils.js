@@ -105,3 +105,17 @@ export function getAssignedTask(task, username) {
     assignedTo: username,
   };
 }
+
+export function getToursToUpdate(itemsIds, tourIndexes) {
+  const toursToUpdate = itemsIds.reduce((acc, taskId) => {
+    const tourId = tourIndexes.tasks[taskId];
+    if (tourId) {
+      // Initialize with all the indexed tour tasks if not already present
+      // and remove the taskId from the tour tasks
+      acc[tourId] = (acc[tourId] || tourIndexes.tours[tourId]).filter(tourTaskId => tourTaskId !== taskId);
+    }
+    return acc;
+  }, {});
+
+  return toursToUpdate;
+}
