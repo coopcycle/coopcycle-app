@@ -61,14 +61,14 @@ export const apiSlice = createApi({
       },
     }),
     setTaskListItems: builder.mutation({
-      query: ({ tasks, username, date }) => {
+      query: ({ items, username, date }) => {
         const mutation = {
           url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
           method: 'PUT',
           headers: {
             'Content-Type': 'application/ld+json',
           },
-          body: JSON.stringify({ items: tasks })
+          body: JSON.stringify({ items })
         };
 
         return mutation;
