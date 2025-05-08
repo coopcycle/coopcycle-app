@@ -13,13 +13,16 @@ import {
 import {
   getAssignedTask,
   getTaskListItemsIds,
+  getToursToUpdate,
   withAssignedLinkedTasks,
   withUnassignedLinkedTasks,
 } from "../taskUtils";
 import {
   selectAllTasks,
+  selectAllTours,
   selectSelectedDate,
-  selectTaskLists, selectToursTasksIndex
+  selectTaskLists,
+  selectToursTasksIndex,
 } from "../selectors";
 import {
   useSetTaskListItemsMutation,
@@ -32,6 +35,7 @@ export default function useSetTaskListItems(
 ) {
   const allTasks = useSelector(selectAllTasks);
   const allTaskLists = useSelector(selectTaskLists);
+  const allTours = useSelector(selectAllTours);
   const toursIndexes = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
 
