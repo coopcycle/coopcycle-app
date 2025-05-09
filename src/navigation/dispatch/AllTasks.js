@@ -50,24 +50,23 @@ export default function AllTasks({
     });
   }, [dispatch]);
 
-   // Combine unassigned tasks and task lists to use in SectionList
-    const sections = [
-      {
-        // TODO add translations
-        title: t('DISPATCH_UNASSIGNED_TASKS'),
-        data: unassignedTasks,
-        backgroundColor: whiteColor,
-        textColor: darkGreyColor,
-        tasksType: 'unassignedTasks'
-      },
-      ...taskLists.map(taskList => ({
-        title: `${taskList.username} (${taskList.items.length})`,
-        data: taskList.items,
-        backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-        textColor: whiteColor,
-        tasksType: 'taskList'
-      })),
-    ];
+  // Combine unassigned tasks and task lists to use in SectionList
+  const sections = [
+    {
+      title: `${t('DISPATCH_UNASSIGNED_TASKS')} (${unassignedTasks.length})`,
+      data: unassignedTasks,
+      backgroundColor: whiteColor,
+      textColor: darkGreyColor,
+      tasksType: 'unassignedTasks'
+    },
+    ...taskLists.map(taskList => ({
+      title: `${taskList.username} (${taskList.items.length})`,
+      data: taskList.items,
+      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
+      textColor: whiteColor,
+      tasksType: 'taskList'
+    })),
+  ];
 
   if (isError) {
     return (
