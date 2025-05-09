@@ -9,14 +9,17 @@ import {
 } from '../../../../../redux/Dispatch/actions';
 import {
   getAssignedTask,
-  getUserTasks,
+  getTaskListItemsIds,
+  getToursToUpdate,
   withAssignedLinkedTasks,
   withUnassignedLinkedTasks,
 } from "../taskUtils";
 import {
   selectAllTasks,
+  selectAllTours,
   selectSelectedDate,
-  selectTaskLists, selectToursTasksIndex
+  selectTaskLists,
+  selectToursTasksIndex,
 } from "../selectors";
 import {
   useSetTaskListItemsMutation,
@@ -35,6 +38,7 @@ export default function useSetTaskListItems(
 ) {
   const allTasks = useSelector(selectAllTasks);
   const allTaskLists = useSelector(selectTaskLists);
+  const allTours = useSelector(selectAllTours);
   const toursIndexes = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
 
@@ -63,7 +67,7 @@ export default function useSetTaskListItems(
   );
 
   const isSuccess = useMemo(
-    () => isSuccessSetTaskListItems || isSuccessSetTourItems,
+    () => isSuccessSetTaskListItems && isSuccessSetTourItems,
     [isSuccessSetTaskListItems, isSuccessSetTourItems]
   );
 
@@ -96,10 +100,10 @@ export default function useSetTaskListItems(
    * @param {User} user - User of the rider to which we assign
    */
   const assignTask = (task, user) => {
-    const userTasks = getUserTasks(user.username, allTaskLists);
-    const allTasksToAssign = [...userTasks, task];
+    const userItemsIds = getTaskListItemsIds(user.username, allTaskLists);
+    const allItemsToAssign = [...userItemsIds, task['@id']];
 
-    return _updateAssigningTasks(allTasksToAssign, user);
+    return _updateAssigningItems(allItemsToAssign, user);
   }
 
   /**
@@ -108,27 +112,29 @@ export default function useSetTaskListItems(
    * @param {User} user - User of the rider to which we assign
    */
   const assignTaskWithRelatedTasks = (task, user) => {
-    const userTasks = getUserTasks(user.username, allTaskLists);
+    const userItemsIds = getTaskListItemsIds(user.username, allTaskLists);
     const linkedTasks = withUnassignedLinkedTasks(task, allTasks);
-    const allTasksToAssign = [...userTasks, ...linkedTasks];
+    const linkedTasksIds = linkedTasks.map(item => item['@id']);
+    const allItemsToAssign = [...userItemsIds, ...linkedTasksIds];
 
-    return _updateAssigningTasks(allTasksToAssign, user);
+    return _updateAssigningItems(allItemsToAssign, user);
   }
 
   /**
-   * Assign several tasks at once (and also the linked tasks)
+   * Assign several tasks at once (and also their linked tasks)
    * @param {Array.Objects} tasks - Task to be assigned
    * @param {User} user - User of the rider to which we assign
    */
   const bulkAssignTasksWithRelatedTasks = (tasks, user) => {
-    const userTasks = getUserTasks(user.username, allTaskLists);
+    const userItemsIds = getTaskListItemsIds(user.username, allTaskLists);
     const tasksWithLinkedTasks = _.uniqBy(
       _.flatMap(tasks.map(task => withUnassignedLinkedTasks(task, allTasks))),
       '@id',
     );
-    const allTasksToAssign = [...userTasks, ...tasksWithLinkedTasks];
+    const tasksWithLinkedTasksIds = tasksWithLinkedTasks.map(item => item['@id']);
+    const allItemsToAssign = [...userItemsIds, ...tasksWithLinkedTasksIds];
 
-    return _updateAssigningTasks(allTasksToAssign, user);
+    return _updateAssigningItems(allItemsToAssign, user);
   }
 
   /**
@@ -137,57 +143,49 @@ export default function useSetTaskListItems(
    */
   const unassignTaskWithRelatedTasks = (task) => {
     const user = { username: task.assignedTo };
-    const userTasks = getUserTasks(user.username, allTaskLists);
-    const linkedTasks = withAssignedLinkedTasks(task, allTasks);
-    const tasksToUnassign = new Set(linkedTasks.map(t => t['@id']));
-    const allTasksToAssign = userTasks.filter(userTask => !tasksToUnassign.has(userTask['@id']));
+    const userItemsIds = getTaskListItemsIds(user.username, allTaskLists);
+    const taskToUnassign = withAssignedLinkedTasks(task, allTasks);
+    const itemsToUnassignIds = taskToUnassign.map(t => t['@id']);
+    const itemsToUnassignSetIds = new Set(itemsToUnassignIds);
+    const allItemsIdsToAssign = userItemsIds.filter(itemId => !itemsToUnassignSetIds.has(itemId));
 
-    return _updateUnassigningTasks(allTasksToAssign, user, linkedTasks);
+    return _updateUnassigningTasks(allItemsIdsToAssign, user, itemsToUnassignIds);
   }
 
-  const _updateAssigningTasks = (tasks, user) => {
-    return _updateAssignedTasks(tasks, user)
+  const _updateAssigningItems = (itemsIds, user) => {
+    return _updateAssignedTasks(itemsIds, user)
+      .then(([res, previousToursIndexes]) => _maybeRemoveTourTasks(itemsIds, previousToursIndexes).then(_res => res))
       .then(({ data: taskList }) => _updateTaskList(taskList))
-      .then(() => _updateTasks(tasks, user));
+      .then(() => _updateTasks(itemsIds, user));
   }
 
-  const _updateUnassigningTasks = (tasks, user, removedTasks) => {
-    return _updateAssignedTasks(tasks, user)
-      .then(res => _maybeRemoveTourTasks(tasks).then(_res => res))
+  const _updateUnassigningTasks = (itemsIds, user, removedItemsIds) => {
+    return _updateAssignedTasks(itemsIds, user)
+      .then(([res, previousToursIndexes]) => _maybeRemoveTourTasks(removedItemsIds, previousToursIndexes).then(_res => res))
       .then(({ data: taskList }) => _updateTaskList(taskList))
-      .then(() => _updateTasks(tasks, user))
-      .then(() => _updateRemovedTasks(removedTasks));
+      .then(() => _updateTasks(itemsIds, user))
+      .then(() => _updateRemovedTasks(removedItemsIds));
   }
 
-  const _updateAssignedTasks = (tasks, user) => {
-    const tasksIds = tasks.map(task => task['@id']);
+  const _updateAssignedTasks = (itemsIds, user) => {
+    const previousToursIndexes = _.cloneDeep(toursIndexes);
 
     return setTaskListItems({
-      tasks: tasksIds,
+      items: itemsIds,
       username: user.username,
       date: selectedDate
-    });
+    })
+    .then((res) => [res, previousToursIndexes]);
   }
 
-  function _maybeRemoveTourTasks(tasks) {
-    const taskIdsToRemove = tasks.map(task => task['@id']);
-
-    const toursToUpdate = taskIdsToRemove.reduce((acc, taskId) => {
-      const tourId = toursIndexes.tasks[taskId];
-      if (tourId) {
-        // Initialize with all the indexed tour tasks if not already present
-        // and remove the taskId from the tour tasks
-        acc[tourId] = (acc[tourId] || toursIndexes.tours[tourId]).filter(tourTaskId => tourTaskId !== taskId);
-      }
-      return acc;
-    }
-      , {});
+  function _maybeRemoveTourTasks(itemsIds, previousToursIndexes) {
+    const toursToUpdate = getToursToUpdate(itemsIds, previousToursIndexes);
 
     return Promise.all(
       Object.entries(toursToUpdate).map(([tourUrl, tourTasks]) => setTourItems({ tourUrl, tourTasks }))
     ).then(() => {
       Object.entries(toursToUpdate).forEach(([tourId, tourTasks]) => {
-        const tour = toursIndexes.tours[tourId];
+        const tour = allTours.find(_tour => _tour['@id'] === tourId);
         const updatedTour = {
           ...tour,
           items: tourTasks,
@@ -201,13 +199,17 @@ export default function useSetTaskListItems(
     dispatch(updateTaskListsSuccess(taskList));
   }
 
-  const _updateTasks = (tasks, user) => {
+  const _updateTasks = (itemsIds, user) => {
+    const itemsIdsSet = new Set(itemsIds);
+    const tasks = allTasks.filter(task => itemsIdsSet.has(task['@id']));
     const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
     dispatch(assignTasksSuccess(newUserTasks));
   }
 
   const _updateRemovedTasks = (removedTasks) => {
-    const unassignedTasks = removedTasks.map(task => getAssignedTask(task));
+    const itemsIdsSet = new Set(removedTasks);
+    const tasks = allTasks.filter(task => itemsIdsSet.has(task['@id']));
+    const unassignedTasks = tasks.map(task => getAssignedTask(task));
     dispatch(unassignTasksSuccess(unassignedTasks));
   }
 

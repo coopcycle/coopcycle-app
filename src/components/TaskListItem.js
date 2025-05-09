@@ -88,15 +88,30 @@ const TaskStatusIcon = ({ task }) => {
   switch (task.status) {
     case 'DOING':
       return (
-        <Icon as={FontAwesome} name={doingIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doingIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DOING'
+        />
       );
     case 'DONE':
       return (
-        <Icon as={FontAwesome} name={doneIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doneIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DONE'
+        />
       );
     case 'FAILED':
       return (
-        <Icon as={FontAwesome} name={failedIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={failedIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-FAILED'
+        />
       );
     default:
       return <View />;
@@ -254,7 +269,6 @@ class TaskListItem extends Component {
               {task.orgName ? (
                 <Text style={textStyle}>{task.orgName}</Text>
               ) : null}
-
               {task.address?.contactName ? (
                 <Text style={textStyle}>{task.address.contactName}</Text>
               ) : null}
@@ -285,7 +299,7 @@ class TaskListItem extends Component {
                 <HStack style={styles.tagsWrapper}>
                   {task.tags.map(tag => (
                     <Text
-                      key={tag}
+                      key={tag.slug}
                       style={[
                         textStyle,
                         styles.tag,
