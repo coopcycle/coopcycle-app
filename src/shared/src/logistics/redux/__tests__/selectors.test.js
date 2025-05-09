@@ -120,6 +120,10 @@ describe('Selectors', () => {
       expect(selectTaskLists(baseState)).toEqual([
         {
           '@id': '/api/task_lists/1',
+          itemIds: [
+            '/api/tasks/1',
+            '/api/tasks/2',
+          ],
           username: 'bot_1',
           items: [
             {
@@ -139,6 +143,9 @@ describe('Selectors', () => {
         {
           '@id': '/api/task_lists/2',
           username: 'bot_2',
+          itemIds: [
+            '/api/tasks/3',
+          ],
           items: [
             {
               '@id': '/api/tasks/3',
@@ -150,6 +157,10 @@ describe('Selectors', () => {
         {
           '@id': '/api/task_lists/3',
           username: 'bot_3',
+          itemIds: [
+            '/api/tasks/4',
+            '/api/tours/1',
+          ],
           items: [
             {
               '@id': '/api/tasks/4',
@@ -211,6 +222,10 @@ describe('Selectors', () => {
         {
           '@id': '/api/task_lists/1',
           username: 'bot_1',
+          itemIds: [
+            '/api/tasks/1',
+            '/api/tasks/2',
+          ],
           items: [
             {
               '@id': '/api/tasks/1',
@@ -272,6 +287,9 @@ describe('Selectors', () => {
         {
           '@id': '/api/task_lists/10',
           username: 'bot_10',
+          itemIds: [
+            '/api/tours/10',
+          ],
           items: [
             {
               '@id': '/api/tasks/9',

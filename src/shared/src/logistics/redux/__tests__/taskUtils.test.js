@@ -1,4 +1,9 @@
-import { getAssignedTask, groupLinkedTasks, tasksToIds } from '../taskUtils.js';
+import {
+  getAssignedTask,
+  getToursToUpdate,
+  groupLinkedTasks,
+  tasksToIds,
+} from '../taskUtils.js';
 
 describe('taskUtils', () => {
   describe('groupLinkedTasks', () => {
@@ -287,6 +292,104 @@ describe('taskUtils', () => {
         isAssigned: false,
         assignedTo: undefined,
       });
+    });
+  });
+
+  describe('getToursToUpdate', () => {
+    it('should return empty if there is no tours', () => {
+      const itemIds = [
+        '/api/tasks/1',
+        '/api/tasks/2',
+      ];
+      const toursIndexes = {
+        tasks: {},
+        tours: {},
+      };
+
+      const result = getToursToUpdate(itemIds, toursIndexes);
+
+      expect(result).toEqual({});
+    });
+
+    it('should return empty if there is no tasks', () => {
+      const itemIds = [];
+      const toursIndexes = {
+        tasks: {},
+        tours: {
+          '/api/tours/1': [],
+        },
+      };
+
+      const result = getToursToUpdate(itemIds, toursIndexes);
+
+      expect(result).toEqual({});
+    });
+
+    it('should return only the tour that have the items ids and remove them', () => {
+      const itemIds = [
+        '/api/tasks/1',
+        '/api/tasks/2',
+      ];
+      const toursIndexes = {
+        tasks: {
+          '/api/tasks/1': '/api/tours/1',
+          '/api/tasks/2': '/api/tours/1',
+          '/api/tasks/3': '/api/tours/1',
+          '/api/tasks/4': '/api/tours/1',
+          '/api/tasks/5': '/api/tours/2',
+          '/api/tasks/6': '/api/tours/2',
+        },
+        tours: {
+          '/api/tours/1': [
+            '/api/tasks/1',
+            '/api/tasks/2',
+            '/api/tasks/3',
+            '/api/tasks/4',
+          ],
+          '/api/tours/2': [
+            '/api/tasks/5',
+            '/api/tasks/6',
+          ],
+        },
+      };
+
+      const result = getToursToUpdate(itemIds, toursIndexes);
+
+      expect(result).toEqual({
+        '/api/tours/1': [
+          '/api/tasks/3',
+          '/api/tasks/4',
+        ],
+      });
+    });
+
+    it('should return empty if no tour has the items ids', () => {
+      const itemIds = [
+        '/api/tasks/7',
+        '/api/tasks/8',
+      ];
+      const toursIndexes = {
+        tasks: {
+          '/api/tasks/1': '/api/tours/1',
+          '/api/tasks/2': '/api/tours/1',
+          '/api/tasks/5': '/api/tours/2',
+          '/api/tasks/6': '/api/tours/2',
+        },
+        tours: {
+          '/api/tours/1': [
+            '/api/tasks/1',
+            '/api/tasks/2',
+          ],
+          '/api/tours/2': [
+            '/api/tasks/3',
+            '/api/tasks/4',
+          ],
+        },
+      };
+
+      const result = getToursToUpdate(itemIds, toursIndexes);
+
+      expect(result).toEqual({});
     });
   });
 });
