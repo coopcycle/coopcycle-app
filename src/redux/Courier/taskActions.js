@@ -10,6 +10,17 @@ import tracker from '../../analytics/Tracker';
 import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
 import { selectCurrentRoute, selectHttpClient } from '../App/selectors';
+import {
+  markTaskDoneFailure,
+  markTaskDoneRequest,
+  markTaskDoneSuccess,
+  markTaskFailedFailure,
+  markTaskFailedRequest,
+  markTaskFailedSuccess,
+  startTaskFailure,
+  startTaskRequest,
+  startTaskSuccess,
+} from '../../shared/logistics/redux';
 
 /*
  * Action Types
@@ -17,18 +28,9 @@ import { selectCurrentRoute, selectHttpClient } from '../App/selectors';
 export const LOAD_TASKS_REQUEST = 'LOAD_TASKS_REQUEST';
 export const LOAD_TASKS_SUCCESS = 'LOAD_TASKS_SUCCESS';
 export const LOAD_TASKS_FAILURE = 'LOAD_TASKS_FAILURE';
-export const MARK_TASK_DONE_REQUEST = 'MARK_TASK_DONE_REQUEST';
-export const MARK_TASK_DONE_SUCCESS = 'MARK_TASK_DONE_SUCCESS';
-export const MARK_TASK_DONE_FAILURE = 'MARK_TASK_DONE_FAILURE';
 export const MARK_TASKS_DONE_REQUEST = 'MARK_TASKS_DONE_REQUEST';
 export const MARK_TASKS_DONE_SUCCESS = 'MARK_TASKS_DONE_SUCCESS';
 export const MARK_TASKS_DONE_FAILURE = 'MARK_TASKS_DONE_FAILURE';
-export const MARK_TASK_FAILED_REQUEST = 'MARK_TASK_FAILED_REQUEST';
-export const MARK_TASK_FAILED_SUCCESS = 'MARK_TASK_FAILED_SUCCESS';
-export const MARK_TASK_FAILED_FAILURE = 'MARK_TASK_FAILED_FAILURE';
-export const START_TASK_REQUEST = 'START_TASK_REQUEST';
-export const START_TASK_SUCCESS = 'START_TASK_SUCCESS';
-export const START_TASK_FAILURE = 'START_TASK_FAILURE';
 export const REPORT_INCIDENT_REQUEST = 'REPORT_INCIDENT_REQUEST';
 export const REPORT_INCIDENT_SUCCESS = 'REPORT_INCIDENT_SUCCESS';
 export const REPORT_INCIDENT_FAILURE = 'REPORT_INCIDENT_FAILURE';
@@ -61,18 +63,9 @@ export const loadTasksSuccess = createAction(
   (date, items, updatedAt) => ({ date, items, updatedAt }),
 );
 export const loadTasksFailure = createAction(LOAD_TASKS_FAILURE);
-export const markTaskDoneRequest = createAction(MARK_TASK_DONE_REQUEST);
-export const markTaskDoneSuccess = createAction(MARK_TASK_DONE_SUCCESS);
-export const markTaskDoneFailure = createAction(MARK_TASK_DONE_FAILURE);
 export const markTasksDoneRequest = createAction(MARK_TASKS_DONE_REQUEST);
 export const markTasksDoneSuccess = createAction(MARK_TASKS_DONE_SUCCESS);
 export const markTasksDoneFailure = createAction(MARK_TASKS_DONE_FAILURE);
-export const markTaskFailedRequest = createAction(MARK_TASK_FAILED_REQUEST);
-export const markTaskFailedSuccess = createAction(MARK_TASK_FAILED_SUCCESS);
-export const markTaskFailedFailure = createAction(MARK_TASK_FAILED_FAILURE);
-export const startTaskRequest = createAction(START_TASK_REQUEST);
-export const startTaskSuccess = createAction(START_TASK_SUCCESS);
-export const startTaskFailure = createAction(START_TASK_FAILURE);
 export const reportIncidentRequest = createAction(REPORT_INCIDENT_REQUEST);
 export const reportIncidentSuccess = createAction(REPORT_INCIDENT_SUCCESS);
 export const reportIncidentFailure = createAction(REPORT_INCIDENT_FAILURE);
@@ -437,7 +430,7 @@ export function startTask(task, cb) {
     httpClient
       .put(task['@id'] + '/start', {})
       .then(savedTask => {
-        dispatch(startTaskSuccess(task));
+        dispatch(startTaskSuccess(savedTask));
         if (typeof cb === 'function') {
           setTimeout(() => cb(), 100);
         }

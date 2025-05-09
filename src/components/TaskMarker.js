@@ -101,6 +101,8 @@ const warnIconStyle = () => {
 };
 
 export default ({ task, type, hasWarnings }) => {
+  const _iconName = iconName(task, type);
+
   return (
     <View style={container}>
       <View style={backgroundStyle(task)} />
@@ -111,9 +113,10 @@ export default ({ task, type, hasWarnings }) => {
       ) : null}
       <Icon
         as={FontAwesome}
-        name={iconName(task, type)}
+        name={_iconName}
         style={iconStyle(task)}
         size="xs"
+        testID={`taskMarker-${_iconName}`}
       />
     </View>
   );

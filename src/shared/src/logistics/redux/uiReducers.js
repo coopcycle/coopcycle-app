@@ -1,7 +1,8 @@
+import { actionMatchCreator } from '../../../../redux/util';
 import {
-  CREATE_TASK_LIST_FAILURE,
-  CREATE_TASK_LIST_REQUEST,
-  CREATE_TASK_LIST_SUCCESS,
+  createTaskListFailure,
+  createTaskListRequest,
+  createTaskListSuccess,
 } from './actions';
 
 const initialState = {
@@ -9,20 +10,22 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  switch (action.type) {
-    case CREATE_TASK_LIST_REQUEST:
-      return {
-        ...state,
-        taskListsLoading: true,
-      };
-
-    case CREATE_TASK_LIST_SUCCESS:
-    case CREATE_TASK_LIST_FAILURE:
-      return {
-        ...state,
-        taskListsLoading: false,
-      };
-    default:
-      return state;
+  if (createTaskListRequest.match(action)) {
+    return {
+      ...state,
+      taskListsLoading: true,
+    };
   }
+
+  if(actionMatchCreator(action, [
+    createTaskListSuccess,
+    createTaskListFailure,
+  ])) {
+    return {
+      ...state,
+      taskListsLoading: false,
+    };
+  }
+
+  return state;
 };

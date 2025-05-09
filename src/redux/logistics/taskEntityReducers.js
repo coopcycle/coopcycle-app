@@ -1,25 +1,23 @@
 import { actionMatchCreator } from '../util';
 import {
-  assignTaskSuccess,
   assignTasksSuccess,
-  cancelTaskSuccess,
   changeDate,
-  createTaskSuccess,
   loadTasksSuccess,
-  unassignTaskSuccess,
-  unassignTasksSuccess,
-  updateTaskSuccess,
 } from '../Dispatch/actions';
-import {
-  MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_SUCCESS,
-  START_TASK_SUCCESS,
-} from '../Courier';
 import {
   SET_USER,
 } from '../App/actions';
 import {
+  assignTaskSuccess,
+  cancelTaskSuccess,
+  createTaskSuccess,
+  markTaskDoneSuccess,
+  markTaskFailedSuccess,
+  startTaskSuccess,
   taskAdapter,
+  unassignTaskSuccess,
+  unassignTasksSuccess,
+  updateTaskSuccess,
 } from '../../coopcycle-frontend-js/logistics/redux';
 
 
@@ -38,8 +36,11 @@ export default (state = initialState, action) => {
 
   if (actionMatchCreator(action, [
     assignTaskSuccess,
-    createTaskSuccess,
     cancelTaskSuccess,
+    createTaskSuccess,
+    markTaskDoneSuccess,
+    markTaskFailedSuccess,
+    startTaskSuccess,
     unassignTaskSuccess,
     updateTaskSuccess,
   ])) {
@@ -55,13 +56,5 @@ export default (state = initialState, action) => {
     }
   }
 
-  switch (action.type) {
-    case START_TASK_SUCCESS:
-    case MARK_TASK_DONE_SUCCESS:
-    case MARK_TASK_FAILED_SUCCESS:
-      return taskAdapter.upsertOne(state, action.payload);
-
-    default:
-      return state;
-  }
+  return state;
 };

@@ -10,13 +10,6 @@ import {
   LOAD_TASKS_FAILURE,
   LOAD_TASKS_REQUEST,
   LOAD_TASKS_SUCCESS,
-  MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST,
-  MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST,
-  MARK_TASK_FAILED_SUCCESS,
-  START_TASK_SUCCESS,
   addPicture,
   addSignature,
   clearTasksFilter,
@@ -44,7 +37,6 @@ import {
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
   startTask,
-  startTaskSuccess,
 } from './taskActions';
 import { tasksEntityReducer } from './taskEntityReducer';
 import {
@@ -73,13 +65,6 @@ export {
   LOAD_TASKS_FAILURE,
   LOAD_TASKS_REQUEST,
   LOAD_TASKS_SUCCESS,
-  MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST,
-  MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST,
-  MARK_TASK_FAILED_SUCCESS,
-  START_TASK_SUCCESS,
   addPicture,
   addSignature,
   clearTasksFilter,
@@ -125,7 +110,6 @@ export {
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
   startTask,
-  startTaskSuccess,
   tasksEntityReducer,
   tasksUiReducer,
 };

@@ -88,15 +88,30 @@ const TaskStatusIcon = ({ task }) => {
   switch (task.status) {
     case 'DOING':
       return (
-        <Icon as={FontAwesome} name={doingIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doingIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DOING'
+        />
       );
     case 'DONE':
       return (
-        <Icon as={FontAwesome} name={doneIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doneIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DONE'
+        />
       );
     case 'FAILED':
       return (
-        <Icon as={FontAwesome} name={failedIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={failedIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-FAILED'
+        />
       );
     default:
       return <View />;
@@ -200,7 +215,9 @@ class TaskListItem extends Component {
         stopRightSwipe={(buttonWidth + 25) * -1}
         onRowOpen={toValue => this._onRowOpen(toValue)}
         onRowClose={this._onRowClose}
-        ref={this.swipeRow}>
+        ref={this.swipeRow}
+        testID={`taskListItem-${index}`}
+      >
         <View style={styles.rowBack}>
           <SwipeButtonContainer
             left

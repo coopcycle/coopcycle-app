@@ -6,26 +6,22 @@ import {
   LOAD_TASKS_FAILURE,
   LOAD_TASKS_REQUEST,
   LOAD_TASKS_SUCCESS,
-  MARK_TASK_DONE_FAILURE,
-  MARK_TASK_DONE_REQUEST,
-  MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_FAILURE,
-  MARK_TASK_FAILED_REQUEST,
-  MARK_TASK_FAILED_SUCCESS,
   clearFiles,
   loadTasks,
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
   markTaskDone,
+  markTaskFailed,
+} from '../taskActions';
+import {
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
-  markTaskFailed,
   markTaskFailedFailure,
   markTaskFailedRequest,
   markTaskFailedSuccess,
-} from '../taskActions';
+} from '../../../shared/logistics/redux';
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
@@ -50,36 +46,6 @@ describe('Redux | Tasks | Actions', () => {
     {
       actionCreator: loadTasksSuccess,
       actionType: LOAD_TASKS_SUCCESS,
-    },
-
-    {
-      actionCreator: markTaskDoneRequest,
-      actionType: MARK_TASK_DONE_REQUEST,
-    },
-
-    {
-      actionCreator: markTaskDoneFailure,
-      actionType: MARK_TASK_DONE_FAILURE,
-    },
-
-    {
-      actionCreator: markTaskDoneSuccess,
-      actionType: MARK_TASK_DONE_SUCCESS,
-    },
-
-    {
-      actionCreator: markTaskFailedRequest,
-      actionType: MARK_TASK_FAILED_REQUEST,
-    },
-
-    {
-      actionCreator: markTaskFailedFailure,
-      actionType: MARK_TASK_FAILED_FAILURE,
-    },
-
-    {
-      actionCreator: markTaskFailedSuccess,
-      actionType: MARK_TASK_FAILED_SUCCESS,
     },
   ].forEach(({ actionCreator, actionType }) => {
     test(`${actionType}`, () => {
