@@ -1,20 +1,19 @@
 import _ from 'lodash';
 import { Text } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
-import TaskList from '../../components/TaskList';
+import { navigateToTask } from '../../navigation/utils';
 import {
   selectTaskLists,
   selectTasksWithColor,
 } from '../../coopcycle-frontend-js/logistics/redux';
-import { unassignTask } from '../../redux/Dispatch/actions';
 import { selectTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import AddButton from './components/AddButton';
-
-import { navigateToTask } from '../../navigation/utils';
-import { useDispatch, useSelector } from 'react-redux';
+import TaskList from '../../components/TaskList';
+import useSetTaskListItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 function TaskListScreen({
   navigation,
@@ -22,14 +21,21 @@ function TaskListScreen({
 }) {
   const { t } = useTranslation();
   const { navigate } = navigation;
-  const dispatch = useDispatch()
 
   const tasksWithColor = useSelector(selectTasksWithColor)
   const taskLists = useSelector(selectTaskLists)
-  const unassignTaskHandler = task => dispatch(unassignTask(task))
+
+  const {
+    unassignTaskWithRelatedTasks,
+  } = useSetTaskListItems();
 
   const [taskList, setTaskList] = useState(route.params?.taskList);
   const tasks = selectTasksNotCancelled({ tasks: taskList.items });
+
+  const unassignTaskHandler = (task) => {
+    const user = {username: taskList.username};
+    unassignTaskWithRelatedTasks(task, user);
+  }
 
   // TODO check
    useEffect(() => {

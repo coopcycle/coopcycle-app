@@ -1,12 +1,13 @@
 import { actionMatchCreator } from '../util';
 import {
   assignTaskSuccess,
-  bulkAssignmentTasksSuccess,
+  assignTasksSuccess,
   cancelTaskSuccess,
   changeDate,
   createTaskSuccess,
   loadTasksSuccess,
   unassignTaskSuccess,
+  unassignTasksSuccess,
   updateTaskSuccess,
 } from '../Dispatch/actions';
 import {
@@ -46,9 +47,12 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    bulkAssignmentTasksSuccess,
+    assignTasksSuccess,
+    unassignTasksSuccess,
   ])) {
-    return taskAdapter.upsertMany(state, action.payload);
+    if (action.payload) {
+      return taskAdapter.upsertMany(state, action.payload);
+    }
   }
 
   switch (action.type) {
