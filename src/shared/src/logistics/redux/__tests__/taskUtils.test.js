@@ -297,7 +297,7 @@ describe('taskUtils', () => {
 
   describe('getToursToUpdate', () => {
     it('should return empty if there is no tours', () => {
-      const itemsIds = [
+      const itemIds = [
         '/api/tasks/1',
         '/api/tasks/2',
       ];
@@ -306,13 +306,13 @@ describe('taskUtils', () => {
         tours: {},
       };
 
-      const result = getToursToUpdate(itemsIds, toursIndexes);
+      const result = getToursToUpdate(itemIds, toursIndexes);
 
       expect(result).toEqual({});
     });
 
     it('should return empty if there is no tasks', () => {
-      const itemsIds = [];
+      const itemIds = [];
       const toursIndexes = {
         tasks: {},
         tours: {
@@ -320,13 +320,13 @@ describe('taskUtils', () => {
         },
       };
 
-      const result = getToursToUpdate(itemsIds, toursIndexes);
+      const result = getToursToUpdate(itemIds, toursIndexes);
 
       expect(result).toEqual({});
     });
 
     it('should return only the tour that have the items ids and remove them', () => {
-      const itemsIds = [
+      const itemIds = [
         '/api/tasks/1',
         '/api/tasks/2',
       ];
@@ -353,7 +353,7 @@ describe('taskUtils', () => {
         },
       };
 
-      const result = getToursToUpdate(itemsIds, toursIndexes);
+      const result = getToursToUpdate(itemIds, toursIndexes);
 
       expect(result).toEqual({
         '/api/tours/1': [
@@ -364,7 +364,7 @@ describe('taskUtils', () => {
     });
 
     it('should return empty if no tour has the items ids', () => {
-      const itemsIds = [
+      const itemIds = [
         '/api/tasks/7',
         '/api/tasks/8',
       ];
@@ -387,7 +387,7 @@ describe('taskUtils', () => {
         },
       };
 
-      const result = getToursToUpdate(itemsIds, toursIndexes);
+      const result = getToursToUpdate(itemIds, toursIndexes);
 
       expect(result).toEqual({});
     });
