@@ -38,7 +38,7 @@ describeif(device.getPlatform() === 'android')('Dispatch - Complete a task', () 
       // Press task's complete button
       await tapById('completeTaskButton');
 
-      // Verify task has status "DOING"
-      await expect(element(by.id('taskListItemIcon-DOING'))).toBeVisible();
+      // Verify task has status "DONE"
+      await expect(element(by.id('taskListItemIcon-DONE'))).toBeVisible();
   });
 });
