@@ -6,9 +6,6 @@ import {
   assignTasksFailure,
   assignTasksRequest,
   assignTasksSuccess,
-  unassignTasksSuccess,
-  updateTaskListsSuccess,
-  updateTourSuccess,
 } from '../../../../../redux/Dispatch/actions';
 import {
   getAssignedTask,

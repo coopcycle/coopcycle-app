@@ -1,14 +1,8 @@
 import { actionMatchCreator } from '../util';
 import {
   assignTasksSuccess,
-  assignTaskSuccess,
-  assignTasksSuccess,
-  cancelTaskSuccess,
   changeDate,
   loadTasksSuccess,
-  unassignTaskSuccess,
-  unassignTasksSuccess,
-  updateTaskSuccess,
 } from '../Dispatch/actions';
 import {
   SET_USER,

@@ -1,7 +1,6 @@
 import {
   changeDate,
   loadTaskListsSuccess,
-  updateTaskListsSuccess,
 } from '../Dispatch/actions';
 import {
   taskListAdapter,

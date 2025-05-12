@@ -15,30 +15,6 @@ import {
 import { isSameDayTask } from '../../shared/src/utils';
 import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
-import {
-  isSameDayTask,
-  isSameDayTaskList,
-  isSameDayTour,
-} from './utils';
-import {
-  markTaskDoneSuccess,
-  markTaskFailedSuccess,
-  startTaskSuccess,
-} from '../Courier';
-import { showAlert } from '../../utils/alert';
-import NavigationHolder from '../../NavigationHolder';
-
-/*
- * Action Types
- */
-
-// TODO: Change to createAction declaration from '@reduxjs/toolkit'
-export const DEP_ASSIGN_TASK_SUCCESS = 'ASSIGN_TASK_SUCCESS';
-export const DEP_BULK_ASSIGNMENT_TASKS_SUCCESS = 'BULK_ASSIGNMENT_TASKS_SUCCESS';
-export const DEP_CHANGE_DATE = 'CHANGE_DATE';
-export const DEP_UNASSIGN_TASK_SUCCESS = 'UNASSIGN_TASK_SUCCESS';
-export const DEP_UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
-export const DEP_UPDATE_TOUR_SUCCESS = 'UPDATE_TOUR_SUCCESS';
 
 
 /*
@@ -57,30 +33,9 @@ export const loadTaskListsRequest = createAction('@dispatch/LOAD_TASK_LISTS_REQU
 export const loadTaskListsSuccess = createAction('@dispatch/LOAD_TASK_LISTS_SUCCESS');
 export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAILURE');
 
-export const updateTaskListsSuccess = createAction('@dispatch/UPDATE_TASK_LIST_SUCCESS');
-
 export const assignTasksRequest = createAction('@dispatch/ASSIGN_TASKS_REQUEST');
 export const assignTasksSuccess = createAction('@dispatch/ASSIGN_TASKS_SUCCESS');
 export const assignTasksFailure = createAction('@dispatch/ASSIGN_TASKS_FAILURE');
-
-export const createTaskRequest = createAction('@dispatch/CREATE_TASK_REQUEST');
-export const createTaskSuccess = createAction('@dispatch/CREATE_TASK_SUCCESS');
-export const createTaskFailure = createAction('@dispatch/CREATE_TASK_FAILURE');
-
-export const cancelTaskRequest = createAction('@dispatch/CANCEL_TASK_REQUEST');
-export const cancelTaskSuccess = createAction('@dispatch/CANCEL_TASK_SUCCESS');
-export const cancelTaskFailure = createAction('@dispatch/CANCEL_TASK_FAILURE');
-
-export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
-
-export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
-
-export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
-
-export const createTourSuccess = createAction('@dispatch/CREATE_TOUR_SUCCESS');
-
-export const updateTourSuccess = createAction(DEP_UPDATE_TOUR_SUCCESS);
-export const unassignTasksSuccess = createAction('@dispatch/UNASSIGN_TASKS_SUCCESS');
 
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
@@ -141,70 +96,4 @@ export function createTask(task) {
         setTimeout(() => showAlert(e), 100);
       });
   };
-}
-
-export function updateTask(action, task) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTask(task, date)) {
-      switch (action) {
-        case 'task:created':
-          dispatch(createTaskSuccess(task));
-          break;
-        case 'task:cancelled':
-          dispatch(cancelTaskSuccess(task));
-          break;
-        case 'task:assigned':
-          dispatch(assignTaskSuccess(task));
-          break;
-        case 'task:unassigned':
-          dispatch(unassignTaskSuccess(task));
-          break;
-        case 'task:started':
-          dispatch(startTaskSuccess(task));
-          break;
-        case 'task:done':
-          dispatch(markTaskDoneSuccess(task));
-          break;
-        case 'task:updated':
-          dispatch(updateTaskSuccess(task));
-          break;
-        case 'task:failed':
-          dispatch(markTaskFailedSuccess(task));
-          break;
-      }
-    }
-  };
-}
-
-export function updateTaskList(action, taskList) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTaskList(taskList, date)) {
-      switch (action) {
-        case 'v2:task_list:updated':
-          dispatch(updateTaskListsSuccess(taskList));
-          break;
-      }
-    }
-  }
-}
-
-export function updateTour(action, tour) {
-  return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
-
-    if (isSameDayTour(tour, date)) {
-      switch (action) {
-        case 'tour:created':
-          dispatch(createTourSuccess(tour));
-          break;
-        case 'tour:updated':
-          dispatch(updateTourSuccess(tour));
-          break;
-      }
-    }
-  }
 }
