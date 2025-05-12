@@ -2,7 +2,7 @@ import {
   doLoginForUserWithRoleDispatcher,
   loadDispatchFixture,
 } from './utils';
-import { itif, tap } from '../utils';
+import { itif, tapById } from '../utils';
 
 describe('Dispatch - Create delivery', () => {
   beforeEach(async () => {
@@ -15,15 +15,15 @@ describe('Dispatch - Create delivery', () => {
   itif(device.getPlatform() === 'android')(
     `should create a delivery for store from Dispatch`,
     async () => {
-      await tap('dispatchNewDelivery');
+      await tapById('dispatchNewDelivery');
 
       // Select store
-      await tap('dispatch:storeList:0');
+      await tapById('dispatch:storeList:0');
 
       // Pickup address
 
       // Select default store's address and continue
-      await tap('delivery__next_button');
+      await tapById('delivery__next_button');
 
       // Dropoff address
 
@@ -39,16 +39,16 @@ describe('Dispatch - Create delivery', () => {
       await expect(element(by.id('delivery__dropoff__phone'))).toBeVisible();
       await element(by.id('delivery__dropoff__phone')).typeText('0612345678\n');
 
-      await tap('delivery__next_button');
+      await tapById('delivery__next_button');
 
       // Delivery form
 
       // Select default values and continue
-      await tap('delivery__next_button');
+      await tapById('delivery__next_button');
 
       // Price form
 
       // Select default values and continue
-      await tap('delivery__next_button');
+      await tapById('delivery__next_button');
   });
 });
