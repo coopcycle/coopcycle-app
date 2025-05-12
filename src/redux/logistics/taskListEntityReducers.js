@@ -1,11 +1,11 @@
 import {
   changeDate,
   loadTaskListsSuccess,
-  updateTaskListsSuccess,
 } from '../Dispatch/actions';
 import {
   taskListAdapter,
   taskListUtils,
+  updateTaskListsSuccess,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import { SET_USER } from '../App/actions';
 
