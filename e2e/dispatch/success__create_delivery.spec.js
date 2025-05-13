@@ -1,4 +1,7 @@
 import {
+  selectAutocompleteAddress,
+} from "../support/commands";
+import {
   doLoginForUserWithRoleDispatcher,
   loadDispatchFixture,
 } from './utils';
@@ -26,10 +29,7 @@ describe('Dispatch - Create delivery', () => {
       await tapById('delivery__next_button');
 
       // Dropoff address
-
-      await expect(element(by.id('delivery__dropoff__address'))).toBeVisible();
-      await element(by.id('delivery__dropoff__address')).typeText('91 rue de rivoli paris');
-      await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
+      await selectAutocompleteAddress('delivery__dropoff__address');
 
       // Append "\n" to make sure virtual keyboard is hidden after entry
       // https://github.com/wix/detox/issues/209
