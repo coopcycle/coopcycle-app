@@ -18,7 +18,6 @@ describe('Dispatch - Assing and unassign tasks', () => {
             await expect(element(by.id('unassignedTasksList'))).toBeVisible();
             await expect(element(by.id('task:0'))).toBeVisible();
             await assignTaskToUser(USERNAME)
-
             // Verify task is on Jane's task list
                 // Jane has a taskList
             await expect(element(by.text('jane'))).toBeVisible()
