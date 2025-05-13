@@ -61,6 +61,7 @@ const TaskList = ({
         disableLeftSwipe={tasksType === 'unassignedTasks'}
         swipeOutLeftIconName={swipeOutLeftIconName}
         swipeOutRightIconName={swipeOutRightIconName}
+        testId={tasksType === 'unassignedTasks' && 'unassignedTasksList'}
       />
     );
   };
