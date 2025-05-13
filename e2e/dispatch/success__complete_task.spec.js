@@ -23,12 +23,8 @@ describeif(device.getPlatform() === 'android')('Dispatch - Complete a task', () 
   });
 
   it('should mark a task as done', async () => {
-      // Open jane's task list
-      await tapById('dispatch:assignedTab');
-      await tapById(`dispatch:taskLists:${USERNAME}`);
-
       // Open assigned task
-      await tapById('task:0:assign');
+      await tapById(`${USERNAME}TasksList:task:0`);
 
       // Swipe complete button, tap ok and press 'Complete'
       await swipeRight('task:completeButton');
