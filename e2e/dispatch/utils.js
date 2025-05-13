@@ -34,6 +34,14 @@ export async function assignTaskToUser(username) {
   await tapById(`assignTo:${username}`);
 }
 
+export async function bulkAssignTaskToUser(username) {
+  // Select first task in Dispatch's view and try to assign it to user with username
+  await swipeRight('unassignedTasksList:task:0');
+  await swipeRight('unassignedTasksList:task:1');
+  await tapById('bulkAssignButton');
+  await tapById(`assignTo:${username}`);
+}
+
 export async function unassignTaskFromUser(username) {
   // Select first task in Dispatch's view and try to assign it to user with username
   await swipeLeft(`${username}TasksList:task:0`);
