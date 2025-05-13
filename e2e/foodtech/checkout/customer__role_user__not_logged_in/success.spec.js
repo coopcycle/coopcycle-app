@@ -3,6 +3,7 @@ import {
   chooseRestaurant,
   connectToLocalInstance,
   connectToSandbox,
+  selectAutocompleteAddress,
   symfonyConsole,
 } from '../../../support/commands';
 
@@ -25,13 +26,7 @@ describe('checkout for customer with existing account (role - user); not logged 
     await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
 
     // Enter address
-    await waitFor(element(by.id('askAddressAutocomplete')))
-      .toExist()
-      .withTimeout(5000);
-    await element(by.id('askAddressAutocomplete')).typeText(
-      '91 rue de rivoli paris',
-    );
-    await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
+    await selectAutocompleteAddress('askAddressAutocomplete');
 
     // List of restaurants
     await expect(element(by.id('checkoutSearch'))).toBeVisible();
