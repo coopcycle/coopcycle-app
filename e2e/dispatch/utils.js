@@ -5,8 +5,8 @@ import {
   symfonyConsole
 } from "../support/commands";
 import {
-  swipeRight,
   swipeLeft,
+  swipeRight,
   tapById,
 } from "../utils";
 
@@ -35,7 +35,7 @@ export async function assignTaskToUser(username) {
 }
 
 export async function bulkAssignTaskToUser(username) {
-  // Select first task in Dispatch's view and try to assign it to user with username
+  // Select 2 tasks in Dispatch's view and try to assign it to user with username
   await swipeRight('unassignedTasksList:task:0');
   await swipeRight('unassignedTasksList:task:1');
   await tapById('bulkAssignButton');
@@ -43,7 +43,7 @@ export async function bulkAssignTaskToUser(username) {
 }
 
 export async function unassignTaskFromUser(username) {
-  // Select first task in Dispatch's view and try to assign it to user with username
+  // Select first assigned task to user with username and try to unassign it
   await swipeLeft(`${username}TasksList:task:0`);
   await tapById(`${username}TasksList:task:0:right`);
 }
