@@ -2,10 +2,6 @@ import {
   assignTasksFailure,
   assignTasksRequest,
   assignTasksSuccess,
-  cancelTaskSuccess,
-  createTaskFailure,
-  createTaskRequest,
-  createTaskSuccess,
   loadTaskListsFailure,
   loadTaskListsRequest,
   loadTaskListsSuccess,
@@ -15,11 +11,15 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
-  unassignTasksSuccess,
 } from "../../Dispatch/actions";
 import {
+  cancelTaskSuccess,
+  createTaskFailure,
+  createTaskRequest,
+  createTaskSuccess,
   loadToursFailure,
   loadToursSuccess,
+  unassignTasksSuccess,
 } from '../../../shared/logistics/redux';
 import reducer from '../uiReducers';
 
