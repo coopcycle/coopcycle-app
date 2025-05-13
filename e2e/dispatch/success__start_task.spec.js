@@ -31,7 +31,7 @@ describeif(device.getPlatform() === 'android')('Dispatch - Start a task', () => 
       await tapById('task:completeSuccessButton');
       await tapByText('▶ Start');
 
-      // Go back to jane's task list
+      // Go back to All Tasks view
       await device.pressBack();
 
       // Verify task has status "DOING"
