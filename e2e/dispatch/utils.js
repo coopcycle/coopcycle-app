@@ -6,6 +6,7 @@ import {
 } from "../support/commands";
 import {
   swipeRight,
+  swipeLeft,
   tapById,
 } from "../utils";
 
@@ -28,7 +29,13 @@ export async function doLoginForUserWithRoleDispatcher() {
 
 export async function assignTaskToUser(username) {
   // Select first task in Dispatch's view and try to assign it to user with username
-  await swipeRight('task:0');
-  await tapById('task:0:assign');
+  await swipeRight('unassignedTasksList:task:0');
+  await tapById('unassignedTasksList:task:0:left');
   await tapById(`assignTo:${username}`);
+}
+
+export async function unassignTaskFromUser(username) {
+  // Select first task in Dispatch's view and try to assign it to user with username
+  await swipeLeft(`${username}TasksList:task:0`);
+  await tapById(`${username}TasksList:task:0:right`);
 }

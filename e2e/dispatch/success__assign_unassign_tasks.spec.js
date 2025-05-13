@@ -1,8 +1,8 @@
-import { element } from 'prop-types';
 import {
   assignTaskToUser,
   doLoginForUserWithRoleDispatcher,
   loadDispatchFixture,
+  unassignTaskFromUser,
 } from './utils';
 import { itif } from '../utils';
 
@@ -16,16 +16,20 @@ describe('Dispatch - Assing and unassign tasks', () => {
   });
 
   itif(device.getPlatform() === 'android')(
-    'should assing a single task to a courier',
+    'should assing a single task to a courier and then unassign it',
     async () => {
-      // TODO check - this refers to the list, not tasks
-      await expect(
-        element(by.id('unassignedTasksList')).typeText('John Doe'),
-      ).toBeVisible();
       await assignTaskToUser(USERNAME);
 
       // Verify task is on Jane's task list
-      await expect(element(by.text('jane')).typeText('John Doe')).toBeVisible();
+      await expect(element(by.id('janeTasksList:task:0'))).toBeVisible();
+
+
+    // Unassign the task
+    await unassignTaskFromUser(USERNAME);
+
+    // Verify all tasks are unassigned
+    await expect(element(by.id('unassignedTasksList:task:0'))).toBeVisible()
+    await expect(element(by.id('unassignedTasksList:task:1'))).toBeVisible()
     },
   );
 });
