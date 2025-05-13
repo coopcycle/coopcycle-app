@@ -17,6 +17,7 @@ const TaskList = ({
   swipeOutRightIconName,
   multipleSelectionIcon,
   onMultipleSelectionAction,
+  id
 }) => {
   const bulkFabButton = useRef(null);
 
@@ -61,7 +62,7 @@ const TaskList = ({
         disableLeftSwipe={tasksType === 'unassignedTasks'}
         swipeOutLeftIconName={swipeOutLeftIconName}
         swipeOutRightIconName={swipeOutRightIconName}
-        testId={tasksType === 'unassignedTasks' && 'unassignedTasksList'}
+        taskListId={id}
       />
     );
   };
@@ -103,6 +104,7 @@ TaskList.propTypes = {
   swipeOutRightIconName: PropTypes.string,
   multipleSelectionIcon: PropTypes.string,
   onMultipleSelectionAction: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 export default TaskList;

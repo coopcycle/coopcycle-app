@@ -57,14 +57,16 @@ export default function AllTasks({
       data: unassignedTasks,
       backgroundColor: whiteColor,
       textColor: darkGreyColor,
-      tasksType: 'unassignedTasks'
+      tasksType: 'unassignedTasks',
+      id: 'unassignedTasksList'
     },
     ...taskLists.map(taskList => ({
       title: `${taskList.username} (${taskList.items.length})`,
       data: taskList.items,
       backgroundColor: taskList.color ? taskList.color : darkGreyColor,
       textColor: whiteColor,
-      tasksType: 'taskList'
+      tasksType: 'taskList',
+      id: `${taskList.username.toLowerCase()}TasksList`
     })),
   ];
 

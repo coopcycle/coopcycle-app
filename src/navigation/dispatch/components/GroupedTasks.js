@@ -76,6 +76,7 @@ export default function GroupedTasks({
                 allowMultipleSelection={allowToSelect}
                 multipleSelectionIcon="user"
                 onMultipleSelectionAction={assignSelectedTasks}
+                id={section.id}
               />
             );
           }

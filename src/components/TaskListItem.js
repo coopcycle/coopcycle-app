@@ -188,7 +188,7 @@ class TaskListItem extends Component {
   }
 
   render() {
-    const { color, task, index } = this.props;
+    const { color, task, index, taskListId } = this.props;
 
     const itemStyle = [];
     const textStyle = [styles.text];
@@ -216,7 +216,6 @@ class TaskListItem extends Component {
         onRowOpen={toValue => this._onRowOpen(toValue)}
         onRowClose={this._onRowClose}
         ref={this.swipeRow}
-        testID={`taskListItem-${index}`}
       >
         <View style={styles.rowBack}>
           <SwipeButtonContainer
@@ -225,7 +224,7 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               this.props.onPressLeft();
             }}
-            testID={`task:${index}:assign`}>
+            testID={`${taskListId}:task:${index}:left`}>
             <SwipeButton
               iconName={this.props.swipeOutLeftIconName || doneIconName}
               width={buttonWidth}
@@ -236,14 +235,15 @@ class TaskListItem extends Component {
             onPress={() => {
               this.swipeRow.current.closeRow();
               this.props.onPressRight();
-            }}>
+            }}
+            testID={`${taskListId}:task:${index}:right`}>
             <SwipeButton
               iconName={this.props.swipeOutRightIconName || incidentIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={this.props.onPress} testID={`task:${index}`}>
+        <ItemTouchable onPress={this.props.onPress} testID={`${taskListId}:task:${index}`}>
           <HStack
             flex={1}
             alignItems="center"
@@ -335,6 +335,7 @@ TaskListItem.propTypes = {
   onPress: PropTypes.func,
   onPressLeft: PropTypes.func,
   onPressRight: PropTypes.func,
+  taskListId: PropTypes.string.isRequired
 };
 
 // We need to use "withRef" prop,
