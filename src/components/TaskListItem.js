@@ -190,6 +190,7 @@ class TaskListItem extends Component {
   render() {
     const { color, task, index, taskListId } = this.props;
 
+    const taskTestId = `${taskListId}:task:${index}`;
     const itemStyle = [];
     const textStyle = [styles.text];
     const itemProps = {};
@@ -224,7 +225,7 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               this.props.onPressLeft();
             }}
-            testID={`${taskListId}:task:${index}:left`}>
+            testID={`${taskTestId}:left`}>
             <SwipeButton
               iconName={this.props.swipeOutLeftIconName || doneIconName}
               width={buttonWidth}
@@ -236,14 +237,14 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               this.props.onPressRight();
             }}
-            testID={`${taskListId}:task:${index}:right`}>
+            testID={`${taskTestId}:right`}>
             <SwipeButton
               iconName={this.props.swipeOutRightIconName || incidentIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={this.props.onPress} testID={`${taskListId}:task:${index}`}>
+        <ItemTouchable onPress={this.props.onPress} testID={taskTestId}>
           <HStack
             flex={1}
             alignItems="center"

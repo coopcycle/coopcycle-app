@@ -76,6 +76,7 @@ export default function TaskListPage({ navigation, route }) {
           onMultipleSelectionAction={selectedTasks =>
             completeSelectedTasks(selectedTasks)
           }
+          id="courierTaskList"
         />
       )}
       {tasks.length === 0 && (
