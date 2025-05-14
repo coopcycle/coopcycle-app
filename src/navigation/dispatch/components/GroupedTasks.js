@@ -2,12 +2,13 @@ import { Text } from 'native-base';
 import { useSelector } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
-import { SectionList } from 'react-native';
+import { Pressable, SectionList } from 'react-native';
 import TaskList from '../../../components/TaskList';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
 import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import { useState } from 'react';
 
 export default function GroupedTasks({
   sections,
@@ -18,7 +19,23 @@ export default function GroupedTasks({
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
+  
+  // collapsable
+  const [collapsedSections, setCollapsedSections] = useState(new Set());
 
+  const handleToggle = (title) => {
+    setCollapsedSections(() => {
+      const next = new Set(collapsedSections);
+      if (next.has(title)) {
+        next.delete(title);
+      } else {
+        next.add(title);
+      }
+      return next;
+    });
+  };
+
+  // data
   const {
     unassignTaskWithRelatedTasks,
     assignTaskWithRelatedTasks,
@@ -53,8 +70,9 @@ export default function GroupedTasks({
         sections={sections}
         keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
         renderItem={({ section, index }) => {
+          const isCollapsed = collapsedSections.has(section.title);
           // TODO check why lists are repeating, is this necessary?
-          if (index === 0 && !isFetching) {
+          if (index === 0 && !isFetching && !isCollapsed) {
             return (
               <TaskList
                 tasks={section.data}
@@ -83,7 +101,8 @@ export default function GroupedTasks({
           return null; // Avoid rendering per item
         }}
         renderSectionHeader={({ section }) => (
-          <Text
+          <Pressable onPress={() => handleToggle(section.title)}>
+            <Text
             style={{
               backgroundColor: section.backgroundColor,
               color: section.textColor,
@@ -92,6 +111,7 @@ export default function GroupedTasks({
             }}>
             {section.title}
           </Text>
+          </Pressable>
         )}
         stickySectionHeadersEnabled={true}
         refreshing={isFetching}
