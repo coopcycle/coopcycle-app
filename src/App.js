@@ -48,7 +48,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import DropdownHolder from './DropdownHolder';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
-import NavigationHolder from './NavigationHolder';
+import { navigationRef } from './NavigationHolder';
 import FullScreenLoadingIndicator from './navigation/FullScreenLoadingIndicator';
 import RootView from './navigation/RootView';
 import {
@@ -89,7 +89,6 @@ LogBox.ignoreLogs([
   '[Reanimated] Reduced motion setting is enabled on this device.',
 ]);
 
-const navigationRef = createRef();
 const routeNameRef = createRef();
 
 function getCurrentRoute() {
@@ -119,8 +118,6 @@ function onNavigationStateChange(prevState, currentState) {
 
   routeNameRef.current = currentRouteName;
 }
-
-NavigationHolder.setNavigationRef(navigationRef);
 
 // https://reactnavigation.org/docs/5.x/configuring-links/
 
