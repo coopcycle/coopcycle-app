@@ -376,7 +376,8 @@
       "LowLactoseDiet": "Low lactose",
       "LowSaltDiet": "Low salt",
       "VeganDiet": "Vegan",
-      "VegetarianDiet": "Vegetarian"
+      "VegetarianDiet": "Vegetarian",
+      "EggFreeDiet": "Egg-free"
     },
     "ALLERGEN": {
       "CEREALS_CONTAINING_GLUTEN": "Cereals containing gluten",
