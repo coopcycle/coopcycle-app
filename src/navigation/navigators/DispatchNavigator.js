@@ -16,6 +16,9 @@ import { createDeliverySuccess } from '../../redux/Store/actions';
 import NavigationHolder from '../../NavigationHolder';
 import { HeaderBackButton } from '@react-navigation/elements';
 
+
+// TODO: remove Tabs
+// deprecated for the moment. Leaving because we might be using tabs for filters
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => (
@@ -57,8 +60,8 @@ const MainNavigator = () => {
   return (
     <MainStack.Navigator screenOptions={screenOptions}>
       <MainStack.Screen
-        name="DispatchHome"
-        component={Tabs}
+        name="DispatchAllTasks"
+        component={screens.DispatchAllTasks}
         options={({ navigation }) => ({
           title: i18n.t('DISPATCH'),
           headerLeft: headerLeft(navigation, 'menuBtnDispatch'),

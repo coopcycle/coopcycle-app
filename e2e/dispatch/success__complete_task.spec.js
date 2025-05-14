@@ -23,12 +23,8 @@ describeif(device.getPlatform() === 'android')('Dispatch - Complete a task', () 
   });
 
   it('should mark a task as done', async () => {
-      // Open jane's task list
-      await tapById('dispatch:assignedTab');
-      await tapById(`dispatch:taskLists:${USERNAME}`);
-
       // Open assigned task
-      await tapById('task:0:assign');
+      await tapById(`${USERNAME}TasksList:task:0`);
 
       // Swipe complete button, tap ok and press 'Complete'
       await swipeRight('task:completeButton');
@@ -37,6 +33,10 @@ describeif(device.getPlatform() === 'android')('Dispatch - Complete a task', () 
 
       // Press task's complete button
       await tapById('completeTaskButton');
+
+      // Go back to All Tasks view
+      await device.pressBack();
+      await device.pressBack();
 
       // Verify task has status "DONE"
       await expect(element(by.id('taskListItemIcon-DONE'))).toBeVisible();

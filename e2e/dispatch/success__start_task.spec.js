@@ -23,19 +23,15 @@ describeif(device.getPlatform() === 'android')('Dispatch - Start a task', () => 
   });
 
   it('should mark a task as started', async () => {
-      // Open jane's task list
-      await tapById('dispatch:assignedTab');
-      await tapById(`dispatch:taskLists:${USERNAME}`);
-
       // Open assigned task
-      await tapById('task:0:assign');
+      await tapById(`${USERNAME}TasksList:task:0`);
 
       // Swipe complete button, tap ok and press 'Start'
       await swipeRight('task:completeButton');
       await tapById('task:completeSuccessButton');
       await tapByText('▶ Start');
 
-      // Go back to jane's task list
+      // Go back to All Tasks view
       await device.pressBack();
 
       // Verify task has status "DOING"

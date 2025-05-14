@@ -15,3 +15,8 @@ export async function swipeRight(testID) {
     await expect(element(by.id(testID))).toBeVisible();
     await element(by.id(testID)).swipe('right');
 }
+
+export async function swipeLeft(testID) {
+    await expect(element(by.id(testID))).toBeVisible();
+    await element(by.id(testID)).swipe('left');
+}
