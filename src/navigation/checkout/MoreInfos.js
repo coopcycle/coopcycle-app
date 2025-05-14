@@ -205,7 +205,7 @@ class MoreInfos extends Component {
                   {!this.props.isAuthenticated && this._userIsGuest() && (
                     <FormControl mb="2">
                       <FormControl.Label>Email</FormControl.Label>
-                      <Input
+                      <Input _stack={{ style: {} }}
                         testID="guestCheckoutEmail"
                         autoCorrect={false}
                         keyboardType="email-address"
@@ -231,7 +231,7 @@ class MoreInfos extends Component {
                     <FormControl.Label>
                       {this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
                     </FormControl.Label>
-                    <Input
+                    <Input _stack={{ style: {} }}
                       testID="checkoutTelephone"
                       autoCorrect={false}
                       keyboardType="phone-pad"

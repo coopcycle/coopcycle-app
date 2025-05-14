@@ -62,7 +62,7 @@ class ForgotPasswordForm extends Component {
                 <FormControl.Label>
                   {this.props.t('USERNAME_OR_EMAIL')}
                 </FormControl.Label>
-                <Input
+                <Input _stack={{ style: {} }}
                   autoCorrect={false}
                   autoCapitalize="none"
                   keyboardType="email-address"

@@ -122,7 +122,7 @@ class LoginForm extends Component {
                   <FormControl.Label>
                     {this.props.t('USERNAME')}
                   </FormControl.Label>
-                  <Input
+                  <Input _stack={{ style: {} }}
                     testID="loginUsername"
                     autoCorrect={false}
                     autoCapitalize="none"
@@ -138,7 +138,7 @@ class LoginForm extends Component {
                   <FormControl.Label>
                     {this.props.t('PASSWORD')}
                   </FormControl.Label>
-                  <Input
+                  <Input _stack={{ style: {} }}
                     testID="loginPassword"
                     ref={component => {
                       this._passwordInput = component;

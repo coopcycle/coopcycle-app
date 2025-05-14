@@ -193,7 +193,7 @@ const ContactNameModal = ({ isVisible, onSwipeComplete, initialValues, onSubmit 
                   <FormControl.Label>
                     {t('DELIVERY_DETAILS_RECIPIENT')}
                   </FormControl.Label>
-                  <Input
+                  <Input _stack={{ style: {} }}
                     autoCorrect={false}
                     autoCapitalize="none"
                     autoCompleteType="off"
@@ -354,7 +354,7 @@ const FailureReasonForm = ({ data, onChange }) => {
             return (
               <FormControl mb="2" key={ item.name }>
                 <FormControl.Label>{ item.label }</FormControl.Label>
-                <Input
+                <Input _stack={{ style: {} }}
                   defaultValue={ item.value.toString() }
                   keyboardType={ item.type === 'number' ? 'number-pad' : 'default' }
                   onChangeText={ handleChange(item.name) }

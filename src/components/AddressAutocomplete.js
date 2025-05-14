@@ -361,7 +361,7 @@ function AddressAutocomplete(props) {
   const renderTextInput = inputProps => (
     <View style={styles.textInput}>
       <View style={styles.textInput}>
-        <Input
+        <Input _stack={{ style: {} }}
           {...inputProps}
           style={[
             inputProps.style,

@@ -21,13 +21,13 @@ class AccountDetailsPage extends Component {
         {username ? (
           <FormControl disabled>
             <FormControl.Label>{this.props.t('USERNAME')}</FormControl.Label>
-            <Input disabled placeholder={username} />
+            <Input _stack={{ style: {} }} disabled placeholder={username} />
           </FormControl>
         ) : null}
         {email ? (
           <FormControl disabled>
             <FormControl.Label>{this.props.t('EMAIL')}</FormControl.Label>
-            <Input disabled placeholder={email} />
+            <Input _stack={{ style: {} }} disabled placeholder={email} />
           </FormControl>
         ) : null}
       </Center>

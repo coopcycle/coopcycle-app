@@ -110,7 +110,7 @@ function Loopeat({ cart, updateLoopeatReturns }) {
                         getPriceFromId(item.format_id, formats),
                       )})`}</Text>
                     </HStack>
-                    <InputSpinner
+                    <Input _stack={{ style: {} }}Spinner
                       width={80}
                       height={40}
                       min={1}

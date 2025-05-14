@@ -211,7 +211,7 @@ class CreditCardClassComponent extends Component {
                         styles.formInputContainer,
                         { paddingHorizontal: 20, marginBottom: 15 },
                       ]}>
-                      <Input
+                      <Input _stack={{ style: {} }}
                         testID="cardholderName"
                         autoCorrect={false}
                         autoCapitalize="none"
