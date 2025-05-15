@@ -1,5 +1,13 @@
 .PHONY: setup start android ios reset test test-only e2e-build e2e-android e2e-android-only e2e-ios e2e-ios-only adb emulator
 
+ENV_FILE ?= .env
+
+# import and export env variables
+ifneq (,$(wildcard ${ENV_FILE}))
+	include ${ENV_FILE}
+    export
+endif
+
 setup:
 	@clear && yarn install
 
