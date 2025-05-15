@@ -522,7 +522,7 @@ const CompleteTask = ({
                   )}
                   <FormControl p="3">
                     <FormControl.Label>{t('NOTES')}</FormControl.Label>
-                    <TextArea
+                    <TextArea _stack={{ style: {} }}
                       autoCorrect={false}
                       totalLines={2}
                       onChangeText={text => setNotes(text)}

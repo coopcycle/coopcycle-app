@@ -129,7 +129,7 @@ function BarcodeIncident({
             </FormControl>
             <FormControl>
               <FormControl.Label>{t('NOTES')}</FormControl.Label>
-              <TextArea value={notes} onChangeText={setNotes} />
+              <TextArea _stack={{ style: {} }} value={notes} onChangeText={setNotes} />
             </FormControl>
             <FormControl>
               <FormControl.Label>{t('PICTURES')}</FormControl.Label>

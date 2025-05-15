@@ -262,7 +262,7 @@ class MoreInfos extends Component {
                       <FormControl.Label>
                         {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}
                       </FormControl.Label>
-                      <TextArea
+                      <TextArea _stack={{ style: {} }}
                         autoCorrect={false}
                         totalLines={3}
                         onChangeText={handleChange('address.description')}
@@ -279,7 +279,7 @@ class MoreInfos extends Component {
                     <FormControl.Label>
                       {this.props.t('CHECKOUT_ORDER_NOTES')}
                     </FormControl.Label>
-                    <TextArea
+                    <TextArea _stack={{ style: {} }}
                       autoCorrect={false}
                       totalLines={3}
                       onChangeText={handleChange('notes')}

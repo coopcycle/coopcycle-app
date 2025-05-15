@@ -279,7 +279,7 @@ function BarcodePage({
         onBackdropPress={() => setShowNoteModal(false)}>
         <FormControl>
           <FormControl.Label>{t('NOTES')}</FormControl.Label>
-          <TextArea
+          <TextArea _stack={{ style: {} }}
             autoFocus
             onChange={e => (note.current = e.nativeEvent.text)}
           />
