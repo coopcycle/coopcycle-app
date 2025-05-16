@@ -1,9 +1,9 @@
-import { Text, View } from 'native-base';
-import { useSelector } from 'react-redux';
-import { Icon } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import {
   LayoutAnimation,
   Platform,
@@ -16,7 +16,6 @@ import { navigateToTask } from '../../../navigation/utils';
 import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
 import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
-import { useState } from 'react';
 import { whiteColor } from '../../../styles/common';
 
 export default function GroupedTasks({ sections, route, isFetching, refetch }) {
@@ -80,6 +79,7 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
         renderItem={({ section, index }) => {
           const isCollapsed = collapsedSections.has(section.title);
           // TODO check why lists are repeating, is this necessary?
+          // TODO handle isCollapsed without null
           if (index === 0 && !isFetching && !isCollapsed) {
             return (
               <TaskList
@@ -106,7 +106,7 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
               />
             );
           }
-          return null; // Avoid rendering per item
+          return null;
         }}
         renderSectionHeader={({ section }) => (
           <Pressable onPress={() => handleToggle(section.title)}>
@@ -139,7 +139,6 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
                   {section.count}
                 </Text>
               </View>
-              {/* TODO check arrow */}
               <Icon
                 as={FontAwesome}
                 name={
