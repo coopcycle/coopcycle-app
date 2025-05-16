@@ -22,8 +22,8 @@ import {
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-import { greenColor, redColor, yellowColor } from '../styles/common';
 import { PaymentMethodInList } from './PaymentMethodInfo';
+import { redColor, yellowColor } from '../styles/common';
 import TaskTitle from './TaskTitle';
 
 const styles = StyleSheet.create({
@@ -118,9 +118,14 @@ const TaskStatusIcon = ({ task }) => {
   }
 };
 
-const SwipeButtonContainer = props => {
-  const { onPress, left, right, children, ...otherProps } = props;
-  const backgroundColor = left ? greenColor : yellowColor;
+const SwipeButtonContainer = ({
+  backgroundColor,
+  children,
+  left,
+  onPress,
+  right,
+  ...otherProps
+}) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
 
   return (
@@ -188,7 +193,21 @@ class TaskListItem extends Component {
   }
 
   render() {
-    const { color, task, index, taskListId } = this.props;
+    const {
+      color,
+      disableLeftSwipe,
+      disableRightSwipe,
+      index,
+      onPress,
+      onPressLeft,
+      onPressRight,
+      swipeOutLeftBackgroundColor,
+      swipeOutLeftIconName,
+      swipeOutRightBackgroundColor,
+      swipeOutRightIconName,
+      task,
+      taskListId,
+    } = this.props;
 
     const taskTestId = `${taskListId}:task:${index}`;
     const itemStyle = [];
@@ -208,8 +227,8 @@ class TaskListItem extends Component {
 
     return (
       <SwipeRow
-        disableRightSwipe={this.props.disableRightSwipe}
-        disableLeftSwipe={this.props.disableLeftSwipe}
+        disableRightSwipe={disableRightSwipe}
+        disableLeftSwipe={disableLeftSwipe}
         leftOpenValue={buttonWidth}
         stopLeftSwipe={buttonWidth + 25}
         rightOpenValue={buttonWidth * -1}
@@ -220,31 +239,33 @@ class TaskListItem extends Component {
       >
         <View style={styles.rowBack}>
           <SwipeButtonContainer
+            backgroundColor={swipeOutLeftBackgroundColor}
             left
             onPress={() => {
               this.swipeRow.current.closeRow();
-              this.props.onPressLeft();
+              onPressLeft();
             }}
             testID={`${taskTestId}:left`}>
             <SwipeButton
-              iconName={this.props.swipeOutLeftIconName || doneIconName}
+              iconName={swipeOutLeftIconName || doneIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
           <SwipeButtonContainer
+            backgroundColor={swipeOutRightBackgroundColor}
             right
             onPress={() => {
               this.swipeRow.current.closeRow();
-              this.props.onPressRight();
+              onPressRight();
             }}
             testID={`${taskTestId}:right`}>
             <SwipeButton
-              iconName={this.props.swipeOutRightIconName || incidentIconName}
+              iconName={swipeOutRightIconName || incidentIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={this.props.onPress} testID={taskTestId}>
+        <ItemTouchable onPress={onPress} testID={taskTestId}>
           <HStack
             flex={1}
             alignItems="center"
