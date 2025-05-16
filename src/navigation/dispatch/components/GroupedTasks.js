@@ -1,29 +1,37 @@
-import { Text } from 'native-base';
+import { Text, View } from 'native-base';
 import { useSelector } from 'react-redux';
+import { Icon } from 'native-base';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { useNavigation } from '@react-navigation/native';
-import { Pressable, SectionList } from 'react-native';
+import {
+  LayoutAnimation,
+  Platform,
+  Pressable,
+  SectionList,
+  UIManager,
+} from 'react-native';
 import TaskList from '../../../components/TaskList';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
 import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { useState } from 'react';
+import { whiteColor } from '../../../styles/common';
 
-export default function GroupedTasks({
-  sections,
-  route,
-  isFetching,
-  refetch
-}) {
+export default function GroupedTasks({ sections, route, isFetching, refetch }) {
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
-  
+
   // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());
+  if (Platform.OS === 'android') {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 
-  const handleToggle = (title) => {
+  const handleToggle = title => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setCollapsedSections(() => {
       const next = new Set(collapsedSections);
       if (next.has(title)) {
@@ -102,15 +110,45 @@ export default function GroupedTasks({
         }}
         renderSectionHeader={({ section }) => (
           <Pressable onPress={() => handleToggle(section.title)}>
-            <Text
-            style={{
-              backgroundColor: section.backgroundColor,
-              color: section.textColor,
-              padding: 20,
-              fontWeight: 700
-            }}>
-            {section.title}
-          </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingHorizontal: 8,
+                paddingVertical: 4,
+                backgroundColor: whiteColor,
+                margin: 4,
+                borderRadius: 5,
+              }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View
+                  style={{
+                    backgroundColor: section.backgroundColor,
+                    borderRadius: 4,
+                    marginEnd: 8,
+                    padding: 4,
+                  }}>
+                  <Text
+                    style={{
+                      color: section.textColor,
+                    }}>
+                    {section.title}
+                  </Text>
+                </View>
+                <Text>
+                  {section.count}
+                </Text>
+              </View>
+              {/* TODO check arrow */}
+              <Icon
+                as={FontAwesome}
+                name={
+                  collapsedSections.has(section.title)
+                    ? 'angle-down'
+                    : 'angle-up'
+                }
+              />
+            </View>
           </Pressable>
         )}
         stickySectionHeadersEnabled={true}
