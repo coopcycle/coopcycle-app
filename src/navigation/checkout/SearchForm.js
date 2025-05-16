@@ -73,7 +73,7 @@ class SearchForm extends Component {
     return (
       <>
         <FormControl>
-          <Input
+          <Input _stack={{ style: {} }}
             size="md"
             m={4}
             p={2}

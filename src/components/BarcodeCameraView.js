@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 import { Dimensions, Text } from 'react-native';
 import { View, Vibration } from 'react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera/next';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import _ from 'lodash';
 import { Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
