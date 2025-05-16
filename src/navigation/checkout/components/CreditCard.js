@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { createRef, forwardRef, Component } from 'react';
 import { CardField, StripeProvider } from '@stripe/stripe-react-native';
 import { Formik } from 'formik';
 import _ from 'lodash';
@@ -53,6 +53,8 @@ class CreditCardClassComponent extends Component {
   constructor(props) {
     super(props);
 
+    this.inputRef = createRef();
+
     this.state = {
       valid: false,
       form: {},
@@ -71,6 +73,13 @@ class CreditCardClassComponent extends Component {
   }
 
   async _onSubmit(values) {
+
+    // Hack to "blur" CardField before unmounting (we actually focus on the other field)
+    // This avoids the app crashing under iOS after payment
+    // https://github.com/stripe/stripe-react-native/issues/1732
+    // This may be removed when upgrading to React Native 0.79 + Stripe 0.45 + Expo 53
+    this.inputRef.current.focus();
+
     this.setState({ isLoading: true });
 
     if ((await this.props.canProceedWithPayment(this.props.cart)) === false) {
@@ -212,6 +221,8 @@ class CreditCardClassComponent extends Component {
                         { paddingHorizontal: 20, marginBottom: 15 },
                       ]}>
                       <Input
+                        _stack={{ style: {} }}
+                        ref={this.inputRef}
                         testID="cardholderName"
                         autoCorrect={false}
                         autoCapitalize="none"

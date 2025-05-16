@@ -101,7 +101,7 @@ export default ({ navigation }) => {
   const dispatch = useDispatch();
 
   const deliveryCallback = newDelivery => {
-    navigation.navigate('DispatchHome');
+    navigation.navigate('DispatchAllTasks');
     dispatch(createDeliverySuccess(newDelivery));
   };
   return (
