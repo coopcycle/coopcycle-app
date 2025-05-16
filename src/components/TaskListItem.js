@@ -84,17 +84,26 @@ const TaskOrder = ({task, color, width}) => (
       height: '100%',
       marginRight: 12,
       alignItems: 'center',
-      justifyContent: 'space-around',
-    }}
-  >
-    <Text
-    style={{
-      color: whiteColor,
-      fontSize: 24,
-      fontWeight: 700,
-      lineHeight: 24,
+      justifyContent: 'center',
+      gap: 12,
     }}>
+    <Text
+      style={{
+        color: whiteColor,
+        fontSize: 24,
+        fontWeight: 700,
+        lineHeight: 24,
+      }}>
       #{task.metadata?.order_number}
+    </Text>
+    <Text
+      style={{
+        color: whiteColor,
+        fontSize: 15,
+        fontWeight: 700,
+        lineHeight: 15,
+      }}>
+      $8,50
     </Text>
   </View>
 )
