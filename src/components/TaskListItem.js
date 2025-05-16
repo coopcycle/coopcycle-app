@@ -23,7 +23,7 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { PaymentMethodInList } from './PaymentMethodInfo';
-import { redColor, yellowColor } from '../styles/common';
+import { redColor, whiteColor, yellowColor } from '../styles/common';
 import TaskTitle from './TaskTitle';
 
 const styles = StyleSheet.create({
@@ -75,6 +75,29 @@ const iconStyle = task => {
 
   return style;
 };
+
+const TaskOrder = ({task, color, width}) => (
+  <View
+    style={{
+      backgroundColor: color,
+      width,
+      height: '100%',
+      marginRight: 12,
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    }}
+  >
+    <Text
+    style={{
+      color: whiteColor,
+      fontSize: 24,
+      fontWeight: 700,
+      lineHeight: 24,
+    }}>
+      #{task.metadata?.order_number}
+    </Text>
+  </View>
+)
 
 const TaskTypeIcon = ({ task }) => (
   <Icon
@@ -223,7 +246,7 @@ class TaskListItem extends Component {
     }
 
     const { width } = Dimensions.get('window');
-    const buttonWidth = width / 3;
+    const buttonWidth = width / 4;
 
     return (
       <SwipeRow
@@ -272,13 +295,10 @@ class TaskListItem extends Component {
             styles={itemStyle}
             pr="3"
             {...itemProps}>
-            <View
-              style={{
-                backgroundColor: color,
-                width: 8,
-                height: '100%',
-                marginRight: 12,
-              }}
+            <TaskOrder
+              color={color}
+              task={task}
+              width={buttonWidth}
             />
             <View style={styles.itemIcon}>
               <TaskTypeIcon task={task} />
