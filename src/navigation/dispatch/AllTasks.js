@@ -21,7 +21,6 @@ import {
   darkGreyColor,
   whiteColor
 } from '../../styles/common';
-import { useColorModeToken } from '../../styles/theme';
 import AddButton from './components/AddButton';
 
 export default function AllTasks({
@@ -36,8 +35,6 @@ export default function AllTasks({
 
   const dispatch = useDispatch();
 
-  // TODO check blackMode
-  const screenBackgroundColor = useColorModeToken('#E6E2E2', '#131313');
   const {
     isFetching,
     isError,
@@ -53,7 +50,8 @@ export default function AllTasks({
   // Combine unassigned tasks and task lists to use in SectionList
   const sections = [
     {
-      title: `${t('DISPATCH_UNASSIGNED_TASKS')} (${unassignedTasks.length})`,
+      title: t('DISPATCH_UNASSIGNED_TASKS'),
+      count: unassignedTasks.length,
       data: unassignedTasks,
       backgroundColor: whiteColor,
       textColor: darkGreyColor,
@@ -61,7 +59,8 @@ export default function AllTasks({
       id: 'unassignedTasksList'
     },
     ...taskLists.map(taskList => ({
-      title: `${taskList.username} (${taskList.items.length})`,
+      title: taskList.username,
+      count: taskList.items.length,
       data: taskList.items,
       backgroundColor: taskList.color ? taskList.color : darkGreyColor,
       textColor: whiteColor,
