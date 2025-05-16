@@ -1,14 +1,16 @@
-import { Text } from 'native-base';
-import { useSelector } from 'react-redux';
-
-import { useNavigation } from '@react-navigation/native';
 import { Pressable, SectionList } from 'react-native';
-import TaskList from '../../../components/TaskList';
-import { navigateToTask } from '../../../navigation/utils';
-import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
-import { selectTasksWithColor } from '../../../shared/logistics/redux';
-import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import { Text } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
+
+import { darkRedColor } from '../../../styles/common';
+import { navigateToTask } from '../../../navigation/utils';
+import { selectTasksWithColor } from '../../../shared/logistics/redux';
+import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
+import TaskList from '../../../components/TaskList';
+import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+
 
 export default function GroupedTasks({
   sections,
@@ -19,7 +21,7 @@ export default function GroupedTasks({
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
-  
+
   // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());
 
@@ -42,10 +44,18 @@ export default function GroupedTasks({
     bulkAssignTasksWithRelatedTasks,
   } = useSetTaskListsItems();
 
-  const unassignTaskHandler = task => unassignTaskWithRelatedTasks(task);
+  const onTaskClick = task => {
+    navigateToTask(navigation, route, task, unassignedTasks);
+  };
 
-  const allowToSelect = task => {
-    return task.status !== 'DONE';
+  const assignTaskHandler = task => {
+    navigation.navigate('DispatchPickUser', {
+      onItemPress: user => _assignTask(task, user),
+    });
+  };
+
+  const unassignTaskHandler = task => {
+    unassignTaskWithRelatedTasks(task);
   };
 
   const _assignTask = (task, user) => {
@@ -64,56 +74,64 @@ export default function GroupedTasks({
     bulkAssignTasksWithRelatedTasks(selectedTasks, user);
   };
 
+  const allowToSelect = task => {
+    return task.status !== 'DONE';
+  };
+
+  const swipeLeftConfiguration = {
+    onSwipeLeft: assignTaskHandler,
+    swipeOutLeftBackgroundColor: darkRedColor,
+    swipeOutLeftEnabled: allowToSelect,
+    swipeOutLeftIconName: 'cube',
+  }
+
+  const swipeRightConfiguration = {
+    onSwipeRight: unassignTaskHandler,
+    swipeOutRightBackgroundColor: darkRedColor,
+    swipeOutRightEnabled: allowToSelect,
+    swipeOutRightIconName: 'user',
+  }
+
   return (
     <>
       <SectionList
         sections={sections}
-        keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
+        renderSectionHeader={({ section }) => (
+          <Pressable onPress={() => handleToggle(section.title)}>
+            <Text
+              style={{
+                backgroundColor: section.backgroundColor,
+                color: section.textColor,
+                padding: 20,
+                fontWeight: 700
+              }}>
+              {section.title}
+            </Text>
+          </Pressable>
+        )}
+        stickySectionHeadersEnabled={true}
+        keyExtractor={(item, index) => item.id}
         renderItem={({ section, index }) => {
           const isCollapsed = collapsedSections.has(section.title);
           // TODO check why lists are repeating, is this necessary?
           if (index === 0 && !isFetching && !isCollapsed) {
             return (
               <TaskList
+                id={section.id}
                 tasks={section.data}
                 tasksType={section.tasksType}
                 tasksWithColor={tasksWithColor}
-                onSwipeRight={unassignTaskHandler}
-                swipeOutRightEnabled={task => task.status !== 'DONE'}
-                swipeOutRightIconName="close"
-                swipeOutLeftEnabled={task => !task.isAssigned}
-                onSwipeLeft={task =>
-                  navigation.navigate('DispatchPickUser', {
-                    onItemPress: user => _assignTask(task, user),
-                  })
-                }
-                swipeOutLeftIconName="user"
-                onTaskClick={task =>
-                  navigateToTask(navigation, route, task, unassignedTasks)
-                }
+                onTaskClick={onTaskClick}
+                {...swipeLeftConfiguration}
+                {...swipeRightConfiguration}
                 allowMultipleSelection={allowToSelect}
                 multipleSelectionIcon="user"
                 onMultipleSelectionAction={assignSelectedTasks}
-                id={section.id}
               />
             );
           }
           return null; // Avoid rendering per item
         }}
-        renderSectionHeader={({ section }) => (
-          <Pressable onPress={() => handleToggle(section.title)}>
-            <Text
-            style={{
-              backgroundColor: section.backgroundColor,
-              color: section.textColor,
-              padding: 20,
-              fontWeight: 700
-            }}>
-            {section.title}
-          </Text>
-          </Pressable>
-        )}
-        stickySectionHeadersEnabled={true}
         refreshing={isFetching}
         onRefresh={refetch}
       />

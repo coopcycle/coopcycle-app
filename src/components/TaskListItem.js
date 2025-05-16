@@ -22,8 +22,8 @@ import {
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-import { greenColor, redColor, yellowColor } from '../styles/common';
 import { PaymentMethodInList } from './PaymentMethodInfo';
+import { redColor, whiteColor, yellowColor } from '../styles/common';
 import TaskTitle from './TaskTitle';
 
 const styles = StyleSheet.create({
@@ -76,6 +76,38 @@ const iconStyle = task => {
   return style;
 };
 
+const TaskOrder = ({task, color, width}) => (
+  <View
+    style={{
+      backgroundColor: color,
+      width,
+      height: '100%',
+      marginRight: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 12,
+    }}>
+    <Text
+      style={{
+        color: whiteColor,
+        fontSize: 24,
+        fontWeight: 700,
+        lineHeight: 24,
+      }}>
+      #{task.metadata?.order_number}
+    </Text>
+    <Text
+      style={{
+        color: whiteColor,
+        fontSize: 15,
+        fontWeight: 700,
+        lineHeight: 15,
+      }}>
+      $8,50
+    </Text>
+  </View>
+)
+
 const TaskTypeIcon = ({ task }) => (
   <Icon
     as={FontAwesome}
@@ -118,9 +150,14 @@ const TaskStatusIcon = ({ task }) => {
   }
 };
 
-const SwipeButtonContainer = props => {
-  const { onPress, left, right, children, ...otherProps } = props;
-  const backgroundColor = left ? greenColor : yellowColor;
+const SwipeButtonContainer = ({
+  backgroundColor,
+  children,
+  left,
+  onPress,
+  right,
+  ...otherProps
+}) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
 
   return (
@@ -188,7 +225,21 @@ class TaskListItem extends Component {
   }
 
   render() {
-    const { color, task, index, taskListId } = this.props;
+    const {
+      color,
+      disableLeftSwipe,
+      disableRightSwipe,
+      index,
+      onPress,
+      onPressLeft,
+      onPressRight,
+      swipeOutLeftBackgroundColor,
+      swipeOutLeftIconName,
+      swipeOutRightBackgroundColor,
+      swipeOutRightIconName,
+      task,
+      taskListId,
+    } = this.props;
 
     const taskTestId = `${taskListId}:task:${index}`;
     const itemStyle = [];
@@ -204,12 +255,12 @@ class TaskListItem extends Component {
     }
 
     const { width } = Dimensions.get('window');
-    const buttonWidth = width / 3;
+    const buttonWidth = width / 4;
 
     return (
       <SwipeRow
-        disableRightSwipe={this.props.disableRightSwipe}
-        disableLeftSwipe={this.props.disableLeftSwipe}
+        disableRightSwipe={disableRightSwipe}
+        disableLeftSwipe={disableLeftSwipe}
         leftOpenValue={buttonWidth}
         stopLeftSwipe={buttonWidth + 25}
         rightOpenValue={buttonWidth * -1}
@@ -220,44 +271,43 @@ class TaskListItem extends Component {
       >
         <View style={styles.rowBack}>
           <SwipeButtonContainer
+            backgroundColor={swipeOutLeftBackgroundColor}
             left
             onPress={() => {
               this.swipeRow.current.closeRow();
-              this.props.onPressLeft();
+              onPressLeft();
             }}
             testID={`${taskTestId}:left`}>
             <SwipeButton
-              iconName={this.props.swipeOutLeftIconName || doneIconName}
+              iconName={swipeOutLeftIconName || doneIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
           <SwipeButtonContainer
+            backgroundColor={swipeOutRightBackgroundColor}
             right
             onPress={() => {
               this.swipeRow.current.closeRow();
-              this.props.onPressRight();
+              onPressRight();
             }}
             testID={`${taskTestId}:right`}>
             <SwipeButton
-              iconName={this.props.swipeOutRightIconName || incidentIconName}
+              iconName={swipeOutRightIconName || incidentIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={this.props.onPress} testID={taskTestId}>
+        <ItemTouchable onPress={onPress} testID={taskTestId}>
           <HStack
             flex={1}
             alignItems="center"
             styles={itemStyle}
             pr="3"
             {...itemProps}>
-            <View
-              style={{
-                backgroundColor: color,
-                width: 8,
-                height: '100%',
-                marginRight: 12,
-              }}
+            <TaskOrder
+              color={color}
+              task={task}
+              width={buttonWidth}
             />
             <View style={styles.itemIcon}>
               <TaskTypeIcon task={task} />
