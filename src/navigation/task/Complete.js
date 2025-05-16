@@ -309,7 +309,8 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{ alignItems: 'center', backgroundColor: footerBgColor }}>
+      style={{ alignItems: 'center', backgroundColor: footerBgColor }}
+      testID="completeTaskButton">
       <HStack py="3" alignItems="center">
         <Icon
           as={FontAwesome}

@@ -21,10 +21,12 @@ describeif(device.getPlatform() === 'android')('Courier', () => {
       try {
         // dismiss BACKGROUND_PERMISSION_DISCLOSURE alert
         await element(by.text("I accept")).tap();
+      } catch {}
 
+      try {
         // dismiss HMS Core alert
         await element(by.text('OK')).tap();
-      } catch (e) { }
+      } catch {}
     }
 
     await expect(element(by.id('messengerTabMap'))).toBeVisible();
@@ -32,7 +34,7 @@ describeif(device.getPlatform() === 'android')('Courier', () => {
 
     await element(by.id('messengerTabList')).tap();
 
-    await expect(element(by.id('task:0'))).toBeVisible();
-    await expect(element(by.id('task:1'))).toBeVisible();
+    await expect(element(by.id('courierTaskList:task:0'))).toBeVisible();
+    await expect(element(by.id('courierTaskList:task:1'))).toBeVisible();
   });
 });

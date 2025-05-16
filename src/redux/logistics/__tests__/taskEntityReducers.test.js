@@ -1,6 +1,6 @@
+import { createTaskSuccess } from '../../../shared/logistics/redux';
 import {
   changeDate,
-  createTaskSuccess,
   loadTasksSuccess,
 } from '../../Dispatch/actions';
 import { default as taskEntityReducers } from '../taskEntityReducers';

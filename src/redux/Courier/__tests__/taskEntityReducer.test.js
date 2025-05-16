@@ -1,17 +1,20 @@
 import { omit } from 'lodash';
 import moment from 'moment';
+
 import { _message } from '../../middlewares/CentrifugoMiddleware/actions';
 import {
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
+} from '../taskActions';
+import {
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
   markTaskFailedFailure,
   markTaskFailedRequest,
   markTaskFailedSuccess,
-} from '../taskActions';
+} from '../../../shared/logistics/redux';
 import { tasksEntityReducer } from '../taskEntityReducer';
 import {
   selectIsTaskCompleteFailure,

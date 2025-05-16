@@ -91,3 +91,31 @@ export function tasksToIds(tasks) {
     item['@type'] === 'TaskCollectionItem' ? item.task : item['@id'],
   );
 }
+
+export function getTaskListItemIds(username, allTaskLists) {
+  const userTaskList = allTaskLists.find(taskList => taskList.username === username);
+
+  return userTaskList ? userTaskList.itemIds : [];
+}
+
+export function getAssignedTask(task, username) {
+  return {
+    ...task,
+    isAssigned: !!username,
+    assignedTo: username,
+  };
+}
+
+export function getToursToUpdate(itemIds, toursTasksIndex) {
+  const toursToUpdate = itemIds.reduce((acc, taskId) => {
+    const tourId = toursTasksIndex.tasks[taskId];
+    if (tourId) {
+      // Initialize with all the indexed tour tasks if not already present
+      // and remove the taskId from the tour tasks
+      acc[tourId] = (acc[tourId] || toursTasksIndex.tours[tourId]).filter(tourTaskId => tourTaskId !== taskId);
+    }
+    return acc;
+  }, {});
+
+  return toursToUpdate;
+}

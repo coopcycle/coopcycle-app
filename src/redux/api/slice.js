@@ -60,6 +60,34 @@ export const apiSlice = createApi({
         return result ? { data: result } : { error: "result.error" };
       },
     }),
+    setTaskListItems: builder.mutation({
+      query: ({ items, username, date }) => {
+        const mutation = {
+          url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/ld+json',
+          },
+          body: JSON.stringify({ items })
+        };
+
+        return mutation;
+      },
+    }),
+    setTourItems: builder.mutation({
+      query: ({ tourUrl, tourTasks }) => {
+        const mutation = {
+          url: tourUrl,
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/ld+json',
+          },
+          body: JSON.stringify({ tasks: tourTasks })
+        };
+
+        return mutation;
+      },
+    }),
     getTours: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -122,11 +150,13 @@ export const {
   useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
+  useGetStoresQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
-  useGetToursQuery,
   useGetTasksQuery,
+  useGetToursQuery,
+  useSetTourItemsMutation,
+  useSetTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
-  useGetStoresQuery
 } = apiSlice;

@@ -6,6 +6,7 @@ import {
   connectToLocalInstance,
   connectToSandbox,
   launchApp,
+  selectAutocompleteAddress,
   symfonyConsole,
 } from '../../../../support/commands';
 import { describeif } from '../../../../utils';
@@ -30,13 +31,7 @@ describeif(device.getPlatform() === 'android')(
       await authenticateWithCredentials('bob', '12345678');
 
       // Enter address
-      await waitFor(element(by.id('askAddressAutocomplete')))
-        .toExist()
-        .withTimeout(5000);
-      await element(by.id('askAddressAutocomplete')).typeText(
-        '91 rue de rivoli paris',
-      );
-      await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
+      await selectAutocompleteAddress('askAddressAutocomplete');
 
       // List of restaurants
       await expect(element(by.id('restaurantList'))).toBeVisible();

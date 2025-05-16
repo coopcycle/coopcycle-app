@@ -1,15 +1,8 @@
 import { actionMatchCreator } from '../util';
 import {
-  assignTaskFailure,
-  assignTaskRequest,
-  assignTaskSuccess,
-  bulkAssignmentTasksFailure,
-  bulkAssignmentTasksRequest,
-  bulkAssignmentTasksSuccess,
-  cancelTaskSuccess,
-  createTaskFailure,
-  createTaskRequest,
-  createTaskSuccess,
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksSuccess,
   loadTaskListsFailure,
   loadTaskListsRequest,
   loadTaskListsSuccess,
@@ -19,30 +12,30 @@ import {
   loadUsersFailure,
   loadUsersRequest,
   loadUsersSuccess,
-  unassignTaskFailure,
-  unassignTaskRequest,
-  unassignTaskSuccess,
 } from '../Dispatch/actions';
 import {
+  cancelTaskSuccess,
+  createTaskFailure,
+  createTaskRequest,
+  createTaskSuccess,
   loadToursFailure,
   loadToursSuccess,
+  unassignTasksSuccess,
 } from '../../shared/logistics/redux';
 
 
 const initialState = {
-  isBulkAssigning: false,
+  isAssigningTasks: false,
   isFetching: false,
   taskListsLoading: false,
 };
 
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [
-    assignTaskRequest,
     createTaskRequest,
     loadTaskListsRequest,
     loadTasksRequest,
     loadUsersRequest,
-    unassignTaskRequest,
   ])) {
     return {
       ...state,
@@ -51,13 +44,11 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    assignTaskFailure,
     createTaskFailure,
     loadTaskListsFailure,
     loadTasksFailure,
     loadToursFailure,
     loadUsersFailure,
-    unassignTaskFailure,
   ])) {
     return {
       ...state,
@@ -66,14 +57,12 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    assignTaskSuccess,
     cancelTaskSuccess,
     createTaskSuccess,
     loadTaskListsSuccess,
     loadTasksSuccess,
     loadToursSuccess,
     loadUsersSuccess,
-    unassignTaskSuccess,
   ])) {
     return {
       ...state,
@@ -82,29 +71,30 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    bulkAssignmentTasksRequest,
+    assignTasksRequest,
   ])) {
     return {
       ...state,
-      isBulkAssigning: true,
+      isAssigningTasks: true,
     };
   }
 
   if (actionMatchCreator(action, [
-    bulkAssignmentTasksFailure,
+    assignTasksFailure,
   ])) {
     return {
       ...state,
-      isBulkAssigning: false,
+      isAssigningTasks: false,
     };
   }
 
   if (actionMatchCreator(action, [
-    bulkAssignmentTasksSuccess,
+    assignTasksSuccess,
+    unassignTasksSuccess,
   ])) {
     return {
       ...state,
-      isBulkAssigning: false,
+      isAssigningTasks: false,
     };
   }
 
