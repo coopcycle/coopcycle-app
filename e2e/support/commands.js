@@ -5,7 +5,7 @@ const os = require('os');
 
 // Make sure to have the correct path to the coopcycle-web repository while running locally!
 // You can set `COOPCYCLE_WEB_REPO_PATH` at your `.env` file and use Makefile's targets to run the tests
-const COOPCYCLE_WEB_REPO_PATH = process.env.COOPCYCLE_WEB_REPO_PATH || '../coopcycle-web-repo';
+const COOPCYCLE_WEB_REPO_PATH = process.env.COOPCYCLE_WEB_REPO_PATH || '../coopcycle-web';
 export const COMMAND_PREFIX = `cd ${COOPCYCLE_WEB_REPO_PATH} && docker compose exec -T php`;
 
 export const symfonyConsole = command => {
