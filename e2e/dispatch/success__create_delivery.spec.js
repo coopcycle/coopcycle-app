@@ -1,8 +1,11 @@
 import {
+  selectAutocompleteAddress,
+} from "../support/commands";
+import {
   doLoginForUserWithRoleDispatcher,
   loadDispatchFixture,
 } from './utils';
-import { itif } from '../utils';
+import { itif, tapById } from '../utils';
 
 describe('Dispatch - Create delivery', () => {
   beforeEach(async () => {
@@ -15,24 +18,18 @@ describe('Dispatch - Create delivery', () => {
   itif(device.getPlatform() === 'android')(
     `should create a delivery for store from Dispatch`,
     async () => {
-      await expect(element(by.id('dispatchNewDelivery'))).toBeVisible();
-      await element(by.id('dispatchNewDelivery')).tap();
+      await tapById('dispatchNewDelivery');
 
       // Select store
-      await expect(element(by.id('dispatch:storeList:0'))).toBeVisible();
-      await element(by.id('dispatch:storeList:0')).tap();
+      await tapById('dispatch:storeList:0');
 
       // Pickup address
 
       // Select default store's address and continue
-      await expect(element(by.id('delivery__next_button'))).toBeVisible();
-      await element(by.id('delivery__next_button')).tap();
+      await tapById('delivery__next_button');
 
       // Dropoff address
-
-      await expect(element(by.id('delivery__dropoff__address'))).toBeVisible();
-      await element(by.id('delivery__dropoff__address')).typeText('91 rue de rivoli paris');
-      await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
+      await selectAutocompleteAddress('delivery__dropoff__address');
 
       // Append "\n" to make sure virtual keyboard is hidden after entry
       // https://github.com/wix/detox/issues/209
@@ -42,19 +39,16 @@ describe('Dispatch - Create delivery', () => {
       await expect(element(by.id('delivery__dropoff__phone'))).toBeVisible();
       await element(by.id('delivery__dropoff__phone')).typeText('0612345678\n');
 
-      await expect(element(by.id('delivery__next_button'))).toBeVisible();
-      await element(by.id('delivery__next_button')).tap();
+      await tapById('delivery__next_button');
 
       // Delivery form
 
       // Select default values and continue
-      await expect(element(by.id('delivery__next_button'))).toBeVisible();
-      await element(by.id('delivery__next_button')).tap();
+      await tapById('delivery__next_button');
 
       // Price form
 
       // Select default values and continue
-      await expect(element(by.id('delivery__next_button'))).toBeVisible();
-      await element(by.id('delivery__next_button')).tap();
+      await tapById('delivery__next_button');
   });
 });

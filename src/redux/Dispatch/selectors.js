@@ -10,12 +10,12 @@ export const selectUnassignedTasksNotCancelled = createSelector(
 
 export const selectTasksNotCancelled = createSelector(
   state => state.tasks,
-  tasks => _.filter(tasks, task => task.status !== 'CANCELLED'),
+  tasks => _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
 );
 
 export const selectIsDispatchFetching = createSelector(
-  state => state.logistics.ui.isBulkAssigning,
+  state => state.logistics.ui.isAssigningTasks,
   state => state.logistics.ui.isFetching,
   state => state.logistics.ui.taskListsLoading,
-  (isBulkAssigning, isFetching, taskListsLoading) => isBulkAssigning || isFetching || taskListsLoading,
+  (isAssigningTasks, isFetching, taskListsLoading) => isAssigningTasks || isFetching || taskListsLoading,
 );

@@ -46,6 +46,7 @@ async function _startTask(httpClient, task_id) {
   }
 }
 
+// TODO: implement this using useSetTaskListItems
 async function _assignTask(httpClient, task_id, token) {
   if (task_id) {
     return await httpClient.put(
@@ -60,6 +61,7 @@ async function _assignTask(httpClient, task_id, token) {
   }
 }
 
+// TODO: implement this using useSetTaskListItems
 async function _unassignTask(httpClient, task_id, token) {
   if (task_id) {
     return await httpClient.put(
@@ -279,7 +281,7 @@ function BarcodePage({
         onBackdropPress={() => setShowNoteModal(false)}>
         <FormControl>
           <FormControl.Label>{t('NOTES')}</FormControl.Label>
-          <TextArea
+          <TextArea _stack={{ style: {} }}
             autoFocus
             onChange={e => (note.current = e.nativeEvent.text)}
           />

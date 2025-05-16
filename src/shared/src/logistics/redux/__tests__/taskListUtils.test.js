@@ -1,24 +1,15 @@
-import { replaceTasksWithIds } from '../taskListUtils.js';
+import { replaceItemsWithItemIds } from '../taskListUtils.js';
 
 describe('taskListUtils', () => {
-  describe('replaceTasksWithIds', () => {
+  describe('replaceItemsWithItemIds', () => {
     it('should remove items and add itemIds in a task list', () => {
       let taskList = {
         '@id': '/api/task_lists/1',
         username: 'bot_1',
-        items: [
-          {
-            '@id': '/api/tasks/1',
-            id: 1,
-          },
-          {
-            '@id': '/api/tasks/2',
-            id: 2,
-          },
-        ],
+        items: ['/api/tasks/1', '/api/tasks/2', ],
       };
 
-      let result = replaceTasksWithIds(taskList);
+      let result = replaceItemsWithItemIds(taskList);
 
       expect(result).toEqual({
         '@id': '/api/task_lists/1',

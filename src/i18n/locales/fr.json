@@ -234,7 +234,7 @@
     "NOTIFICATION_ORDER_CREATED_DESC": "Une nouvelle commande pour le {{date}} a été créée",
     "NOTIFICATION_CLOSES_SOON": "Hop hop hop ! On se dépêche, il reste {{diff}} avant la fermeture !",
     "UNASSIGNED_TASKS": "Non assignées",
-    "DISPATCH_UNASSIGNED_TASKS": "Non assignées",
+    "DISPATCH_UNASSIGNED_TASKS": "Nouvelles commandes",
     "DISPATCH_TASK_LISTS": "Assignées",
     "DISPATCH_TASK_LIST": "Assigné à {{username}}",
     "DISPATCH_ADD_TASK_LIST": "Ajouter un utilisateur",
@@ -367,7 +367,8 @@
       "LowLactoseDiet": "Sans lactose",
       "LowSaltDiet": "Sans sel",
       "VeganDiet": "Vegan",
-      "VegetarianDiet": "Végétarien"
+      "VegetarianDiet": "Végétarien",
+      "EggFreeDiet": "Sans œuf"
     },
     "ALLERGEN": {
       "CEREALS_CONTAINING_GLUTEN": "Céréales contenant du gluten",
@@ -413,8 +414,8 @@
     "FILTER_BY_TAGS": "Filtrer par tags",
     "CONNECT_WITH_FACEBOOK": "Se connecter avec Facebook",
     "RESTAURANT_PRE_ORDER": "Pré-commander",
-    "RESTAURANT_CLOSED_BUT_OPENS": "Ce restaurant est fermé maintenant mais ouvre {{ datetime }}. Vous pouvez quand même commander pour plus tard !",
-    "RESTAURANT_CLOSED_PRE_ORDER": "Ce restaurant est fermé actuellement, vous pouvez tout même commander pour une livraison à {{ datetime }} !",
+    "RESTAURANT_CLOSED_BUT_OPENS": "Vous pouvez commander dans ce commerce pour son ouverture à {{ datetime }}.",
+    "RESTAURANT_CLOSED_PRE_ORDER": "Vous pouvez commander dans ce commerce en pré-commande, pour une livraison à {{ datetime }} !",
     "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Ce restaurant est fermé et non disponible jusqu'à {{ datetime }}.",
     "CHECKOUT_AS_GUEST": "Commander en tant qu'invité",
     "GUEST_CHECKOUT_ORDER_EMAIL_HELP": "Pour vous envoyer des mises à jour à propos de votre commande",
@@ -532,6 +533,7 @@
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Cette tâche vous a déjà été assignée",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Désassigner",
     "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "M'assigner",
+    "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "La tâche a déjà été désassignée mais la tournée à laquelle elle appartient ne l'est pas. Veuillez résoudre cela depuis l'application web.",
     "TASK_MULTIPLE_PACKAGES": "Plusieurs colis",
     "X_PACKAGES": "{{count}} colis",
     "NO_NEED_TO_SCAN_OTHERS": "Pas besoin de scanner les autres colis.",

@@ -5,7 +5,7 @@
  *
  * The `entities` sub-tree is used a little like a NoSQL database to record
  * the main entities the application is concerned with: Tasks, Orders,
- * Restaurants, Couriers, etc.
+ * Restaurants, Couriers, Tours, etc.
  *
  * The `ui` sub-tree stores state fragments related only to the appearance
  * of the UI, and which have no impact or relation to the `entities`.
@@ -15,31 +15,35 @@
  *
  * Initial state-shapes are provided in each individual reducer file.
  */
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import reduceReducers from 'reduce-reducers';
+
+import { apiSlice } from './api/slice'
+import { appReducer } from './App';
+import { createTaskItemsTransform } from './util';
 import {
   dateReducer as coreDateReducer,
   taskEntityReducers as coreTaskEntityReducers,
   taskListEntityReducers as coreTaskListEntityReducers,
   uiReducers as coreUiReducers,
 } from '../coopcycle-frontend-js/logistics/redux';
+import {
+  tasksEntityReducer,
+  tasksUiReducer,
+} from './Courier';
 import accountReducer from './Account/reducers';
-import { appReducer } from './App';
-import checkoutReducer from './Checkout/reducers';
-import { tasksEntityReducer, tasksUiReducer } from './Courier';
-import deliveryReducer from './Delivery/reducers';
-import appDispatchReducer from './Dispatch/reducers';
-import restaurantReducer from './Restaurant/reducers';
-import storeReducer from './Store/reducers';
 import appDateReducer from './logistics/dateReducer';
+import appDispatchReducer from './Dispatch/reducers';
+import appUiReducers from './logistics/uiReducers';
 import appTaskEntityReducers from './logistics/taskEntityReducers';
 import appTaskListEntityReducers from './logistics/taskListEntityReducers';
-import appLastmileUiReducers from './logistics/uiReducers';
-import { createTaskItemsTransform } from './util';
-import { apiSlice } from './api/slice'
+import appTourEntityReducers from './logistics/tourEntityReducers';
+import checkoutReducer from './Checkout/reducers';
+import deliveryReducer from './Delivery/reducers';
+import restaurantReducer from './Restaurant/reducers';
+import storeReducer from './Store/reducers';
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
@@ -182,12 +186,16 @@ export default combineReducers({
   logistics: combineReducers({
     date: reduceReducers(coreDateReducer, appDateReducer),
     entities: combineReducers({
-      tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),
+      tasks: reduceReducers(
+        coreTaskEntityReducers,
+        appTaskEntityReducers,
+      ),
       taskLists: reduceReducers(
         coreTaskListEntityReducers,
         appTaskListEntityReducers,
       ),
+      tours: appTourEntityReducers,
     }),
-    ui: reduceReducers(coreUiReducers, appLastmileUiReducers),
+    ui: reduceReducers(coreUiReducers, appUiReducers),
   }),
 });

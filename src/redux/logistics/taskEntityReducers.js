@@ -1,50 +1,60 @@
+import { actionMatchCreator } from '../util';
 import {
-  MARK_TASK_DONE_SUCCESS,
-  MARK_TASK_FAILED_SUCCESS,
-  START_TASK_SUCCESS,
-} from '../Courier';
-import {
-  ASSIGN_TASK_SUCCESS,
-  CANCEL_TASK_SUCCESS,
-  CHANGE_DATE,
-  CREATE_TASK_SUCCESS,
-  LOAD_TASK_LISTS_SUCCESS,
-  LOAD_UNASSIGNED_TASKS_SUCCESS,
-  UNASSIGN_TASK_SUCCESS,
-  UPDATE_TASK_SUCCESS,
+  assignTasksSuccess,
+  changeDate,
+  loadTasksSuccess,
 } from '../Dispatch/actions';
-
 import {
+  SET_USER,
+} from '../App/actions';
+import {
+  assignTaskSuccess,
+  cancelTaskSuccess,
+  createTaskSuccess,
+  markTaskDoneSuccess,
+  markTaskFailedSuccess,
+  startTaskSuccess,
   taskAdapter,
-  taskListUtils,
+  unassignTaskSuccess,
+  unassignTasksSuccess,
+  updateTaskSuccess,
 } from '../../coopcycle-frontend-js/logistics/redux';
+
 
 const initialState = taskAdapter.getInitialState();
 
 export default (state = initialState, action) => {
-  switch (action.type) {
-    case CHANGE_DATE:
-      return initialState;
-    case LOAD_UNASSIGNED_TASKS_SUCCESS: {
-      return taskAdapter.setAll(state, action.payload);
-    }
-    // TODO: remove this case on feature/235
-    case LOAD_TASK_LISTS_SUCCESS: {
-      let assignedTasks = taskListUtils.assignedTasks(action.payload);
-      return taskAdapter.upsertMany(state, assignedTasks);
-    }
-    case UPDATE_TASK_SUCCESS:
-    case CREATE_TASK_SUCCESS:
-    case CANCEL_TASK_SUCCESS:
-    case ASSIGN_TASK_SUCCESS:
-    case UNASSIGN_TASK_SUCCESS:
-    case START_TASK_SUCCESS:
-    case MARK_TASK_DONE_SUCCESS:
-    case MARK_TASK_FAILED_SUCCESS: {
-      let task = action.payload;
-      return taskAdapter.upsertOne(state, task);
-    }
-    default:
-      return state;
+  if (changeDate.match(action) || action.type === SET_USER) {
+    return initialState;
   }
+
+  if (actionMatchCreator(action, [
+    loadTasksSuccess,
+  ])) {
+    return taskAdapter.setAll(state, action.payload);
+  }
+
+  if (actionMatchCreator(action, [
+    assignTaskSuccess,
+    cancelTaskSuccess,
+    createTaskSuccess,
+    markTaskDoneSuccess,
+    markTaskFailedSuccess,
+    startTaskSuccess,
+    unassignTaskSuccess,
+    updateTaskSuccess,
+  ])) {
+    return taskAdapter.upsertOne(state, action.payload);
+  }
+
+  if (actionMatchCreator(action, [
+    assignTasksSuccess,
+    unassignTasksSuccess,
+  ])) {
+    if (action.payload) {
+      return taskAdapter.upsertMany(state, action.payload);
+    }
+  }
+
+  return state;
 };

@@ -239,7 +239,7 @@
     "NOTIFICATION_ORDER_CREATED_DESC": "A new order for {{date}} has been created",
     "NOTIFICATION_CLOSES_SOON": "Hop hop hop ! Hurry up, it remains {{diff}} until closing !",
     "UNASSIGNED_TASKS": "Unassigned",
-    "DISPATCH_UNASSIGNED_TASKS": "Unassigned",
+    "DISPATCH_UNASSIGNED_TASKS": "New orders",
     "DISPATCH_TASK_LISTS": "Assigned",
     "DISPATCH_TASK_LIST": "Assigned to {{username}}",
     "DISPATCH_ADD_TASK_LIST": "Add user",
@@ -376,7 +376,8 @@
       "LowLactoseDiet": "Low lactose",
       "LowSaltDiet": "Low salt",
       "VeganDiet": "Vegan",
-      "VegetarianDiet": "Vegetarian"
+      "VegetarianDiet": "Vegetarian",
+      "EggFreeDiet": "Egg-free"
     },
     "ALLERGEN": {
       "CEREALS_CONTAINING_GLUTEN": "Cereals containing gluten",
@@ -563,6 +564,7 @@
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "This task has already been assigned to you",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Unassign",
     "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Assign to me",
+    "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "The task has already been unassigned but the tour where it belogs to is not. Please solve this from the web app.",
     "TASK_MULTIPLE_PACKAGES": "Multiple packages",
     "X_PACKAGES": "{{count}} packages",
     "NO_NEED_TO_SCAN_OTHERS": "No need to scan the others packages.",

@@ -1,17 +1,20 @@
 import { omit } from 'lodash';
 import moment from 'moment';
+
 import { _message } from '../../middlewares/CentrifugoMiddleware/actions';
 import {
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
+} from '../taskActions';
+import {
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
   markTaskFailedFailure,
   markTaskFailedRequest,
   markTaskFailedSuccess,
-} from '../taskActions';
+} from '../../../shared/logistics/redux';
 import { tasksEntityReducer } from '../taskEntityReducer';
 import {
   selectIsTaskCompleteFailure,
@@ -106,10 +109,11 @@ describe('Redux | Tasks | Reducers', () => {
         loadTasksFetchError: true,
         isFetching: true,
       };
-      const date = moment().format('YYYY-MM-DD');
+      const now = moment();
+      const date = now.format('YYYY-MM-DD');
       const newState = tasksEntityReducer(
         prevState,
-        loadTasksSuccess(date, tasks, moment()),
+        loadTasksSuccess(date, tasks, now),
       );
       const fullState = { entities: { tasks: newState } };
 
@@ -184,6 +188,7 @@ describe('Redux | Tasks | Reducers', () => {
 
     test(`${_message} | task_list:updated`, () => {
       const date = moment().format('YYYY-MM-DD');
+      const username = 'some_username';
 
       const oldTasks = [{ '@id': '/api/tasks/1' }, { '@id': '/api/tasks/2' }];
       const newTasks = [
@@ -197,6 +202,7 @@ describe('Redux | Tasks | Reducers', () => {
           task_list: {
             date,
             items: newTasks,
+            username,
           },
         },
       };
@@ -207,6 +213,7 @@ describe('Redux | Tasks | Reducers', () => {
         items: {
           [date]: oldTasks,
         },
+        username,
       };
 
       const newState = tasksEntityReducer(prevState, _message(wsMsg));

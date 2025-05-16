@@ -394,7 +394,7 @@ function AddressAutocomplete(props) {
           size={5}
         />
       </TouchableOpacity>}
-      <Input
+      <Input _stack={{ style: {} }}
         {...inputProps}
         style={[
           inputProps.style,

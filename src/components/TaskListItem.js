@@ -88,15 +88,30 @@ const TaskStatusIcon = ({ task }) => {
   switch (task.status) {
     case 'DOING':
       return (
-        <Icon as={FontAwesome} name={doingIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doingIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DOING'
+        />
       );
     case 'DONE':
       return (
-        <Icon as={FontAwesome} name={doneIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={doneIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-DONE'
+        />
       );
     case 'FAILED':
       return (
-        <Icon as={FontAwesome} name={failedIconName} style={iconStyle(task)} />
+        <Icon
+          as={FontAwesome}
+          name={failedIconName}
+          style={iconStyle(task)}
+          testID='taskListItemIcon-FAILED'
+        />
       );
     default:
       return <View />;
@@ -173,8 +188,9 @@ class TaskListItem extends Component {
   }
 
   render() {
-    const { color, task, index } = this.props;
+    const { color, task, index, taskListId } = this.props;
 
+    const taskTestId = `${taskListId}:task:${index}`;
     const itemStyle = [];
     const textStyle = [styles.text];
     const itemProps = {};
@@ -200,7 +216,8 @@ class TaskListItem extends Component {
         stopRightSwipe={(buttonWidth + 25) * -1}
         onRowOpen={toValue => this._onRowOpen(toValue)}
         onRowClose={this._onRowClose}
-        ref={this.swipeRow}>
+        ref={this.swipeRow}
+      >
         <View style={styles.rowBack}>
           <SwipeButtonContainer
             left
@@ -208,7 +225,7 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               this.props.onPressLeft();
             }}
-            testID={`task:${index}:assign`}>
+            testID={`${taskTestId}:left`}>
             <SwipeButton
               iconName={this.props.swipeOutLeftIconName || doneIconName}
               width={buttonWidth}
@@ -219,14 +236,15 @@ class TaskListItem extends Component {
             onPress={() => {
               this.swipeRow.current.closeRow();
               this.props.onPressRight();
-            }}>
+            }}
+            testID={`${taskTestId}:right`}>
             <SwipeButton
               iconName={this.props.swipeOutRightIconName || incidentIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={this.props.onPress} testID={`task:${index}`}>
+        <ItemTouchable onPress={this.props.onPress} testID={taskTestId}>
           <HStack
             flex={1}
             alignItems="center"
@@ -252,24 +270,24 @@ class TaskListItem extends Component {
               {task.orgName ? (
                 <Text style={textStyle}>{task.orgName}</Text>
               ) : null}
-              {task.address.contactName ? (
+              {task.address?.contactName ? (
                 <Text style={textStyle}>{task.address.contactName}</Text>
               ) : null}
-              {task.address.name ? (
+              {task.address?.name ? (
                 <Text style={textStyle}>{task.address.name}</Text>
               ) : null}
               <Text numberOfLines={1} style={textStyle}>
-                {task.address.streetAddress}
+                {task.address?.streetAddress}
               </Text>
               <HStack alignItems="center">
                 <Text pr="2" style={textStyle}>
                   {moment(task.doneAfter).format('LT')} -{' '}
                   {moment(task.doneBefore).format('LT')}
                 </Text>
-                {task.address.description && task.address.description.length ? (
+                {task.address?.description && task.address?.description.length ? (
                   <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
                 ) : null}
-                {task.metadata && task.metadata.payment_method && (
+                {task.metadata && task.metadata?.payment_method && (
                   <PaymentMethodInList
                     paymentMethod={task.metadata.payment_method}
                   />
@@ -282,7 +300,7 @@ class TaskListItem extends Component {
                 <HStack style={styles.tagsWrapper}>
                   {task.tags.map(tag => (
                     <Text
-                      key={tag}
+                      key={tag.slug}
                       style={[
                         textStyle,
                         styles.tag,
@@ -318,6 +336,7 @@ TaskListItem.propTypes = {
   onPress: PropTypes.func,
   onPressLeft: PropTypes.func,
   onPressRight: PropTypes.func,
+  taskListId: PropTypes.string.isRequired
 };
 
 // We need to use "withRef" prop,

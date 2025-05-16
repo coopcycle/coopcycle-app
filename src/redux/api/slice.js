@@ -21,7 +21,7 @@ export const apiSlice = createApi({
         body: {}
       }),
     }),
-    getUnassignedTasks: builder.query({
+    getTasks: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
@@ -29,7 +29,6 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD'),
-            assigned: 'no'
           });
 
         return result ? { data: result } : { error: "result.error" };
@@ -43,6 +42,60 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD')
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
+    getTaskListsV2: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/task_lists/v2',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
+          });
+
+        return result ? { data: result } : { error: "result.error" };
+      },
+    }),
+    setTaskListItems: builder.mutation({
+      query: ({ items, username, date }) => {
+        const mutation = {
+          url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/ld+json',
+          },
+          body: JSON.stringify({ items })
+        };
+
+        return mutation;
+      },
+    }),
+    setTourItems: builder.mutation({
+      query: ({ tourUrl, tourTasks }) => {
+        const mutation = {
+          url: tourUrl,
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/ld+json',
+          },
+          body: JSON.stringify({ tasks: tourTasks })
+        };
+
+        return mutation;
+      },
+    }),
+    getTours: builder.query({
+      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          'api/tours',
+          100,
+          {
+            date: date.format('YYYY-MM-DD'),
           });
 
         return result ? { data: result } : { error: "result.error" };
@@ -97,9 +150,13 @@ export const {
   useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetOrderTimingQuery,
+  useGetStoresQuery,
   useGetTaskListsQuery,
-  useGetUnassignedTasksQuery,
+  useGetTaskListsV2Query,
+  useGetTasksQuery,
+  useGetToursQuery,
+  useSetTourItemsMutation,
+  useSetTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
-  useGetStoresQuery
 } = apiSlice;

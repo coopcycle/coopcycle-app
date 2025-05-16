@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { updateTask } from '../../Dispatch/actions';
+import { updateTask, updateTaskList, updateTour } from '../../../shared/logistics/redux';
 
 export const CENTRIFUGO_MESSAGE = '@centrifugo/MESSAGE';
 
@@ -26,6 +26,13 @@ export function message(payload) {
         case 'task:failed':
         case 'task:updated':
           dispatch(updateTask(name, data.task));
+          break;
+        case 'v2:task_list:updated':
+          dispatch(updateTaskList(name, data.task_list));
+          break;
+        case 'tour:created':
+        case 'tour:updated':
+          dispatch(updateTour(name, data.tour));
           break;
         default:
           dispatch(_message(payload));

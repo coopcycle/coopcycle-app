@@ -1,4 +1,4 @@
-import { Camera } from 'expo-camera';
+import { Camera, CameraView } from 'expo-camera';
 import { Button, Icon, IconButton, Text, VStack } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -7,7 +7,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 
-import { ImageType } from 'expo-camera/build/Camera.types';
 import { addPicture } from '../../redux/Courier';
 
 class Photo extends Component {
@@ -65,7 +64,7 @@ class Photo extends Component {
 
   _takePicture() {
     if (this.camera.current) {
-      const options = { quality: 0.5, base64: false, imageType: ImageType.jpg };
+      const options = { quality: 0.5, base64: false, imageType: 'jpg' };
       this.camera.current.takePictureAsync(options).then(data => {
         this.setState({ image: data });
       });
@@ -93,7 +92,7 @@ class Photo extends Component {
             // If you have multiple screens in your app, you should unmount Camera components whenever a screen is unfocused.
             */}
             {this.state.canMountCamera && this.state.canStartCamera ? (
-              <Camera
+              <CameraView
                 ref={this.camera}
                 style={styles.camera}
                 flashMode={this.state.flash ? 'on' : 'off'}>
@@ -129,7 +128,7 @@ class Photo extends Component {
                     />
                   )}
                 </View>
-              </Camera>
+              </CameraView>
             ) : null}
           </View>
         </VStack>

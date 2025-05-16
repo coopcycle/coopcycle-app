@@ -1009,21 +1009,31 @@ function handlePaymentSuccess(order) {
 
     dispatch(setNewOrder(order, token));
 
-    // First, reset checkout stack
+    // Reset nav stack so that when hitting "back" on OrderTracking screen,
+    // the user goes to CheckoutHome
     NavigationHolder.dispatch(
-      CommonActions.navigate({
-        name: 'Main',
-        params: {
-          screen: 'CheckoutHome',
-        },
-      }),
-    );
-
-    // Then, navigate to order screen
-    NavigationHolder.dispatch(
-      CommonActions.navigate({
-        name: 'OrderTracking',
-        params: { order: order.number },
+      CommonActions.reset({
+        routes: [
+          {
+            name: 'CheckoutNav',
+            state: {
+              routes: [
+                {
+                  name: 'Main',
+                  state: {
+                    routes: [
+                      { name: 'CheckoutHome' },
+                      {
+                        name: 'OrderTracking',
+                        params: { order: order.number },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
       }),
     );
 

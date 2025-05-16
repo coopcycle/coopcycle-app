@@ -259,3 +259,15 @@ export const closeRestaurantForToday = async (username, password) => {
     console.error('Error closing restaurants:', error);
   }
 };
+
+export const selectAutocompleteAddress = async (
+  elemId,
+  address='91 rue de rivoli paris',
+  placeId='Eh85MSBSdWUgZGUgUml2b2xpLCBQYXJpcywgRnJhbmNlIjASLgoUChIJmeuzXiFu5kcRwuW58Y4zYxgQWyoUChIJt4MohSFu5kcRUHvqO0vC-Ig'
+) => {
+  await waitFor(element(by.id(elemId)))
+    .toExist()
+    .withTimeout(5000);
+  await element(by.id(elemId)).typeText(address);
+  await element(by.id(`placeId:${placeId}`)).tap();
+};

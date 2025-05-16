@@ -377,6 +377,7 @@
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "Diese Aufgabe wurde dir bereits zugewiesen",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Zuweisung aufheben",
     "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Mir zuweisen",
+    "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "Die Aufgabe wurde bereits zugewiesen, aber die Tour, zu der sie gehört, nicht. Bitte lösen Sie dies über die Webanwendung.",
     "TASK_MULTIPLE_PACKAGES": "Mehrere Pakete",
     "X_PACKAGES": "{{count}} Pakete",
     "NO_NEED_TO_SCAN_OTHERS": "Es ist nicht nötig, die anderen Pakete zu scannen.",
