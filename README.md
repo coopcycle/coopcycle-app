@@ -142,7 +142,7 @@ Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
 
 To run end-to-end tests locally make sure that:
 * Set `APP_ENV` to `test` (already done when running from `Makefile` targets).
-* Set `COOPCYCLE_WEB_REPO_PATH` in `.env` only if your path to `coopcycle-web` project is other than: `../coopcycle-web` (required to run e2e tests against local CoopCycle instance).
+* Set `COOPCYCLE_WEB_REPO_PATH` in `.env` only if your path to `coopcycle-web` project is other than: `../coopcycle-web` (used to run e2e tests against local web instance).
 
 #### Build the app:
 
