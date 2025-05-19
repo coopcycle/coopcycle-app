@@ -39,7 +39,7 @@ export default function GroupedTasks({
 
   // data
   const {
-    unassignTaskWithRelatedTasks,
+    assignTask,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
   } = useSetTaskListsItems();
@@ -48,19 +48,26 @@ export default function GroupedTasks({
     navigateToTask(navigation, route, task, unassignedTasks);
   };
 
+  const assignTaskWithRelatedTasksHandler = task => {
+    navigation.navigate('DispatchPickUser', {
+      onItemPress: user => _assignTaskWithRelatedTasks(task, user),
+    });
+  };
+
   const assignTaskHandler = task => {
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _assignTask(task, user),
     });
   };
 
-  const unassignTaskHandler = task => {
-    unassignTaskWithRelatedTasks(task);
+  const _assignTaskWithRelatedTasks = (task, user) => {
+    navigation.navigate('DispatchAllTasks');
+    assignTaskWithRelatedTasks(task, user);
   };
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchAllTasks');
-    assignTaskWithRelatedTasks(task, user);
+    assignTask(task, user);
   };
 
   const assignSelectedTasks = selectedTasks => {
@@ -79,14 +86,14 @@ export default function GroupedTasks({
   };
 
   const swipeLeftConfiguration = {
-    onSwipeLeft: assignTaskHandler,
+    onSwipeLeft: assignTaskWithRelatedTasksHandler,
     swipeOutLeftBackgroundColor: darkRedColor,
     swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIconName: 'cube',
   }
 
   const swipeRightConfiguration = {
-    onSwipeRight: unassignTaskHandler,
+    onSwipeRight: assignTaskHandler,
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: 'user',
