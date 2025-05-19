@@ -1,4 +1,5 @@
 name: Run CoopCycle Web
+description: Runs a coopcycle-web local instance with docker
 
 runs:
   using: "composite"
