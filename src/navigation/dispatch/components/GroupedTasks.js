@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import {
-  LayoutAnimation,
-  Platform,
+  //LayoutAnimation,
+  //Platform,
   Pressable,
   SectionList,
-  UIManager,
+  //UIManager,
 } from 'react-native';
 import TaskList from '../../../components/TaskList';
 import { navigateToTask } from '../../../navigation/utils';
@@ -22,25 +22,6 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
-
-  // collapsable
-  const [collapsedSections, setCollapsedSections] = useState(new Set());
-  if (Platform.OS === 'android') {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-
-  const handleToggle = title => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setCollapsedSections(() => {
-      const next = new Set(collapsedSections);
-      if (next.has(title)) {
-        next.delete(title);
-      } else {
-        next.add(title);
-      }
-      return next;
-    });
-  };
 
   // data
   const {
@@ -71,17 +52,36 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
     bulkAssignTasksWithRelatedTasks(selectedTasks, user);
   };
 
+  // collapsable
+  const [collapsedSections, setCollapsedSections] = useState(new Set());
+  // Disabled animation for now..!
+  // if (Platform.OS === 'android') {
+  //   UIManager.setLayoutAnimationEnabledExperimental(true);
+  // }
+  const handleToggle = title => {
+    // Disabled animation for now..!
+    // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setCollapsedSections(() => {
+      const next = new Set(collapsedSections);
+      next[next.has(title) ? 'delete' : 'add'](title);
+      return next;
+    });
+  };
+
   return (
     <>
       <SectionList
         sections={sections}
         keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
         renderItem={({ section, index }) => {
-          const isCollapsed = collapsedSections.has(section.title);
           // TODO check why lists are repeating, is this necessary?
           // TODO handle isCollapsed without null
-          if (index === 0 && !isFetching && !isCollapsed) {
+          if (index === 0 && !isFetching) {
+            const isCollapsed = collapsedSections.has(section.title);
             return (
+              //<View height={isCollapsed ? 0 : 'auto'}>
+              //<View opacity={isCollapsed ? 0.0 : 1.0}>
+              <View style={{display: isCollapsed ? 'none' : 'flex'}}>
               <TaskList
                 tasks={section.data}
                 tasksType={section.tasksType}
@@ -104,6 +104,7 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
                 onMultipleSelectionAction={assignSelectedTasks}
                 id={section.id}
               />
+              </View>
             );
           }
           return null;
