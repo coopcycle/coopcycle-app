@@ -100,13 +100,13 @@ Running App
 ### Start the bundler
 
 ```sh
-yarn start
+make start
 ```
 
 ### Run the Android app
 
 ```sh
-yarn android
+make android
 ```
 
 ### Run the iOS app
@@ -114,7 +114,7 @@ yarn android
 On any simulator:
 
 ```sh
-yarn ios
+make ios
 ```
 
 With a picker to choose a specific simulator:
@@ -133,57 +133,51 @@ Testing
 -------
 
 ```sh
-yarn test
+make test
 ```
 
-##### Detox (end-to-end testing):
+### Detox (end-to-end testing):
 
 Setup: https://wix.github.io/Detox/docs/introduction/environment-setup
 
-To run end-to-end tests locally make sure that
+To run end-to-end tests locally make sure that:
+* Set `APP_ENV` to `test` (already done when running from `Makefile` targets).
+* Set `COOPCYCLE_WEB_REPO_PATH` in `.env` only if your path to `coopcycle-web` project is other than: `../coopcycle-web` (used to run e2e tests against local web instance).
 
-* `APP_ENV` is set to `test` in `.env` file (don't forget to return it back to `dev` after testing).
-* `COMMAND_PREFIX` in `commands.js` contains correct path to `coopcycle-web` project (required to run android tests against local CoopCycle instance).
-
-Build the app:
+#### Build the app:
 
 Android:
 
 ```sh
-detox build -c android.emu.debug
+make e2e-build-android
 ```
 
 iOS:
 
 ```sh
-detox build -c ios.sim.debug
+make e2e-build-ios
 ```
 
-Run tests:
+#### Run tests:
 
 Android:
 
 ```sh
-detox test -c android.emu.debug --retries 0
+make e2e-android
 ```
 
 iOS:
 
 ```sh
-detox test -c ios.sim.debug --retries 0
+make e2e-ios
 ```
 
-Mics
-
-Run a single test:
+Run a single test, set the `TESTFILE` env var when running `make e2e-android-only` or `make e2e-ios-only`:
 
 ```sh
-detox test -c android.emu.debug --retries 0 e2e/foodtech/first_launch.spec.js
+make e2e-android-only TESTFILE=dispatch/success__start_task.spec.js
 ```
-
-```sh
-detox test -c ios.sim.debug --retries 0 e2e/foodtech/first_launch.spec.js
-```
+(note that it omits the `e2e/` part of the path)
 
 Run a single test in debug mode:
 
@@ -208,8 +202,5 @@ watchman watch-del-all
 rm -rf $TMPDIR/react-*
 rm -rf $TMPDIR/metro-*
 rm -rf ~/.rncache
-rm -rf node_modules
-rm yarn.lock
-yarn cache clean
-yarn install
+make start-fresh
 ```
