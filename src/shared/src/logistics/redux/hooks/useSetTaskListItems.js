@@ -165,6 +165,15 @@ export default function useSetTaskListItems(
     return _updateUnassigningItems(allItemIdsToAssign, user, itemsToUnassignIds);
   }
 
+  /**
+   * Reassign just one task to rider (remove it from previous rider)
+   * @param {Task} task - Task to be reassigned
+   * @param {User} user - User of the rider to which we assign
+   */
+  const reassignTask = (task, user) => {
+    return unassignTask(task).then(() => assignTask(task, user));
+  }
+
   const _updateAssigningItems = (itemIds, user) => {
     const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
 
@@ -234,6 +243,7 @@ export default function useSetTaskListItems(
     isError,
     isLoading,
     isSuccess,
+    reassignTask,
     unassignTask,
     unassignTaskWithRelatedTasks,
   };
