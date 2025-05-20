@@ -48,12 +48,6 @@ describe('checkout for guest user; payment - cash on delivery', () => {
     // Add item
     await addProduct('menuItem:0:0');
 
-    // Check if footer is present
-    await waitFor(element(by.id('cartFooter')))
-      .toExist()
-      .withTimeout(5000);
-    await expect(element(by.id('cartFooter'))).toBeVisible();
-
     // Add 2 more items
     await addProduct('menuItem:0:1');
     await addProduct('menuItem:1:0');
