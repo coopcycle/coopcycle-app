@@ -43,6 +43,7 @@ export default function GroupedTasks({
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
     reassignTask,
+    reassignTaskWithRelatedTasks,
     unassignTask,
     unassignTaskWithRelatedTasks,
   } = useSetTaskListsItems();
@@ -53,7 +54,7 @@ export default function GroupedTasks({
 
   const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
     const onItemPress = user => _onSelectNewAssignation(
-      () => isUnassignedTaskList ? assignTaskWithRelatedTasks(task, user) : reassignTask(task, user),
+      () => (isUnassignedTaskList ? assignTaskWithRelatedTasks : reassignTaskWithRelatedTasks)(task, user),
     );
 
     const onUnassignButtonPress = () => _onSelectNewAssignation(
@@ -69,7 +70,7 @@ export default function GroupedTasks({
 
   const assignTaskHandler = isUnassignedTaskList => task => {
     const onItemPress = user => _onSelectNewAssignation(
-      () => isUnassignedTaskList ? assignTask(task, user) : reassignTask(task, user),
+      () => (isUnassignedTaskList ? assignTask : reassignTask)(task, user),
     );
 
     const onUnassignButtonPress = () => _onSelectNewAssignation(
