@@ -1,22 +1,21 @@
 import _ from 'lodash';
-import { Icon, Text } from 'native-base';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Icon, Text } from 'native-base';
+import { withTranslation } from 'react-i18next';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React, { Component } from 'react';
 
+import { greenColor, redColor, whiteColor } from '../../styles/common';
+import { selectUser } from '../../redux/App/selectors';
 import Avatar from '../../components/Avatar';
 import ItemSeparatorComponent from '../../components/ItemSeparator';
-import { greenColor } from '../../styles/common';
-
-import { selectUser } from '../../redux/App/selectors';
 
 class PickUser extends Component {
   renderItem(user) {
     return (
       <TouchableOpacity
-        onPress={() => this.props.onPress(user)}
+        onPress={() => this.props.onItemPress(user)}
         testID={`assignTo:${user.username}`}
         style={styles.item}>
         <Avatar baseURL={this.props.baseURL} username={user.username} />
@@ -28,29 +27,29 @@ class PickUser extends Component {
     );
   }
 
-  getUsersWithUnassign(users) {
-    const unassignItem = { username: undefined };
-    return [unassignItem, ...users];
-  }
-
   render() {
-    const { users, isUnassignedTaskList } = this.props;
-
-    const allItems = isUnassignedTaskList ? users : this.getUsersWithUnassign(users);
+    const { users } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
+        {this.props.showUnassignButton && (
+          <TouchableOpacity
+            style={styles.unassignButton}
+            onPress={() => this.props.onUnassignButtonPress()}>
+            <Text style={styles.buttonText}>{this.props.t('DISPATCH_UNASSIGN')}</Text>
+          </TouchableOpacity>
+        )}
         <FlatList
-          data={allItems}
+          data={users}
           keyExtractor={(item, index) => item.username}
           renderItem={({ item, index }) => this.renderItem(item, index)}
           ItemSeparatorComponent={ItemSeparatorComponent}
         />
         {this.props.selfAssign && (
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.props.onPress(this.props.user)}>
-            <Text>{this.props.t('DISPATCH_ASSIGN_TO_ME')}</Text>
+            style={styles.assignToMeButton}
+            onPress={() => this.props.onItemPress(this.props.user)}>
+            <Text style={styles.buttonText}>{this.props.t('DISPATCH_ASSIGN_TO_ME')}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -71,10 +70,18 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
-  button: {
+  unassignButton: {
     alignItems: 'center',
+    backgroundColor: redColor,
     padding: 20,
+  },
+  assignToMeButton: {
+    alignItems: 'center',
     backgroundColor: greenColor,
+    padding: 20,
+  },
+  buttonText: {
+    color: whiteColor,
   },
 });
 
@@ -90,8 +97,9 @@ function mapStateToProps(state, ownProps) {
   return {
     baseURL: state.app.baseURL,
     users: users,
-    onPress: ownProps.route.params?.onItemPress,
-    isUnassignedTaskList: ownProps.route.params?.isUnassignedTaskList,
+    onItemPress: ownProps.route.params?.onItemPress,
+    showUnassignButton: ownProps.route.params?.showUnassignButton,
+    onUnassignButtonPress: ownProps.route.params?.onUnassignButtonPress,
     selfAssign: withSelfAssignBtn && _.includes(user.roles, 'ROLE_COURIER'),
     user,
   };

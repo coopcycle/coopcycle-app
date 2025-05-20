@@ -52,33 +52,37 @@ export default function GroupedTasks({
   const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _assignTaskWithRelatedTasks(task, user),
-      isUnassignedTaskList,
+      showUnassignButton: !isUnassignedTaskList,
+      onUnassignButtonPress: () => _unassignTaskWithRelatedTasks(task),
     });
   };
 
   const assignTaskHandler = isUnassignedTaskList => task => {
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _assignTask(task, user),
-      isUnassignedTaskList,
+      showUnassignButton: !isUnassignedTaskList,
+      onUnassignButtonPress: () => _unassignTask(task),
     });
   };
 
   const _assignTaskWithRelatedTasks = (task, user) => {
     navigation.navigate('DispatchAllTasks');
-    if (user.username) {
-      assignTaskWithRelatedTasks(task, user);
-    } else {
-      unassignTaskWithRelatedTasks(task);
-    }
+    assignTaskWithRelatedTasks(task, user);
   };
+
+  const _unassignTaskWithRelatedTasks = task => {
+    navigation.navigate('DispatchAllTasks');
+    unassignTaskWithRelatedTasks(task);
+  }
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchAllTasks');
-    if (user.username) {
-      assignTask(task, user);
-    } else {
-      unassignTaskWithRelatedTasks(task);
-    }
+    assignTask(task, user);
+  };
+
+  const _unassignTask = task => {
+    navigation.navigate('DispatchAllTasks');
+    unassignTaskWithRelatedTasks(task);
   };
 
   const assignSelectedTasks = selectedTasks => {
