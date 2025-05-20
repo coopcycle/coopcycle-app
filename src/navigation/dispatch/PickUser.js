@@ -20,17 +20,28 @@ class PickUser extends Component {
         testID={`assignTo:${user.username}`}
         style={styles.item}>
         <Avatar baseURL={this.props.baseURL} username={user.username} />
-        <Text style={styles.itemText}>{user.username}</Text>
+        <Text style={styles.itemText}>
+          {user.username ? user.username : 'unassign'}
+        </Text>
         <Icon as={FontAwesome} name="arrow-right" size="sm" />
       </TouchableOpacity>
     );
   }
 
+  getUsersWithUnassign(users) {
+    const unassignItem = { username: undefined };
+    return [unassignItem, ...users];
+  }
+
   render() {
+    const { users, isUnassignedTaskList } = this.props;
+
+    const allItems = isUnassignedTaskList ? users : this.getUsersWithUnassign(users);
+
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={this.props.users}
+          data={allItems}
           keyExtractor={(item, index) => item.username}
           renderItem={({ item, index }) => this.renderItem(item, index)}
           ItemSeparatorComponent={ItemSeparatorComponent}
@@ -80,6 +91,7 @@ function mapStateToProps(state, ownProps) {
     baseURL: state.app.baseURL,
     users: users,
     onPress: ownProps.route.params?.onItemPress,
+    isUnassignedTaskList: ownProps.route.params?.isUnassignedTaskList,
     selfAssign: withSelfAssignBtn && _.includes(user.roles, 'ROLE_COURIER'),
     user,
   };

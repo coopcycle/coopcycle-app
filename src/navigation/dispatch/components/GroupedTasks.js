@@ -42,32 +42,43 @@ export default function GroupedTasks({
     assignTask,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
+    unassignTaskWithRelatedTasks,
   } = useSetTaskListsItems();
 
   const onTaskClick = task => {
     navigateToTask(navigation, route, task, unassignedTasks);
   };
 
-  const assignTaskWithRelatedTasksHandler = task => {
+  const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _assignTaskWithRelatedTasks(task, user),
+      isUnassignedTaskList,
     });
   };
 
-  const assignTaskHandler = task => {
+  const assignTaskHandler = isUnassignedTaskList => task => {
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _assignTask(task, user),
+      isUnassignedTaskList,
     });
   };
 
   const _assignTaskWithRelatedTasks = (task, user) => {
     navigation.navigate('DispatchAllTasks');
-    assignTaskWithRelatedTasks(task, user);
+    if (user.username) {
+      assignTaskWithRelatedTasks(task, user);
+    } else {
+      unassignTaskWithRelatedTasks(task);
+    }
   };
 
   const _assignTask = (task, user) => {
     navigation.navigate('DispatchAllTasks');
-    assignTask(task, user);
+    if (user.username) {
+      assignTask(task, user);
+    } else {
+      unassignTaskWithRelatedTasks(task);
+    }
   };
 
   const assignSelectedTasks = selectedTasks => {
@@ -85,19 +96,19 @@ export default function GroupedTasks({
     return task.status !== 'DONE';
   };
 
-  const swipeLeftConfiguration = {
-    onSwipeLeft: assignTaskWithRelatedTasksHandler,
+  const swipeLeftConfiguration = section => ({
+    onSwipeLeft: assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
     swipeOutLeftBackgroundColor: darkRedColor,
     swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIconName: 'cube',
-  }
+  });
 
-  const swipeRightConfiguration = {
-    onSwipeRight: assignTaskHandler,
+  const swipeRightConfiguration = section => ({
+    onSwipeRight: assignTaskHandler(section.isUnassignedTaskList),
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: 'user',
-  }
+  });
 
   return (
     <>
@@ -126,11 +137,10 @@ export default function GroupedTasks({
               <TaskList
                 id={section.id}
                 tasks={section.data}
-                tasksType={section.tasksType}
                 tasksWithColor={tasksWithColor}
                 onTaskClick={onTaskClick}
-                {...swipeLeftConfiguration}
-                {...swipeRightConfiguration}
+                {...swipeLeftConfiguration(section)}
+                {...swipeRightConfiguration(section)}
                 allowMultipleSelection={allowToSelect}
                 multipleSelectionIcon="user"
                 onMultipleSelectionAction={assignSelectedTasks}
