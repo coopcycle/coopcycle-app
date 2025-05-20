@@ -137,14 +137,28 @@ export default function useSetTaskListItems(
   }
 
   /**
+   * Unassign just one task
+   * @param {Task} task - Task to be unassigned
+   */
+  const unassignTask = (task) => {
+    const user = { username: task.assignedTo };
+    const userItemIds = getTaskListItemIds(user.username, allTaskLists);
+    const itemsToUnassignIds = [task['@id']];
+    const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
+    const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
+
+    return _updateUnassigningItems(allItemIdsToAssign, user, itemsToUnassignIds);
+  }
+
+  /**
    * Unassign a task and its related tasks to rider
    * @param {Task} task - Task to be unassigned
    */
   const unassignTaskWithRelatedTasks = (task) => {
     const user = { username: task.assignedTo };
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
-    const taskToUnassign = withAssignedLinkedTasks(task, allTasks);
-    const itemsToUnassignIds = taskToUnassign.map(t => t['@id']);
+    const tasksToUnassign = withAssignedLinkedTasks(task, allTasks);
+    const itemsToUnassignIds = tasksToUnassign.map(t => t['@id']);
     const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
     const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
 
@@ -220,6 +234,7 @@ export default function useSetTaskListItems(
     isError,
     isLoading,
     isSuccess,
+    unassignTask,
     unassignTaskWithRelatedTasks,
   };
 }

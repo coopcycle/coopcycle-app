@@ -42,6 +42,7 @@ export default function GroupedTasks({
     assignTask,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
+    unassignTask,
     unassignTaskWithRelatedTasks,
   } = useSetTaskListsItems();
 
@@ -82,7 +83,7 @@ export default function GroupedTasks({
 
   const _unassignTask = task => {
     navigation.navigate('DispatchAllTasks');
-    unassignTaskWithRelatedTasks(task);
+    unassignTask(task);
   };
 
   const assignSelectedTasks = selectedTasks => {
