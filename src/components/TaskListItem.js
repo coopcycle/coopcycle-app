@@ -365,7 +365,6 @@ class TaskListItem extends Component {
               ) : null}
             </VStack>
             {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
-            <Icon as={FontAwesome} name="arrow-right" size="sm" />
           </HStack>
         </ItemTouchable>
       </SwipeRow>
