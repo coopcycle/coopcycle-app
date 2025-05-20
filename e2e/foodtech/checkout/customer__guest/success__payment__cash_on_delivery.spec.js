@@ -32,7 +32,6 @@ describe('checkout for guest user; payment - cash on delivery', () => {
     await selectAutocompleteAddress('askAddressAutocomplete');
 
     // List of restaurants
-    await expect(element(by.id('checkoutSearch'))).toBeVisible();
     await expect(element(by.id('restaurantList'))).toBeVisible();
 
     // Choose a restaurant

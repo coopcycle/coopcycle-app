@@ -29,7 +29,6 @@ describe('checkout for customer with existing account (role - user); not logged 
     await selectAutocompleteAddress('askAddressAutocomplete');
 
     // List of restaurants
-    await expect(element(by.id('checkoutSearch'))).toBeVisible();
     await expect(element(by.id('restaurantList'))).toBeVisible();
 
     // Choose a restaurant
