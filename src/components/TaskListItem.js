@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
   },
+  textBold: {
+    marginLeft: -8,
+    fontSize: 14,
+    fontWeight: 700,
+  },
   textDanger: {
     color: redColor,
   },
@@ -138,11 +143,14 @@ const TaskTypeIcon = ({ task }) => (
 );
 
 const TaskStatusIcon = ({ task }) => {
+  const color = '#FFFFFF'; // Make it invisible
+
   switch (task.status) {
     case 'DOING':
       return (
         <Icon
           as={FontAwesome}
+          color={color}
           name={doingIconName}
           style={iconStyle(task)}
           testID='taskListItemIcon-DOING'
@@ -152,6 +160,7 @@ const TaskStatusIcon = ({ task }) => {
       return (
         <Icon
           as={FontAwesome}
+          color={color}
           name={doneIconName}
           style={iconStyle(task)}
           testID='taskListItemIcon-DONE'
@@ -161,6 +170,7 @@ const TaskStatusIcon = ({ task }) => {
       return (
         <Icon
           as={FontAwesome}
+          color={color}
           name={failedIconName}
           style={iconStyle(task)}
           testID='taskListItemIcon-FAILED'
@@ -324,6 +334,7 @@ class TaskListItem extends Component {
             alignItems="center"
             styles={itemStyle}
             pr="3"
+            minHeight={buttonWidth}
             {...itemProps}>
             <TaskId
               color={color}
@@ -331,9 +342,13 @@ class TaskListItem extends Component {
               width={buttonWidth}
             />
             <VStack flex={1} py="3" px="1">
-              {task.orgName ? (
-                <Text style={textStyle}>{task.orgName}</Text>
-              ) : null}
+              <HStack alignItems='center'>
+                <TaskTypeIcon task={task}/>
+                {task.orgName ? (
+                  <Text style={styles.textBold}>{task.orgName}</Text>
+                ) : null}
+                <TaskStatusIcon task={task}/>
+              </HStack>
               {task.address?.contactName ? (
                 <Text style={textStyle}>{task.address.contactName}</Text>
               ) : null}
