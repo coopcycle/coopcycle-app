@@ -75,13 +75,10 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
         keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
         renderItem={({ section, index }) => {
           // TODO check why lists are repeating, is this necessary?
-          // TODO handle isCollapsed without null
           if (index === 0 && !isFetching) {
             const isCollapsed = collapsedSections.has(section.title);
             return (
-              //<View height={isCollapsed ? 0 : 'auto'}>
-              //<View opacity={isCollapsed ? 0.0 : 1.0}>
-              <View style={{display: isCollapsed ? 'none' : 'flex'}}>
+              <View style={{ overflow: 'hidden', height: isCollapsed ? 0 : 'auto' }}>
               <TaskList
                 tasks={section.data}
                 tasksType={section.tasksType}
