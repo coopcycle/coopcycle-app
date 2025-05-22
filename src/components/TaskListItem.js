@@ -24,15 +24,16 @@ import {
 } from '../navigation/task/styles/common';
 import { formatPrice } from '../utils/formatting';
 import { PaymentMethodInList } from './PaymentMethodInfo';
-import { redColor, whiteColor, yellowColor } from '../styles/common';
-import TaskTitle from './TaskTitle';
+import {
+  blackColor,
+  greyColor,
+  redColor,
+  whiteColor,
+  yellowColor,
+} from '../styles/common';
+
 
 const styles = StyleSheet.create({
-  itemIcon: {
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    height: '100%',
-  },
   text: {
     fontSize: 14,
   },
@@ -77,41 +78,56 @@ const iconStyle = task => {
   return style;
 };
 
-const TaskOrder = ({task, color, width}) => (
-  <View
-    style={{
-      backgroundColor: color,
-      width,
-      height: '100%',
-      marginRight: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 12,
-    }}>
-    {task.metadata?.order_number && (
+
+function getTaskOrderId(task) {
+  const id = task.metadata?.delivery_position
+    ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
+    : task.metadata.order_number;
+
+  return id;
+}
+
+const TaskId = ({task, color, width}) => {
+  const backgroundColor = color ? color : greyColor;
+  const textColor = color === '#ffffff' ? blackColor : whiteColor;
+  const taskId = task.metadata.order_number
+    ? getTaskOrderId(task)
+    : `#${task.id}`;
+
+  return (
+    <View
+      style={{
+        backgroundColor,
+        width,
+        height: '100%',
+        marginRight: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 12,
+      }}>
       <Text
         style={{
-          color: whiteColor,
+          color: textColor,
           fontSize: 24,
           fontWeight: 700,
           lineHeight: 24,
         }}>
-        #{task.metadata?.order_number}
+        {taskId}
       </Text>
-    )}
-    {task.metadata?.order_total && (
-      <Text
-        style={{
-          color: whiteColor,
-          fontSize: 15,
-          fontWeight: 700,
-          lineHeight: 15,
-        }}>
-        {formatPrice(task.metadata.order_total)}
-      </Text>
-    )}
-  </View>
-)
+      {task.metadata?.order_total && (
+        <Text
+          style={{
+            color: textColor,
+            fontSize: 15,
+            fontWeight: 700,
+            lineHeight: 15,
+          }}>
+          {formatPrice(task.metadata.order_total)}
+        </Text>
+      )}
+    </View>
+  )
+}
 
 const TaskTypeIcon = ({ task }) => (
   <Icon
@@ -309,19 +325,12 @@ class TaskListItem extends Component {
             styles={itemStyle}
             pr="3"
             {...itemProps}>
-            <TaskOrder
+            <TaskId
               color={color}
               task={task}
               width={buttonWidth}
             />
-            <View style={styles.itemIcon}>
-              <TaskTypeIcon task={task} />
-              <TaskStatusIcon task={task} />
-            </View>
             <VStack flex={1} py="3" px="1">
-              <Text style={textStyle}>
-                <TaskTitle task={task} />
-              </Text>
               {task.orgName ? (
                 <Text style={textStyle}>{task.orgName}</Text>
               ) : null}
