@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { HStack, Icon, Text, VStack, useTheme } from 'native-base';
+import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -16,6 +16,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import {
+blackColor,
+greyColor,
+redColor,
+whiteColor,
+yellowColor,
+} from '../styles/common';
+import {
   doingIconName,
   doneIconName,
   failedIconName,
@@ -23,14 +30,8 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { formatPrice } from '../utils/formatting';
+import { HOUR } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
-import {
-  blackColor,
-  greyColor,
-  redColor,
-  whiteColor,
-  yellowColor,
-} from '../styles/common';
 
 
 const styles = StyleSheet.create({
@@ -180,6 +181,28 @@ const TaskStatusIcon = ({ task }) => {
       return <View />;
   }
 };
+
+const TaskPriorityStatus = ({task}) => {
+  let backgroundColor = whiteColor;
+  const now = moment();
+  const timeDifference = now.diff(task.doneBefore);
+
+  if (timeDifference < 4*HOUR) {
+    backgroundColor = '#FFC300';
+  }
+
+  if (timeDifference < 2*HOUR) {
+    backgroundColor = '#B42205';
+  }
+
+  return (
+    <Box
+      width={2}
+      height='100%'
+      backgroundColor={backgroundColor}
+    />
+  )
+}
 
 const SwipeButtonContainer = ({
   backgroundColor,
@@ -331,9 +354,8 @@ class TaskListItem extends Component {
         <ItemTouchable onPress={onPress} testID={taskTestId}>
           <HStack
             flex={1}
-            alignItems="center"
+            alignItems="stretch"
             styles={itemStyle}
-            pr="3"
             minHeight={buttonWidth}
             {...itemProps}>
             <TaskId
@@ -394,6 +416,7 @@ class TaskListItem extends Component {
               ) : null}
             </VStack>
             {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
+            <TaskPriorityStatus task={task} />
           </HStack>
         </ItemTouchable>
       </SwipeRow>
