@@ -22,6 +22,7 @@ import {
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
+import { formatPrice } from '../utils/formatting';
 import { PaymentMethodInList } from './PaymentMethodInfo';
 import { redColor, whiteColor, yellowColor } from '../styles/common';
 import TaskTitle from './TaskTitle';
@@ -87,24 +88,28 @@ const TaskOrder = ({task, color, width}) => (
       justifyContent: 'center',
       gap: 12,
     }}>
-    <Text
-      style={{
-        color: whiteColor,
-        fontSize: 24,
-        fontWeight: 700,
-        lineHeight: 24,
-      }}>
-      #{task.metadata?.order_number}
-    </Text>
-    <Text
-      style={{
-        color: whiteColor,
-        fontSize: 15,
-        fontWeight: 700,
-        lineHeight: 15,
-      }}>
-      $8,50
-    </Text>
+    {task.metadata?.order_number && (
+      <Text
+        style={{
+          color: whiteColor,
+          fontSize: 24,
+          fontWeight: 700,
+          lineHeight: 24,
+        }}>
+        #{task.metadata?.order_number}
+      </Text>
+    )}
+    {task.metadata?.order_total && (
+      <Text
+        style={{
+          color: whiteColor,
+          fontSize: 15,
+          fontWeight: 700,
+          lineHeight: 15,
+        }}>
+        {formatPrice(task.metadata.order_total)}
+      </Text>
+    )}
   </View>
 )
 
