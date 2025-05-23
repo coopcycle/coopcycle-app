@@ -10,6 +10,8 @@ const TaskList = ({
   tasks,
   tasksType,
   tasksWithColor,
+  refreshing = false,
+  onRefresh = () => {},
   onTaskClick,
   onSwipeLeft,
   onSwipeRight,
@@ -39,7 +41,7 @@ const TaskList = ({
 
   const onFabButtonPressed = (items) => {
     onMultipleSelectionAction(items);
-  } 
+  }
 
   // check this filter
   useEffect(() => {
@@ -85,11 +87,6 @@ const TaskList = ({
       />
     </>
   );
-};
-
-TaskList.defaultProps = {
-  refreshing: false,
-  onRefresh: () => {},
 };
 
 TaskList.propTypes = {
