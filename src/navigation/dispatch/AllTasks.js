@@ -100,7 +100,7 @@ export default function AllTasks({
         <GroupedTasks
             sections={sections}
             navigation
-            route
+            route={route}
             isFetching={isFetching}
             refetch={refetch}
         />
