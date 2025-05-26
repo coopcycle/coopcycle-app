@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { HStack, Icon, Text, VStack, useTheme } from 'native-base';
+import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -16,24 +16,32 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import {
+blackColor,
+greyColor,
+redColor,
+whiteColor,
+yellowColor,
+} from '../styles/common';
+import {
   doingIconName,
   doneIconName,
   failedIconName,
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-import { greenColor, redColor, yellowColor } from '../styles/common';
+import { formatPrice } from '../utils/formatting';
+import { HOUR } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
-import TaskTitle from './TaskTitle';
+
 
 const styles = StyleSheet.create({
-  itemIcon: {
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    height: '100%',
-  },
   text: {
     fontSize: 14,
+  },
+  textBold: {
+    marginLeft: -8,
+    fontSize: 14,
+    fontWeight: 700,
   },
   textDanger: {
     color: redColor,
@@ -76,6 +84,57 @@ const iconStyle = task => {
   return style;
 };
 
+
+function getTaskOrderId(task) {
+  const id = task.metadata?.delivery_position
+    ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
+    : task.metadata.order_number;
+
+  return id;
+}
+
+const TaskId = ({task, color, width}) => {
+  const backgroundColor = color ? color : greyColor;
+  const textColor = color === '#ffffff' ? blackColor : whiteColor;
+  const taskId = task.metadata.order_number
+    ? getTaskOrderId(task)
+    : `#${task.id}`;
+
+  return (
+    <View
+      style={{
+        backgroundColor,
+        width,
+        height: '100%',
+        marginRight: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 12,
+      }}>
+      <Text
+        style={{
+          color: textColor,
+          fontSize: 24,
+          fontWeight: 700,
+          lineHeight: 24,
+        }}>
+        {taskId}
+      </Text>
+      {task.metadata?.order_total && (
+        <Text
+          style={{
+            color: textColor,
+            fontSize: 15,
+            fontWeight: 700,
+            lineHeight: 15,
+          }}>
+          {formatPrice(task.metadata.order_total)}
+        </Text>
+      )}
+    </View>
+  )
+}
+
 const TaskTypeIcon = ({ task }) => (
   <Icon
     as={FontAwesome}
@@ -85,11 +144,14 @@ const TaskTypeIcon = ({ task }) => (
 );
 
 const TaskStatusIcon = ({ task }) => {
+  const color = '#FFFFFF'; // Make it invisible
+
   switch (task.status) {
     case 'DOING':
       return (
         <Icon
           as={FontAwesome}
+          color={color}
           name={doingIconName}
           style={iconStyle(task)}
           testID='taskListItemIcon-DOING'
@@ -99,6 +161,7 @@ const TaskStatusIcon = ({ task }) => {
       return (
         <Icon
           as={FontAwesome}
+          color={color}
           name={doneIconName}
           style={iconStyle(task)}
           testID='taskListItemIcon-DONE'
@@ -108,6 +171,7 @@ const TaskStatusIcon = ({ task }) => {
       return (
         <Icon
           as={FontAwesome}
+          color={color}
           name={failedIconName}
           style={iconStyle(task)}
           testID='taskListItemIcon-FAILED'
@@ -118,9 +182,36 @@ const TaskStatusIcon = ({ task }) => {
   }
 };
 
-const SwipeButtonContainer = props => {
-  const { onPress, left, right, children, ...otherProps } = props;
-  const backgroundColor = left ? greenColor : yellowColor;
+const TaskPriorityStatus = ({task}) => {
+  let backgroundColor = whiteColor;
+  const now = moment();
+  const timeDifference = now.diff(task.doneBefore);
+
+  if (timeDifference < 4*HOUR) {
+    backgroundColor = '#FFC300';
+  }
+
+  if (timeDifference < 2*HOUR) {
+    backgroundColor = '#B42205';
+  }
+
+  return (
+    <Box
+      width={2}
+      height='100%'
+      backgroundColor={backgroundColor}
+    />
+  )
+}
+
+const SwipeButtonContainer = ({
+  backgroundColor,
+  children,
+  left,
+  onPress,
+  right,
+  ...otherProps
+}) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
 
   return (
@@ -188,7 +279,21 @@ class TaskListItem extends Component {
   }
 
   render() {
-    const { color, task, index, taskListId } = this.props;
+    const {
+      color,
+      disableLeftSwipe,
+      disableRightSwipe,
+      index,
+      onPress,
+      onPressLeft,
+      onPressRight,
+      swipeOutLeftBackgroundColor,
+      swipeOutLeftIconName,
+      swipeOutRightBackgroundColor,
+      swipeOutRightIconName,
+      task,
+      taskListId,
+    } = this.props;
 
     const taskTestId = `${taskListId}:task:${index}`;
     const itemStyle = [];
@@ -204,12 +309,12 @@ class TaskListItem extends Component {
     }
 
     const { width } = Dimensions.get('window');
-    const buttonWidth = width / 3;
+    const buttonWidth = width / 4;
 
     return (
       <SwipeRow
-        disableRightSwipe={this.props.disableRightSwipe}
-        disableLeftSwipe={this.props.disableLeftSwipe}
+        disableRightSwipe={disableRightSwipe}
+        disableLeftSwipe={disableLeftSwipe}
         leftOpenValue={buttonWidth}
         stopLeftSwipe={buttonWidth + 25}
         rightOpenValue={buttonWidth * -1}
@@ -220,56 +325,52 @@ class TaskListItem extends Component {
       >
         <View style={styles.rowBack}>
           <SwipeButtonContainer
+            backgroundColor={swipeOutLeftBackgroundColor}
             left
             onPress={() => {
               this.swipeRow.current.closeRow();
-              this.props.onPressLeft();
+              onPressLeft();
             }}
             testID={`${taskTestId}:left`}>
             <SwipeButton
-              iconName={this.props.swipeOutLeftIconName || doneIconName}
+              iconName={swipeOutLeftIconName || doneIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
           <SwipeButtonContainer
+            backgroundColor={swipeOutRightBackgroundColor}
             right
             onPress={() => {
               this.swipeRow.current.closeRow();
-              this.props.onPressRight();
+              onPressRight();
             }}
             testID={`${taskTestId}:right`}>
             <SwipeButton
-              iconName={this.props.swipeOutRightIconName || incidentIconName}
+              iconName={swipeOutRightIconName || incidentIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={this.props.onPress} testID={taskTestId}>
+        <ItemTouchable onPress={onPress} testID={taskTestId}>
           <HStack
             flex={1}
-            alignItems="center"
+            alignItems="stretch"
             styles={itemStyle}
-            pr="3"
+            minHeight={buttonWidth}
             {...itemProps}>
-            <View
-              style={{
-                backgroundColor: color,
-                width: 8,
-                height: '100%',
-                marginRight: 12,
-              }}
+            <TaskId
+              color={color}
+              task={task}
+              width={buttonWidth}
             />
-            <View style={styles.itemIcon}>
-              <TaskTypeIcon task={task} />
-              <TaskStatusIcon task={task} />
-            </View>
             <VStack flex={1} py="3" px="1">
-              <Text style={textStyle}>
-                <TaskTitle task={task} />
-              </Text>
-              {task.orgName ? (
-                <Text style={textStyle}>{task.orgName}</Text>
-              ) : null}
+              <HStack alignItems='center'>
+                <TaskTypeIcon task={task}/>
+                {task.orgName ? (
+                  <Text style={styles.textBold}>{task.orgName}</Text>
+                ) : null}
+                <TaskStatusIcon task={task}/>
+              </HStack>
               {task.address?.contactName ? (
                 <Text style={textStyle}>{task.address.contactName}</Text>
               ) : null}
@@ -315,7 +416,7 @@ class TaskListItem extends Component {
               ) : null}
             </VStack>
             {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
-            <Icon as={FontAwesome} name="arrow-right" size="sm" />
+            <TaskPriorityStatus task={task} />
           </HStack>
         </ItemTouchable>
       </SwipeRow>

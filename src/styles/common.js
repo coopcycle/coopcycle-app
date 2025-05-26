@@ -4,12 +4,14 @@ import Config from 'react-native-config';
 
 let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
   whiteColor = '#fff',
+  blackColor = '#000',
   darkGreyColor = '#424242',
   greyColor = '#95A5A6',
   lightGreyColor = '#ECF0F1',
   blueColor = '#3498DB',
   greenColor = '#2ECC71',
   redColor = '#E74C3C',
+  darkRedColor = '#7D0A0A',
   orangeColor = '#d35400',
   yellowColor = '#F1C40F',
   fontTitleName = 'Raleway-Regular',
@@ -17,8 +19,10 @@ let primaryColor = Config.PRIMARY_COLOR || '#e4022d',
   headerFontSize = 18;
 
 export {
+  blackColor,
   blueColor,
   darkGreyColor,
+  darkRedColor,
   dateSelectHeaderHeight,
   fontTitleName,
   greenColor,

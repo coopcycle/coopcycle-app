@@ -7,22 +7,24 @@ import ItemsBulkFabButton from './ItemsBulkFabButton';
 import TaskListItem from './TaskListItem';
 
 const TaskList = ({
-  tasks,
-  tasksType,
-  tasksWithColor,
-  refreshing = false,
-  onRefresh = () => {},
-  onTaskClick,
-  onSwipeLeft,
-  onSwipeRight,
-  swipeOutLeftIconName,
-  swipeOutRightIconName,
+  id,
   multipleSelectionIcon,
   onMultipleSelectionAction,
-  id
+  onRefresh = () => {},
+  onSwipeLeft,
+  onSwipeRight,
+  onTaskClick,
+  refreshing = false,
+  swipeOutLeftBackgroundColor,
+  swipeOutLeftEnabled,
+  swipeOutLeftIconName,
+  swipeOutRightBackgroundColor,
+  swipeOutRightEnabled,
+  swipeOutRightIconName,
+  tasks,
+  tasksWithColor,
 }) => {
   const bulkFabButton = useRef(null);
-
 
   const taskColor = (task) => {
     let tasksWithColorSafe = tasksWithColor ?? [];
@@ -30,6 +32,22 @@ const TaskList = ({
       ? tasksWithColor[task['@id']]
       : '#ffffff';
   };
+
+  const swipeLeftConfiguration = (task) => ({
+    disableLeftSwipe: !swipeOutLeftEnabled(task),
+    onPressLeft: () => onSwipeLeft(task),
+    onSwipedToLeft: () => _handleSwipeToLeft(task),
+    swipeOutLeftBackgroundColor,
+    swipeOutLeftIconName,
+  });
+
+  const swipeRightConfiguration = (task) => ({
+    disableRightSwipe: !swipeOutRightEnabled(task),
+    onPressRight: () => onSwipeRight(task),
+    onSwipeClosed: () => _handleSwipeClosed(task),
+    swipeOutRightBackgroundColor,
+    swipeOutRightIconName,
+  });
 
   const _handleSwipeToLeft = useCallback((task) => {
     bulkFabButton.current?.addItem(task);
@@ -41,7 +59,7 @@ const TaskList = ({
 
   const onFabButtonPressed = (items) => {
     onMultipleSelectionAction(items);
-  }
+  };
 
   // check this filter
   useEffect(() => {
@@ -55,16 +73,10 @@ const TaskList = ({
         task={item}
         index={index}
         color={taskColor(item)}
-        onPress={() => onTaskClick(item)}
-        onPressLeft={() => onSwipeLeft(item)}
-        onPressRight={() => onSwipeRight(item)}
-        onSwipedToLeft={() => _handleSwipeToLeft(item)}
-        onSwipeClosed={() => _handleSwipeClosed(item)}
-        disableRightSwipe={tasksType === 'taskList'}
-        disableLeftSwipe={tasksType === 'unassignedTasks'}
-        swipeOutLeftIconName={swipeOutLeftIconName}
-        swipeOutRightIconName={swipeOutRightIconName}
         taskListId={id}
+        onPress={() => onTaskClick(item)}
+        {...swipeLeftConfiguration(item)}
+        {...swipeRightConfiguration(item)}
       />
     );
   };
@@ -75,7 +87,7 @@ const TaskList = ({
         data={tasks}
         keyExtractor={(item, index) => item['@id']}
         renderItem={renderItem}
-        // handled globally
+        // handled globally in GroupedTasks. TODO: check in Courier's section
         // refreshing={refreshing}
         // onRefresh={onRefresh}
         ItemSeparatorComponent={ItemSeparatorComponent}
@@ -90,18 +102,20 @@ const TaskList = ({
 };
 
 TaskList.propTypes = {
-  tasks: PropTypes.array.isRequired,
-  tasksWithColor: PropTypes.object,
-  onTaskClick: PropTypes.func.isRequired,
-  onSwipeLeft: PropTypes.func,
-  onSwipeRight: PropTypes.func,
-  swipeOutLeftEnabled: PropTypes.func,
-  swipeOutRightEnabled: PropTypes.func,
-  swipeOutLeftIconName: PropTypes.string,
-  swipeOutRightIconName: PropTypes.string,
+  id: PropTypes.string.isRequired,
   multipleSelectionIcon: PropTypes.string,
   onMultipleSelectionAction: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
+  onSwipeLeft: PropTypes.func,
+  onSwipeRight: PropTypes.func,
+  onTaskClick: PropTypes.func.isRequired,
+  swipeOutLeftBackgroundColor: PropTypes.string,
+  swipeOutLeftEnabled: PropTypes.func,
+  swipeOutLeftIconName: PropTypes.string,
+  swipeOutRightBackgroundColor: PropTypes.string,
+  swipeOutRightEnabled: PropTypes.func,
+  swipeOutRightIconName: PropTypes.string,
+  tasks: PropTypes.array.isRequired,
+  tasksWithColor: PropTypes.object,
 };
 
 export default TaskList;
