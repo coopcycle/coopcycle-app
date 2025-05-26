@@ -60,10 +60,10 @@ export default function TaskListPage({ navigation, route }) {
         <TaskList
           tasks={tasks}
           tasksWithColor={tasksWithColor}
-          onSwipeLeft={task =>
+          onPressLeft={task =>
             navigateToCompleteTask(navigation, route, task, [], true)
           }
-          onSwipeRight={task =>
+          onPressRight={task =>
             navigateToCompleteTask(navigation, route, task, [], false)
           }
           swipeOutLeftEnabled={task => task.status !== 'DONE'}

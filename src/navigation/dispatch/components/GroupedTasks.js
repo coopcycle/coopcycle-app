@@ -102,14 +102,14 @@ export default function GroupedTasks({
   };
 
   const swipeLeftConfiguration = section => ({
-    onSwipeLeft: assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
+    onPressLeft: assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
     swipeOutLeftBackgroundColor: darkRedColor,
     swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIconName: 'cube',
   });
 
   const swipeRightConfiguration = section => ({
-    onSwipeRight: assignTaskHandler(section.isUnassignedTaskList),
+    onPressRight: assignTaskHandler(section.isUnassignedTaskList),
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: 'user',

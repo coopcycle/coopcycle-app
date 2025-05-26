@@ -11,6 +11,8 @@ const TaskList = ({
   multipleSelectionIcon,
   onMultipleSelectionAction,
   onRefresh = () => {},
+  onPressLeft,
+  onPressRight,
   onSwipeLeft,
   onSwipeRight,
   onTaskClick,
@@ -35,7 +37,7 @@ const TaskList = ({
 
   const swipeLeftConfiguration = (task) => ({
     disableLeftSwipe: !swipeOutLeftEnabled(task),
-    onPressLeft: () => onSwipeLeft(task),
+    onPressLeft: () => onPressLeft(task),
     onSwipedToLeft: () => _handleSwipeToLeft(task),
     swipeOutLeftBackgroundColor,
     swipeOutLeftIconName,
@@ -43,7 +45,7 @@ const TaskList = ({
 
   const swipeRightConfiguration = (task) => ({
     disableRightSwipe: !swipeOutRightEnabled(task),
-    onPressRight: () => onSwipeRight(task),
+    onPressRight: () => onPressRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
     swipeOutRightBackgroundColor,
     swipeOutRightIconName,
@@ -105,6 +107,8 @@ TaskList.propTypes = {
   id: PropTypes.string.isRequired,
   multipleSelectionIcon: PropTypes.string,
   onMultipleSelectionAction: PropTypes.func.isRequired,
+  onPressLeft: PropTypes.func,
+  onPressRight: PropTypes.func,
   onSwipeLeft: PropTypes.func,
   onSwipeRight: PropTypes.func,
   onTaskClick: PropTypes.func.isRequired,
