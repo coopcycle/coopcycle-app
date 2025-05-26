@@ -50,22 +50,24 @@ export default function AllTasks({
   // Combine unassigned tasks and task lists to use in SectionList
   const sections = [
     {
-      title: t('DISPATCH_UNASSIGNED_TASKS'),
+      backgroundColor: whiteColor,
       count: unassignedTasks.length,
       data: unassignedTasks,
-      backgroundColor: whiteColor,
-      textColor: darkGreyColor,
+      id: 'unassignedTasksList',
       isUnassignedTaskList: true,
-      id: 'unassignedTasksList'
+      taskListId: 'unassignedTasksList',
+      textColor: darkGreyColor,
+      title: t('DISPATCH_UNASSIGNED_TASKS'),
     },
     ...taskLists.map(taskList => ({
-      title: taskList.username,
+      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
       count: taskList.items.length,
       data: taskList.items,
-      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-      textColor: whiteColor,
+      id: `${taskList.username.toLowerCase()}TasksList`,
       isUnassignedTaskList: false,
-      id: `${taskList.username.toLowerCase()}TasksList`
+      taskListId: taskList['@id'],
+      textColor: whiteColor,
+      title: taskList.username,
     })),
   ];
 

@@ -86,6 +86,18 @@ export default function GroupedTasks({
     callback();
   }
 
+  const handleOnSwipeToLeft = (task, taskListId) => {
+    bulkEditTasksFloatingButtonRef.current?.addItem(task, taskListId);
+  }
+
+  const handleOnSwipeToRight = (task, taskListId) => {
+    bulkEditTasksFloatingButtonRef.current?.addItem(task, taskListId);
+  }
+
+  const handleOnSwipeClose = (section) => (task) => {
+    bulkEditTasksFloatingButtonRef.current?.removeItem(task, section.taskListId);
+  };
+
   const assignSelectedTasks = selectedTasks => {
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _bulkAssign(user, selectedTasks),
@@ -103,6 +115,7 @@ export default function GroupedTasks({
 
   const swipeLeftConfiguration = section => ({
     onPressLeft: assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
+    onSwipeToLeft: (task) => handleOnSwipeToLeft(task, section.taskListId),
     swipeOutLeftBackgroundColor: darkRedColor,
     swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIconName: 'cube',
@@ -110,6 +123,7 @@ export default function GroupedTasks({
 
   const swipeRightConfiguration = section => ({
     onPressRight: assignTaskHandler(section.isUnassignedTaskList),
+    onSwipeToRight: (task) => handleOnSwipeToRight(task, section.taskListId),
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: 'user',
@@ -186,8 +200,8 @@ export default function GroupedTasks({
                   id={section.id}
                   onTaskClick={onTaskClick}
                   tasks={section.data}
-                  tasksType={section.tasksType}
                   tasksWithColor={tasksWithColor}
+                  onSwipeClosed={handleOnSwipeClose(section)}
                   {...swipeLeftConfiguration(section)}
                   {...swipeRightConfiguration(section)}
                 />

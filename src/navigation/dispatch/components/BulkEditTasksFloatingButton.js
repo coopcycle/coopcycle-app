@@ -1,10 +1,11 @@
+import _ from 'lodash';
 import { Fab, Icon } from 'native-base';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { whiteColor } from '../../../styles/common';
 
-function BulkEditTasksFloatingButton({ onPressed, iconName, ref }) {
+function BulkEditTasksFloatingButton({ onPressed, iconName }, ref) {
   const [selectedTasks, setSelectedTasks] = useState({});
 
   useImperativeHandle(ref, () => {
@@ -25,8 +26,13 @@ function BulkEditTasksFloatingButton({ onPressed, iconName, ref }) {
       },
       removeItem: (task, taskListId) => {
         const newSelectedTasks = {...selectedTasks};
+        const selectedTasksForTaskList = newSelectedTasks[taskListId];
 
-        newSelectedTasks[taskListId] = newSelectedTasks[taskListId].filter(t => t.id !== task.id);
+        if(!selectedTasksForTaskList) {
+          return;
+        }
+
+        newSelectedTasks[taskListId] = selectedTasksForTaskList.filter(t => t.id !== task.id);
 
         if (newSelectedTasks[taskListId].length === 0) {
           delete newSelectedTasks[taskListId];
@@ -37,30 +43,36 @@ function BulkEditTasksFloatingButton({ onPressed, iconName, ref }) {
     }
   }, [selectedTasks]);
 
+  const allSelectedTasks = useMemo(() => {
+    return _.flatMap(Object.values(selectedTasks));
+  }, [selectedTasks])
+
   return (
     <>
-      <Fab
-        renderInPortal={false}
-        shadow={2}
-        placement="bottom-right"
-        onPress={onPressed}
-        style={{
-          width: 80,
-          height: 80,
-          marginBottom: 12,
-          marginRight: 8,
-        }}
-        icon={
-          <Icon
-            as={FontAwesome}
-            name={iconName}
-            color={whiteColor}
-            size="lg"
-            testID="bulkAssignButton"
-            style={{ marginStart: 10 }}
-          />
-        }
-      />
+      {allSelectedTasks.length <= 1 ? null : (
+        <Fab
+          renderInPortal={false}
+          shadow={2}
+          placement="bottom-right"
+          onPress={onPressed}
+          style={{
+            width: 80,
+            height: 80,
+            marginBottom: 12,
+            marginRight: 8,
+          }}
+          icon={
+            <Icon
+              as={FontAwesome}
+              name={iconName}
+              color={whiteColor}
+              size="lg"
+              testID="bulkAssignButton"
+              style={{ marginStart: 10 }}
+            />
+          }
+        />
+      )}
     </>
   );
 }

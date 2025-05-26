@@ -13,8 +13,9 @@ const TaskList = ({
   onRefresh = () => {},
   onPressLeft,
   onPressRight,
-  onSwipeLeft,
-  onSwipeRight,
+  onSwipeClosed,
+  onSwipeToLeft,
+  onSwipeToRight,
   onTaskClick,
   refreshing = false,
   swipeOutLeftBackgroundColor,
@@ -46,6 +47,7 @@ const TaskList = ({
   const swipeRightConfiguration = (task) => ({
     disableRightSwipe: !swipeOutRightEnabled(task),
     onPressRight: () => onPressRight(task),
+    onSwipedToRight: () => _handleSwipeToRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
     swipeOutRightBackgroundColor,
     swipeOutRightIconName,
@@ -53,11 +55,17 @@ const TaskList = ({
 
   const _handleSwipeToLeft = useCallback((task) => {
     bulkFabButton.current?.addItem(task);
-  }, []);
+    onSwipeToLeft(task);
+  }, [onSwipeToLeft]);
+
+  const _handleSwipeToRight = useCallback((task) => {
+    onSwipeToRight(task);
+  }, [onSwipeToRight]);
 
   const _handleSwipeClosed = useCallback((task) => {
     bulkFabButton.current?.removeItem(task);
-  }, []);
+    onSwipeClosed(task);
+  }, [onSwipeClosed]);
 
   const onFabButtonPressed = (items) => {
     onMultipleSelectionAction(items);
@@ -111,8 +119,9 @@ TaskList.propTypes = {
   onMultipleSelectionAction: PropTypes.func,
   onPressLeft: PropTypes.func,
   onPressRight: PropTypes.func,
-  onSwipeLeft: PropTypes.func,
-  onSwipeRight: PropTypes.func,
+  onSwipeClosed: PropTypes.func,
+  onSwipeToLeft: PropTypes.func,
+  onSwipeToRight: PropTypes.func,
   onTaskClick: PropTypes.func.isRequired,
   swipeOutLeftBackgroundColor: PropTypes.string,
   swipeOutLeftEnabled: PropTypes.func,
