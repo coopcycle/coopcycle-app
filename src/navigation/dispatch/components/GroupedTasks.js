@@ -3,7 +3,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   //LayoutAnimation,
   //Platform,
@@ -31,6 +31,8 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
   } = useSetTaskListsItems();
 
   const unassignTaskHandler = task => unassignTaskWithRelatedTasks(task);
+
+  const bulkEditTasksFloatingButtonRef = useRef(null);
 
   const allowToSelect = task => {
     return task.status !== 'DONE';
@@ -151,7 +153,11 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
         refreshing={isFetching}
         onRefresh={refetch}
       />
-      <BulkEditTasksFloatingButton onPressed={() => console.log('pressed')} iconName="user" />
+      <BulkEditTasksFloatingButton
+        onPressed={() => console.log('pressed')}
+        iconName="user"
+        ref={bulkEditTasksFloatingButtonRef}
+      />
     </>
   );
 }
