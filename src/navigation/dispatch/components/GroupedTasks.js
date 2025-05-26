@@ -10,13 +10,13 @@ import {
   Pressable,
   SectionList,
 } from 'react-native';
-import FloatingButton from '../../../components/FloatingButton';
 import TaskList from '../../../components/TaskList';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
 import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { whiteColor } from '../../../styles/common';
+import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 
 export default function GroupedTasks({ sections, route, isFetching, refetch }) {
   const navigation = useNavigation();
@@ -151,7 +151,7 @@ export default function GroupedTasks({ sections, route, isFetching, refetch }) {
         refreshing={isFetching}
         onRefresh={refetch}
       />
-      <FloatingButton onPressed={() => console.log('pressed')} iconName="user" />
+      <BulkEditTasksFloatingButton onPressed={() => console.log('pressed')} iconName="user" />
     </>
   );
 }
