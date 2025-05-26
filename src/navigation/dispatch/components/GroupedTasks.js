@@ -190,8 +190,6 @@ export default function GroupedTasks({
                   tasksWithColor={tasksWithColor}
                   {...swipeLeftConfiguration(section)}
                   {...swipeRightConfiguration(section)}
-                  multipleSelectionIcon="user"
-                  onMultipleSelectionAction={assignSelectedTasks}
                 />
               </View>
             );
