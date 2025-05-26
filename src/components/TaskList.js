@@ -94,11 +94,13 @@ const TaskList = ({
         // onRefresh={onRefresh}
         ItemSeparatorComponent={ItemSeparatorComponent}
       />
-      <ItemsBulkFabButton
-        iconName={multipleSelectionIcon}
-        onPressed={(items) => onFabButtonPressed(items)}
-        ref={bulkFabButton}
-      />
+      {multipleSelectionIcon && onFabButtonPressed && (
+        <ItemsBulkFabButton
+          iconName={multipleSelectionIcon}
+          onPressed={(items) => onFabButtonPressed(items)}
+          ref={bulkFabButton}
+        />
+      )}
     </>
   );
 };
@@ -106,7 +108,7 @@ const TaskList = ({
 TaskList.propTypes = {
   id: PropTypes.string.isRequired,
   multipleSelectionIcon: PropTypes.string,
-  onMultipleSelectionAction: PropTypes.func.isRequired,
+  onMultipleSelectionAction: PropTypes.func,
   onPressLeft: PropTypes.func,
   onPressRight: PropTypes.func,
   onSwipeLeft: PropTypes.func,
