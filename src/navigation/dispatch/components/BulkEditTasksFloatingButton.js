@@ -1,50 +1,80 @@
 import _ from 'lodash';
 import { Fab, Icon } from 'native-base';
-import { forwardRef, useImperativeHandle, useMemo, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { whiteColor } from '../../../styles/common';
 
-function BulkEditTasksFloatingButton({ onPressed, iconName }, ref) {
-  const [selectedTasks, setSelectedTasks] = useState({});
+function BulkEditTasksFloatingButton({
+  onPress,
+  iconName
+}, ref) {
+  const [selectedTasks, setSelectedTasks] = useState({
+    orders: {},
+    tasks: {},
+  });
 
-  useImperativeHandle(ref, () => {
-    return {
-      addItem: (task, taskListId) => {
-        const newSelectedTasks = {...selectedTasks};
-
-        if (!newSelectedTasks[taskListId]) {
-          newSelectedTasks[taskListId] = [];
-        }
-
-        if (newSelectedTasks[taskListId].some(i => i.id === task.id)) {
-          return;
-        }
-
-        newSelectedTasks[taskListId].push(task);
-        setSelectedTasks(newSelectedTasks);
-      },
-      removeItem: (task, taskListId) => {
-        const newSelectedTasks = {...selectedTasks};
-        const selectedTasksForTaskList = newSelectedTasks[taskListId];
-
-        if(!selectedTasksForTaskList) {
-          return;
-        }
-
-        newSelectedTasks[taskListId] = selectedTasksForTaskList.filter(t => t.id !== task.id);
-
-        if (newSelectedTasks[taskListId].length === 0) {
-          delete newSelectedTasks[taskListId];
-        }
-
-        setSelectedTasks(newSelectedTasks);
-      }
+  useImperativeHandle(ref, () => ({
+      addOrder: (task, taskListId) => addItem(task, taskListId, true),
+      addTask: (task, taskListId) => addItem(task, taskListId, false),
+      removeOrder: (task, taskListId) => removeItem(task, taskListId, true),
+      removeTask: (task, taskListId) => removeItem(task, taskListId, false),
     }
-  }, [selectedTasks]);
+  ), [addItem, removeItem]);
+
+  const addItem = useCallback((task, taskListId, isAssigningOrder) => {
+    removeItem(task, taskListId, !isAssigningOrder);
+
+    setSelectedTasks(prevSelectedTasks => {
+      const { orders, tasks } = prevSelectedTasks;
+      const itemsList = isAssigningOrder ? orders : tasks;
+      const newItemsList = {...itemsList};
+
+      if (!newItemsList[taskListId]) {
+        newItemsList[taskListId] = [];
+      }
+
+      newItemsList[taskListId].push(task);
+
+      return {
+        orders: isAssigningOrder ? newItemsList : orders,
+        tasks: !isAssigningOrder ? newItemsList : tasks,
+      };
+    });
+  }, [removeItem]);
+
+  const removeItem = useCallback((task, taskListId, isUnassigningOrder) => {
+    setSelectedTasks(prevSelectedTasks => {
+      const { orders, tasks } = prevSelectedTasks;
+      const itemsList = isUnassigningOrder ? orders : tasks;
+      const newItemsList = {...itemsList};
+      const selectedTasksForTaskList = newItemsList[taskListId];
+
+      if(!selectedTasksForTaskList) {
+        return prevSelectedTasks;
+      }
+
+      newItemsList[taskListId] = selectedTasksForTaskList.filter(t => t.id !== task.id);
+
+      if (newItemsList[taskListId].length === 0) {
+        delete newItemsList[taskListId];
+      }
+
+      return {
+        orders: isUnassigningOrder ? newItemsList : orders,
+        tasks: !isUnassigningOrder ? newItemsList : tasks,
+      };
+    });
+  }, []);
 
   const allSelectedTasks = useMemo(() => {
-    return _.flatMap(Object.values(selectedTasks));
+    const ordersByTaskList = selectedTasks.orders || {};
+    const tasksByTaskList = selectedTasks.tasks || {};
+
+    const orders = _.flatMap(Object.values(ordersByTaskList));
+    const tasks = _.flatMap(Object.values(tasksByTaskList));
+
+    return [...orders, ...tasks];
   }, [selectedTasks])
 
   return (
@@ -54,7 +84,7 @@ function BulkEditTasksFloatingButton({ onPressed, iconName }, ref) {
           renderInPortal={false}
           shadow={2}
           placement="bottom-right"
-          onPress={onPressed}
+          onPress={() => onPress(selectedTasks)}
           style={{
             width: 80,
             height: 80,

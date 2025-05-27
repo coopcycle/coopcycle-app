@@ -87,22 +87,23 @@ export default function GroupedTasks({
   }
 
   const handleOnSwipeToLeft = (task, taskListId) => {
-    bulkEditTasksFloatingButtonRef.current?.addItem(task, taskListId);
+    bulkEditTasksFloatingButtonRef.current?.addOrder(task, taskListId);
   }
 
   const handleOnSwipeToRight = (task, taskListId) => {
-    bulkEditTasksFloatingButtonRef.current?.addItem(task, taskListId);
+    bulkEditTasksFloatingButtonRef.current?.addTask(task, taskListId);
   }
 
   const handleOnSwipeClose = (section) => (task) => {
-    bulkEditTasksFloatingButtonRef.current?.removeItem(task, section.taskListId);
+    bulkEditTasksFloatingButtonRef.current?.removeOrder(task, section.taskListId);
+    bulkEditTasksFloatingButtonRef.current?.removeTask(task, section.taskListId);
   };
 
-  const assignSelectedTasks = selectedTasks => {
+  const handleBulkAssignButtonPress = selectedTasks => {
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => _bulkAssign(user, selectedTasks),
     });
-  };
+  }
 
   const _bulkAssign = (user, selectedTasks) => {
     navigation.navigate('DispatchAllTasks');
@@ -214,7 +215,7 @@ export default function GroupedTasks({
         onRefresh={refetch}
       />
       <BulkEditTasksFloatingButton
-        onPressed={() => console.log('pressed')}
+        onPress={handleBulkAssignButtonPress}
         iconName="user"
         ref={bulkEditTasksFloatingButtonRef}
       />
