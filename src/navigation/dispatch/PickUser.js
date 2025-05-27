@@ -35,7 +35,8 @@ class PickUser extends Component {
         {this.props.showUnassignButton && (
           <TouchableOpacity
             style={styles.unassignButton}
-            onPress={() => this.props.onUnassignButtonPress()}>
+            onPress={() => this.props.onUnassignButtonPress()}
+            testID={`unassignTask`}>
             <Text style={styles.buttonText}>{this.props.t('DISPATCH_UNASSIGN')}</Text>
           </TouchableOpacity>
         )}
