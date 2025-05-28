@@ -3,7 +3,7 @@ import { Fab, Icon } from 'native-base';
 import { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { whiteColor } from '../../../styles/common';
+import { darkRedColor, whiteColor } from '../../../styles/common';
 
 function BulkEditTasksFloatingButton({
   onPress,
@@ -85,20 +85,22 @@ function BulkEditTasksFloatingButton({
           shadow={2}
           placement="bottom-right"
           onPress={() => onPress(selectedTasks)}
+          bg={whiteColor}
           style={{
-            width: 80,
-            height: 80,
             marginBottom: 12,
             marginRight: 8,
+            padding: 0,
+            height: 94,
+            width: 94
           }}
           icon={
             <Icon
               as={FontAwesome}
               name={iconName}
-              color={whiteColor}
-              size="lg"
+              size='4xl'
+              color={darkRedColor}
+              style={{ padding: 0}}
               testID="bulkAssignButton"
-              style={{ marginStart: 10 }}
             />
           }
         />

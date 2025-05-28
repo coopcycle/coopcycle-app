@@ -13,7 +13,7 @@ import {
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
 import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
-import { whiteColor } from '../../../styles/common';
+import { greyColor, lightGreyColor, whiteColor } from '../../../styles/common';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
@@ -150,7 +150,7 @@ export default function GroupedTasks({
         sections={sections}
         stickySectionHeadersEnabled={true}
         renderSectionHeader={({ section }) => (
-          <Pressable onPress={() => handleToggle(section.title)}>
+          <Pressable onPress={() => handleToggle(section.title)} style={{ backgroundColor: lightGreyColor }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -216,7 +216,7 @@ export default function GroupedTasks({
       />
       <BulkEditTasksFloatingButton
         onPress={handleBulkAssignButtonPress}
-        iconName="user"
+        iconName="user-circle"
         ref={bulkEditTasksFloatingButtonRef}
       />
     </>

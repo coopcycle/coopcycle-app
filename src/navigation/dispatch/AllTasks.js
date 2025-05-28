@@ -19,6 +19,7 @@ import {
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import {
   darkGreyColor,
+  mediumGreyColor,
   whiteColor
 } from '../../styles/common';
 import AddButton from './components/AddButton';
@@ -90,7 +91,7 @@ export default function AllTasks({
 
   return (
     <BasicSafeAreaView>
-        <View>
+        <View style={{ backgroundColor: mediumGreyColor }}>
           <AddButton
             testID="dispatchNewDelivery"
             onPress={() => navigation.navigate('DispatchNewDelivery')}>
