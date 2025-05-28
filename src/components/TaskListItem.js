@@ -208,16 +208,20 @@ const SwipeButtonContainer = ({
   backgroundColor,
   children,
   left,
-  onPress,
   right,
+  width,
   ...otherProps
 }) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
 
   return (
     <TouchableOpacity
-      style={{ flex: 1, justifyContent: 'center', backgroundColor, alignItems }}
-      onPress={onPress}
+      style={{
+        alignItems,
+        backgroundColor,
+        justifyContent: 'center',
+        width,
+      }}
       {...otherProps}>
       {children}
     </TouchableOpacity>
@@ -310,15 +314,16 @@ class TaskListItem extends Component {
 
     const { width } = Dimensions.get('window');
     const buttonWidth = width / 4;
+    const visibleButtonWidth = buttonWidth + 25;
 
     return (
       <SwipeRow
         disableRightSwipe={disableRightSwipe}
         disableLeftSwipe={disableLeftSwipe}
         leftOpenValue={buttonWidth}
-        stopLeftSwipe={buttonWidth + 25}
-        rightOpenValue={buttonWidth * -1}
-        stopRightSwipe={(buttonWidth + 25) * -1}
+        stopLeftSwipe={visibleButtonWidth}
+        rightOpenValue={-buttonWidth}
+        stopRightSwipe={-visibleButtonWidth}
         onRowOpen={toValue => this._onRowOpen(toValue)}
         onRowClose={this._onRowClose}
         ref={this.swipeRow}
@@ -331,7 +336,8 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               onPressLeft();
             }}
-            testID={`${taskTestId}:left`}>
+            testID={`${taskTestId}:left`}
+            width={visibleButtonWidth}>
             <SwipeButton
               iconName={swipeOutLeftIconName || doneIconName}
               width={buttonWidth}
@@ -344,7 +350,8 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               onPressRight();
             }}
-            testID={`${taskTestId}:right`}>
+            testID={`${taskTestId}:right`}
+            width={visibleButtonWidth}>
             <SwipeButton
               iconName={swipeOutRightIconName || incidentIconName}
               width={buttonWidth}
