@@ -106,6 +106,15 @@ export default function useSetTaskListItems(
     return _updateAssigningItems(allItemsToAssign, user);
   }
 
+  // Assign more than one task to rider 
+  const bulkAssignTasks = (tasks, user) => {
+  const userItemIds = getTaskListItemIds(user.username, allTaskLists);
+  const taskIds = tasks.map(task => task['@id']);
+  const allItemsToAssign = [...userItemIds, ...taskIds];
+
+  return _updateAssigningItems(allItemsToAssign, user);
+};
+
   /**
    * Assign a task and its related tasks to rider
    * @param {Task} task - Task to be assigned
@@ -257,6 +266,7 @@ export default function useSetTaskListItems(
 
   return {
     assignTask,
+    bulkAssignTasks,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
     isError,
