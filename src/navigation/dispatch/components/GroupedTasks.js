@@ -1,7 +1,5 @@
-import { Icon, Text, View } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { Icon, Text, View } from 'native-base';
 import { useRef, useState } from 'react';
 import {
   //LayoutAnimation,
@@ -9,15 +7,16 @@ import {
   Pressable,
   SectionList,
 } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 
-import { navigateToTask } from '../../../navigation/utils';
-import { selectTasksWithColor } from '../../../shared/logistics/redux';
-import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
-import { greyColor, lightGreyColor, whiteColor } from '../../../styles/common';
-import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
+import { navigateToTask } from '../../../navigation/utils';
+import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
+import { selectTasksWithColor } from '../../../shared/logistics/redux';
 import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
-import { darkRedColor } from '../../../styles/common';
+import { darkRedColor, lightGreyColor, whiteColor } from '../../../styles/common';
+import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 
 
 export default function GroupedTasks({
@@ -99,11 +98,11 @@ export default function GroupedTasks({
     bulkEditTasksFloatingButtonRef.current?.removeTask(task, section.taskListId);
   };
 
-  const handleBulkAssignButtonPress = selectedTasks => {
-    navigation.navigate('DispatchPickUser', {
-      onItemPress: user => _bulkAssign(user, selectedTasks),
-    });
-  }
+  const handleBulkAssignButtonPress = (selectedTasks) => {
+  navigation.navigate('DispatchPickUser', {
+    onItemPress: user => _bulkAssign(user, selectedTasks),
+  });
+};
 
   const _bulkAssign = (user, selectedTasks) => {
     navigation.navigate('DispatchAllTasks');

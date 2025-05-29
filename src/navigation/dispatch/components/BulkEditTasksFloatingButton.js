@@ -84,7 +84,7 @@ function BulkEditTasksFloatingButton({
           renderInPortal={false}
           shadow={2}
           placement="bottom-right"
-          onPress={() => onPress(selectedTasks)}
+          onPress={() => onPress(allSelectedTasks)}
           bg={whiteColor}
           style={{
             marginBottom: 12,
