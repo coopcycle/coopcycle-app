@@ -36,11 +36,13 @@ export default function GroupedTasks({
   // Update tasks functions
   const {
     assignTask,
+    bulkAssignTasks,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
     reassignTask,
     reassignTaskWithRelatedTasks,
     unassignTask,
+    //TODO unassignBulkTasks?
     unassignTaskWithRelatedTasks,
   } = useSetTaskListsItems();
 
@@ -99,8 +101,12 @@ export default function GroupedTasks({
   };
 
   const handleBulkAssignButtonPress = (selectedTasks) => {
+    console.log('✅ Received in parent:', JSON.stringify(selectedTasks)); 
   navigation.navigate('DispatchPickUser', {
-    onItemPress: user => _bulkAssign(user, selectedTasks),
+    onItemPress: user => {
+      _bulkAssign(user, selectedTasks.orders)
+      bulkAssignTasks(selectedTasks.tasks, user)
+    }
   });
 };
 
