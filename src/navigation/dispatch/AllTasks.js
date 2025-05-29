@@ -19,9 +19,9 @@ import {
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import {
   darkGreyColor,
+  mediumGreyColor,
   whiteColor
 } from '../../styles/common';
-import { useColorModeToken } from '../../styles/theme';
 import AddButton from './components/AddButton';
 
 export default function AllTasks({
@@ -36,8 +36,6 @@ export default function AllTasks({
 
   const dispatch = useDispatch();
 
-  // TODO check blackMode
-  const screenBackgroundColor = useColorModeToken('#E6E2E2', '#131313');
   const {
     isFetching,
     isError,
@@ -53,20 +51,24 @@ export default function AllTasks({
   // Combine unassigned tasks and task lists to use in SectionList
   const sections = [
     {
-      title: `${t('DISPATCH_UNASSIGNED_TASKS')} (${unassignedTasks.length})`,
-      data: unassignedTasks,
       backgroundColor: whiteColor,
+      count: unassignedTasks.length,
+      data: unassignedTasks,
+      id: 'unassignedTasksList',
+      isUnassignedTaskList: true,
+      taskListId: 'unassignedTasksList',
       textColor: darkGreyColor,
-      tasksType: 'unassignedTasks',
-      id: 'unassignedTasksList'
+      title: t('DISPATCH_UNASSIGNED_TASKS'),
     },
     ...taskLists.map(taskList => ({
-      title: `${taskList.username} (${taskList.items.length})`,
-      data: taskList.items,
       backgroundColor: taskList.color ? taskList.color : darkGreyColor,
+      count: taskList.items.length,
+      data: taskList.items,
+      id: `${taskList.username.toLowerCase()}TasksList`,
+      isUnassignedTaskList: false,
+      taskListId: taskList['@id'],
       textColor: whiteColor,
-      tasksType: 'taskList',
-      id: `${taskList.username.toLowerCase()}TasksList`
+      title: taskList.username,
     })),
   ];
 
@@ -89,7 +91,7 @@ export default function AllTasks({
 
   return (
     <BasicSafeAreaView>
-        <View>
+        <View style={{ backgroundColor: mediumGreyColor }}>
           <AddButton
             testID="dispatchNewDelivery"
             onPress={() => navigation.navigate('DispatchNewDelivery')}>
@@ -101,7 +103,7 @@ export default function AllTasks({
         <GroupedTasks
             sections={sections}
             navigation
-            route
+            route={route}
             isFetching={isFetching}
             refetch={refetch}
         />
