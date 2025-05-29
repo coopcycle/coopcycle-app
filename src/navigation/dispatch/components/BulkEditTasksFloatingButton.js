@@ -74,7 +74,10 @@ function BulkEditTasksFloatingButton({
     const orders = _.flatMap(Object.values(ordersByTaskList));
     const tasks = _.flatMap(Object.values(tasksByTaskList));
 
-    return [...orders, ...tasks];
+    return {
+    orders,
+    tasks,
+  };
   }, [selectedTasks])
 
   return (
