@@ -30,7 +30,7 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { formatPrice } from '../utils/formatting';
-import { HOUR } from '../utils/dates';
+import { minutes } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
 
 
@@ -187,11 +187,11 @@ const TaskPriorityStatus = ({task}) => {
   const now = moment();
   const timeDifference = now.diff(task.doneBefore);
 
-  if (timeDifference < 4*HOUR) {
+  if (timeDifference < minutes(10)) {
     backgroundColor = '#FFC300';
   }
 
-  if (timeDifference < 2*HOUR) {
+  if (timeDifference < minutes(0)) {
     backgroundColor = '#B42205';
   }
 
