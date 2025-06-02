@@ -82,7 +82,7 @@ function BulkEditTasksFloatingButton({
 
   return (
     <>
-      {allSelectedTasks.length <= 1 ? null : (
+      {(allSelectedTasks.orders.length + allSelectedTasks.tasks.length) < 2 ? null : (
         <Fab
           renderInPortal={false}
           shadow={2}
