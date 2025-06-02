@@ -305,9 +305,17 @@ class TaskListItem extends Component {
       swipeOutLeftIconName,
       swipeOutRightBackgroundColor,
       swipeOutRightIconName,
+      t,
       task,
       taskListId,
     } = this.props;
+
+    const taskTitle = task.orgName
+      ? ( task.metadata.order_number
+        ? task.orgName
+        : `${task.orgName} - ${t('TASK_WITH_ID', { id: task.id })}`
+      )
+      : t('TASK_WITH_ID', { id: task.id });
 
     const taskTestId = `${taskListId}:task:${index}`;
     const itemStyle = [];
@@ -383,9 +391,7 @@ class TaskListItem extends Component {
             <VStack flex={1} py="3" px="1">
               <HStack alignItems='center'>
                 <TaskTypeIcon task={task}/>
-                {task.orgName ? (
-                  <Text style={styles.textBold}>{task.orgName}</Text>
-                ) : null}
+                  <Text style={styles.textBold}>{taskTitle}</Text>
                 <TaskStatusIcon task={task}/>
               </HStack>
               {task.address?.contactName ? (
