@@ -17,7 +17,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import {
 blackColor,
-greyColor,
+lightGreyColor,
 redColor,
 whiteColor,
 yellowColor,
@@ -32,6 +32,7 @@ import {
 import { formatPrice } from '../utils/formatting';
 import { minutes } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
+import CoopcyleLogo from '../../assets/images/logo.svg';
 
 
 const styles = StyleSheet.create({
@@ -85,7 +86,7 @@ const iconStyle = task => {
 };
 
 
-function getTaskOrderId(task) {
+function getOrderId(task) {
   const id = task.metadata?.delivery_position
     ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
     : task.metadata.order_number;
@@ -93,12 +94,11 @@ function getTaskOrderId(task) {
   return id;
 }
 
-const TaskId = ({task, color, width}) => {
-  const backgroundColor = color ? color : greyColor;
-  const textColor = color === '#ffffff' ? blackColor : whiteColor;
-  const taskId = task.metadata.order_number
-    ? getTaskOrderId(task)
-    : `#${task.id}`;
+const OrderInfo = ({task, color, width}) => {
+  const isDefaultColor = color === '#ffffff';
+  const backgroundColor = isDefaultColor ? lightGreyColor : color;
+  const textColor = isDefaultColor ? blackColor : whiteColor;
+  const orderId = getOrderId(task);
 
   return (
     <View
@@ -111,26 +111,36 @@ const TaskId = ({task, color, width}) => {
         justifyContent: 'center',
         gap: 12,
       }}>
-      <Text
-        style={{
-          color: textColor,
-          fontSize: 24,
-          fontWeight: 700,
-          lineHeight: 24,
-        }}>
-        {taskId}
-      </Text>
-      {task.metadata?.order_total && (
-        <Text
-          style={{
-            color: textColor,
-            fontSize: 15,
-            fontWeight: 700,
-            lineHeight: 15,
-          }}>
-          {formatPrice(task.metadata.order_total)}
-        </Text>
-      )}
+      { orderId
+      ? (
+        <>
+          <Text
+            style={{
+              color: textColor,
+              fontSize: 24,
+              fontWeight: 700,
+              lineHeight: 24,
+            }}>
+            {orderId}
+          </Text>
+          {task.metadata.order_total && (
+            <Text
+              style={{
+                color: textColor,
+                fontSize: 15,
+                fontWeight: 700,
+                lineHeight: 15,
+              }}>
+              {formatPrice(task.metadata.order_total)}
+            </Text>
+          )}
+        </>)
+        : (
+          <CoopcyleLogo
+            width={width * 0.5}
+            height={width * 0.5}
+          />
+        )}
     </View>
   )
 }
@@ -365,7 +375,7 @@ class TaskListItem extends Component {
             styles={itemStyle}
             minHeight={buttonWidth}
             {...itemProps}>
-            <TaskId
+            <OrderInfo
               color={color}
               task={task}
               width={buttonWidth}
