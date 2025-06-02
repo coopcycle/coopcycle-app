@@ -39,6 +39,7 @@ export default function GroupedTasks({
     bulkAssignTasks,
     assignTaskWithRelatedTasks,
     bulkAssignTasksWithRelatedTasks,
+    // TODO bulk
     reassignTask,
     reassignTaskWithRelatedTasks,
     unassignTask,
@@ -101,19 +102,15 @@ export default function GroupedTasks({
   };
 
   const handleBulkAssignButtonPress = (selectedTasks) => {
-    console.log('✅ Received in parent:', JSON.stringify(selectedTasks)); 
   navigation.navigate('DispatchPickUser', {
     onItemPress: user => {
-      _bulkAssign(user, selectedTasks.orders)
+      // TODO create a function that lists all tasks in utils
+      bulkAssignTasksWithRelatedTasks(selectedTasks.orders, user)
       bulkAssignTasks(selectedTasks.tasks, user)
+      navigation.navigate('DispatchAllTasks')
     }
   });
 };
-
-  const _bulkAssign = (user, selectedTasks) => {
-    navigation.navigate('DispatchAllTasks');
-    bulkAssignTasksWithRelatedTasks(selectedTasks, user);
-  };
 
   const allowToSelect = task => {
     return task.status !== 'DONE';
