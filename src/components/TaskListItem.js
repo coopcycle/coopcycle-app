@@ -93,12 +93,12 @@ const OrderInfo = ({task, color, width}) => {
   const orderId = getOrderId(task);
 
   return (
-    <View
+    <ItemTouchable
+      onPress={() => console.log("order info pressed")}
       style={{
         backgroundColor,
         width,
         height: '100%',
-        marginRight: 12,
         alignItems: 'center',
         justifyContent: 'center',
         gap: 12,
@@ -133,7 +133,7 @@ const OrderInfo = ({task, color, width}) => {
             height={width * 0.5}
           />
         )}
-    </View>
+    </ItemTouchable>
   )
 }
 
@@ -246,13 +246,13 @@ const SwipeButton = ({ iconName, width }) => (
   </View>
 );
 
-const ItemTouchable = ({ children, ...otherProps }) => {
+const ItemTouchable = ({ children, style, ...otherProps }) => {
   const colorScheme = useColorScheme();
   const { colors } = useTheme();
 
   return (
     <TouchableHighlight
-      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
+      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white', ...style }}
       underlayColor={
         colorScheme === 'dark' ? colors.gray['700'] : colors.gray['200']
       }
@@ -331,7 +331,6 @@ class TaskListItem extends Component {
       );
 
     const taskTestId = `${taskListId}:task:${index}`;
-    const itemStyle = [];
     const textStyle = [styles.text];
     const itemProps = {};
 
@@ -389,91 +388,103 @@ class TaskListItem extends Component {
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={onPress} testID={taskTestId}>
-          <HStack
-            flex={1}
-            alignItems="stretch"
-            styles={itemStyle}
-            minHeight={buttonWidth}
-            {...itemProps}>
-            <OrderInfo
-              color={color}
-              task={task}
-              width={buttonWidth}
-            />
-            <VStack flex={1} py="3" px="1">
-              <HStack alignItems='center'>
-                <TaskTypeIcon task={task}/>
-                <Text
-                  style={styles.textBold}
-                  numberOfLines={1}>
-                  {taskTitle}
-                </Text>
-                <TaskStatusIcon task={task}/>
-              </HStack>
-              {address && (
-                <Text style={textStyle} numberOfLines={1}>{address}</Text>
-              )}
-              <Text numberOfLines={1} style={textStyle}>
-                {task.address?.streetAddress}
-              </Text>
-              <HStack alignItems="center">
-                <Text pr="2" style={textStyle}>
-                  {moment(task.doneAfter).format('LT')} -{' '}
-                  {moment(task.doneBefore).format('LT')}
-                </Text>
-                {task.address?.description && task.address?.description.length ? (
-                  <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
-                ) : null}
-                {task.metadata && task.metadata?.payment_method && (
-                  <PaymentMethodInList
-                    paymentMethod={task.metadata.payment_method}
-                  />
-                )}
-                {task.metadata && task.metadata.zero_waste && (
-                  <Icon as={FontAwesome5} name="recycle" size="sm" />
-                )}
-              </HStack>
-              {task.tags && task.tags.length ? (
-                <HStack style={styles.tagsWrapper}>
-                  {task.tags.map(tag => (
-                    <Text
-                      key={tag.slug}
-                      style={[
-                        textStyle,
-                        styles.tag,
-                        {
-                          backgroundColor: tag.color,
-                        },
-                      ]}>
-                      {tag.name}
-                    </Text>
-                  ))}
-                  <Icon
-                    as={FontAwesome}
-                    name={commentsIconName}
-                    style={{
-                      paddingHorizontal: 4,
-                      fontSize: 14,
-                    }}/>
+        <HStack
+          flex={1}
+          alignItems="stretch"
+          minHeight={buttonWidth}
+          {...itemProps}>
+          <OrderInfo
+            color={color}
+            task={task}
+            width={buttonWidth}
+          />
+          <ItemTouchable
+            onPress={onPress}
+            testID={taskTestId}
+            style={{
+              width: width-buttonWidth,
+              paddingLeft: 12,
+            }}
+          >
+            <HStack
+              style={{
+                height: '100%'
+              }}
+            >
+              <VStack flex={1} py="3" px="1">
+                <HStack alignItems='center'>
+                  <TaskTypeIcon task={task}/>
+                  <Text
+                    style={styles.textBold}
+                    numberOfLines={1}>
+                    {taskTitle}
+                  </Text>
+                  <TaskStatusIcon task={task}/>
                 </HStack>
-              ) : null}
-            </VStack>
-            {task.hasIncidents && (
-              <Icon
-                as={FontAwesome}
-                name={incidentIconName}
-                style={{
-                  alignSelf: 'center',
-                  backgroundColor: yellowColor,
-                  borderRadius: 5,
-                  color: redColor,
-                  marginRight: 12,
-                }} />
+                {address && (
+                  <Text style={textStyle} numberOfLines={1}>{address}</Text>
+                )}
+                <Text numberOfLines={1} style={textStyle}>
+                  {task.address?.streetAddress}
+                </Text>
+                <HStack alignItems="center">
+                  <Text pr="2" style={textStyle}>
+                    {moment(task.doneAfter).format('LT')} -{' '}
+                    {moment(task.doneBefore).format('LT')}
+                  </Text>
+                  {task.address?.description && task.address?.description.length ? (
+                    <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
+                  ) : null}
+                  {task.metadata && task.metadata?.payment_method && (
+                    <PaymentMethodInList
+                      paymentMethod={task.metadata.payment_method}
+                    />
+                  )}
+                  {task.metadata && task.metadata.zero_waste && (
+                    <Icon as={FontAwesome5} name="recycle" size="sm" />
+                  )}
+                </HStack>
+                {task.tags && task.tags.length ? (
+                  <HStack style={styles.tagsWrapper}>
+                    {task.tags.map(tag => (
+                      <Text
+                        key={tag.slug}
+                        style={[
+                          textStyle,
+                          styles.tag,
+                          {
+                            backgroundColor: tag.color,
+                          },
+                        ]}>
+                        {tag.name}
+                      </Text>
+                    ))}
+                    <Icon
+                      as={FontAwesome}
+                      name={commentsIconName}
+                      style={{
+                        paddingHorizontal: 4,
+                        fontSize: 14,
+                      }}/>
+                  </HStack>
+                ) : null}
+              </VStack>
+              {task.hasIncidents && (
+                <Icon
+                  as={FontAwesome}
+                  name={incidentIconName}
+                  style={{
+                    alignSelf: 'center',
+                    backgroundColor: yellowColor,
+                    borderRadius: 5,
+                    color: redColor,
+                    marginRight: 12,
+                  }} />
               )}
-            <TaskPriorityStatus task={task} />
-          </HStack>
-        </ItemTouchable>
+              <TaskPriorityStatus task={task} />
+            </HStack>
+          </ItemTouchable>
+        </HStack>
       </SwipeRow>
     );
   }
