@@ -36,6 +36,8 @@ import { PaymentMethodInList } from './PaymentMethodInfo';
 import CoopcyleLogo from '../../assets/images/logo.svg';
 
 
+const cardBorderRadius = 2.5;
+
 const styles = StyleSheet.create({
   text: {
     fontSize: 14,
@@ -96,12 +98,14 @@ const OrderInfo = ({task, color, width}) => {
     <ItemTouchable
       onPress={() => console.log("order info pressed")}
       style={{
-        backgroundColor,
-        width,
-        height: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor,
+        borderBottomLeftRadius: cardBorderRadius,
+        borderTopLeftRadius: cardBorderRadius,
         gap: 12,
+        height: '100%',
+        justifyContent: 'center',
+        width,
       }}>
       { orderId
       ? (
@@ -208,9 +212,13 @@ const TaskPriorityStatus = ({task}) => {
 
   return (
     <Box
-      width={2}
-      height='100%'
-      backgroundColor={backgroundColor}
+      style={{
+        width: 6,
+        height: '100%',
+        backgroundColor: backgroundColor,
+        borderTopRightRadius: cardBorderRadius,
+        borderBottomRightRadius: cardBorderRadius,
+      }}
     />
   )
 }
@@ -224,6 +232,8 @@ const SwipeButtonContainer = ({
   ...otherProps
 }) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
+  const borderRadiusLeft = left ? cardBorderRadius : 0;
+  const borderRadiusRight = right ? cardBorderRadius : 0;
 
   return (
     <TouchableOpacity
@@ -232,6 +242,10 @@ const SwipeButtonContainer = ({
         backgroundColor,
         justifyContent: 'center',
         width,
+        borderTopLeftRadius: borderRadiusLeft,
+        borderBottomLeftRadius: borderRadiusLeft,
+        borderTopRightRadius: borderRadiusRight,
+        borderBottomRightRadius: borderRadiusRight,
       }}
       {...otherProps}>
       {children}
@@ -333,17 +347,21 @@ class TaskListItem extends Component {
     const taskTestId = `${taskListId}:task:${index}`;
     const textStyle = [styles.text];
     const itemProps = {};
+    const swipeButtonsProps = {};
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
       itemProps.opacity = 0.4;
+      swipeButtonsProps.display = 'none';
     }
 
     if (task.status === 'FAILED') {
       textStyle.push(styles.textDanger);
     }
 
+    const marginHorizontal = 6;
     const { width } = Dimensions.get('window');
-    const buttonWidth = width / 4;
+    const cardWidth = width - marginHorizontal * 2;
+    const buttonWidth = cardWidth / 4;
     const visibleButtonWidth = buttonWidth + 25;
 
     return (
@@ -357,8 +375,14 @@ class TaskListItem extends Component {
         onRowOpen={toValue => this._onRowOpen(toValue)}
         onRowClose={this._onRowClose}
         ref={this.swipeRow}
+        style={{
+          borderRadius: cardBorderRadius,
+          marginVertical: 1.5,
+          marginLeft: marginHorizontal,
+          marginRight:marginHorizontal,
+        }}
       >
-        <View style={styles.rowBack}>
+        <View style={{...styles.rowBack, ...swipeButtonsProps}}>
           <SwipeButtonContainer
             backgroundColor={swipeOutLeftBackgroundColor}
             left
@@ -389,9 +413,13 @@ class TaskListItem extends Component {
           </SwipeButtonContainer>
         </View>
         <HStack
-          flex={1}
-          alignItems="stretch"
-          minHeight={buttonWidth}
+          style={{
+            flex: 1,
+            alignItems: "stretch",
+            minHeight: buttonWidth,
+            borderTopRightRadius: cardBorderRadius,
+            borderBottomRightRadius: cardBorderRadius,
+          }}
           {...itemProps}>
           <OrderInfo
             color={color}
@@ -402,8 +430,10 @@ class TaskListItem extends Component {
             onPress={onPress}
             testID={taskTestId}
             style={{
-              width: width-buttonWidth,
+              borderBottomRightRadius: cardBorderRadius,
+              borderTopRightRadius: cardBorderRadius,
               paddingLeft: 12,
+              width: cardWidth-buttonWidth,
             }}
           >
             <HStack
@@ -475,7 +505,6 @@ class TaskListItem extends Component {
                   name={incidentIconName}
                   style={{
                     alignSelf: 'center',
-                    backgroundColor: yellowColor,
                     borderRadius: 5,
                     color: redColor,
                     marginRight: 12,
