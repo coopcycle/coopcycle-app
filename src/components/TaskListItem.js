@@ -317,6 +317,18 @@ class TaskListItem extends Component {
       )
       : t('TASK_WITH_ID', { id: task.id });
 
+    const address = task.address?.contactName
+      ? (
+        task.address?.name
+          ? `${task.address.contactName} - ${task.address.name}`
+          : task.address.contactName
+      )
+      : (
+        task.address?.name
+        ? task.address.name
+        : null
+      );
+
     const taskTestId = `${taskListId}:task:${index}`;
     const itemStyle = [];
     const textStyle = [styles.text];
@@ -398,12 +410,9 @@ class TaskListItem extends Component {
                 </Text>
                 <TaskStatusIcon task={task}/>
               </HStack>
-              {task.address?.contactName ? (
-                <Text style={textStyle}>{task.address.contactName}</Text>
-              ) : null}
-              {task.address?.name ? (
-                <Text style={textStyle}>{task.address.name}</Text>
-              ) : null}
+              {address && (
+                <Text style={textStyle} numberOfLines={1}>{address}</Text>
+              )}
               <Text numberOfLines={1} style={textStyle}>
                 {task.address?.streetAddress}
               </Text>
