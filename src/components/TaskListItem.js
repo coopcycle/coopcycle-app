@@ -26,6 +26,7 @@ import {
   doingIconName,
   doneIconName,
   failedIconName,
+  incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { formatPrice } from '../utils/formatting';
@@ -75,15 +76,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 });
-
-const iconStyle = task => {
-  const style = [styles.icon];
-  if (task.status === 'FAILED') {
-    style.push(styles.iconDanger);
-  }
-
-  return style;
-};
 
 function getOrderId(task) {
   const id = task.metadata?.delivery_position
@@ -143,6 +135,15 @@ const OrderInfo = ({task, color, width}) => {
     </View>
   )
 }
+
+const iconStyle = task => {
+  const style = [styles.icon];
+  if (task.status === 'FAILED') {
+    style.push(styles.iconDanger);
+  }
+
+  return style;
+};
 
 const TaskTypeIcon = ({ task }) => (
   <Icon
@@ -441,7 +442,18 @@ class TaskListItem extends Component {
                 </HStack>
               ) : null}
             </VStack>
-            {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
+            {task.hasIncidents && (
+              <Icon
+                as={FontAwesome}
+                name={incidentIconName}
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: yellowColor,
+                  borderRadius: 5,
+                  color: redColor,
+                  marginRight: 12,
+                }} />
+              )}
             <TaskPriorityStatus task={task} />
           </HStack>
         </ItemTouchable>
