@@ -9,6 +9,15 @@ const getTask = (id) => {
     }
   )
 }
+const getTaskList = (id, items) => {
+  return (
+    {
+      '@id': `/api/task_lists/${id}`,
+      id: id,
+      items: items
+    }
+  )
+}
 
 describe('taskListUtils', () => {
   describe('replaceItemsWithItemIds', () => {
@@ -70,6 +79,35 @@ describe('taskListUtils', () => {
         '/api/task_lists/1': [getTask(1), getTask(2)],
           '/api/task_lists/2': [getTask(3), getTask(4)],
           '/api/task_lists/3': [getTask(5), getTask(6), getTask(7)]
+      })
+    });
+    it('should retun an object with orders tasks by taskLists with no related tasks', () => {
+      const selectedTasks = {
+        orders: {
+          '/api/task_lists/1': [getTask(1)]
+        },
+        tasks: {},
+      }
+
+      let result = tasksListsToEdit(selectedTasks)
+
+      expect(result).toEqual({
+        '/api/task_lists/1': [getTask(1)],
+      })
+    });
+    it('should retun an object with orders tasks by taskLists with related tasks', () => {
+      const selectedTasks = {
+        orders: {
+          '/api/task_lists/1': [getTask(1)]
+        },
+        tasks: {},
+      }
+      const allTaskLists = [getTaskList(1, [getTask(1), getTask(2)])]
+
+      let result = tasksListsToEdit(selectedTasks, allTaskLists)
+
+      expect(result).toEqual({
+        '/api/task_lists/1': [getTask(1), getTask(2)],
       })
     });
   })
