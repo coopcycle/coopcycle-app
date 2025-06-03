@@ -51,11 +51,3 @@ jest.mock('react-native-share', () => ({}));
 jest.mock('uuid', () => ({
   v4: jest.fn(),
 }));
-
-const fakeNavigator = {
-  current: {
-    dispatch: action => {},
-  },
-};
-
-NavigationHolder.setNavigationRef(fakeNavigator);

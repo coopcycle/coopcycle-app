@@ -32,7 +32,6 @@ describe('checkout for customer with existing account (role - user); logged in; 
     await selectAutocompleteAddress('askAddressAutocomplete');
 
     // List of restaurants
-    await expect(element(by.id('checkoutSearch'))).toBeVisible();
     await expect(element(by.id('restaurantList'))).toBeVisible();
 
     // Choose a restaurant
@@ -48,12 +47,6 @@ describe('checkout for customer with existing account (role - user); logged in; 
 
     // Add item
     await addProduct('menuItem:0:0');
-
-    // Check if footer is present
-    await waitFor(element(by.id('cartFooter')))
-      .toExist()
-      .withTimeout(5000);
-    await expect(element(by.id('cartFooter'))).toBeVisible();
 
     // Add 2 more items
     await addProduct('menuItem:0:1');

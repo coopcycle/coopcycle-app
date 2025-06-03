@@ -29,7 +29,7 @@ class DeliveryAddressForm extends Component {
     return (
       <FormControl>
         <FormControl.Label>{this.props.t('NAME')}</FormControl.Label>
-        <Input
+        <Input _stack={{ style: {} }}
           {...inputProps}
           onChangeText={name => this.setState({ name })}
           value={this.state.name}
@@ -44,7 +44,7 @@ class DeliveryAddressForm extends Component {
         <FormControl.Label>
           {this.props.t('ADDRESS_DESCRIPTION')}
         </FormControl.Label>
-        <Input
+        <Input _stack={{ style: {} }}
           {...inputProps}
           multiline
           onChangeText={description => this.setState({ description })}
@@ -59,7 +59,7 @@ class DeliveryAddressForm extends Component {
     return (
       <FormControl>
         <FormControl.Label>{this.props.t('TELEPHONE')}</FormControl.Label>
-        <Input
+        <Input _stack={{ style: {} }}
           {...inputProps}
           onChangeText={telephone => this.setState({ telephone })}
           value={this.state.telephone}
@@ -80,7 +80,7 @@ class DeliveryAddressForm extends Component {
       <VStack>
         <FormControl>
           <FormControl.Label>{this.props.t('ADDRESS')}</FormControl.Label>
-          <Input
+          <Input _stack={{ style: {} }}
             {...inputProps}
             onChangeText={streetAddress => this.setState({ streetAddress })}
             value={this.state.streetAddress}
@@ -88,7 +88,7 @@ class DeliveryAddressForm extends Component {
         </FormControl>
         <FormControl {...postalCodeProps}>
           <FormControl.Label>{this.props.t('POST_CODE')}</FormControl.Label>
-          <Input
+          <Input _stack={{ style: {} }}
             {...inputProps}
             onChangeText={postalCode => this.setState({ postalCode })}
             value={this.state.postalCode}
@@ -96,7 +96,7 @@ class DeliveryAddressForm extends Component {
         </FormControl>
         <FormControl>
           <FormControl.Label>{this.props.t('CITY')}</FormControl.Label>
-          <Input
+          <Input _stack={{ style: {} }}
             {...inputProps}
             onChangeText={addressLocality => this.setState({ addressLocality })}
             value={this.state.addressLocality}

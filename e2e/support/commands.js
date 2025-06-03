@@ -3,17 +3,15 @@ import axios from 'axios';
 const execSync = require('child_process').execSync;
 const os = require('os');
 
-//Make sure to have the correct path to the coopcycle-web repository while running locally
-export const COMMAND_PREFIX =
-  'cd ../coopcycle-web-repo && docker compose exec -T php';
+// Make sure to have the correct path to the coopcycle-web repository while running locally!
+// You can set `COOPCYCLE_WEB_REPO_PATH` at your `.env` file and use Makefile's targets to run the tests
+const COOPCYCLE_WEB_REPO_PATH = process.env.COOPCYCLE_WEB_REPO_PATH || '../coopcycle-web';
+export const COMMAND_PREFIX = `cd ${COOPCYCLE_WEB_REPO_PATH} && docker compose exec -T php`;
 
 export const symfonyConsole = command => {
   const prefix = COMMAND_PREFIX;
-  let cmd = `bin/console ${command} --env="test"`;
-  if (prefix) {
-    cmd = `${prefix} ${cmd}`;
-  }
-  execSync(cmd);
+  const cmd = `bin/console ${command} --env="test"`;
+  execSync(prefix ? `${prefix} ${cmd}` : cmd)
 };
 
 export const launchApp = async () => {

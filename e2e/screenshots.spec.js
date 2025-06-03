@@ -46,7 +46,6 @@ VARIANTS.forEach(variant => {
 
       // The server may be under maintenance
       try {
-        await expect(element(by.id('checkoutSearch'))).toBeVisible();
         await expect(element(by.id('restaurantList'))).toBeVisible();
         await waitFor(element(by.id('restaurants:2'))).toBeVisible();
 

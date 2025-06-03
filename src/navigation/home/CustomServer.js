@@ -34,7 +34,7 @@ class CustomServer extends Component {
       <Center flex={1} px="3">
         <FormControl {...itemProps}>
           <Stack>
-            <Input
+            <Input _stack={{ style: {} }}
               ref={ref => {
                 this.input = ref;
               }}
