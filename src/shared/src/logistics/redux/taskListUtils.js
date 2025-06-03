@@ -26,3 +26,10 @@ export function createTempTaskList(username, items = []) {
     items,
   };
 }
+
+export function tasksListsToEdit(selectedTasks) {
+  const ordersByTaskList = selectedTasks.orders || {};
+  const tasksByTaskList = selectedTasks.tasks || {};
+    
+  return {...ordersByTaskList, ...tasksByTaskList}
+}
