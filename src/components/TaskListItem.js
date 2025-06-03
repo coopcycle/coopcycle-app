@@ -39,9 +39,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   textBold: {
-    marginLeft: -8,
     fontSize: 14,
     fontWeight: 700,
+    marginLeft: -8,
+    overflow: 'hidden',
   },
   textDanger: {
     color: redColor,
@@ -389,7 +390,11 @@ class TaskListItem extends Component {
             <VStack flex={1} py="3" px="1">
               <HStack alignItems='center'>
                 <TaskTypeIcon task={task}/>
-                  <Text style={styles.textBold}>{taskTitle}</Text>
+                <Text
+                  style={styles.textBold}
+                  numberOfLines={1}>
+                  {taskTitle}
+                </Text>
                 <TaskStatusIcon task={task}/>
               </HStack>
               {task.address?.contactName ? (
