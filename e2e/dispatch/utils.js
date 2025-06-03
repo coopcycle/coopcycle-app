@@ -14,7 +14,7 @@ import {
 export async function loadDispatchFixture() {
   if (device.getPlatform() === 'android') {
     symfonyConsole(
-      'coopcycle:fixtures:load -f cypress/fixtures/dispatch.yml',
+      'coopcycle:fixtures:load -s cypress/fixtures/setup_default.yml -f cypress/fixtures/dispatch.yml',
     );
     await connectToLocalInstance();
   } else {
