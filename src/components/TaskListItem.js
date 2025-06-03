@@ -1,8 +1,4 @@
-import moment from 'moment';
 import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
   StyleSheet,
@@ -12,21 +8,24 @@ import {
   useColorScheme,
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
+import { withTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import {
-blackColor,
-lightGreyColor,
-redColor,
-whiteColor,
-yellowColor,
+  blackColor,
+  lightGreyColor,
+  redColor,
+  whiteColor,
+  yellowColor,
 } from '../styles/common';
 import {
   doingIconName,
   doneIconName,
   failedIconName,
-  incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { formatPrice } from '../utils/formatting';
@@ -84,7 +83,6 @@ const iconStyle = task => {
 
   return style;
 };
-
 
 function getOrderId(task) {
   const id = task.metadata?.delivery_position
@@ -357,7 +355,7 @@ class TaskListItem extends Component {
             testID={`${taskTestId}:left`}
             width={visibleButtonWidth}>
             <SwipeButton
-              iconName={swipeOutLeftIconName || doneIconName}
+              iconName={swipeOutLeftIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
@@ -371,7 +369,7 @@ class TaskListItem extends Component {
             testID={`${taskTestId}:right`}
             width={visibleButtonWidth}>
             <SwipeButton
-              iconName={swipeOutRightIconName || incidentIconName}
+              iconName={swipeOutRightIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>

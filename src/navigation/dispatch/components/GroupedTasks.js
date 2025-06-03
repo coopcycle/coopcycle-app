@@ -149,7 +149,6 @@ export default function GroupedTasks({
                 onTaskClick={onTaskClick}
                 {...swipeLeftConfiguration(section)}
                 {...swipeRightConfiguration(section)}
-                allowMultipleSelection={allowToSelect}
                 multipleSelectionIcon="user"
                 onMultipleSelectionAction={assignSelectedTasks}
               />

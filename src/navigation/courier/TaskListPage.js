@@ -1,18 +1,20 @@
-import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import React from 'react';
 
-import DateSelectHeader from '../../components/DateSelectHeader';
-import TapToRefresh from '../../components/TapToRefresh';
-import TaskList from '../../components/TaskList';
+import { doneIconName, incidentIconName } from '../task/styles/common';
+import { greenColor, yellowColor } from '../../styles/common';
 import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils';
 import {
   selectFilteredTasks,
   selectTaskSelectedDate,
   selectTasksWithColor,
 } from '../../redux/Courier';
-import { doneIconName } from '../task/styles/common';
 import { useGetMyTasksQuery } from '../../redux/api/slice';
+import DateSelectHeader from '../../components/DateSelectHeader';
+import TapToRefresh from '../../components/TapToRefresh';
+import TaskList from '../../components/TaskList';
+
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -27,10 +29,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const allowToSelect = task => {
-  return task.status !== 'DONE';
-};
-
 export default function TaskListPage({ navigation, route }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
@@ -44,6 +42,24 @@ export default function TaskListPage({ navigation, route }) {
   const { isFetching, refetch } = useGetMyTasksQuery(selectedDate, {
     refetchOnFocus: true,
   });
+
+  const allowToSelect = task => {
+    return task.status !== 'DONE';
+  };
+
+  const swipeLeftConfiguration = {
+    onSwipeLeft: task => navigateToCompleteTask(navigation, route, task, [], true),
+    swipeOutLeftBackgroundColor: greenColor,
+    swipeOutLeftEnabled: allowToSelect,
+    swipeOutLeftIconName: doneIconName,
+  };
+
+  const swipeRightConfiguration = {
+    onSwipeRight: task => navigateToCompleteTask(navigation, route, task, [], false),
+    swipeOutRightBackgroundColor: yellowColor,
+    swipeOutRightEnabled: allowToSelect,
+    swipeOutRightIconName: incidentIconName,
+  };
 
   const completeSelectedTasks = selectedTasks => {
     if (selectedTasks.length > 1) {
@@ -60,22 +76,13 @@ export default function TaskListPage({ navigation, route }) {
         <TaskList
           tasks={tasks}
           tasksWithColor={tasksWithColor}
-          onSwipeLeft={task =>
-            navigateToCompleteTask(navigation, route, task, [], true)
-          }
-          onSwipeRight={task =>
-            navigateToCompleteTask(navigation, route, task, [], false)
-          }
-          swipeOutLeftEnabled={task => task.status !== 'DONE'}
-          swipeOutRightEnabled={task => task.status !== 'DONE'}
-          onTaskClick={task => navigateToTask(navigation, route, task, tasks)}
           refreshing={isFetching}
           onRefresh={() => refetch()}
-          allowMultipleSelection={task => allowToSelect(task)}
+          onTaskClick={task => navigateToTask(navigation, route, task, tasks)}
+          {...swipeLeftConfiguration}
+          {...swipeRightConfiguration}
           multipleSelectionIcon={doneIconName}
-          onMultipleSelectionAction={selectedTasks =>
-            completeSelectedTasks(selectedTasks)
-          }
+          onMultipleSelectionAction={completeSelectedTasks}
           id="courierTaskList"
         />
       )}
