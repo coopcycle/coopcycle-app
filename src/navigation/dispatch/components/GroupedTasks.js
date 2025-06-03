@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
+import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import { darkRedColor } from '../../../styles/common';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
@@ -108,14 +109,14 @@ export default function GroupedTasks({
     onSwipeLeft: assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
     swipeOutLeftBackgroundColor: darkRedColor,
     swipeOutLeftEnabled: allowToSelect,
-    swipeOutLeftIconName: 'cube',
+    swipeOutLeftIconName: assignOrderIconName,
   });
 
   const swipeRightConfiguration = section => ({
     onSwipeRight: assignTaskHandler(section.isUnassignedTaskList),
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightEnabled: allowToSelect,
-    swipeOutRightIconName: 'user',
+    swipeOutRightIconName: assignTaskIconName,
   });
 
   return (
