@@ -19,6 +19,10 @@ function BulkEditTasksFloatingButton({
       addTask: (task, taskListId) => addItem(task, taskListId, false),
       removeOrder: (task, taskListId) => removeItem(task, taskListId, true),
       removeTask: (task, taskListId) => removeItem(task, taskListId, false),
+      clearSelectedTasks: () => setSelectedTasks({
+        orders: {},
+        tasks: {},
+  })
     }
   ), [addItem, removeItem]);
 
@@ -74,20 +78,21 @@ function BulkEditTasksFloatingButton({
     const orders = _.flatMap(Object.values(ordersByTaskList));
     const tasks = _.flatMap(Object.values(tasksByTaskList));
 
-    return {
-    orders,
-    tasks,
-  };
+    return [...tasks, ...orders];
   }, [selectedTasks])
+
+  const handleOnPress = () => {
+    onPress(selectedTasks);
+  };
 
   return (
     <>
-      {(allSelectedTasks.orders.length + allSelectedTasks.tasks.length) < 2 ? null : (
+      {allSelectedTasks.length < 2 ? null : (
         <Fab
           renderInPortal={false}
           shadow={2}
           placement="bottom-right"
-          onPress={() => onPress(allSelectedTasks)}
+          onPress={handleOnPress}
           bg={whiteColor}
           style={{
             marginBottom: 12,
