@@ -23,6 +23,7 @@ import {
   yellowColor,
 } from '../styles/common';
 import {
+  commentsIconName,
   doingIconName,
   doneIconName,
   failedIconName,
@@ -448,6 +449,13 @@ class TaskListItem extends Component {
                       {tag.name}
                     </Text>
                   ))}
+                  <Icon
+                    as={FontAwesome}
+                    name={commentsIconName}
+                    style={{
+                      paddingHorizontal: 4,
+                      fontSize: 14,
+                    }}/>
                 </HStack>
               ) : null}
             </VStack>

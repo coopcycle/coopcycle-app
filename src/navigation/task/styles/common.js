@@ -4,6 +4,7 @@ const doingIconName = 'play';
 const doneIconName = 'check';
 const failedIconName = 'remove';
 const incidentIconName = 'exclamation-triangle';
+const commentsIconName = 'comments';
 
 const pickupIconName = 'cube';
 const dropOffIconName = 'arrow-down';
@@ -12,11 +13,12 @@ const taskTypeIconName = task =>
   task.type === 'PICKUP' ? pickupIconName : dropOffIconName;
 
 export {
+  commentsIconName,
   doingIconName,
   doneIconName,
+  dropOffIconName,
   failedIconName,
   incidentIconName,
   pickupIconName,
-  dropOffIconName,
   taskTypeIconName,
 };
