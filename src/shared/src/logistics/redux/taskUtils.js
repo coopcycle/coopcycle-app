@@ -56,7 +56,7 @@ export function groupLinkedTasks(tasks) {
   });
 }
 
-function withLinkedTasks(task, allTasks) {
+export function withLinkedTasks(task, allTasks) {
   const groups = groupLinkedTasks(allTasks);
   const newTasks = [];
 

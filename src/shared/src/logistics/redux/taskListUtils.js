@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+import { withLinkedTasks } from './taskUtils';
 
 export function replaceItemsWithItemIds(taskList) {
   let entity = {
@@ -27,9 +28,25 @@ export function createTempTaskList(username, items = []) {
   };
 }
 
-export function tasksListsToEdit(selectedTasks) {
-  const ordersByTaskList = selectedTasks.orders || {};
-  const tasksByTaskList = selectedTasks.tasks || {};
-    
-  return {...ordersByTaskList, ...tasksByTaskList}
+export function withLinkedTasksForTaskList(orders, allTaskLists) {
+  return Object.keys(orders).reduce((acc, taskListId) => {
+    const tasks = orders[taskListId];
+    const taskList = allTaskLists.find(
+      _taskList => _taskList['@id'] === taskListId,
+    );
+    acc[taskListId] = _.flatMap(tasks, task =>
+      withLinkedTasks(task, taskList.items),
+    );
+    return acc;
+  }, {});
+}
+
+export function tasksListsToEdit(selectedTasks, allTaskLists) {
+  const ordersByTaskList = withLinkedTasksForTaskList(
+    selectedTasks.orders,
+    allTaskLists,
+  );
+  const tasksByTaskList = selectedTasks.tasks;
+
+  return { ...ordersByTaskList, ...tasksByTaskList };
 }
