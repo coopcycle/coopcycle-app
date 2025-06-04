@@ -1,6 +1,6 @@
 name: Build iOS
 run-name: >
-  Upload to App Store ${{ inputs.tag }}
+  Upload to App Store ${{ inputs.tag }} ${{ inputs.app_selection }}
 on:
   workflow_dispatch:
     inputs:
