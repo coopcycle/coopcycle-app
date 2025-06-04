@@ -4,6 +4,7 @@ import {
   withLinkedTasksForTaskList,
 } from '../taskListUtils.js';
 
+
 const getTask = (id, previous = null) => {
   return {
     '@id': `/api/tasks/${id}`,
@@ -11,6 +12,7 @@ const getTask = (id, previous = null) => {
     previous: previous ? `/api/tasks/${previous}` : null,
   };
 };
+
 const getTaskList = (id, items) => {
   return {
     '@id': `/api/task_lists/${id}`,
@@ -18,6 +20,25 @@ const getTaskList = (id, items) => {
     items: items,
   };
 };
+
+const allTasks = [
+  getTask(0),
+  getTask(1),
+  getTask(2, 1),
+  getTask(3),
+  getTask(4, 3),
+  getTask(5, 4),
+  getTask(6, 5),
+  getTask(7, 6),
+];
+
+const allTaskLists = [
+  getTaskList(1, []),
+  getTaskList(2, [allTasks[0]]),
+  getTaskList(3, [allTasks[1], allTasks[2]]),
+  getTaskList(4, [allTasks[3], allTasks[4], allTasks[5]]),
+  getTaskList(5, [allTasks[6], allTasks[7]]),
+];
 
 describe('taskListUtils', () => {
   describe('replaceItemsWithItemIds', () => {
@@ -39,13 +60,6 @@ describe('taskListUtils', () => {
     });
   });
   describe('withLinkedTasksForTaskList', () => {
-    const allTaskLists = [
-      getTaskList(1, []),
-      getTaskList(2, [getTask(1)]),
-      getTaskList(3, [getTask(2), getTask(3, 2)]),
-      getTaskList(4, [getTask(4), getTask(5, 4), getTask(6, 5)]),
-      getTaskList(5, [getTask(7, 1), getTask(8, 7)]),
-    ];
     it('should retun an empty object if no orders selected', () => {
       const orders = {};
       let result = withLinkedTasksForTaskList(orders, allTaskLists);
@@ -54,55 +68,48 @@ describe('taskListUtils', () => {
     });
     it('should retun an object with tasks for taskLists with no related tasks', () => {
       const orders = {
-        '/api/task_lists/2': [getTask(1)],
+        '/api/task_lists/2': [allTasks[0]],
       };
       let result = withLinkedTasksForTaskList(orders, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/2': [getTask(1)],
+        '/api/task_lists/2': [allTasks[0]],
       });
     });
     it('should retun an object with tasks for one taskLists with related tasks', () => {
       const orders = {
-        '/api/task_lists/4': [getTask(5)],
+        '/api/task_lists/4': [allTasks[4]],
       };
       let result = withLinkedTasksForTaskList(orders, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/4': [getTask(4), getTask(5, 4), getTask(6, 5)],
+        '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
       });
     });
     it('should retun an object with tasks for two taskLists with related tasks', () => {
       const orders = {
-        '/api/task_lists/3': [getTask(3)],
-        '/api/task_lists/4': [getTask(5)],
+        '/api/task_lists/3': [allTasks[2]],
+        '/api/task_lists/4': [allTasks[4]],
       };
       let result = withLinkedTasksForTaskList(orders, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/3': [getTask(2), getTask(3, 2)],
-        '/api/task_lists/4': [getTask(4), getTask(5, 4), getTask(6, 5)],
+        '/api/task_lists/3': [allTasks[1], allTasks[2]],
+        '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
       });
     });
     it('should retun an object with tasks for taskLists with related tasks in other taskList', () => {
       const orders = {
-        '/api/task_lists/5': [getTask(7)],
+        '/api/task_lists/5': [allTasks[6]],
       };
       let result = withLinkedTasksForTaskList(orders, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/5': [getTask(7, 1), getTask(8, 7)],
+        '/api/task_lists/5': [allTasks[6], allTasks[7]],
       });
     });
   });
   describe('getTasksListsToEdit', () => {
-    const allTaskLists = [
-      getTaskList(1, []),
-      getTaskList(2, [getTask(1)]),
-      getTaskList(3, [getTask(2), getTask(3, 2)]),
-      getTaskList(4, [getTask(4), getTask(5, 4), getTask(6, 5)]),
-      getTaskList(5, [getTask(7, 1), getTask(8, 7)]),
-    ];
     it('should retun an empty object when nothing has been selected', () => {
       const selectedTasks = {
         orders: {},
@@ -117,86 +124,86 @@ describe('taskListUtils', () => {
       const selectedTasks = {
         orders: {},
         tasks: {
-          '/api/task_lists/1': [getTask(1), getTask(2)],
+          '/api/task_lists/1': [allTasks[0], allTasks[1]],
         },
       };
 
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/1': [getTask(1), getTask(2)],
+        '/api/task_lists/1': [allTasks[0], allTasks[1]],
       });
     });
     it('should retun an object with tasks order by taskLists', () => {
       const selectedTasks = {
         orders: {},
         tasks: {
-          '/api/task_lists/1': [getTask(1), getTask(2)],
-          '/api/task_lists/2': [getTask(3), getTask(4)],
-          '/api/task_lists/3': [getTask(5), getTask(6), getTask(7)],
+          '/api/task_lists/1': [allTasks[0], allTasks[1]],
+          '/api/task_lists/2': [allTasks[2], allTasks[3]],
+          '/api/task_lists/3': [allTasks[4], allTasks[5], allTasks[6]],
         },
       };
 
       let result = getTasksListsToEdit(selectedTasks);
 
       expect(result).toEqual({
-        '/api/task_lists/1': [getTask(1), getTask(2)],
-        '/api/task_lists/2': [getTask(3), getTask(4)],
-        '/api/task_lists/3': [getTask(5), getTask(6), getTask(7)],
+        '/api/task_lists/1': [allTasks[0], allTasks[1]],
+        '/api/task_lists/2': [allTasks[2], allTasks[3]],
+        '/api/task_lists/3': [allTasks[4], allTasks[5], allTasks[6]],
       });
     });
     it('should retun an object with several orders tasks by taskLists with related tasks', () => {
       const selectedTasks = {
         orders: {
-          '/api/task_lists/3': [getTask(3)],
-          '/api/task_lists/4': [getTask(5)],
+          '/api/task_lists/3': [allTasks[2]],
+          '/api/task_lists/4': [allTasks[4]],
         },
         tasks: {},
       };
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/3': [getTask(2), getTask(3, 2)],
-        '/api/task_lists/4': [getTask(4), getTask(5, 4), getTask(6, 5)],
+        '/api/task_lists/3': [allTasks[1], allTasks[2]],
+        '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
       });
     });
     it('should retun an object with several orders tasks by taskLists with related tasks and tasks', () => {
       const selectedTasks = {
         orders: {
-          '/api/task_lists/3': [getTask(3)],
-          '/api/task_lists/4': [getTask(5)],
+          '/api/task_lists/3': [allTasks[2]],
+          '/api/task_lists/4': [allTasks[4]],
         },
         tasks: {
-          '/api/task_lists/2': [getTask(1)],
-          '/api/task_lists/5': [getTask(8)],
+          '/api/task_lists/2': [allTasks[0]],
+          '/api/task_lists/5': [allTasks[7]],
         },
       };
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/2': [getTask(1)],
-        '/api/task_lists/3': [getTask(2), getTask(3, 2)],
-        '/api/task_lists/4': [getTask(4), getTask(5, 4), getTask(6, 5)],
-        '/api/task_lists/5': [getTask(8)],
+        '/api/task_lists/2': [allTasks[0]],
+        '/api/task_lists/3': [allTasks[1], allTasks[2]],
+        '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
+        '/api/task_lists/5': [allTasks[7]],
       });
     });
     it('should retun an object with several tasks by taskLists with related tasks and tasks for the same taskList', () => {
       const selectedTasks = {
         orders: {
-          '/api/task_lists/3': [getTask(3)],
-          '/api/task_lists/4': [getTask(5)],
+          '/api/task_lists/3': [allTasks[2]],
+          '/api/task_lists/4': [allTasks[4]],
         },
         tasks: {
-          '/api/task_lists/2': [getTask(1)],
-          '/api/task_lists/4': [getTask(6)],
+          '/api/task_lists/2': [allTasks[0]],
+          '/api/task_lists/4': [allTasks[5]],
         },
       };
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
-        '/api/task_lists/2': [getTask(1)],
-        '/api/task_lists/3': [getTask(2), getTask(3, 2)],
-        '/api/task_lists/4': [getTask(4), getTask(5, 4), getTask(6, 5)],
+        '/api/task_lists/2': [allTasks[0]],
+        '/api/task_lists/3': [allTasks[1], allTasks[2]],
+        '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
       });
     });
   });
