@@ -2,21 +2,21 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, View } from 'native-base';
 import { useRef, useState } from 'react';
 import {
-  //LayoutAnimation,
-  //Platform,
   Pressable,
   SectionList,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
-import TaskList from '../../../components/TaskList';
-import { navigateToTask } from '../../../navigation/utils';
-import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
-import { selectTasksWithColor } from '../../../shared/logistics/redux';
-import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { darkRedColor, lightGreyColor, whiteColor } from '../../../styles/common';
+import { getTasksListIdsToEdit } from '../../../shared/src/logistics/redux/taskListUtils';
+import { navigateToTask } from '../../../navigation/utils';
+import { selectTasksWithColor } from '../../../shared/logistics/redux';
+import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
+import TaskList from '../../../components/TaskList';
+import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 
 export default function GroupedTasks({
@@ -99,15 +99,28 @@ export default function GroupedTasks({
   };
 
   const handleBulkAssignButtonPress = (selectedTasks) => {
-  navigation.navigate('DispatchPickUser', {
-    onItemPress: user => {
-      _onSelectNewAssignation(async () => {
-        await bulkEditTasks(selectedTasks, user);
-        bulkEditTasksFloatingButtonRef.current?.clearSelectedTasks();
-      })
-    }
-  });
-};
+    const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
+    const showUnassignButton = (
+      tasksListIdsToEdit.length > 0 &&
+      tasksListIdsToEdit.some(id => id !== UNASSIGNED_TASKS_LIST_ID)
+    );
+
+    navigation.navigate('DispatchPickUser', {
+      onItemPress: user => {
+        _onSelectNewAssignation(async () => {
+          await bulkEditTasks(selectedTasks, user);
+          bulkEditTasksFloatingButtonRef.current?.clearSelectedTasks();
+        })
+      },
+      showUnassignButton,
+      onUnassignButtonPress: () => {
+        _onSelectNewAssignation(async () => {
+          await bulkEditTasks(selectedTasks);
+          bulkEditTasksFloatingButtonRef.current?.clearSelectedTasks();
+        })
+      },
+    });
+  };
 
   const allowToSelect = task => {
     return task.status !== 'DONE';
