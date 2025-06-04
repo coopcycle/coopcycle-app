@@ -52,3 +52,10 @@ export function getTasksListsToEdit(selectedTasks, allTaskLists) {
     return _.uniqBy([... (orders || []), ...(tasks || [])], '@id')
   });
 }
+
+export function getTasksListIdsToEdit(selectedTasks) {
+  const ordersTasksListIds = Object.keys(selectedTasks.orders);
+  const tasksTasksListIds = Object.keys(selectedTasks.tasks);
+
+  return _.uniq([... ordersTasksListIds, ...tasksTasksListIds])
+}

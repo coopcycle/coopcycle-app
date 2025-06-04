@@ -1,4 +1,7 @@
+import _ from 'lodash';
+
 import {
+  getTasksListIdsToEdit,
   getTasksListsToEdit,
   replaceItemsWithItemIds,
   withLinkedTasksForTaskList,
@@ -39,6 +42,16 @@ const allTaskLists = [
   getTaskList(4, [allTasks[3], allTasks[4], allTasks[5]]),
   getTaskList(5, [allTasks[6], allTasks[7]]),
 ];
+
+function normalizeTasksListIdsToEdit(tasksListIdsToEdit) {
+  return Object.keys(tasksListIdsToEdit).reduce(
+    (res, key) => {
+      res[key] = _.sortBy([...tasksListIdsToEdit[key]], '@id');
+      return res;
+    },
+    {}
+  );
+}
 
 describe('taskListUtils', () => {
   describe('replaceItemsWithItemIds', () => {
@@ -118,7 +131,7 @@ describe('taskListUtils', () => {
 
       const result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
-      expect(result).toEqual({});
+      expect(normalizeTasksListIdsToEdit(result)).toEqual({});
     });
     it('should retun an object with tasks of just one taskLists', () => {
       const selectedTasks = {
@@ -130,9 +143,9 @@ describe('taskListUtils', () => {
 
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
-      expect(result).toEqual({
+      expect(normalizeTasksListIdsToEdit(result)).toEqual(normalizeTasksListIdsToEdit({
         '/api/task_lists/1': [allTasks[0], allTasks[1]],
-      });
+      }));
     });
     it('should retun an object with tasks order by taskLists', () => {
       const selectedTasks = {
@@ -146,11 +159,11 @@ describe('taskListUtils', () => {
 
       let result = getTasksListsToEdit(selectedTasks);
 
-      expect(result).toEqual({
+      expect(normalizeTasksListIdsToEdit(result)).toEqual(normalizeTasksListIdsToEdit({
         '/api/task_lists/1': [allTasks[0], allTasks[1]],
         '/api/task_lists/2': [allTasks[2], allTasks[3]],
         '/api/task_lists/3': [allTasks[4], allTasks[5], allTasks[6]],
-      });
+      }));
     });
     it('should retun an object with several orders tasks by taskLists with related tasks', () => {
       const selectedTasks = {
@@ -162,10 +175,10 @@ describe('taskListUtils', () => {
       };
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
-      expect(result).toEqual({
+      expect(normalizeTasksListIdsToEdit(result)).toEqual(normalizeTasksListIdsToEdit({
         '/api/task_lists/3': [allTasks[1], allTasks[2]],
         '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
-      });
+      }));
     });
     it('should retun an object with several orders tasks by taskLists with related tasks and tasks', () => {
       const selectedTasks = {
@@ -180,12 +193,12 @@ describe('taskListUtils', () => {
       };
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
-      expect(result).toEqual({
+      expect(normalizeTasksListIdsToEdit(result)).toEqual(normalizeTasksListIdsToEdit({
         '/api/task_lists/2': [allTasks[0]],
         '/api/task_lists/3': [allTasks[1], allTasks[2]],
         '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
         '/api/task_lists/5': [allTasks[7]],
-      });
+      }));
     });
     it('should retun an object with several tasks by taskLists with related tasks and tasks for the same taskList', () => {
       const selectedTasks = {
@@ -200,11 +213,61 @@ describe('taskListUtils', () => {
       };
       let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
-      expect(result).toEqual({
+      expect(normalizeTasksListIdsToEdit(result)).toEqual(normalizeTasksListIdsToEdit({
         '/api/task_lists/2': [allTasks[0]],
         '/api/task_lists/3': [allTasks[1], allTasks[2]],
         '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
-      });
+      }));
     });
   });
+  describe('getTasksListIdsToEdit', () => {
+    it('should return empty list for empty selected tasks', () => {
+      const selectedTasks = {
+        orders: {},
+        tasks: {},
+      };
+      let result = getTasksListIdsToEdit(selectedTasks);
+
+      expect(result).toEqual([]);
+    })
+    it('should return the union list for selected tasks with different task lists', () => {
+      const selectedTasks = {
+        orders: {
+          '/api/task_lists/3': [allTasks[2]],
+          '/api/task_lists/4': [allTasks[4]],
+        },
+        tasks: {
+          '/api/task_lists/2': [allTasks[0]],
+          '/api/task_lists/5': [allTasks[6]],
+        },
+      };
+      let result = getTasksListIdsToEdit(selectedTasks);
+
+      expect(result.sort()).toEqual([
+        '/api/task_lists/2',
+        '/api/task_lists/3',
+        '/api/task_lists/4',
+        '/api/task_lists/5',
+      ].sort());
+    })
+    it('should return the union list for selected tasks with orders and tasks selected for the same task lists', () => {
+      const selectedTasks = {
+        orders: {
+          '/api/task_lists/3': [allTasks[2]],
+          '/api/task_lists/4': [allTasks[4]],
+        },
+        tasks: {
+          '/api/task_lists/2': [allTasks[0]],
+          '/api/task_lists/4': [allTasks[5]],
+        },
+      };
+      let result = getTasksListIdsToEdit(selectedTasks);
+
+      expect(result.sort()).toEqual([
+        '/api/task_lists/2',
+        '/api/task_lists/3',
+        '/api/task_lists/4',
+      ].sort());
+    })
+  })
 });
