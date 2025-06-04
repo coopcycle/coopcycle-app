@@ -48,5 +48,7 @@ export function tasksListsToEdit(selectedTasks, allTaskLists) {
   );
   const tasksByTaskList = selectedTasks.tasks;
 
-  return { ...ordersByTaskList, ...tasksByTaskList };
+  return _.mergeWith(ordersByTaskList, tasksByTaskList, (orders, tasks) => {
+    return _.uniqBy([... (orders || []), ...(tasks || [])], '@id')
+  });
 }
