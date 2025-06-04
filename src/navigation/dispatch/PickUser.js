@@ -20,7 +20,7 @@ class PickUser extends Component {
         style={styles.item}>
         <Avatar baseURL={this.props.baseURL} username={user.username} />
         <Text style={styles.itemText}>
-          {user.username ? user.username : 'unassign'}
+          {user.username}
         </Text>
         <Icon as={FontAwesome} name="arrow-right" size="sm" />
       </TouchableOpacity>
@@ -28,15 +28,23 @@ class PickUser extends Component {
   }
 
   render() {
-    const { users } = this.props;
+    const {
+      onItemPress,
+      onUnassignButtonPress,
+      selfAssign,
+      showUnassignButton,
+      t,
+      user,
+      users,
+    } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
-        {this.props.showUnassignButton && (
+        {showUnassignButton && (
           <TouchableOpacity
             style={styles.unassignButton}
-            onPress={() => this.props.onUnassignButtonPress()}>
-            <Text style={styles.buttonText}>{this.props.t('DISPATCH_UNASSIGN')}</Text>
+            onPress={() => onUnassignButtonPress()}>
+            <Text style={styles.buttonText}>{t('DISPATCH_UNASSIGN')}</Text>
           </TouchableOpacity>
         )}
         <FlatList
@@ -45,11 +53,11 @@ class PickUser extends Component {
           renderItem={({ item, index }) => this.renderItem(item, index)}
           ItemSeparatorComponent={ItemSeparatorComponent}
         />
-        {this.props.selfAssign && (
+        {selfAssign && (
           <TouchableOpacity
             style={styles.assignToMeButton}
-            onPress={() => this.props.onItemPress(this.props.user)}>
-            <Text style={styles.buttonText}>{this.props.t('DISPATCH_ASSIGN_TO_ME')}</Text>
+            onPress={() => onItemPress(user)}>
+            <Text style={styles.buttonText}>{t('DISPATCH_ASSIGN_TO_ME')}</Text>
           </TouchableOpacity>
         )}
       </View>
