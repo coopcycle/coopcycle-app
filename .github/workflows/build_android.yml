@@ -2,8 +2,7 @@ name: Build Android
 run-name: >
   ${{ inputs.deploy_google_play && 'Upload to Google Play' || 'Build' }}
   ${{ inputs.deploy_google_play && inputs.google_play_track || '' }}
-  ${{ inputs.tag }}
-  ${{ inputs.app_selection }}
+  ${{ inputs.tag }}; ${{ inputs.app_selection }}
 on:
   workflow_dispatch:
     inputs:
