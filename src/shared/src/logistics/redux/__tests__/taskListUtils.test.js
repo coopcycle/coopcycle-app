@@ -1,8 +1,8 @@
 import {
+  getTasksListsToEdit,
   replaceItemsWithItemIds,
   withLinkedTasksForTaskList,
 } from '../taskListUtils.js';
-import { tasksListsToEdit } from '../taskListUtils.js';
 
 const getTask = (id, previous = null) => {
   return {
@@ -95,7 +95,7 @@ describe('taskListUtils', () => {
       });
     });
   });
-  describe('tasksListsToEdit', () => {
+  describe('getTasksListsToEdit', () => {
     const allTaskLists = [
       getTaskList(1, []),
       getTaskList(2, [getTask(1)]),
@@ -109,7 +109,7 @@ describe('taskListUtils', () => {
         tasks: {},
       };
 
-      const result = tasksListsToEdit(selectedTasks, allTaskLists);
+      const result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({});
     });
@@ -121,7 +121,7 @@ describe('taskListUtils', () => {
         },
       };
 
-      let result = tasksListsToEdit(selectedTasks, allTaskLists);
+      let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
         '/api/task_lists/1': [getTask(1), getTask(2)],
@@ -137,7 +137,7 @@ describe('taskListUtils', () => {
         },
       };
 
-      let result = tasksListsToEdit(selectedTasks);
+      let result = getTasksListsToEdit(selectedTasks);
 
       expect(result).toEqual({
         '/api/task_lists/1': [getTask(1), getTask(2)],
@@ -153,7 +153,7 @@ describe('taskListUtils', () => {
         },
         tasks: {},
       };
-      let result = tasksListsToEdit(selectedTasks, allTaskLists);
+      let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
         '/api/task_lists/3': [getTask(2), getTask(3, 2)],
@@ -171,7 +171,7 @@ describe('taskListUtils', () => {
           '/api/task_lists/5': [getTask(8)],
         },
       };
-      let result = tasksListsToEdit(selectedTasks, allTaskLists);
+      let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
         '/api/task_lists/2': [getTask(1)],
@@ -191,7 +191,7 @@ describe('taskListUtils', () => {
           '/api/task_lists/4': [getTask(6)],
         },
       };
-      let result = tasksListsToEdit(selectedTasks, allTaskLists);
+      let result = getTasksListsToEdit(selectedTasks, allTaskLists);
 
       expect(result).toEqual({
         '/api/task_lists/2': [getTask(1)],

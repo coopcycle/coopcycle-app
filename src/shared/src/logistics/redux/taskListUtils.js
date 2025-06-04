@@ -41,7 +41,7 @@ export function withLinkedTasksForTaskList(orders, allTaskLists) {
   }, {});
 }
 
-export function tasksListsToEdit(selectedTasks, allTaskLists) {
+export function getTasksListsToEdit(selectedTasks, allTaskLists) {
   const ordersByTaskList = withLinkedTasksForTaskList(
     selectedTasks.orders,
     allTaskLists,
