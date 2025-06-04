@@ -15,6 +15,7 @@ import {
   withAssignedLinkedTasks,
   withUnassignedLinkedTasks,
 } from "../taskUtils";
+import { getTasksListsToEdit } from '../taskListUtils';
 import {
   selectAllTasks,
   selectAllTours,
@@ -31,6 +32,8 @@ import {
   updateTaskListsSuccess,
   updateTourSuccess,
 } from '../actions';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants';
+import { selectUnassignedTasksNotCancelled } from '../../../../../redux/Dispatch/selectors';
 
 
 export default function useSetTaskListItems(
@@ -106,14 +109,43 @@ export default function useSetTaskListItems(
     return _updateAssigningItems(allItemsToAssign, user);
   }
 
-  // Assign more than one task to rider 
-  const bulkAssignTasks = (tasks, user) => {
-  const userItemIds = getTaskListItemIds(user.username, allTaskLists);
-  const taskIds = tasks.map(task => task['@id']);
-  const allItemsToAssign = [...userItemIds, ...taskIds];
+  const assignTasks = (tasks, user) => {
+    const userItemIds = getTaskListItemIds(user.username, allTaskLists);
+    const itemsToAssignIds = tasks.map(task => task['@id']);
+    const allItemsToAssign = _.uniq([...userItemIds, ...itemsToAssignIds]);
 
-  return _updateAssigningItems(allItemsToAssign, user);
-};
+    return _updateAssigningItems(allItemsToAssign, user);
+  }
+
+  /**
+   * Edit several tasks at once (and also their linked tasks)
+   * @param {Array.Objects} tasks - Task to be un/assigned
+   * @param {User} user - User of the rider to which we assign
+   */
+  const bulkEditTasks = async(selectedTasks, user) => {
+    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTaskLists);
+
+    const taskListToUnassign = {...taskListToEdit};
+    if (user) {
+      const userTaskList = allTaskLists.find(taskList => taskList.username === user.username);
+      if (userTaskList) {
+        delete taskListToUnassign[userTaskList['@id']];
+      }
+    }
+    delete taskListToUnassign[UNASSIGNED_TASKS_LIST_ID];
+
+    const unassignResolve = await Promise.all(
+      Object.values(taskListToUnassign).map(tasksToUnassign => unassignTasks(tasksToUnassign))
+    );
+
+    if(!user) {
+      return unassignResolve;
+    }
+
+    const tasksToAssign = _.flatten(Object.values(taskListToEdit));
+
+    return assignTasks(tasksToAssign, user);
+  };
 
   /**
    * Assign a task and its related tasks to rider
@@ -136,23 +168,6 @@ export default function useSetTaskListItems(
   }
 
   /**
-   * Assign several tasks at once (and also their linked tasks)
-   * @param {Array.Objects} tasks - Task to be assigned
-   * @param {User} user - User of the rider to which we assign
-   */
-  const bulkAssignTasksWithRelatedTasks = (tasks, user) => {
-    const userItemIds = getTaskListItemIds(user.username, allTaskLists);
-    const tasksWithLinkedTasks = _.uniqBy(
-      _.flatMap(tasks.map(task => withUnassignedLinkedTasks(task, allTasks))),
-      '@id',
-    );
-    const tasksWithLinkedTaskIds = tasksWithLinkedTasks.map(item => item['@id']);
-    const allItemsToAssign = [...userItemIds, ...tasksWithLinkedTaskIds];
-
-    return _updateAssigningItems(allItemsToAssign, user);
-  }
-
-  /**
    * Unassign just one task
    * @param {Task} task - Task to be unassigned
    */
@@ -160,6 +175,24 @@ export default function useSetTaskListItems(
     const user = { username: task.assignedTo };
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
     const itemsToUnassignIds = [task['@id']];
+    const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
+    const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
+
+    return _updateUnassigningItems(allItemIdsToAssign, user, itemsToUnassignIds);
+  }
+
+  /**
+   * Unassign tasks from a courier
+   * @param {Array} tasks - Tasks to be unassigned
+   */
+  const unassignTasks = (tasks) => {
+    if (tasks.length === 0) {
+      return Promise.resolve();
+    }
+
+    const user = { username: tasks[0].assignedTo };
+    const userItemIds = getTaskListItemIds(user.username, allTaskLists);
+    const itemsToUnassignIds = tasks.map(task => task['@id']);
     const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
     const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
 
@@ -260,15 +293,14 @@ export default function useSetTaskListItems(
   const _updateRemovedTasks = (removedTasks) => {
     const itemIdsSet = new Set(removedTasks);
     const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
-    const unassignedTasks = tasks.map(task => getAssignedTask(task));
-    dispatch(unassignTasksSuccess(unassignedTasks));
+    const newUnassignedTasks = tasks.map(task => getAssignedTask(task));
+    dispatch(unassignTasksSuccess(newUnassignedTasks));
   }
 
   return {
     assignTask,
-    bulkAssignTasks,
+    bulkEditTasks,
     assignTaskWithRelatedTasks,
-    bulkAssignTasksWithRelatedTasks,
     isError,
     isLoading,
     isSuccess,

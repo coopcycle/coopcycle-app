@@ -22,6 +22,7 @@ import {
   mediumGreyColor,
   whiteColor
 } from '../../styles/common';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
 import AddButton from './components/AddButton';
 
 export default function AllTasks({
@@ -54,9 +55,9 @@ export default function AllTasks({
       backgroundColor: whiteColor,
       count: unassignedTasks.length,
       data: unassignedTasks,
-      id: 'unassignedTasksList',
+      id: UNASSIGNED_TASKS_LIST_ID,
       isUnassignedTaskList: true,
-      taskListId: 'unassignedTasksList',
+      taskListId: UNASSIGNED_TASKS_LIST_ID,
       textColor: darkGreyColor,
       title: t('DISPATCH_UNASSIGNED_TASKS'),
     },

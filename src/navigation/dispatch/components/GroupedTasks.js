@@ -36,14 +36,11 @@ export default function GroupedTasks({
   // Update tasks functions
   const {
     assignTask,
-    bulkAssignTasks,
+    bulkEditTasks,
     assignTaskWithRelatedTasks,
-    bulkAssignTasksWithRelatedTasks,
-    // TODO bulk
     reassignTask,
     reassignTaskWithRelatedTasks,
     unassignTask,
-    //TODO unassignBulkTasks?
     unassignTaskWithRelatedTasks,
   } = useSetTaskListsItems();
 
@@ -104,10 +101,10 @@ export default function GroupedTasks({
   const handleBulkAssignButtonPress = (selectedTasks) => {
   navigation.navigate('DispatchPickUser', {
     onItemPress: user => {
-      // TODO create a function that lists all tasks in utils
-      bulkAssignTasksWithRelatedTasks(selectedTasks.orders, user)
-      bulkAssignTasks(selectedTasks.tasks, user)
-      navigation.navigate('DispatchAllTasks')
+      _onSelectNewAssignation(async () => {
+        await bulkEditTasks(selectedTasks, user);
+        bulkEditTasksFloatingButtonRef.current?.clearSelectedTasks();
+      })
     }
   });
 };
