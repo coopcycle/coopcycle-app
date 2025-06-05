@@ -40,10 +40,12 @@ export default function useSetTaskListItems(
   navigation,
 ) {
   const allTasks = useSelector(selectAllTasks);
+  const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const allTaskLists = useSelector(selectTaskLists);
   const allTours = useSelector(selectAllTours);
   const toursTasksIndex = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
+
 
   const dispatch = useDispatch();
 
@@ -123,8 +125,8 @@ export default function useSetTaskListItems(
    * @param {User} user - User of the rider to which we assign
    */
   const bulkEditTasks = async(selectedTasks, user) => {
-    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTaskLists);
-
+    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTaskLists, unassignedTasks);
+    console.log(' >>>>>>>>> taskListToEdit', JSON.stringify(taskListToEdit), true)
     const taskListToUnassign = {...taskListToEdit};
     if (user) {
       const userTaskList = allTaskLists.find(taskList => taskList.username === user.username);
@@ -133,7 +135,7 @@ export default function useSetTaskListItems(
       }
     }
     delete taskListToUnassign[UNASSIGNED_TASKS_LIST_ID];
-
+    console.log(' >>>>>>>>> taskListToUnassign', JSON.stringify(taskListToUnassign), true)
     const unassignResolve = await Promise.all(
       Object.values(taskListToUnassign).map(tasksToUnassign => unassignTasks(tasksToUnassign))
     );

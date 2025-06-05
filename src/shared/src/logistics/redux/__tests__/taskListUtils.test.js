@@ -33,6 +33,9 @@ const allTasks = [
   getTask(5, 4),
   getTask(6, 5),
   getTask(7, 6),
+  getTask(8),
+  getTask(9, 8),
+  getTask(10, 9)
 ];
 
 const allTaskLists = [
@@ -41,7 +44,13 @@ const allTaskLists = [
   getTaskList(3, [allTasks[1], allTasks[2]]),
   getTaskList(4, [allTasks[3], allTasks[4], allTasks[5]]),
   getTaskList(5, [allTasks[6], allTasks[7]]),
+  getTaskList(6, [allTasks[8]]),
+  getTaskList(7, [allTasks[9]]),
 ];
+
+const unassignedTasks = [
+  allTasks[7]
+]
 
 function normalizeTasksListIdsToEdit(tasksListIdsToEdit) {
   return Object.keys(tasksListIdsToEdit).reduce(
@@ -73,13 +82,13 @@ describe('taskListUtils', () => {
     });
   });
   describe('withLinkedTasksForTaskList', () => {
-    it('should retun an empty object if no orders selected', () => {
+    it('should return an empty object if no orders selected', () => {
       const orders = {};
       let result = withLinkedTasksForTaskList(orders, allTaskLists);
 
       expect(result).toEqual({});
     });
-    it('should retun an object with tasks for taskLists with no related tasks', () => {
+    it('should return an object with tasks for taskLists with no related tasks', () => {
       const orders = {
         '/api/task_lists/2': [allTasks[0]],
       };
@@ -89,7 +98,7 @@ describe('taskListUtils', () => {
         '/api/task_lists/2': [allTasks[0]],
       });
     });
-    it('should retun an object with tasks for one taskLists with related tasks', () => {
+    it('should return an object with tasks for one taskLists with related tasks', () => {
       const orders = {
         '/api/task_lists/4': [allTasks[4]],
       };
@@ -99,7 +108,7 @@ describe('taskListUtils', () => {
         '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
       });
     });
-    it('should retun an object with tasks for two taskLists with related tasks', () => {
+    it('should return an object with tasks for two taskLists with related tasks', () => {
       const orders = {
         '/api/task_lists/3': [allTasks[2]],
         '/api/task_lists/4': [allTasks[4]],
@@ -111,7 +120,7 @@ describe('taskListUtils', () => {
         '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
       });
     });
-    it('should retun an object with tasks for taskLists with related tasks in other taskList', () => {
+    it('should return an object with tasks for taskLists with related tasks in other taskList', () => {
       const orders = {
         '/api/task_lists/5': [allTasks[6]],
       };
@@ -121,9 +130,21 @@ describe('taskListUtils', () => {
         '/api/task_lists/5': [allTasks[6], allTasks[7]],
       });
     });
+    it('should return an object with tasks for taskList including unassigned', () => {
+      const orders = {
+        '/api/task_lists/6': [allTasks[8]],
+      };
+      let result = withLinkedTasksForTaskList(orders, allTaskLists, unassignedTasks);
+
+      expect(result).toEqual({
+        'UNASSIGNED_TASKS_LIST' : [allTasks[7]],
+        '/api/task_lists/6': [allTasks[8]],
+        '/api/task_lists/7': [allTasks[9]],
+      });
+    });
   });
   describe('getTasksListsToEdit', () => {
-    it('should retun an empty object when nothing has been selected', () => {
+    it('should return an empty object when nothing has been selected', () => {
       const selectedTasks = {
         orders: {},
         tasks: {},
@@ -133,7 +154,7 @@ describe('taskListUtils', () => {
 
       expect(normalizeTasksListIdsToEdit(result)).toEqual({});
     });
-    it('should retun an object with tasks of just one taskLists', () => {
+    it('should return an object with tasks of just one taskLists', () => {
       const selectedTasks = {
         orders: {},
         tasks: {
@@ -147,7 +168,7 @@ describe('taskListUtils', () => {
         '/api/task_lists/1': [allTasks[0], allTasks[1]],
       }));
     });
-    it('should retun an object with tasks order by taskLists', () => {
+    it('should return an object with tasks order by taskLists', () => {
       const selectedTasks = {
         orders: {},
         tasks: {
@@ -165,7 +186,7 @@ describe('taskListUtils', () => {
         '/api/task_lists/3': [allTasks[4], allTasks[5], allTasks[6]],
       }));
     });
-    it('should retun an object with several orders tasks by taskLists with related tasks', () => {
+    it('should return an object with several orders tasks by taskLists with related tasks', () => {
       const selectedTasks = {
         orders: {
           '/api/task_lists/3': [allTasks[2]],
@@ -180,7 +201,7 @@ describe('taskListUtils', () => {
         '/api/task_lists/4': [allTasks[3], allTasks[4], allTasks[5]],
       }));
     });
-    it('should retun an object with several orders tasks by taskLists with related tasks and tasks', () => {
+    it('should return an object with several orders tasks by taskLists with related tasks and tasks', () => {
       const selectedTasks = {
         orders: {
           '/api/task_lists/3': [allTasks[2]],
@@ -200,7 +221,7 @@ describe('taskListUtils', () => {
         '/api/task_lists/5': [allTasks[7]],
       }));
     });
-    it('should retun an object with several tasks by taskLists with related tasks and tasks for the same taskList', () => {
+    it('should return an object with several tasks by taskLists with related tasks and tasks for the same taskList', () => {
       const selectedTasks = {
         orders: {
           '/api/task_lists/3': [allTasks[2]],
