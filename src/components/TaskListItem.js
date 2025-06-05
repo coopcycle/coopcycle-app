@@ -1,8 +1,4 @@
-import moment from 'moment';
 import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
   StyleSheet,
@@ -12,17 +8,22 @@ import {
   useColorScheme,
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
+import { withTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import {
-blackColor,
-greyColor,
-redColor,
-whiteColor,
-yellowColor,
+  blackColor,
+  lightGreyColor,
+  redColor,
+  whiteColor,
+  yellowColor,
 } from '../styles/common';
 import {
+  commentsIconName,
   doingIconName,
   doneIconName,
   failedIconName,
@@ -30,18 +31,22 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 import { formatPrice } from '../utils/formatting';
-import { HOUR } from '../utils/dates';
+import { minutes } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
+import CoopcyleLogo from '../../assets/images/logo.svg';
 
+
+const cardBorderRadius = 2.5;
 
 const styles = StyleSheet.create({
   text: {
     fontSize: 14,
   },
   textBold: {
-    marginLeft: -8,
     fontSize: 14,
     fontWeight: 700,
+    marginLeft: -8,
+    overflow: 'hidden',
   },
   textDanger: {
     color: redColor,
@@ -75,6 +80,67 @@ const styles = StyleSheet.create({
   },
 });
 
+function getOrderId(task) {
+  const id = task.metadata?.delivery_position
+    ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
+    : task.metadata.order_number;
+
+  return id;
+}
+
+const OrderInfo = ({task, color, width}) => {
+  const isDefaultColor = color === '#ffffff';
+  const backgroundColor = isDefaultColor ? lightGreyColor : color;
+  const textColor = isDefaultColor ? blackColor : whiteColor;
+  const orderId = getOrderId(task);
+
+  return (
+    <ItemTouchable
+      onPress={() => console.log("order info pressed")}
+      style={{
+        alignItems: 'center',
+        backgroundColor,
+        borderBottomLeftRadius: cardBorderRadius,
+        borderTopLeftRadius: cardBorderRadius,
+        gap: 12,
+        height: '100%',
+        justifyContent: 'center',
+        width,
+      }}>
+      { orderId
+      ? (
+        <>
+          <Text
+            style={{
+              color: textColor,
+              fontSize: 24,
+              fontWeight: 700,
+              lineHeight: 24,
+            }}>
+            {orderId}
+          </Text>
+          {task.metadata.order_total && (
+            <Text
+              style={{
+                color: textColor,
+                fontSize: 15,
+                fontWeight: 700,
+                lineHeight: 15,
+              }}>
+              {formatPrice(task.metadata.order_total)}
+            </Text>
+          )}
+        </>)
+        : (
+          <CoopcyleLogo
+            width={width * 0.5}
+            height={width * 0.5}
+          />
+        )}
+    </ItemTouchable>
+  )
+}
+
 const iconStyle = task => {
   const style = [styles.icon];
   if (task.status === 'FAILED') {
@@ -83,57 +149,6 @@ const iconStyle = task => {
 
   return style;
 };
-
-
-function getTaskOrderId(task) {
-  const id = task.metadata?.delivery_position
-    ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
-    : task.metadata.order_number;
-
-  return id;
-}
-
-const TaskId = ({task, color, width}) => {
-  const backgroundColor = color ? color : greyColor;
-  const textColor = color === '#ffffff' ? blackColor : whiteColor;
-  const taskId = task.metadata.order_number
-    ? getTaskOrderId(task)
-    : `#${task.id}`;
-
-  return (
-    <View
-      style={{
-        backgroundColor,
-        width,
-        height: '100%',
-        marginRight: 12,
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 12,
-      }}>
-      <Text
-        style={{
-          color: textColor,
-          fontSize: 24,
-          fontWeight: 700,
-          lineHeight: 24,
-        }}>
-        {taskId}
-      </Text>
-      {task.metadata?.order_total && (
-        <Text
-          style={{
-            color: textColor,
-            fontSize: 15,
-            fontWeight: 700,
-            lineHeight: 15,
-          }}>
-          {formatPrice(task.metadata.order_total)}
-        </Text>
-      )}
-    </View>
-  )
-}
 
 const TaskTypeIcon = ({ task }) => (
   <Icon
@@ -187,19 +202,23 @@ const TaskPriorityStatus = ({task}) => {
   const now = moment();
   const timeDifference = now.diff(task.doneBefore);
 
-  if (timeDifference < 4*HOUR) {
+  if (timeDifference < minutes(10)) {
     backgroundColor = '#FFC300';
   }
 
-  if (timeDifference < 2*HOUR) {
+  if (timeDifference < minutes(0)) {
     backgroundColor = '#B42205';
   }
 
   return (
     <Box
-      width={2}
-      height='100%'
-      backgroundColor={backgroundColor}
+      style={{
+        width: 6,
+        height: '100%',
+        backgroundColor: backgroundColor,
+        borderTopRightRadius: cardBorderRadius,
+        borderBottomRightRadius: cardBorderRadius,
+      }}
     />
   )
 }
@@ -208,16 +227,26 @@ const SwipeButtonContainer = ({
   backgroundColor,
   children,
   left,
-  onPress,
   right,
+  width,
   ...otherProps
 }) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
+  const borderRadiusLeft = left ? cardBorderRadius : 0;
+  const borderRadiusRight = right ? cardBorderRadius : 0;
 
   return (
     <TouchableOpacity
-      style={{ flex: 1, justifyContent: 'center', backgroundColor, alignItems }}
-      onPress={onPress}
+      style={{
+        alignItems,
+        backgroundColor,
+        justifyContent: 'center',
+        width,
+        borderTopLeftRadius: borderRadiusLeft,
+        borderBottomLeftRadius: borderRadiusLeft,
+        borderTopRightRadius: borderRadiusRight,
+        borderBottomRightRadius: borderRadiusRight,
+      }}
       {...otherProps}>
       {children}
     </TouchableOpacity>
@@ -231,13 +260,13 @@ const SwipeButton = ({ iconName, width }) => (
   </View>
 );
 
-const ItemTouchable = ({ children, ...otherProps }) => {
+const ItemTouchable = ({ children, style, ...otherProps }) => {
   const colorScheme = useColorScheme();
   const { colors } = useTheme();
 
   return (
     <TouchableHighlight
-      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}
+      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white', ...style }}
       underlayColor={
         colorScheme === 'dark' ? colors.gray['700'] : colors.gray['200']
       }
@@ -291,39 +320,69 @@ class TaskListItem extends Component {
       swipeOutLeftIconName,
       swipeOutRightBackgroundColor,
       swipeOutRightIconName,
+      t,
       task,
       taskListId,
     } = this.props;
 
+    const taskTitle = task.orgName
+      ? ( task.metadata.order_number
+        ? task.orgName
+        : `${task.orgName} - ${t('TASK_WITH_ID', { id: task.id })}`
+      )
+      : t('TASK_WITH_ID', { id: task.id });
+
+    const address = task.address?.contactName
+      ? (
+        task.address?.name
+          ? `${task.address.contactName} - ${task.address.name}`
+          : task.address.contactName
+      )
+      : (
+        task.address?.name
+        ? task.address.name
+        : null
+      );
+
     const taskTestId = `${taskListId}:task:${index}`;
-    const itemStyle = [];
     const textStyle = [styles.text];
     const itemProps = {};
+    const swipeButtonsProps = {};
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
       itemProps.opacity = 0.4;
+      swipeButtonsProps.display = 'none';
     }
 
     if (task.status === 'FAILED') {
       textStyle.push(styles.textDanger);
     }
 
+    const marginHorizontal = 6;
     const { width } = Dimensions.get('window');
-    const buttonWidth = width / 4;
+    const cardWidth = width - marginHorizontal * 2;
+    const buttonWidth = cardWidth / 4;
+    const visibleButtonWidth = buttonWidth + 25;
 
     return (
       <SwipeRow
         disableRightSwipe={disableRightSwipe}
         disableLeftSwipe={disableLeftSwipe}
         leftOpenValue={buttonWidth}
-        stopLeftSwipe={buttonWidth + 25}
-        rightOpenValue={buttonWidth * -1}
-        stopRightSwipe={(buttonWidth + 25) * -1}
+        stopLeftSwipe={visibleButtonWidth}
+        rightOpenValue={-buttonWidth}
+        stopRightSwipe={-visibleButtonWidth}
         onRowOpen={toValue => this._onRowOpen(toValue)}
         onRowClose={this._onRowClose}
         ref={this.swipeRow}
+        style={{
+          borderRadius: cardBorderRadius,
+          marginVertical: 1.5,
+          marginLeft: marginHorizontal,
+          marginRight:marginHorizontal,
+        }}
       >
-        <View style={styles.rowBack}>
+        <View style={{...styles.rowBack, ...swipeButtonsProps}}>
           <SwipeButtonContainer
             backgroundColor={swipeOutLeftBackgroundColor}
             left
@@ -331,9 +390,10 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               onPressLeft();
             }}
-            testID={`${taskTestId}:left`}>
+            testID={`${taskTestId}:left`}
+            width={visibleButtonWidth}>
             <SwipeButton
-              iconName={swipeOutLeftIconName || doneIconName}
+              iconName={swipeOutLeftIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
@@ -344,81 +404,116 @@ class TaskListItem extends Component {
               this.swipeRow.current.closeRow();
               onPressRight();
             }}
-            testID={`${taskTestId}:right`}>
+            testID={`${taskTestId}:right`}
+            width={visibleButtonWidth}>
             <SwipeButton
-              iconName={swipeOutRightIconName || incidentIconName}
+              iconName={swipeOutRightIconName}
               width={buttonWidth}
             />
           </SwipeButtonContainer>
         </View>
-        <ItemTouchable onPress={onPress} testID={taskTestId}>
-          <HStack
-            flex={1}
-            alignItems="stretch"
-            styles={itemStyle}
-            minHeight={buttonWidth}
-            {...itemProps}>
-            <TaskId
-              color={color}
-              task={task}
-              width={buttonWidth}
-            />
-            <VStack flex={1} py="3" px="1">
-              <HStack alignItems='center'>
-                <TaskTypeIcon task={task}/>
-                {task.orgName ? (
-                  <Text style={styles.textBold}>{task.orgName}</Text>
-                ) : null}
-                <TaskStatusIcon task={task}/>
-              </HStack>
-              {task.address?.contactName ? (
-                <Text style={textStyle}>{task.address.contactName}</Text>
-              ) : null}
-              {task.address?.name ? (
-                <Text style={textStyle}>{task.address.name}</Text>
-              ) : null}
-              <Text numberOfLines={1} style={textStyle}>
-                {task.address?.streetAddress}
-              </Text>
-              <HStack alignItems="center">
-                <Text pr="2" style={textStyle}>
-                  {moment(task.doneAfter).format('LT')} -{' '}
-                  {moment(task.doneBefore).format('LT')}
-                </Text>
-                {task.address?.description && task.address?.description.length ? (
-                  <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
-                ) : null}
-                {task.metadata && task.metadata?.payment_method && (
-                  <PaymentMethodInList
-                    paymentMethod={task.metadata.payment_method}
-                  />
-                )}
-                {task.metadata && task.metadata.zero_waste && (
-                  <Icon as={FontAwesome5} name="recycle" size="sm" />
-                )}
-              </HStack>
-              {task.tags && task.tags.length ? (
-                <HStack style={styles.tagsWrapper}>
-                  {task.tags.map(tag => (
-                    <Text
-                      key={tag.slug}
-                      style={[
-                        textStyle,
-                        styles.tag,
-                        {
-                          backgroundColor: tag.color,
-                        },
-                      ]}>
-                      {tag.name}
-                    </Text>
-                  ))}
+        <HStack
+          style={{
+            flex: 1,
+            alignItems: "stretch",
+            minHeight: buttonWidth,
+            borderTopRightRadius: cardBorderRadius,
+            borderBottomRightRadius: cardBorderRadius,
+          }}
+          {...itemProps}>
+          <OrderInfo
+            color={color}
+            task={task}
+            width={buttonWidth}
+          />
+          <ItemTouchable
+            onPress={onPress}
+            testID={taskTestId}
+            style={{
+              borderBottomRightRadius: cardBorderRadius,
+              borderTopRightRadius: cardBorderRadius,
+              paddingLeft: 12,
+              width: cardWidth-buttonWidth,
+            }}
+          >
+            <HStack
+              style={{
+                height: '100%'
+              }}
+            >
+              <VStack flex={1} py="3" px="1">
+                <HStack alignItems='center'>
+                  <TaskTypeIcon task={task}/>
+                  <Text
+                    style={styles.textBold}
+                    numberOfLines={1}>
+                    {taskTitle}
+                  </Text>
+                  <TaskStatusIcon task={task}/>
                 </HStack>
-              ) : null}
-            </VStack>
-            {task.hasIncidents && <Icon as={FontAwesome} name="exclamation-triangle" size="md" style={{ backgroundColor: yellowColor, color: redColor, marginRight: 12, borderRadius: 5 }} />}
-            <TaskPriorityStatus task={task} />
-          </HStack>
-        </ItemTouchable>
+                {address && (
+                  <Text style={textStyle} numberOfLines={1}>{address}</Text>
+                )}
+                <Text numberOfLines={1} style={textStyle}>
+                  {task.address?.streetAddress}
+                </Text>
+                <HStack alignItems="center">
+                  <Text pr="2" style={textStyle}>
+                    {moment(task.doneAfter).format('LT')} -{' '}
+                    {moment(task.doneBefore).format('LT')}
+                  </Text>
+                  {task.address?.description && task.address?.description.length ? (
+                    <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
+                  ) : null}
+                  {task.metadata && task.metadata?.payment_method && (
+                    <PaymentMethodInList
+                      paymentMethod={task.metadata.payment_method}
+                    />
+                  )}
+                  {task.metadata && task.metadata.zero_waste && (
+                    <Icon as={FontAwesome5} name="recycle" size="sm" />
+                  )}
+                </HStack>
+                {task.tags && task.tags.length ? (
+                  <HStack style={styles.tagsWrapper}>
+                    {task.tags.map(tag => (
+                      <Text
+                        key={tag.slug}
+                        style={[
+                          textStyle,
+                          styles.tag,
+                          {
+                            backgroundColor: tag.color,
+                          },
+                        ]}>
+                        {tag.name}
+                      </Text>
+                    ))}
+                    <Icon
+                      as={FontAwesome}
+                      name={commentsIconName}
+                      style={{
+                        paddingHorizontal: 4,
+                        fontSize: 14,
+                      }}/>
+                  </HStack>
+                ) : null}
+              </VStack>
+              {task.hasIncidents && (
+                <Icon
+                  as={FontAwesome}
+                  name={incidentIconName}
+                  style={{
+                    alignSelf: 'center',
+                    borderRadius: 5,
+                    color: redColor,
+                    marginRight: 12,
+                  }} />
+              )}
+              <TaskPriorityStatus task={task} />
+            </HStack>
+          </ItemTouchable>
+        </HStack>
       </SwipeRow>
     );
   }

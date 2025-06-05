@@ -8,7 +8,11 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
-import { darkRedColor, lightGreyColor, whiteColor } from '../../../styles/common';
+import {
+  darkRedColor,
+  lightGreyColor,
+  whiteColor
+} from '../../../styles/common';
 import { getTasksListIdsToEdit } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
@@ -131,7 +135,7 @@ export default function GroupedTasks({
     onSwipeToLeft: (task) => handleOnSwipeToLeft(task, section.taskListId),
     swipeOutLeftBackgroundColor: darkRedColor,
     swipeOutLeftEnabled: allowToSelect,
-    swipeOutLeftIconName: 'cube',
+    swipeOutLeftIconName: assignOrderIconName,
   });
 
   const swipeRightConfiguration = section => ({
@@ -139,7 +143,7 @@ export default function GroupedTasks({
     onSwipeToRight: (task) => handleOnSwipeToRight(task, section.taskListId),
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightEnabled: allowToSelect,
-    swipeOutRightIconName: 'user',
+    swipeOutRightIconName: assignTaskIconName,
   });
 
   // Disabled animation for now..!
