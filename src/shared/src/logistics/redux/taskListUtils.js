@@ -28,23 +28,35 @@ export function createTempTaskList(username, items = []) {
   };
 }
 
-export function withLinkedTasksForTaskList(orders, allTaskLists) {
+export function withLinkedTasksForTaskList(orders, allTaskLists, unassignedTasks) {
   return Object.keys(orders).reduce((acc, taskListId) => {
     const tasks = orders[taskListId];
     const taskList = allTaskLists.find(
       _taskList => _taskList['@id'] === taskListId,
     );
-    acc[taskListId] = _.flatMap(tasks, task =>
-      withLinkedTasks(task, taskList.items),
-    );
+    // const bagOfTasks = [...unassignedTasks, ...(taskList?.items || [])]
+
+    if (taskList) {
+      acc[taskListId] = _.flatMap(tasks, task =>
+        withLinkedTasks(task, (taskList.items || [])),
+      );
+    } else {
+      unassignedTasks.find(
+        unassignedTask => unassignedTask['@id']
+      )
+    }
+
     return acc;
+    // {'admin': [], 'unn': [], 'afr': [] }
+
   }, {});
 }
 
-export function getTasksListsToEdit(selectedTasks, allTaskLists) {
+export function getTasksListsToEdit(selectedTasks, allTaskLists, unassignedTasks) {
   const ordersByTaskList = withLinkedTasksForTaskList(
     selectedTasks.orders,
     allTaskLists,
+    unassignedTasks
   );
   const tasksByTaskList = selectedTasks.tasks;
 
