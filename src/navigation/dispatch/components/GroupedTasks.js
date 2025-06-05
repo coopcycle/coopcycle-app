@@ -8,6 +8,7 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
+import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import {
   darkRedColor,
   lightGreyColor,
