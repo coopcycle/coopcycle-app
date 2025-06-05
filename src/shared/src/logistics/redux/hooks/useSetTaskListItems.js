@@ -33,14 +33,11 @@ import {
   updateTourSuccess,
 } from '../actions';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants';
-import { selectUnassignedTasksNotCancelled } from '../../../../../redux/Dispatch/selectors';
-
 
 export default function useSetTaskListItems(
   navigation,
 ) {
   const allTasks = useSelector(selectAllTasks);
-  const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const allTaskLists = useSelector(selectTaskLists);
   const allTours = useSelector(selectAllTours);
   const toursTasksIndex = useSelector(selectToursTasksIndex);
@@ -125,22 +122,22 @@ export default function useSetTaskListItems(
    * @param {User} user - User of the rider to which we assign
    */
   const bulkEditTasks = async(selectedTasks, user) => {
-    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTaskLists, unassignedTasks);
-    console.log(' >>>>>>>>> taskListToEdit', JSON.stringify(taskListToEdit), true)
+    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
     const taskListToUnassign = {...taskListToEdit};
-    if (user) {
+
+    if (user) { // Skip unassigning the user that is going to be assigned later
       const userTaskList = allTaskLists.find(taskList => taskList.username === user.username);
       if (userTaskList) {
         delete taskListToUnassign[userTaskList['@id']];
       }
     }
     delete taskListToUnassign[UNASSIGNED_TASKS_LIST_ID];
-    console.log(' >>>>>>>>> taskListToUnassign', JSON.stringify(taskListToUnassign), true)
+
     const unassignResolve = await Promise.all(
-      Object.values(taskListToUnassign).map(tasksToUnassign => unassignTasks(tasksToUnassign))
+      Object.values(taskListToUnassign).map(unassignTasks)
     );
 
-    if(!user) {
+    if(!user) { // We are just unassigning tasks
       return unassignResolve;
     }
 
@@ -184,7 +181,7 @@ export default function useSetTaskListItems(
   }
 
   /**
-   * Unassign tasks from a courier
+   * Unassign tasks from a single/same courier
    * @param {Array} tasks - Tasks to be unassigned
    */
   const unassignTasks = (tasks) => {
@@ -192,6 +189,7 @@ export default function useSetTaskListItems(
       return Promise.resolve();
     }
 
+    // DANGER: We are assuming that all tasks are assigned to the same user..!!!
     const user = { username: tasks[0].assignedTo };
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
     const itemsToUnassignIds = tasks.map(task => task['@id']);

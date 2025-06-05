@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import moment from 'moment';
 import { withLinkedTasks } from './taskUtils';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../constants';
+
 
 export function replaceItemsWithItemIds(taskList) {
   let entity = {
@@ -28,35 +30,31 @@ export function createTempTaskList(username, items = []) {
   };
 }
 
-export function withLinkedTasksForTaskList(orders, allTaskLists, unassignedTasks) {
-  return Object.keys(orders).reduce((acc, taskListId) => {
-    const tasks = orders[taskListId];
-    const taskList = allTaskLists.find(
-      _taskList => _taskList['@id'] === taskListId,
-    );
-    // const bagOfTasks = [...unassignedTasks, ...(taskList?.items || [])]
+// NOTE: This function is only used from the function `getTasksListsToEdit`
+// and is exported only to be able to test it.
+export function withLinkedTasksForTaskList(orders, allTasks, allTaskLists) {
+  return Object.values(orders).reduce((acc, taskListTasks) => {
+    taskListTasks.forEach(task => {
+      const allRelatedTasks = withLinkedTasks(task, allTasks);
 
-    if (taskList) {
-      acc[taskListId] = _.flatMap(tasks, task =>
-        withLinkedTasks(task, (taskList.items || [])),
-      );
-    } else {
-      unassignedTasks.find(
-        unassignedTask => unassignedTask['@id']
-      )
-    }
+      allRelatedTasks.forEach(relatedTask => {
+        const foundRelatedTaskList = allTaskLists.find(
+          taskList => taskList.items.map(t => t['@id']).includes(relatedTask['@id'])
+        );
+        const accKey = foundRelatedTaskList ? foundRelatedTaskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
+        acc[accKey] = (acc[accKey] || []).concat(relatedTask);
+      });
+    });
 
     return acc;
-    // {'admin': [], 'unn': [], 'afr': [] }
-
   }, {});
 }
 
-export function getTasksListsToEdit(selectedTasks, allTaskLists, unassignedTasks) {
+export function getTasksListsToEdit(selectedTasks, allTasks, allTaskLists) {
   const ordersByTaskList = withLinkedTasksForTaskList(
     selectedTasks.orders,
-    allTaskLists,
-    unassignedTasks
+    allTasks,
+    allTaskLists
   );
   const tasksByTaskList = selectedTasks.tasks;
 
