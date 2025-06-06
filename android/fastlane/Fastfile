@@ -50,7 +50,9 @@ platform :android do
     end
 
     begin
-      previous_build_number = google_play_track_version_codes()[0]
+      previous_build_number = google_play_track_version_codes(
+        track: "internal",
+      )[0]
       current_build_number = previous_build_number + 1
       increment_version_code(
         version_code: current_build_number
