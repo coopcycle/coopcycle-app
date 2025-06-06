@@ -23,16 +23,6 @@ import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
-
-import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
-import { darkRedColor } from '../../../styles/common';
-import { navigateToTask } from '../../../navigation/utils';
-import { selectTasksWithColor } from '../../../shared/logistics/redux';
-import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
-import TaskList from '../../../components/TaskList';
-import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
-
-
 export default function GroupedTasks({
   sections,
   route,
