@@ -352,6 +352,7 @@
         "DELIVERY_ASAP": "Lo más pronto posible",
         "PHOTO_ADD": "Añadir imagen",
         "SIGNATURE_ADD": "Añadir firma",
+        "DISPATCH_UNASSIGN": "Desasignar",
         "DISPATCH_ASSIGN_TO_ME": "Asignarme",
         "RESTAURANT_SOUND_ALERT_CONFIRM": "De acuerdo, lo haré",
         "RESTAURANT_SOUND_ALERT_MESSAGE": "El volumen del sonido está bajo. Deberías subirlo para asegurarte de escuchar las notificaciones.",

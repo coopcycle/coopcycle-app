@@ -14,7 +14,7 @@ import {
 export async function loadDispatchFixture() {
   if (device.getPlatform() === 'android') {
     symfonyConsole(
-      'coopcycle:fixtures:load -f cypress/fixtures/dispatch.yml',
+      'coopcycle:fixtures:load -s cypress/fixtures/setup_default.yml -f cypress/fixtures/dispatch.yml',
     );
     await connectToLocalInstance();
   } else {
@@ -29,15 +29,15 @@ export async function doLoginForUserWithRoleDispatcher() {
 
 export async function assignTaskToUser(username) {
   // Select first task in Dispatch's view and try to assign it to user with username
-  await swipeRight('unassignedTasksList:task:0');
-  await tapById('unassignedTasksList:task:0:left');
+  await swipeLeft('unassignedTasksList:task:0');
+  await tapById('unassignedTasksList:task:0:right');
   await tapById(`assignTo:${username}`);
 }
 
 export async function bulkAssignTaskToUser(username) {
   // Select 2 tasks in Dispatch's view and try to assign it to user with username
-  await swipeRight('unassignedTasksList:task:0');
-  await swipeRight('unassignedTasksList:task:1');
+  await swipeLeft('unassignedTasksList:task:0');
+  await swipeLeft('unassignedTasksList:task:1');
   await tapById('bulkAssignButton');
   await tapById(`assignTo:${username}`);
 }
@@ -46,4 +46,5 @@ export async function unassignTaskFromUser(username) {
   // Select first assigned task to user with username and try to unassign it
   await swipeLeft(`${username}TasksList:task:0`);
   await tapById(`${username}TasksList:task:0:right`);
+  await tapById('unassignTask');
 }
