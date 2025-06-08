@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Icon } from 'native-base';
-import React from 'react';
+import { Box, Icon, Input, Text } from 'native-base';
+import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import screens, { headerLeft } from '..';
@@ -15,38 +15,36 @@ import { useDispatch } from 'react-redux';
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import NavigationHolder from '../../NavigationHolder';
 import { HeaderBackButton } from '@react-navigation/elements';
+import { View } from 'react-native';
 
 
-// TODO: remove Tabs
-// deprecated for the moment. Leaving because we might be using tabs for filters
 const Tab = createBottomTabNavigator();
+
+function CutomBottomTabNavigator({ navigation }) {
+  return (
+    <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center', marginBottom: 14, paddingHorizontal: 24, gap: 14 }}>
+      <Box><Icon as={FontAwesome} name="map" /></Box>
+        <Box style= {{ flex: 1, overflow: 'hidden' }}>
+            <Input placeholder="Search" />
+          </Box>
+          <Box><Icon as={FontAwesome} name="filter" onPress={navigation.navigate('DispatchAllTasks')} /></Box>
+    </View>
+  );
+}
 
 const Tabs = () => (
   <Tab.Navigator
-    screenOptions={{
+      tabBar={(props) => <CutomBottomTabNavigator {...props}/>}
+      screenOptions={{
       headerShown: false,
       tabBarShowIcon: true,
     }}>
-    <Tab.Screen
-      name="DispatchUnassignedTasks"
-      component={screens.DispatchUnassignedTasks}
-      options={({ navigation }) => ({
-        title: i18n.t('DISPATCH_UNASSIGNED_TASKS'),
-        tabBarTestID: 'dispatch:unassignedTab',
-        tabBarIcon: ({ focused, horizontal, color }) => {
-          return <Icon as={FontAwesome} name="clock-o" style={{ color }} />;
-        },
-      })}
-    />
-    <Tab.Screen
+       <Tab.Screen
       name="DispatchTaskLists"
-      component={screens.DispatchTaskLists}
+      component={screens.DispatchAllTasks}
       options={({ navigation }) => ({
-        title: i18n.t('DISPATCH_TASK_LISTS'),
-        tabBarTestID: 'dispatch:assignedTab',
-        tabBarIcon: ({ focused, horizontal, color }) => {
-          return <Icon as={FontAwesome} name="user" style={{ color }} />;
-        },
+        title: false,
+        tabBarTestID: 'dispatchAllTasks',
       })}
     />
   </Tab.Navigator>
@@ -59,6 +57,19 @@ const MainNavigator = () => {
 
   return (
     <MainStack.Navigator screenOptions={screenOptions}>
+    <MainStack.Screen
+      name="DispatchHome"
+      component={Tabs}
+      options={({ navigation }) => ({
+        title: i18n.t('DISPATCH'),
+        headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
+        headerRight: () => (
+          <HeaderRightButton
+            onPress={() => navigation.navigate('DispatchDate')}
+          />
+        ),
+      })}
+    />
       <MainStack.Screen
         name="DispatchAllTasks"
         component={screens.DispatchAllTasks}
