@@ -89,6 +89,24 @@ export default function useSetTaskListItems() {
   }, [dispatch, isError]);
 
   /**
+   * Unassign just one task
+   * @param {Task} task - Task to be unassigned
+   */
+  const unassignTask = (task) => {
+    const selectedTasks = buildSelectedTasks([], [task], allTaskLists);
+    return bulkEditTasks(selectedTasks);
+  }
+
+  /**
+   * Unassign a task and its related tasks to rider
+   * @param {Task} task - Task to be unassigned
+   */
+  const unassignTaskWithRelatedTasks = (task) => {
+    const selectedTasks = buildSelectedTasks([task], [], allTaskLists);
+    return bulkEditTasks(selectedTasks);
+  }
+
+  /**
    * Assign just one task to rider
    * @param {Task} task - Task to be assigned
    * @param {User} user - User of the rider to which we assign
@@ -106,24 +124,6 @@ export default function useSetTaskListItems() {
   const assignTaskWithRelatedTasks = (task, user) => {
     const selectedTasks = buildSelectedTasks([task], [], allTaskLists);
     return bulkEditTasks(selectedTasks, user);
-  }
-
-  /**
-   * Unassign just one task
-   * @param {Task} task - Task to be unassigned
-   */
-  const unassignTask = (task) => {
-    const selectedTasks = buildSelectedTasks([], [task], allTaskLists);
-    return bulkEditTasks(selectedTasks);
-  }
-
-  /**
-   * Unassign a task and its related tasks to rider
-   * @param {Task} task - Task to be unassigned
-   */
-  const unassignTaskWithRelatedTasks = (task) => {
-    const selectedTasks = buildSelectedTasks([task], [], allTaskLists);
-    return bulkEditTasks(selectedTasks);
   }
 
   /**
@@ -209,15 +209,6 @@ export default function useSetTaskListItems() {
     return _updateAssigningItems(allItemsToAssign, user, updateUi);
   }
 
-  const _updateAssigningItems = (itemIds, user, updateUi) => {
-    const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
-
-    return _updateAssignedItems(itemIds, user)
-      .then((res) => _maybeRemoveTourTasks(itemIds, previousToursTasksIndex).then(_res => res))
-      .then(({ data: taskList }) => _updateTaskList(taskList))
-      .then(() => _updateTasks(itemIds, user, updateUi));
-  }
-
   const _updateUnassigningItems = (newItemIds, user, removedItemIds, isJustUnassign) => {
     const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
 
@@ -226,6 +217,15 @@ export default function useSetTaskListItems() {
       .then(({ data: taskList }) => _updateTaskList(taskList))
       .then(() => _updateTasks(newItemIds, user, false))
       .then(() => isJustUnassign && _updateRemovedTasks(removedItemIds))
+  }
+
+  const _updateAssigningItems = (itemIds, user, updateUi) => {
+    const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
+
+    return _updateAssignedItems(itemIds, user)
+      .then((res) => _maybeRemoveTourTasks(itemIds, previousToursTasksIndex).then(_res => res))
+      .then(({ data: taskList }) => _updateTaskList(taskList))
+      .then(() => _updateTasks(itemIds, user, updateUi));
   }
 
   const _updateAssignedItems = (itemIds, user) => {
