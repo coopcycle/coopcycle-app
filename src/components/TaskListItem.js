@@ -445,6 +445,7 @@ class TaskListItem extends Component {
                 <HStack alignItems='center'>
                   <TaskTypeIcon task={task}/>
                   <Text
+                    testID={`${taskTestId}:title`}
                     style={styles.textBold}
                     numberOfLines={1}>
                     {taskTitle}
