@@ -174,7 +174,7 @@ export default function useSetTaskListItems() {
 
     const tasksToAssign = _.flatten(Object.values(taskListToEdit));
 
-    return _assignTasks(tasksToAssign, user, true);
+    return _assignTasks(tasksToAssign, user);
   };
 
   /**
@@ -201,12 +201,12 @@ export default function useSetTaskListItems() {
     );
   }
 
-  const _assignTasks = (tasks, user, updateUi) => {
+  const _assignTasks = (tasks, user) => {
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
     const itemsToAssignIds = tasks.map(task => task['@id']);
     const allItemsToAssign = _.uniq([...userItemIds, ...itemsToAssignIds]);
 
-    return _updateAssigningItems(allItemsToAssign, user, updateUi);
+    return _updateAssigningItems(allItemsToAssign, user);
   }
 
   const _updateUnassigningItems = (newItemIds, user, removedItemIds, isJustUnassign) => {
@@ -219,13 +219,13 @@ export default function useSetTaskListItems() {
       .then(() => isJustUnassign && _updateRemovedTasks(removedItemIds))
   }
 
-  const _updateAssigningItems = (itemIds, user, updateUi) => {
+  const _updateAssigningItems = (itemIds, user) => {
     const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
 
     return _updateAssignedItems(itemIds, user)
       .then((res) => _maybeRemoveTourTasks(itemIds, previousToursTasksIndex).then(_res => res))
       .then(({ data: taskList }) => _updateTaskList(taskList))
-      .then(() => _updateTasks(itemIds, user, updateUi));
+      .then(() => _updateTasks(itemIds, user, true));
   }
 
   const _updateAssignedItems = (itemIds, user) => {
