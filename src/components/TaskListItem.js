@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
 });
 
 function getOrderId(task) {
-  const id = task.metadata?.delivery_position
+  const id = task.metadata?.delivery_position && task.metadata?.order_number
     ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
-    : task.metadata.order_number;
+    : (task.metadata.order_number || "");
 
   return id;
 }
@@ -119,7 +119,7 @@ const OrderInfo = ({task, color, width}) => {
             }}>
             {orderId}
           </Text>
-          {task.metadata.order_total && (
+          {task.metadata?.order_total ? (
             <Text
               style={{
                 color: textColor,
@@ -129,7 +129,7 @@ const OrderInfo = ({task, color, width}) => {
               }}>
               {formatPrice(task.metadata.order_total)}
             </Text>
-          )}
+          ) : null}
         </>)
         : (
           <CoopcyleLogo

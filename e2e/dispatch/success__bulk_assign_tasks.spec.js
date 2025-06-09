@@ -7,8 +7,7 @@ import { itif } from '../utils';
 
 const USERNAME = 'jane';
 
-// Skip it just for this branch
-describe.skip('Dispatch - Bulk assign tasks', () => {
+describe('Dispatch - Bulk assign tasks', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
     await loadDispatchFixture();
