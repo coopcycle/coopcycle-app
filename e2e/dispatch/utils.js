@@ -26,7 +26,7 @@ export async function loadDispatchFixture() {
 }
 
 export async function relaunchCleanApp() {
-  await launchApp(true);
+  await launchApp();
 }
 
 export async function doLoginForUserWithRoleDispatcher() {

@@ -14,9 +14,8 @@ export const symfonyConsole = command => {
   execSync(prefix ? `${prefix} ${cmd}` : cmd)
 };
 
-export const launchApp = async (newInstance = false) => {
+export const launchApp = async () => {
   await device.launchApp({
-    newInstance,
     delete: true,
     permissions: {
       notifications: 'YES',
