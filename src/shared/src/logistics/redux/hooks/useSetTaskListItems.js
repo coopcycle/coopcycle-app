@@ -5,7 +5,9 @@ import { useEffect, useMemo } from 'react';
 import {
   assignTasksFailure,
   assignTasksRequest,
+  assignTasksSuccess,
   assignTasksWithUiUpdateSuccess,
+  unassignTasksSuccess,
   unassignTasksWithUiUpdateSuccess,
   updateTaskListsSuccess,
   updateTourSuccess,
@@ -102,15 +104,15 @@ export default function useSetTaskListItems() {
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
     const allItemsToAssign = [...userItemIds, task['@id']];
 
-    return _updateAssigningItems(allItemsToAssign, user);
+    return _updateAssigningItems(allItemsToAssign, user, true);
   }
 
-  const assignTasks = (tasks, user) => {
+  const assignTasks = (tasks, user, updateUi) => {
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
     const itemsToAssignIds = tasks.map(task => task['@id']);
     const allItemsToAssign = _.uniq([...userItemIds, ...itemsToAssignIds]);
 
-    return _updateAssigningItems(allItemsToAssign, user);
+    return _updateAssigningItems(allItemsToAssign, user, updateUi);
   }
 
   /**
@@ -129,18 +131,19 @@ export default function useSetTaskListItems() {
       }
     }
     delete taskListToUnassign[UNASSIGNED_TASKS_LIST_ID];
+    const isJustUnassign = !user;
 
     const unassignResolve = await Promise.all(
-      Object.values(taskListToUnassign).map(unassignTasks)
+      Object.values(taskListToUnassign).map((tasks) => unassignTasks(tasks, isJustUnassign))
     );
 
-    if(!user) { // We are just unassigning tasks
+    if(isJustUnassign) { // We are just unassigning tasks
       return unassignResolve;
     }
 
     const tasksToAssign = _.flatten(Object.values(taskListToEdit));
 
-    return assignTasks(tasksToAssign, user);
+    return assignTasks(tasksToAssign, user, true);
   };
 
   /**
@@ -160,28 +163,33 @@ export default function useSetTaskListItems() {
 
     const allItemsToAssign = [...userItemIds, ..._linkedTaskIds];
 
-    return _updateAssigningItems(allItemsToAssign, user);
+    return _updateAssigningItems(allItemsToAssign, user, true);
   }
 
   /**
    * Unassign just one task
    * @param {Task} task - Task to be unassigned
    */
-  const unassignTask = (task) => {
+  const unassignTask = (task, updateUi=true) => {
     const user = { username: task.assignedTo };
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
     const itemsToUnassignIds = [task['@id']];
     const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
     const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
 
-    return _updateUnassigningItems(allItemIdsToAssign, user, itemsToUnassignIds);
+    return _updateUnassigningItems(
+      allItemIdsToAssign,
+      user,
+      itemsToUnassignIds,
+      updateUi,
+    );
   }
 
   /**
    * Unassign tasks from a single/same courier
    * @param {Array} tasks - Tasks to be unassigned
    */
-  const unassignTasks = (tasks) => {
+  const unassignTasks = (tasks, updateUi) => {
     if (tasks.length === 0) {
       return Promise.resolve();
     }
@@ -193,7 +201,12 @@ export default function useSetTaskListItems() {
     const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
     const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
 
-    return _updateUnassigningItems(allItemIdsToAssign, user, itemsToUnassignIds);
+    return _updateUnassigningItems(
+      allItemIdsToAssign,
+      user,
+      itemsToUnassignIds,
+      updateUi,
+    );
   }
 
   /**
@@ -209,7 +222,12 @@ export default function useSetTaskListItems() {
     const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
     const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
 
-    return _updateUnassigningItems(allItemIdsToAssign, user, itemsToUnassignIds);
+    return _updateUnassigningItems(
+      allItemIdsToAssign,
+      user,
+      itemsToUnassignIds,
+      true,
+    );
   }
 
   /**
@@ -218,7 +236,7 @@ export default function useSetTaskListItems() {
    * @param {User} user - User of the rider to which we assign
    */
   const reassignTask = async (task, user) => {
-    return unassignTask(task).then(() => assignTask(task, user));
+    return unassignTask(task, false).then(() => assignTask(task, user));
   }
 
   /**
@@ -231,23 +249,23 @@ export default function useSetTaskListItems() {
       .then((removedItemIds) => assignTaskWithRelatedTasks(task, user, removedItemIds));
   }
 
-  const _updateAssigningItems = (itemIds, user) => {
+  const _updateAssigningItems = (itemIds, user, updateUi) => {
     const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
 
     return _updateAssignedItems(itemIds, user)
       .then((res) => _maybeRemoveTourTasks(itemIds, previousToursTasksIndex).then(_res => res))
       .then(({ data: taskList }) => _updateTaskList(taskList))
-      .then(() => _updateTasks(itemIds, user));
+      .then(() => _updateTasks(itemIds, user, updateUi));
   }
 
-  const _updateUnassigningItems = (itemIds, user, removedItemIds) => {
+  const _updateUnassigningItems = (itemIds, user, removedItemIds, updateUi) => {
     const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
 
     return _updateAssignedItems(itemIds, user)
       .then((res) => _maybeRemoveTourTasks(removedItemIds, previousToursTasksIndex).then(_res => res))
       .then(({ data: taskList }) => _updateTaskList(taskList))
-      .then(() => _updateTasks(itemIds, user))
-      .then(() => _updateRemovedTasks(removedItemIds))
+      .then(() => _updateTasks(itemIds, user, false))
+      .then(() => _updateRemovedTasks(removedItemIds, updateUi))
       .then(() => removedItemIds);
   }
 
@@ -280,18 +298,28 @@ export default function useSetTaskListItems() {
     dispatch(updateTaskListsSuccess(taskList));
   }
 
-  const _updateTasks = (itemIds, user) => {
+  const _updateTasks = (itemIds, user, updateUi) => {
     const itemIdsSet = new Set(itemIds);
     const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
     const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
-    dispatch(assignTasksWithUiUpdateSuccess(newUserTasks));
+
+    if (updateUi) {
+      dispatch(assignTasksWithUiUpdateSuccess(newUserTasks));
+    } else {
+      dispatch(assignTasksSuccess(newUserTasks));
+    }
   }
 
-  const _updateRemovedTasks = (removedTasks) => {
+  const _updateRemovedTasks = (removedTasks, updateUi) => {
     const itemIdsSet = new Set(removedTasks);
     const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
     const newUnassignedTasks = tasks.map(task => getAssignedTask(task));
-    dispatch(unassignTasksWithUiUpdateSuccess(newUnassignedTasks));
+
+    if (updateUi) {
+      dispatch(unassignTasksWithUiUpdateSuccess(newUnassignedTasks));
+    } else {
+      dispatch(unassignTasksSuccess(newUnassignedTasks));
+    }
   }
 
   return {
