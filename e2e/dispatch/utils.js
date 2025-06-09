@@ -34,16 +34,26 @@ export async function doLoginForUserWithRoleDispatcher() {
 }
 
 export async function assignTaskToUser(username, index = 0) {
-  // Select first task in Dispatch's view and try to assign it to user with username
   await swipeLeftTask(UNASSIGNED_TASKS_LIST_ID, index);
   await tapById(`${UNASSIGNED_TASKS_LIST_ID}:task:${index}:right`);
   await tapById(`assignTo:${username}`);
 }
 
+export async function assignOrderToUser(username, index = 0) {
+  await swipeRightTask(UNASSIGNED_TASKS_LIST_ID, index);
+  await tapById(`${UNASSIGNED_TASKS_LIST_ID}:task:${index}:left`);
+  await tapById(`assignTo:${username}`);
+}
+
 export async function unassignTaskFromUser(username, index = 0) {
-  // Select first assigned task to user with username and try to unassign it
   await swipeLeftTask(`${username}TasksList`, index);
   await tapById(`${username}TasksList:task:${index}:right`);
+  await tapById('unassignTask');
+}
+
+export async function unassignOrderFromUser(username, index = 0) {
+  await swipeRightTask(`${username}TasksList`, index);
+  await tapById(`${username}TasksList:task:${index}:left`);
   await tapById('unassignTask');
 }
 
@@ -63,6 +73,10 @@ export async function toggleSection(sectionId) {
 
 export async function toggleSectionUnassigned() {
   await toggleSection(UNASSIGNED_TASKS_LIST_ID);
+}
+
+export async function toggleSectionUser(username) {
+  await toggleSection(`${username}TasksList`);
 }
 
 export async function swipeLeftTask(sectionId, index = 0) {
