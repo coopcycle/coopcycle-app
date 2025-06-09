@@ -2,6 +2,7 @@ import {
   authenticateWithCredentials,
   connectToLocalInstance,
   connectToSandbox,
+  launchApp,
   symfonyConsole
 } from "../support/commands";
 import {
@@ -24,6 +25,10 @@ export async function loadDispatchFixture() {
   }
 }
 
+export async function relaunchCleanApp() {
+  await launchApp(true);
+}
+
 export async function doLoginForUserWithRoleDispatcher() {
   await authenticateWithCredentials('dispatcher', 'dispatcher');
 }
@@ -35,23 +40,16 @@ export async function assignTaskToUser(username, index = 0) {
   await tapById(`assignTo:${username}`);
 }
 
-export async function bulkAssignTaskToUser(username, index = 0) {
-  // Select 2 tasks in Dispatch's view and try to assign it to user with username
-  await swipeLeftTask(UNASSIGNED_TASKS_LIST_ID, index);
-  await swipeLeftTask(UNASSIGNED_TASKS_LIST_ID, index + 1);
-  await bulkAssignToUser(username);
-}
-
-export async function bulkAssignToUser(username) {
-  await tapById('bulkAssignButton');
-  await tapById(`assignTo:${username}`);
-}
-
 export async function unassignTaskFromUser(username, index = 0) {
   // Select first assigned task to user with username and try to unassign it
   await swipeLeftTask(`${username}TasksList`, index);
   await tapById(`${username}TasksList:task:${index}:right`);
   await tapById('unassignTask');
+}
+
+export async function bulkAssignToUser(username) {
+  await tapById('bulkAssignButton');
+  await tapById(`assignTo:${username}`);
 }
 
 export async function bulkUnassign() {
