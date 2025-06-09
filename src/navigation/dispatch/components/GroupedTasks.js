@@ -197,6 +197,7 @@ export default function GroupedTasks({
               {section.count === 0 ? null :
               <Icon
                 as={FontAwesome}
+                testID={`${section.id}:toggler`}
                 name={
                   collapsedSections.has(section.title)
                     ? 'angle-down'

@@ -9,6 +9,7 @@ import {
   swipeRight,
   tapById,
 } from "../utils";
+import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 
 export async function loadDispatchFixture() {
@@ -29,15 +30,15 @@ export async function doLoginForUserWithRoleDispatcher() {
 
 export async function assignTaskToUser(username) {
   // Select first task in Dispatch's view and try to assign it to user with username
-  await swipeLeft('unassignedTasksList:task:0');
-  await tapById('unassignedTasksList:task:0:right');
+  await swipeLeft(`${UNASSIGNED_TASKS_LIST_ID}:task:0`);
+  await tapById(`${UNASSIGNED_TASKS_LIST_ID}:task:0:right`);
   await tapById(`assignTo:${username}`);
 }
 
 export async function bulkAssignTaskToUser(username) {
   // Select 2 tasks in Dispatch's view and try to assign it to user with username
-  await swipeLeft('unassignedTasksList:task:0');
-  await swipeLeft('unassignedTasksList:task:1');
+  await swipeLeft(`${UNASSIGNED_TASKS_LIST_ID}:task:0`);
+  await swipeLeft(`${UNASSIGNED_TASKS_LIST_ID}:task:1`);
   await tapById('bulkAssignButton');
   await tapById(`assignTo:${username}`);
 }
@@ -47,4 +48,8 @@ export async function unassignTaskFromUser(username) {
   await swipeLeft(`${username}TasksList:task:0`);
   await tapById(`${username}TasksList:task:0:right`);
   await tapById('unassignTask');
+}
+
+export async function toggleSection(sectionId) {
+  await tapById(`${sectionId}:toggler`);
 }
