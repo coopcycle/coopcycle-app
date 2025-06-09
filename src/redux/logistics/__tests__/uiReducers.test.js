@@ -1,7 +1,4 @@
 import {
-  assignTasksFailure,
-  assignTasksRequest,
-  assignTasksSuccess,
   loadTaskListsFailure,
   loadTaskListsRequest,
   loadTaskListsSuccess,
@@ -13,6 +10,9 @@ import {
   loadUsersSuccess,
 } from "../../Dispatch/actions";
 import {
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,

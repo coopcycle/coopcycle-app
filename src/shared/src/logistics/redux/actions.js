@@ -28,6 +28,10 @@ export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
 export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 
+export const assignTasksFailure = createAction('@logistics/ASSIGN_TASKS_FAILURE');
+export const assignTasksRequest = createAction('@logistics/ASSIGN_TASKS_REQUEST');
+export const assignTasksSuccess = createAction('@logistics/ASSIGN_TASKS_SUCCESS');
+
 export const unassignTasksSuccess = createAction('@logistics/UNASSIGN_TASKS_SUCCESS');
 
 export const startTaskRequest = createAction('@logistics/START_TASK_REQUEST');

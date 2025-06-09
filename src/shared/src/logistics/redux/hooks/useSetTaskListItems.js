@@ -6,7 +6,10 @@ import {
   assignTasksFailure,
   assignTasksRequest,
   assignTasksSuccess,
-} from '../../../../../redux/Dispatch/actions';
+  unassignTasksSuccess,
+  updateTaskListsSuccess,
+  updateTourSuccess,
+} from '../actions';
 import {
   getAssignedTask,
   getTaskListItemIds,
@@ -23,20 +26,14 @@ import {
   selectTaskLists,
   selectToursTasksIndex,
 } from "../selectors";
+import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants';
 import {
   useSetTaskListItemsMutation,
   useSetTourItemsMutation,
 } from "../../../../../redux/api/slice";
-import {
-  unassignTasksSuccess,
-  updateTaskListsSuccess,
-  updateTourSuccess,
-} from '../actions';
-import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants';
 
-export default function useSetTaskListItems(
-  navigation,
-) {
+
+export default function useSetTaskListItems() {
   const allTasks = useSelector(selectAllTasks);
   const allTaskLists = useSelector(selectTaskLists);
   const allTours = useSelector(selectAllTours);

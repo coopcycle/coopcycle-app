@@ -1,6 +1,5 @@
 import { actionMatchCreator } from '../util';
 import {
-  assignTasksSuccess,
   changeDate,
   loadTasksSuccess,
 } from '../Dispatch/actions';
@@ -9,6 +8,7 @@ import {
 } from '../App/actions';
 import {
   assignTaskSuccess,
+  assignTasksSuccess,
   cancelTaskSuccess,
   createTaskSuccess,
   markTaskDoneSuccess,

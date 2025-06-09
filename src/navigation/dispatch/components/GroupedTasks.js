@@ -21,7 +21,7 @@ import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selec
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
-import useSetTaskListsItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
   sections,
@@ -46,7 +46,7 @@ export default function GroupedTasks({
     reassignTaskWithRelatedTasks,
     unassignTask,
     unassignTaskWithRelatedTasks,
-  } = useSetTaskListsItems();
+  } = useSetTaskListItems();
 
   const onTaskClick = task => {
     navigateToTask(navigation, route, task, unassignedTasks);
