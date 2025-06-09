@@ -8,6 +8,7 @@ import {
 } from '../App/actions';
 import {
   assignTaskSuccess,
+  assignTasksSuccess,
   assignTasksWithUiUpdateSuccess,
   cancelTaskSuccess,
   createTaskSuccess,
@@ -16,6 +17,7 @@ import {
   startTaskSuccess,
   taskAdapter,
   unassignTaskSuccess,
+  unassignTasksSuccess,
   unassignTasksWithUiUpdateSuccess,
   updateTaskSuccess,
 } from '../../coopcycle-frontend-js/logistics/redux';
@@ -48,7 +50,9 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
+    assignTasksSuccess,
     assignTasksWithUiUpdateSuccess,
+    unassignTasksSuccess,
     unassignTasksWithUiUpdateSuccess,
   ])) {
     if (action.payload) {
