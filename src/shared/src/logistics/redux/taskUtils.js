@@ -1,6 +1,8 @@
-import ColorHash from 'color-hash';
 import _, { mapValues } from 'lodash';
+import ColorHash from 'color-hash';
 import moment from 'moment';
+
+import { getUserTaskList } from './taskListUtils';
 
 
 /**
@@ -93,13 +95,13 @@ export function tasksToIds(tasks) {
 }
 
 export function getTaskListItems(username, allTaskLists) {
-  const userTaskList = allTaskLists.find(taskList => taskList.username === username);
+  const userTaskList = getUserTaskList(username, allTaskLists);
 
   return userTaskList ? userTaskList.items : [];
 }
 
 export function getTaskListItemIds(username, allTaskLists) {
-  const userTaskList = allTaskLists.find(taskList => taskList.username === username);
+  const userTaskList = getUserTaskList(username, allTaskLists);
 
   return userTaskList ? userTaskList.itemIds : [];
 }

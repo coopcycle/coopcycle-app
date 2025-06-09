@@ -2,13 +2,13 @@ import {
   bulkAssignTaskToUser,
   doLoginForUserWithRoleDispatcher,
   loadDispatchFixture,
+  toggleSectionUnassigned,
 } from './utils';
 import { itif } from '../utils';
 
 const USERNAME = 'jane';
 
-// Skip it just for this branch
-describe.skip('Dispatch - Bulk assign tasks', () => {
+describe('Dispatch - Bulk assign tasks', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
     await loadDispatchFixture();
@@ -16,13 +16,16 @@ describe.skip('Dispatch - Bulk assign tasks', () => {
   });
 
   itif(device.getPlatform() === 'android')(
-    'should assing two tasks to a courier',
+    'should assign two tasks to a courier',
     async () => {
       await bulkAssignTaskToUser(USERNAME);
 
-      // Verify task is on Jane's task list
-      await expect(element(by.id('janeTasksList:task:0'))).toBeVisible();
-      await expect(element(by.id('janeTasksList:task:1'))).toBeVisible();
+      // Hide unassigned tasks section
+      await toggleSectionUnassigned();
+
+      // Verify task is on USERNAME's task list
+      await expect(element(by.id(`${USERNAME}TasksList:task:0`))).toBeVisible();
+      await expect(element(by.id(`${USERNAME}TasksList:task:1`))).toBeVisible();
     },
   );
 });
