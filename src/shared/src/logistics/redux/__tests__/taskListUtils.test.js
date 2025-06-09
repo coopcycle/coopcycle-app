@@ -1,44 +1,13 @@
 import _ from 'lodash';
 
 import {
+  buildSelectedTasks,
   getTasksListIdsToEdit,
   getTasksListsToEdit,
   replaceItemsWithItemIds,
   withLinkedTasksForTaskList,
 } from '../taskListUtils.js';
 
-
-const getTask = (id, previous = null) => {
-  return {
-    '@id': `/api/tasks/${id}`,
-    id: id,
-    previous: previous ? `/api/tasks/${previous}` : null,
-  };
-};
-
-const getTaskList = (id, items) => {
-  const username = usernames[id];
-  return {
-    '@id': `/api/task_lists/${id}`,
-    id: id,
-    items: items.map(task => ({...task, assignedTo: username})) || [],
-    username,
-  };
-};
-
-const allTasks = [
-  getTask(0),
-  getTask(1),
-  getTask(2, 1),
-  getTask(3),
-  getTask(4, 3),
-  getTask(5, 4),
-  getTask(6, 5),
-  getTask(7, 6),
-  getTask(8),
-  getTask(9, 8),
-  getTask(10, 9)
-];
 
 const usernames = [
   'username0',
@@ -48,6 +17,41 @@ const usernames = [
   'username4',
   'username5',
   'username6',
+];
+
+const getTask = (id, usernameId, previous = null) => {
+  const username = usernames[usernameId];
+
+  return {
+    '@id': `/api/tasks/${id}`,
+    id: id,
+    previous: previous ? `/api/tasks/${previous}` : null,
+    assignedTo: username,
+  };
+};
+
+const getTaskList = (id, items) => {
+  const username = usernames[id];
+  return {
+    '@id': `/api/task_lists/${id}`,
+    id: id,
+    items: items || [],
+    username,
+  };
+};
+
+const allTasks = [
+  getTask(0, 1),
+  getTask(1, 2),
+  getTask(2, 2, 1),
+  getTask(3, 3),
+  getTask(4, 3, 3),
+  getTask(5, 3, 4),
+  getTask(6, 4, 5),
+  getTask(7, 4, 6),
+  getTask(8, 5),
+  getTask(9, 6, 8),
+  getTask(10, null, 9)
 ];
 
 const allTaskLists = [
@@ -328,8 +332,63 @@ describe('taskListUtils', () => {
         '/api/task_lists/1',
         '/api/task_lists/2',
         '/api/task_lists/3',
-        '/api/task_lists/4',
       ].sort());
     });
   })
+
+  describe('buildSelectedTasks', () => {
+    it('should return an empty object for orders and tasks if no order or task is provided', () => {
+      const orders = [];
+      const tasks = [];
+
+      const result = buildSelectedTasks(orders, tasks, allTaskLists);
+
+      expect(result).toEqual({
+        orders: {},
+        tasks: {}
+      });
+    });
+
+    it('should return an object for orders if tasks are provided', () => {
+      const orders = [allTasks[3], allTasks[4]];
+
+      const result = buildSelectedTasks(orders, [], allTaskLists);
+
+      expect(result).toEqual({
+        orders: {
+          '/api/task_lists/3': orders,
+        },
+        tasks: {},
+      });
+    });
+
+    it('should return an object for tasks if tasks are provided', () => {
+      const tasks = [allTasks[3], allTasks[4]];
+
+      const result = buildSelectedTasks([], tasks, allTaskLists);
+
+      expect(result).toEqual({
+        orders: {},
+        tasks: {
+          '/api/task_lists/3': tasks,
+        },
+      });
+    });
+
+    it('should return an object for orders and tasks if both are provided', () => {
+      const orders = [allTasks[3], allTasks[4]];
+      const tasks = [allTasks[6], allTasks[7]];
+
+      const result = buildSelectedTasks(orders, tasks, allTaskLists);
+
+      expect(result).toEqual({
+        orders: {
+          '/api/task_lists/3': orders,
+        },
+        tasks: {
+          '/api/task_lists/4': tasks,
+        },
+      });
+    });
+  });
 });
