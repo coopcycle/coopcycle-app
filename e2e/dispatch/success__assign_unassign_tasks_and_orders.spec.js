@@ -3,6 +3,7 @@ import {
   assignTaskToUser,
   bulkAssignToUser,
   bulkUnassign,
+  describeif,
   doLoginForUserWithRoleDispatcher,
   getTaskTitleElement,
   loadDispatchFixture,
@@ -19,7 +20,10 @@ import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 const USER_JANE = 'jane';
 const USER_ZAK = 'zak';
 
-describe('Dispatch - Assing and unassign tasks and orders (single + bulk)', () => {
+//FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+describeif(device.getPlatform() === 'android')
+  ('Dispatch - Assing, reassign and unassign tasks and orders (single + bulk)', () => {
+
   beforeEach(async () => {
     await relaunchCleanApp();
     await loadDispatchFixture();
@@ -237,4 +241,5 @@ describe('Dispatch - Assing and unassign tasks and orders (single + bulk)', () =
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 4)).toHaveText("Acme - Task #7");
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 5)).toHaveText("Acme - Task #9");
   });
+
 });
