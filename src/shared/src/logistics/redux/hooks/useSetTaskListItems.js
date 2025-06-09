@@ -168,7 +168,7 @@ export default function useSetTaskListItems() {
       Object.values(taskListToUnassign).map((tasks) => _unassignTasks(tasks, isJustUnassign))
     );
 
-    if(isJustUnassign) { // We are just unassigning tasks
+    if(isJustUnassign) {
       return unassignResolve;
     }
 
