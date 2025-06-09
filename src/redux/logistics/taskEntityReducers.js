@@ -8,7 +8,7 @@ import {
 } from '../App/actions';
 import {
   assignTaskSuccess,
-  assignTasksSuccess,
+  assignTasksWithUiUpdateSuccess,
   cancelTaskSuccess,
   createTaskSuccess,
   markTaskDoneSuccess,
@@ -16,7 +16,7 @@ import {
   startTaskSuccess,
   taskAdapter,
   unassignTaskSuccess,
-  unassignTasksSuccess,
+  unassignTasksWithUiUpdateSuccess,
   updateTaskSuccess,
 } from '../../coopcycle-frontend-js/logistics/redux';
 
@@ -48,8 +48,8 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    assignTasksSuccess,
-    unassignTasksSuccess,
+    assignTasksWithUiUpdateSuccess,
+    unassignTasksWithUiUpdateSuccess,
   ])) {
     if (action.payload) {
       return taskAdapter.upsertMany(state, action.payload);

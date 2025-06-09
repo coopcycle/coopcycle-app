@@ -5,8 +5,8 @@ import { useEffect, useMemo } from 'react';
 import {
   assignTasksFailure,
   assignTasksRequest,
-  assignTasksSuccess,
-  unassignTasksSuccess,
+  assignTasksWithUiUpdateSuccess,
+  unassignTasksWithUiUpdateSuccess,
   updateTaskListsSuccess,
   updateTourSuccess,
 } from '../actions';
@@ -81,11 +81,11 @@ export default function useSetTaskListItems() {
     }
   }, [dispatch, isLoading]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(assignTasksSuccess());
-    }
-  }, [dispatch, isSuccess]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     dispatch(assignTasksWithUiUpdateSuccess());
+  //   }
+  // }, [dispatch, isSuccess]);
 
   useEffect(() => {
     if (isError) {
@@ -284,14 +284,14 @@ export default function useSetTaskListItems() {
     const itemIdsSet = new Set(itemIds);
     const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
     const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
-    dispatch(assignTasksSuccess(newUserTasks));
+    dispatch(assignTasksWithUiUpdateSuccess(newUserTasks));
   }
 
   const _updateRemovedTasks = (removedTasks) => {
     const itemIdsSet = new Set(removedTasks);
     const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
     const newUnassignedTasks = tasks.map(task => getAssignedTask(task));
-    dispatch(unassignTasksSuccess(newUnassignedTasks));
+    dispatch(unassignTasksWithUiUpdateSuccess(newUnassignedTasks));
   }
 
   return {
