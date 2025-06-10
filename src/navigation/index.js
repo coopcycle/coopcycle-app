@@ -5,7 +5,10 @@ import HeaderButton from '../components/HeaderButton';
 import DispatchAllTasks from './dispatch/AllTasks';
 import DispatchDate from './dispatch/Date';
 import DispatchPickUser from './dispatch/PickUser';
+import DispatchTasksFilters from './dispatch/PickUser';
 import DispatchTasksMap from './dispatch/TasksMap';
+import DispatchTasksSearchResults from './dispatch/TasksSearchResults';
+
 
 import TaskComplete from './task/Complete';
 import TaskPhoto from './task/Photo';
@@ -129,7 +132,9 @@ export default {
   DispatchAllTasks,
   DispatchDate,
   DispatchPickUser,
+  DispatchTasksFilters,
   DispatchTasksMap,
+  DispatchTasksSearchResults,
   NewDeliveryStore,
   NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,

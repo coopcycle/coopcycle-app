@@ -1,8 +1,8 @@
-import { Box, Icon, Input } from 'native-base';
+import { Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { TouchableOpacity, View } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 
@@ -21,15 +21,29 @@ import TaskNavigator from './TaskNavigator';
 const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const handleSearchSubmit = () => {
+    if (searchQuery.trim()) {
+      navigation.navigate('DispatchTasksSearchResults', { searchQuery });
+      setSearchQuery('');
+    }
+  };
+
   return (
     <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center', marginBottom: 14, paddingHorizontal: 24, gap: 14 }}>
       <TouchableOpacity onPress={() => navigation.navigate('DispatchTasksMap')}>
         <Icon as={FontAwesome} name="map" />
       </TouchableOpacity>
-      <Box style= {{ flex: 1, overflow: 'hidden' }}>
-        <Input placeholder="Search" />
-      </Box>
-      <TouchableOpacity onPress={() => navigation.navigate('DispatchAllTasks')}>
+      <TextInput
+        style= {{ flex: 1, overflow: 'hidden' }}
+        placeholder="Search..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        onSubmitEditing={handleSearchSubmit}
+        returnKeyType="search"
+      />
+      <TouchableOpacity onPress={() => navigation.navigate('DispatchTasksFilters')}>
         <Icon as={FontAwesome} name="filter"/>
       </TouchableOpacity>
     </View>
@@ -53,6 +67,22 @@ const Tabs = () => (
       <Tab.Screen
         name="DispatchTasksMap"
         component={screens.DispatchTasksMap}
+        options={() => ({
+          title: false,
+          tabBarTestID: 'dispatchTasksMap',
+        })}
+      />
+      <Tab.Screen
+        name="DispatchTasksSearchResults"
+        component={screens.DispatchTasksSearchResults}
+        options={() => ({
+          title: false,
+          tabBarTestID: 'dispatchTasksMap',
+        })}
+      />
+      <Tab.Screen
+        name="DispatchTasksFilters"
+        component={screens.DispatchTasksFilters}
         options={() => ({
           title: false,
           tabBarTestID: 'dispatchTasksMap',
