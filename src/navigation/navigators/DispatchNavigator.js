@@ -168,7 +168,7 @@ export default function DispatchNavigator({
           component={screens.DispatchTasksSearchResults}
           options={() => ({
             tabBarTestID: 'dispatchTasksSearchResults',
-            title: 'dispatchTasksSearchResults',
+            title: i18n.t('DISPATCH_SEARCH_RESULTS'),
           })}
         />
         <RootStack.Screen
@@ -176,7 +176,7 @@ export default function DispatchNavigator({
         component={screens.DispatchTasksFilters}
           options={() => ({
             tabBarTestID: 'dispatchTasksFilters',
-            title: 'dispatchTasksFilters',
+            title: i18n.t('DISPATCH_TASKS_FILTERS'),
           })}
         />
         <RootStack.Screen
