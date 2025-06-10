@@ -1,8 +1,8 @@
-import { Icon } from 'native-base';
+import { Box, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 
@@ -31,31 +31,88 @@ function CustomTabBar({ navigation }) {
   };
 
   return (
-    <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center', marginBottom: 14, paddingHorizontal: 24, gap: 14 }}>
-      <TouchableOpacity onPress={() => navigation.navigate('DispatchTasksMap')}>
+    <View style={customTabBarStyles.tabBarContainer}>
+      <TouchableOpacity
+        style={customTabBarStyles.tabButton}
+        onPress={() => navigation.navigate('DispatchTasksMap')}
+      >
         <Icon as={FontAwesome} name="map" />
       </TouchableOpacity>
-      <TextInput
-        style= {{ flex: 1, overflow: 'hidden' }}
-        placeholder="Search..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        onSubmitEditing={handleSearchSubmit}
-        returnKeyType="search"
-      />
-      <TouchableOpacity onPress={() => navigation.navigate('DispatchTasksFilters')}>
-        <Icon as={FontAwesome} name="filter"/>
+      <Box style={customTabBarStyles.searchContainer}>
+        <Icon
+          as={FontAwesome}
+          name="search"
+          size={6}
+          color="#000000"
+          style={customTabBarStyles.searchIcon}
+        />
+        <TextInput
+          style={customTabBarStyles.searchInput}
+          placeholder="Search"
+          placeholderTextColor="#000000"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onSubmitEditing={handleSearchSubmit}
+          returnKeyType="search"
+        />
+      </Box>
+      <TouchableOpacity
+        style={customTabBarStyles.tabButton}
+        onPress={() => navigation.navigate('DispatchTasksFilters')}
+      >
+        <Icon as={FontAwesome} name="filter" />
       </TouchableOpacity>
     </View>
   );
 }
 
-const Tabs = () => (
-  <Tab.Navigator
-    tabBar={(props) => <CustomTabBar {...props}/>}
-    screenOptions={{
-      headerShown: false,
-    }}>
+// Styles
+const customTabBarStyles = StyleSheet.create({
+  tabBarContainer: {
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderTopColor: '#ddd',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    height: 68,
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  tabButton: {
+    padding: 10,
+  },
+  searchContainer: {
+    alignItems: 'center',
+    backgroundColor: '#EFEFEF',
+    borderRadius: 20.5,
+    flex: 1,
+    flexDirection: 'row',
+    height: 41,
+    marginHorizontal: 10,
+    paddingLeft: 15,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    color: '#000000',
+    flex: 1,
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 14,
+    height: '100%',
+    marginLeft: -30,
+    paddingRight: 30,
+    textAlign: 'center',
+  },
+});
+
+function Tabs() {
+  return (
+    <Tab.Navigator
+      tabBar={(props) => <CustomTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Tab.Screen
         name="DispatchAllTasks"
         component={screens.DispatchAllTasks}
@@ -88,12 +145,15 @@ const Tabs = () => (
           tabBarTestID: 'dispatchTasksMap',
         })}
       />
-  </Tab.Navigator>
-);
+    </Tab.Navigator>
+  );
+};
 
 const RootStack = createStackNavigator();
 
-export default ({ navigation }) => {
+export default function DispatchNavigator({
+  navigation,
+}) {
   const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
