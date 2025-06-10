@@ -2,9 +2,10 @@ import { Box, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import React from 'react';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
@@ -21,7 +22,8 @@ import TaskNavigator from './TaskNavigator';
 const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showMapButton, setShowMapButton] = useState(true);
 
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
@@ -30,14 +32,36 @@ function CustomTabBar({ navigation }) {
     }
   };
 
+  const goToTasksMap = () => {
+    setShowMapButton(false);
+    navigation.navigate('DispatchTasksMap');
+  }
+
+  const goToTasksList = () => {
+    setShowMapButton(true);
+    navigation.navigate('DispatchAllTasks')
+  }
+
   return (
     <View style={customTabBarStyles.tabBarContainer}>
-      <TouchableOpacity
-        style={customTabBarStyles.tabButton}
-        onPress={() => navigation.navigate('DispatchTasksMap')}
-      >
-        <Icon as={FontAwesome} name="map" />
-      </TouchableOpacity>
+      { showMapButton
+        ? (
+          <TouchableOpacity
+            style={customTabBarStyles.tabButton}
+            onPress={goToTasksMap}
+          >
+            <Icon as={FontAwesome} name="map" />
+          </TouchableOpacity>
+        )
+        : (
+          <TouchableOpacity
+            style={customTabBarStyles.tabButton}
+            onPress={goToTasksList}
+          >
+            <Icon as={FontAwesome} name="list" />
+          </TouchableOpacity>
+        )
+      }
       <Box style={customTabBarStyles.searchContainer}>
         <Icon
           as={FontAwesome}
@@ -86,7 +110,7 @@ const customTabBarStyles = StyleSheet.create({
     borderRadius: 20.5,
     flex: 1,
     flexDirection: 'row',
-    height: 41,
+    height: 40,
     marginHorizontal: 10,
     paddingLeft: 15,
   },
@@ -106,29 +130,64 @@ const customTabBarStyles = StyleSheet.create({
 });
 
 function Tabs() {
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (e) => {
+        const calculated = e.endCoordinates.height - 92;
+        setKeyboardHeight(calculated);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, [insets.bottom]);
+
   return (
-    <Tab.Navigator
-      tabBar={(props) => <CustomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Tab.Screen
-        name="DispatchAllTasks"
-        component={screens.DispatchAllTasks}
-        options={() => ({
-          title: false,
-          tabBarTestID: 'dispatchAllTasks',
-        })}
-      />
-      <Tab.Screen
-        name="DispatchTasksMap"
-        component={screens.DispatchTasksMap}
-        options={() => ({
-          title: false,
-          tabBarTestID: 'dispatchTasksMap',
-        })}
-      />
-    </Tab.Navigator>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'android' ? 'height' : 'padding'}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={
+        Platform.OS === 'android'
+          ? -keyboardHeight
+          : insets.bottom
+      }
+    >
+      <Tab.Navigator
+        tabBar={(props) => <CustomTabBar {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="DispatchAllTasks"
+          component={screens.DispatchAllTasks}
+          options={() => ({
+            title: false,
+            tabBarTestID: 'dispatchAllTasks',
+          })}
+        />
+        <Tab.Screen
+          name="DispatchTasksMap"
+          component={screens.DispatchTasksMap}
+          options={() => ({
+            title: false,
+            tabBarTestID: 'dispatchTasksMap',
+          })}
+        />
+      </Tab.Navigator>
+    </KeyboardAvoidingView>
   );
 };
 
