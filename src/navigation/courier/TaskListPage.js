@@ -48,14 +48,14 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   const swipeLeftConfiguration = {
-    onSwipeLeft: task => navigateToCompleteTask(navigation, route, task, [], true),
+    onPressLeft: task => navigateToCompleteTask(navigation, route, task, [], true),
     swipeOutLeftBackgroundColor: greenColor,
     swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIconName: doneIconName,
   };
 
   const swipeRightConfiguration = {
-    onSwipeRight: task => navigateToCompleteTask(navigation, route, task, [], false),
+    onPressRight: task => navigateToCompleteTask(navigation, route, task, [], false),
     swipeOutRightBackgroundColor: yellowColor,
     swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: incidentIconName,
@@ -74,6 +74,7 @@ export default function TaskListPage({ navigation, route }) {
       <DateSelectHeader navigate={navigation.navigate} />
       {tasks.length > 0 && (
         <TaskList
+          id="courierTaskList"
           tasks={tasks}
           tasksWithColor={tasksWithColor}
           refreshing={isFetching}
@@ -83,7 +84,6 @@ export default function TaskListPage({ navigation, route }) {
           {...swipeRightConfiguration}
           multipleSelectionIcon={doneIconName}
           onMultipleSelectionAction={completeSelectedTasks}
-          id="courierTaskList"
         />
       )}
       {tasks.length === 0 && (
