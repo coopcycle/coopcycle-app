@@ -11,12 +11,12 @@ const TaskList = ({
   multipleSelectionIcon,
   onMultipleSelectionAction,
   onRefresh = () => {},
-  onPressLeft,
-  onPressRight,
-  onSwipeClosed,
-  onSwipeToLeft,
-  onSwipeToRight,
-  onTaskClick,
+  onPressLeft = () => {},
+  onPressRight = () => {},
+  onSwipeClosed = () => {},
+  onSwipeToLeft = () => {},
+  onSwipeToRight = () => {},
+  onTaskClick = () => {},
   refreshing = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftEnabled,
@@ -97,9 +97,8 @@ const TaskList = ({
         data={tasks}
         keyExtractor={(item, index) => item['@id']}
         renderItem={renderItem}
-        // handled globally in GroupedTasks. TODO: check in Courier's section
-        // refreshing={refreshing}
-        // onRefresh={onRefresh}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         ItemSeparatorComponent={ItemSeparatorComponent}
       />
       {multipleSelectionIcon && onFabButtonPressed && (
