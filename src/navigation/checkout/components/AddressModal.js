@@ -142,11 +142,11 @@ class AddressModal extends Component {
       </Modal>
     );
   }
-}
 
-AddressModal.defaultProps = {
-  value: null,
-};
+  static defaultProps = {
+    value: null,
+  }
+}
 
 AddressModal.propTypes = {
   onSelect: PropTypes.func.isRequired,

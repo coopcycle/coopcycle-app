@@ -16,17 +16,22 @@ const TipCart = props => (
   </Pressable>
 );
 
-function Tips(props) {
-  const [tip, setTip] = useState(props.value);
-  const [advancedView, setAdvancedView] = useState(!props.values.includes(tip));
+function Tips({
+    onTip,
+    value = 0,
+    values = [0, 100, 200, 400]
+  }) {
+  const props = arguments[0];
+  const [tip, setTip] = useState(value);
+  const [advancedView, setAdvancedView] = useState(!values.includes(tip));
 
-  const defaultView = values => {
-    return values.map((value, index) => (
+  const defaultView = () => {
+    return values.map((val, index) => (
       <TipCart
         key={index}
-        text={formatPrice(value, { mantissa: 0 })}
-        onPress={() => setTip(value)}
-        bg={tip === value ? pressedTipColor : tipColor}
+        text={formatPrice(val, { mantissa: 0 })}
+        onPress={() => setTip(val)}
+        bg={tip === val ? pressedTipColor : tipColor}
       />
     ));
   };
@@ -35,7 +40,7 @@ function Tips(props) {
     <View padding={2}>
       <Heading size={'xs'}>{props.t('TIP')}</Heading>
       <HStack justifyContent="center" paddingBottom={5}>
-        {!advancedView && defaultView(props.values)}
+        {!advancedView && defaultView()}
 
         {advancedView && (
           <TipCart
@@ -65,15 +70,10 @@ function Tips(props) {
           bg={tipColor}
         />
       </HStack>
-      <Button onPress={() => props.onTip(tip)}>{props.t('VALIDATE')}</Button>
+      <Button onPress={() => onTip(tip)}>{props.t('VALIDATE')}</Button>
     </View>
   );
 }
-
-Tips.defaultProps = {
-  value: 0,
-  values: [0, 100, 200, 400],
-};
 
 Tips.propTypes = {
   onTip: PropTypes.func.isRequired,

@@ -193,12 +193,12 @@ class OrderItems extends Component {
       </View>
     );
   }
-}
 
-OrderItems.defaultProps = {
-  withDeliveryTotal: false,
-  withTotals: true,
-};
+  static defaultProps = {
+    withDeliveryTotal: false,
+    withTotals: true,
+  }
+}
 
 OrderItems.propTypes = {
   withDeliveryTotal: PropTypes.bool,
