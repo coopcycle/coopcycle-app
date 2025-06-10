@@ -66,7 +66,6 @@ function CustomTabBar({ navigation }) {
   );
 }
 
-// Styles
 const customTabBarStyles = StyleSheet.create({
   tabBarContainer: {
     alignItems: 'center',
@@ -129,22 +128,6 @@ function Tabs() {
           tabBarTestID: 'dispatchTasksMap',
         })}
       />
-      <Tab.Screen
-        name="DispatchTasksSearchResults"
-        component={screens.DispatchTasksSearchResults}
-        options={() => ({
-          title: false,
-          tabBarTestID: 'dispatchTasksMap',
-        })}
-      />
-      <Tab.Screen
-        name="DispatchTasksFilters"
-        component={screens.DispatchTasksFilters}
-        options={() => ({
-          title: false,
-          tabBarTestID: 'dispatchTasksMap',
-        })}
-      />
     </Tab.Navigator>
   );
 };
@@ -178,6 +161,22 @@ export default function DispatchNavigator({
                 onPress={() => navigation.navigate('DispatchDate')}
               />
             ),
+          })}
+        />
+        <RootStack.Screen
+          name="DispatchTasksSearchResults"
+          component={screens.DispatchTasksSearchResults}
+          options={() => ({
+            tabBarTestID: 'dispatchTasksSearchResults',
+            title: 'dispatchTasksSearchResults',
+          })}
+        />
+        <RootStack.Screen
+        name="DispatchTasksFilters"
+        component={screens.DispatchTasksFilters}
+          options={() => ({
+            tabBarTestID: 'dispatchTasksFilters',
+            title: 'dispatchTasksFilters',
           })}
         />
         <RootStack.Screen
