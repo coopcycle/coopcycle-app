@@ -3,10 +3,8 @@ import React from 'react';
 import HeaderButton from '../components/HeaderButton';
 
 import DispatchAllTasks from './dispatch/AllTasks';
-import DispatchAssignTask from './dispatch/AssignTask';
 import DispatchDate from './dispatch/Date';
 import DispatchPickUser from './dispatch/PickUser';
-import DispatchTaskList from './dispatch/TaskList';
 
 import TaskComplete from './task/Complete';
 import TaskPhoto from './task/Photo';
@@ -128,10 +126,8 @@ export default {
   AccountResetPasswordCheckEmail,
   AccountResetPasswordNewPassword,
   DispatchAllTasks,
-  DispatchAssignTask,
   DispatchDate,
   DispatchPickUser,
-  DispatchTaskList,
   NewDeliveryStore,
   NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,

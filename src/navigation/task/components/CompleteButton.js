@@ -87,6 +87,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
             <LeftButton width={buttonWidth} />
           </TouchableOpacity>
           <TouchableOpacity
+            testID="task:completeFailureButton"
             style={{
               flex: 1,
               alignItems: 'flex-end',

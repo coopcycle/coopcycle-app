@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
 });
 
 function getOrderId(task) {
-  const id = task.metadata?.delivery_position
+  const id = task.metadata?.delivery_position && task.metadata?.order_number
     ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
-    : task.metadata.order_number;
+    : (task.metadata.order_number || "");
 
   return id;
 }
@@ -119,7 +119,7 @@ const OrderInfo = ({task, color, width}) => {
             }}>
             {orderId}
           </Text>
-          {task.metadata.order_total && (
+          {task.metadata?.order_total ? (
             <Text
               style={{
                 color: textColor,
@@ -129,7 +129,7 @@ const OrderInfo = ({task, color, width}) => {
               }}>
               {formatPrice(task.metadata.order_total)}
             </Text>
-          )}
+          ) : null}
         </>)
         : (
           <CoopcyleLogo
@@ -160,6 +160,7 @@ const TaskTypeIcon = ({ task }) => (
 
 const TaskStatusIcon = ({ task }) => {
   const color = '#FFFFFF'; // Make it invisible
+  const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
   switch (task.status) {
     case 'DOING':
@@ -169,7 +170,7 @@ const TaskStatusIcon = ({ task }) => {
           color={color}
           name={doingIconName}
           style={iconStyle(task)}
-          testID='taskListItemIcon-DOING'
+          testID={testID}
         />
       );
     case 'DONE':
@@ -179,7 +180,7 @@ const TaskStatusIcon = ({ task }) => {
           color={color}
           name={doneIconName}
           style={iconStyle(task)}
-          testID='taskListItemIcon-DONE'
+          testID={testID}
         />
       );
     case 'FAILED':
@@ -189,7 +190,7 @@ const TaskStatusIcon = ({ task }) => {
           color={color}
           name={failedIconName}
           style={iconStyle(task)}
-          testID='taskListItemIcon-FAILED'
+          testID={testID}
         />
       );
     default:
@@ -445,6 +446,7 @@ class TaskListItem extends Component {
                 <HStack alignItems='center'>
                   <TaskTypeIcon task={task}/>
                   <Text
+                    testID={`${taskTestId}:title`}
                     style={styles.textBold}
                     numberOfLines={1}>
                     {taskTitle}

@@ -3,9 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   itemSeparator: {
-    height: StyleSheet.hairlineWidth,
+    height: 4,
     width: '100%',
-    backgroundColor: '#CCCCCC',
   },
 });
 

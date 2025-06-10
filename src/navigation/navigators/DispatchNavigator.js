@@ -73,15 +73,6 @@ const MainNavigator = () => {
         })}
       />
       <MainStack.Screen
-        name="DispatchTaskList"
-        component={screens.DispatchTaskList}
-        options={({ route }) => ({
-          title: i18n.t('DISPATCH_TASK_LIST', {
-            username: route.params?.taskList.username,
-          }),
-        })}
-      />
-      <MainStack.Screen
         name="Task"
         component={TaskNavigator}
         options={{
@@ -140,13 +131,6 @@ export default ({ navigation }) => {
           component={screens.DispatchDate}
           options={{
             title: i18n.t('DISPATCH_DATE'),
-          }}
-        />
-        <RootStack.Screen
-          name="DispatchAssignTask"
-          component={screens.DispatchAssignTask}
-          options={{
-            title: i18n.t('DISPATCH_ASSIGN_TASK'),
           }}
         />
       </RootStack.Navigator>

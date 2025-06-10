@@ -2,6 +2,7 @@ import {
   authenticateWithCredentials,
   connectToLocalInstance,
   connectToSandbox,
+  launchApp,
   symfonyConsole
 } from "../support/commands";
 import {
@@ -9,6 +10,7 @@ import {
   swipeRight,
   tapById,
 } from "../utils";
+import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 
 export async function loadDispatchFixture() {
@@ -23,28 +25,68 @@ export async function loadDispatchFixture() {
   }
 }
 
+export async function relaunchCleanApp() {
+  await launchApp();
+}
+
 export async function doLoginForUserWithRoleDispatcher() {
   await authenticateWithCredentials('dispatcher', 'dispatcher');
 }
 
-export async function assignTaskToUser(username) {
-  // Select first task in Dispatch's view and try to assign it to user with username
-  await swipeLeft('unassignedTasksList:task:0');
-  await tapById('unassignedTasksList:task:0:right');
+export async function assignTaskToUser(username, index = 0) {
+  await swipeLeftTask(UNASSIGNED_TASKS_LIST_ID, index);
+  await tapById(`${UNASSIGNED_TASKS_LIST_ID}:task:${index}:right`);
   await tapById(`assignTo:${username}`);
 }
 
-export async function bulkAssignTaskToUser(username) {
-  // Select 2 tasks in Dispatch's view and try to assign it to user with username
-  await swipeLeft('unassignedTasksList:task:0');
-  await swipeLeft('unassignedTasksList:task:1');
+export async function assignOrderToUser(username, index = 0) {
+  await swipeRightTask(UNASSIGNED_TASKS_LIST_ID, index);
+  await tapById(`${UNASSIGNED_TASKS_LIST_ID}:task:${index}:left`);
+  await tapById(`assignTo:${username}`);
+}
+
+export async function unassignTaskFromUser(username, index = 0) {
+  await swipeLeftTask(`${username}TasksList`, index);
+  await tapById(`${username}TasksList:task:${index}:right`);
+  await tapById('unassignTask');
+}
+
+export async function unassignOrderFromUser(username, index = 0) {
+  await swipeRightTask(`${username}TasksList`, index);
+  await tapById(`${username}TasksList:task:${index}:left`);
+  await tapById('unassignTask');
+}
+
+export async function bulkAssignToUser(username) {
   await tapById('bulkAssignButton');
   await tapById(`assignTo:${username}`);
 }
 
-export async function unassignTaskFromUser(username) {
-  // Select first assigned task to user with username and try to unassign it
-  await swipeLeft(`${username}TasksList:task:0`);
-  await tapById(`${username}TasksList:task:0:right`);
+export async function bulkUnassign() {
+  await tapById('bulkAssignButton');
   await tapById('unassignTask');
+}
+
+export async function toggleSection(sectionId) {
+  await tapById(`${sectionId}:toggler`);
+}
+
+export async function toggleSectionUnassigned() {
+  await toggleSection(UNASSIGNED_TASKS_LIST_ID);
+}
+
+export async function toggleSectionUser(username) {
+  await toggleSection(`${username}TasksList`);
+}
+
+export async function swipeLeftTask(sectionId, index = 0) {
+  await swipeLeft(`${sectionId}:task:${index}`);
+}
+
+export async function swipeRightTask(sectionId, index = 0) {
+  await swipeRight(`${sectionId}:task:${index}`);
+}
+
+export function getTaskTitleElement(sectionId, index = 0) {
+  return element(by.id(`${sectionId}:task:${index}:title`))
 }

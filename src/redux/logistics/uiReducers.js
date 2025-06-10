@@ -1,8 +1,5 @@
 import { actionMatchCreator } from '../util';
 import {
-  assignTasksFailure,
-  assignTasksRequest,
-  assignTasksSuccess,
   loadTaskListsFailure,
   loadTaskListsRequest,
   loadTaskListsSuccess,
@@ -14,13 +11,16 @@ import {
   loadUsersSuccess,
 } from '../Dispatch/actions';
 import {
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksWithUiUpdateSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
   createTaskSuccess,
   loadToursFailure,
   loadToursSuccess,
-  unassignTasksSuccess,
+  unassignTasksWithUiUpdateSuccess,
 } from '../../shared/logistics/redux';
 
 
@@ -89,8 +89,8 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [
-    assignTasksSuccess,
-    unassignTasksSuccess,
+    assignTasksWithUiUpdateSuccess,
+    unassignTasksWithUiUpdateSuccess,
   ])) {
     return {
       ...state,

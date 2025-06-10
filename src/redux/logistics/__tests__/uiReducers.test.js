@@ -1,7 +1,4 @@
 import {
-  assignTasksFailure,
-  assignTasksRequest,
-  assignTasksSuccess,
   loadTaskListsFailure,
   loadTaskListsRequest,
   loadTaskListsSuccess,
@@ -13,13 +10,16 @@ import {
   loadUsersSuccess,
 } from "../../Dispatch/actions";
 import {
+  assignTasksFailure,
+  assignTasksRequest,
+  assignTasksWithUiUpdateSuccess,
   cancelTaskSuccess,
   createTaskFailure,
   createTaskRequest,
   createTaskSuccess,
   loadToursFailure,
   loadToursSuccess,
-  unassignTasksSuccess,
+  unassignTasksWithUiUpdateSuccess,
 } from '../../../shared/logistics/redux';
 import reducer from '../uiReducers';
 
@@ -109,8 +109,8 @@ describe('uiReducers', () => {
     })
 
     it.each([
-      ['assignTasksSuccess', assignTasksSuccess],
-      ['unassignTasksSuccess', unassignTasksSuccess],
+      ['assignTasksWithUiUpdateSuccess', assignTasksWithUiUpdateSuccess],
+      ['unassignTasksWithUiUpdateSuccess', unassignTasksWithUiUpdateSuccess],
     ])('should change isAssigningTasks to FALSE for success action %s', (actionName, actionCreator) => {
       const action = actionCreator();
       const state = {

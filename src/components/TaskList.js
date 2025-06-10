@@ -10,9 +10,14 @@ const TaskList = ({
   id,
   multipleSelectionIcon,
   onMultipleSelectionAction,
-  onSwipeLeft,
-  onSwipeRight,
-  onTaskClick,
+  onRefresh = () => {},
+  onPressLeft = () => {},
+  onPressRight = () => {},
+  onSwipeClosed = () => {},
+  onSwipeToLeft = () => {},
+  onSwipeToRight = () => {},
+  onTaskClick = () => {},
+  refreshing = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftEnabled,
   swipeOutLeftIconName,
@@ -33,7 +38,7 @@ const TaskList = ({
 
   const swipeLeftConfiguration = (task) => ({
     disableLeftSwipe: !swipeOutLeftEnabled(task),
-    onPressLeft: () => onSwipeLeft(task),
+    onPressLeft: () => onPressLeft(task),
     onSwipedToLeft: () => _handleSwipeToLeft(task),
     swipeOutLeftBackgroundColor,
     swipeOutLeftIconName,
@@ -41,7 +46,8 @@ const TaskList = ({
 
   const swipeRightConfiguration = (task) => ({
     disableRightSwipe: !swipeOutRightEnabled(task),
-    onPressRight: () => onSwipeRight(task),
+    onPressRight: () => onPressRight(task),
+    onSwipedToRight: () => _handleSwipeToRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
     swipeOutRightBackgroundColor,
     swipeOutRightIconName,
@@ -49,11 +55,17 @@ const TaskList = ({
 
   const _handleSwipeToLeft = useCallback((task) => {
     bulkFabButton.current?.addItem(task);
-  }, []);
+    onSwipeToLeft(task);
+  }, [onSwipeToLeft]);
+
+  const _handleSwipeToRight = useCallback((task) => {
+    onSwipeToRight(task);
+  }, [onSwipeToRight]);
 
   const _handleSwipeClosed = useCallback((task) => {
     bulkFabButton.current?.removeItem(task);
-  }, []);
+    onSwipeClosed(task);
+  }, [onSwipeClosed]);
 
   const onFabButtonPressed = (items) => {
     onMultipleSelectionAction(items);
@@ -85,31 +97,30 @@ const TaskList = ({
         data={tasks}
         keyExtractor={(item, index) => item['@id']}
         renderItem={renderItem}
-        // handled globally
-        // refreshing={refreshing}
-        // onRefresh={onRefresh}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         ItemSeparatorComponent={ItemSeparatorComponent}
       />
-      <ItemsBulkFabButton
-        iconName={multipleSelectionIcon}
-        onPressed={(items) => onFabButtonPressed(items)}
-        ref={bulkFabButton}
-      />
+      {multipleSelectionIcon && onFabButtonPressed && (
+        <ItemsBulkFabButton
+          iconName={multipleSelectionIcon}
+          onPressed={(items) => onFabButtonPressed(items)}
+          ref={bulkFabButton}
+        />
+      )}
     </>
   );
-};
-
-TaskList.defaultProps = {
-  refreshing: false,
-  onRefresh: () => {},
 };
 
 TaskList.propTypes = {
   id: PropTypes.string.isRequired,
   multipleSelectionIcon: PropTypes.string,
-  onMultipleSelectionAction: PropTypes.func.isRequired,
-  onSwipeLeft: PropTypes.func,
-  onSwipeRight: PropTypes.func,
+  onMultipleSelectionAction: PropTypes.func,
+  onPressLeft: PropTypes.func,
+  onPressRight: PropTypes.func,
+  onSwipeClosed: PropTypes.func,
+  onSwipeToLeft: PropTypes.func,
+  onSwipeToRight: PropTypes.func,
   onTaskClick: PropTypes.func.isRequired,
   swipeOutLeftBackgroundColor: PropTypes.string,
   swipeOutLeftEnabled: PropTypes.func,

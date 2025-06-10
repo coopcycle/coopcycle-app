@@ -166,6 +166,7 @@
     "react-native-clean-project": "^3.6.7",
     "react-native-svg-transformer": "^1.5.1",
     "react-test-renderer": "18.3.1",
+    "react-native-svg-transformer": "^1.5.1",
     "reactotron-react-native": "^5.1.7",
     "reactotron-redux": "^3.1.9",
     "redux-mock-store": "^1.5.5",

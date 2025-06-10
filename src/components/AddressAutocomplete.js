@@ -48,12 +48,13 @@ const fuseOptions = {
   keys: ['contactName', 'streetAddress'],
 };
 
-function AddressAutocomplete(props) {
-  const {
+function AddressAutocomplete({
     country,
     t,
     value,
-    addresses,
+    addresses = [],
+    minChars = 3,
+    renderRight = () => <View />,
     containerStyle,
     inputContainerStyle,
     listContainerStyle,
@@ -62,7 +63,8 @@ function AddressAutocomplete(props) {
     onSelectAddress,
     placeholder,
     ...otherProps
-  } = props;
+  }) {
+  const props = arguments[0];
 
   const [query, setQuery] = useState(
     _.isObject(value) ? value.streetAddress || '' : value || '',
@@ -451,12 +453,6 @@ function AddressAutocomplete(props) {
     </View>
   );
 }
-
-AddressAutocomplete.defaultProps = {
-  minChars: 3,
-  addresses: [],
-  renderRight: () => <View />,
-};
 
 AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
