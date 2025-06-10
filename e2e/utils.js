@@ -20,3 +20,11 @@ export async function swipeLeft(testID) {
     await expect(element(by.id(testID))).toBeVisible();
     await element(by.id(testID)).swipe('left');
 }
+
+export async function waitForElement(elemId, timeout = 10000) {
+  await waitFor(element(by.id(elemId))).toBeVisible().withTimeout(timeout);
+}
+
+export async function sleep(timeout) {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}

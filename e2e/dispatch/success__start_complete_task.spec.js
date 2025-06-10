@@ -7,6 +7,7 @@ import {
 } from './utils';
 import {
   describeif,
+  //swipeLeft,
   swipeRight,
   tapById,
   tapByText,
@@ -60,13 +61,22 @@ describeif(device.getPlatform() === 'android')
     await expect(element(by.id('taskListItemIcon:DONE:1'))).toBeVisible();
   });
 
-  // TODO FIXME: Somehow the step to tap 'task:finishButton' isn't working..!
-  // The view is loaded fine but the console keeps saying:
+  // TODO FIXME: Somehow the step to tap 'task:completeFailureButton' isn't working..!
+  // The new view is loaded fine but the console keeps saying:
   //     The app is busy with the following tasks:
   //       • UI elements are busy:
   //         - Reason: Animations running on screen.
+  //
+  // And then, after a while, the console says:
+  //     The app has not responded to the network requests below:
+  //     (id = 32) invoke:
+  //       {"target":{"type":"Class","value":"com.wix.detox.espresso.EspressoDetox"},
+  //       "method":"perform", "args":[
+  //         {"type":"Invocation","value":{"target":{"type":"Class","value":"com.wix.detox.espresso.DetoxMatcher"},"method":"matcherForTestId","args":["task:completeFailureButton",{"type":"boolean","value":false}]}},
+  //         {"type":"Invocation","value":{"target":{"type":"Class","value":"com.wix.detox.espresso.DetoxViewActions"},"method":"click","args":[]}}
+  //       ]}
   // it('should mark a task as FAILED', async () => {
-  //   // Swipe complete button, tap 'failed' and press 'Start'
+  //   // Swipe complete button, tap 'failed' and press 'Report incident'
   //   await swipeLeft('task:completeButton');
   //   await tapById('task:completeFailureButton');
 
