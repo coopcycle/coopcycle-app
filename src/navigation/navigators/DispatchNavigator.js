@@ -20,33 +20,32 @@ import TaskNavigator from './TaskNavigator';
 
 const Tab = createBottomTabNavigator();
 
-function CutomBottomTabNavigator({ navigation }) {
+function CustomTabBar({ navigation }) {
   return (
     <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center', marginBottom: 14, paddingHorizontal: 24, gap: 14 }}>
-      <TouchableOpacity onPress={navigation.navigate('DispatchTasksMap')}>
+      <TouchableOpacity onPress={() => navigation.navigate('DispatchTasksMap')}>
         <Icon as={FontAwesome} name="map" />
       </TouchableOpacity>
       <Box style= {{ flex: 1, overflow: 'hidden' }}>
         <Input placeholder="Search" />
       </Box>
-      <Box onPress={navigation.navigate('DispatchAllTasks')}>
+      <TouchableOpacity onPress={() => navigation.navigate('DispatchAllTasks')}>
         <Icon as={FontAwesome} name="filter"/>
-      </Box>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const Tabs = () => (
   <Tab.Navigator
-    tabBar={(props) => <CutomBottomTabNavigator {...props}/>}
+    tabBar={(props) => <CustomTabBar {...props}/>}
     screenOptions={{
       headerShown: false,
-      tabBarShowIcon: true,
     }}>
       <Tab.Screen
         name="DispatchAllTasks"
         component={screens.DispatchAllTasks}
-        options={({ navigation }) => ({
+        options={() => ({
           title: false,
           tabBarTestID: 'dispatchAllTasks',
         })}
@@ -54,7 +53,7 @@ const Tabs = () => (
       <Tab.Screen
         name="DispatchTasksMap"
         component={screens.DispatchTasksMap}
-        options={({ navigation }) => ({
+        options={() => ({
           title: false,
           tabBarTestID: 'dispatchTasksMap',
         })}
@@ -62,68 +61,38 @@ const Tabs = () => (
   </Tab.Navigator>
 );
 
-const MainStack = createStackNavigator();
-
-const MainNavigator = () => {
-  const screenOptions = useStackNavigatorScreenOptions();
-
-  return (
-    <MainStack.Navigator screenOptions={screenOptions}>
-    <MainStack.Screen
-      name="DispatchHome"
-      component={Tabs}
-      options={({ navigation }) => ({
-        title: i18n.t('DISPATCH'),
-        headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
-        headerRight: () => (
-          <HeaderRightButton
-            onPress={() => navigation.navigate('DispatchDate')}
-          />
-        ),
-      })}
-    />
-      {/* <MainStack.Screen
-        name="DispatchAllTasks"
-        component={screens.DispatchAllTasks}
-        options={({ navigation }) => ({
-          title: i18n.t('DISPATCH'),
-          headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
-          headerRight: () => (
-            <HeaderRightButton
-              onPress={() => navigation.navigate('DispatchDate')}
-            />
-          ),
-        })}
-      /> */}
-      <MainStack.Screen
-        name="Task"
-        component={TaskNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-    </MainStack.Navigator>
-  );
-};
-
 const RootStack = createStackNavigator();
 
 export default ({ navigation }) => {
+  const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
   });
-  const dispatch = useDispatch();
 
   const deliveryCallback = newDelivery => {
     navigation.navigate('DispatchAllTasks');
     dispatch(createDeliverySuccess(newDelivery));
   };
+
   return (
     <DeliveryCallbackProvider callback={deliveryCallback}>
       <RootStack.Navigator screenOptions={screenOptions}>
         <RootStack.Screen
-          name="Main"
-          component={MainNavigator}
+          name="DispatchHome"
+          component={Tabs}
+          options={({ navigation }) => ({
+            title: i18n.t('DISPATCH'),
+            headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
+            headerRight: () => (
+              <HeaderRightButton
+                onPress={() => navigation.navigate('DispatchDate')}
+              />
+            ),
+          })}
+        />
+        <RootStack.Screen
+          name="Task"
+          component={TaskNavigator}
           options={{
             headerShown: false,
           }}

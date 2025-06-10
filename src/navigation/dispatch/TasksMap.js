@@ -1,12 +1,12 @@
 import { Text, View } from 'native-base';
-
-import BasicSafeAreaView from "../../components/BasicSafeAreaView";
-import { mediumGreyColor } from '../../styles/common';
-import AddButton from './components/AddButton';
 import { useSelector } from 'react-redux';
-import { selectSelectedDate } from '../../shared/logistics/redux';
 
-export default function TaskMap({
+import { mediumGreyColor } from '../../styles/common';
+import { selectSelectedDate } from '../../shared/logistics/redux';
+import AddButton from './components/AddButton';
+import BasicSafeAreaView from "../../components/BasicSafeAreaView";
+
+export default function TasksMap({
   navigation,
 }) {
   const selectedDate = useSelector(selectSelectedDate);
