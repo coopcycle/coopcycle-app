@@ -142,10 +142,6 @@ class AddressModal extends Component {
       </Modal>
     );
   }
-
-  static defaultProps = {
-    value: null,
-  }
 }
 
 AddressModal.propTypes = {
@@ -202,7 +198,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
   let savedAddresses;
-  if (ownProps.value !== null) {
+  if (ownProps.value) {
     savedAddresses = [ownProps.value, ...state.account.addresses.slice(0, 2)];
   } else {
     savedAddresses = state.account.addresses.slice(0, 3);

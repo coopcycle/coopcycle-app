@@ -1,7 +1,7 @@
 import { Avatar, Button, HStack, Heading, View } from 'native-base';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import { formatPrice } from '../../../utils/formatting';
 
@@ -19,11 +19,11 @@ const TipCart = props => (
 function Tips({
     onTip,
     value = 0,
-    values = [0, 100, 200, 400]
+    values = [0, 100, 200, 400],
   }) {
-  const props = arguments[0];
   const [tip, setTip] = useState(value);
   const [advancedView, setAdvancedView] = useState(!values.includes(tip));
+  const { t } = useTranslation();
 
   const defaultView = () => {
     return values.map((val, index) => (
@@ -38,7 +38,7 @@ function Tips({
 
   return (
     <View padding={2}>
-      <Heading size={'xs'}>{props.t('TIP')}</Heading>
+      <Heading size={'xs'}>{t('TIP')}</Heading>
       <HStack justifyContent="center" paddingBottom={5}>
         {!advancedView && defaultView()}
 
@@ -70,7 +70,7 @@ function Tips({
           bg={tipColor}
         />
       </HStack>
-      <Button onPress={() => onTip(tip)}>{props.t('VALIDATE')}</Button>
+      <Button onPress={() => onTip(tip)}>{t('VALIDATE')}</Button>
     </View>
   );
 }
@@ -81,4 +81,4 @@ Tips.propTypes = {
   values: PropTypes.arrayOf(PropTypes.number),
 };
 
-export default withTranslation()(Tips);
+export default Tips;

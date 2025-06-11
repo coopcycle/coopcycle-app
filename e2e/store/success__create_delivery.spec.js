@@ -20,8 +20,7 @@ describeif(device.getPlatform() === 'android')
 
   //FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
   it('should create a delivery for a store', async () => {
-    await expect(element(by.id('navigate_to_delivery'))).toBeVisible();
-    await element(by.id('navigate_to_delivery')).tap();
+    await tapById('navigate_to_delivery');
 
     // Pickup address
 
