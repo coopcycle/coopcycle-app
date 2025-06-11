@@ -21,10 +21,7 @@ import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 
 
-function NewDeliveryDropoffAddress({
-  navigation,
-  route,
-}) {
+function NewDeliveryDropoffAddress({ navigation, route }) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);
   const backgroundColor = useBackgroundContainerColor();
@@ -37,7 +34,7 @@ function NewDeliveryDropoffAddress({
   const store = useSelector(selectStore);
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -62,17 +59,17 @@ function NewDeliveryDropoffAddress({
     });
   }
 
-  function onSelectAddress(address, setFieldValue) {
-    if (address['@id']) {
-      setAddressData(address, setFieldValue);
+  function onSelectAddress(addr, setFieldValue) {
+    if (addr['@id']) {
+      setAddressData(addr, setFieldValue);
     } else {
-      setAddress(address);
+      setAddress(addr);
     }
 
     const delivery = {
       store: store['@id'],
       dropoff: {
-        address,
+        address: addr,
         before: 'tomorrow 12:00',
       },
     };
@@ -160,7 +157,7 @@ function NewDeliveryDropoffAddress({
     <Formik
       initialValues={initialValues}
       validate={validate}
-      onSubmit={values => submit(values)}
+      onSubmit={submit}
       validateOnBlur={true}
       validateOnChange={true}>
       {({

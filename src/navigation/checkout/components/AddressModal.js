@@ -144,10 +144,6 @@ class AddressModal extends Component {
   }
 }
 
-AddressModal.defaultProps = {
-  value: null,
-};
-
 AddressModal.propTypes = {
   onSelect: PropTypes.func.isRequired,
   value: PropTypes.object,
@@ -202,7 +198,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, ownProps) {
   let savedAddresses;
-  if (ownProps.value !== null) {
+  if (ownProps.value) {
     savedAddresses = [ownProps.value, ...state.account.addresses.slice(0, 2)];
   } else {
     savedAddresses = state.account.addresses.slice(0, 3);

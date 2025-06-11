@@ -160,6 +160,7 @@ const TaskTypeIcon = ({ task }) => (
 
 const TaskStatusIcon = ({ task }) => {
   const color = '#FFFFFF'; // Make it invisible
+  const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
   switch (task.status) {
     case 'DOING':
@@ -169,7 +170,7 @@ const TaskStatusIcon = ({ task }) => {
           color={color}
           name={doingIconName}
           style={iconStyle(task)}
-          testID='taskListItemIcon-DOING'
+          testID={testID}
         />
       );
     case 'DONE':
@@ -179,7 +180,7 @@ const TaskStatusIcon = ({ task }) => {
           color={color}
           name={doneIconName}
           style={iconStyle(task)}
-          testID='taskListItemIcon-DONE'
+          testID={testID}
         />
       );
     case 'FAILED':
@@ -189,7 +190,7 @@ const TaskStatusIcon = ({ task }) => {
           color={color}
           name={failedIconName}
           style={iconStyle(task)}
-          testID='taskListItemIcon-FAILED'
+          testID={testID}
         />
       );
     default:
@@ -518,13 +519,13 @@ class TaskListItem extends Component {
       </SwipeRow>
     );
   }
-}
 
-TaskListItem.defaultProps = {
-  onPress: () => {},
-  onPressLeft: () => {},
-  onPressRight: () => {},
-};
+  static defaultProps = {
+    onPress: () => {},
+    onPressLeft: () => {},
+    onPressRight: () => {},
+  }
+}
 
 TaskListItem.propTypes = {
   task: PropTypes.object.isRequired,
