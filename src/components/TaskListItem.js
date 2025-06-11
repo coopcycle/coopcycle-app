@@ -519,13 +519,13 @@ class TaskListItem extends Component {
       </SwipeRow>
     );
   }
-}
 
-TaskListItem.defaultProps = {
-  onPress: () => {},
-  onPressLeft: () => {},
-  onPressRight: () => {},
-};
+  static defaultProps = {
+    onPress: () => {},
+    onPressLeft: () => {},
+    onPressRight: () => {},
+  }
+}
 
 TaskListItem.propTypes = {
   task: PropTypes.object.isRequired,

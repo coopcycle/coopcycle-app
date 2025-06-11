@@ -107,17 +107,17 @@ class TimingModal extends Component {
       </>
     );
   }
-}
 
-TimingModal.defaultProps = {
-  modalEnabled: true,
-  fulfillmentMethods: [],
-  orderNodeId: null,
-  cartFulfillmentMethod: null,
-  onFulfillmentMethodChange: () => {},
-  onSchedule: () => {},
-  onSkip: () => {},
-};
+  static defaultProps = {
+    modalEnabled: true,
+    fulfillmentMethods: [],
+    orderNodeId: null,
+    cartFulfillmentMethod: null,
+    onFulfillmentMethodChange: () => {},
+    onSchedule: () => {},
+    onSkip: () => {},
+  }
+}
 
 TimingModal.propTypes = {
   openingHoursSpecification: PropTypes.object.isRequired,

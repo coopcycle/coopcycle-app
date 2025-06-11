@@ -1,106 +1,246 @@
+import { Box, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Icon } from 'native-base';
-import React from 'react';
+import { HeaderBackButton } from '@react-navigation/elements';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import screens, { headerLeft } from '..';
-import i18n from '../../i18n';
-import HeaderRightButton from '../dispatch/HeaderRightButton';
-import { useStackNavigatorScreenOptions } from '../styles';
-import { NewDeliveryNavigator } from './NewDeliveryNavigator';
-import TaskNavigator from './TaskNavigator';
-import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
-import { useDispatch } from 'react-redux';
 import { createDeliverySuccess } from '../../redux/Store/actions';
+import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
+import { NewDeliveryNavigator } from './NewDeliveryNavigator';
+import { useDispatch } from 'react-redux';
+import { useStackNavigatorScreenOptions } from '../styles';
+import HeaderRightButton from '../dispatch/HeaderRightButton';
+import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
-import { HeaderBackButton } from '@react-navigation/elements';
+import screens, { headerLeft } from '..';
+import TaskNavigator from './TaskNavigator';
 
 
-// TODO: remove Tabs
-// deprecated for the moment. Leaving because we might be using tabs for filters
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => (
-  <Tab.Navigator
-    screenOptions={{
-      headerShown: false,
-      tabBarShowIcon: true,
-    }}>
-    <Tab.Screen
-      name="DispatchUnassignedTasks"
-      component={screens.DispatchUnassignedTasks}
-      options={({ navigation }) => ({
-        title: i18n.t('DISPATCH_UNASSIGNED_TASKS'),
-        tabBarTestID: 'dispatch:unassignedTab',
-        tabBarIcon: ({ focused, horizontal, color }) => {
-          return <Icon as={FontAwesome} name="clock-o" style={{ color }} />;
-        },
-      })}
-    />
-    <Tab.Screen
-      name="DispatchTaskLists"
-      component={screens.DispatchTaskLists}
-      options={({ navigation }) => ({
-        title: i18n.t('DISPATCH_TASK_LISTS'),
-        tabBarTestID: 'dispatch:assignedTab',
-        tabBarIcon: ({ focused, horizontal, color }) => {
-          return <Icon as={FontAwesome} name="user" style={{ color }} />;
-        },
-      })}
-    />
-  </Tab.Navigator>
-);
+function CustomTabBar({ navigation }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showMapButton, setShowMapButton] = useState(true);
 
-const MainStack = createStackNavigator();
+  const handleSearchSubmit = () => {
+    if (searchQuery.trim()) {
+      navigation.navigate('DispatchTasksSearchResults', { searchQuery });
+      setSearchQuery('');
+    }
+  };
 
-const MainNavigator = () => {
-  const screenOptions = useStackNavigatorScreenOptions();
+  const goToTasksMap = () => {
+    setShowMapButton(false);
+    navigation.navigate('DispatchTasksMap');
+  }
+
+  const goToTasksList = () => {
+    setShowMapButton(true);
+    navigation.navigate('DispatchAllTasks')
+  }
 
   return (
-    <MainStack.Navigator screenOptions={screenOptions}>
-      <MainStack.Screen
-        name="DispatchAllTasks"
-        component={screens.DispatchAllTasks}
-        options={({ navigation }) => ({
-          title: i18n.t('DISPATCH'),
-          headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
-          headerRight: () => (
-            <HeaderRightButton
-              onPress={() => navigation.navigate('DispatchDate')}
-            />
-          ),
-        })}
-      />
-      <MainStack.Screen
-        name="Task"
-        component={TaskNavigator}
-        options={{
+    <View style={customTabBarStyles.tabBarContainer}>
+      { showMapButton
+        ? (
+          <TouchableOpacity
+            style={customTabBarStyles.tabButton}
+            onPress={goToTasksMap}
+          >
+            <Icon as={FontAwesome} name="map" />
+          </TouchableOpacity>
+        )
+        : (
+          <TouchableOpacity
+            style={customTabBarStyles.tabButton}
+            onPress={goToTasksList}
+          >
+            <Icon as={FontAwesome} name="list" />
+          </TouchableOpacity>
+        )
+      }
+      <Box style={customTabBarStyles.searchContainer}>
+        <Icon
+          as={FontAwesome}
+          name="search"
+          size={6}
+          color="#000000"
+          style={customTabBarStyles.searchIcon}
+        />
+        <TextInput
+          style={customTabBarStyles.searchInput}
+          placeholder="Search"
+          placeholderTextColor="#000000"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onSubmitEditing={handleSearchSubmit}
+          returnKeyType="search"
+        />
+      </Box>
+      <TouchableOpacity
+        style={customTabBarStyles.tabButton}
+        onPress={() => navigation.navigate('DispatchTasksFilters')}
+      >
+        <Icon as={FontAwesome} name="filter" />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const customTabBarStyles = StyleSheet.create({
+  tabBarContainer: {
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderTopColor: '#ddd',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    height: 68,
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  tabButton: {
+    padding: 10,
+  },
+  searchContainer: {
+    alignItems: 'center',
+    backgroundColor: '#EFEFEF',
+    borderRadius: 20.5,
+    flex: 1,
+    flexDirection: 'row',
+    height: 40,
+    marginHorizontal: 10,
+    paddingLeft: 15,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    color: '#000000',
+    flex: 1,
+    fontFamily: 'OpenSans-SemiBold',
+    fontSize: 14,
+    height: '100%',
+    marginLeft: -30,
+    paddingRight: 30,
+    textAlign: 'center',
+  },
+});
+
+function Tabs() {
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (e) => {
+        const calculated = e.endCoordinates.height - 92;
+        setKeyboardHeight(calculated);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, [insets.bottom]);
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'android' ? 'height' : 'padding'}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={
+        Platform.OS === 'android'
+          ? -keyboardHeight
+          : insets.bottom
+      }
+    >
+      <Tab.Navigator
+        tabBar={(props) => <CustomTabBar {...props} />}
+        screenOptions={{
           headerShown: false,
-        }}
-      />
-    </MainStack.Navigator>
+        }}>
+        <Tab.Screen
+          name="DispatchAllTasks"
+          component={screens.DispatchAllTasks}
+          options={() => ({
+            title: false,
+            tabBarTestID: 'dispatchAllTasks',
+          })}
+        />
+        <Tab.Screen
+          name="DispatchTasksMap"
+          component={screens.DispatchTasksMap}
+          options={() => ({
+            title: false,
+            tabBarTestID: 'dispatchTasksMap',
+          })}
+        />
+      </Tab.Navigator>
+    </KeyboardAvoidingView>
   );
 };
 
 const RootStack = createStackNavigator();
 
-export default ({ navigation }) => {
+export default function DispatchNavigator({
+  navigation,
+}) {
+  const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
   });
-  const dispatch = useDispatch();
 
   const deliveryCallback = newDelivery => {
     navigation.navigate('DispatchAllTasks');
     dispatch(createDeliverySuccess(newDelivery));
   };
+
   return (
     <DeliveryCallbackProvider callback={deliveryCallback}>
       <RootStack.Navigator screenOptions={screenOptions}>
         <RootStack.Screen
-          name="Main"
-          component={MainNavigator}
+          name="DispatchHome"
+          component={Tabs}
+          options={({ navigation }) => ({
+            title: i18n.t('DISPATCH'),
+            headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
+            headerRight: () => (
+              <HeaderRightButton
+                onPress={() => navigation.navigate('DispatchDate')}
+              />
+            ),
+          })}
+        />
+        <RootStack.Screen
+          name="DispatchTasksSearchResults"
+          component={screens.DispatchTasksSearchResults}
+          options={() => ({
+            tabBarTestID: 'dispatchTasksSearchResults',
+            title: i18n.t('DISPATCH_SEARCH_RESULTS'),
+          })}
+        />
+        <RootStack.Screen
+        name="DispatchTasksFilters"
+        component={screens.DispatchTasksFilters}
+          options={() => ({
+            tabBarTestID: 'dispatchTasksFilters',
+            title: i18n.t('DISPATCH_TASKS_FILTERS'),
+          })}
+        />
+        <RootStack.Screen
+          name="Task"
+          component={TaskNavigator}
           options={{
             headerShown: false,
           }}

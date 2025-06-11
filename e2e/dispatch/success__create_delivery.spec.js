@@ -20,7 +20,7 @@ describeif(device.getPlatform() === 'android')
     await doLoginForUserWithRoleDispatcher();
   });
 
-  it(`should create a delivery for a store`, async () => {
+  it('should create a delivery for a store', async () => {
     await tapById('dispatchNewDelivery');
 
     // Select store
