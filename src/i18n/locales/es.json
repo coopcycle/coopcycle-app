@@ -217,7 +217,7 @@
         "DISPATCH_TASK": "Tarea #{{id}}",
         "DISPATCH_ASSIGN_TASK": "Asignar una tarea",
         "DISPATCH_PICK_USER": "Elegir un usuario",
-        "DISPATCH_SEARCH_RESULTS": "Resultados",
+        "DISPATCH_SEARCH_RESULTS": "Resultados de búsqueda",
         "DISPATCH_TASKS_FILTERS": "Filtros",
         "TASK_FORM_ADDRESS_LABEL": "Dirección",
         "TASK_FORM_DONE_AFTER_LABEL": "Para hacer desde",

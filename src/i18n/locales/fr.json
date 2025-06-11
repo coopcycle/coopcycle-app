@@ -244,7 +244,7 @@
     "DISPATCH_TASK": "Task #{{id}}",
     "DISPATCH_ASSIGN_TASK": "Assigner une tâche",
     "DISPATCH_PICK_USER": "Choisissez un utilisateur",
-    "DISPATCH_SEARCH_RESULTS": "Résultats",
+    "DISPATCH_SEARCH_RESULTS": "Résultats de recherche",
     "DISPATCH_TASKS_FILTERS": "Filtres",
     "DISPATCH_UNASSIGN": "Désassigner",
     "DISPATCH_ASSIGN_TO_ME": "M'assigner la tâche",
