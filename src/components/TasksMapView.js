@@ -2,6 +2,7 @@ import _  from 'lodash';
 import { Callout, Marker, Polyline } from 'react-native-maps';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
+import { decode }from '@mapbox/polyline';
 import {
   Dimensions,
   FlatList,
@@ -225,6 +226,19 @@ class TasksMapView extends Component {
     );
   }
 
+  getCoordinates(taskList) {
+    if(taskList.polyline !== '') {
+      const decodedCoordinates = decode(taskList.polyline).map(coords => ({
+        latitude: coords[0],
+        longitude: coords[1]
+      }));
+
+      return decodedCoordinates;
+    }
+
+    return taskList.items.map(task => task.address.geo);
+  }
+
   renderModal() {
     return (
       <Modal isVisible={this.state.isModalVisible} style={styles.modal}>
@@ -299,7 +313,7 @@ class TasksMapView extends Component {
             {this.props.isPolylineOn ? (
               this.props.taskLists.map(taskList => (
                 <Polyline
-                  coordinates={taskList.items.map(task => task.address.geo)}
+                  coordinates={this.getCoordinates(taskList)}
                   strokeWidth={3}
                   strokeColor={taskList.color}
                 />

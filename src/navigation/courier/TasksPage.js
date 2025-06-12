@@ -56,7 +56,7 @@ function TaskMapPage({ navigation, route }) {
   const tasks = useSelector(selectFilteredTasks);
   const latlng = useSelector(selectSettingsLatLng);
 
-  const adHocTaskList = useMemo(() => {
+  const courierTaskList = useMemo(() => {
     const taskList = createTempTaskList('current', tasks)
     taskList.color = blueColor;
 
@@ -77,7 +77,7 @@ function TaskMapPage({ navigation, route }) {
       <View style={{ flex: 1 }}>
         <TasksMapView
           mapCenter={mapCenter}
-          taskLists={[adHocTaskList]}
+          taskLists={[courierTaskList]}
           onMarkerCalloutPress={task =>
             navigateToTask(navigation, route, task, tasks)
           }
