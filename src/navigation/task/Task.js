@@ -5,9 +5,9 @@ import { withTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
+import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { selectAllTasks as selectAllDispatchTasks } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectTasks, startTask } from '../../redux/Courier';
-
 import TaskCompleteButton from './components/CompleteButton';
 import TaskDetails from './components/Details';
 import TaskMiniMap from './components/MiniMap';
@@ -110,6 +110,8 @@ class Task extends Component {
     }
 
     const task = this.props.route.params?.task;
+    const tasks = this.props.route.params?.tasks || [];
+    const taskList = createCurrentTaskList(tasks);
     const { mapDimensions } = this.state;
 
     let aspectRatio = 1;
@@ -121,6 +123,7 @@ class Task extends Component {
     return (
       <TaskMiniMap
         task={task}
+        taskList={taskList}
         onLayout={this._onMapLayout.bind(this)}
         aspectRatio={aspectRatio}
       />
