@@ -234,7 +234,7 @@
     "NOTIFICATION_ORDER_CREATED_DESC": "Une nouvelle commande pour le {{date}} a été créée",
     "NOTIFICATION_CLOSES_SOON": "Hop hop hop ! On se dépêche, il reste {{diff}} avant la fermeture !",
     "UNASSIGNED_TASKS": "Non assignées",
-    "DISPATCH_UNASSIGNED_TASKS": "Nouvelles commandes",
+    "DISPATCH_UNASSIGNED_TASKS": "Nouvelles tâches",
     "DISPATCH_TASK_LISTS": "Assignées",
     "DISPATCH_TASK_LIST": "Assigné à {{username}}",
     "DISPATCH_ADD_TASK_LIST": "Ajouter un utilisateur",

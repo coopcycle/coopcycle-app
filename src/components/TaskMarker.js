@@ -27,8 +27,11 @@ const markerColor = (task, taskList) => {
     color = task.tags[0].color;
   }
 
-  const taskListColors = mapToColor(taskList.items);
-  color = taskListColors[task['@id']];
+  // TODO / FIXME: Sometimes `taskList` is undefined
+  if (taskList && taskList.items) {
+    const taskListColors = mapToColor(taskList.items);
+    color = taskListColors[task['@id']] || color;
+  }
 
   switch (task.status) {
     case 'DONE':
