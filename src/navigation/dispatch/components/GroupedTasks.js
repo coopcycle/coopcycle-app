@@ -212,20 +212,17 @@ export default function GroupedTasks({
         keyExtractor={(item, index) => item.id}
         renderItem={({ section, index }) => {
           // TODO check why lists are repeating, is this necessary?
-          if (index === 0 && !isFetching) {
-            const isCollapsed = collapsedSections.has(section.title);
+          if (index === 0 && !isFetching && !collapsedSections.has(section.title)) {
             return (
-              <View style={{ overflow: 'hidden', height: isCollapsed ? 0 : 'auto' }}>
-                <TaskList
-                  id={section.id}
-                  onTaskClick={onTaskClick}
-                  tasks={section.data}
-                  tasksWithColor={tasksWithColor}
-                  onSwipeClosed={handleOnSwipeClose(section)}
-                  {...swipeLeftConfiguration(section)}
-                  {...swipeRightConfiguration(section)}
-                />
-              </View>
+              <TaskList
+                id={section.id}
+                onTaskClick={onTaskClick}
+                tasks={section.data}
+                tasksWithColor={tasksWithColor}
+                onSwipeClosed={handleOnSwipeClose(section)}
+                {...swipeLeftConfiguration(section)}
+                {...swipeRightConfiguration(section)}
+              />
             );
           }
           return null;
