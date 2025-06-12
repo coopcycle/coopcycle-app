@@ -16,7 +16,7 @@ import RNPinScreen from 'react-native-pin-screen';
 
 import { blueColor } from '../../styles/common';
 import { connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
-import { createTempTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../navigation/utils';
 import {
   selectFilteredTasks,
@@ -57,7 +57,7 @@ function TaskMapPage({ navigation, route }) {
   const latlng = useSelector(selectSettingsLatLng);
 
   const courierTaskList = useMemo(() => {
-    const taskList = createTempTaskList('current', tasks)
+    const taskList = createCurrentTaskList(tasks);
     taskList.color = blueColor;
 
     return taskList;

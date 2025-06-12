@@ -15,6 +15,16 @@ export function replaceItemsWithItemIds(taskList) {
   return entity;
 }
 
+export function createCurrentTaskList(items = []) {
+  const username = 'current';
+  const assignedItems = items.map(item => ({
+    ...item,
+    assignedTo: username,
+  }));
+
+  return createTempTaskList(username, assignedItems);
+}
+
 export function createTempTaskList(username, items = []) {
   return {
     '@context': '/api/contexts/TaskList',
