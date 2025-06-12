@@ -3,6 +3,7 @@ import { Text, View } from 'native-base';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
+import { getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { mediumGreyColor } from '../../styles/common';
 import { navigateToTask } from '../utils';
 import { selectSelectedDate, selectTaskLists } from '../../shared/logistics/redux';
@@ -43,7 +44,7 @@ export default function TasksMap({
   navigation,
   route,
 }) {
-  const taskLists = useSelector(selectTaskLists);
+  const allTaskLists = useSelector(selectTaskLists);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
 
@@ -54,6 +55,12 @@ export default function TasksMap({
   const mapCenter = useMemo(() => {
     return defaultCoordinates.split(',').map(parseFloat);
   }, [defaultCoordinates]);
+
+  const navigateToSelectedTask = (task) => {
+    const taskList = getTaskTaskList(task, allTaskLists);
+    // task is one the the task lists' tasks, so taskList is always defined
+    navigateToTask(navigation, route, task, taskList.items)
+  }
 
 
   return (
@@ -70,11 +77,9 @@ export default function TasksMap({
       <View style={styles.mapContainer}>
         <TasksMapView
           mapCenter={mapCenter}
-          taskLists={taskLists}
-          onMarkerCalloutPress={task => {
-            // TODO: navigate to task's related tasks
-            navigateToTask(navigation, route, task, [task])
-          }}/>
+          taskLists={allTaskLists}
+          onMarkerCalloutPress={navigateToSelectedTask}
+        />
         {isFetching ? (
           <View style={styles.activityContainer}>
             <ActivityIndicator

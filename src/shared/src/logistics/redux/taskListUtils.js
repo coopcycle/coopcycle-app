@@ -30,10 +30,6 @@ export function createTempTaskList(username, items = []) {
   };
 }
 
-export function getUserTaskList(username, allTaskLists) {
-  return allTaskLists.find(taskList => taskList.username === username);
-}
-
 // NOTE: This function is only used from the function `getTasksListsToEdit`
 // and is exported only to be able to test it.
 export function withLinkedTasksForTaskList(orders, allTasks, allTaskLists) {
@@ -74,9 +70,17 @@ export function getTasksListIdsToEdit(selectedTasks) {
   return _.uniq([... ordersTasksListIds, ...tasksTasksListIds])
 }
 
-function getTaskListIdForTask(task, allTaskLists) {
+export function getUserTaskList(username, allTaskLists) {
+  return allTaskLists.find(taskList => taskList.username === username);
+}
+
+export function getTaskTaskList(task, allTaskLists) {
   const username = task.assignedTo;
-  const taskList = getUserTaskList(username, allTaskLists);
+  return getUserTaskList(username, allTaskLists);
+}
+
+function getTaskListIdForTask(task, allTaskLists) {
+  const taskList = getTaskTaskList(task, allTaskLists);
   const key = taskList ? taskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
 
   return key;
