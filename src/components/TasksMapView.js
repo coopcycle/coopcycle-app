@@ -16,6 +16,7 @@ import ClusteredMapView from 'react-native-maps-super-cluster';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
 
+import { getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
 import { selectIsPolylineOn } from '../redux/Courier';
@@ -208,6 +209,8 @@ class TasksMapView extends Component {
 
     const warnings = this._getWarnings(task);
 
+    const taskList = getTaskTaskList(task, this.props.taskLists);
+
     return (
       <Marker
         identifier={task['@id']}
@@ -216,7 +219,12 @@ class TasksMapView extends Component {
         flat={true}
         ref={this.markers.get(task['@id'])}
         tracksViewChanges={false}>
-        <TaskMarker task={task} type="status" hasWarnings={warnings.length} />
+        <TaskMarker
+          task={task}
+          taskList={taskList}
+          type="status"
+          hasWarnings={warnings.length}
+        />
         <Callout
           onPress={() => this.onCalloutPress(task)}
           style={[styles.markerCallout, { width: Math.floor(width * 0.6666) }]}>
