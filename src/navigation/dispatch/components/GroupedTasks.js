@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, View } from 'native-base';
 import { useRef, useState } from 'react';
 import {
-  Pressable,
   SectionList,
+  TouchableOpacity,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
@@ -166,8 +166,10 @@ export default function GroupedTasks({
         sections={sections}
         stickySectionHeadersEnabled={true}
         renderSectionHeader={({ section }) => (
-          <Pressable onPress={() => handleToggle(section.title)} style={{ backgroundColor: lightGreyColor }}>
-            <View
+          <View style={{ backgroundColor: lightGreyColor }}>
+            <TouchableOpacity
+              onPress={() => handleToggle(section.title)}
+              activeOpacity={0.5}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -204,8 +206,8 @@ export default function GroupedTasks({
                     : 'angle-up'
                 }
               />}
-            </View>
-          </Pressable>
+            </TouchableOpacity>
+          </View>
         )}
         keyExtractor={(item, index) => item.id}
         renderItem={({ section, index }) => {
