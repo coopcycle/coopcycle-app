@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { mediumGreyColor } from '../../styles/common';
 import { navigateToTask } from '../utils';
-import { selectAllTasks, selectSelectedDate } from '../../shared/logistics/redux';
+import { selectSelectedDate, selectTaskLists } from '../../shared/logistics/redux';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
 import { useAllTasks } from './useAllTasks';
 import AddButton from './components/AddButton';
@@ -43,7 +43,7 @@ export default function TasksMap({
   navigation,
   route,
 }) {
-  const allTasks = useSelector(selectAllTasks);
+  const taskLists = useSelector(selectTaskLists);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
 
@@ -70,11 +70,11 @@ export default function TasksMap({
       <View style={styles.mapContainer}>
         <TasksMapView
           mapCenter={mapCenter}
-          tasks={allTasks}
+          taskLists={taskLists}
           onMarkerCalloutPress={task => {
-            navigateToTask(navigation, route, task, allTasks)
-          }}
-        />
+            // TODO: navigate to task's related tasks
+            navigateToTask(navigation, route, task, [task])
+          }}/>
         {isFetching ? (
           <View style={styles.activityContainer}>
             <ActivityIndicator

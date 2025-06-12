@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
+import _  from 'lodash';
+import { Callout, Marker, Polyline } from 'react-native-maps';
+import { Component, createRef } from 'react';
+import { connect } from 'react-redux';
 import {
   Dimensions,
   FlatList,
@@ -8,18 +10,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Callout, Marker, Polyline } from 'react-native-maps';
+import { withTranslation } from 'react-i18next';
 import ClusteredMapView from 'react-native-maps-super-cluster';
+import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
-import { connect } from 'react-redux';
 
-import { uniq } from 'lodash';
+import { greyColor, whiteColor } from '../styles/common';
+import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
 import { selectIsPolylineOn } from '../redux/Courier';
-import { blueColor, greyColor, whiteColor } from '../styles/common';
 import TaskCallout from './TaskCallout';
 import TaskMarker from './TaskMarker';
-import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
-import Foundation from 'react-native-vector-icons/Foundation';
 
 const clusterContainerSize = 40;
 
@@ -75,7 +75,7 @@ const hasSameLocation = markers => {
   const coordsArray = markers.map(
     m => `${m.location.latitude};${m.location.longitude}`,
   );
-  const coordsArrayUniq = uniq(coordsArray);
+  const coordsArrayUniq = _.uniq(coordsArray);
 
   return coordsArrayUniq.length === 1;
 };
@@ -202,7 +202,7 @@ class TasksMapView extends Component {
     const { width } = Dimensions.get('window');
 
     if (!this.markers.has(task['@id'])) {
-      this.markers.set(task['@id'], React.createRef());
+      this.markers.set(task['@id'], createRef());
     }
 
     const warnings = this._getWarnings(task);
@@ -256,11 +256,13 @@ class TasksMapView extends Component {
   render() {
     const { onMapReady, ...otherProps } = this.props;
 
-    // Objects must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
-    const data = this.props.tasks.map(task => ({
-      ...task,
-      location: task.address.geo,
-    }));
+    // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
+    const data = _.flatMap(this.props.taskLists, (taskList) => {
+      return taskList.items.map(task => ({
+        ...task,
+        location: task.address.geo,
+      }));
+    });
 
     // <ClusteredMapView> has required width/height props which default to Dimensions.get('window')
     // We use onLayout() to get the actual dimensions to fill all remaining available space
@@ -295,11 +297,13 @@ class TasksMapView extends Component {
             {...otherProps}>
             {this.props.children}
             {this.props.isPolylineOn ? (
-              <Polyline
-                coordinates={this.props.tasks.map(task => task.address.geo)}
-                strokeWidth={3}
-                strokeColor={blueColor}
-              />
+              this.props.taskLists.map(taskList => (
+                <Polyline
+                  coordinates={taskList.items.map(task => task.address.geo)}
+                  strokeWidth={3}
+                  strokeColor={taskList.color}
+                />
+              ))
             ) : null}
           </ClusteredMapView>
         ) : null}

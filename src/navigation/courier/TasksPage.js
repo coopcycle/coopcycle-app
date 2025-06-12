@@ -1,6 +1,7 @@
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import React, { Component, useMemo } from 'react';
-import { withTranslation } from 'react-i18next';
+import {
+  activateKeepAwakeAsync,
+  deactivateKeepAwake,
+} from 'expo-keep-awake';
 import {
   ActivityIndicator,
   InteractionManager,
@@ -8,24 +9,28 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import RNPinScreen from 'react-native-pin-screen';
+import { Component, useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
+import { withTranslation } from 'react-i18next';
+import RNPinScreen from 'react-native-pin-screen';
 
-import DateSelectHeader from '../../components/DateSelectHeader';
-import TasksMapView from '../../components/TasksMapView';
+import { blueColor } from '../../styles/common';
+import { connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
+import { createTempTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../navigation/utils';
 import {
   selectFilteredTasks,
   selectKeepAwake,
   selectTaskSelectedDate,
 } from '../../redux/Courier';
-
 import {
   selectIsCentrifugoConnected,
   selectSettingsLatLng,
 } from '../../redux/App/selectors';
-import { connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 import { useGetMyTasksQuery } from '../../redux/api/slice';
+import DateSelectHeader from '../../components/DateSelectHeader';
+import TasksMapView from '../../components/TasksMapView';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -50,6 +55,14 @@ function TaskMapPage({ navigation, route }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const latlng = useSelector(selectSettingsLatLng);
+
+  const adHocTaskList = useMemo(() => {
+    const taskList = createTempTaskList('current', tasks)
+    taskList.color = blueColor;
+
+    return taskList;
+  }, [tasks]);
+
   const mapCenter = useMemo(() => {
     return latlng.split(',').map(parseFloat);
   }, [latlng]);
@@ -64,7 +77,7 @@ function TaskMapPage({ navigation, route }) {
       <View style={{ flex: 1 }}>
         <TasksMapView
           mapCenter={mapCenter}
-          tasks={tasks}
+          taskLists={[adHocTaskList]}
           onMarkerCalloutPress={task =>
             navigateToTask(navigation, route, task, tasks)
           }
