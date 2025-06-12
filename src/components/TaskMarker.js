@@ -27,9 +27,8 @@ const markerColor = (task, taskList) => {
     color = task.tags[0].color;
   }
 
-  const taskListColor = mapToColor(taskList.items);
-  console.log({taskListColor})
-  color = mapToColor(taskList.items)[task['@id']];
+  const taskListColors = mapToColor(taskList.items);
+  color = taskListColors[task['@id']];
 
   switch (task.status) {
     case 'DONE':

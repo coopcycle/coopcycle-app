@@ -324,6 +324,7 @@ class TasksMapView extends Component {
                   coordinates={this.getCoordinates(taskList)}
                   strokeWidth={3}
                   strokeColor={taskList.color}
+                  key={taskList.id}
                 />
               ))
             ) : null}
