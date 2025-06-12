@@ -16,8 +16,6 @@ class FooterButton extends Component {
   }
 }
 
-FooterButton.defaultProps = {};
-
 FooterButton.propTypes = {
   text: PropTypes.string.isRequired,
   testID: PropTypes.string,

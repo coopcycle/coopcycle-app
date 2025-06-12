@@ -3,52 +3,59 @@ import {
 } from "../support/commands";
 import {
   doLoginForUserWithRoleDispatcher,
+  getTaskTitleElement,
   loadDispatchFixture,
+  relaunchCleanApp,
 } from './utils';
-import { itif, tapById } from '../utils';
+import { describeif, tapById } from '../utils';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
-describe('Dispatch - Create delivery', () => {
+//FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+describeif(device.getPlatform() === 'android')
+  ('Dispatch - Create delivery', () => {
+
   beforeEach(async () => {
-    await device.reloadReactNative();
+    await relaunchCleanApp();
     await loadDispatchFixture();
     await doLoginForUserWithRoleDispatcher();
   });
 
-  //FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-  itif(device.getPlatform() === 'android')(
-    `should create a delivery for store from Dispatch`,
-    async () => {
-      await tapById('dispatchNewDelivery');
+  it('should create a delivery for a store', async () => {
+    await tapById('dispatchNewDelivery');
 
-      // Select store
-      await tapById('dispatch:storeList:0');
+    // Select store
+    await tapById('dispatch:storeList:0');
 
-      // Pickup address
+    // Pickup address
 
-      // Select default store's address and continue
-      await tapById('delivery__next_button');
+    // Select default store's address and continue
+    await tapById('delivery__next_button');
 
-      // Dropoff address
-      await selectAutocompleteAddress('delivery__dropoff__address');
+    // Dropoff address
+    await selectAutocompleteAddress('delivery__dropoff__address');
 
-      // Append "\n" to make sure virtual keyboard is hidden after entry
-      // https://github.com/wix/detox/issues/209
-      await expect(element(by.id('delivery__dropoff__contact_name'))).toBeVisible();
-      await element(by.id('delivery__dropoff__contact_name')).typeText('Alice\n');
+    // Append "\n" to make sure virtual keyboard is hidden after entry
+    // https://github.com/wix/detox/issues/209
+    await expect(element(by.id('delivery__dropoff__contact_name'))).toBeVisible();
+    await element(by.id('delivery__dropoff__contact_name')).typeText('Alice\n');
 
-      await expect(element(by.id('delivery__dropoff__phone'))).toBeVisible();
-      await element(by.id('delivery__dropoff__phone')).typeText('0612345678\n');
+    await expect(element(by.id('delivery__dropoff__phone'))).toBeVisible();
+    await element(by.id('delivery__dropoff__phone')).typeText('0612345678\n');
 
-      await tapById('delivery__next_button');
+    await tapById('delivery__next_button');
 
-      // Delivery form
+    // Delivery form
 
-      // Select default values and continue
-      await tapById('delivery__next_button');
+    // Select default values and continue
+    await tapById('delivery__next_button');
 
-      // Price form
+    // Price form
 
-      // Select default values and continue
-      await tapById('delivery__next_button');
+    // Select default values and continue
+    await tapById('delivery__next_button');
+
+    // Check the new task was created
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 6)).toHaveText("Acme - Task #11");
   });
+
 });

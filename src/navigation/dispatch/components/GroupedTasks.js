@@ -228,6 +228,7 @@ export default function GroupedTasks({
           }
           return null;
         }}
+        // We pass those 2 to SectionList instead of TaskList
         refreshing={isFetching}
         onRefresh={refetch}
       />

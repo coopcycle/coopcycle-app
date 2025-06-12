@@ -181,14 +181,14 @@ class DeliveryList extends Component {
       />
     );
   }
-}
 
-DeliveryList.defaultProps = {
-  data: [],
-  loading: false,
-  refreshing: false,
-  onRefresh: () => {},
-};
+  static defaultProps = {
+    data: [],
+    loading: false,
+    refreshing: false,
+    onRefresh: () => {},
+  }
+}
 
 DeliveryList.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),

@@ -37,11 +37,11 @@ class CartFooter extends Component {
       </HStack>
     );
   }
-}
 
-CartFooter.defaultProps = {
-  disabled: false,
-};
+  static defaultProps = {
+    disabled: false,
+  }
+}
 
 CartFooter.propTypes = {
   testID: PropTypes.string.isRequired,

@@ -50,18 +50,18 @@ class Step extends Component {
       </HStack>
     );
   }
-}
 
-Step.defaultProps = {
-  start: false,
-  active: false,
-  loading: false,
-  error: false,
-  hide: false,
-  activeLabel: '',
-  loadingLabel: '',
-  errorLabel: '',
-};
+  static defaultProps = {
+    start: false,
+    active: false,
+    loading: false,
+    error: false,
+    hide: false,
+    activeLabel: '',
+    loadingLabel: '',
+    errorLabel: '',
+  }
+}
 
 Step.propTypes = {
   start: PropTypes.bool,
