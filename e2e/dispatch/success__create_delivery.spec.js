@@ -1,5 +1,6 @@
 import {
   selectAutocompleteAddress,
+  typeTextQuick,
 } from "../support/commands";
 import {
   doLoginForUserWithRoleDispatcher,
@@ -37,10 +38,10 @@ describeif(device.getPlatform() === 'android')
     // Append "\n" to make sure virtual keyboard is hidden after entry
     // https://github.com/wix/detox/issues/209
     await expect(element(by.id('delivery__dropoff__contact_name'))).toBeVisible();
-    await element(by.id('delivery__dropoff__contact_name')).typeText('Alice\n');
+    await typeTextQuick('delivery__dropoff__contact_name', 'Alice\n');
 
     await expect(element(by.id('delivery__dropoff__phone'))).toBeVisible();
-    await element(by.id('delivery__dropoff__phone')).typeText('0612345678\n');
+    await typeTextQuick('delivery__dropoff__phone', '0612345678\n');
 
     await tapById('delivery__next_button');
 
