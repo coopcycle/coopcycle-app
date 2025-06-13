@@ -15,6 +15,16 @@ export function replaceItemsWithItemIds(taskList) {
   return entity;
 }
 
+export function createCurrentTaskList(items = []) {
+  const username = 'current';
+  const assignedItems = items.map(item => ({
+    ...item,
+    assignedTo: username,
+  }));
+
+  return createTempTaskList(username, assignedItems);
+}
+
 export function createTempTaskList(username, items = []) {
   return {
     '@context': '/api/contexts/TaskList',
@@ -28,10 +38,6 @@ export function createTempTaskList(username, items = []) {
     username,
     items,
   };
-}
-
-export function getUserTaskList(username, allTaskLists) {
-  return allTaskLists.find(taskList => taskList.username === username);
 }
 
 // NOTE: This function is only used from the function `getTasksListsToEdit`
@@ -74,9 +80,17 @@ export function getTasksListIdsToEdit(selectedTasks) {
   return _.uniq([... ordersTasksListIds, ...tasksTasksListIds])
 }
 
-function getTaskListIdForTask(task, allTaskLists) {
+export function getUserTaskList(username, allTaskLists) {
+  return allTaskLists.find(taskList => taskList.username === username);
+}
+
+export function getTaskTaskList(task, allTaskLists) {
   const username = task.assignedTo;
-  const taskList = getUserTaskList(username, allTaskLists);
+  return getUserTaskList(username, allTaskLists);
+}
+
+function getTaskListIdForTask(task, allTaskLists) {
+  const taskList = getTaskTaskList(task, allTaskLists);
   const key = taskList ? taskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
 
   return key;

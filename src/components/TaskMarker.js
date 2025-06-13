@@ -1,13 +1,18 @@
 import { Icon, Text } from 'native-base';
-import React from 'react';
 import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import {
+  darkGreyColor,
+  redColor,
+  whiteColor,
+} from '../styles/common';
 import {
   doneIconName,
   failedIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-import { darkGreyColor, redColor, whiteColor } from '../styles/common';
+import { mapToColor } from '../shared/src/logistics/redux/taskUtils';
 
 const container = {
   margin: 10,
@@ -15,11 +20,17 @@ const container = {
   justifyContent: 'center',
 };
 
-const markerColor = task => {
+const markerColor = (task, taskList) => {
   let color = darkGreyColor;
 
   if (task.tags.length > 0) {
     color = task.tags[0].color;
+  }
+
+  // TODO / FIXME: Sometimes `taskList` is undefined
+  if (taskList && taskList.items) {
+    const taskListColors = mapToColor(taskList.items);
+    color = taskListColors[task['@id']] || color;
   }
 
   switch (task.status) {
@@ -46,12 +57,12 @@ const markerOpacity = task => {
 const containerSize = 32;
 const background = whiteColor;
 
-const backgroundStyle = task => {
+const backgroundStyle = (task, taskList) => {
   return {
     width: containerSize,
     height: containerSize,
     backgroundColor: background,
-    borderColor: markerColor(task),
+    borderColor: markerColor(task, taskList),
     opacity: markerOpacity(task),
     borderWidth: 2,
     borderStyle: 'solid',
@@ -63,10 +74,10 @@ const backgroundStyle = task => {
   };
 };
 
-const iconStyle = task => {
+const iconStyle = (task, taskList) => {
   return {
     position: 'absolute',
-    color: markerColor(task),
+    color: markerColor(task, taskList),
     opacity: markerOpacity(task),
   };
 };
@@ -100,12 +111,12 @@ const warnIconStyle = () => {
   };
 };
 
-export default ({ task, type, hasWarnings }) => {
+export default ({ task, taskList, type, hasWarnings }) => {
   const _iconName = iconName(task, type);
 
   return (
     <View style={container}>
-      <View style={backgroundStyle(task)} />
+      <View style={backgroundStyle(task, taskList)} />
       {hasWarnings ? (
         <Text bold style={warnIconStyle()}>
           .
@@ -114,7 +125,7 @@ export default ({ task, type, hasWarnings }) => {
       <Icon
         as={FontAwesome}
         name={_iconName}
-        style={iconStyle(task)}
+        style={iconStyle(task, taskList)}
         size="xs"
         testID={`taskMarker-${_iconName}`}
       />
