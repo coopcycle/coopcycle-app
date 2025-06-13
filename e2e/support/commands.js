@@ -46,9 +46,7 @@ export const connectToSandbox = async () => {
   await expect(element(by.id('moreServerOptions'))).toBeVisible();
   await element(by.id('moreServerOptions')).tap();
 
-  await element(by.id('customServerURL')).typeText(
-    'sandbox-fr.coopcycle.org\n',
-  );
+  await typeTextQuick('customServerURL', 'sandbox-fr.coopcycle.org\n');
 
   try {
     // We deliberately add "\n" to hide the keyboard
@@ -78,9 +76,7 @@ export const connectToLocalInstance = async () => {
   await expect(element(by.id('moreServerOptions'))).toBeVisible();
   await element(by.id('moreServerOptions')).tap();
 
-  await element(by.id('customServerURL')).typeText(
-    `${getLocalInstanceUrl()}\n`,
-  );
+  await typeTextQuick('customServerURL', `${getLocalInstanceUrl()}\n`);
 
   try {
     // We deliberately add "\n" to hide the keyboard
@@ -102,8 +98,8 @@ export const authenticateWithCredentials = async (username, password) => {
     }
   }
 
-  await element(by.id('loginUsername')).typeText(`${username}\n`);
-  await element(by.id('loginPassword')).typeText(`${password}\n`);
+  await typeTextQuick('loginUsername', `${username}\n`);
+  await typeTextQuick('loginPassword', `${password}\n`);
 
   // As we are using "\n", the form may have been submitted yet
   try {
@@ -202,10 +198,10 @@ export const enterValidCreditCard = async () => {
   // Tap the credit card input to make sure we can interact with it
   await cardNumberElement().tap();
 
-  await cardNumberElement().typeText('4242424242424242');
-  await expirationDateElement().typeText('1228');
+  await typeTextQuick(cardNumberElement(), '4242424242424242');
+  await typeTextQuick(expirationDateElement(), '1228');
   // Add "\n" to make sure keyboard is hidden
-  await cvvElement().typeText('123\n');
+  await typeTextQuick(cvvElement(), '123\n');
 };
 
 export const closeRestaurantForToday = async (username, password) => {
@@ -266,6 +262,19 @@ export const selectAutocompleteAddress = async (
   await waitFor(element(by.id(elemId)))
     .toExist()
     .withTimeout(5000);
-  await element(by.id(elemId)).typeText(address);
+  await typeTextQuick(elemId, address);
   await element(by.id(`placeId:${placeId}`)).tap();
+};
+
+// Improved version of `typeText`
+export const typeTextQuick = async (elemIdOrObj, text) => {
+  const elem = () => typeof elemIdOrObj === 'string' ? element(by.id(elemIdOrObj)) : elemIdOrObj
+
+  if (text.length) {
+    await elem().replaceText(text.slice(0, -1));
+    text = text.slice(-1);
+  }
+
+  // Just type the last character
+  await elem().typeText(text);
 };
