@@ -1,24 +1,28 @@
 import { FlatList, StyleSheet } from 'react-native';
 import { HStack, Switch, Text, View } from 'native-base';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { mediumGreyColor } from '../../styles/common';
+import {
+  clearTasksFilter,
+  filterTasks,
+  selectAreDoneTasksHidden,
+  selectIsPolylineOn,
+  selectTasksChangedAlertSound,
+  setPolylineOn,
+  setTasksChangedAlertSound,
+} from '../../redux/Courier';
+import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 import BasicSafeAreaView from "../../components/BasicSafeAreaView";
 import ItemSeparatorComponent from '../../components/ItemSeparator';
 
 const styles = StyleSheet.create({
   view: {
     alignItems: 'stretch',
-    // backgroundColor: mediumGreyColor,
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingHorizontal: 14,
   },
-  // text: {
-  //   color: '#000000',
-  //   fontSize: 16,
-  //   fontWeight: 'bold',
-  // },
 });
 
 const SettingsItemInner = ({ item }) => (
@@ -36,27 +40,57 @@ export default function TasksFilters({
   ...props
 }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const areDoneTasksHidden = useSelector(selectAreDoneTasksHidden);
+  const areIncidentsHidden = useSelector(selectAreIncidentsHidden);
+  const tasksChangedAlertSound = useSelector(selectTasksChangedAlertSound);
+  const isPolylineOn = useSelector(selectIsPolylineOn);
+
+  function toggleDisplayDone(isHidden) {
+    if (isHidden) {
+      dispatch(clearTasksFilter({ status: 'DONE' }));
+    } else {
+      dispatch(filterTasks({ status: 'DONE' }));
+    }
+  }
+
+  function toggleDisplayIncidents(isHidden) {
+    if (isHidden) {
+      dispatch(clearTasksFilter({ hasIncidents: true }));
+    } else {
+      dispatch(filterTasks({ hasIncidents: true }));
+    }
+  }
+
+  function toggleTasksChangedAlertSound(enabled) {
+    dispatch(setTasksChangedAlertSound(enabled));
+  }
+
+  function togglePolylineOn(enabled) {
+    dispatch(setPolylineOn(enabled));
+  }
 
   const sections = [
     {
       label: t('HIDE_DONE_TASKS'),
-      // onToggle: () => toggleDisplayDone(areDoneTasksHidden),
-      // isChecked: areDoneTasksHidden,
+      onToggle: () => toggleDisplayDone(areDoneTasksHidden),
+      isChecked: areDoneTasksHidden,
     },
     {
       label: t('HIDE_INCIDENTS_TASKS'),
-      // onToggle: () => toggleDisplayIncidens(areIncidentsHidden),
-      // isChecked: areIncidentsHidden,
+      onToggle: () => toggleDisplayIncidents(areIncidentsHidden),
+      isChecked: areIncidentsHidden,
     },
     {
       label: t('TASKS_CHANGED_ALERT_SOUND'),
-      // onToggle: toggleTasksChangedAlertSound,
-      // isChecked: tasksChangedAlertSound,
+      onToggle: toggleTasksChangedAlertSound,
+      isChecked: tasksChangedAlertSound,
     },
     {
       label: t('TASKS_SHOW_POLYLINE'),
-      // onToggle: togglePolylineOn,
-      // isChecked: isPolylineOn,
+      onToggle: togglePolylineOn,
+      isChecked: isPolylineOn,
     },
   ];
 
