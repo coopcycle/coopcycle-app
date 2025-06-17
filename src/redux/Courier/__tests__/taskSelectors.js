@@ -1,5 +1,10 @@
 import { cloneDeep, merge } from 'lodash';
 import moment from 'moment';
+
+import {
+  filterStatusDone,
+  filterStatusFailed,
+} from '../../logistics/filters';
 import {
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
@@ -38,7 +43,7 @@ describe('Task Selectors', () => {
 
     test('returns correctly filtered list for single filter', () => {
       const state = merge(cloneDeep(baseState), {
-        ui: { tasks: { excludeFilters: [{ status: 'DONE' }] } },
+        ui: { tasks: { excludeFilters: [filterStatusDone] } },
       });
       expect(selectFilteredTasks(state)).toEqual([
         state.entities.tasks.items[date][1],
@@ -48,7 +53,7 @@ describe('Task Selectors', () => {
     test('returns correctly filtered list for multiple filters', () => {
       const state = merge(cloneDeep(baseState), {
         ui: {
-          tasks: { excludeFilters: [{ status: 'DONE' }, { status: 'TODO' }] },
+          tasks: { excludeFilters: [filterStatusDone, { status: 'TODO' }] },
         },
       });
       expect(selectFilteredTasks(state)).toEqual([]);
@@ -65,24 +70,24 @@ describe('Task Selectors', () => {
   });
 
   describe('selectAreDoneTasksHidden', () => {
-    test("correctly indicates presence of { status: 'DONE' } filter", () => {
+    test("correctly indicates presence of filterStatusDone filter", () => {
       const state = cloneDeep(baseState);
       expect(selectAreDoneTasksHidden(state)).toBe(false);
 
       const newState = merge(cloneDeep(baseState), {
-        ui: { tasks: { excludeFilters: [{ status: 'DONE' }] } },
+        ui: { tasks: { excludeFilters: [filterStatusDone] } },
       });
       expect(selectAreDoneTasksHidden(newState)).toBe(true);
     });
   });
 
   describe('selectAreFailedTasksHidden', () => {
-    test("correctly indicates presence of { status: 'DONE' } filter", () => {
+    test("correctly indicates presence of filterStatusDone filter", () => {
       const state = cloneDeep(baseState);
       expect(selectAreFailedTasksHidden(state)).toBe(false);
 
       const newState = merge(cloneDeep(baseState), {
-        ui: { tasks: { excludeFilters: [{ status: 'FAILED' }] } },
+        ui: { tasks: { excludeFilters: [filterStatusFailed] } },
       });
       expect(selectAreFailedTasksHidden(newState)).toBe(true);
     });

@@ -12,6 +12,10 @@ import {
   setPolylineOn,
   setTasksChangedAlertSound,
 } from '../../redux/Courier';
+import {
+  filterHasIncidents,
+  filterStatusDone,
+} from '../../redux/logistics/filters';
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 import BasicSafeAreaView from "../../components/BasicSafeAreaView";
 import ItemSeparatorComponent from '../../components/ItemSeparator';
@@ -49,17 +53,17 @@ export default function TasksFilters({
 
   function toggleDisplayDone(isHidden) {
     if (isHidden) {
-      dispatch(clearTasksFilter({ status: 'DONE' }));
+      dispatch(clearTasksFilter(filterStatusDone));
     } else {
-      dispatch(filterTasks({ status: 'DONE' }));
+      dispatch(filterTasks(filterStatusDone));
     }
   }
 
   function toggleDisplayIncidents(isHidden) {
     if (isHidden) {
-      dispatch(clearTasksFilter({ hasIncidents: true }));
+      dispatch(clearTasksFilter(filterHasIncidents));
     } else {
-      dispatch(filterTasks({ hasIncidents: true }));
+      dispatch(filterTasks(filterHasIncidents));
     }
   }
 
