@@ -22,6 +22,7 @@ import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import { useBackgroundHighlightColor } from '../../../styles/theme';
 
 export default function GroupedTasks({
   sections,
@@ -33,6 +34,7 @@ export default function GroupedTasks({
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const bulkEditTasksFloatingButtonRef = useRef(null);
+  const bgHighlightColor = useBackgroundHighlightColor()
 
   // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());
@@ -166,7 +168,7 @@ export default function GroupedTasks({
         sections={sections}
         stickySectionHeadersEnabled={true}
         renderSectionHeader={({ section }) => (
-          <View style={{ backgroundColor: lightGreyColor }}>
+          <View style={{ backgroundColor: bgHighlightColor }}>
             <TouchableOpacity
               onPress={() => handleToggle(section.title)}
               activeOpacity={0.5}
