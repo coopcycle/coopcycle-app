@@ -1,34 +1,27 @@
 import { View } from 'native-base';
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { ActivityIndicator, InteractionManager } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, InteractionManager } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { initialize } from "../../redux/Dispatch/actions";
-import { selectUnassignedTasksNotCancelled } from "../../redux/Dispatch/selectors";
-import { selectSelectedDate, selectTaskLists } from "../../shared/logistics/redux";
-import GroupedTasks from "./components/GroupedTasks";
-import { useAllTasks } from "./useAllTasks";
-
+import { initialize } from '../../redux/Dispatch/actions';
+import { selectUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
 import {
-  Center,
-  Heading,
-  Text
-} from 'native-base';
-
-import BasicSafeAreaView from '../../components/BasicSafeAreaView';
+  selectSelectedDate,
+  selectTaskLists,
+} from '../../shared/logistics/redux';
+import GroupedTasks from './components/GroupedTasks';
+import { useAllTasks } from './useAllTasks';
+import { Center, Heading, Text } from 'native-base';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
 import {
   darkGreyColor,
-  mediumGreyColor,
   whiteColor
 } from '../../styles/common';
-import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
+import { useBackgroundHighlightColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 
-export default function AllTasks({
-  navigation,
-  route,
-}) {
+export default function AllTasks({ navigation, route }) {
   const { t } = useTranslation();
 
   const selectedDate = useSelector(selectSelectedDate);
@@ -37,11 +30,8 @@ export default function AllTasks({
 
   const dispatch = useDispatch();
 
-  const {
-    isFetching,
-    isError,
-    refetch
-  } = useAllTasks(selectedDate);
+  const { isFetching, isError, refetch } = useAllTasks(selectedDate);
+  const bgHighlightColor = useBackgroundHighlightColor()
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -87,27 +77,25 @@ export default function AllTasks({
       <Center w="95%" h="80%">
         <ActivityIndicator animating={true} size="large" />
       </Center>
-    )
+    );
   }
 
   return (
-    <BasicSafeAreaView>
-        <View style={{ backgroundColor: mediumGreyColor }}>
-          <AddButton
-            testID="dispatchNewDelivery"
-            onPress={() => navigation.navigate('DispatchNewDelivery')}>
-            <Text style={{ fontWeight: '700' }}>
-              {selectedDate.format('ll')}
-            </Text>
-          </AddButton>
-        </View>
-        <GroupedTasks
-            sections={sections}
-            navigation
-            route={route}
-            isFetching={isFetching}
-            refetch={refetch}
-        />
-      </BasicSafeAreaView>
+    <>
+      <View style={{ backgroundColor: bgHighlightColor }}>
+        <AddButton
+          testID="dispatchNewDelivery"
+          onPress={() => navigation.navigate('DispatchNewDelivery')}>
+          <Text style={{ fontWeight: '700' }}>{selectedDate.format('ll')}</Text>
+        </AddButton>
+      </View>
+      <GroupedTasks
+        sections={sections}
+        navigation
+        route={route}
+        isFetching={isFetching}
+        refetch={refetch}
+      />
+    </>
   );
 }
