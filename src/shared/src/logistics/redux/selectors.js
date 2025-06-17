@@ -1,7 +1,11 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
+
 import { mapToColor } from './taskUtils';
+import { selectTaskFilters } from '../../../../redux/Courier/taskSelectors';
+import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
+import { filterTasks } from '../../../../redux/logistics/utils';
+
 
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,
@@ -69,6 +73,23 @@ export const selectTaskLists = createSelector(
       return newTaskList;
     }),
 );
+
+export const selectFilteredTaskLists = createSelector(
+  selectTaskLists,
+  selectTaskFilters,
+  (taskLists, filters) => {
+    const filteredTaskLists = taskLists.map(taskList => {
+      const filteredTaskList = {...taskList};
+      filteredTaskList.items = filterTasks(taskList.items, filters);
+
+      return filteredTaskList;
+    });
+
+    console.log({filteredTaskLists})
+
+    return filteredTaskLists;
+  }
+)
 
 // Returns a tours/tasks index with the format:
 // {

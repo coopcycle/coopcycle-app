@@ -1,29 +1,28 @@
-import { View } from 'native-base';
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { ActivityIndicator, InteractionManager } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-
-import { initialize } from "../../redux/Dispatch/actions";
-import { selectUnassignedTasksNotCancelled } from "../../redux/Dispatch/selectors";
-import { selectSelectedDate, selectTaskLists } from "../../shared/logistics/redux";
-import GroupedTasks from "./components/GroupedTasks";
-import { useAllTasks } from "./useAllTasks";
-
 import {
   Center,
   Heading,
-  Text
+  Text,
+  View
 } from 'native-base';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import {
   darkGreyColor,
   mediumGreyColor,
   whiteColor
 } from '../../styles/common';
+import { initialize } from "../../redux/Dispatch/actions";
+import { selectFilteredTaskLists } from '../../shared/src/logistics/redux/selectors';
+import { selectSelectedDate } from "../../shared/logistics/redux";
+import { selectUnassignedTasksNotCancelled } from "../../redux/Dispatch/selectors";
 import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
+import { useAllTasks } from "./useAllTasks";
 import AddButton from './components/AddButton';
+import BasicSafeAreaView from '../../components/BasicSafeAreaView';
+import GroupedTasks from "./components/GroupedTasks";
 
 export default function AllTasks({
   navigation,
@@ -33,7 +32,7 @@ export default function AllTasks({
 
   const selectedDate = useSelector(selectSelectedDate);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
-  const taskLists = useSelector(selectTaskLists);
+  const taskLists = useSelector(selectFilteredTaskLists);
 
   const dispatch = useDispatch();
 
