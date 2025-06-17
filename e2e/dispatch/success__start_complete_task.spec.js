@@ -1,18 +1,18 @@
 import {
-  assignTaskToUser,
-  doLoginForUserWithRoleDispatcher,
-  loadDispatchFixture,
-  relaunchCleanApp,
-  toggleSectionUnassigned,
-} from './utils';
-import {
   describeif,
   swipeLeft,
   swipeRight,
   tapById,
   tapByText,
   waitForElement
-} from "../utils";
+} from "../support/commands";
+import {
+  assignTaskToUser,
+  doLoginForUserWithRoleDispatcher,
+  loadDispatchFixture,
+  relaunchCleanApp,
+  toggleSectionUnassigned,
+} from './utils';
 
 const USER_JANE = 'jane';
 

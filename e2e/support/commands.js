@@ -24,6 +24,10 @@ export const launchApp = async () => {
   });
 };
 
+export const describeif = condition => (condition ? describe : describe.skip);
+// eslint-disable-next-line no-undef
+export const itif = condition => (condition ? it : it.skip);
+
 export const disablePasswordAutofill = () => {
   if (device.getPlatform() === 'ios') {
     // disable password autofill: https://github.com/wix/Detox/issues/3761
@@ -39,21 +43,28 @@ export const disablePasswordAutofill = () => {
   }
 };
 
-export const connectToSandbox = async () => {
-  await expect(element(by.id('chooseCityBtn'))).toBeVisible();
-  await element(by.id('chooseCityBtn')).tap();
+export const connectToSandbox = async (url = "sandbox-fr.coopcycle.org") => {
+  await connectToInstance("sandbox-fr.coopcycle.org");
+};
 
-  await expect(element(by.id('moreServerOptions'))).toBeVisible();
-  await element(by.id('moreServerOptions')).tap();
+export const connectToLocalInstance = async () => {
+  await connectToInstance(getLocalInstanceUrl());
+};
 
-  await typeTextQuick('customServerURL', 'sandbox-fr.coopcycle.org\n');
+const connectToInstance = async (url) => {
+  await tapById('chooseCityBtn');
+  await tapById('moreServerOptions');
+
+  await typeTextQuick('customServerURL', `${url}\n`);
 
   try {
     // We deliberately add "\n" to hide the keyboard
     // The tap below shouldn't be necessary
-    await element(by.id('submitCustomServer')).tap();
+    await tapById('submitCustomServer');
   } catch (e) {}
 };
+
+const getLocalInstanceUrl = () => `http://${getLocalIpAddress()}:9080`;
 
 const getLocalIpAddress = () => {
   const interfaces = os.networkInterfaces();
@@ -67,34 +78,15 @@ const getLocalIpAddress = () => {
   return null;
 };
 
-const getLocalInstanceUrl = () => `http://${getLocalIpAddress()}:9080`;
-
-export const connectToLocalInstance = async () => {
-  await expect(element(by.id('chooseCityBtn'))).toBeVisible();
-  await element(by.id('chooseCityBtn')).tap();
-
-  await expect(element(by.id('moreServerOptions'))).toBeVisible();
-  await element(by.id('moreServerOptions')).tap();
-
-  await typeTextQuick('customServerURL', `${getLocalInstanceUrl()}\n`);
-
-  try {
-    // We deliberately add "\n" to hide the keyboard
-    // The tap below shouldn't be necessary
-    await element(by.id('submitCustomServer')).tap();
-  } catch (e) {}
-};
-
 export const authenticateWithCredentials = async (username, password) => {
-  await expect(element(by.id('menuBtn'))).toBeVisible();
-  await element(by.id('menuBtn')).tap();
+  await tapById('menuBtn');
 
-  await element(by.id('drawerAccountBtn')).tap();
+  await tapById('drawerAccountBtn');
   //FIXME: for some reason drawer menu does not close after the first tap on Android
   if (device.getPlatform() === 'android') {
     const attrs = await element(by.id('drawerAccountBtn')).getAttributes();
     if (attrs.visible) {
-      await element(by.id('drawerAccountBtn')).tap();
+      await tapById('drawerAccountBtn');
     }
   }
 
@@ -103,13 +95,12 @@ export const authenticateWithCredentials = async (username, password) => {
 
   // As we are using "\n", the form may have been submitted yet
   try {
-    await element(by.id('loginSubmit')).tap();
+    await tapById('loginSubmit');
   } catch (e) {}
 };
 
 export const logout = async (username, password) => {
-  // await expect(element(by.id('menuBtn'))).toBeVisible()
-  // await waitFor(element(by.id('menuBtn'))).toExist().withTimeout(5000)
+  // await waitForElement('menuBtn')
 
   // Multiple elements were matched: (
   //     "<RCTView:0x7fd151feba00; AX=Y; AX.id='menuBtn'; AX.label='\Uf32a'; AX.frame={{0, 3001.5}, {61, 41}}; AX.activationPoint={30.5, 3022}; AX.traits='UIAccessibilityTraitNone'; AX.focused='N'; frame={{0, 1.5}, {61, 41}}; opaque; alpha=1>",
@@ -118,9 +109,9 @@ export const logout = async (username, password) => {
   // ). Please use selection matchers to narrow the selection down to single element.
   // await element(by.id('menuBtn')).atIndex(0).tap()
 
-  await element(by.id('drawerAccountBtn')).tap();
+  await tapById('drawerAccountBtn');
 
-  await element(by.id('logout')).tap();
+  await tapById('logout');
 };
 
 export const chooseRestaurant = async restaurantName => {
@@ -142,22 +133,19 @@ export const addProduct = async id => {
     //FIXME: make scroll more flexible or use
     // await element(by.id('restaurantData')).scrollToIndex(0);
     // instead
-    await waitFor(element(by.id(id)))
-      .toBeVisible()
+    await waitForElement(id)
       .whileElement(by.id('restaurantData'))
       .scroll(180, 'down');
   }
 
-  await element(by.id(id)).tap();
+  await tapById(id);
 
   try {
     // Product details page
-    await waitFor(element(by.id('productDetails')))
-      .toBeVisible()
-      .withTimeout(1000);
+    await waitForElement('productDetails');
   } catch (e) {
     //FIXME: it seems that sometimes the tap does not work on the first try
-    await element(by.id(id)).tap();
+    await tapById(id);
   }
 
   // FIXME: with a local coopcycle-web instance, we'll have more control over the test data
@@ -165,13 +153,13 @@ export const addProduct = async id => {
   // we try with 10 sections
   for (let section = 0; section < 10; section++) {
     try {
-      await element(by.id(`productOptions:${section}:0`)).tap();
+      await tapById(`productOptions:${section}:0`);
     } catch (e) {
       // ignore errors if a section does not have any option
     }
   }
 
-  await element(by.id('addProduct')).tap();
+  await tapById('addProduct');
 };
 
 const stripeUiElement = (androidLabel, iOSLabel) => {
@@ -259,11 +247,9 @@ export const selectAutocompleteAddress = async (
   address='91 rue de rivoli paris',
   placeId='Eh85MSBSdWUgZGUgUml2b2xpLCBQYXJpcywgRnJhbmNlIjASLgoUChIJmeuzXiFu5kcRwuW58Y4zYxgQWyoUChIJt4MohSFu5kcRUHvqO0vC-Ig'
 ) => {
-  await waitFor(element(by.id(elemId)))
-    .toExist()
-    .withTimeout(5000);
+  await waitForElement(elemId);
   await typeTextQuick(elemId, address);
-  await element(by.id(`placeId:${placeId}`)).tap();
+  await tapById(`placeId:${placeId}`);
 };
 
 // Improved version of `typeText`
@@ -278,3 +264,31 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
   // Just type the last character
   await elem().typeText(text);
 };
+
+export async function tapById(testID) {
+    await expect(element(by.id(testID))).toBeVisible();
+    await element(by.id(testID)).tap();
+}
+
+export async function tapByText(text) {
+    await waitFor(element(by.text(text))).toBeVisible();
+    await element(by.text(text)).tap();
+}
+
+export async function swipeRight(testID) {
+    await expect(element(by.id(testID))).toBeVisible();
+    await element(by.id(testID)).swipe('right');
+}
+
+export async function swipeLeft(testID) {
+    await expect(element(by.id(testID))).toBeVisible();
+    await element(by.id(testID)).swipe('left');
+}
+
+export async function waitForElement(elemId, timeout = 10000) {
+  await waitFor(element(by.id(elemId))).toBeVisible().withTimeout(timeout);
+}
+
+export async function sleep(timeout) {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}

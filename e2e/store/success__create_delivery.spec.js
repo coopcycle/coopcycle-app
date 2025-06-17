@@ -1,5 +1,7 @@
 import {
+  describeif,
   selectAutocompleteAddress,
+  tapById,
   typeTextQuick,
 } from "../support/commands";
 import {
@@ -7,7 +9,6 @@ import {
   loadStoreFixture,
   relaunchCleanApp,
 } from './utils';
-import { describeif, tapById } from '../utils';
 
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')

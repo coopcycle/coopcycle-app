@@ -3,13 +3,11 @@ import {
   connectToLocalInstance,
   connectToSandbox,
   launchApp,
-  symfonyConsole
-} from "../support/commands";
-import {
   swipeLeft,
   swipeRight,
+  symfonyConsole,
   tapById,
-} from "../utils";
+} from "../support/commands";
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 

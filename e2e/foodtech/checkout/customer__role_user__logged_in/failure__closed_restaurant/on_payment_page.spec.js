@@ -1,6 +1,5 @@
 import { initTest } from './beforeEach';
-import { describeif } from '../../../../utils';
-import { closeRestaurantForToday } from '../../../../support/commands';
+import { closeRestaurantForToday, describeif } from '../../../../support/commands';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')(

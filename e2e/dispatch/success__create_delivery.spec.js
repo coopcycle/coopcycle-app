@@ -1,5 +1,7 @@
 import {
+  describeif,
   selectAutocompleteAddress,
+  tapById,
   typeTextQuick,
 } from "../support/commands";
 import {
@@ -8,7 +10,6 @@ import {
   loadDispatchFixture,
   relaunchCleanApp,
 } from './utils';
-import { describeif, tapById } from '../utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)

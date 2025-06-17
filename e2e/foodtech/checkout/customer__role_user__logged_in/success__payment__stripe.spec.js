@@ -4,12 +4,11 @@ import {
   chooseRestaurant,
   connectToLocalInstance,
   connectToSandbox,
+  describeif,
   enterValidCreditCard,
   selectAutocompleteAddress,
   symfonyConsole,
 } from '../../../support/commands';
-
-import { describeif } from '../../../utils';
 
 //FIXME: run on iOS too; see Stripe-related issues below
 describeif(device.getPlatform() === 'android')(

@@ -1,4 +1,7 @@
 import {
+  describeif,
+} from "../support/commands";
+import {
   assignOrderToUser,
   assignTaskToUser,
   bulkAssignToUser,
@@ -14,9 +17,6 @@ import {
   unassignOrderFromUser,
   unassignTaskFromUser,
 } from './utils';
-import {
-  describeif,
-} from "../utils";
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 const USER_JANE = 'jane';

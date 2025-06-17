@@ -4,11 +4,11 @@ import {
   closeRestaurantForToday,
   connectToLocalInstance,
   connectToSandbox,
+  describeif,
   launchApp,
   selectAutocompleteAddress,
   symfonyConsole,
 } from '../../../../support/commands';
-import { describeif } from '../../../../utils';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')(

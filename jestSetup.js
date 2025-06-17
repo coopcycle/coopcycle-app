@@ -1,7 +1,5 @@
 /* global jest */
 
-import NavigationHolder from './src/NavigationHolder';
-
 jest.mock('react-native/Libraries/AppState/AppState', () => ({
   currentState: 'active',
 }));
