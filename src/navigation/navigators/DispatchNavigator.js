@@ -1,27 +1,31 @@
-import { Box, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Box, Icon } from 'native-base';
 import { useEffect, useState } from 'react';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { createDeliverySuccess } from '../../redux/Store/actions';
-import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
-import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { useDispatch } from 'react-redux';
-import { useStackNavigatorScreenOptions } from '../styles';
-import HeaderRightButton from '../dispatch/HeaderRightButton';
+import screens, { headerLeft } from '..';
 import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
-import screens, { headerLeft } from '..';
+import { createDeliverySuccess } from '../../redux/Store/actions';
+import { blackColor } from '../../styles/common';
+import { useBackgroundContainerColor, useBaseTextColor } from '../../styles/theme';
+import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
+import HeaderRightButton from '../dispatch/HeaderRightButton';
+import { useStackNavigatorScreenOptions } from '../styles';
+import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import TaskNavigator from './TaskNavigator';
 
 
 const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
+  const color = useBaseTextColor();
+  const bgColor = useBackgroundContainerColor()
   const [searchQuery, setSearchQuery] = useState('');
   const [showMapButton, setShowMapButton] = useState(true);
 
@@ -43,14 +47,14 @@ function CustomTabBar({ navigation }) {
   }
 
   return (
-    <View style={customTabBarStyles.tabBarContainer}>
+    <View style={[customTabBarStyles.tabBarContainer, { backgroundColor: bgColor }]}>
       { showMapButton
         ? (
           <TouchableOpacity
             style={customTabBarStyles.tabButton}
             onPress={goToTasksMap}
           >
-            <Icon as={FontAwesome} name="map" />
+            <Icon as={FontAwesome} name="map" style={{ color }} />
           </TouchableOpacity>
         )
         : (
@@ -58,7 +62,7 @@ function CustomTabBar({ navigation }) {
             style={customTabBarStyles.tabButton}
             onPress={goToTasksList}
           >
-            <Icon as={FontAwesome} name="list" />
+            <Icon as={FontAwesome} name="list" style={{ color }} />
           </TouchableOpacity>
         )
       }
@@ -67,13 +71,12 @@ function CustomTabBar({ navigation }) {
           as={FontAwesome}
           name="search"
           size={6}
-          color="#000000"
           style={customTabBarStyles.searchIcon}
         />
         <TextInput
           style={customTabBarStyles.searchInput}
           placeholder="Search"
-          placeholderTextColor="#000000"
+          placeholderTextColor={blackColor}
           value={searchQuery}
           onChangeText={setSearchQuery}
           onSubmitEditing={handleSearchSubmit}
@@ -84,7 +87,7 @@ function CustomTabBar({ navigation }) {
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
       >
-        <Icon as={FontAwesome} name="filter" />
+        <Icon as={FontAwesome} name="filter" style={{ color }} />
       </TouchableOpacity>
     </View>
   );
@@ -93,13 +96,11 @@ function CustomTabBar({ navigation }) {
 const customTabBarStyles = StyleSheet.create({
   tabBarContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderTopColor: '#ddd',
-    borderTopWidth: 1,
     flexDirection: 'row',
-    height: 68,
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 30,
   },
   tabButton: {
     padding: 10,
@@ -118,7 +119,6 @@ const customTabBarStyles = StyleSheet.create({
     marginRight: 8,
   },
   searchInput: {
-    color: '#000000',
     flex: 1,
     fontFamily: 'OpenSans-SemiBold',
     fontSize: 14,
@@ -169,6 +169,7 @@ function Tabs() {
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
+          tabBarShowLabel: false,
         }}>
         <Tab.Screen
           name="DispatchAllTasks"
