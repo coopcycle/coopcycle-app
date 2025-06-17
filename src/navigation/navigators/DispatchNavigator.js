@@ -2,13 +2,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Box, Icon } from 'native-base';
-import { useEffect, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { useDispatch } from 'react-redux';
 import screens, { headerLeft } from '..';
+import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeightAwareKeyboardAvoidingView';
 import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
 import { createDeliverySuccess } from '../../redux/Store/actions';
@@ -130,41 +130,9 @@ const customTabBarStyles = StyleSheet.create({
 });
 
 function Tabs() {
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const insets = useSafeAreaInsets();
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      (e) => {
-        const calculated = e.endCoordinates.height - 92;
-        setKeyboardHeight(calculated);
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardHeight(0);
-      }
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, [insets.bottom]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'android' ? 'height' : 'padding'}
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={
-        Platform.OS === 'android'
-          ? -keyboardHeight
-          : insets.bottom
-      }
-    >
+    <HeaderHeightAwareKeyboardAvoidingView>
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
@@ -188,7 +156,7 @@ function Tabs() {
           })}
         />
       </Tab.Navigator>
-    </KeyboardAvoidingView>
+    </HeaderHeightAwareKeyboardAvoidingView>
   );
 };
 
