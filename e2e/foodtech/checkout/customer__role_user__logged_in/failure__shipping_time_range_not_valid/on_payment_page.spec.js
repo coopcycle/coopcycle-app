@@ -6,7 +6,6 @@ import {
   connectToLocalInstance,
   connectToSandbox,
   describeif,
-  launchApp,
   selectAutocompleteAddress,
   symfonyConsole,
 } from '../../../../support/commands';
@@ -16,8 +15,6 @@ describeif(device.getPlatform() === 'android')(
   'checkout for customer with existing account (role - user); logged in; with validation failures',
   () => {
     beforeEach(async () => {
-      await launchApp();
-
       if (device.getPlatform() === 'android') {
         symfonyConsole(
           'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',

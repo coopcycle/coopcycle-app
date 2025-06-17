@@ -10,7 +10,6 @@ import {
   assignTaskToUser,
   doLoginForUserWithRoleDispatcher,
   loadDispatchFixture,
-  relaunchCleanApp,
   toggleSectionUnassigned,
 } from './utils';
 
@@ -21,7 +20,6 @@ describeif(device.getPlatform() === 'android')
   ('Dispatch - Start and complete a task', () => {
 
   beforeEach(async () => {
-    await relaunchCleanApp();
     await loadDispatchFixture();
     await doLoginForUserWithRoleDispatcher();
 

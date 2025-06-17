@@ -5,7 +5,6 @@ import {
   connectToLocalInstance,
   connectToSandbox,
   describeif,
-  launchApp,
   selectAutocompleteAddress,
   symfonyConsole,
 } from '../../../../support/commands';
@@ -15,8 +14,6 @@ describeif(device.getPlatform() === 'android')(
   'checkout for customer guest user; Time range changed modal',
   () => {
     beforeEach(async () => {
-      await launchApp();
-
       if (device.getPlatform() === 'android') {
         symfonyConsole(
           'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',

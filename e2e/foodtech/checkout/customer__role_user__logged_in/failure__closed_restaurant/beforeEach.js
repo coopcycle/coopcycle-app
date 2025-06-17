@@ -4,14 +4,11 @@ import {
   chooseRestaurant,
   connectToLocalInstance,
   connectToSandbox,
-  launchApp,
   selectAutocompleteAddress,
   symfonyConsole,
 } from '../../../../support/commands';
 
 export const initTest = async () => {
-  await launchApp();
-
   if (device.getPlatform() === 'android') {
     symfonyConsole('coopcycle:fixtures:load -f cypress/fixtures/checkout.yml');
     await connectToLocalInstance();

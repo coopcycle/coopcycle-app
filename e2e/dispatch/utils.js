@@ -2,7 +2,6 @@ import {
   authenticateWithCredentials,
   connectToLocalInstance,
   connectToSandbox,
-  launchApp,
   swipeLeft,
   swipeRight,
   symfonyConsole,
@@ -21,10 +20,6 @@ export async function loadDispatchFixture() {
     //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
     await connectToSandbox();
   }
-}
-
-export async function relaunchCleanApp() {
-  await launchApp();
 }
 
 export async function doLoginForUserWithRoleDispatcher() {

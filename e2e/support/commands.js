@@ -248,15 +248,23 @@ export const selectAutocompleteAddress = async (
   placeId='Eh85MSBSdWUgZGUgUml2b2xpLCBQYXJpcywgRnJhbmNlIjASLgoUChIJmeuzXiFu5kcRwuW58Y4zYxgQWyoUChIJt4MohSFu5kcRUHvqO0vC-Ig'
 ) => {
   await waitForElement(elemId);
+
+  //await element(by.id(elemId)).typeText(address);
   await typeTextQuick(elemId, address);
-  await tapById(`placeId:${placeId}`);
+  // Sometimes the app hangs waiting for:
+  //   The app is busy with the following tasks:
+  //    • "LooperIdlingResource-2828-mqt_js" (JS Thread) is executing (JavaScript code).
+
+  //await tapById(`placeId:${placeId}`);
+  // The line above was disabled because somehow it doesn't like `toBeVisible()`
+  await element(by.id(`placeId:${placeId}`)).tap();
 };
 
 // Improved version of `typeText`
 export const typeTextQuick = async (elemIdOrObj, text) => {
   const elem = () => typeof elemIdOrObj === 'string' ? element(by.id(elemIdOrObj)) : elemIdOrObj
 
-  if (text.length) {
+  if (text.length > 1) {
     await elem().replaceText(text.slice(0, -1));
     text = text.slice(-1);
   }

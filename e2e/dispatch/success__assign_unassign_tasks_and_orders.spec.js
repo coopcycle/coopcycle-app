@@ -9,7 +9,6 @@ import {
   doLoginForUserWithRoleDispatcher,
   getTaskTitleElement,
   loadDispatchFixture,
-  relaunchCleanApp,
   swipeLeftTask,
   swipeRightTask,
   toggleSectionUnassigned,
@@ -27,7 +26,6 @@ describeif(device.getPlatform() === 'android')
   ('Dispatch - Assing, reassign and unassign tasks and orders (single + bulk)', () => {
 
   beforeEach(async () => {
-    await relaunchCleanApp();
     await loadDispatchFixture();
     await doLoginForUserWithRoleDispatcher();
   });

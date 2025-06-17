@@ -7,7 +7,6 @@ import {
 import {
   doLoginForUserWithRoleStore,
   loadStoreFixture,
-  relaunchCleanApp,
 } from './utils';
 
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
@@ -15,7 +14,6 @@ describeif(device.getPlatform() === 'android')
   ('Store - Create delivery', () => {
 
   beforeEach(async () => {
-    await relaunchCleanApp();
     await loadStoreFixture();
     await doLoginForUserWithRoleStore();
   });

@@ -4,8 +4,6 @@ import {
   connectToSandbox,
   symfonyConsole
 } from "../support/commands";
-export { relaunchCleanApp } from '../dispatch/utils';
-
 
 export async function loadStoreFixture() {
   if (device.getPlatform() === 'android') {

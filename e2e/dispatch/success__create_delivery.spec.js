@@ -8,7 +8,6 @@ import {
   doLoginForUserWithRoleDispatcher,
   getTaskTitleElement,
   loadDispatchFixture,
-  relaunchCleanApp,
 } from './utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
@@ -17,7 +16,6 @@ describeif(device.getPlatform() === 'android')
   ('Dispatch - Create delivery', () => {
 
   beforeEach(async () => {
-    await relaunchCleanApp();
     await loadDispatchFixture();
     await doLoginForUserWithRoleDispatcher();
   });
