@@ -12,7 +12,7 @@ export async function loadDispatchFixture() {
   await loadFixturesAndConnect('dispatch.yml', true);
 }
 
-export async function doLoginForUserWithRoleDispatcher() {
+export async function loginDispatcherUser() {
   await authenticateWithCredentials('dispatcher', 'dispatcher');
 }
 

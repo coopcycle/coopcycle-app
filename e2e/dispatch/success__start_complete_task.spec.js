@@ -8,8 +8,8 @@ import {
 } from "../support/commands";
 import {
   assignTaskToUser,
-  doLoginForUserWithRoleDispatcher,
   loadDispatchFixture,
+  loginDispatcherUser,
   toggleSectionUnassigned,
 } from './utils';
 
@@ -21,7 +21,7 @@ describeif(device.getPlatform() === 'android')
 
   beforeEach(async () => {
     await loadDispatchFixture();
-    await doLoginForUserWithRoleDispatcher();
+    await loginDispatcherUser();
 
     // Assign task #1
     await assignTaskToUser(USER_JANE);
@@ -82,11 +82,9 @@ describeif(device.getPlatform() === 'android')
 
     // Swipe complete button, tap 'failed' and press 'Report incident'
     await swipeLeft('task:completeButton');
-    await waitToBeVisible('task:completeFailureButton');
     await tapById('task:completeFailureButton');
 
     // Click the finish button in the new view
-    await waitToBeVisible('task:finishButton');
     await tapById('task:finishButton');
 
     // Verify task #1 has status "FAILED"

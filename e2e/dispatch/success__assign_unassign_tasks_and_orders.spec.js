@@ -6,9 +6,9 @@ import {
   assignTaskToUser,
   bulkAssignToUser,
   bulkUnassign,
-  doLoginForUserWithRoleDispatcher,
   getTaskTitleElement,
   loadDispatchFixture,
+  loginDispatcherUser,
   swipeLeftTask,
   swipeRightTask,
   toggleSectionUnassigned,
@@ -27,7 +27,7 @@ describeif(device.getPlatform() === 'android')
 
   beforeEach(async () => {
     await loadDispatchFixture();
-    await doLoginForUserWithRoleDispatcher();
+    await loginDispatcherUser();
   });
 
   it('should assing a single task to a courier and then unassign it', async () => {
