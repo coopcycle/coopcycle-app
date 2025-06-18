@@ -38,6 +38,30 @@ export function getTaskWithAssignedTo(assignedTo) {
   });
 }
 
+export function getTaskWithStoreName(orgName) {
+  return Task({
+    orgName,
+  });
+}
+
+export function getTaskWithTags(tags) {
+  return Task({
+    tags,
+  });
+}
+
+export function getTaskWithStatus(status) {
+  return Task({
+    status,
+  });
+}
+
+export function getTaskWithHasIncidents(hasIncidents) {
+  return Task({
+    hasIncidents,
+  });
+}
+
 export const getTaskListWithItems = usernames => (id, items) => {
   const username = usernames[id];
 
