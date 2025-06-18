@@ -11,8 +11,12 @@ import { useTranslation } from "react-i18next";
 
 import { initialize } from "../../redux/Dispatch/actions";
 import { mediumGreyColor } from '../../styles/common';
-import { selectFilteredTaskLists, selectFilteredUnassignedTasksNotCancelled } from '../../shared/src/logistics/redux/selectors';
-import { selectSelectedDate } from "../../shared/logistics/redux";
+
+import {
+  selectFilteredTaskLists,
+  selectFilteredUnassignedTasksNotCancelled,
+  selectSelectedDate,
+} from "../../shared/logistics/redux";
 import { useAllTasks } from "./useAllTasks";
 import AddButton from './components/AddButton';
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';

@@ -8,11 +8,14 @@ export {
   makeSelectTaskListItemsByUsername,
   selectAllTasks,
   selectAssignedTasks,
+  selectFilteredTaskLists,
+  selectFilteredUnassignedTasksNotCancelled,
   selectSelectedDate,
   selectTaskLists,
   selectTasksWithColor,
   selectToursTasksIndex,
   selectUnassignedTasks,
+  selectUnassignedTasksNotCancelled,
 } from './selectors';
 
 export * from './actions';
