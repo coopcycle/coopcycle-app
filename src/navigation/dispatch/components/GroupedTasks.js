@@ -5,11 +5,13 @@ import {
   SectionList,
   TouchableOpacity,
 } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import {
+  darkGreyColor,
   darkRedColor,
   lightGreyColor,
   whiteColor
@@ -17,22 +19,46 @@ import {
 import { getTasksListIdsToEdit } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
-import { selectUnassignedTasksNotCancelled } from '../../../shared/src/logistics/redux/selectors';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
-  sections,
-  route,
   isFetching,
-  refetch
+  refetch,
+  route,
+  taskLists,
+  unassignedTasks,
 }) {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
-  const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const bulkEditTasksFloatingButtonRef = useRef(null);
+
+  // Combine unassigned tasks and task lists to use in SectionList
+  const sections = [
+    {
+      backgroundColor: whiteColor,
+      count: unassignedTasks.length,
+      data: unassignedTasks,
+      id: UNASSIGNED_TASKS_LIST_ID,
+      isUnassignedTaskList: true,
+      taskListId: UNASSIGNED_TASKS_LIST_ID,
+      textColor: darkGreyColor,
+      title: t('DISPATCH_UNASSIGNED_TASKS'),
+    },
+    ...taskLists.map(taskList => ({
+      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
+      count: taskList.items.length,
+      data: taskList.items,
+      id: `${taskList.username.toLowerCase()}TasksList`,
+      isUnassignedTaskList: false,
+      taskListId: taskList['@id'],
+      textColor: whiteColor,
+      title: taskList.username,
+    })),
+  ];
 
   // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());

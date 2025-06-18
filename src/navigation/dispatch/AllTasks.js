@@ -9,15 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  darkGreyColor,
-  mediumGreyColor,
-  whiteColor
-} from '../../styles/common';
 import { initialize } from "../../redux/Dispatch/actions";
+import { mediumGreyColor } from '../../styles/common';
 import { selectFilteredTaskLists, selectFilteredUnassignedTasksNotCancelled } from '../../shared/src/logistics/redux/selectors';
 import { selectSelectedDate } from "../../shared/logistics/redux";
-import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
 import { useAllTasks } from "./useAllTasks";
 import AddButton from './components/AddButton';
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
@@ -46,30 +41,6 @@ export default function AllTasks({
       dispatch(initialize());
     });
   }, [dispatch]);
-
-  // Combine unassigned tasks and task lists to use in SectionList
-  const sections = [
-    {
-      backgroundColor: whiteColor,
-      count: unassignedTasks.length,
-      data: unassignedTasks,
-      id: UNASSIGNED_TASKS_LIST_ID,
-      isUnassignedTaskList: true,
-      taskListId: UNASSIGNED_TASKS_LIST_ID,
-      textColor: darkGreyColor,
-      title: t('DISPATCH_UNASSIGNED_TASKS'),
-    },
-    ...taskLists.map(taskList => ({
-      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-      count: taskList.items.length,
-      data: taskList.items,
-      id: `${taskList.username.toLowerCase()}TasksList`,
-      isUnassignedTaskList: false,
-      taskListId: taskList['@id'],
-      textColor: whiteColor,
-      title: taskList.username,
-    })),
-  ];
 
   if (isError) {
     return (
@@ -100,11 +71,11 @@ export default function AllTasks({
           </AddButton>
         </View>
         <GroupedTasks
-            sections={sections}
-            navigation
-            route={route}
-            isFetching={isFetching}
-            refetch={refetch}
+          isFetching={isFetching}
+          refetch={refetch}
+          route={route}
+          taskLists={taskLists}
+          unassignedTasks={unassignedTasks}
         />
       </BasicSafeAreaView>
   );
