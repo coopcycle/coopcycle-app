@@ -8,7 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { useDispatch } from 'react-redux';
 import screens, { headerLeft } from '..';
-import HeaderHeightAwareKeyboardAvoidingView from '../../components/HeaderHeightAwareKeyboardAvoidingView';
+import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
 import { createDeliverySuccess } from '../../redux/Store/actions';
@@ -100,7 +100,7 @@ const customTabBarStyles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingTop: 10,
-    paddingBottom: 30,
+    paddingBottom: 10,
   },
   tabButton: {
     padding: 10,
@@ -132,7 +132,7 @@ const customTabBarStyles = StyleSheet.create({
 function Tabs() {
 
   return (
-    <HeaderHeightAwareKeyboardAvoidingView>
+    <KeyboardAdjustView style={{ flex: 1 }} androidBehavior={'heigh'}>
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
@@ -156,7 +156,7 @@ function Tabs() {
           })}
         />
       </Tab.Navigator>
-    </HeaderHeightAwareKeyboardAvoidingView>
+    </KeyboardAdjustView>
   );
 };
 
