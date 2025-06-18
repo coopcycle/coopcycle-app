@@ -7,6 +7,7 @@ import {
   replaceItemsWithItemIds,
   withLinkedTasksForTaskList,
 } from '../taskListUtils.js';
+import { getTaskListWithItems, getTaskWithPrevious } from '../testsUtils.js';
 
 
 const usernames = [
@@ -19,49 +20,31 @@ const usernames = [
   'username6',
 ];
 
-const getTask = (id, usernameId, previous = null) => {
-  const username = usernames[usernameId];
-
-  return {
-    '@id': `/api/tasks/${id}`,
-    id: id,
-    previous: previous ? `/api/tasks/${previous}` : null,
-    assignedTo: username,
-  };
-};
-
-const getTaskList = (id, items) => {
-  const username = usernames[id];
-  return {
-    '@id': `/api/task_lists/${id}`,
-    id: id,
-    items: items || [],
-    username,
-  };
-};
+const getTaskWithPreviousWithUsernames = getTaskWithPrevious(usernames);
+const getTaskListWithItemsWithUsernames = getTaskListWithItems(usernames);
 
 const allTasks = [
-  getTask(0, 1),
-  getTask(1, 2),
-  getTask(2, 2, 1),
-  getTask(3, 3),
-  getTask(4, 3, 3),
-  getTask(5, 3, 4),
-  getTask(6, 4, 5),
-  getTask(7, 4, 6),
-  getTask(8, 5),
-  getTask(9, 6, 8),
-  getTask(10, null, 9)
+  getTaskWithPreviousWithUsernames(0, 1),
+  getTaskWithPreviousWithUsernames(1, 2),
+  getTaskWithPreviousWithUsernames(2, 2, 1),
+  getTaskWithPreviousWithUsernames(3, 3),
+  getTaskWithPreviousWithUsernames(4, 3, 3),
+  getTaskWithPreviousWithUsernames(5, 3, 4),
+  getTaskWithPreviousWithUsernames(6, 4, 5),
+  getTaskWithPreviousWithUsernames(7, 4, 6),
+  getTaskWithPreviousWithUsernames(8, 5),
+  getTaskWithPreviousWithUsernames(9, 6, 8),
+  getTaskWithPreviousWithUsernames(10, null, 9)
 ];
 
 const allTaskLists = [
-  getTaskList(0, []),
-  getTaskList(1, [allTasks[0]]),
-  getTaskList(2, [allTasks[1], allTasks[2]]),
-  getTaskList(3, [allTasks[3], allTasks[4], allTasks[5]]),
-  getTaskList(4, [allTasks[6], allTasks[7]]),
-  getTaskList(5, [allTasks[8]]),
-  getTaskList(6, [allTasks[9]]),
+  getTaskListWithItemsWithUsernames(0, []),
+  getTaskListWithItemsWithUsernames(1, [allTasks[0]]),
+  getTaskListWithItemsWithUsernames(2, [allTasks[1], allTasks[2]]),
+  getTaskListWithItemsWithUsernames(3, [allTasks[3], allTasks[4], allTasks[5]]),
+  getTaskListWithItemsWithUsernames(4, [allTasks[6], allTasks[7]]),
+  getTaskListWithItemsWithUsernames(5, [allTasks[8]]),
+  getTaskListWithItemsWithUsernames(6, [allTasks[9]]),
 ];
 
 function normalizeTasksListIdsToEdit(tasksListIdsToEdit) {
