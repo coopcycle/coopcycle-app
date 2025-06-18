@@ -127,3 +127,13 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
 
   return toursToUpdate;
 }
+
+export function filterTasksByString(tasks, searchString) {
+  if (searchString === '') {
+    return tasks;
+  }
+
+  return tasks.filter(task => (
+    task.assignedTo.includes(searchString)
+  ));
+}

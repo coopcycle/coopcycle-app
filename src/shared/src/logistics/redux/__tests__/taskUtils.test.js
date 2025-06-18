@@ -1,9 +1,11 @@
 import {
+  filterTasksByString,
   getAssignedTask,
   getToursToUpdate,
   groupLinkedTasks,
   tasksToIds,
 } from '../taskUtils.js';
+import { getTaskWithAssignedTo } from '../testsUtils.js';
 
 describe('taskUtils', () => {
   describe('groupLinkedTasks', () => {
@@ -390,6 +392,30 @@ describe('taskUtils', () => {
       const result = getToursToUpdate(itemIds, toursIndexes);
 
       expect(result).toEqual({});
+    });
+  });
+
+  describe('filterTasksByString', () => {
+    const tasks = [
+      getTaskWithAssignedTo('Assigned to Alba'),
+      getTaskWithAssignedTo('Assigned to Bob'),
+      getTaskWithAssignedTo('Assigned to Carla'),
+    ];
+
+    it('should return all tasks if search string is empty', () => {
+      const searchString = '';
+
+      const result = filterTasksByString(tasks, searchString);
+
+      expect(result).toEqual(tasks);
+    });
+
+    it('should return tasks that have searchString in assignedTo', () => {
+      const searchString = 'Bob';
+
+      const result = filterTasksByString(tasks, searchString);
+
+      expect(result).toEqual(tasks.slice(1,2));
     });
   });
 });
