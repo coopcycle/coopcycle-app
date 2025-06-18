@@ -15,9 +15,8 @@ import {
   whiteColor
 } from '../../styles/common';
 import { initialize } from "../../redux/Dispatch/actions";
-import { selectFilteredTaskLists } from '../../shared/src/logistics/redux/selectors';
+import { selectFilteredTaskLists, selectFilteredUnassignedTasksNotCancelled } from '../../shared/src/logistics/redux/selectors';
 import { selectSelectedDate } from "../../shared/logistics/redux";
-import { selectUnassignedTasksNotCancelled } from "../../redux/Dispatch/selectors";
 import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
 import { useAllTasks } from "./useAllTasks";
 import AddButton from './components/AddButton';
@@ -31,7 +30,7 @@ export default function AllTasks({
   const { t } = useTranslation();
 
   const selectedDate = useSelector(selectSelectedDate);
-  const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
+  const unassignedTasks = useSelector(selectFilteredUnassignedTasksNotCancelled);
   const taskLists = useSelector(selectFilteredTaskLists);
 
   const dispatch = useDispatch();

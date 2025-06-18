@@ -7,6 +7,8 @@ import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
 import { filterTasks } from '../../../../redux/logistics/utils';
 
 
+// Selectors
+
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,
 );
@@ -47,6 +49,12 @@ export const selectUnassignedTasksNotCancelled = createSelector(
   selectUnassignedTasks,
   tasks =>
     _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
+);
+
+export const selectFilteredUnassignedTasksNotCancelled = createSelector(
+  selectUnassignedTasks,
+  selectTaskFilters,
+  (tasks, filters) => filterTasks(tasks, filters),
 );
 
 
