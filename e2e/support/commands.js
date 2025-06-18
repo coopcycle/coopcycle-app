@@ -11,7 +11,7 @@ export const COMMAND_PREFIX = `cd ${COOPCYCLE_WEB_REPO_PATH} && docker compose e
 export const symfonyConsole = command => {
   const prefix = COMMAND_PREFIX;
   const cmd = `bin/console ${command} --env="test"`;
-  execSync(prefix ? `${prefix} ${cmd}` : cmd)
+  return execSync(prefix ? `${prefix} ${cmd}` : cmd)
 };
 
 export const launchApp = async () => {
@@ -111,7 +111,7 @@ export const logout = async (username, password) => {
 
   await tapById('drawerAccountBtn');
 
-  await tapById('logout');
+  return await tapById('logout');
 };
 
 export const chooseRestaurant = async restaurantName => {
@@ -124,6 +124,7 @@ export const chooseRestaurant = async restaurantName => {
       .scroll(120, 'down');
   }
   await element(by.label(restaurantName)).tap();
+  return element(by.label(restaurantName));
 };
 
 export const addProduct = async id => {
@@ -159,7 +160,7 @@ export const addProduct = async id => {
     }
   }
 
-  await tapById('addProduct');
+  return await tapById('addProduct');
 };
 
 const stripeUiElement = (androidLabel, iOSLabel) => {
@@ -258,6 +259,7 @@ export const selectAutocompleteAddress = async (
   //await tapById(`placeId:${placeId}`);
   // The line above was disabled because somehow it doesn't like `toBeVisible()`
   await element(by.id(`placeId:${placeId}`)).tap();
+  return element(by.id(`placeId:${placeId}`));
 };
 
 // Improved version of `typeText`
@@ -271,30 +273,35 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
 
   // Just type the last character
   await elem().typeText(text);
+  return elem();
 };
 
 export async function tapById(testID) {
-    await expect(element(by.id(testID))).toBeVisible();
-    await element(by.id(testID)).tap();
+  await expect(element(by.id(testID))).toBeVisible();
+  await element(by.id(testID)).tap();
+  return element(by.id(testID));
 }
 
 export async function tapByText(text) {
-    await waitFor(element(by.text(text))).toBeVisible();
-    await element(by.text(text)).tap();
+  await waitFor(element(by.text(text))).toBeVisible();
+  await element(by.text(text)).tap();
+  return element(by.text(text));
 }
 
 export async function swipeRight(testID) {
-    await expect(element(by.id(testID))).toBeVisible();
-    await element(by.id(testID)).swipe('right');
+  await expect(element(by.id(testID))).toBeVisible();
+  await element(by.id(testID)).swipe('right');
+  return element(by.id(testID));
 }
 
 export async function swipeLeft(testID) {
-    await expect(element(by.id(testID))).toBeVisible();
-    await element(by.id(testID)).swipe('left');
+  await expect(element(by.id(testID))).toBeVisible();
+  await element(by.id(testID)).swipe('left');
+  return element(by.id(testID));
 }
 
 export async function waitForElement(elemId, timeout = 10000) {
-  await waitFor(element(by.id(elemId))).toBeVisible().withTimeout(timeout);
+  return await waitFor(element(by.id(elemId))).toBeVisible().withTimeout(timeout);
 }
 
 export async function sleep(timeout) {
