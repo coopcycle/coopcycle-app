@@ -2,12 +2,14 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 import { mapToColor } from './taskUtils';
-import { selectTaskFilters } from '../../../../redux/Courier/taskSelectors';
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
 import { filterTasks } from '../../../../redux/logistics/utils';
 
 
 // Selectors
+
+// TODO: move UI related state management to Shared folder
+const selectTaskFilters = state => state.ui.tasks.excludeFilters;
 
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,
