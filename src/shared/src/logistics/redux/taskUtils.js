@@ -134,6 +134,18 @@ export function filterTasksByString(tasks, searchString) {
   }
 
   return tasks.filter(task => (
-    task.assignedTo.includes(searchString)
+    standardIncludes(task.assignedTo, searchString)
+    || standardIncludes(task.orgName, searchString)
+    || task.tags.reduce((acc, tag) => acc || standardIncludes(tag.name, searchString), false)
   ));
+}
+
+function standardIncludes(originalString, searchString) {
+  if (!originalString) {
+    return false;
+  }
+
+  const lowercaseSearchString = searchString.toLowerCase();
+
+  return originalString.toLowerCase().includes(lowercaseSearchString);
 }

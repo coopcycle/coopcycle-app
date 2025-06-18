@@ -5,7 +5,7 @@ import {
   groupLinkedTasks,
   tasksToIds,
 } from '../taskUtils.js';
-import { getTaskWithAssignedTo } from '../testsUtils.js';
+import { getTaskWithAssignedTo, getTaskWithStoreName, getTaskWithTags } from '../testsUtils.js';
 
 describe('taskUtils', () => {
   describe('groupLinkedTasks', () => {
@@ -400,6 +400,12 @@ describe('taskUtils', () => {
       getTaskWithAssignedTo('Assigned to Alba'),
       getTaskWithAssignedTo('Assigned to Bob'),
       getTaskWithAssignedTo('Assigned to Carla'),
+      getTaskWithStoreName('Store name ACME'),
+      getTaskWithStoreName('Store name Bullanga'),
+      getTaskWithStoreName('Store name Cremon'),
+      getTaskWithTags(['A', 'AA', 'AAA']),
+      getTaskWithTags(['B', 'BB', 'BBB']),
+      getTaskWithTags(['C', 'CC', 'CCC']),
     ];
 
     it('should return all tasks if search string is empty', () => {
@@ -410,12 +416,28 @@ describe('taskUtils', () => {
       expect(result).toEqual(tasks);
     });
 
-    it('should return tasks that have searchString in assignedTo', () => {
-      const searchString = 'Bob';
-
+    it.each([
+      'bob', 'Bob', 'BOB'
+    ])('should return tasks that have searchString in assignedTo', (searchString) => {
       const result = filterTasksByString(tasks, searchString);
 
       expect(result).toEqual(tasks.slice(1,2));
+    });
+
+    it.each([
+      'bullanga', 'Bullanga', 'BULLANGA'
+    ])('should return tasks that have searchString in store name', (searchString) => {
+      const result = filterTasksByString(tasks, searchString);
+
+      expect(result).toEqual(tasks.slice(4,5));
+    });
+
+    it.each([
+      'bbb', 'BBB',
+    ])('should return tasks that have searchString in any tag', (searchString) => {
+      const result = filterTasksByString(tasks, searchString);
+
+      expect(result).toEqual(tasks.slice(7,8));
     });
   });
 });

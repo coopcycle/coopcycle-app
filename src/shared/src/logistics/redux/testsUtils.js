@@ -1,10 +1,22 @@
 function Task({
+  assignedTo,
+  hasIncidents,
   id,
+  orgName,
+  previous,
+  status,
+  tags,
   ...props
 }) {
   return {
     '@id': `/api/tasks/${id}`,
     id,
+    assignedTo: assignedTo || '',
+    hasIncidents: hasIncidents || false,
+    orgName: orgName || '',
+    previous,
+    status: status || '',
+    tags: tags || [],
     ...props
   };
 };
@@ -46,7 +58,7 @@ export function getTaskWithStoreName(orgName) {
 
 export function getTaskWithTags(tags) {
   return Task({
-    tags,
+    tags: tags.map(tag => ({name: tag})),
   });
 }
 
