@@ -17,11 +17,16 @@ const tourSelectors = tourAdapter.getSelectors(
   state => state.logistics.entities.tours,
 );
 
+// Base selections
+
 export const selectSelectedDate = state => state.logistics.date;
 
 export const selectAllTasks = taskSelectors.selectAll;
 
 export const selectAllTours = tourSelectors.selectAll;
+
+
+// Selections for Tasks
 
 export const selectAssignedTasks = createSelector(
   selectAllTasks,
@@ -37,6 +42,15 @@ export const selectTasksWithColor = createSelector(
   selectAllTasks,
   allTasks => mapToColor(allTasks),
 );
+
+export const selectUnassignedTasksNotCancelled = createSelector(
+  selectUnassignedTasks,
+  tasks =>
+    _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
+);
+
+
+// Selections for TaskLists
 
 // FIXME
 // This is not optimized
@@ -85,11 +99,12 @@ export const selectFilteredTaskLists = createSelector(
       return filteredTaskList;
     });
 
-    console.log({filteredTaskLists})
-
     return filteredTaskLists;
   }
 )
+
+
+// Selections for Tours
 
 // Returns a tours/tasks index with the format:
 // {

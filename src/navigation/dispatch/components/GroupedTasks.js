@@ -17,7 +17,7 @@ import {
 import { getTasksListIdsToEdit } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
-import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
+import { selectUnassignedTasksNotCancelled } from '../../../shared/src/logistics/redux/selectors';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
@@ -49,6 +49,7 @@ export default function GroupedTasks({
   } = useSetTaskListItems();
 
   const onTaskClick = task => {
+    // TODO: navigate with related tasks
     navigateToTask(navigation, route, task, unassignedTasks);
   };
 
