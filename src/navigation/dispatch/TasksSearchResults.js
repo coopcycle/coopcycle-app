@@ -1,8 +1,15 @@
-import { Text, View } from 'native-base';
-
-import { mediumGreyColor } from '../../styles/common';
-import BasicSafeAreaView from "../../components/BasicSafeAreaView";
 import { StyleSheet } from 'react-native';
+import { Text, View } from 'native-base';
+import { useSelector } from 'react-redux';
+
+import { filterTasksByString } from '../../shared/src/logistics/redux/taskUtils';
+import { mediumGreyColor } from '../../styles/common';
+import {
+  selectFilteredTaskLists,
+  selectFilteredUnassignedTasksNotCancelled,
+} from "../../shared/logistics/redux";
+import BasicSafeAreaView from "../../components/BasicSafeAreaView";
+import GroupedTasks from './components/GroupedTasks';
 
 const styles = StyleSheet.create({
   view: {
@@ -25,11 +32,29 @@ const styles = StyleSheet.create({
 export default function TasksSearchResults({
   route,
 }) {
+  const unassignedTasks = useSelector(selectFilteredUnassignedTasksNotCancelled);
+  const taskLists = useSelector(selectFilteredTaskLists);
+
+  const filteredUnassignedTasks = filterTasksByString(unassignedTasks, route.params.searchQuery);
+  const filteredTasksLists = taskLists
+    .map(taskList => {
+      const filteredTaskList = {...taskList};
+      filteredTaskList.items = filterTasksByString(taskList.items, route.params.searchQuery);
+
+      return filteredTaskList;
+    })
+    .filter(taskList => taskList.items.length > 0);
+
   return (
     <BasicSafeAreaView>
       <View style={styles.view}>
-        <Text style={styles.text}>Search results for '{route.params.searchQuery}' coming soon..!</Text>
+        <Text style={styles.text}>Search results for '{route.params.searchQuery}'</Text>
       </View>
+      <GroupedTasks
+        route={route}
+        taskLists={filteredTasksLists}
+        unassignedTasks={filteredUnassignedTasks}
+      />
     </BasicSafeAreaView>
   )
 }
