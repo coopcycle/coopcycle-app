@@ -53,6 +53,7 @@ export const selectUnassignedTasksNotCancelled = createSelector(
     _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
 );
 
+// TODO: Move to dispatch's selectors and use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
 export const selectFilteredUnassignedTasksNotCancelled = createSelector(
   selectUnassignedTasksNotCancelled,
   selectTaskFilters,
@@ -98,6 +99,7 @@ export const selectTaskLists = createSelector(
     }),
 );
 
+// TODO: Move to dispatch's selectors and use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
 export const selectFilteredTaskLists = createSelector(
   selectTaskLists,
   selectTaskFilters,
