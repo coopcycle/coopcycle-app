@@ -54,7 +54,7 @@ export const selectUnassignedTasksNotCancelled = createSelector(
 );
 
 export const selectFilteredUnassignedTasksNotCancelled = createSelector(
-  selectUnassignedTasks,
+  selectUnassignedTasksNotCancelled,
   selectTaskFilters,
   (tasks, filters) => filterTasks(tasks, filters),
 );
