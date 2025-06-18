@@ -7,9 +7,6 @@ import {
 } from './support/commands';
 
 describe.skip('Registration', () => {
-  beforeEach(async () => {
-    await device.reloadReactNative();
-  });
 
   it('should be able to register', async () => {
     if (device.getPlatform() === 'android') {

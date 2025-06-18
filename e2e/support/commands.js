@@ -14,8 +14,8 @@ export const symfonyConsole = command => {
   return execSync(prefix ? `${prefix} ${cmd}` : cmd)
 };
 
-export const launchApp = async () => {
-  await device.launchApp({
+export const launchApp = () => {
+  return device.launchApp({
     delete: true,
     permissions: {
       notifications: 'YES',
@@ -44,11 +44,11 @@ export const disablePasswordAutofill = () => {
 };
 
 export const connectToSandbox = async (url = "sandbox-fr.coopcycle.org") => {
-  await connectToInstance("sandbox-fr.coopcycle.org");
+  return await connectToInstance("sandbox-fr.coopcycle.org");
 };
 
 export const connectToLocalInstance = async () => {
-  await connectToInstance(getLocalInstanceUrl());
+  return await connectToInstance(getLocalInstanceUrl());
 };
 
 const connectToInstance = async (url) => {
@@ -100,7 +100,7 @@ export const authenticateWithCredentials = async (username, password) => {
 };
 
 export const logout = async (username, password) => {
-  // await waitForElement('menuBtn')
+  // await waitToBeVisible('menuBtn')
 
   // Multiple elements were matched: (
   //     "<RCTView:0x7fd151feba00; AX=Y; AX.id='menuBtn'; AX.label='\Uf32a'; AX.frame={{0, 3001.5}, {61, 41}}; AX.activationPoint={30.5, 3022}; AX.traits='UIAccessibilityTraitNone'; AX.focused='N'; frame={{0, 1.5}, {61, 41}}; opaque; alpha=1>",
@@ -127,26 +127,23 @@ export const chooseRestaurant = async restaurantName => {
   return element(by.label(restaurantName));
 };
 
-export const addProduct = async id => {
+export const addProduct = async testID => {
   try {
-    await expect(element(by.id(id))).toBeVisible();
+    await expect(element(by.id(testID))).toBeVisible();
   } catch (e) {
-    //FIXME: make scroll more flexible or use
-    // await element(by.id('restaurantData')).scrollToIndex(0);
-    // instead
-    await waitForElement(id)
+    await waitToBeVisible(testID, 0)
       .whileElement(by.id('restaurantData'))
-      .scroll(180, 'down');
+      .scroll(200, 'down');
   }
 
-  await tapById(id);
+  await tapById(testID);
 
   try {
     // Product details page
-    await waitForElement('productDetails');
+    await waitToBeVisible('productDetails');
   } catch (e) {
     //FIXME: it seems that sometimes the tap does not work on the first try
-    await tapById(id);
+    await tapById(testID);
   }
 
   // FIXME: with a local coopcycle-web instance, we'll have more control over the test data
@@ -191,6 +188,8 @@ export const enterValidCreditCard = async () => {
   await typeTextQuick(expirationDateElement(), '1228');
   // Add "\n" to make sure keyboard is hidden
   await typeTextQuick(cvvElement(), '123\n');
+
+  return cardNumberElement();
 };
 
 export const closeRestaurantForToday = async (username, password) => {
@@ -248,7 +247,7 @@ export const selectAutocompleteAddress = async (
   address='91 rue de rivoli paris',
   placeId='Eh85MSBSdWUgZGUgUml2b2xpLCBQYXJpcywgRnJhbmNlIjASLgoUChIJmeuzXiFu5kcRwuW58Y4zYxgQWyoUChIJt4MohSFu5kcRUHvqO0vC-Ig'
 ) => {
-  await waitForElement(elemId);
+  await waitToBeVisible(elemId);
 
   //await element(by.id(elemId)).typeText(address);
   await typeTextQuick(elemId, address);
@@ -276,8 +275,8 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
   return elem();
 };
 
-export async function tapById(testID) {
-  await expect(element(by.id(testID))).toBeVisible();
+export async function tapById(testID, timeout = 0) {
+  await waitToBeVisible(testID, timeout);
   await element(by.id(testID)).tap();
   return element(by.id(testID));
 }
@@ -288,22 +287,28 @@ export async function tapByText(text) {
   return element(by.text(text));
 }
 
-export async function swipeRight(testID) {
-  await expect(element(by.id(testID))).toBeVisible();
+export async function swipeRight(testID, timeout = 0) {
+  await waitToBeVisible(testID, timeout);
   await element(by.id(testID)).swipe('right');
   return element(by.id(testID));
 }
 
-export async function swipeLeft(testID) {
-  await expect(element(by.id(testID))).toBeVisible();
+export async function swipeLeft(testID, timeout = 0) {
+  await waitToBeVisible(testID, timeout);
   await element(by.id(testID)).swipe('left');
   return element(by.id(testID));
 }
 
-export async function waitForElement(elemId, timeout = 10000) {
-  return await waitFor(element(by.id(elemId))).toBeVisible().withTimeout(timeout);
+export function waitToBeVisible(testID, timeout = 5000) {
+  const elem = waitFor(element(by.id(testID))).toBeVisible();
+  return timeout ? elem.withTimeout(timeout) : elem;
 }
 
-export async function sleep(timeout) {
+export function waitToExist(testID, timeout = 5000) {
+  const elem = waitFor(element(by.id(testID))).toExist();
+  return timeout ? elem.withTimeout(timeout) : elem;
+}
+
+export function sleep(timeout) {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }

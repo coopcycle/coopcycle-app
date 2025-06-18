@@ -9,8 +9,6 @@ import {
 
 describe('checkout for customer with existing account (role - user); not logged in yet; payment - cash on delivery', () => {
   beforeEach(async () => {
-    await device.reloadReactNative();
-
     if (device.getPlatform() === 'android') {
       symfonyConsole(
         'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',

@@ -10,7 +10,6 @@ describeif(device.getPlatform() === 'android')('Courier', () => {
   beforeEach(async () => {
     symfonyConsole('coopcycle:fixtures:load -f cypress/fixtures/courier.yml');
 
-    await device.reloadReactNative();
     await connectToLocalInstance();
   });
 

@@ -1,6 +1,6 @@
 import { disablePasswordAutofill, launchApp } from './support/commands';
 
-beforeAll(async () => {
+beforeAll(() => {
   disablePasswordAutofill();
 });
 

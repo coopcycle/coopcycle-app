@@ -8,6 +8,10 @@ import {
   enterValidCreditCard,
   selectAutocompleteAddress,
   symfonyConsole,
+  tapById,
+  typeTextQuick,
+  waitToBeVisible,
+  waitToExist,
 } from '../../../support/commands';
 
 //FIXME: run on iOS too; see Stripe-related issues below
@@ -15,8 +19,6 @@ describeif(device.getPlatform() === 'android')(
   'checkout for customer with existing account (role - user); logged in; payment - stripe',
   () => {
     beforeEach(async () => {
-      await device.reloadReactNative();
-
       if (device.getPlatform() === 'android') {
         symfonyConsole(
           'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
@@ -31,24 +33,20 @@ describeif(device.getPlatform() === 'android')(
     });
 
     it(`should complete checkout`, async () => {
-      await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
+      await waitToBeVisible('checkoutAskAddress');
 
       // Enter address
       await selectAutocompleteAddress('askAddressAutocomplete');
 
       // List of restaurants
-      await expect(element(by.id('restaurantList'))).toBeVisible();
+      await waitToBeVisible('restaurantList');
 
       // Choose a restaurant
       await chooseRestaurant('Crazy Hamburger');
 
       // Restaurant page
-      await waitFor(element(by.id('restaurantData')))
-        .toExist()
-        .withTimeout(5000);
-      await waitFor(element(by.id('menuItem:0:0')))
-        .toExist()
-        .withTimeout(5000);
+      await waitToExist('restaurantData');
+      await waitToExist('menuItem:0:0');
 
       // Add item
       await addProduct('menuItem:0:0');
@@ -57,28 +55,20 @@ describeif(device.getPlatform() === 'android')(
       await addProduct('menuItem:0:1');
       await addProduct('menuItem:1:0');
 
-      await waitFor(element(by.id('cartSubmit')))
-        .toBeVisible()
-        .withTimeout(5000);
-      await element(by.id('cartSubmit')).tap();
+      await tapById('cartSubmit');
 
       // Cart summary page
-      await waitFor(element(by.id('cartSummarySubmit')))
-        .toBeVisible()
-        .withTimeout(5000);
-
-      await element(by.id('cartSummarySubmit')).tap();
+      await tapById('cartSummarySubmit');
 
       // More infos page
-      await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-      await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
+      await waitToBeVisible('checkoutTelephone');
+      await waitToBeVisible('moreInfosSubmit');
 
       // Append "\n" to make sure virtual keybord is hidden after entry
       // https://github.com/wix/detox/issues/209
-      await element(by.id('checkoutTelephone')).typeText('0612345678');
-      await element(by.id('checkoutTelephone')).typeText('\n');
+      await typeTextQuick('checkoutTelephone', '0612345678\n');
 
-      await element(by.id('moreInfosSubmit')).tap();
+      await tapById('moreInfosSubmit');
 
       // Payment page
       await element(by.id('cardholderName')).typeText('John Doe');
@@ -92,12 +82,10 @@ describeif(device.getPlatform() === 'android')(
       //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
       await enterValidCreditCard();
 
-      await element(by.id('creditCardSubmit')).tap();
+      await tapById('creditCardSubmit');
 
       // Confirmation page
-      await waitFor(element(by.id('orderTimeline')))
-        .toBeVisible()
-        .withTimeout(15000);
+      await waitToBeVisible('orderTimeline', 15000);
     });
   },
 );

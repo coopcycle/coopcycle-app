@@ -5,10 +5,6 @@ import {
 } from '../support/commands';
 
 describe('Foodtech - first launch', () => {
-  beforeEach(async () => {
-    await device.reloadReactNative();
-  });
-
   it(`should show AskAddress screen`, async () => {
     if (device.getPlatform() === 'android') {
       symfonyConsole(

@@ -6,12 +6,14 @@ import {
   connectToSandbox,
   selectAutocompleteAddress,
   symfonyConsole,
+  tapById,
+  typeTextQuick,
+  waitToBeVisible,
+  waitToExist,
 } from '../../../support/commands';
 
 describe('checkout for customer with existing account (role - user); logged in; payment - cash on delivery', () => {
   beforeEach(async () => {
-    await device.reloadReactNative();
-
     if (device.getPlatform() === 'android') {
       symfonyConsole(
         'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
@@ -26,24 +28,20 @@ describe('checkout for customer with existing account (role - user); logged in; 
   });
 
   it(`should complete checkout`, async () => {
-    await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
+    await waitToBeVisible('checkoutAskAddress');
 
     // Enter address
     await selectAutocompleteAddress('askAddressAutocomplete');
 
     // List of restaurants
-    await expect(element(by.id('restaurantList'))).toBeVisible();
+    await waitToBeVisible('restaurantList');
 
     // Choose a restaurant
     await chooseRestaurant('Restaurant with cash on delivery');
 
     // Restaurant page
-    await waitFor(element(by.id('restaurantData')))
-      .toExist()
-      .withTimeout(5000);
-    await waitFor(element(by.id('menuItem:0:0')))
-      .toExist()
-      .withTimeout(5000);
+    await waitToExist('restaurantData');
+    await waitToExist('menuItem:0:0');
 
     // Add item
     await addProduct('menuItem:0:0');
@@ -52,42 +50,28 @@ describe('checkout for customer with existing account (role - user); logged in; 
     await addProduct('menuItem:0:1');
     await addProduct('menuItem:1:0');
 
-    await waitFor(element(by.id('cartSubmit')))
-      .toBeVisible()
-      .withTimeout(5000);
-    await element(by.id('cartSubmit')).tap();
+    await tapById('cartSubmit');
 
     // Cart summary page
-    await waitFor(element(by.id('cartSummarySubmit')))
-      .toBeVisible()
-      .withTimeout(5000);
-
-    await element(by.id('cartSummarySubmit')).tap();
+    await tapById('cartSummarySubmit');
 
     // More infos page
-    await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-    await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
+    await waitToBeVisible('checkoutTelephone');
+    await waitToBeVisible('moreInfosSubmit');
 
     // Append "\n" to make sure virtual keybord is hidden after entry
     // https://github.com/wix/detox/issues/209
-    await element(by.id('checkoutTelephone')).typeText('0612345678');
-    await element(by.id('checkoutTelephone')).typeText('\n');
+    await typeTextQuick('checkoutTelephone', '0612345678\n');
 
-    await element(by.id('moreInfosSubmit')).tap();
+    await tapById('moreInfosSubmit');
 
     // Payment picker page
-    await expect(
-      element(by.id('paymentMethod-cash_on_delivery')),
-    ).toBeVisible();
-    await element(by.id('paymentMethod-cash_on_delivery')).tap();
+    await tapById('paymentMethod-cash_on_delivery');
 
     // Cash on delivery page
-    await waitFor(element(by.id('cashOnDeliverySubmit'))).toExist().withTimeout(5000);
-    await element(by.id('cashOnDeliverySubmit')).tap();
+    await tapById('cashOnDeliverySubmit');
 
     // Confirmation page
-    await waitFor(element(by.id('orderTimeline')))
-      .toBeVisible()
-      .withTimeout(15000);
+    await waitToBeVisible('orderTimeline', 15000);
   });
 });

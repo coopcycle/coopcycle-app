@@ -13,8 +13,6 @@ describeif(device.getPlatform() === 'android')
   ('checkout for guest user; payment - cash on delivery', () => {
 
   beforeEach(async () => {
-    await device.reloadReactNative();
-
     if (device.getPlatform() === 'android') {
       symfonyConsole(
         'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
