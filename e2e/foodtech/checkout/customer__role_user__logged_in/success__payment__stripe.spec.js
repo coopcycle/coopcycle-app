@@ -1,62 +1,27 @@
 import {
-  addProduct,
   authenticateWithCredentials,
-  chooseRestaurant,
-  connectToLocalInstance,
-  connectToSandbox,
   describeif,
   enterValidCreditCard,
-  selectAutocompleteAddress,
-  symfonyConsole,
   tapById,
   typeTextQuick,
   waitToBeVisible,
-  waitToExist,
 } from '../../../support/commands';
+import {
+  loadCheckoutFixturesAndConnect,
+  selectCartItemsFromRestaurant,
+} from '../../utils';
 
 //FIXME: run on iOS too; see Stripe-related issues below
 describeif(device.getPlatform() === 'android')(
   'checkout for customer with existing account (role - user); logged in; payment - stripe',
   () => {
     beforeEach(async () => {
-      if (device.getPlatform() === 'android') {
-        symfonyConsole(
-          'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
-        );
-        await connectToLocalInstance();
-      } else {
-        //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-        await connectToSandbox();
-      }
-
+      await loadCheckoutFixturesAndConnect();
       await authenticateWithCredentials('bob', '12345678');
+      await selectCartItemsFromRestaurant('Crazy Hamburger');
     });
 
     it(`should complete checkout`, async () => {
-      await waitToBeVisible('checkoutAskAddress');
-
-      // Enter address
-      await selectAutocompleteAddress('askAddressAutocomplete');
-
-      // List of restaurants
-      await waitToBeVisible('restaurantList');
-
-      // Choose a restaurant
-      await chooseRestaurant('Crazy Hamburger');
-
-      // Restaurant page
-      await waitToExist('restaurantData');
-      await waitToExist('menuItem:0:0');
-
-      // Add item
-      await addProduct('menuItem:0:0');
-
-      // Add 2 more items
-      await addProduct('menuItem:0:1');
-      await addProduct('menuItem:1:0');
-
-      await tapById('cartSubmit');
-
       // Cart summary page
       await tapById('cartSummarySubmit');
 

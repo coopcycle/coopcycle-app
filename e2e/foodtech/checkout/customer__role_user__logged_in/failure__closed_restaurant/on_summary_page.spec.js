@@ -1,36 +1,45 @@
-import { initTest } from './beforeEach';
-import { closeRestaurantForToday, describeif } from '../../../../support/commands';
+import {
+  authenticateWithCredentials,
+  closeRestaurantForToday,
+  describeif,
+  tapById,
+  waitToBeVisible,
+} from '../../../../support/commands';
+import {
+  loadCheckoutFixturesAndConnect,
+  selectCartItemsFromRestaurant,
+} from '../../../utils';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-describeif(device.getPlatform() === 'android')(
-  'checkout for customer with existing account (role - user); logged in; Time range changed modal; restaurant was closed while the customer had been on the Summary page',
-  () => {
-    beforeEach(async () => {
-      await initTest();
-    });
+describeif(device.getPlatform() === 'android')
+  ('checkout for customer with existing account (role - user); logged in; Time range changed modal; restaurant was closed while the customer had been on the Summary page', () => {
 
-    it(`should suggest to choose a new time range (Timing modal)`, async () => {
-      // Cart summary page
+  beforeEach(async () => {
+    await loadCheckoutFixturesAndConnect();
+    await authenticateWithCredentials('bob', '12345678');
+    await selectCartItemsFromRestaurant('Restaurant with cash on delivery');
+  });
 
-      await closeRestaurantForToday(
-        'restaurant_with_cash_on_delivery_owner',
-        '12345678',
-      );
+  it(`should suggest to choose a new time range (Timing modal)`, async () => {
+    await closeRestaurantForToday(
+      'restaurant_with_cash_on_delivery_owner',
+      '12345678',
+    );
 
-      await element(by.id('cartSummarySubmit')).tap();
+    // Cart summary page
+    await tapById('cartSummarySubmit');
 
-      // Time range changed modal
-      await waitFor(element(by.id('timeRangeChangedModal')))
-        .toBeVisible()
-        .withTimeout(5000);
-      // Select a shipping time range
-      await element(by.id('setShippingTimeRange')).tap();
+    // Time range changed modal
+    await waitToBeVisible('timeRangeChangedModal');
 
-      await element(by.id('cartSummarySubmit')).tap();
+    // Select a shipping time range
+    await tapById('setShippingTimeRange');
 
-      // More infos page
-      await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-      await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
-    });
-  },
-);
+    await tapById('cartSummarySubmit');
+
+    // More infos page
+    await waitToBeVisible('checkoutTelephone');
+    await waitToBeVisible('moreInfosSubmit');
+  });
+
+});

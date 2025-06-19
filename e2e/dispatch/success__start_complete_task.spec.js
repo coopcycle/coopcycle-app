@@ -82,9 +82,11 @@ describeif(device.getPlatform() === 'android')
 
     // Swipe complete button, tap 'failed' and press 'Report incident'
     await swipeLeft('task:completeButton');
+    await waitToBeVisible('task:completeFailureButton'); // Remove if `disableSynchronization` is removed..!
     await tapById('task:completeFailureButton');
 
     // Click the finish button in the new view
+    await waitToBeVisible('task:finishButton'); // Remove if `disableSynchronization` is removed..!
     await tapById('task:finishButton');
 
     // Verify task #1 has status "FAILED"

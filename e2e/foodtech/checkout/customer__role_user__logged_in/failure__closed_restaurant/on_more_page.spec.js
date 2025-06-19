@@ -1,51 +1,58 @@
-import { initTest } from './beforeEach';
-import { closeRestaurantForToday, describeif } from '../../../../support/commands';
+import {
+  authenticateWithCredentials,
+  closeRestaurantForToday,
+  describeif,
+  tapById,
+  typeTextQuick,
+  waitToBeVisible,
+} from '../../../../support/commands';
+import {
+  loadCheckoutFixturesAndConnect,
+  selectCartItemsFromRestaurant,
+} from '../../../utils';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-describeif(device.getPlatform() === 'android')(
-  'checkout for customer with existing account (role - user); logged in; Time range changed modal; restaurant was closed while the customer had been on the More page',
-  () => {
-    beforeEach(async () => {
-      await initTest();
-    });
+describeif(device.getPlatform() === 'android')
+  ('checkout for customer with existing account (role - user); logged in; Time range changed modal; restaurant was closed while the customer had been on the More page', () => {
 
-    it(`should suggest to choose a new time range (Timing modal)`, async () => {
-      // Cart summary page
-      await element(by.id('cartSummarySubmit')).tap();
+  beforeEach(async () => {
+    await loadCheckoutFixturesAndConnect();
+    await authenticateWithCredentials('bob', '12345678');
+    await selectCartItemsFromRestaurant('Restaurant with cash on delivery');
+  });
 
-      // More infos page
-      await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-      await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
+  it(`should suggest to choose a new time range (Timing modal)`, async () => {
+    // Cart summary page
+    await tapById('cartSummarySubmit');
 
-      // Append "\n" to make sure virtual keybord is hidden after entry
-      // https://github.com/wix/detox/issues/209
-      await element(by.id('checkoutTelephone')).typeText('0612345678');
-      await element(by.id('checkoutTelephone')).typeText('\n');
+    // More infos page
+    await waitToBeVisible('checkoutTelephone');
+    await waitToBeVisible('moreInfosSubmit');
 
-      await closeRestaurantForToday(
-        'restaurant_with_cash_on_delivery_owner',
-        '12345678',
-      );
+    // Append "\n" to make sure virtual keybord is hidden after entry
+    // https://github.com/wix/detox/issues/209
+    await typeTextQuick('checkoutTelephone', '0612345678\n');
 
-      await element(by.id('moreInfosSubmit')).tap();
+    await closeRestaurantForToday(
+      'restaurant_with_cash_on_delivery_owner',
+      '12345678',
+    );
 
-      // Time range changed modal
-      await waitFor(element(by.id('timeRangeChangedModal')))
-        .toBeVisible()
-        .withTimeout(5000);
-      // Select a shipping time range
-      await element(by.id('setShippingTimeRange')).tap();
+    await tapById('moreInfosSubmit');
 
-      await element(by.id('moreInfosSubmit')).tap();
+    // Time range changed modal
+    await waitToBeVisible('timeRangeChangedModal');
 
-      // Payment picker page
-      await expect(
-        element(by.id('paymentMethod-cash_on_delivery')),
-      ).toBeVisible();
-      await element(by.id('paymentMethod-cash_on_delivery')).tap();
+    // Select a shipping time range
+    await tapById('setShippingTimeRange');
 
-      // Cash on delivery page
-      await waitFor(element(by.id('cashOnDeliverySubmit'))).toExist().withTimeout(5000);
-    });
-  },
-);
+    await tapById('moreInfosSubmit');
+
+    // Payment picker page
+    await tapById('paymentMethod-cash_on_delivery');
+
+    // Cash on delivery page
+    await tapById('cashOnDeliverySubmit');
+  });
+
+});
