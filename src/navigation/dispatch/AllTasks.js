@@ -15,8 +15,8 @@ import { mediumGreyColor } from '../../styles/common';
 import {
   selectFilteredTaskLists,
   selectFilteredUnassignedTasksNotCancelled,
-  selectSelectedDate,
-} from "../../shared/logistics/redux";
+} from "../../redux/Dispatch/selectors";
+import { selectSelectedDate } from "../../shared/logistics/redux";
 import { useAllTasks } from "./useAllTasks";
 import AddButton from './components/AddButton';
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';

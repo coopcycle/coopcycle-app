@@ -7,8 +7,8 @@ import { mediumGreyColor } from '../../styles/common';
 import {
   selectFilteredTaskLists,
   selectFilteredUnassignedTasksNotCancelled,
-} from "../../shared/logistics/redux";
-import BasicSafeAreaView from "../../components/BasicSafeAreaView";
+} from '../../redux/Dispatch/selectors';
+import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import GroupedTasks from './components/GroupedTasks';
 
 const styles = StyleSheet.create({

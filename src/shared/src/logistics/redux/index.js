@@ -8,8 +8,6 @@ export {
   makeSelectTaskListItemsByUsername,
   selectAllTasks,
   selectAssignedTasks,
-  selectFilteredTaskLists,
-  selectFilteredUnassignedTasksNotCancelled,
   selectSelectedDate,
   selectTaskLists,
   selectTasksWithColor,

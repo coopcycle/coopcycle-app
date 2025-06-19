@@ -3,13 +3,9 @@ import { createSelector } from 'reselect';
 
 import { mapToColor } from './taskUtils';
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
-import { filterTasks } from '../../../../redux/logistics/utils';
 
 
 // Selectors
-
-// TODO: move UI related state management to Shared folder
-const selectTaskFilters = state => state.ui.tasks.excludeFilters;
 
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,
@@ -53,13 +49,6 @@ export const selectUnassignedTasksNotCancelled = createSelector(
     _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
 );
 
-// TODO: Move to dispatch's selectors and use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
-export const selectFilteredUnassignedTasksNotCancelled = createSelector(
-  selectUnassignedTasksNotCancelled,
-  selectTaskFilters,
-  (tasks, filters) => filterTasks(tasks, filters),
-);
-
 
 // Selections for TaskLists
 
@@ -98,22 +87,6 @@ export const selectTaskLists = createSelector(
       return newTaskList;
     }),
 );
-
-// TODO: Move to dispatch's selectors and use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
-export const selectFilteredTaskLists = createSelector(
-  selectTaskLists,
-  selectTaskFilters,
-  (taskLists, filters) => {
-    const filteredTaskLists = taskLists.map(taskList => {
-      const filteredTaskList = {...taskList};
-      filteredTaskList.items = filterTasks(taskList.items, filters);
-
-      return filteredTaskList;
-    });
-
-    return filteredTaskLists;
-  }
-)
 
 
 // Selections for Tours
