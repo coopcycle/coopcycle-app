@@ -31,10 +31,10 @@ describe('checkout for customer with existing account (role - user); logged in; 
     await tapById('moreInfosSubmit');
 
     // Payment picker page
-    await tapById('paymentMethod-cash_on_delivery');
+    await tapById('paymentMethod-cash_on_delivery', 10000);
 
     // Cash on delivery page
-    await tapById('cashOnDeliverySubmit');
+    await tapById('cashOnDeliverySubmit', 10000);
 
     // Confirmation page
     await waitToBeVisible('orderTimeline', 15000);

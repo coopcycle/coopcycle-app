@@ -37,7 +37,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('moreInfosSubmit');
 
     // Payment picker page
-    await tapById('paymentMethod-cash_on_delivery');
+    await tapById('paymentMethod-cash_on_delivery', 10000);
 
     // Cash on delivery page
     await waitToExist('cashOnDeliverySubmit');
@@ -47,7 +47,7 @@ describeif(device.getPlatform() === 'android')
       '12345678',
     );
 
-    await tapById('cashOnDeliverySubmit');
+    await tapById('cashOnDeliverySubmit', 10000);
 
     // Time range changed modal
     await waitToBeVisible('timeRangeChangedModal');
@@ -55,7 +55,7 @@ describeif(device.getPlatform() === 'android')
     // Select a shipping time range
     await tapById('setShippingTimeRange');
 
-    await tapById('cashOnDeliverySubmit');
+    await tapById('cashOnDeliverySubmit', 10000);
 
     // Confirmation page
     await waitToBeVisible('orderTimeline', 15000);

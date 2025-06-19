@@ -205,7 +205,8 @@ export const enterValidCreditCard = async () => {
   // Tap the credit card input to make sure we can interact with it
   await cardNumberElement().tap();
 
-  await typeTextQuick(cardNumberElement(), '4242424242424242');
+  // Can't use `typeTextQuick` for the card number, the component fails to validate it
+  await cardNumberElement().typeText('4242424242424242');
   await typeTextQuick(expirationDateElement(), '1228');
   // Add "\n" to make sure keyboard is hidden
   await typeTextQuick(cvvElement(), '123\n');
@@ -284,7 +285,9 @@ export const selectAutocompleteAddress = async (
 
 // Improved version of `typeText`
 export const typeTextQuick = async (elemIdOrObj, text) => {
-  const elem = () => typeof elemIdOrObj === 'string' ? element(by.id(elemIdOrObj)) : elemIdOrObj;
+  const isElemId = typeof elemIdOrObj === 'string';
+  const elem = () => isElemId ? element(by.id(elemIdOrObj)) : elemIdOrObj;
+  console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}..`);
 
   if (text.length > 1) {
     await elem().replaceText(text.slice(0, -1));
