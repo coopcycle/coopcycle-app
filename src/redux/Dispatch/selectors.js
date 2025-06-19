@@ -15,21 +15,21 @@ export const selectIsDispatchFetching = createSelector(
   (isAssigningTasks, isFetching, taskListsLoading) => isAssigningTasks || isFetching || taskListsLoading,
 );
 
-// TODO: move UI related state management to Shared folder
-// const selectTaskFilters = state => state.ui.tasks.excludeFilters;
+// use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
+const selectDispatchTaskFilters = createSelector(
+  selectTaskFilters,
+  taskFilters => taskFilters.filter(taskFilter => !Object.keys(taskFilter).includes('tags'))
+);
 
-// TODO: Move to dispatch's selectors and use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
 export const selectFilteredUnassignedTasksNotCancelled = createSelector(
   selectUnassignedTasksNotCancelled,
-  selectTaskFilters,
+  selectDispatchTaskFilters,
   (tasks, filters) => filterTasks(tasks, filters),
 );
 
-
-// TODO: Move to dispatch's selectors and use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
 export const selectFilteredTaskLists = createSelector(
   selectTaskLists,
-  selectTaskFilters,
+  selectDispatchTaskFilters,
   (taskLists, filters) => {
     const filteredTaskLists = taskLists.map(taskList => {
       const filteredTaskList = {...taskList};
@@ -40,4 +40,4 @@ export const selectFilteredTaskLists = createSelector(
 
     return filteredTaskLists;
   }
-)
+);
