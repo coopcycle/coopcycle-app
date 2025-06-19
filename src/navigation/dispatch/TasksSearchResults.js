@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { filterTasksByString } from '../../shared/src/logistics/redux/taskUtils';
 import { mediumGreyColor } from '../../styles/common';
 import {
-  selectFilteredTaskLists,
-  selectFilteredUnassignedTasksNotCancelled,
-} from '../../redux/Dispatch/selectors';
+  selectTaskLists,
+  selectUnassignedTasksNotCancelled,
+} from '../../shared/logistics/redux';
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import GroupedTasks from './components/GroupedTasks';
 
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
 export default function TasksSearchResults({
   route,
 }) {
-  const unassignedTasks = useSelector(selectFilteredUnassignedTasksNotCancelled);
-  const taskLists = useSelector(selectFilteredTaskLists);
+  const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
+  const taskLists = useSelector(selectTaskLists);
 
   const filteredUnassignedTasks = filterTasksByString(unassignedTasks, route.params.searchQuery);
   const filteredTasksLists = taskLists
