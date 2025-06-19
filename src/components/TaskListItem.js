@@ -96,6 +96,7 @@ const OrderInfo = ({task, color, width}) => {
 
   return (
     <ItemTouchable
+      onPress={() => console.log("order info pressed")}
       style={{
         alignItems: 'center',
         backgroundColor,
