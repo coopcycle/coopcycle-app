@@ -1,23 +1,22 @@
-import { ActivityIndicator, StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
 import { useMemo } from 'react';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import TasksMapView from '../../components/TasksMapView';
+import { selectSettingsLatLng } from '../../redux/App/selectors';
+import {
+  selectSelectedDate,
+  selectTaskLists,
+} from '../../shared/logistics/redux';
 import { getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { mediumGreyColor } from '../../styles/common';
 import { navigateToTask } from '../utils';
-import { selectSelectedDate, selectTaskLists } from '../../shared/logistics/redux';
-import { selectSettingsLatLng } from '../../redux/App/selectors';
-import { useAllTasks } from './useAllTasks';
 import AddButton from './components/AddButton';
-import BasicSafeAreaView from "../../components/BasicSafeAreaView";
-import TasksMapView from '../../components/TasksMapView';
-
+import { useAllTasks } from './useAllTasks';
+import { useBackgroundHighlightColor } from '../../styles/theme';
 
 const styles = StyleSheet.create({
-  newDeliveryBar: {
-    backgroundColor: mediumGreyColor,
-  },
   newDeliveryBarDate: {
     fontWeight: '700',
   },
@@ -40,32 +39,27 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TasksMap({
-  navigation,
-  route,
-}) {
+export default function TasksMap({ navigation, route }) {
   const allTaskLists = useSelector(selectTaskLists);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
+  const bgHighlightColor = useBackgroundHighlightColor()
 
-  const {
-    isFetching,
-  } = useAllTasks(selectedDate);
+  const { isFetching } = useAllTasks(selectedDate);
 
   const mapCenter = useMemo(() => {
     return defaultCoordinates.split(',').map(parseFloat);
   }, [defaultCoordinates]);
 
-  const navigateToSelectedTask = (task) => {
+  const navigateToSelectedTask = task => {
     const taskList = getTaskTaskList(task, allTaskLists);
     // task is one the the task lists' tasks, so taskList is always defined
-    navigateToTask(navigation, route, task, taskList.items)
-  }
-
+    navigateToTask(navigation, route, task, taskList.items);
+  };
 
   return (
-    <BasicSafeAreaView>
-      <View style={styles.newDeliveryBar}>
+    <>
+      <View style={{backgroundColor: bgHighlightColor}}>
         <AddButton
           testID="dispatchNewDelivery"
           onPress={() => navigation.navigate('DispatchNewDelivery')}>
@@ -90,6 +84,6 @@ export default function TasksMap({
           </View>
         ) : null}
       </View>
-    </BasicSafeAreaView>
-  )
+    </>
+  );
 }

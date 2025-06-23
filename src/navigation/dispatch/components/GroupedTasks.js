@@ -1,10 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, View } from 'native-base';
-import { useRef, useState } from 'react';
 import {
   SectionList,
   TouchableOpacity,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -13,13 +13,13 @@ import { assignOrderIconName, assignTaskIconName } from '../../task/styles/commo
 import {
   darkGreyColor,
   darkRedColor,
-  lightGreyColor,
   whiteColor
 } from '../../../styles/common';
 import { getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTaskLists, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
+import { useBackgroundHighlightColor } from '../../../styles/theme';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
@@ -33,10 +33,13 @@ export default function GroupedTasks({
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+
   const tasksWithColor = useSelector(selectTasksWithColor);
   const allTaskLists = useSelector(selectTaskLists);
   const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
+
   const bulkEditTasksFloatingButtonRef = useRef(null);
+  const bgHighlightColor = useBackgroundHighlightColor()
 
   // Combine unassigned tasks and task lists to use in SectionList
   const sections = [
@@ -203,7 +206,7 @@ export default function GroupedTasks({
         sections={sections}
         stickySectionHeadersEnabled={true}
         renderSectionHeader={({ section }) => (
-          <View style={{ backgroundColor: lightGreyColor }}>
+          <View style={{ backgroundColor: bgHighlightColor }}>
             <TouchableOpacity
               onPress={() => handleToggle(section.title)}
               activeOpacity={0.5}

@@ -2,18 +2,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { Icon } from 'native-base';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { useEffect, useState } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet,TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
-import { useDispatch } from 'react-redux';
+import { useBackgroundContainerColor, useBaseTextColor } from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
 import i18n from '../../i18n';
+import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import NavigationHolder from '../../NavigationHolder';
 import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
@@ -23,6 +24,8 @@ import TaskNavigator from './TaskNavigator';
 const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
+  const color = useBaseTextColor();
+  const bgColor = useBackgroundContainerColor()
   const [searchQuery, setSearchQuery] = useState('');
   const [showMapButton, setShowMapButton] = useState(true);
 
@@ -44,14 +47,14 @@ function CustomTabBar({ navigation }) {
   }
 
   return (
-    <View style={customTabBarStyles.tabBarContainer}>
+    <View style={[customTabBarStyles.tabBarContainer, { backgroundColor: bgColor }]}>
       { showMapButton
         ? (
           <TouchableOpacity
             style={customTabBarStyles.tabButton}
             onPress={goToTasksMap}
           >
-            <Icon as={FontAwesome} name="map" />
+            <Icon as={FontAwesome} name="map" style={{ color }} />
           </TouchableOpacity>
         )
         : (
@@ -59,7 +62,7 @@ function CustomTabBar({ navigation }) {
             style={customTabBarStyles.tabButton}
             onPress={goToTasksList}
           >
-            <Icon as={FontAwesome} name="list" />
+            <Icon as={FontAwesome} name="list" style={{ color }} />
           </TouchableOpacity>
         )
       }
@@ -74,7 +77,7 @@ function CustomTabBar({ navigation }) {
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
       >
-        <Icon as={FontAwesome} name="filter" />
+        <Icon as={FontAwesome} name="filter" style={{ color }} />
       </TouchableOpacity>
     </View>
   );
@@ -83,13 +86,11 @@ function CustomTabBar({ navigation }) {
 const customTabBarStyles = StyleSheet.create({
   tabBarContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderTopColor: '#ddd',
-    borderTopWidth: 1,
     flexDirection: 'row',
-    height: 68,
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   tabButton: {
     padding: 10,
@@ -101,45 +102,14 @@ const customTabBarStyles = StyleSheet.create({
 });
 
 function Tabs() {
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const insets = useSafeAreaInsets();
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      (e) => {
-        const calculated = e.endCoordinates.height - 92;
-        setKeyboardHeight(calculated);
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardHeight(0);
-      }
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, [insets.bottom]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'android' ? 'height' : 'padding'}
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={
-        Platform.OS === 'android'
-          ? -keyboardHeight
-          : insets.bottom
-      }
-    >
+    <KeyboardAdjustView style={{ flex: 1 }} androidBehavior="height">
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
+          tabBarShowLabel: false,
         }}>
         <Tab.Screen
           name="DispatchAllTasks"
@@ -158,7 +128,7 @@ function Tabs() {
           })}
         />
       </Tab.Navigator>
-    </KeyboardAvoidingView>
+    </KeyboardAdjustView>
   );
 };
 

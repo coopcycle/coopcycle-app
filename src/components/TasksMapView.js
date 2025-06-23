@@ -300,7 +300,7 @@ class TasksMapView extends Component {
         {this.state.mapHeight && this.state.mapHeight > 0 ? (
           <ClusteredMapView
             data={data}
-            style={[styles.map, { marginBottom: this.state.marginBottom }]}
+            style={[styles.map, { marginBottom: this.state.marginBottom, flex: 1, minHeight: '100%', widht: '100%' }]}
             width={width}
             height={this.state.mapHeight}
             initialRegion={this.initialRegion}
