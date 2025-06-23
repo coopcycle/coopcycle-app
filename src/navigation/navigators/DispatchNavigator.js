@@ -132,7 +132,7 @@ const customTabBarStyles = StyleSheet.create({
 function Tabs() {
 
   return (
-    <KeyboardAdjustView style={{ flex: 1 }} androidBehavior={'heigh'}>
+    <KeyboardAdjustView style={{ flex: 1 }} androidBehavior="height">
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
