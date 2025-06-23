@@ -34,9 +34,10 @@ function ActiveFilter({
   const isNegative = filter.slice(0, 1) === '-';
 
   const color = colorHash.hex(filter);
-  console.log({color});
+  const mainColor = isNegative ? color : whiteColor;
+  const secondaryColor = isNegative ? whiteColor : color;
 
-  // TODO: no remove item if pressed from Filters
+  // TODO: dont remove item if pressed from Filters
   const removeFilter = () => {
     dispatch(removeStringFilter(filter));
   }
@@ -45,11 +46,13 @@ function ActiveFilter({
     <TouchableHighlight onPress={removeFilter}>
       <HStack
         style={styles.activeFilter}
-        backgroundColor={isNegative ? whiteColor : color}
+        backgroundColor={secondaryColor}
+        borderColor={color}
       >
         <Text
           style={styles.activeFilterLabel}
-          color={isNegative ? color : whiteColor}
+          color={mainColor}
+          borderRightColor={mainColor}
         >
           {filter}
         </Text>
@@ -57,7 +60,7 @@ function ActiveFilter({
           as={FontAwesome}
           name="times"
           size={4}
-          color={isNegative ? color : whiteColor}
+          color={mainColor}
           style={styles.activeFilterClose}
         />
       </HStack>
@@ -76,11 +79,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   activeFilter: {
-
+    alignItems: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
   },
   activeFilterLabel: {
+    borderRightWidth: 1,
+    paddingHorizontal: 6,
   },
   activeFilterClose: {
-
+    marginLeft: 6,
   }
 });
