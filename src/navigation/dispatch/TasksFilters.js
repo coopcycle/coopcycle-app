@@ -29,16 +29,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const SettingsItemInner = ({ item }) => (
+const SettingsItemSwitch = ({item}) => (
   <HStack alignItems="center" justifyContent="space-between" py="3">
     <HStack alignItems="center">
       <Text>{item.label}</Text>
     </HStack>
-    {!item.onPress && (
-      <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
-    )}
+    <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
   </HStack>
 );
+
+const FilterByKeywords = () => (
+  <Text>Keywords!</Text>
+);
+
+const SettingsItemInner = ({ item }) =>
+  !item.isFilterByKeywordsSection
+  ? <SettingsItemSwitch item={item}/>
+  : <FilterByKeywords />;
 
 export default function TasksFilters({
   ...props
@@ -96,10 +103,14 @@ export default function TasksFilters({
       onToggle: togglePolylineOn,
       isChecked: isPolylineOn,
     },
+    {
+      label: t('FILTER_BY_KEYWORDS'),
+      isFilterByKeywordsSection: true,
+    }
   ];
 
-  const renderItem = ({item, index}) => (
-    <SettingsItemInner item={item} />
+  const renderItem = ({item}) => (
+    <SettingsItemInner item={item}/>
   );
 
   return (

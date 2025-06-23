@@ -139,6 +139,8 @@
         "TASKS_FILTER": "Tareas",
         "HIDE_DONE_TASKS": "Ocultar tareas completadas",
         "HIDE_FAILED_TASKS": "Ocultar tareas fallidas",
+        "TASKS_SHOW_POLYLINE": "Mostrar recorrido entre tareas",
+        "FILTER_BY_KEYWORDS": "Filtrar por palabras clave",
         "HIDE_TASKS_TAGGED_WITH": "Ocultar tareas marcadas con",
         "RESTAURANT_LIST_CLICK_BELOW": "Haga clic en un restaurante en la lista de abajo",
         "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nuevos pedidos ({{count}})",
