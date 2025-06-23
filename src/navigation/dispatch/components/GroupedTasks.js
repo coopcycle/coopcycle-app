@@ -16,9 +16,9 @@ import {
   lightGreyColor,
   whiteColor
 } from '../../../styles/common';
-import { getTasksListIdsToEdit } from '../../../shared/src/logistics/redux/taskListUtils';
+import { getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
-import { selectTasksWithColor } from '../../../shared/logistics/redux';
+import { selectTaskLists, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
@@ -34,6 +34,8 @@ export default function GroupedTasks({
   const { t } = useTranslation();
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
+  const allTaskLists = useSelector(selectTaskLists);
+  const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const bulkEditTasksFloatingButtonRef = useRef(null);
 
   // Combine unassigned tasks and task lists to use in SectionList
@@ -74,9 +76,17 @@ export default function GroupedTasks({
     unassignTaskWithRelatedTasks,
   } = useSetTaskListItems();
 
-  const onTaskClick = task => {
-    // TODO: navigate with related tasks
-    navigateToTask(navigation, route, task, unassignedTasks);
+  const onTaskClick = isUnassignedTaskList => task => {
+    // If task is unassigned, related tasks are unassigned tasks
+    // If task is assigned, related tasks are task's task list's tasks
+    if (isUnassignedTaskList) {
+      navigateToTask(navigation, route, task, allUnassignedTasks);
+    } else {
+      const username = task.assignedTo;
+      const taskList = getUserTaskList(username, allTaskLists)
+      const relatedTasks = taskList.items;
+      navigateToTask(navigation, route, task, relatedTasks);
+    }
   };
 
   const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
@@ -243,7 +253,7 @@ export default function GroupedTasks({
             return (
               <TaskList
                 id={section.id}
-                onTaskClick={onTaskClick}
+                onTaskClick={onTaskClick(section.isUnassignedTaskList)}
                 tasks={section.data}
                 tasksWithColor={tasksWithColor}
                 onSwipeClosed={handleOnSwipeClose(section)}
