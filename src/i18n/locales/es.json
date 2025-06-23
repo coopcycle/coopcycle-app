@@ -221,6 +221,7 @@
         "DISPATCH_PICK_USER": "Elegir un usuario",
         "DISPATCH_SEARCH_RESULTS": "Resultados de búsqueda",
         "DISPATCH_TASKS_FILTERS": "Filtros",
+        "DISPATCH_KEYWORDS_FILTERS": "Filtros",
         "TASK_FORM_ADDRESS_LABEL": "Dirección",
         "TASK_FORM_DONE_AFTER_LABEL": "Para hacer desde",
         "TASK_FORM_DONE_BEFORE_LABEL": "Para hacer antes de",

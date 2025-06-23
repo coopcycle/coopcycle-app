@@ -247,6 +247,7 @@
     "DISPATCH_PICK_USER": "Choisissez un utilisateur",
     "DISPATCH_SEARCH_RESULTS": "Résultats de recherche",
     "DISPATCH_TASKS_FILTERS": "Filtres",
+    "DISPATCH_KEYWORDS_FILTERS": "Filtres",
     "DISPATCH_UNASSIGN": "Désassigner",
     "DISPATCH_ASSIGN_TO_ME": "M'assigner la tâche",
     "TASK_FORM_ADDRESS_LABEL": "Adresse",

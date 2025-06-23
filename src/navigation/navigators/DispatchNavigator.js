@@ -231,11 +231,19 @@ export default function DispatchNavigator({
           })}
         />
         <RootStack.Screen
-        name="DispatchTasksFilters"
-        component={screens.DispatchTasksFilters}
+          name="DispatchTasksFilters"
+          component={screens.DispatchTasksFilters}
           options={() => ({
             tabBarTestID: 'dispatchTasksFilters',
             title: i18n.t('DISPATCH_TASKS_FILTERS'),
+          })}
+        />
+        <RootStack.Screen
+          name="DispatchKeywordsFilters"
+          component={screens.DispatchKeywordsFilters}
+          options={() => ({
+            tabBarTestID: 'dispatchKeywordsFilters',
+            title: i18n.t('DISPATCH_KEYWORDS_FILTERS'),
           })}
         />
         <RootStack.Screen

@@ -1,6 +1,7 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { HStack, Switch, Text, View } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -31,16 +32,27 @@ const styles = StyleSheet.create({
 
 const SettingsItemSwitch = ({item}) => (
   <HStack alignItems="center" justifyContent="space-between" py="3">
-    <HStack alignItems="center">
-      <Text>{item.label}</Text>
-    </HStack>
+    <Text>{item.label}</Text>
     <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
   </HStack>
 );
 
-const FilterByKeywords = () => (
-  <Text>Keywords!</Text>
-);
+const FilterByKeywords = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  const navigateToKeywordsFilters = () => {
+    navigation.navigate('DispatchKeywordsFilters');
+  }
+
+  return (
+    <TouchableOpacity onPress={navigateToKeywordsFilters}>
+      <HStack alignItems="center" justifyContent="space-between" py="3">
+        <Text>{t('FILTER_BY_KEYWORDS')}</Text>
+      </HStack>
+    </TouchableOpacity>
+  );
+}
 
 const SettingsItemInner = ({ item }) =>
   !item.isFilterByKeywordsSection
