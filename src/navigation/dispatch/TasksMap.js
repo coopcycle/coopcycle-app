@@ -14,11 +14,9 @@ import { mediumGreyColor } from '../../styles/common';
 import { navigateToTask } from '../utils';
 import AddButton from './components/AddButton';
 import { useAllTasks } from './useAllTasks';
+import { useBackgroundHighlightColor } from '../../styles/theme';
 
 const styles = StyleSheet.create({
-  newDeliveryBar: {
-    backgroundColor: mediumGreyColor,
-  },
   newDeliveryBarDate: {
     fontWeight: '700',
   },
@@ -45,6 +43,7 @@ export default function TasksMap({ navigation, route }) {
   const allTaskLists = useSelector(selectTaskLists);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
+  const bgHighlightColor = useBackgroundHighlightColor()
 
   const { isFetching } = useAllTasks(selectedDate);
 
@@ -60,7 +59,7 @@ export default function TasksMap({ navigation, route }) {
 
   return (
     <>
-      <View style={styles.newDeliveryBar}>
+      <View style={{backgroundColor: bgHighlightColor}}>
         <AddButton
           testID="dispatchNewDelivery"
           onPress={() => navigation.navigate('DispatchNewDelivery')}>
