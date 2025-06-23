@@ -11,13 +11,8 @@ export default function SearchInput({
   style,
   ...props
 }) {
-  const mergedStyles = {
-    ...styles.searchContainer,
-    ...style,
-  }
-
   return (
-    <Box style={mergedStyles} {...props}>
+    <Box style={[styles.searchContainer, style]} {...props}>
       <Icon
         as={FontAwesome}
         name="search"

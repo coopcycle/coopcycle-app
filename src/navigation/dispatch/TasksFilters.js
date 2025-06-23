@@ -18,6 +18,7 @@ import {
   filterStatusDone,
 } from '../../redux/logistics/filters';
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
+import ActiveStringFilters from './components/ActiveStringFilters';
 import BasicSafeAreaView from "../../components/BasicSafeAreaView";
 import ItemSeparatorComponent from '../../components/ItemSeparator';
 
@@ -50,6 +51,7 @@ const FilterByKeywords = () => {
       <HStack alignItems="center" justifyContent="space-between" py="3">
         <Text>{t('FILTER_BY_KEYWORDS')}</Text>
       </HStack>
+      <ActiveStringFilters />
     </TouchableOpacity>
   );
 }
