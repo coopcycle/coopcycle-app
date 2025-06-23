@@ -1,7 +1,7 @@
-import { Box, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
+import { Icon } from 'native-base';
 import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +16,7 @@ import HeaderRightButton from '../dispatch/HeaderRightButton';
 import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
 import screens, { headerLeft } from '..';
+import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 
 
@@ -62,24 +63,13 @@ function CustomTabBar({ navigation }) {
           </TouchableOpacity>
         )
       }
-      <Box style={customTabBarStyles.searchContainer}>
-        <Icon
-          as={FontAwesome}
-          name="search"
-          size={6}
-          color="#000000"
-          style={customTabBarStyles.searchIcon}
-        />
-        <TextInput
-          style={customTabBarStyles.searchInput}
-          placeholder="Search"
-          placeholderTextColor="#000000"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onSubmitEditing={handleSearchSubmit}
-          returnKeyType="search"
-        />
-      </Box>
+      <SearchInput
+        style={customTabBarStyles.searchInput}
+        onChangeText={setSearchQuery}
+        onSubmitEditing={handleSearchSubmit}
+        placeholder="Search"
+        value={searchQuery}
+      />
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
@@ -104,28 +94,10 @@ const customTabBarStyles = StyleSheet.create({
   tabButton: {
     padding: 10,
   },
-  searchContainer: {
-    alignItems: 'center',
-    backgroundColor: '#EFEFEF',
-    borderRadius: 20.5,
+  searchInput: {
     flex: 1,
-    flexDirection: 'row',
-    height: 40,
     marginHorizontal: 10,
     paddingLeft: 15,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    color: '#000000',
-    flex: 1,
-    fontFamily: 'OpenSans-SemiBold',
-    fontSize: 14,
-    height: '100%',
-    marginLeft: -30,
-    paddingRight: 30,
-    textAlign: 'center',
   },
 });
 
