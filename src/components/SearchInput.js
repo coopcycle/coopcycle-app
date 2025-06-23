@@ -12,8 +12,8 @@ export default function SearchInput({
   ...props
 }) {
   const mergedStyles = {
-    ...style,
     ...styles.searchContainer,
+    ...style,
   }
 
   return (
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 20.5,
     flexDirection: 'row',
     height: 40,
+    paddingLeft: 15,
   },
   searchIcon: {
     marginRight: 8,

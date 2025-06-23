@@ -97,7 +97,6 @@ const customTabBarStyles = StyleSheet.create({
   searchInput: {
     flex: 1,
     marginHorizontal: 10,
-    paddingLeft: 15,
   },
 });
 
