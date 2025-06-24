@@ -128,8 +128,8 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
   return toursToUpdate;
 }
 
-export function filterTasksByString(tasks, searchString) {
-  if (searchString === '') {
+export function filterTasksByKeyword(tasks, keyword) {
+  if (keyword === '') {
     return tasks;
   }
 

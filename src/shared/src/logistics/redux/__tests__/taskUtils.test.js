@@ -1,5 +1,5 @@
 import {
-  filterTasksByString,
+  filterTasksByKeyword,
   getAssignedTask,
   getToursToUpdate,
   groupLinkedTasks,
@@ -395,7 +395,7 @@ describe('taskUtils', () => {
     });
   });
 
-  describe('filterTasksByString', () => {
+  describe('filterTasksByKeyword', () => {
     const tasks = [
       getTaskWithAssignedTo('Assigned to Alba'),
       getTaskWithAssignedTo('Assigned to Bob'),
@@ -411,7 +411,7 @@ describe('taskUtils', () => {
     it('should return all tasks if search string is empty', () => {
       const searchString = '';
 
-      const result = filterTasksByString(tasks, searchString);
+      const result = filterTasksByKeyword(tasks, searchString);
 
       expect(result).toEqual(tasks);
     });
@@ -419,7 +419,7 @@ describe('taskUtils', () => {
     it.each([
       'bob', 'Bob', 'BOB'
     ])('should return tasks that have searchString in assignedTo', (searchString) => {
-      const result = filterTasksByString(tasks, searchString);
+      const result = filterTasksByKeyword(tasks, searchString);
 
       expect(result).toEqual(tasks.slice(1,2));
     });
@@ -427,7 +427,7 @@ describe('taskUtils', () => {
     it.each([
       'bullanga', 'Bullanga', 'BULLANGA'
     ])('should return tasks that have searchString in store name', (searchString) => {
-      const result = filterTasksByString(tasks, searchString);
+      const result = filterTasksByKeyword(tasks, searchString);
 
       expect(result).toEqual(tasks.slice(4,5));
     });
@@ -435,7 +435,7 @@ describe('taskUtils', () => {
     it.each([
       'bbb', 'BBB',
     ])('should return tasks that have searchString in any tag', (searchString) => {
-      const result = filterTasksByString(tasks, searchString);
+      const result = filterTasksByKeyword(tasks, searchString);
 
       expect(result).toEqual(tasks.slice(7,8));
     });

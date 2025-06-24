@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
 import { useSelector } from 'react-redux';
 
-import { filterTasksByString } from '../../shared/src/logistics/redux/taskUtils';
+import { filterTasksByKeyword } from '../../shared/src/logistics/redux/taskUtils';
 import { mediumGreyColor } from '../../styles/common';
 import {
   selectTaskLists,
@@ -18,11 +18,11 @@ export default function TasksSearchResults({
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const taskLists = useSelector(selectTaskLists);
 
-  const filteredUnassignedTasks = filterTasksByString(unassignedTasks, route.params.searchQuery);
+  const filteredUnassignedTasks = filterTasksByKeyword(unassignedTasks, route.params.searchQuery);
   const filteredTasksLists = taskLists
     .map(taskList => {
       const filteredTaskList = {...taskList};
-      filteredTaskList.items = filterTasksByString(taskList.items, route.params.searchQuery);
+      filteredTaskList.items = filterTasksByKeyword(taskList.items, route.params.searchQuery);
 
       return filteredTaskList;
     })
