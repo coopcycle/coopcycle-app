@@ -10,12 +10,15 @@ export const COMMAND_PREFIX = `cd ${COOPCYCLE_WEB_REPO_PATH} && docker compose e
 
 export const symfonyConsole = command => {
   const prefix = COMMAND_PREFIX;
-  const cmd = `bin/console ${command} --env="test"`;
-  execSync(prefix ? `${prefix} ${cmd}` : cmd)
+  let cmd = `bin/console ${command} --env="test"`;
+  cmd = prefix ? `${prefix} ${cmd}` : cmd;
+  console.log(`Executing command: ${cmd}`);
+  return execSync(cmd);
 };
 
-export const launchApp = async () => {
-  await device.launchApp({
+export const launchApp = () => {
+  console.log('Launching app..');
+  return device.launchApp({
     delete: true,
     permissions: {
       notifications: 'YES',
@@ -24,8 +27,14 @@ export const launchApp = async () => {
   });
 };
 
+export const describeif = condition => (condition ? describe : describe.skip);
+// eslint-disable-next-line no-undef
+export const itif = condition => (condition ? it : it.skip);
+export const ifandroid = (onTrue, onFalse = () => {}) => (device.getPlatform() === 'android' ? onTrue() : onFalse());
+export const ifios = (onTrue, onFalse = () => {}) => (device.getPlatform() === 'ios' ? onTrue() : onFalse());
+
 export const disablePasswordAutofill = () => {
-  if (device.getPlatform() === 'ios') {
+  ifios(() => {
     // disable password autofill: https://github.com/wix/Detox/issues/3761
     execSync(
       `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist`,
@@ -36,26 +45,32 @@ export const disablePasswordAutofill = () => {
     execSync(
       `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`,
     );
-  }
+  });
 };
 
-export const connectToSandbox = async () => {
-  await expect(element(by.id('chooseCityBtn'))).toBeVisible();
-  await element(by.id('chooseCityBtn')).tap();
+export const connectToSandbox = async (url = "sandbox-fr.coopcycle.org") => {
+  return await connectToInstance("sandbox-fr.coopcycle.org");
+};
 
-  await expect(element(by.id('moreServerOptions'))).toBeVisible();
-  await element(by.id('moreServerOptions')).tap();
+export const connectToLocalInstance = async () => {
+  return await connectToInstance(getLocalInstanceUrl());
+};
 
-  await element(by.id('customServerURL')).typeText(
-    'sandbox-fr.coopcycle.org\n',
-  );
+const connectToInstance = async (url) => {
+  console.log(`Connecting to instance at "${url}"`);
+  await tapById('chooseCityBtn');
+  await tapById('moreServerOptions');
+
+  await typeTextQuick('customServerURL', `${url}\n`);
 
   try {
     // We deliberately add "\n" to hide the keyboard
     // The tap below shouldn't be necessary
-    await element(by.id('submitCustomServer')).tap();
+    await tapById('submitCustomServer');
   } catch (e) {}
 };
+
+const getLocalInstanceUrl = () => `http://${getLocalIpAddress()}:9080`;
 
 const getLocalIpAddress = () => {
   const interfaces = os.networkInterfaces();
@@ -69,65 +84,57 @@ const getLocalIpAddress = () => {
   return null;
 };
 
-const getLocalInstanceUrl = () => `http://${getLocalIpAddress()}:9080`;
+export const loadFixtures = (fixtures, setup = false) => {
+  const basePath = "cypress/fixtures";
+  const fixturesString = (Array.isArray(fixtures) ? fixtures : [fixtures]).map(f => `-f ${basePath}/${f}`).join(' ')
+  console.log(`Loading fixture/s (setup: ${setup}): ${fixturesString}`);
+  return symfonyConsole(`coopcycle:fixtures:load${setup ? ` -s ${basePath}/setup_default.yml` : ''} ${fixturesString}`)
+};
 
-export const connectToLocalInstance = async () => {
-  await expect(element(by.id('chooseCityBtn'))).toBeVisible();
-  await element(by.id('chooseCityBtn')).tap();
+export const loadFixturesWithSetup = (fixtures) => {
+  return loadFixtures(fixtures, true);
+};
 
-  await expect(element(by.id('moreServerOptions'))).toBeVisible();
-  await element(by.id('moreServerOptions')).tap();
-
-  await element(by.id('customServerURL')).typeText(
-    `${getLocalInstanceUrl()}\n`,
-  );
-
-  try {
-    // We deliberately add "\n" to hide the keyboard
-    // The tap below shouldn't be necessary
-    await element(by.id('submitCustomServer')).tap();
-  } catch (e) {}
+export const loadFixturesAndConnect = async (fixtures, setup = false) => {
+  return ifandroid(() => {
+    loadFixtures(fixtures, setup);
+    return connectToLocalInstance();
+  }, () => {
+    //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+    return connectToSandbox();
+  });
 };
 
 export const authenticateWithCredentials = async (username, password) => {
-  await expect(element(by.id('menuBtn'))).toBeVisible();
-  await element(by.id('menuBtn')).tap();
+  console.log(`Authenticating with "${username}:${password}"`);
+  await tapById('menuBtn');
 
-  await element(by.id('drawerAccountBtn')).tap();
+  await tapById('drawerAccountBtn');
   //FIXME: for some reason drawer menu does not close after the first tap on Android
-  if (device.getPlatform() === 'android') {
+  await ifandroid(async () => {
     const attrs = await element(by.id('drawerAccountBtn')).getAttributes();
     if (attrs.visible) {
-      await element(by.id('drawerAccountBtn')).tap();
+      await tapById('drawerAccountBtn');
     }
-  }
+  });
 
-  await element(by.id('loginUsername')).typeText(`${username}\n`);
-  await element(by.id('loginPassword')).typeText(`${password}\n`);
+  await typeTextQuick('loginUsername', `${username}\n`);
+  await typeTextQuick('loginPassword', `${password}\n`);
 
   // As we are using "\n", the form may have been submitted yet
   try {
-    await element(by.id('loginSubmit')).tap();
+    await tapById('loginSubmit');
   } catch (e) {}
 };
 
-export const logout = async (username, password) => {
-  // await expect(element(by.id('menuBtn'))).toBeVisible()
-  // await waitFor(element(by.id('menuBtn'))).toExist().withTimeout(5000)
-
-  // Multiple elements were matched: (
-  //     "<RCTView:0x7fd151feba00; AX=Y; AX.id='menuBtn'; AX.label='\Uf32a'; AX.frame={{0, 3001.5}, {61, 41}}; AX.activationPoint={30.5, 3022}; AX.traits='UIAccessibilityTraitNone'; AX.focused='N'; frame={{0, 1.5}, {61, 41}}; opaque; alpha=1>",
-  //     "<RCTView:0x7fd155a60320; AX=Y; AX.id='menuBtn'; AX.label='\Uf32a'; AX.frame={{0, 21.5}, {61, 41}}; AX.activationPoint={30.5, 42}; AX.traits='UIAccessibilityTraitNone'; AX.focused='N'; frame={{0, 1.5}, {61, 41}}; opaque; alpha=1>",
-  //     "<RCTView:0x7fd151ea12d0; AX=Y; AX.id='menuBtn'; AX.label='\Uf32a'; AX.frame={{0, 3001.5}, {61, 41}}; AX.activationPoint={30.5, 3022}; AX.traits='UIAccessibilityTraitNone'; AX.focused='N'; frame={{0, 1.5}, {61, 41}}; opaque; alpha=1>"
-  // ). Please use selection matchers to narrow the selection down to single element.
-  // await element(by.id('menuBtn')).atIndex(0).tap()
-
-  await element(by.id('drawerAccountBtn')).tap();
-
-  await element(by.id('logout')).tap();
+export const logout = async () => {
+  console.log(`Logging out user..`);
+  await tapById('drawerAccountBtn');
+  return await tapById('logout');
 };
 
 export const chooseRestaurant = async restaurantName => {
+  console.log(`Choosing restaurant "${restaurantName}"`);
   try {
     await expect(element(by.label(restaurantName))).toBeVisible();
   } catch (e) {
@@ -137,31 +144,27 @@ export const chooseRestaurant = async restaurantName => {
       .scroll(120, 'down');
   }
   await element(by.label(restaurantName)).tap();
+  return element(by.label(restaurantName));
 };
 
-export const addProduct = async id => {
+export const addProduct = async testID => {
+  console.log(`Adding product with testID "${testID}"`);
   try {
-    await expect(element(by.id(id))).toBeVisible();
+    await expect(element(by.id(testID))).toBeVisible();
   } catch (e) {
-    //FIXME: make scroll more flexible or use
-    // await element(by.id('restaurantData')).scrollToIndex(0);
-    // instead
-    await waitFor(element(by.id(id)))
-      .toBeVisible()
+    await waitToBeVisible(testID, 0)
       .whileElement(by.id('restaurantData'))
-      .scroll(180, 'down');
+      .scroll(200, 'down');
   }
 
-  await element(by.id(id)).tap();
+  await tapById(testID);
 
   try {
     // Product details page
-    await waitFor(element(by.id('productDetails')))
-      .toBeVisible()
-      .withTimeout(1000);
+    await waitToBeVisible('productDetails');
   } catch (e) {
     //FIXME: it seems that sometimes the tap does not work on the first try
-    await element(by.id(id)).tap();
+    await tapById(testID);
   }
 
   // FIXME: with a local coopcycle-web instance, we'll have more control over the test data
@@ -169,13 +172,13 @@ export const addProduct = async id => {
   // we try with 10 sections
   for (let section = 0; section < 10; section++) {
     try {
-      await element(by.id(`productOptions:${section}:0`)).tap();
+      await tapById(`productOptions:${section}:0`);
     } catch (e) {
       // ignore errors if a section does not have any option
     }
   }
 
-  await element(by.id('addProduct')).tap();
+  return await tapById('addProduct');
 };
 
 const stripeUiElement = (androidLabel, iOSLabel) => {
@@ -202,10 +205,13 @@ export const enterValidCreditCard = async () => {
   // Tap the credit card input to make sure we can interact with it
   await cardNumberElement().tap();
 
+  // Can't use `typeTextQuick` for the card number, the component fails to validate it
   await cardNumberElement().typeText('4242424242424242');
-  await expirationDateElement().typeText('1228');
+  await typeTextQuick(expirationDateElement(), '1228');
   // Add "\n" to make sure keyboard is hidden
-  await cvvElement().typeText('123\n');
+  await typeTextQuick(cvvElement(), '123\n');
+
+  return cardNumberElement();
 };
 
 export const closeRestaurantForToday = async (username, password) => {
@@ -263,9 +269,73 @@ export const selectAutocompleteAddress = async (
   address='91 rue de rivoli paris',
   placeId='Eh85MSBSdWUgZGUgUml2b2xpLCBQYXJpcywgRnJhbmNlIjASLgoUChIJmeuzXiFu5kcRwuW58Y4zYxgQWyoUChIJt4MohSFu5kcRUHvqO0vC-Ig'
 ) => {
-  await waitFor(element(by.id(elemId)))
-    .toExist()
-    .withTimeout(5000);
-  await element(by.id(elemId)).typeText(address);
+  await waitToBeVisible(elemId);
+
+  //await element(by.id(elemId)).typeText(address);
+  await typeTextQuick(elemId, address);
+  // Sometimes the app hangs waiting for:
+  //   The app is busy with the following tasks:
+  //    • "LooperIdlingResource-2828-mqt_js" (JS Thread) is executing (JavaScript code).
+
+  //await tapById(`placeId:${placeId}`);
+  // The line above was disabled because somehow it doesn't like `toBeVisible()`
   await element(by.id(`placeId:${placeId}`)).tap();
+  return element(by.id(`placeId:${placeId}`));
+};
+
+// Improved version of `typeText`
+export const typeTextQuick = async (elemIdOrObj, text) => {
+  const isElemId = typeof elemIdOrObj === 'string';
+  const elem = () => isElemId ? element(by.id(elemIdOrObj)) : elemIdOrObj;
+  console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}..`);
+
+  if (text.length > 1) {
+    await elem().replaceText(text.slice(0, -1));
+    text = text.slice(-1);
+  }
+
+  // Just type the last character
+  await elem().typeText(text);
+  return elem();
+};
+
+export const tapById = async (testID, timeout = 0) => {
+  await waitToBeVisible(testID, timeout);
+  await element(by.id(testID)).tap();
+  return element(by.id(testID));
+};
+
+export const tapByText = async (text) => {
+  await waitFor(element(by.text(text))).toBeVisible();
+  await element(by.text(text)).tap();
+  return element(by.text(text));
+};
+
+export const swipeRight = async (testID, timeout = 0) => {
+  await waitToBeVisible(testID, timeout);
+  await element(by.id(testID)).swipe('right');
+  return element(by.id(testID));
+};
+
+export const swipeLeft = async (testID, timeout = 0) => {
+  await waitToBeVisible(testID, timeout);
+  await element(by.id(testID)).swipe('left');
+  return element(by.id(testID));
+};
+
+export const waitToBeVisible = (testID, timeout = 5000) => {
+  console.log(`Waiting for element with testID "${testID}" to be visible${timeout ? ` for ${timeout}ms` : ''}..`);
+  const elem = waitFor(element(by.id(testID))).toBeVisible();
+  return timeout ? elem.withTimeout(timeout) : elem;
+};
+
+export const waitToExist = (testID, timeout = 5000) => {
+  console.log(`Waiting for element with testID "${testID}" to exist${timeout ? ` for ${timeout}ms` : ''}..`);
+  const elem = waitFor(element(by.id(testID))).toExist();
+  return timeout ? elem.withTimeout(timeout) : elem;
+};
+
+export const sleep = (timeout) => {
+  console.log(`Sleeping for ${timeout} ms..`);
+  return new Promise(resolve => setTimeout(resolve, timeout));
 };

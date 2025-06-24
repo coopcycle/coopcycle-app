@@ -1,12 +1,14 @@
 import {
+  describeif,
+} from "../support/commands";
+import {
   assignOrderToUser,
   assignTaskToUser,
   bulkAssignToUser,
   bulkUnassign,
-  doLoginForUserWithRoleDispatcher,
   getTaskTitleElement,
   loadDispatchFixture,
-  relaunchCleanApp,
+  loginDispatcherUser,
   swipeLeftTask,
   swipeRightTask,
   toggleSectionUnassigned,
@@ -14,9 +16,6 @@ import {
   unassignOrderFromUser,
   unassignTaskFromUser,
 } from './utils';
-import {
-  describeif,
-} from "../utils";
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 const USER_JANE = 'jane';
@@ -27,9 +26,8 @@ describeif(device.getPlatform() === 'android')
   ('Dispatch - Assing, reassign and unassign tasks and orders (single + bulk)', () => {
 
   beforeEach(async () => {
-    await relaunchCleanApp();
     await loadDispatchFixture();
-    await doLoginForUserWithRoleDispatcher();
+    await loginDispatcherUser();
   });
 
   it('should assing a single task to a courier and then unassign it', async () => {
