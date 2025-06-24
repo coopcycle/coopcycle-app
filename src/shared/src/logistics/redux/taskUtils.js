@@ -133,13 +133,22 @@ export function filterTasksByKeyword(tasks, keyword) {
     return tasks;
   }
 
-  return tasks.filter(task => taskIncludesKeyword(task, keyword));
+  return tasks.filter(task => taskIncludesKeyword(task, keyword) || taskIncludesKeywordInOrder(task, keyword));
 }
 
 export function taskIncludesKeyword(task, keyword) {
   return standardIncludes(task.assignedTo, keyword)
     || standardIncludes(task.orgName, keyword)
     || task.tags.reduce((acc, tag) => acc || standardIncludes(tag.name, keyword), false);
+}
+
+export function taskIncludesKeywordInOrder(task, keyword) {
+  return standardIncludes(task.metadata?.order_number, keyword)
+    || standardIncludes(task.address.contactName, keyword)
+    || standardIncludes(task.address.firstName, keyword)
+    || standardIncludes(task.address.lastName, keyword)
+    || standardIncludes(task.address.name, keyword)
+    || standardIncludes(task.address.streetAddress, keyword)
 }
 
 function standardIncludes(originalString, keyword) {
