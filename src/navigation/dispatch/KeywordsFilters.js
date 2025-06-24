@@ -4,7 +4,7 @@ import { View } from "native-base";
 
 import { addStringFilter } from "../../redux/Dispatch/actions";
 import { useDispatch } from "react-redux";
-import ActiveStringFilters from "./components/ActiveStringFilters";
+import ActiveKeywordFilters from "./components/ActiveKeywordFilters";
 import BasicSafeAreaView from "../../components/BasicSafeAreaView";
 import SearchInput from "../../components/SearchInput";
 
@@ -31,7 +31,7 @@ export default function KeywordsFilters() {
           placeholder="Search your filters..."
           value={searchQuery}
         />
-        <ActiveStringFilters />
+        <ActiveKeywordFilters />
       </View>
     </BasicSafeAreaView>
   )

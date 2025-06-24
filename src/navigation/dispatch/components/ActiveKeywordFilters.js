@@ -5,19 +5,19 @@ import ColorHash from 'color-hash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { removeStringFilter } from "../../../redux/Dispatch/actions";
-import { selectStringFilters } from "../../../redux/Dispatch/selectors";
+import { selectKeywordFilters } from "../../../redux/Dispatch/selectors";
 import { whiteColor } from "../../../styles/common";
 
 
-export default function ActiveStringFilters({
+export default function ActiveKeywordFilters({
   style,
   ...props
 }) {
-  const activeFilters = useSelector(selectStringFilters);
+  const keywordFilters = useSelector(selectKeywordFilters);
 
   return (
     <Box style={[style, styles.container]} {...props}>
-      {activeFilters.map(filter => (
+      {keywordFilters.map(filter => (
         <ActiveFilter filter={filter} />
       ))}
     </Box>
@@ -31,15 +31,15 @@ function ActiveFilter({
 }) {
   const dispatch = useDispatch();
 
-  const isNegative = filter.slice(0, 1) === '-';
+  const isNegative = filter.keyword.slice(0, 1) === '-';
 
-  const color = colorHash.hex(filter);
+  const color = colorHash.hex(filter.keyword);
   const mainColor = isNegative ? color : whiteColor;
   const secondaryColor = isNegative ? whiteColor : color;
 
   // TODO: dont remove item if pressed from Filters
   const removeFilter = () => {
-    dispatch(removeStringFilter(filter));
+    dispatch(removeStringFilter(filter.keyword));
   }
 
   return (
@@ -54,7 +54,7 @@ function ActiveFilter({
           color={mainColor}
           borderRightColor={mainColor}
         >
-          {filter}
+          {filter.keyword}
         </Text>
         <Icon
           as={FontAwesome}
