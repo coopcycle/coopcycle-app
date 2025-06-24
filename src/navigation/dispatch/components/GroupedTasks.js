@@ -25,6 +25,7 @@ import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
+  hideEmptyTaskLists,
   isFetching,
   refetch,
   route,
@@ -64,6 +65,10 @@ export default function GroupedTasks({
       title: taskList.username,
     })),
   ];
+
+  const filteredSections = hideEmptyTaskLists
+    ? sections.filter(section => section.data.length > 0)
+    : sections;
 
   // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());
@@ -203,7 +208,7 @@ export default function GroupedTasks({
   return (
     <>
       <SectionList
-        sections={sections}
+        sections={filteredSections}
         stickySectionHeadersEnabled={true}
         renderSectionHeader={({ section }) => (
           <View style={{ backgroundColor: bgHighlightColor }}>

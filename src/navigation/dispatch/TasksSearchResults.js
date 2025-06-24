@@ -34,6 +34,7 @@ export default function TasksSearchResults({
         <Text style={styles.text}>Search results for '{route.params.searchQuery}'</Text>
       </View>
       <GroupedTasks
+        hideEmptyTaskLists={true}
         route={route}
         taskLists={filteredTasksLists}
         unassignedTasks={filteredUnassignedTasks}
