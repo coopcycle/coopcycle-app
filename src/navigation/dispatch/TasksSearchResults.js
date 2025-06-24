@@ -11,23 +11,6 @@ import {
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import GroupedTasks from './components/GroupedTasks';
 
-const styles = StyleSheet.create({
-  view: {
-    alignItems: 'center',
-    backgroundColor: mediumGreyColor,
-    borderTopColor: '#ddd',
-    borderTopWidth: 1,
-    flexDirection: 'row',
-    height: 68,
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-  },
-  text: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default function TasksSearchResults({
   route,
@@ -58,3 +41,21 @@ export default function TasksSearchResults({
     </BasicSafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  view: {
+    alignItems: 'center',
+    backgroundColor: mediumGreyColor,
+    borderTopColor: '#ddd',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    height: 68,
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  text: {
+    color: '#000000',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
