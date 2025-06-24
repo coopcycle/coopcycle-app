@@ -1,24 +1,24 @@
 import {
+  describeif,
   selectAutocompleteAddress,
+  tapById,
+  typeTextQuick,
+  waitToBeVisible,
 } from "../support/commands";
 import {
-  doLoginForUserWithRoleStore,
   loadStoreFixture,
-  relaunchCleanApp,
+  loginStoreUser,
 } from './utils';
-import { describeif, tapById } from '../utils';
 
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')
   ('Store - Create delivery', () => {
 
   beforeEach(async () => {
-    await relaunchCleanApp();
     await loadStoreFixture();
-    await doLoginForUserWithRoleStore();
+    await loginStoreUser();
   });
 
-  //FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
   it('should create a delivery for a store', async () => {
     await tapById('navigate_to_delivery');
 
@@ -32,11 +32,11 @@ describeif(device.getPlatform() === 'android')
 
     // Append "\n" to make sure virtual keyboard is hidden after entry
     // https://github.com/wix/detox/issues/209
-    await expect(element(by.id('delivery__dropoff__contact_name'))).toBeVisible();
-    await element(by.id('delivery__dropoff__contact_name')).typeText('Alice\n');
+    await waitToBeVisible('delivery__dropoff__contact_name');
+    await typeTextQuick('delivery__dropoff__contact_name', 'Alice\n');
 
-    await expect(element(by.id('delivery__dropoff__phone'))).toBeVisible();
-    await element(by.id('delivery__dropoff__phone')).typeText('0612345678\n');
+    await waitToBeVisible('delivery__dropoff__phone');
+    await typeTextQuick('delivery__dropoff__phone', '0612345678\n');
 
     await tapById('delivery__next_button');
 

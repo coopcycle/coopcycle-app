@@ -68,25 +68,28 @@ if (Platform.OS === 'ios') {
   KeyboardManager.setToolbarPreviousNextButtonEnable(false);
 }
 
+// The line below doesn't work..! `Config.APP_ENV` is always `undefined` unless you manually define it at your `.env` file
 if (Config.APP_ENV === 'test') {
   LogBox.ignoreAllLogs(true);
 }
 
 LogBox.ignoreLogs([
+  'Open debugger to view warnings',
   'Warning: isMounted(...) is deprecated in plain JavaScript React classes.',
   'Module RCTImageLoader requires main queue setup',
   'Module RCTBackgroundGeolocation requires main queue setup',
   // @see https://github.com/invertase/react-native-firebase/issues/1446
   'Require cycle:',
   // react-native-camera
-  'Warning: componentWillMount has been renamed',
-  'Warning: componentWillReceiveProps has been renamed',
-  'Warning: componentWillUpdate has been renamed',
+  'has been renamed, and is not recommended for use',
   'Accessing view manager configs directly off UIManager',
   'VirtualizedLists should never be nested',
-  'When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.',
+  'SSRProvider',
   // https://docs.swmansion.com/react-native-reanimated/docs/guides/troubleshooting/#reduced-motion-setting-is-enabled-on-this-device
-  '[Reanimated] Reduced motion setting is enabled on this device.',
+  'Reduced motion setting is enabled on this device',
+  'React Native Firebase namespaced API',
+  'global process.env.EXPO_OS is not defined',
+  'Support for defaultProps will be removed',
 ]);
 
 const routeNameRef = createRef();

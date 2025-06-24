@@ -1,35 +1,18 @@
 import {
   authenticateWithCredentials,
-  connectToLocalInstance,
-  connectToSandbox,
-  launchApp,
-  symfonyConsole
-} from "../support/commands";
-import {
+  loadFixturesAndConnect,
   swipeLeft,
   swipeRight,
   tapById,
-} from "../utils";
+} from "../support/commands";
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 
 export async function loadDispatchFixture() {
-  if (device.getPlatform() === 'android') {
-    symfonyConsole(
-      'coopcycle:fixtures:load -s cypress/fixtures/setup_default.yml -f cypress/fixtures/dispatch.yml',
-    );
-    await connectToLocalInstance();
-  } else {
-    //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-    await connectToSandbox();
-  }
+  await loadFixturesAndConnect('dispatch.yml', true);
 }
 
-export async function relaunchCleanApp() {
-  await launchApp();
-}
-
-export async function doLoginForUserWithRoleDispatcher() {
+export async function loginDispatcherUser() {
   await authenticateWithCredentials('dispatcher', 'dispatcher');
 }
 

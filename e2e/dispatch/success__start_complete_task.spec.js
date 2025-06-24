@@ -1,18 +1,17 @@
 import {
-  assignTaskToUser,
-  doLoginForUserWithRoleDispatcher,
-  loadDispatchFixture,
-  relaunchCleanApp,
-  toggleSectionUnassigned,
-} from './utils';
-import {
   describeif,
   swipeLeft,
   swipeRight,
   tapById,
   tapByText,
-  waitForElement
-} from "../utils";
+  waitToBeVisible
+} from "../support/commands";
+import {
+  assignTaskToUser,
+  loadDispatchFixture,
+  loginDispatcherUser,
+  toggleSectionUnassigned,
+} from './utils';
 
 const USER_JANE = 'jane';
 
@@ -21,9 +20,8 @@ describeif(device.getPlatform() === 'android')
   ('Dispatch - Start and complete a task', () => {
 
   beforeEach(async () => {
-    await relaunchCleanApp();
     await loadDispatchFixture();
-    await doLoginForUserWithRoleDispatcher();
+    await loginDispatcherUser();
 
     // Assign task #1
     await assignTaskToUser(USER_JANE);
@@ -45,7 +43,7 @@ describeif(device.getPlatform() === 'android')
     await device.pressBack();
 
     // Verify task #1 has status "DOING"
-    await expect(element(by.id('taskListItemIcon:DOING:1'))).toBeVisible();
+    await waitToBeVisible('taskListItemIcon:DOING:1');
   });
 
 
@@ -59,7 +57,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('task:finishButton');
 
     // Verify task #1 has status "DONE"
-    await expect(element(by.id('taskListItemIcon:DONE:1'))).toBeVisible();
+    await waitToBeVisible('taskListItemIcon:DONE:1');
   });
 
   // TODO FIXME: Somehow the step to tap 'task:completeFailureButton' isn't working..!
@@ -77,25 +75,24 @@ describeif(device.getPlatform() === 'android')
   //         {"type":"Invocation","value":{"target":{"type":"Class","value":"com.wix.detox.espresso.DetoxViewActions"},"method":"click","args":[]}}
   //       ]}
   //
-  // UGLY WORKAROUND: Disable synchronization for this test and use `waitForElement`
+  // UGLY WORKAROUND: Disable synchronization for this test and use `waitToBeVisible`
   it('should mark a task as FAILED', async () => {
     // Ugly workaround: disable synchronization..
     await device.disableSynchronization();
 
     // Swipe complete button, tap 'failed' and press 'Report incident'
     await swipeLeft('task:completeButton');
-    await waitForElement('task:completeFailureButton');
+    await waitToBeVisible('task:completeFailureButton'); // Remove if `disableSynchronization` is removed..!
     await tapById('task:completeFailureButton');
 
     // Click the finish button in the new view
-    await waitForElement('task:finishButton');
+    await waitToBeVisible('task:finishButton'); // Remove if `disableSynchronization` is removed..!
     await tapById('task:finishButton');
 
     // Verify task #1 has status "FAILED"
     // TODO FIXME: This check was disabled because the task isn't auto-refreshed!
     // It seems that the backend doesn't send the update event.
-    //await waitForElement('taskListItemIcon:FAILED:1');
-    //await expect(element(by.id('taskListItemIcon:FAILED:1'))).toBeVisible();
+    //await waitToBeVisible('taskListItemIcon:FAILED:1');
   });
 
 });
