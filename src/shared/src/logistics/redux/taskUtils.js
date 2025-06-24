@@ -133,19 +133,21 @@ export function filterTasksByKeyword(tasks, keyword) {
     return tasks;
   }
 
-  return tasks.filter(task => (
-    standardIncludes(task.assignedTo, searchString)
-    || standardIncludes(task.orgName, searchString)
-    || task.tags.reduce((acc, tag) => acc || standardIncludes(tag.name, searchString), false)
-  ));
+  return tasks.filter(task => taskIncludesKeyword(task, keyword));
 }
 
-function standardIncludes(originalString, searchString) {
+export function taskIncludesKeyword(task, keyword) {
+  return standardIncludes(task.assignedTo, keyword)
+    || standardIncludes(task.orgName, keyword)
+    || task.tags.reduce((acc, tag) => acc || standardIncludes(tag.name, keyword), false);
+}
+
+function standardIncludes(originalString, keyword) {
   if (!originalString) {
     return false;
   }
 
-  const lowercaseSearchString = searchString.toLowerCase();
+  const lowercaseKeyword = keyword.toLowerCase();
 
-  return originalString.toLowerCase().includes(lowercaseSearchString);
+  return originalString.toLowerCase().includes(lowercaseKeyword);
 }
