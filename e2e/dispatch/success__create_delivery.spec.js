@@ -12,6 +12,9 @@ import {
 } from './utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
+// NOTE: Although this test is ALMOST THE SAME as the one at `store/success__create_delivery.spec.js`,
+// somehow it randomly fails when entering address or contact name or phone with an ugly "network timeout error".
+// That's why we use those 2 functions below, just for this test...
 const selectAutocompleteAddressJustForThisTest = async (
   elemId,
   address='91 rue de rivoli paris',

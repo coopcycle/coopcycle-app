@@ -3,7 +3,7 @@ module.exports = {
   testRunner: {
     args: {
       config: 'e2e/jest.config.js',
-      _: ['e2e/dispatch/success__create_delivery.spec.js'],
+      _: ['e2e'],
     },
     retries: 2,
   },
