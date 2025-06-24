@@ -1,15 +1,16 @@
+import { Circle, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { Icon } from 'native-base';
 import { StyleSheet,TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
+import { selectKeywordFilters } from '../../redux/Dispatch/selectors';
 import { useBackgroundContainerColor, useBaseTextColor } from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
@@ -25,7 +26,9 @@ const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
   const color = useBaseTextColor();
-  const bgColor = useBackgroundContainerColor()
+  const bgColor = useBackgroundContainerColor();
+  const keywordFilters = useSelector(selectKeywordFilters);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [showMapButton, setShowMapButton] = useState(true);
 
@@ -78,6 +81,12 @@ function CustomTabBar({ navigation }) {
         onPress={() => navigation.navigate('DispatchTasksFilters')}
       >
         <Icon as={FontAwesome} name="filter" style={{ color }} />
+        {keywordFilters.length > 0 && (
+          <Circle
+            size={3}
+            style={customTabBarStyles.filtersEnabled}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -99,6 +108,12 @@ const customTabBarStyles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 10,
   },
+  filtersEnabled: {
+    backgroundColor: '#D80000',
+    position: 'absolute',
+    right: 10,
+    top: 10,
+  }
 });
 
 function Tabs() {
