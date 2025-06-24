@@ -1,3 +1,4 @@
+import { filterByKeyword } from '../logistics/filters';
 import { actionMatchCreator } from '../util';
 import {
   addStringFilter,
@@ -10,7 +11,7 @@ const initialState = {
   initialized: false,
   users: [],
   ui: {
-    stringFilters: [],
+    keywordFilters: [],
   },
 };
 
@@ -40,7 +41,7 @@ export default (state = initialState, action = {}) => {
       ...state,
       ui: {
         ...state.ui,
-        stringFilters: [...state.ui.stringFilters, action.payload]
+        keywordFilters: [...state.ui.keywordFilters, filterByKeyword(action.payload)]
       },
     };
   }
@@ -52,7 +53,7 @@ export default (state = initialState, action = {}) => {
       ...state,
       ui: {
         ...state.ui,
-        stringFilters: state.ui.stringFilters.filter(f => f !== action.payload)
+        keywordFilters: state.ui.keywordFilters.filter(f => f.keyword !== action.payload)
       },
     };
   }

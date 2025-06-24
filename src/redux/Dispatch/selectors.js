@@ -40,4 +40,4 @@ export const selectFilteredTaskLists = filters => createSelector(
   }
 );
 
-export const selectStringFilters = state => state.dispatch.ui.stringFilters;
+export const selectKeywordFilters = state => state.dispatch.ui.keywordFilters;

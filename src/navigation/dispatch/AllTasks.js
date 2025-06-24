@@ -6,7 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'native-base';
 
 import { initialize } from '../../redux/Dispatch/actions';
-import { selectDispatchUiTaskFilters, selectFilteredTaskLists, selectFilteredUnassignedTasksNotCancelled } from '../../redux/Dispatch/selectors';
+import {
+  selectDispatchUiTaskFilters,
+  selectFilteredTaskLists,
+  selectFilteredUnassignedTasksNotCancelled,
+  selectKeywordFilters,
+} from '../../redux/Dispatch/selectors';
 import { selectSelectedDate } from '../../shared/logistics/redux';
 import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor } from '../../styles/theme';
@@ -19,8 +24,10 @@ export default function AllTasks({ navigation, route }) {
 
   const selectedDate = useSelector(selectSelectedDate);
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
-  const unassignedTasks = useSelector(selectFilteredUnassignedTasksNotCancelled(uiFilters));
-  const taskLists = useSelector(selectFilteredTaskLists(uiFilters));
+  const keywordFilters = useSelector(selectKeywordFilters);
+  const allFilters = [...uiFilters, ...keywordFilters];
+  const unassignedTasks = useSelector(selectFilteredUnassignedTasksNotCancelled(allFilters));
+  const taskLists = useSelector(selectFilteredTaskLists(allFilters));
 
   const dispatch = useDispatch();
 
