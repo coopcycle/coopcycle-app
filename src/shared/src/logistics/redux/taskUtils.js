@@ -144,11 +144,11 @@ export function taskIncludesKeyword(task, keyword) {
 
 export function taskIncludesKeywordInOrder(task, keyword) {
   return standardIncludes(task.metadata?.order_number, keyword)
-    || standardIncludes(task.address.contactName, keyword)
-    || standardIncludes(task.address.firstName, keyword)
-    || standardIncludes(task.address.lastName, keyword)
-    || standardIncludes(task.address.name, keyword)
-    || standardIncludes(task.address.streetAddress, keyword)
+    || standardIncludes(task.address?.contactName, keyword)
+    || standardIncludes(task.address?.firstName, keyword)
+    || standardIncludes(task.address?.lastName, keyword)
+    || standardIncludes(task.address?.name, keyword)
+    || standardIncludes(task.address?.streetAddress, keyword)
 }
 
 function standardIncludes(originalString, keyword) {
