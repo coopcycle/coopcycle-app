@@ -23,14 +23,14 @@ const USER_ZAK = 'zak';
 
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')
-  ('Dispatch - Assing, reassign and unassign tasks and orders (single + bulk)', () => {
+  ('Dispatch - Assign, reassign and unassign tasks and orders (single + bulk)', () => {
 
   beforeEach(async () => {
     await loadDispatchFixture();
     await loginDispatcherUser();
   });
 
-  it('should assing a single task to a courier and then unassign it', async () => {
+  it('should assign a single task to a courier and then unassign it', async () => {
     // All 3 tasks are unassigned
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #1");
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #2");
@@ -61,7 +61,7 @@ describeif(device.getPlatform() === 'android')
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 2)).toHaveText("Acme - Task #3");
   });
 
-  it('should assing a single order (with 3 tasks) to a courier and then unassign it', async () => {
+  it('should assign a single order (with 3 tasks) to a courier and then unassign it', async () => {
     // All 4 tasks are unassigned
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #1");
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #2");
@@ -131,7 +131,7 @@ describeif(device.getPlatform() === 'android')
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 2)).toHaveText("Acme - Task #3");
   });
 
-  it('should bulk assing a task and an order to a courier and then unassign them', async () => {
+  it('should bulk assign a task and an order to a courier and then unassign them', async () => {
     // All 4 tasks are unassigned
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #1");
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #2");
@@ -170,7 +170,7 @@ describeif(device.getPlatform() === 'android')
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 3)).toHaveText("Acme - Task #5");
   });
 
-  it('should bulk assing a task and an order to a courier and then reassign them to another courier and then unassign them all again', async () => {
+  it('should bulk assign a task and an order to a courier and then reassign them to another courier and then unassign them all again', async () => {
     // All 5 tasks are unassigned
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #1");
     await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #2");
