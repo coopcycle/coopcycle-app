@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import ColorHash from 'color-hash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import { isKeywordFilterNegative } from "../../../redux/logistics/utils";
 import { removeKeywordFilter } from "../../../redux/Dispatch/actions";
 import { selectKeywordFilters } from "../../../redux/Dispatch/selectors";
 import { whiteColor } from "../../../styles/common";
@@ -47,7 +48,7 @@ function ActiveFilter({
 }) {
   const dispatch = useDispatch();
 
-  const isNegative = filter.keyword.slice(0, 1) === '-';
+  const isNegative = isKeywordFilterNegative(filter);
 
   const color = colorHash.hex(filter.keyword);
   const mainColor = isNegative ? color : whiteColor;
