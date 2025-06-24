@@ -24,55 +24,8 @@ import BasicSafeAreaView from "../../components/BasicSafeAreaView";
 import ItemSeparatorComponent from '../../components/ItemSeparator';
 import { blackColor } from '../../styles/common';
 
-const styles = StyleSheet.create({
-  view: {
-    alignItems: 'stretch',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    paddingHorizontal: 14,
-  },
-});
 
-const SettingsItemSwitch = ({item}) => (
-  <HStack alignItems="center" justifyContent="space-between" py="3">
-    <Text>{item.label}</Text>
-    <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
-  </HStack>
-);
-
-const FilterByKeywords = () => {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
-
-  const navigateToKeywordsFilters = () => {
-    navigation.navigate('DispatchKeywordsFilters');
-  }
-
-  return (
-    <TouchableOpacity onPress={navigateToKeywordsFilters}>
-      <HStack alignItems="center" justifyContent="space-between" py="3">
-        <Text>{t('FILTER_BY_KEYWORDS')}</Text>
-        <Icon
-          as={FontAwesome}
-          name="plus"
-          size={6}
-          color={blackColor}
-          style={styles.activeFilterClose}
-        />
-      </HStack>
-      <ActiveKeywordFilters />
-    </TouchableOpacity>
-  );
-}
-
-const SettingsItemInner = ({ item }) =>
-  !item.isFilterByKeywordsSection
-  ? <SettingsItemSwitch item={item}/>
-  : <FilterByKeywords />;
-
-export default function TasksFilters({
-  ...props
-}) {
+export default function TasksFilters() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -149,3 +102,52 @@ export default function TasksFilters({
     </BasicSafeAreaView>
   )
 }
+
+function SettingsItemInner({ item }) {
+  return item.isFilterByKeywordsSection
+    ? <FilterByKeywords />
+    : <SettingsItemSwitch item={item}/>;
+}
+
+function SettingsItemSwitch({item}) {
+  return (
+    <HStack alignItems="center" justifyContent="space-between" py="3">
+      <Text>{item.label}</Text>
+      <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
+    </HStack>
+  );
+}
+
+function FilterByKeywords() {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  const navigateToKeywordsFilters = () => {
+    navigation.navigate('DispatchKeywordsFilters');
+  }
+
+  return (
+    <TouchableOpacity onPress={navigateToKeywordsFilters}>
+      <HStack alignItems="center" justifyContent="space-between" py="3">
+        <Text>{t('FILTER_BY_KEYWORDS')}</Text>
+        <Icon
+          as={FontAwesome}
+          name="plus"
+          size={6}
+          color={blackColor}
+          style={styles.activeFilterClose}
+        />
+      </HStack>
+      <ActiveKeywordFilters />
+    </TouchableOpacity>
+  );
+}
+
+const styles = StyleSheet.create({
+  view: {
+    alignItems: 'stretch',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+  },
+});
