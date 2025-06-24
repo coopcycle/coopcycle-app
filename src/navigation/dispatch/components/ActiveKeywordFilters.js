@@ -1,6 +1,7 @@
 import { Box, HStack, Icon, Text } from "native-base";
-import { StyleSheet, TouchableHighlight } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import ColorHash from 'color-hash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -17,10 +18,25 @@ export default function ActiveKeywordFilters({
 
   return (
     <Box style={[style, styles.container]} {...props}>
-      {keywordFilters.map(filter => (
-        <ActiveFilter filter={filter} />
-      ))}
+      {keywordFilters.length === 0
+        ? <NoFiltersPlaceholder />
+        : <Box style={styles.activeFiltersContainer}>
+            {keywordFilters.map(filter => (
+              <ActiveFilter filter={filter} />
+            ))}
+          </Box>
+      }
     </Box>
+  );
+}
+
+function NoFiltersPlaceholder() {
+  const { t } = useTranslation();
+
+  return (
+    <Text style={styles.noFiltersLabel}>
+      {t('NO_KEYWORDS_FILTERS')}
+    </Text>
   );
 }
 
@@ -37,13 +53,12 @@ function ActiveFilter({
   const mainColor = isNegative ? color : whiteColor;
   const secondaryColor = isNegative ? whiteColor : color;
 
-  // TODO: dont remove item if pressed from Filters
   const removeFilter = () => {
     dispatch(removeStringFilter(filter.keyword));
   }
 
   return (
-    <TouchableHighlight onPress={removeFilter}>
+    <TouchableOpacity onPress={removeFilter}>
       <HStack
         style={styles.activeFilter}
         backgroundColor={secondaryColor}
@@ -64,19 +79,30 @@ function ActiveFilter({
           style={styles.activeFilterClose}
         />
       </HStack>
-    </TouchableHighlight>
-  )
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: whiteColor,
+    borderRadius: 28,
+    justifyContent: 'center',
+    minHeight: 56,
+  },
+  noFiltersLabel: {
+    color: '#8B8B8B',
+  },
+  activeFiltersContainer: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
     justifyContent: 'center',
+    paddingHorizontal: 6,
+    paddingVertical: 16,
   },
   activeFilter: {
     alignItems: 'center',
