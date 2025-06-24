@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { addStringFilter } from "../../redux/Dispatch/actions";
+import { addKeywordFilter } from "../../redux/Dispatch/actions";
 import { greenColor, whiteColor } from "../../styles/common";
 import { useDispatch } from "react-redux";
 import ActiveKeywordFilters from "./components/ActiveKeywordFilters";
@@ -17,12 +17,12 @@ export default function KeywordsFilters() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [keyword, setKeyword] = useState('');
 
   const handleSearchSubmit = () => {
-    if (searchQuery.trim()) {
-      dispatch(addStringFilter(searchQuery));
-      setSearchQuery('');
+    if (keyword.trim()) {
+      dispatch(addKeywordFilter(keyword));
+      setKeyword('');
     }
   };
 
@@ -35,10 +35,10 @@ export default function KeywordsFilters() {
       <View style={styles.view}>
         <SearchInput
           style={styles.searchInput}
-          onChangeText={setSearchQuery}
+          onChangeText={setKeyword}
           onSubmitEditing={handleSearchSubmit}
           placeholder={t('KEYWORD_FILTERS_SEARCH_PLACEHOLDER')}
-          value={searchQuery}
+          value={keyword}
         />
         <ActiveKeywordFilters />
       </View>

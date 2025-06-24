@@ -1,10 +1,10 @@
 import { filterByKeyword } from '../logistics/filters';
 import { actionMatchCreator } from '../util';
 import {
-  addStringFilter,
+  addKeywordFilter,
   initialized,
   loadUsersSuccess,
-  removeStringFilter,
+  removeKeywordFilter,
 } from './actions';
 
 const initialState = {
@@ -35,7 +35,7 @@ export default (state = initialState, action = {}) => {
   }
 
   if (actionMatchCreator(action, [
-    addStringFilter,
+    addKeywordFilter,
   ])) {
     return {
       ...state,
@@ -47,7 +47,7 @@ export default (state = initialState, action = {}) => {
   }
 
   if (actionMatchCreator(action, [
-    removeStringFilter,
+    removeKeywordFilter,
   ])) {
     return {
       ...state,
