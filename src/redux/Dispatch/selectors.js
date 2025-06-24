@@ -16,21 +16,19 @@ export const selectIsDispatchFetching = createSelector(
 );
 
 // use selectTaskFilters with "tags" eliminated (is not used in Dispatch)
-const selectDispatchTaskFilters = createSelector(
+export const selectDispatchUiTaskFilters = createSelector(
   selectTaskFilters,
   taskFilters => taskFilters.filter(taskFilter => !Object.keys(taskFilter).includes('tags'))
 );
 
-export const selectFilteredUnassignedTasksNotCancelled = createSelector(
+export const selectFilteredUnassignedTasksNotCancelled = filters => createSelector(
   selectUnassignedTasksNotCancelled,
-  selectDispatchTaskFilters,
-  (tasks, filters) => filterTasks(tasks, filters),
+  (tasks) => filterTasks(tasks, filters),
 );
 
-export const selectFilteredTaskLists = createSelector(
+export const selectFilteredTaskLists = filters => createSelector(
   selectTaskLists,
-  selectDispatchTaskFilters,
-  (taskLists, filters) => {
+  (taskLists) => {
     const filteredTaskLists = taskLists.map(taskList => {
       const filteredTaskList = {...taskList};
       filteredTaskList.items = filterTasks(taskList.items, filters);
