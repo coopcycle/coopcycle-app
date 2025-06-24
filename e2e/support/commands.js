@@ -291,7 +291,6 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
 
   if (text.length > 1) {
     await elem().replaceText(text.slice(0, -1));
-    await sleep(500); // Wait a bit to avoid possible issues with: "The app has not responded to the network requests below:..."
     text = text.slice(-1);
   }
 

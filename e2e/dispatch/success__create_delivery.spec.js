@@ -1,8 +1,8 @@
 import {
   describeif,
-  selectAutocompleteAddress,
+  //selectAutocompleteAddress,
   tapById,
-  typeTextQuick,
+  //typeTextQuick,
   waitToBeVisible,
 } from "../support/commands";
 import {
@@ -11,6 +11,25 @@ import {
   loginDispatcherUser,
 } from './utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
+
+const selectAutocompleteAddressJustForThisTest = async (
+  elemId,
+  address='91 rue de rivoli paris',
+  placeId='Eh85MSBSdWUgZGUgUml2b2xpLCBQYXJpcywgRnJhbmNlIjASLgoUChIJmeuzXiFu5kcRwuW58Y4zYxgQWyoUChIJt4MohSFu5kcRUHvqO0vC-Ig'
+) => {
+  await waitToBeVisible(elemId);
+
+  await typeTextQuickJustForThisTest(elemId, address);
+
+  await element(by.id(`placeId:${placeId}`)).tap();
+  return element(by.id(`placeId:${placeId}`));
+};
+
+// Nothing "quick" here.. just the regular `typeText`
+const typeTextQuickJustForThisTest = async (elemId, text) => {
+  console.log(`Typing text "${text}" into element with testID "${elemId}"..`);
+  return await element(by.id(elemId)).typeText(text);
+};
 
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')
@@ -33,15 +52,15 @@ describeif(device.getPlatform() === 'android')
     await tapById('delivery__next_button');
 
     // Dropoff address
-    await selectAutocompleteAddress('delivery__dropoff__address');
+    await selectAutocompleteAddressJustForThisTest('delivery__dropoff__address');
 
     // Append "\n" to make sure virtual keyboard is hidden after entry
     // https://github.com/wix/detox/issues/209
     await waitToBeVisible('delivery__dropoff__contact_name');
-    await typeTextQuick('delivery__dropoff__contact_name', 'Alice\n');
+    await typeTextQuickJustForThisTest('delivery__dropoff__contact_name', 'Alice\n');
 
     await waitToBeVisible('delivery__dropoff__phone');
-    await typeTextQuick('delivery__dropoff__phone', '0612345678\n');
+    await typeTextQuickJustForThisTest('delivery__dropoff__phone', '0612345678\n');
 
     await tapById('delivery__next_button');
 
