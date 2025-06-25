@@ -4,6 +4,7 @@ import HeaderButton from '../components/HeaderButton';
 
 import DispatchAllTasks from './dispatch/AllTasks';
 import DispatchDate from './dispatch/Date';
+import DispatchKeywordsFilters from './dispatch/KeywordsFilters';
 import DispatchPickUser from './dispatch/PickUser';
 import DispatchTasksFilters from './dispatch/TasksFilters';
 import DispatchTasksMap from './dispatch/TasksMap';
@@ -131,6 +132,7 @@ export default {
   AccountResetPasswordNewPassword,
   DispatchAllTasks,
   DispatchDate,
+  DispatchKeywordsFilters,
   DispatchPickUser,
   DispatchTasksFilters,
   DispatchTasksMap,

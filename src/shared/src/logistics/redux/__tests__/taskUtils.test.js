@@ -1,9 +1,12 @@
 import {
+  filterTasksByKeyword,
   getAssignedTask,
   getToursToUpdate,
   groupLinkedTasks,
+  taskIncludesKeyword,
   tasksToIds,
 } from '../taskUtils.js';
+import { getTaskWithAssignedTo, getTaskWithStoreName, getTaskWithTags } from '../testsUtils.js';
 
 describe('taskUtils', () => {
   describe('groupLinkedTasks', () => {
@@ -390,6 +393,96 @@ describe('taskUtils', () => {
       const result = getToursToUpdate(itemIds, toursIndexes);
 
       expect(result).toEqual({});
+    });
+  });
+
+  describe('filterTasksByKeyword', () => {
+    const tasks = [
+      getTaskWithAssignedTo('Assigned to Alba'),
+      getTaskWithAssignedTo('Assigned to Bob'),
+      getTaskWithAssignedTo('Assigned to Carla'),
+      getTaskWithStoreName('Store name ACME'),
+      getTaskWithStoreName('Store name Bullanga'),
+      getTaskWithStoreName('Store name Cremon'),
+      getTaskWithTags(['A', 'AA', 'AAA']),
+      getTaskWithTags(['B', 'BB', 'BBB']),
+      getTaskWithTags(['C', 'CC', 'CCC']),
+    ];
+
+    it('should return all tasks if search string is empty', () => {
+      const searchString = '';
+
+      const result = filterTasksByKeyword(tasks, searchString);
+
+      expect(result).toEqual(tasks);
+    });
+
+    it.each([
+      'bob', 'Bob', 'BOB'
+    ])('should return tasks that have searchString in assignedTo', (searchString) => {
+      const result = filterTasksByKeyword(tasks, searchString);
+
+      expect(result).toEqual(tasks.slice(1,2));
+    });
+
+    it.each([
+      'bullanga', 'Bullanga', 'BULLANGA'
+    ])('should return tasks that have searchString in store name', (searchString) => {
+      const result = filterTasksByKeyword(tasks, searchString);
+
+      expect(result).toEqual(tasks.slice(4,5));
+    });
+
+    it.each([
+      'bbb', 'BBB',
+    ])('should return tasks that have searchString in any tag', (searchString) => {
+      const result = filterTasksByKeyword(tasks, searchString);
+
+      expect(result).toEqual(tasks.slice(7,8));
+    });
+  });
+
+  describe('taskIncludesKeyword', () => {
+    it('should return true if keyword is empty', () => {
+      const task = getTaskWithAssignedTo('Assigned to Alba');
+      const keyword = '';
+
+      const result = taskIncludesKeyword(task, keyword);
+
+      expect(result).toBe(true);
+    });
+
+    it.each([
+      ['Alba', true],
+      ['not', false],
+    ])('should return if keyword is included in assignedTo', (keyword, expected) => {
+      const task = getTaskWithAssignedTo('Assigned to Alba');
+
+      const result = taskIncludesKeyword(task, keyword);
+
+      expect(result).toBe(expected);
+    });
+
+    it.each([
+      ['Acme', true],
+      ['not', false],
+    ])('should return if keyword is included in store name', (keyword, expected) => {
+      const task = getTaskWithStoreName('Store name ACME');
+
+      const result = taskIncludesKeyword(task, keyword);
+
+      expect(result).toBe(expected);
+    });
+
+    it.each([
+      ['aa', true],
+      ['not', false],
+    ])('should return if keyword is included in tags', (keyword, expected) => {
+      const task = getTaskWithTags(['A', 'AA', 'AAA']);
+
+      const result = taskIncludesKeyword(task, keyword);
+
+      expect(result).toBe(expected);
     });
   });
 });

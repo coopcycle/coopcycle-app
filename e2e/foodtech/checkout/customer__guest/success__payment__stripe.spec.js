@@ -1,115 +1,64 @@
 import {
-  addProduct,
-  chooseRestaurant,
-  connectToLocalInstance,
-  connectToSandbox,
+  describeif,
   enterValidCreditCard,
-  selectAutocompleteAddress,
-  symfonyConsole,
+  tapById,
+  typeTextQuick,
+  waitToBeVisible,
 } from '../../../support/commands';
-import { describeif } from '../../../utils';
+import {
+  loadCheckoutFixturesAndConnect,
+  selectCartItemsFromRestaurant,
+} from '../../utils';
 
 //FIXME: run on iOS too; see Stripe-related issues below
-describeif(device.getPlatform() === 'android')(
-  'checkout for guest user; payment - stripe',
-  () => {
-    beforeEach(async () => {
-      await device.reloadReactNative();
+describeif(device.getPlatform() === 'android')
+  ('checkout for guest user; payment - stripe', () => {
 
-      if (device.getPlatform() === 'android') {
-        symfonyConsole(
-          'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
-        );
-        symfonyConsole(
-          'craue:setting:create --section="general" --name="guest_checkout_enabled" --value="1" --force',
-        );
-        await connectToLocalInstance();
-      } else {
-        //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-        await connectToSandbox();
-      }
-    });
+  beforeEach(async () => {
+    await loadCheckoutFixturesAndConnect();
+    await selectCartItemsFromRestaurant('Crazy Hamburger');
+  });
 
-    it(`should complete checkout`, async () => {
-      await expect(element(by.id('checkoutAskAddress'))).toBeVisible();
+  it(`should complete checkout`, async () => {
+    // Cart summary page
+    await tapById('cartSummarySubmit');
 
-      // Enter address
-      await selectAutocompleteAddress('askAddressAutocomplete');
+    // Authentication page
+    await waitToBeVisible('loginUsername');
 
-      // List of restaurants
-      await expect(element(by.id('restaurantList'))).toBeVisible();
+    try {
+      await tapById('guestCheckoutButton');
+    } catch (e) {}
 
-      // Choose a restaurant
-      await chooseRestaurant('Crazy Hamburger');
+    // More infos page
+    await waitToBeVisible('guestCheckoutEmail');
+    await waitToBeVisible('checkoutTelephone');
+    await waitToBeVisible('moreInfosSubmit');
 
-      // Restaurant page
-      await waitFor(element(by.id('restaurantData')))
-        .toExist()
-        .withTimeout(5000);
-      await waitFor(element(by.id('menuItem:0:0')))
-        .toExist()
-        .withTimeout(5000);
+    await typeTextQuick('guestCheckoutEmail', 'e2e-mobile@demo.coopcycle.org');
 
-      // Add item
-      await addProduct('menuItem:0:0');
+    // Append "\n" to make sure virtual keybord is hidden after entry
+    // https://github.com/wix/detox/issues/209
+    await typeTextQuick('checkoutTelephone', '0612345678\n');
 
-      // Add 2 more items
-      await addProduct('menuItem:0:1');
-      await addProduct('menuItem:1:0');
+    await tapById('moreInfosSubmit');
 
-      await waitFor(element(by.id('cartSubmit')))
-        .toBeVisible()
-        .withTimeout(5000);
-      await element(by.id('cartSubmit')).tap();
+    // Payment page
+    await typeTextQuick('cardholderName', 'John Doe');
 
-      // Cart summary page
-      await waitFor(element(by.id('cartSummarySubmit')))
-        .toBeVisible()
-        .withTimeout(5000);
+    // FIXME; test payment via Stripe as well
+    //  iOS: Test Failed: View is not hittable at its visible point. Error: View is not visible around point.
+    //    - view point: {100, 25}
+    //    - visible bounds: {{118, 0}, {82, 50}}
+    //    - view bounds: {{-118, 0}, {200, 50}}
+    //   ---
+    //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
+    await enterValidCreditCard();
 
-      await element(by.id('cartSummarySubmit')).tap();
+    await tapById('creditCardSubmit');
 
-      // Authentication page
-      await expect(element(by.id('loginUsername'))).toBeVisible();
+    // Confirmation page
+    await waitToBeVisible('orderTimeline', 15000);
+  });
 
-      try {
-        await element(by.id('guestCheckoutButton')).tap();
-      } catch (e) {}
-
-      // More infos page
-      await expect(element(by.id('guestCheckoutEmail'))).toBeVisible();
-      await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-      await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
-
-      await element(by.id('guestCheckoutEmail')).typeText(
-        'e2e-mobile@demo.coopcycle.org',
-      );
-
-      // Append "\n" to make sure virtual keybord is hidden after entry
-      // https://github.com/wix/detox/issues/209
-      await element(by.id('checkoutTelephone')).typeText('0612345678');
-      await element(by.id('checkoutTelephone')).typeText('\n');
-
-      await element(by.id('moreInfosSubmit')).tap();
-
-      // Payment page
-      await element(by.id('cardholderName')).typeText('John Doe');
-
-      // FIXME; test payment via Stripe as well
-      //  iOS: Test Failed: View is not hittable at its visible point. Error: View is not visible around point.
-      //    - view point: {100, 25}
-      //    - visible bounds: {{118, 0}, {82, 50}}
-      //    - view bounds: {{-118, 0}, {200, 50}}
-      //   ---
-      //   Error: Error Domain=DetoxErrorDomain Code=0 "View “<StripePaymentsUI.STPFormTextField: 0x7fe7a6649800>” is not visible: View does not pass visibility percent threshold (100)"
-      await enterValidCreditCard();
-
-      await element(by.id('creditCardSubmit')).tap();
-
-      // Confirmation page
-      await waitFor(element(by.id('orderTimeline')))
-        .toBeVisible()
-        .withTimeout(15000);
-    });
-  },
-);
+});

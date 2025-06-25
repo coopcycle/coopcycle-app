@@ -4,6 +4,7 @@ const initialState = {
   orders: {},
   tasks: {},
 };
+
 const updateSelectedTasksSlice = createSlice({
   name: 'selectedTasks',
   initialState,
@@ -85,4 +86,5 @@ export const {
   removeTask,
   clearSelectedTasks,
 } = updateSelectedTasksSlice.actions;
+
 export default updateSelectedTasksSlice.reducer;

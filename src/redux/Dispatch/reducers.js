@@ -8,6 +8,7 @@ function initializedReducer(state = false, action = {}) {
   if (actionMatchCreator(action, [initialized])) {
     return true;
   }
+
   return state;
 }
 

@@ -29,6 +29,7 @@ import {
   taskListEntityReducers as coreTaskListEntityReducers,
   uiReducers as coreUiReducers,
 } from '../coopcycle-frontend-js/logistics/redux';
+
 import { tasksEntityReducer, tasksUiReducer } from './Courier';
 import accountReducer from './Account/reducers';
 import appDateReducer from './logistics/dateReducer';
@@ -41,6 +42,7 @@ import checkoutReducer from './Checkout/reducers';
 import deliveryReducer from './Delivery/reducers';
 import restaurantReducer from './Restaurant/reducers';
 import storeReducer from './Store/reducers';
+import keywordFiltersReducer from './Dispatch/keywordFiltersSlice';
 import selectedTasksReducer from './Dispatch/updateSelectedTasksSlice';
 
 
@@ -184,6 +186,7 @@ export default combineReducers({
   dispatch: combineReducers({
     ...appDispatchReducer,
     ui: combineReducers({
+      keywordFilters: keywordFiltersReducer,
       selectedTasks: selectedTasksReducer,
     }),
   }),
