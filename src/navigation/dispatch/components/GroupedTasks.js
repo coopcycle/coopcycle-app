@@ -6,17 +6,18 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import {
+  darkGreyColor,
   darkRedColor,
   whiteColor
 } from '../../../styles/common';
 import { getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
-import { selectTaskLists, selectTasksWithColor } from '../../../shared/logistics/redux';
-import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
+import { selectTaskLists, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
@@ -24,20 +25,50 @@ import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
-  sections,
-  route,
+  hideEmptyTaskLists,
   isFetching,
-  refetch
+  refetch,
+  route,
+  taskLists,
+  unassignedTasks,
 }) {
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const tasksWithColor = useSelector(selectTasksWithColor);
-  const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const allTaskLists = useSelector(selectTaskLists);
+  const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
 
   const bulkEditTasksFloatingButtonRef = useRef(null);
-
   const bgHighlightColor = useBackgroundHighlightColor()
+
+  // Combine unassigned tasks and task lists to use in SectionList
+  const sections = [
+    {
+      backgroundColor: whiteColor,
+      count: unassignedTasks.length,
+      data: unassignedTasks,
+      id: UNASSIGNED_TASKS_LIST_ID,
+      isUnassignedTaskList: true,
+      taskListId: UNASSIGNED_TASKS_LIST_ID,
+      textColor: darkGreyColor,
+      title: t('DISPATCH_UNASSIGNED_TASKS'),
+    },
+    ...taskLists.map(taskList => ({
+      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
+      count: taskList.items.length,
+      data: taskList.items,
+      id: `${taskList.username.toLowerCase()}TasksList`,
+      isUnassignedTaskList: false,
+      taskListId: taskList['@id'],
+      textColor: whiteColor,
+      title: taskList.username,
+    })),
+  ];
+
+  const filteredSections = hideEmptyTaskLists
+    ? sections.filter(section => section.data.length > 0)
+    : sections;
 
   // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());
@@ -57,7 +88,7 @@ export default function GroupedTasks({
     // If task is unassigned, related tasks are unassigned tasks
     // If task is assigned, related tasks are task's task list's tasks
     if (isUnassignedTaskList) {
-      navigateToTask(navigation, route, task, unassignedTasks);
+      navigateToTask(navigation, route, task, allUnassignedTasks);
     } else {
       const username = task.assignedTo;
       const taskList = getUserTaskList(username, allTaskLists)
@@ -177,7 +208,7 @@ export default function GroupedTasks({
   return (
     <>
       <SectionList
-        sections={sections}
+        sections={filteredSections}
         stickySectionHeadersEnabled={true}
         renderSectionHeader={({ section }) => (
           <View style={{ backgroundColor: bgHighlightColor }}>
@@ -242,8 +273,8 @@ export default function GroupedTasks({
           return null;
         }}
         // We pass those 2 to SectionList instead of TaskList
-        refreshing={isFetching}
-        onRefresh={refetch}
+        refreshing={!!isFetching}
+        onRefresh={() => refetch && refetch()}
       />
       <BulkEditTasksFloatingButton
         onPress={handleBulkAssignButtonPress}
