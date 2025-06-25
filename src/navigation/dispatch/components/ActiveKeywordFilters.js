@@ -23,7 +23,7 @@ export default function ActiveKeywordFilters({
         ? <NoFiltersPlaceholder />
         : <Box style={styles.activeFiltersContainer}>
             {keywordFilters.map(filter => (
-              <ActiveFilter filter={filter} />
+              <ActiveFilter filter={filter} key={filter.keyword}/>
             ))}
           </Box>
       }
@@ -45,6 +45,7 @@ const colorHash = new ColorHash();
 
 function ActiveFilter({
   filter,
+  ...props
 }) {
   const dispatch = useDispatch();
 
@@ -59,7 +60,7 @@ function ActiveFilter({
   }
 
   return (
-    <TouchableOpacity onPress={removeFilter}>
+    <TouchableOpacity onPress={removeFilter} {...props}>
       <HStack
         style={styles.activeFilter}
         backgroundColor={secondaryColor}

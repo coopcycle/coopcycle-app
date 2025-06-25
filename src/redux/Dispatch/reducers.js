@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { filterByKeyword } from '../logistics/filters';
 import { actionMatchCreator } from '../util';
 import {
@@ -37,11 +39,16 @@ export default (state = initialState, action = {}) => {
   if (actionMatchCreator(action, [
     addKeywordFilter,
   ])) {
+    const newKeywordFilters = _.uniqBy(
+      [...state.ui.keywordFilters, filterByKeyword(action.payload)],
+      'keyword',
+    );
+
     return {
       ...state,
       ui: {
         ...state.ui,
-        keywordFilters: [...state.ui.keywordFilters, filterByKeyword(action.payload)]
+        keywordFilters: newKeywordFilters
       },
     };
   }
