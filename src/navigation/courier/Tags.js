@@ -12,6 +12,7 @@ import {
   selectIsTagHidden,
   selectTagNames,
 } from '../../redux/Courier';
+import { filterByTag } from '../../redux/logistics/filters';
 
 const Tags = ({ toggleDisplayTag, isTagHidden, tags, t }) => (
   <FlatList
@@ -48,7 +49,7 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleDisplayTag: (tag, hidden) =>
       dispatch(
-        hidden ? clearTasksFilter({ tags: tag }) : filterTasks({ tags: tag }),
+        hidden ? clearTasksFilter(filterByTag(tag)) : filterTasks(filterByTag(tag)),
       ),
   };
 }

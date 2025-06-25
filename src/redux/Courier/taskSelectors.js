@@ -5,10 +5,13 @@
  * Here we use `reselect`, which allows us to memoize computed property values,
  * benefitting performance.
  */
-import { isEqual, reject, uniqWith } from 'lodash';
-import moment from 'moment';
 import { createSelector } from 'reselect';
+import { isEqual, uniqWith } from 'lodash';
+import moment from 'moment';
+
+import { filterTasks } from '../logistics/utils';
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
+
 
 /* Simple Selectors */
 export const selectTaskSelectedDate = state => state.ui.tasks.selectedDate;
@@ -46,8 +49,7 @@ export const selectTasks = createSelector(
 export const selectFilteredTasks = createSelector(
   selectTaskFilters,
   selectTasks,
-  (filters, tasks) =>
-    reject(tasks, t => filters.some(f => doesFilterMatch(f, t))),
+  (filters, tasks) => filterTasks(tasks, filters),
 );
 
 /**
@@ -100,20 +102,6 @@ export const selectIsTagHidden = createSelector(
   selectTaskFilters,
   filters => tag => filters.some(f => f.tags === tag),
 );
-
-/**
- * @param   {Object} filter Exclusion filter, e.g. { status: 'done' }
- * @param   {Task}   task   Plain object describing task (see taskEntityReducer for structure)
- * @returns {Boolean}       Does the filter match the given task?
- */
-const doesFilterMatch = (filter, task) =>
-  Object.keys(filter).reduce(
-    (acc, k) =>
-      acc || k === 'tags'
-        ? task.tags.map(t => t.name).includes(filter[k])
-        : task[k] === filter[k],
-    false,
-  );
 
 export const selectTasksWithColor = createSelector(selectTasks, tasks =>
   taskUtils.mapToColor(tasks),

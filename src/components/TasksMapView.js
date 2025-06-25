@@ -16,6 +16,7 @@ import ClusteredMapView from 'react-native-maps-super-cluster';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
 
+import { filterTasks } from '../redux/logistics/utils';
 import { getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
@@ -276,11 +277,18 @@ class TasksMapView extends Component {
   }
 
   render() {
-    const { onMapReady, ...otherProps } = this.props;
+    const {
+      onMapReady,
+      taskLists,
+      uiFilters,
+      ...otherProps
+    } = this.props;
 
     // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
-    const data = _.flatMap(this.props.taskLists, (taskList) => {
-      return taskList.items.map(task => ({
+    const data = _.flatMap(taskLists, (taskList) => {
+      const items = uiFilters ? filterTasks(taskList.items, uiFilters) : taskList.items;
+
+      return items.map(task => ({
         ...task,
         location: task.address.geo,
       }));
@@ -319,7 +327,7 @@ class TasksMapView extends Component {
             {...otherProps}>
             {this.props.children}
             {this.props.isPolylineOn ? (
-              this.props.taskLists.map(taskList => (
+              taskLists.map(taskList => (
                 <Polyline
                   coordinates={this.getCoordinates(taskList)}
                   strokeWidth={3}

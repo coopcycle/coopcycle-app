@@ -1,23 +1,24 @@
+import { Circle, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HeaderBackButton } from '@react-navigation/elements';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Box, Icon } from 'native-base';
+import { HeaderBackButton } from '@react-navigation/elements';
+import { StyleSheet,TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { useDispatch } from 'react-redux';
-import screens, { headerLeft } from '..';
-import KeyboardAdjustView from '../../components/KeyboardAdjustView';
-import i18n from '../../i18n';
-import NavigationHolder from '../../NavigationHolder';
 import { createDeliverySuccess } from '../../redux/Store/actions';
-import { blackColor } from '../../styles/common';
-import { useBackgroundContainerColor, useBaseTextColor } from '../../styles/theme';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
-import HeaderRightButton from '../dispatch/HeaderRightButton';
-import { useStackNavigatorScreenOptions } from '../styles';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
+import { selectKeywordFilters } from '../../redux/Dispatch/selectors';
+import { useBackgroundContainerColor, useBaseTextColor } from '../../styles/theme';
+import { useStackNavigatorScreenOptions } from '../styles';
+import HeaderRightButton from '../dispatch/HeaderRightButton';
+import i18n from '../../i18n';
+import KeyboardAdjustView from '../../components/KeyboardAdjustView';
+import NavigationHolder from '../../NavigationHolder';
+import screens, { headerLeft } from '..';
+import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 
 
@@ -25,7 +26,9 @@ const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
   const color = useBaseTextColor();
-  const bgColor = useBackgroundContainerColor()
+  const bgColor = useBackgroundContainerColor();
+  const keywordFilters = useSelector(selectKeywordFilters);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [showMapButton, setShowMapButton] = useState(true);
 
@@ -66,28 +69,24 @@ function CustomTabBar({ navigation }) {
           </TouchableOpacity>
         )
       }
-      <Box style={customTabBarStyles.searchContainer}>
-        <Icon
-          as={FontAwesome}
-          name="search"
-          size={6}
-          style={customTabBarStyles.searchIcon}
-        />
-        <TextInput
-          style={customTabBarStyles.searchInput}
-          placeholder="Search"
-          placeholderTextColor={blackColor}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onSubmitEditing={handleSearchSubmit}
-          returnKeyType="search"
-        />
-      </Box>
+      <SearchInput
+        style={customTabBarStyles.searchInput}
+        onChangeText={setSearchQuery}
+        onSubmitEditing={handleSearchSubmit}
+        placeholder="Search"
+        value={searchQuery}
+      />
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
       >
         <Icon as={FontAwesome} name="filter" style={{ color }} />
+        {keywordFilters.length > 0 && (
+          <Circle
+            size={3}
+            style={customTabBarStyles.filtersEnabled}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -105,28 +104,16 @@ const customTabBarStyles = StyleSheet.create({
   tabButton: {
     padding: 10,
   },
-  searchContainer: {
-    alignItems: 'center',
-    backgroundColor: '#EFEFEF',
-    borderRadius: 20.5,
-    flex: 1,
-    flexDirection: 'row',
-    height: 40,
-    marginHorizontal: 10,
-    paddingLeft: 15,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
   searchInput: {
     flex: 1,
-    fontFamily: 'OpenSans-SemiBold',
-    fontSize: 14,
-    height: '100%',
-    marginLeft: -30,
-    paddingRight: 30,
-    textAlign: 'center',
+    marginHorizontal: 10,
   },
+  filtersEnabled: {
+    backgroundColor: '#D80000',
+    position: 'absolute',
+    right: 10,
+    top: 10,
+  }
 });
 
 function Tabs() {
@@ -200,11 +187,19 @@ export default function DispatchNavigator({
           })}
         />
         <RootStack.Screen
-        name="DispatchTasksFilters"
-        component={screens.DispatchTasksFilters}
+          name="DispatchTasksFilters"
+          component={screens.DispatchTasksFilters}
           options={() => ({
             tabBarTestID: 'dispatchTasksFilters',
             title: i18n.t('DISPATCH_TASKS_FILTERS'),
+          })}
+        />
+        <RootStack.Screen
+          name="DispatchKeywordsFilters"
+          component={screens.DispatchKeywordsFilters}
+          options={() => ({
+            tabBarTestID: 'dispatchKeywordsFilters',
+            title: i18n.t('DISPATCH_KEYWORDS_FILTERS'),
           })}
         />
         <RootStack.Screen

@@ -1,20 +1,20 @@
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
 import { useMemo } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import TasksMapView from '../../components/TasksMapView';
+import { getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import { navigateToTask } from '../utils';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
 import {
   selectSelectedDate,
   selectTaskLists,
 } from '../../shared/logistics/redux';
-import { getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
-import { mediumGreyColor } from '../../styles/common';
-import { navigateToTask } from '../utils';
-import AddButton from './components/AddButton';
+import { selectDispatchUiTaskFilters } from '../../redux/Dispatch/selectors';
 import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor } from '../../styles/theme';
+import AddButton from './components/AddButton';
+import TasksMapView from '../../components/TasksMapView';
 
 const styles = StyleSheet.create({
   newDeliveryBarDate: {
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 });
 
 export default function TasksMap({ navigation, route }) {
+  const uiFilters = useSelector(selectDispatchUiTaskFilters);
   const allTaskLists = useSelector(selectTaskLists);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
@@ -73,6 +74,7 @@ export default function TasksMap({ navigation, route }) {
           mapCenter={mapCenter}
           taskLists={allTaskLists}
           onMarkerCalloutPress={navigateToSelectedTask}
+          uiFilters={uiFilters}
         />
         {isFetching ? (
           <View style={styles.activityContainer}>

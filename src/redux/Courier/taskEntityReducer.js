@@ -35,6 +35,7 @@ import {
   startTaskRequest,
   startTaskSuccess,
 } from '../../shared/logistics/redux';
+import { filterHasIncidents } from '../logistics/filters';
 import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 
 /*
@@ -173,7 +174,7 @@ export const tasksEntityReducer = (
         ...state,
         isFetching: false,
         items: _.mapValues(state.items, tasks =>
-          updateItem(tasks, action.payload.task, { hasIncidents: true }),
+          updateItem(tasks, action.payload.task, filterHasIncidents),
         ),
       }
 

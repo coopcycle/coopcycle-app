@@ -13,6 +13,7 @@ export {
   selectTasksWithColor,
   selectToursTasksIndex,
   selectUnassignedTasks,
+  selectUnassignedTasksNotCancelled,
 } from './selectors';
 
 export * from './actions';

@@ -23,9 +23,13 @@ import {
 } from '../../redux/Courier';
 import {
   doneIconName,
-  failedIconName,
   incidentIconName,
 } from '../task/styles/common';
+import {
+  filterHasIncidents,
+  filterStatusDone,
+  filterStatusFailed,
+} from '../../redux/logistics/filters';
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 
 const SettingsItemInner = ({ item }) => (
@@ -159,20 +163,20 @@ function mapDispatchToProps(dispatch) {
     toggleDisplayDone: hidden =>
       dispatch(
         hidden
-          ? clearTasksFilter({ status: 'DONE' })
-          : filterTasks({ status: 'DONE' }),
+          ? clearTasksFilter(filterStatusDone)
+          : filterTasks(filterStatusDone),
       ),
     toggleDisplayFailed: hidden =>
       dispatch(
         hidden
-          ? clearTasksFilter({ status: 'FAILED' })
-          : filterTasks({ status: 'FAILED' }),
+          ? clearTasksFilter(filterStatusFailed)
+          : filterTasks(filterStatusFailed),
       ),
     toggleDisplayIncidens: hidden =>
       dispatch(
         hidden
-          ? clearTasksFilter({ hasIncidents: true })
-          : filterTasks({ hasIncidents: true }),
+          ? clearTasksFilter(filterHasIncidents)
+          : filterTasks(filterHasIncidents),
       ),
     toggleTasksChangedAlertSound: enabled =>
       dispatch(setTasksChangedAlertSound(enabled)),
