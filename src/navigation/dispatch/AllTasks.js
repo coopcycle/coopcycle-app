@@ -20,6 +20,7 @@ import {
 } from '../../styles/common';
 import { useBackgroundHighlightColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
+import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
 
 export default function AllTasks({ navigation, route }) {
   const { t } = useTranslation();
@@ -32,6 +33,11 @@ export default function AllTasks({ navigation, route }) {
 
   const { isFetching, isError, refetch } = useAllTasks(selectedDate);
   const bgHighlightColor = useBackgroundHighlightColor()
+
+  const handleRefetch = () => {
+    refetch()
+    dispatch(clearSelectedTasks());
+  }
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -94,7 +100,7 @@ export default function AllTasks({ navigation, route }) {
         navigation
         route={route}
         isFetching={isFetching}
-        refetch={refetch}
+        refetch={handleRefetch}
       />
     </>
   );
