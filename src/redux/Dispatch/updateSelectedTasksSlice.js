@@ -14,6 +14,7 @@ const updateSelectedTasksSlice = createSlice({
     // add remove
     addOrder: (state, { payload: { task, taskListId } }) => {
       // remove if it's in selectedTasks.tasks
+      // TODO also has to remove linked tasks
       const selectedTasksForTaskList = state.tasks[taskListId];
 
       if (selectedTasksForTaskList) {

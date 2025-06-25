@@ -49,6 +49,7 @@ export default function GroupedTasks({
   // Update tasks functions
   const {
     assignTask,
+    getLinkedTasks,
     bulkEditTasks,
     assignTaskWithRelatedTasks,
     reassignTask,
@@ -107,19 +108,35 @@ export default function GroupedTasks({
   }
 
   const handleOnSwipeToLeft = (task, taskListId) => {
+  const tasksByTaskList = getLinkedTasks(task, taskListId);
+
+  Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
+    tasks.forEach(taskToAdd => {
+      dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
+    });
+  });
+};
+
+/*    const handleOnSwipeToLeft = (task, taskListId) => {
     dispatch(addOrder({ task, taskListId }));
-  }
+  } */
 
   const handleOnSwipeToRight = (task, taskListId) => {
     dispatch(addTask({ task, taskListId }));
   }
 
   const handleOnSwipeClose = (section, task) => {
-    const taskId = task['@id']
-    const taskListId = section.taskListId
-    dispatch(removeOrder({ taskId, taskListId }));
-    dispatch(removeTask({ taskId, taskListId }));
-  };
+  const taskListId = section.taskListId;
+  const tasksByTaskList = getLinkedTasks(task, taskListId);
+
+  Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
+    tasks.forEach(taskToRemove => {
+      const taskId = taskToRemove['@id'];
+      dispatch(removeOrder({ taskId, taskListId: listId }));
+      dispatch(removeTask({ taskId, taskListId: listId }));
+    });
+  });
+};
 
   const handleBulkAssignButtonPress = (selectedTasks) => {
     const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
