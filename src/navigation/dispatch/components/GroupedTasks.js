@@ -1,14 +1,20 @@
-import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, View } from 'native-base';
-import { useState } from 'react';
 import {
   SectionList,
   TouchableOpacity,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 
-import TaskList from '../../../components/TaskList';
+import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
+import {
+  darkRedColor,
+  whiteColor
+} from '../../../styles/common';
+import { getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
 import {
   addOrder,
@@ -17,18 +23,14 @@ import {
   removeOrder,
   removeTask
 } from '../../../redux/Dispatch/updateSelectedTasksSlice';
+import { selectTaskLists, selectTasksWithColor } from '../../../shared/logistics/redux';
 import { selectUnassignedTasksNotCancelled } from '../../../redux/Dispatch/selectors';
 import { selectTasksWithColor } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
-import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
-import { getTasksListIdsToEdit } from '../../../shared/src/logistics/redux/taskListUtils';
-import {
-  darkRedColor,
-  whiteColor
-} from '../../../styles/common';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
-import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
+import TaskList from '../../../components/TaskList';
+import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
   sections,
@@ -37,10 +39,13 @@ export default function GroupedTasks({
   refetch
 }) {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+
   const tasksWithColor = useSelector(selectTasksWithColor);
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
-  // const bulkEditTasksFloatingButtonRef = useRef(null);
+  const allTaskLists = useSelector(selectTaskLists);
+
+  const bulkEditTasksFloatingButtonRef = useRef(null);
+
   const bgHighlightColor = useBackgroundHighlightColor()
 
   // collapsable
@@ -57,8 +62,17 @@ export default function GroupedTasks({
     unassignTaskWithRelatedTasks,
   } = useSetTaskListItems();
 
-  const onTaskClick = task => {
-    navigateToTask(navigation, route, task, unassignedTasks);
+  const onTaskClick = isUnassignedTaskList => task => {
+    // If task is unassigned, related tasks are unassigned tasks
+    // If task is assigned, related tasks are task's task list's tasks
+    if (isUnassignedTaskList) {
+      navigateToTask(navigation, route, task, unassignedTasks);
+    } else {
+      const username = task.assignedTo;
+      const taskList = getUserTaskList(username, allTaskLists)
+      const relatedTasks = taskList.items;
+      navigateToTask(navigation, route, task, relatedTasks);
+    }
   };
 
   const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
@@ -228,7 +242,7 @@ export default function GroupedTasks({
             return (
               <TaskList
                 id={section.id}
-                onTaskClick={onTaskClick}
+                onTaskClick={onTaskClick(section.isUnassignedTaskList)}
                 tasks={section.data}
                 tasksWithColor={tasksWithColor}
                 onSwipeClosed={(task) =>{handleOnSwipeClose(section, task)}}
