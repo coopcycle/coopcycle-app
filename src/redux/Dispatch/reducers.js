@@ -4,29 +4,21 @@ import {
   loadUsersSuccess,
 } from './actions';
 
-const initialState = {
-  initialized: false,
-  users: [],
-};
-
-export default (state = initialState, action = {}) => {
-  if (actionMatchCreator(action, [
-    initialized,
-  ])) {
-    return {
-      ...state,
-      initialized: true,
-    };
+function initializedReducer(state = false, action = {}) {
+  if (actionMatchCreator(action, [initialized])) {
+    return true;
   }
-
-  if (actionMatchCreator(action, [
-    loadUsersSuccess,
-  ])) {
-    return {
-      ...state,
-      users: action.payload,
-    };
-  }
-
   return state;
+}
+
+function usersReducer(state = [], action = {}) {
+  if (actionMatchCreator(action, [loadUsersSuccess])) {
+    return action.payload;
+  }
+  return state;
+}
+
+export default {
+  initialized: initializedReducer,
+  users: usersReducer,
 };
