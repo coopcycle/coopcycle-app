@@ -53,39 +53,27 @@ export const selectUnassignedTasksNotCancelled = createSelector(
 
 // Selections for TaskLists
 
-// FIXME
-// This is not optimized
-// Each time any task is updated, the tasks lists are looped over
-// Also, it generates copies all the time
-// Replace this with a selectTaskListItemsByUsername selector, used by the <TaskList> component
-// https://redux.js.org/tutorials/essentials/part-6-performance-normalization#memoizing-selector-functions
 export const selectTaskLists = createSelector(
   taskListSelectors.selectAll,
-  taskSelectors.selectEntities,
   tourSelectors.selectEntities,
-  (taskLists, tasksById, toursById) =>
+  (taskLists, toursById) =>
     taskLists.map(taskList => {
       let newTaskList = { ...taskList };
 
       const orderedItems = taskList.itemIds.flatMap(itemId => {
-        const maybeTask = tasksById[itemId];
+          const maybeTour = toursById[itemId];
 
-        if (maybeTask) {
-          return [maybeTask];
-        }
+          if (maybeTour) {
+            return maybeTour.items;
+          }
 
-        const maybeTour = toursById[itemId];
+          if (itemId.includes('/api/tasks/')){
+            return [itemId];
+          }
 
-        if (maybeTour) {
-          return maybeTour.items.map(taskId => tasksById[taskId]);
-        }
-
-        return [];
+          return [];
       });
-
-      const items = _.uniqBy(orderedItems, '@id');
-      // newTaskList.items = items;
-      newTaskList.tasksIds = items.map(item => item['@id']);
+      newTaskList.tasksIds = _.uniq(orderedItems);
 
       return newTaskList;
     }),
