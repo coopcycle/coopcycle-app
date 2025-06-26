@@ -52,7 +52,6 @@ export default function GroupedTasks({
   const sections = [
     {
       backgroundColor: whiteColor,
-      count: unassignedTasks.length,
       data: unassignedTasks,
       id: UNASSIGNED_TASKS_LIST_ID,
       isUnassignedTaskList: true,
@@ -62,7 +61,6 @@ export default function GroupedTasks({
     },
     ...taskLists.map(taskList => ({
       backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-      count: taskList.items.length,
       data: taskList.items,
       id: `${taskList.username.toLowerCase()}TasksList`,
       isUnassignedTaskList: false,
@@ -264,9 +262,9 @@ export default function GroupedTasks({
                     {section.title}
                   </Text>
                 </View>
-                <Text>{section.count}</Text>
+                <Text>{section.data.length}</Text>
               </View>
-              {section.count === 0 ? null :
+              {section.data.length === 0 ? null :
               <Icon
                 as={FontAwesome}
                 testID={`${section.id}:toggler`}
