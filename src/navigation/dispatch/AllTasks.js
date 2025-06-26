@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'native-base';
 
 import { initialize } from '../../redux/Dispatch/actions';
+import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
 import {
   selectDispatchUiTaskFilters,
   selectFilteredTaskLists,
@@ -33,6 +34,11 @@ export default function AllTasks({ navigation, route }) {
 
   const { isFetching, isError, refetch } = useAllTasks(selectedDate);
   const bgHighlightColor = useBackgroundHighlightColor()
+
+  const handleRefetch = () => {
+    refetch()
+    dispatch(clearSelectedTasks());
+  }
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -70,7 +76,7 @@ export default function AllTasks({ navigation, route }) {
       </View>
       <GroupedTasks
         isFetching={isFetching}
-        refetch={refetch}
+        refetch={handleRefetch}
         route={route}
         taskLists={taskLists}
         unassignedTasks={unassignedTasks}

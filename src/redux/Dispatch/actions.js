@@ -33,9 +33,6 @@ export const loadTaskListsRequest = createAction('@dispatch/LOAD_TASK_LISTS_REQU
 export const loadTaskListsSuccess = createAction('@dispatch/LOAD_TASK_LISTS_SUCCESS');
 export const loadTaskListsFailure = createAction('@dispatch/LOAD_TASK_LISTS_FAILURE');
 
-export const addKeywordFilter = createAction('@dispatch/ADD_KEYWORD_FILTER');
-export const removeKeywordFilter = createAction('@dispatch/REMOVE_KEYWORD_FILTER');
-
 export const changeDate = createAction(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
