@@ -83,6 +83,7 @@ export const selectTaskLists = createSelector(
       });
 
       newTaskList.items = _.uniqBy(orderedItems, '@id');
+      newTaskList.tasksIds = newTaskList.items.map(item => item['@id']);
 
       return newTaskList;
     }),

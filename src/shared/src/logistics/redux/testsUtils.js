@@ -80,6 +80,7 @@ export const getTaskListWithItems = usernames => (id, items) => {
   return TaskList({
     id,
     items,
+    tasksIds: items.map(item => item['@id']),
     username,
   })
 }

@@ -124,6 +124,10 @@ describe('Selectors', () => {
             '/api/tasks/1',
             '/api/tasks/2',
           ],
+          tasksIds: [
+            '/api/tasks/1',
+            '/api/tasks/2',
+          ],
           username: 'bot_1',
           items: [
             {
@@ -146,6 +150,9 @@ describe('Selectors', () => {
           itemIds: [
             '/api/tasks/3',
           ],
+          tasksIds: [
+            '/api/tasks/3',
+          ],
           items: [
             {
               '@id': '/api/tasks/3',
@@ -160,6 +167,11 @@ describe('Selectors', () => {
           itemIds: [
             '/api/tasks/4',
             '/api/tours/1',
+          ],
+          tasksIds: [
+            '/api/tasks/4',
+            '/api/tasks/5',
+            '/api/tasks/6',
           ],
           items: [
             {
@@ -226,6 +238,9 @@ describe('Selectors', () => {
             '/api/tasks/1',
             '/api/tasks/2',
           ],
+          tasksIds: [
+            '/api/tasks/1',
+          ],
           items: [
             {
               '@id': '/api/tasks/1',
@@ -289,6 +304,10 @@ describe('Selectors', () => {
           username: 'bot_10',
           itemIds: [
             '/api/tours/10',
+          ],
+          tasksIds: [
+            '/api/tasks/9',
+            '/api/tasks/10',
           ],
           items: [
             {

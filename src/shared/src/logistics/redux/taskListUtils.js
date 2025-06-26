@@ -49,7 +49,7 @@ export function withLinkedTasksForTaskList(orders, allTasks, allTaskLists) {
 
       allRelatedTasks.forEach(relatedTask => {
         const foundRelatedTaskList = allTaskLists.find(
-          taskList => taskList.items.map(t => t['@id']).includes(relatedTask['@id'])
+          taskList => taskList.tasksIds.includes(relatedTask['@id'])
         );
         const accKey = foundRelatedTaskList ? foundRelatedTaskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
         acc[accKey] = (acc[accKey] || []).concat(relatedTask);
