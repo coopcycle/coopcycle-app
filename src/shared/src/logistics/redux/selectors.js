@@ -22,6 +22,7 @@ const tourSelectors = tourAdapter.getSelectors(
 export const selectSelectedDate = state => state.logistics.date;
 
 export const selectAllTasks = taskSelectors.selectAll;
+export const selectTasksEntities = taskSelectors.selectEntities;
 
 export const selectAllTours = tourSelectors.selectAll;
 
@@ -82,8 +83,9 @@ export const selectTaskLists = createSelector(
         return [];
       });
 
-      newTaskList.items = _.uniqBy(orderedItems, '@id');
-      newTaskList.tasksIds = newTaskList.items.map(item => item['@id']);
+      const items = _.uniqBy(orderedItems, '@id');
+      // newTaskList.items = items;
+      newTaskList.tasksIds = items.map(item => item['@id']);
 
       return newTaskList;
     }),

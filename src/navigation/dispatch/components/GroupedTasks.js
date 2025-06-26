@@ -16,20 +16,20 @@ import {
   removeOrder,
   removeTask
 } from '../../../redux/Dispatch/updateSelectedTasksSlice';
-import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
-import { getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
+import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import {
   darkGreyColor,
   darkRedColor,
   whiteColor
 } from '../../../styles/common';
+import { getTaskListTasks, getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
-import { selectTaskLists, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
+import { selectTaskLists, selectTasksEntities, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
-import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
+import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -43,8 +43,9 @@ export default function GroupedTasks({
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
-  const allTaskLists = useSelector(selectTaskLists);
+  const tasksEntities = useSelector(selectTasksEntities);
   const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
+  const allTaskLists = useSelector(selectTaskLists);
 
   const bgHighlightColor = useBackgroundHighlightColor();
 
@@ -62,8 +63,8 @@ export default function GroupedTasks({
     },
     ...taskLists.map(taskList => ({
       backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-      count: taskList.items.length,
-      data: taskList.items,
+      count: taskList.tasksIds.length,
+      data: getTaskListTasks(taskList, tasksEntities),
       id: `${taskList.username.toLowerCase()}TasksList`,
       isUnassignedTaskList: false,
       taskListId: taskList['@id'],
@@ -99,7 +100,7 @@ export default function GroupedTasks({
     } else {
       const username = task.assignedTo;
       const taskList = getUserTaskList(username, allTaskLists)
-      const relatedTasks = taskList.items;
+      const relatedTasks = getTaskListTasks(taskList, tasksEntities);
       navigateToTask(navigation, route, task, relatedTasks);
     }
   };

@@ -1,9 +1,11 @@
 import { createSelector } from 'reselect';
 
 import { filterTasks } from '../logistics/utils';
+import { getTaskListTasks } from '../../shared/src/logistics/redux/taskListUtils';
 import { selectTaskFilters } from '../Courier/taskSelectors';
 import {
   selectTaskLists,
+  selectTasksEntities,
   selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
 
@@ -28,10 +30,14 @@ export const selectFilteredUnassignedTasksNotCancelled = filters => createSelect
 
 export const selectFilteredTaskLists = filters => createSelector(
   selectTaskLists,
-  (taskLists) => {
+  selectTasksEntities,
+  (taskLists, taskEntities) => {
     const filteredTaskLists = taskLists.map(taskList => {
       const filteredTaskList = {...taskList};
-      filteredTaskList.items = filterTasks(taskList.items, filters);
+
+      const tasks = getTaskListTasks(taskList, taskEntities);
+      const filteredTasks = filterTasks(tasks, filters);
+      filteredTaskList.tasksIds = filteredTasks.map(task => task['@id']);
 
       return filteredTaskList;
     });

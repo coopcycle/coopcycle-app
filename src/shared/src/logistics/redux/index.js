@@ -10,6 +10,7 @@ export {
   selectAssignedTasks,
   selectSelectedDate,
   selectTaskLists,
+  selectTasksEntities,
   selectTasksWithColor,
   selectToursTasksIndex,
   selectUnassignedTasks,

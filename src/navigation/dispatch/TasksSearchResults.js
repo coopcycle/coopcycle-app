@@ -3,9 +3,11 @@ import { Text, View } from 'native-base';
 import { useSelector } from 'react-redux';
 
 import { filterTasksByKeyword } from '../../shared/src/logistics/redux/taskUtils';
+import { getTaskListTasks } from '../../shared/src/logistics/redux/taskListUtils';
 import { mediumGreyColor } from '../../styles/common';
 import {
   selectTaskLists,
+  selectTasksEntities,
   selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
@@ -16,17 +18,20 @@ export default function TasksSearchResults({
   route,
 }) {
   const unassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
+  const tasksEntities = useSelector(selectTasksEntities);
   const taskLists = useSelector(selectTaskLists);
 
   const filteredUnassignedTasks = filterTasksByKeyword(unassignedTasks, route.params.searchQuery);
   const filteredTasksLists = taskLists
     .map(taskList => {
       const filteredTaskList = {...taskList};
-      filteredTaskList.items = filterTasksByKeyword(taskList.items, route.params.searchQuery);
+      const tasks = getTaskListTasks(taskList, tasksEntities);
+      const filteredTasks = filterTasksByKeyword(tasks, route.params.searchQuery)
+      filteredTaskList.tasksIds = filteredTasks.map(task => task['@id']);
 
       return filteredTaskList;
     })
-    .filter(taskList => taskList.items.length > 0);
+    .filter(taskList => taskList.tasksIds.length > 0);
 
   return (
     <BasicSafeAreaView>
