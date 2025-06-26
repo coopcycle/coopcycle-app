@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { addKeywordFilter } from "../../redux/Dispatch/actions";
+import { addKeywordFilter } from "../../redux/Dispatch/keywordFiltersSlice";
 import { greenColor, whiteColor } from "../../styles/common";
 import { useDispatch } from "react-redux";
 import ActiveKeywordFilters from "./components/ActiveKeywordFilters";

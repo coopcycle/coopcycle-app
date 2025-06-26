@@ -1,28 +1,35 @@
+import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, View } from 'native-base';
+import { useState } from 'react';
 import {
   SectionList,
   TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
+import {
+  addOrder,
+  addTask,
+  clearSelectedTasks,
+  removeOrder,
+  removeTask
+} from '../../../redux/Dispatch/updateSelectedTasksSlice';
+import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import { getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import {
   darkGreyColor,
   darkRedColor,
   whiteColor
 } from '../../../styles/common';
-import { getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTaskLists, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
+import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
-import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -33,14 +40,13 @@ export default function GroupedTasks({
   unassignedTasks,
 }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-
   const tasksWithColor = useSelector(selectTasksWithColor);
   const allTaskLists = useSelector(selectTaskLists);
   const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
 
-  const bulkEditTasksFloatingButtonRef = useRef(null);
-  const bgHighlightColor = useBackgroundHighlightColor()
+  const bgHighlightColor = useBackgroundHighlightColor();
 
   // Combine unassigned tasks and task lists to use in SectionList
   const sections = [
@@ -76,6 +82,7 @@ export default function GroupedTasks({
   // Update tasks functions
   const {
     assignTask,
+    getLinkedTasks,
     bulkEditTasks,
     assignTaskWithRelatedTasks,
     reassignTask,
@@ -96,7 +103,6 @@ export default function GroupedTasks({
       navigateToTask(navigation, route, task, relatedTasks);
     }
   };
-
   const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
     const onItemPress = user => _onSelectNewAssignation(
       () => (isUnassignedTaskList ? assignTaskWithRelatedTasks : reassignTaskWithRelatedTasks)(task, user),
@@ -135,17 +141,35 @@ export default function GroupedTasks({
   }
 
   const handleOnSwipeToLeft = (task, taskListId) => {
-    bulkEditTasksFloatingButtonRef.current?.addOrder(task, taskListId);
-  }
+  const tasksByTaskList = getLinkedTasks(task, taskListId);
+
+  Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
+    tasks.forEach(taskToAdd => {
+      dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
+    });
+  });
+};
+
+/*    const handleOnSwipeToLeft = (task, taskListId) => {
+    dispatch(addOrder({ task, taskListId }));
+  } */
 
   const handleOnSwipeToRight = (task, taskListId) => {
-    bulkEditTasksFloatingButtonRef.current?.addTask(task, taskListId);
+    dispatch(addTask({ task, taskListId }));
   }
 
-  const handleOnSwipeClose = (section) => (task) => {
-    bulkEditTasksFloatingButtonRef.current?.removeOrder(task, section.taskListId);
-    bulkEditTasksFloatingButtonRef.current?.removeTask(task, section.taskListId);
-  };
+  const handleOnSwipeClose = (section, task) => {
+  const taskListId = section.taskListId;
+  const tasksByTaskList = getLinkedTasks(task, taskListId);
+
+  Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
+    tasks.forEach(taskToRemove => {
+      const taskId = taskToRemove['@id'];
+      dispatch(removeOrder({ taskId, taskListId: listId }));
+      dispatch(removeTask({ taskId, taskListId: listId }));
+    });
+  });
+};
 
   const handleBulkAssignButtonPress = (selectedTasks) => {
     const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
@@ -158,14 +182,14 @@ export default function GroupedTasks({
       onItemPress: user => {
         _onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks, user);
-          bulkEditTasksFloatingButtonRef.current?.clearSelectedTasks();
+          dispatch(clearSelectedTasks());
         })
       },
       showUnassignButton,
       onUnassignButtonPress: () => {
         _onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks);
-          bulkEditTasksFloatingButtonRef.current?.clearSelectedTasks();
+          dispatch(clearSelectedTasks());
         })
       },
     });
@@ -210,6 +234,7 @@ export default function GroupedTasks({
       <SectionList
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
+        keyboardShouldPersistTaps="handled"
         renderSectionHeader={({ section }) => (
           <View style={{ backgroundColor: bgHighlightColor }}>
             <TouchableOpacity
@@ -264,7 +289,7 @@ export default function GroupedTasks({
                 onTaskClick={onTaskClick(section.isUnassignedTaskList)}
                 tasks={section.data}
                 tasksWithColor={tasksWithColor}
-                onSwipeClosed={handleOnSwipeClose(section)}
+                onSwipeClosed={(task) =>{handleOnSwipeClose(section, task)}}
                 {...swipeLeftConfiguration(section)}
                 {...swipeRightConfiguration(section)}
               />
@@ -279,7 +304,7 @@ export default function GroupedTasks({
       <BulkEditTasksFloatingButton
         onPress={handleBulkAssignButtonPress}
         iconName="user-circle"
-        ref={bulkEditTasksFloatingButtonRef}
+        //ref={bulkEditTasksFloatingButtonRef}
       />
     </>
   );
