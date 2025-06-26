@@ -134,7 +134,7 @@ export const logout = async () => {
 };
 
 export const chooseRestaurant = async restaurantName => {
-  console.log(`Choosing restaurant "${restaurantName}"`);
+  console.log(`Choosing restaurant "${restaurantName}"..`);
   try {
     await expect(element(by.label(restaurantName))).toBeVisible();
   } catch (e) {
@@ -202,6 +202,7 @@ const cvvElement = () => stripeUiElement('CVC', 'CVC');
  * see https://docs.stripe.com/testing for more test card numbers
  */
 export const enterValidCreditCard = async () => {
+  console.log("Entering valid credit card information..");
   // Tap the credit card input to make sure we can interact with it
   await cardNumberElement().tap();
 
@@ -215,6 +216,7 @@ export const enterValidCreditCard = async () => {
 };
 
 export const closeRestaurantForToday = async (username, password) => {
+  console.log("Closing restaurant for today..");
   try {
     // Get API token
     const loginResponse = await axios.post(
@@ -287,7 +289,7 @@ export const selectAutocompleteAddress = async (
 export const typeTextQuick = async (elemIdOrObj, text) => {
   const isElemId = typeof elemIdOrObj === 'string';
   const elem = () => isElemId ? element(by.id(elemIdOrObj)) : elemIdOrObj;
-  console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}..`);
+  console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}`);
 
   if (text.length > 1) {
     await elem().replaceText(text.slice(0, -1));
@@ -300,24 +302,28 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
 };
 
 export const tapById = async (testID, timeout = 0) => {
+  console.log(`Tapping element with testID "${testID}"`);
   await waitToBeVisible(testID, timeout);
   await element(by.id(testID)).tap();
   return element(by.id(testID));
 };
 
 export const tapByText = async (text) => {
+  console.log(`Tapping element containing the text "${text}"`);
   await waitFor(element(by.text(text))).toBeVisible();
   await element(by.text(text)).tap();
   return element(by.text(text));
 };
 
 export const swipeRight = async (testID, timeout = 0) => {
+  console.log(`Swiping right element with testID "${testID}"`);
   await waitToBeVisible(testID, timeout);
   await element(by.id(testID)).swipe('right');
   return element(by.id(testID));
 };
 
 export const swipeLeft = async (testID, timeout = 0) => {
+  console.log(`Swiping left element with testID "${testID}"`);
   await waitToBeVisible(testID, timeout);
   await element(by.id(testID)).swipe('left');
   return element(by.id(testID));
