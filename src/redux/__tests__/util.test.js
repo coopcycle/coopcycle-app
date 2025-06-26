@@ -80,7 +80,7 @@ describe('Redux | util', () => {
       });
 
       const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 10);
-      expect(rs).toEqual(members);
+      expect(rs).toEqual({ data: members });
       expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
 
@@ -94,7 +94,7 @@ describe('Redux | util', () => {
       });
 
       const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 2);
-      expect(rs).toEqual([...members, ...members, ...members]);
+      expect(rs).toEqual({ data: [...members, ...members, ...members] });
       expect(fetchWithBQ).toHaveBeenCalledTimes(3);
     });
 
@@ -108,7 +108,7 @@ describe('Redux | util', () => {
       });
 
       const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 7);
-      expect(rs).toEqual(members);
+      expect(rs).toEqual({ data: members });
       expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
 
@@ -122,8 +122,38 @@ describe('Redux | util', () => {
       });
 
       const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 1);
-      expect(rs).toEqual(members);
+      expect(rs).toEqual({ data: members });
       expect(fetchWithBQ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return error when first page request fails', async () => {
+      const fetchWithBQ = jest.fn();
+      const error = new Error('Network error');
+      fetchWithBQ.mockRejectedValue(error);
+
+      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 10);
+      expect(rs).toEqual({ error });
+      expect(fetchWithBQ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return error when subsequent page request fails', async () => {
+      const fetchWithBQ = jest.fn();
+      const error = new Error('Network error on page 2');
+
+      // First call succeeds
+      fetchWithBQ.mockResolvedValueOnce({
+        data: {
+          'hydra:totalItems': 4,
+          'hydra:member': members
+        }
+      });
+
+      // Second call fails
+      fetchWithBQ.mockRejectedValueOnce(error);
+
+      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 2);
+      expect(rs).toEqual({ error });
+      expect(fetchWithBQ).toHaveBeenCalledTimes(2);
     });
   });
 
