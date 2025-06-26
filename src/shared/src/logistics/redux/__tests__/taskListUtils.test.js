@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import {
   buildSelectedTasks,
+  getTaskListTasks,
   getTasksListIdsToEdit,
   getTasksListsToEdit,
   replaceItemsWithItemIds,
@@ -60,20 +61,66 @@ function sortTasksListItems(tasksListIdsToEdit) {
 describe('taskListUtils', () => {
   describe('replaceItemsWithItemIds', () => {
     it('should remove items and add itemIds in a task list', () => {
-      const taskList = {
-        '@id': '/api/task_lists/1',
-        username: 'bot_1',
-        items: ['/api/tasks/1', '/api/tasks/2'],
-      };
+      const taskList = allTaskLists[3];
 
       const result = replaceItemsWithItemIds(taskList);
 
-      expect(result).toEqual({
-        '@id': '/api/task_lists/1',
-        username: 'bot_1',
-        itemIds: ['/api/tasks/1', '/api/tasks/2'],
-      });
+      const expected = {
+        ...taskList,
+        itemIds: taskList.items,
+      };
+      delete expected.items;
+
+      expect(result).toEqual(expected);
       expect(result).not.toBe(taskList);
+    });
+  });
+
+  describe('getTaskListTasks', () => {
+    it('should return empty if no tasks are loaded', () => {
+      const taskList = allTaskLists[3];
+
+      const tasksEntities = {};
+
+      const result = getTaskListTasks(taskList, tasksEntities);
+
+      expect(result).toEqual([]);
+    });
+
+    it('should return a partial list if some tasks are loaded', () => {
+      const taskList = allTaskLists[3];
+
+      const tasksEntities = {
+        '/api/tasks/3': allTasks[3],
+        '/api/tasks/4': allTasks[4],
+      };
+
+      const result = getTaskListTasks(taskList, tasksEntities);
+
+      expect(result).toEqual([
+        allTasks[3],
+        allTasks[4],
+      ]);
+    });
+
+    it('should return all tasks if all tasks are loaded', () => {
+      const taskList = allTaskLists[3];
+
+      const tasksEntities = {
+        '/api/tasks/2': allTasks[2],
+        '/api/tasks/3': allTasks[3],
+        '/api/tasks/4': allTasks[4],
+        '/api/tasks/5': allTasks[5],
+        '/api/tasks/6': allTasks[6],
+      };
+
+      const result = getTaskListTasks(taskList, tasksEntities);
+
+      expect(result).toEqual([
+        allTasks[3],
+        allTasks[4],
+        allTasks[5],
+      ]);
     });
   });
 

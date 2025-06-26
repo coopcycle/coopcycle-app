@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+
 import { withLinkedTasks } from './taskUtils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../constants';
 
@@ -13,6 +14,16 @@ export function replaceItemsWithItemIds(taskList) {
   delete entity.items;
 
   return entity;
+}
+
+export function getTaskListTasks(taskList, tasksEntities) {
+  const tasks = taskList.tasksIds.map(taskId => {
+    const maybeTask = tasksEntities[taskId];
+
+    return maybeTask;
+  }).filter(maybeTask => maybeTask);
+
+  return tasks;
 }
 
 export function createCurrentTaskList(items = []) {
