@@ -17,10 +17,11 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
 
 import { filterTasks } from '../redux/logistics/utils';
-import { getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
+import { getTaskListTasks, getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
 import { selectIsPolylineOn } from '../redux/Courier';
+import { selectTasksEntities } from '../shared/logistics/redux';
 import TaskCallout from './TaskCallout';
 import TaskMarker from './TaskMarker';
 
@@ -235,7 +236,7 @@ class TasksMapView extends Component {
     );
   }
 
-  getCoordinates(taskList) {
+  getCoordinates(taskList, tasksEntities) {
     if(taskList.polyline !== '') {
       const decodedCoordinates = decode(taskList.polyline).map(coords => ({
         latitude: coords[0],
@@ -244,8 +245,9 @@ class TasksMapView extends Component {
 
       return decodedCoordinates;
     }
+    const taskListTasks = getTaskListTasks(taskList, tasksEntities);
 
-    return taskList.items.map(task => task.address.geo);
+    return taskListTasks.map(task => task.address.geo);
   }
 
   renderModal() {
@@ -281,12 +283,14 @@ class TasksMapView extends Component {
       onMapReady,
       taskLists,
       uiFilters,
+      tasksEntities,
       ...otherProps
     } = this.props;
 
     // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
     const data = _.flatMap(taskLists, (taskList) => {
-      const items = uiFilters ? filterTasks(taskList.items, uiFilters) : taskList.items;
+      const taskListTasks = getTaskListTasks(taskList, tasksEntities);
+      const items = uiFilters ? filterTasks(taskListTasks, uiFilters) : taskListTasks;
 
       return items.map(task => ({
         ...task,
@@ -329,7 +333,7 @@ class TasksMapView extends Component {
             {this.props.isPolylineOn ? (
               taskLists.map(taskList => (
                 <Polyline
-                  coordinates={this.getCoordinates(taskList)}
+                  coordinates={this.getCoordinates(taskList, tasksEntities)}
                   strokeWidth={3}
                   strokeColor={taskList.color}
                   key={taskList.id}
@@ -347,6 +351,7 @@ class TasksMapView extends Component {
 function mapStateToProps(state) {
   return {
     isPolylineOn: selectIsPolylineOn(state),
+    tasksEntities: selectTasksEntities(state),
   };
 }
 

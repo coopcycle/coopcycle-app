@@ -3,12 +3,13 @@ import { Text, View } from 'native-base';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import { getTaskListTasks, getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../utils';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
 import {
   selectSelectedDate,
   selectTaskLists,
+  selectTasksEntities,
 } from '../../shared/logistics/redux';
 import { selectDispatchUiTaskFilters } from '../../redux/Dispatch/selectors';
 import { useAllTasks } from './useAllTasks';
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
 export default function TasksMap({ navigation, route }) {
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
   const allTaskLists = useSelector(selectTaskLists);
+  const tasksEntities = useSelector(selectTasksEntities);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
   const bgHighlightColor = useBackgroundHighlightColor()
@@ -53,9 +55,10 @@ export default function TasksMap({ navigation, route }) {
   }, [defaultCoordinates]);
 
   const navigateToSelectedTask = task => {
-    const taskList = getTaskTaskList(task, allTaskLists);
     // task is one the the task lists' tasks, so taskList is always defined
-    navigateToTask(navigation, route, task, taskList.items);
+    const taskList = getTaskTaskList(task, allTaskLists);
+    const relatedTasks = getTaskListTasks(taskList, tasksEntities);
+    navigateToTask(navigation, route, task, relatedTasks);
   };
 
   return (

@@ -1,4 +1,5 @@
 import { Icon, Text } from 'native-base';
+import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -12,7 +13,9 @@ import {
   failedIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
+import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import { mapToColor } from '../shared/src/logistics/redux/taskUtils';
+import { selectTasksEntities } from '../shared/logistics/redux';
 
 const container = {
   margin: 10,
@@ -20,7 +23,7 @@ const container = {
   justifyContent: 'center',
 };
 
-const markerColor = (task, taskList) => {
+const markerColor = (task, taskList, tasksEntities) => {
   let color = darkGreyColor;
 
   if (task.tags.length > 0) {
@@ -28,8 +31,9 @@ const markerColor = (task, taskList) => {
   }
 
   // TODO / FIXME: Sometimes `taskList` is undefined
-  if (taskList && taskList.items) {
-    const taskListColors = mapToColor(taskList.items);
+  if (taskList && taskList.tasksIds) {
+    const taskListTasks = getTaskListTasks(taskList, tasksEntities);
+    const taskListColors = mapToColor(taskListTasks);
     color = taskListColors[task['@id']] || color;
   }
 
@@ -57,12 +61,12 @@ const markerOpacity = task => {
 const containerSize = 32;
 const background = whiteColor;
 
-const backgroundStyle = (task, taskList) => {
+const backgroundStyle = (task, taskList, tasksEntities) => {
   return {
     width: containerSize,
     height: containerSize,
     backgroundColor: background,
-    borderColor: markerColor(task, taskList),
+    borderColor: markerColor(task, taskList, tasksEntities),
     opacity: markerOpacity(task),
     borderWidth: 2,
     borderStyle: 'solid',
@@ -74,10 +78,10 @@ const backgroundStyle = (task, taskList) => {
   };
 };
 
-const iconStyle = (task, taskList) => {
+const iconStyle = (task, taskList, tasksEntities) => {
   return {
     position: 'absolute',
-    color: markerColor(task, taskList),
+    color: markerColor(task, taskList, tasksEntities),
     opacity: markerOpacity(task),
   };
 };
@@ -112,11 +116,12 @@ const warnIconStyle = () => {
 };
 
 export default ({ task, taskList, type, hasWarnings }) => {
+  const tasksEntities = useSelector(selectTasksEntities);
   const _iconName = iconName(task, type);
 
   return (
     <View style={container}>
-      <View style={backgroundStyle(task, taskList)} />
+      <View style={backgroundStyle(task, taskList, tasksEntities)} />
       {hasWarnings ? (
         <Text bold style={warnIconStyle()}>
           .
@@ -125,7 +130,7 @@ export default ({ task, taskList, type, hasWarnings }) => {
       <Icon
         as={FontAwesome}
         name={_iconName}
-        style={iconStyle(task, taskList)}
+        style={iconStyle(task, taskList, tasksEntities)}
         size="xs"
         testID={`taskMarker-${_iconName}`}
       />
