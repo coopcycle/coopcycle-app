@@ -150,7 +150,7 @@
     "HIDE_FAILED_TASKS": "Hide failed tasks",
     "FILTER_BY_KEYWORDS": "Filter by keywords",
     "NO_KEYWORDS_FILTERS": "You don't have active filters",
-    "KEYWORD_FILTERS_SEARCH_PLACEHOLDER": "Search your filters...",
+    "KEYWORD_FILTERS_SEARCH_EXPLANATION": "Enter a tag, a store/restaurant/shop..\n(type \"-\" to exclude)",
     "KEYWORD_FILTERS_APPLY_FILTERS": "Apply filters",
     "HIDE_TASKS_TAGGED_WITH": "Hide tasks tagged with",
     "TASKS_CHANGED_ALERT_SOUND": "Tasks changed alert sound",

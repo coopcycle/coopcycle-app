@@ -149,7 +149,7 @@
     "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
     "FILTER_BY_KEYWORDS": "Filtrer par mots-clés",
     "NO_KEYWORDS_FILTERS": "Vous n'avez pas de filtres actifs",
-    "KEYWORD_FILTERS_SEARCH_PLACEHOLDER": "Recherchez vos filtres...",
+    "KEYWORD_FILTERS_SEARCH_EXPLANATION": "Entrez un tag, un magasin/restaurant/boutiques..\n(tapez \"-\" pour exclure)",
     "KEYWORD_FILTERS_APPLY_FILTERS": "Appliquer des filtres",
     "HIDE_TASKS_TAGGED_WITH": "Masquer les tâches marquées avec",
     "RESTAURANT_LIST_CLICK_BELOW": "Cliquez sur un restaurant dans la liste ci-dessous",

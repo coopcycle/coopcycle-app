@@ -33,11 +33,14 @@ export default function KeywordsFilters() {
   return (
     <BasicSafeAreaView>
       <View style={styles.view}>
+        <Text style={styles.searchExplanation}>
+          {t('KEYWORD_FILTERS_SEARCH_EXPLANATION')}
+        </Text>
         <SearchInput
           style={styles.searchInput}
           onChangeText={setKeyword}
           onSubmitEditing={handleSearchSubmit}
-          placeholder={t('KEYWORD_FILTERS_SEARCH_PLACEHOLDER')}
+          placeholder=""
           value={keyword}
         />
         <ActiveKeywordFilters />
@@ -63,6 +66,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop: 20,
     paddingHorizontal: 14,
+  },
+  searchExplanation: {
+    flexDirection: 'row',
   },
   searchInput: {
     backgroundColor: '#FFFFFF',
