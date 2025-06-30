@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, View } from 'native-base';
-import { useState } from 'react';
 import {
   SectionList,
   TouchableOpacity,
 } from 'react-native';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +28,7 @@ import { selectTaskLists, selectTasksEntities, selectTasksWithColor, selectUnass
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
-import TaskList from '../../../components/TaskList';
+import TaskListItem from '../../../components/TaskListItem';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 
 export default function GroupedTasks({
@@ -47,10 +47,8 @@ export default function GroupedTasks({
   const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const allTaskLists = useSelector(selectTaskLists);
 
-  const bgHighlightColor = useBackgroundHighlightColor();
-
   // Combine unassigned tasks and task lists to use in SectionList
-  const sections = [
+  const sections = useMemo(() => [
     {
       backgroundColor: whiteColor,
       count: unassignedTasks.length,
@@ -71,7 +69,7 @@ export default function GroupedTasks({
       textColor: whiteColor,
       title: taskList.username,
     })),
-  ];
+  ], [t, taskLists, tasksEntities, unassignedTasks]);
 
   const filteredSections = hideEmptyTaskLists
     ? sections.filter(section => section.data.length > 0)
@@ -92,7 +90,7 @@ export default function GroupedTasks({
     unassignTaskWithRelatedTasks,
   } = useSetTaskListItems();
 
-  const onTaskClick = isUnassignedTaskList => task => {
+  const onTaskClick = useCallback((isUnassignedTaskList, task) => {
     // If task is unassigned, related tasks are unassigned tasks
     // If task is assigned, related tasks are task's task list's tasks
     if (isUnassignedTaskList) {
@@ -103,8 +101,9 @@ export default function GroupedTasks({
       const relatedTasks = getTaskListTasks(taskList, tasksEntities);
       navigateToTask(navigation, route, task, relatedTasks);
     }
-  };
-  const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
+  }, [allTaskLists, allUnassignedTasks, navigation, route, tasksEntities]);
+
+  const assignTaskWithRelatedTasksHandler = useCallback(isUnassignedTaskList => task => {
     const onItemPress = user => _onSelectNewAssignation(
       () => (isUnassignedTaskList ? assignTaskWithRelatedTasks : reassignTaskWithRelatedTasks)(task, user),
     );
@@ -115,12 +114,12 @@ export default function GroupedTasks({
 
     navigation.navigate('DispatchPickUser', {
       onItemPress,
-      showUnassignButton: !isUnassignedTaskList,
       onUnassignButtonPress,
+      showUnassignButton: !isUnassignedTaskList,
     });
-  };
+  }, [_onSelectNewAssignation, assignTaskWithRelatedTasks, navigation, reassignTaskWithRelatedTasks, unassignTaskWithRelatedTasks]);
 
-  const assignTaskHandler = isUnassignedTaskList => task => {
+  const assignTaskHandler = useCallback(isUnassignedTaskList => task => {
     const onItemPress = user => _onSelectNewAssignation(
       () => (isUnassignedTaskList ? assignTask : reassignTask)(task, user),
     );
@@ -134,43 +133,39 @@ export default function GroupedTasks({
       showUnassignButton: !isUnassignedTaskList,
       onUnassignButtonPress,
     });
-  };
+  }, [_onSelectNewAssignation, assignTask, navigation, reassignTask, unassignTask]);
 
-  const _onSelectNewAssignation = (callback) => {
+  const _onSelectNewAssignation = useCallback((callback) => {
     navigation.navigate('DispatchAllTasks');
     callback();
-  }
+  }, [navigation]);
 
-  const handleOnSwipeToLeft = (task, taskListId) => {
-  const tasksByTaskList = getLinkedTasks(task, taskListId);
+  const handleOnSwipeToLeft = useCallback((task, taskListId) => {
+    const tasksByTaskList = getLinkedTasks(task, taskListId);
 
-  Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
-    tasks.forEach(taskToAdd => {
-      dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
+    Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
+      tasks.forEach(taskToAdd => {
+        dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
+      });
     });
-  });
-};
+  }, [dispatch, getLinkedTasks]);
 
-/*    const handleOnSwipeToLeft = (task, taskListId) => {
-    dispatch(addOrder({ task, taskListId }));
-  } */
-
-  const handleOnSwipeToRight = (task, taskListId) => {
+  const handleOnSwipeToRight = useCallback((task, taskListId) => {
     dispatch(addTask({ task, taskListId }));
-  }
+  }, [dispatch]);
 
-  const handleOnSwipeClose = (section, task) => {
-  const taskListId = section.taskListId;
-  const tasksByTaskList = getLinkedTasks(task, taskListId);
+  const handleOnSwipeClose = useCallback((section, task) => {
+    const taskListId = section.taskListId;
+    const tasksByTaskList = getLinkedTasks(task, taskListId);
 
-  Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
-    tasks.forEach(taskToRemove => {
-      const taskId = taskToRemove['@id'];
-      dispatch(removeOrder({ taskId, taskListId: listId }));
-      dispatch(removeTask({ taskId, taskListId: listId }));
+    Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
+      tasks.forEach(taskToRemove => {
+        const taskId = taskToRemove['@id'];
+        dispatch(removeOrder({ taskId, taskListId: listId }));
+        dispatch(removeTask({ taskId, taskListId: listId }));
+      });
     });
-  });
-};
+  }, [dispatch, getLinkedTasks]);
 
   const handleBulkAssignButtonPress = (selectedTasks) => {
     const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
@@ -200,21 +195,79 @@ export default function GroupedTasks({
     return task.status !== 'DONE';
   };
 
-  const swipeLeftConfiguration = section => ({
-    onPressLeft: assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
-    onSwipeToLeft: (task) => handleOnSwipeToLeft(task, section.taskListId),
+  const swipeLeftConfiguration = useCallback((section, task) => ({
+    disableLeftSwipe: !allowToSelect(task),
+    onPressLeft: () => assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
+    onSwipedToLeft: () => handleOnSwipeToLeft(task, section.taskListId),
+    onSwipeClosed: () => handleOnSwipeClose(section, task),
     swipeOutLeftBackgroundColor: darkRedColor,
-    swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIconName: assignOrderIconName,
-  });
+  }), [assignTaskWithRelatedTasksHandler, handleOnSwipeClose, handleOnSwipeToLeft]);
 
-  const swipeRightConfiguration = section => ({
-    onPressRight: assignTaskHandler(section.isUnassignedTaskList),
-    onSwipeToRight: (task) => handleOnSwipeToRight(task, section.taskListId),
+  const swipeRightConfiguration = useCallback((section, task) => ({
+    disableRightSwipe: !allowToSelect(task),
+    onPressRight: () => assignTaskHandler(section.isUnassignedTaskList),
+    onSwipeClosed: () => handleOnSwipeClose(section, task),
+    onSwipedToRight: () => handleOnSwipeToRight(task, section.taskListId),
     swipeOutRightBackgroundColor: darkRedColor,
-    swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: assignTaskIconName,
-  });
+  }), [assignTaskHandler, handleOnSwipeClose, handleOnSwipeToRight]);
+
+  const taskColor = (task) => {
+    let tasksWithColorSafe = tasksWithColor ?? [];
+    return Object.prototype.hasOwnProperty.call(tasksWithColorSafe, task['@id'])
+      ? tasksWithColor[task['@id']]
+      : '#ffffff';
+  };
+
+  return (
+    <>
+      <SectionList
+        sections={filteredSections}
+        stickySectionHeadersEnabled={true}
+        keyboardShouldPersistTaps="handled"
+        initialNumToRender={2}
+        maxToRenderPerBatch={25}
+        windowSize={5}
+        renderSectionHeader={({ section }) => (
+          <SectionHeader
+            section={section}
+            collapsedSections={collapsedSections}
+            setCollapsedSections={setCollapsedSections}
+          />
+        )}
+        keyExtractor={(item, index) => item.id}
+        renderItem={({ section, item, index }) => {
+          console.log({index, item: item.id, section: section.id})
+          if (!isFetching && !collapsedSections.has(section.title)) {
+            return (
+              <TaskListItem
+                task={item}
+                index={index}
+                color={taskColor(item)}
+                taskListId={section.id}
+                onPress={() => onTaskClick(section.isUnassignedTaskList, item)}
+                {...swipeLeftConfiguration(section, item)}
+                {...swipeRightConfiguration(section, item)}
+              />
+            );
+          }
+          return null;
+        }}
+        refreshing={!!isFetching}
+        onRefresh={() => refetch && refetch()}
+      />
+      <BulkEditTasksFloatingButton
+        onPress={handleBulkAssignButtonPress}
+        iconName="user-circle"
+        //ref={bulkEditTasksFloatingButtonRef}
+      />
+    </>
+  );
+}
+
+function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
+  const bgHighlightColor = useBackgroundHighlightColor();
 
   // Disabled animation for now..!
   // if (Platform.OS === 'android') {
@@ -231,82 +284,47 @@ export default function GroupedTasks({
   };
 
   return (
-    <>
-      <SectionList
-        sections={filteredSections}
-        stickySectionHeadersEnabled={true}
-        keyboardShouldPersistTaps="handled"
-        renderSectionHeader={({ section }) => (
-          <View style={{ backgroundColor: bgHighlightColor }}>
-            <TouchableOpacity
-              onPress={() => handleToggle(section.title)}
-              activeOpacity={0.5}
+    <View style={{ backgroundColor: bgHighlightColor }}>
+      <TouchableOpacity
+        onPress={() => handleToggle(section.title)}
+        activeOpacity={0.5}
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 8,
+          paddingVertical: 4,
+          backgroundColor: whiteColor,
+          margin: 4,
+          borderRadius: 5,
+        }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View
+            style={{
+              backgroundColor: section.backgroundColor,
+              borderRadius: 4,
+              marginEnd: 8,
+              padding: 4,
+            }}>
+            <Text
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 8,
-                paddingVertical: 4,
-                backgroundColor: whiteColor,
-                margin: 4,
-                borderRadius: 5,
+                color: section.textColor,
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View
-                  style={{
-                    backgroundColor: section.backgroundColor,
-                    borderRadius: 4,
-                    marginEnd: 8,
-                    padding: 4,
-                  }}>
-                  <Text
-                    style={{
-                      color: section.textColor,
-                    }}>
-                    {section.title}
-                  </Text>
-                </View>
-                <Text>{section.count}</Text>
-              </View>
-              {section.count === 0 ? null :
-              <Icon
-                as={FontAwesome}
-                testID={`${section.id}:toggler`}
-                name={
-                  collapsedSections.has(section.title)
-                    ? 'angle-down'
-                    : 'angle-up'
-                }
-              />}
-            </TouchableOpacity>
+              {section.title}
+            </Text>
           </View>
-        )}
-        keyExtractor={(item, index) => item.id}
-        renderItem={({ section, index }) => {
-          // TODO check why lists are repeating, is this necessary?
-          if (index === 0 && !isFetching && !collapsedSections.has(section.title)) {
-            return (
-              <TaskList
-                id={section.id}
-                onTaskClick={onTaskClick(section.isUnassignedTaskList)}
-                tasks={section.data}
-                tasksWithColor={tasksWithColor}
-                onSwipeClosed={(task) =>{handleOnSwipeClose(section, task)}}
-                {...swipeLeftConfiguration(section)}
-                {...swipeRightConfiguration(section)}
-              />
-            );
+          <Text>{section.count}</Text>
+        </View>
+        {section.count === 0 ? null :
+        <Icon
+          as={FontAwesome}
+          testID={`${section.id}:toggler`}
+          name={
+            collapsedSections.has(section.title)
+              ? 'angle-down'
+              : 'angle-up'
           }
-          return null;
-        }}
-        // We pass those 2 to SectionList instead of TaskList
-        refreshing={!!isFetching}
-        onRefresh={() => refetch && refetch()}
-      />
-      <BulkEditTasksFloatingButton
-        onPress={handleBulkAssignButtonPress}
-        iconName="user-circle"
-        //ref={bulkEditTasksFloatingButtonRef}
-      />
-    </>
+        />}
+      </TouchableOpacity>
+    </View>
   );
 }

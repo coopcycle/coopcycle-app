@@ -47,8 +47,8 @@ const TaskList = ({
   const swipeRightConfiguration = (task) => ({
     disableRightSwipe: !swipeOutRightEnabled(task),
     onPressRight: () => onPressRight(task),
-    onSwipedToRight: () => _handleSwipeToRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
+    onSwipedToRight: () => _handleSwipeToRight(task),
     swipeOutRightBackgroundColor,
     swipeOutRightIconName,
   });

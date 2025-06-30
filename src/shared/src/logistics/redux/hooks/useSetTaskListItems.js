@@ -147,17 +147,17 @@ export default function useSetTaskListItems() {
   }
 
   const getLinkedTasks = (task, taskListId) => {
-  return getTasksListsToEdit(
-    {
-      orders: {
-        [taskListId]: [task]
+    return getTasksListsToEdit(
+      {
+        orders: {
+          [taskListId]: [task]
+        },
+        tasks: {}
       },
-      tasks: {}
-    },
-    allTasks,
-    allTaskLists
-  );
-};
+      allTasks,
+      allTaskLists
+    );
+  };
 
   /**
    * Edit several tasks at once (and also their linked tasks)
