@@ -20,9 +20,10 @@ import { filterTasks } from '../redux/logistics/utils';
 import { getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
-import { selectIsPolylineOn } from '../redux/Courier';
+import { selectIsHideUnassignedFromMap, selectIsPolylineOn } from '../redux/Courier';
 import TaskCallout from './TaskCallout';
 import TaskMarker from './TaskMarker';
+import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
 
 const clusterContainerSize = 40;
 
@@ -236,7 +237,7 @@ class TasksMapView extends Component {
   }
 
   getCoordinates(taskList) {
-    if(taskList.polyline !== '') {
+    if(taskList.polyline) {
       const decodedCoordinates = decode(taskList.polyline).map(coords => ({
         latitude: coords[0],
         longitude: coords[1]
@@ -246,6 +247,23 @@ class TasksMapView extends Component {
     }
 
     return taskList.items.map(task => task.address.geo);
+  }
+
+  renderPolylines(taskLists) {
+    if (!this.props.isPolylineOn) {
+      return null;
+    }
+
+    return taskLists.map(taskList => (
+      this.props.isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID ? null : (
+        <Polyline
+          coordinates={this.getCoordinates(taskList)}
+          strokeWidth={3}
+          strokeColor={taskList.color}
+          key={taskList.id}
+        />
+      )
+    ));
   }
 
   renderModal() {
@@ -286,6 +304,11 @@ class TasksMapView extends Component {
 
     // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
     const data = _.flatMap(taskLists, (taskList) => {
+      // Do not parse unassigned tasks if the filter is enabled
+      if (this.props.isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID) {
+        return [];
+      }
+
       const items = uiFilters ? filterTasks(taskList.items, uiFilters) : taskList.items;
 
       return items.map(task => ({
@@ -326,16 +349,7 @@ class TasksMapView extends Component {
             onClusterPress={this.onClusterPress}
             {...otherProps}>
             {this.props.children}
-            {this.props.isPolylineOn ? (
-              taskLists.map(taskList => (
-                <Polyline
-                  coordinates={this.getCoordinates(taskList)}
-                  strokeWidth={3}
-                  strokeColor={taskList.color}
-                  key={taskList.id}
-                />
-              ))
-            ) : null}
+            {this.renderPolylines(taskLists)}
           </ClusteredMapView>
         ) : null}
         {this.renderModal()}
@@ -346,6 +360,7 @@ class TasksMapView extends Component {
 
 function mapStateToProps(state) {
   return {
+    isHideUnassignedFromMap: selectIsHideUnassignedFromMap(state),
     isPolylineOn: selectIsPolylineOn(state),
   };
 }

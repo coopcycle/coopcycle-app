@@ -146,6 +146,7 @@
     "INVALID_PASSWORD_CONFIRMATION": "Password confirmation does not match",
     "TASKS_FILTER": "Tasks",
     "HIDE_DONE_TASKS": "Hide done tasks",
+    "TASKS_HIDE_UNASSIGNED": "Hide unassigned tasks from map",
     "TASKS_SHOW_POLYLINE": "Show line linking tasks",
     "HIDE_FAILED_TASKS": "Hide failed tasks",
     "FILTER_BY_KEYWORDS": "Filter by keywords",

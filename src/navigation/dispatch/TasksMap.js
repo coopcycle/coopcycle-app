@@ -9,12 +9,15 @@ import { selectSettingsLatLng } from '../../redux/App/selectors';
 import {
   selectSelectedDate,
   selectTaskLists,
+  selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
 import { selectDispatchUiTaskFilters } from '../../redux/Dispatch/selectors';
 import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import TasksMapView from '../../components/TasksMapView';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
+import { darkGreyColor } from '../../styles/common';
 
 const styles = StyleSheet.create({
   newDeliveryBarDate: {
@@ -42,6 +45,7 @@ const styles = StyleSheet.create({
 export default function TasksMap({ navigation, route }) {
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
   const allTaskLists = useSelector(selectTaskLists);
+  const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
   const bgHighlightColor = useBackgroundHighlightColor()
@@ -52,8 +56,21 @@ export default function TasksMap({ navigation, route }) {
     return defaultCoordinates.split(',').map(parseFloat);
   }, [defaultCoordinates]);
 
+  const mergedTaskListsWithUnassigned = useMemo(() => {
+    return [
+      // Prepend the unassigned tasks list
+      {
+        id: UNASSIGNED_TASKS_LIST_ID,
+        '@id': UNASSIGNED_TASKS_LIST_ID,
+        items: allUnassignedTasks,
+        color: darkGreyColor,
+      },
+      ...allTaskLists
+    ];
+  }, [allTaskLists, allUnassignedTasks]);
+
   const navigateToSelectedTask = task => {
-    const taskList = getTaskTaskList(task, allTaskLists);
+    const taskList = getTaskTaskList(task, mergedTaskListsWithUnassigned);
     // task is one the the task lists' tasks, so taskList is always defined
     navigateToTask(navigation, route, task, taskList.items);
   };
@@ -72,7 +89,7 @@ export default function TasksMap({ navigation, route }) {
       <View style={styles.mapContainer}>
         <TasksMapView
           mapCenter={mapCenter}
-          taskLists={allTaskLists}
+          taskLists={mergedTaskListsWithUnassigned}
           onMarkerCalloutPress={navigateToSelectedTask}
           uiFilters={uiFilters}
         />
