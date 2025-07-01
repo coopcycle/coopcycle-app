@@ -35,7 +35,6 @@ import { minutes } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
 import CoopcyleLogo from '../../assets/images/logo.svg';
 
-
 const cardBorderRadius = 2.5;
 
 const styles = StyleSheet.create({
@@ -81,14 +80,15 @@ const styles = StyleSheet.create({
 });
 
 function getOrderId(task) {
-  const id = task.metadata?.delivery_position && task.metadata?.order_number
-    ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
-    : (task.metadata.order_number || "");
+  const id =
+    task.metadata?.delivery_position && task.metadata?.order_number
+      ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
+      : task.metadata.order_number || '';
 
   return id;
 }
 
-const OrderInfo = ({task, color, width}) => {
+const OrderInfo = ({ task, color, width }) => {
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
@@ -96,7 +96,7 @@ const OrderInfo = ({task, color, width}) => {
 
   return (
     <ItemTouchable
-      onPress={() => console.log("order info pressed")}
+      onPress={() => console.log('order info pressed')}
       style={{
         alignItems: 'center',
         backgroundColor,
@@ -107,8 +107,7 @@ const OrderInfo = ({task, color, width}) => {
         justifyContent: 'center',
         width,
       }}>
-      { orderId
-      ? (
+      {orderId ? (
         <>
           <Text
             style={{
@@ -130,16 +129,13 @@ const OrderInfo = ({task, color, width}) => {
               {formatPrice(task.metadata.order_total)}
             </Text>
           ) : null}
-        </>)
-        : (
-          <CoopcyleLogo
-            width={width * 0.5}
-            height={width * 0.5}
-          />
-        )}
+        </>
+      ) : (
+        <CoopcyleLogo width={width * 0.5} height={width * 0.5} />
+      )}
     </ItemTouchable>
-  )
-}
+  );
+};
 
 const iconStyle = task => {
   const style = [styles.icon];
@@ -198,7 +194,7 @@ const TaskStatusIcon = ({ task }) => {
   }
 };
 
-const TaskPriorityStatus = ({task}) => {
+const TaskPriorityStatus = ({ task }) => {
   let backgroundColor = whiteColor;
   const now = moment();
   const timeDifference = now.diff(task.doneBefore);
@@ -221,8 +217,8 @@ const TaskPriorityStatus = ({task}) => {
         borderBottomRightRadius: cardBorderRadius,
       }}
     />
-  )
-}
+  );
+};
 
 const SwipeButtonContainer = ({
   backgroundColor,
@@ -267,7 +263,10 @@ const ItemTouchable = ({ children, style, ...otherProps }) => {
 
   return (
     <TouchableHighlight
-      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white', ...style }}
+      style={{
+        backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
+        ...style,
+      }}
       underlayColor={
         colorScheme === 'dark' ? colors.gray['700'] : colors.gray['200']
       }
@@ -300,13 +299,24 @@ class TaskListItem extends Component {
     }
   }
 
-  componentDidUpdate() {
-    const { task } = this.props;
+  componentDidUpdate(prevProps) {
+  const { task, shouldAlsoSwipe } = this.props;
 
-    if (task.status === 'DONE') {
-      this.swipeRow.current?.closeRow();
-    }
+  if (task.status === 'DONE') {
+    this.swipeRow.current?.closeRow();
   }
+  const { width } = Dimensions.get('window');
+  const marginHorizontal = 6;
+  const cardWidth = width - marginHorizontal * 2;
+  const buttonWidth = cardWidth / 4;
+
+  if (!prevProps.shouldAlsoSwipe && shouldAlsoSwipe) {
+    this.swipeRow.current?.manuallySwipeRow?.(buttonWidth);
+  }
+  if (prevProps.shouldAlsoSwipe && !shouldAlsoSwipe) {
+    this.swipeRow.current?.closeRow?.();
+  }
+}
 
   render() {
     const {
@@ -324,26 +334,22 @@ class TaskListItem extends Component {
       t,
       task,
       taskListId,
+      shouldAlsoSwipe,
     } = this.props;
 
     const taskTitle = task.orgName
-      ? ( task.metadata.order_number
+      ? task.metadata.order_number
         ? task.orgName
         : `${task.orgName} - ${t('TASK_WITH_ID', { id: task.id })}`
-      )
       : t('TASK_WITH_ID', { id: task.id });
 
     const address = task.address?.contactName
-      ? (
-        task.address?.name
-          ? `${task.address.contactName} - ${task.address.name}`
-          : task.address.contactName
-      )
-      : (
-        task.address?.name
-        ? task.address.name
-        : null
-      );
+      ? task.address?.name
+        ? `${task.address.contactName} - ${task.address.name}`
+        : task.address.contactName
+      : task.address?.name
+      ? task.address.name
+      : null;
 
     const taskTestId = `${taskListId}:task:${index}`;
     const textStyle = [styles.text];
@@ -380,10 +386,9 @@ class TaskListItem extends Component {
           borderRadius: cardBorderRadius,
           marginVertical: 1.5,
           marginLeft: marginHorizontal,
-          marginRight:marginHorizontal,
-        }}
-      >
-        <View style={{...styles.rowBack, ...swipeButtonsProps}}>
+          marginRight: marginHorizontal,
+        }}>
+        <View style={{ ...styles.rowBack, ...swipeButtonsProps }}>
           <SwipeButtonContainer
             backgroundColor={swipeOutLeftBackgroundColor}
             left
@@ -393,10 +398,7 @@ class TaskListItem extends Component {
             }}
             testID={`${taskTestId}:left`}
             width={visibleButtonWidth}>
-            <SwipeButton
-              iconName={swipeOutLeftIconName}
-              width={buttonWidth}
-            />
+            <SwipeButton iconName={swipeOutLeftIconName} width={buttonWidth} />
           </SwipeButtonContainer>
           <SwipeButtonContainer
             backgroundColor={swipeOutRightBackgroundColor}
@@ -407,26 +409,19 @@ class TaskListItem extends Component {
             }}
             testID={`${taskTestId}:right`}
             width={visibleButtonWidth}>
-            <SwipeButton
-              iconName={swipeOutRightIconName}
-              width={buttonWidth}
-            />
+            <SwipeButton iconName={swipeOutRightIconName} width={buttonWidth} />
           </SwipeButtonContainer>
         </View>
         <HStack
           style={{
             flex: 1,
-            alignItems: "stretch",
+            alignItems: 'stretch',
             minHeight: buttonWidth,
             borderTopRightRadius: cardBorderRadius,
             borderBottomRightRadius: cardBorderRadius,
           }}
           {...itemProps}>
-          <OrderInfo
-            color={color}
-            task={task}
-            width={buttonWidth}
-          />
+          <OrderInfo color={color} task={task} width={buttonWidth} />
           <ItemTouchable
             onPress={onPress}
             testID={taskTestId}
@@ -434,27 +429,27 @@ class TaskListItem extends Component {
               borderBottomRightRadius: cardBorderRadius,
               borderTopRightRadius: cardBorderRadius,
               paddingLeft: 12,
-              width: cardWidth-buttonWidth,
-            }}
-          >
+              width: cardWidth - buttonWidth,
+            }}>
             <HStack
               style={{
-                height: '100%'
-              }}
-            >
+                height: '100%',
+              }}>
               <VStack flex={1} py="3" px="1">
-                <HStack alignItems='center'>
-                  <TaskTypeIcon task={task}/>
+                <HStack alignItems="center">
+                  <TaskTypeIcon task={task} />
                   <Text
                     testID={`${taskTestId}:title`}
                     style={styles.textBold}
                     numberOfLines={1}>
                     {taskTitle}
                   </Text>
-                  <TaskStatusIcon task={task}/>
+                  <TaskStatusIcon task={task} />
                 </HStack>
                 {address && (
-                  <Text style={textStyle} numberOfLines={1}>{address}</Text>
+                  <Text style={textStyle} numberOfLines={1}>
+                    {address}
+                  </Text>
                 )}
                 <Text numberOfLines={1} style={textStyle}>
                   {task.address?.streetAddress}
@@ -464,7 +459,8 @@ class TaskListItem extends Component {
                     {moment(task.doneAfter).format('LT')} -{' '}
                     {moment(task.doneBefore).format('LT')}
                   </Text>
-                  {task.address?.description && task.address?.description.length ? (
+                  {task.address?.description &&
+                  task.address?.description.length ? (
                     <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
                   ) : null}
                   {task.metadata && task.metadata?.payment_method && (
@@ -497,7 +493,8 @@ class TaskListItem extends Component {
                       style={{
                         paddingHorizontal: 4,
                         fontSize: 14,
-                      }}/>
+                      }}
+                    />
                   </HStack>
                 ) : null}
               </VStack>
@@ -510,7 +507,8 @@ class TaskListItem extends Component {
                     borderRadius: 5,
                     color: redColor,
                     marginRight: 12,
-                  }} />
+                  }}
+                />
               )}
               <TaskPriorityStatus task={task} />
             </HStack>
@@ -524,7 +522,7 @@ class TaskListItem extends Component {
     onPress: () => {},
     onPressLeft: () => {},
     onPressRight: () => {},
-  }
+  };
 }
 
 TaskListItem.propTypes = {
@@ -534,7 +532,7 @@ TaskListItem.propTypes = {
   onPress: PropTypes.func,
   onPressLeft: PropTypes.func,
   onPressRight: PropTypes.func,
-  taskListId: PropTypes.string.isRequired
+  taskListId: PropTypes.string.isRequired,
 };
 
 // We need to use "withRef" prop,
