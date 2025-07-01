@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { SwipeListView } from 'react-native-swipe-list-view';
-
 import ItemSeparatorComponent from './ItemSeparator';
 import ItemsBulkFabButton from './ItemsBulkFabButton';
 import TaskListItem from './TaskListItem';
-import { useSelector } from 'react-redux';
 
 const TaskList = ({
   id,
@@ -87,19 +85,6 @@ const TaskList = ({
     bulkFabButton.current?.updateItems(doneTasks);
   }, [tasks]);
 
-  // autoSwipe
-  const selectedTasks = useSelector(state => state.dispatch.ui.selectedTasks);
-  const getAllTaskIds = useCallback(() => {
-     const orders = selectedTasks.orders || {};
-
-    return Object.values(orders).flatMap(taskList =>
-      Object.values(taskList)
-        .map(task => task.id)
-        .filter(Boolean),
-    );}, [selectedTasks]
-  )
-
-  const allTaskIds = useMemo(() => getAllTaskIds(), [getAllTaskIds]);
   const renderItem = ({ item, index }) => {
     return (
       <TaskListItem
@@ -110,7 +95,6 @@ const TaskList = ({
         onPress={() => onTaskClick(item)}
         {...swipeLeftConfiguration(item)}
         {...swipeRightConfiguration(item)}
-        shouldAlsoSwipe={allTaskIds.includes(item.id) }
       />
     );
   };
