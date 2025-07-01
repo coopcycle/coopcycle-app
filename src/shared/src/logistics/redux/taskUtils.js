@@ -74,16 +74,6 @@ export function withLinkedTasks(task, allTasks) {
   return newTasks.sort(tasksSort);
 }
 
-// TODO: remove this function
-export function withUnassignedLinkedTasks(task, allTasks) {
-  return withLinkedTasks(task, allTasks).filter(t => !t.assignedTo)
-}
-
-// TODO: remove this function
-export function withAssignedLinkedTasks(task, allTasks) {
-  return withLinkedTasks(task, allTasks).filter(t => t.assignedTo)
-}
-
 // TODO: calculate just once task's color when tasks are saved on state
 export function mapToColor(tasks) {
   return mapValues(groupLinkedTasks(tasks), taskIds =>
