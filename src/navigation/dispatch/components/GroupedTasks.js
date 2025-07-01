@@ -220,6 +220,32 @@ export default function GroupedTasks({
       : '#ffffff';
   };
 
+  const renderSectionHeader = ({ section }) => (
+    <SectionHeader
+      section={section}
+      collapsedSections={collapsedSections}
+      setCollapsedSections={setCollapsedSections}
+    />
+  )
+
+  const renderItem = ({ section, item, index }) => {
+    console.log({index, item: item.id, section: section.id})
+    if (!isFetching && !collapsedSections.has(section.title)) {
+      return (
+        <TaskListItem
+          task={item}
+          index={index}
+          color={taskColor(item)}
+          taskListId={section.id}
+          onPress={() => onTaskClick(section.isUnassignedTaskList, item)}
+          {...swipeLeftConfiguration(section, item)}
+          {...swipeRightConfiguration(section, item)}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <>
       <SectionList
@@ -229,31 +255,9 @@ export default function GroupedTasks({
         initialNumToRender={2}
         maxToRenderPerBatch={25}
         windowSize={5}
-        renderSectionHeader={({ section }) => (
-          <SectionHeader
-            section={section}
-            collapsedSections={collapsedSections}
-            setCollapsedSections={setCollapsedSections}
-          />
-        )}
+        renderSectionHeader={renderSectionHeader}
         keyExtractor={(item, index) => item.id}
-        renderItem={({ section, item, index }) => {
-          console.log({index, item: item.id, section: section.id})
-          if (!isFetching && !collapsedSections.has(section.title)) {
-            return (
-              <TaskListItem
-                task={item}
-                index={index}
-                color={taskColor(item)}
-                taskListId={section.id}
-                onPress={() => onTaskClick(section.isUnassignedTaskList, item)}
-                {...swipeLeftConfiguration(section, item)}
-                {...swipeRightConfiguration(section, item)}
-              />
-            );
-          }
-          return null;
-        }}
+        renderItem={renderItem}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
       />
