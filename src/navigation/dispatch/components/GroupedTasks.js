@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useCallback, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
 
 import {
   addOrder,
@@ -90,7 +90,7 @@ export default function GroupedTasks({
     unassignTaskWithRelatedTasks,
   } = useSetTaskListItems();
 
-  const onTaskClick = isUnassignedTaskList => task => {
+  const onTaskClick = useCallback(isUnassignedTaskList => task => {
     // If task is unassigned, related tasks are unassigned tasks
     // If task is assigned, related tasks are task's task list's tasks
     if (isUnassignedTaskList) {
@@ -101,14 +101,14 @@ export default function GroupedTasks({
       const relatedTasks = getTaskListTasks(taskList, tasksEntities);
       navigateToTask(navigation, route, task, relatedTasks);
     }
-  };
+  }, [allTaskLists, allUnassignedTasks, navigation, route, tasksEntities]);
 
-  const assignTaskWithRelatedTasksHandler = isUnassignedTaskList => task => {
-    const onItemPress = user => _onSelectNewAssignation(
+  const assignTaskWithRelatedTasksHandler = useCallback(isUnassignedTaskList => task => {
+    const onItemPress = user => onSelectNewAssignation(
       () => (isUnassignedTaskList ? assignTaskWithRelatedTasks : reassignTaskWithRelatedTasks)(task, user),
     );
 
-    const onUnassignButtonPress = () => _onSelectNewAssignation(
+    const onUnassignButtonPress = () => onSelectNewAssignation(
       () => unassignTaskWithRelatedTasks(task),
     );
 
@@ -117,14 +117,14 @@ export default function GroupedTasks({
       onUnassignButtonPress,
       showUnassignButton: !isUnassignedTaskList,
     });
-  };
+  }, [onSelectNewAssignation, assignTaskWithRelatedTasks, navigation, reassignTaskWithRelatedTasks, unassignTaskWithRelatedTasks]);
 
-  const assignTaskHandler = isUnassignedTaskList => task => {
-    const onItemPress = user => _onSelectNewAssignation(
+  const assignTaskHandler = useCallback(isUnassignedTaskList => task => {
+    const onItemPress = user => onSelectNewAssignation(
       () => (isUnassignedTaskList ? assignTask : reassignTask)(task, user),
     );
 
-    const onUnassignButtonPress = () => _onSelectNewAssignation(
+    const onUnassignButtonPress = () => onSelectNewAssignation(
       () => unassignTask(task),
     );
 
@@ -133,14 +133,14 @@ export default function GroupedTasks({
       showUnassignButton: !isUnassignedTaskList,
       onUnassignButtonPress,
     });
-  };
+  }, [onSelectNewAssignation, assignTask, navigation, reassignTask, unassignTask]);
 
-  const _onSelectNewAssignation = (callback) => {
+  const onSelectNewAssignation = useCallback((callback) => {
     navigation.navigate('DispatchAllTasks');
     callback();
-  };
+  }, [navigation]);
 
-  const handleOnSwipeToLeft = (task, taskListId) => {
+  const handleOnSwipeToLeft = useCallback(taskListId => task => {
     const tasksByTaskList = getLinkedTasks(task, taskListId);
 
     Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
@@ -148,13 +148,13 @@ export default function GroupedTasks({
         dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
       });
     });
-  };
+  }, [dispatch, getLinkedTasks]);
 
-  const handleOnSwipeToRight = (task, taskListId) => {
+  const handleOnSwipeToRight = useCallback(taskListId => task => {
     dispatch(addTask({ task, taskListId }));
-  };
+  }, [dispatch]);
 
-  const handleOnSwipeClose = (section, task) => {
+  const handleOnSwipeClose = useCallback((section, task) => {
     const taskListId = section.taskListId;
     const tasksByTaskList = getLinkedTasks(task, taskListId);
 
@@ -165,9 +165,9 @@ export default function GroupedTasks({
         dispatch(removeTask({ taskId, taskListId: listId }));
       });
     });
-  };
+  }, [dispatch, getLinkedTasks]);
 
-  const handleBulkAssignButtonPress = (selectedTasks) => {
+  const handleBulkAssignButtonPress = useCallback((selectedTasks) => {
     const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
     const showUnassignButton = (
       tasksListIdsToEdit.length > 0 &&
@@ -176,50 +176,50 @@ export default function GroupedTasks({
 
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => {
-        _onSelectNewAssignation(async () => {
+        onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks, user);
           dispatch(clearSelectedTasks());
         })
       },
       showUnassignButton,
       onUnassignButtonPress: () => {
-        _onSelectNewAssignation(async () => {
+        onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks);
           dispatch(clearSelectedTasks());
         })
       },
     });
-  };
+  }, [onSelectNewAssignation, bulkEditTasks, dispatch, navigation]);
 
   const allowToSelect = task => {
     return task.status !== 'DONE';
   };
 
-  const swipeLeftConfiguration = section => ({
+  const swipeLeftConfiguration = useCallback(section => ({
     onPressLeft: assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList),
-    onSwipeToLeft: (task) => handleOnSwipeToLeft(task, section.taskListId),
+    onSwipeToLeft: handleOnSwipeToLeft(section.taskListId),
     swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftBackgroundColor: darkRedColor,
     swipeOutLeftIconName: assignOrderIconName,
-  });
+  }), [assignTaskWithRelatedTasksHandler, handleOnSwipeToLeft]);
 
-  const swipeRightConfiguration = section => ({
+  const swipeRightConfiguration = useCallback(section => ({
     onPressRight: assignTaskHandler(section.isUnassignedTaskList),
-    onSwipeToRight: (task) => handleOnSwipeToRight(task, section.taskListId),
+    onSwipeToRight: handleOnSwipeToRight(section.taskListId),
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: assignTaskIconName,
-  });
+  }), [assignTaskHandler, handleOnSwipeToRight]);
 
-  const renderSectionHeader = ({ section }) => (
+  const renderSectionHeader = useCallback(({ section }) => (
     <SectionHeader
       section={section}
       collapsedSections={collapsedSections}
       setCollapsedSections={setCollapsedSections}
     />
-  )
+  ), [collapsedSections]);
 
-  const renderItem = ({ section, item, index }) => {
+  const renderItem = useCallback(({ section, item, index }) => {
     if (!isFetching && !collapsedSections.has(section.title)) {
       const tasks = getTaskListTasks(item, tasksEntities);
 
@@ -235,8 +235,9 @@ export default function GroupedTasks({
         />
       );
     }
+
     return null;
-  };
+  }, [collapsedSections, handleOnSwipeClose, isFetching, onTaskClick, swipeLeftConfiguration, swipeRightConfiguration, tasksEntities, tasksWithColor]);
 
   return (
     <>
