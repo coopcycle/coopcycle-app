@@ -23,13 +23,11 @@ function Task({
 
 function TaskList({
   id,
-  items,
   ...props
 }) {
   return {
     '@id': `/api/task_lists/${id}`,
     id,
-    items: items || [],
     ...props
   };
 };
@@ -79,7 +77,6 @@ export const getTaskListWithItems = usernames => (id, items) => {
 
   return TaskList({
     id,
-    items,
     tasksIds: items.map(item => item['@id']),
     username,
   })

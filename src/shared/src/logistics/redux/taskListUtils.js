@@ -17,6 +17,10 @@ export function replaceItemsWithItemIds(taskList) {
 }
 
 export function getTaskListTasks(taskList, tasksEntities) {
+  if (taskList.items) {
+    return taskList.items;
+  }
+
   const tasks = taskList.tasksIds.map(taskId => {
     const maybeTask = tasksEntities[taskId];
 
@@ -48,6 +52,7 @@ export function createTempTaskList(username, items = []) {
     updatedAt: moment().format(),
     username,
     items,
+    tasksIds: items.map(item => item['@id']),
   };
 }
 
