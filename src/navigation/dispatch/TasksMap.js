@@ -3,7 +3,7 @@ import { Text, View } from 'native-base';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import { createUnassignedTaskLists, getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../utils';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
 import {
@@ -16,8 +16,6 @@ import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import TasksMapView from '../../components/TasksMapView';
-import { UNASSIGNED_TASKS_LIST_ID } from '../../shared/src/constants';
-import { darkGreyColor } from '../../styles/common';
 
 const styles = StyleSheet.create({
   newDeliveryBarDate: {
@@ -57,18 +55,13 @@ export default function TasksMap({ navigation, route }) {
   }, [defaultCoordinates]);
 
   const mergedTaskListsWithUnassigned = useMemo(() => {
-    return [
-      // Prepend the unassigned tasks list
-      {
-        id: UNASSIGNED_TASKS_LIST_ID,
-        '@id': UNASSIGNED_TASKS_LIST_ID,
-        items: allUnassignedTasks,
-        color: darkGreyColor,
-      },
-      ...allTaskLists
-    ];
+    // Split the unassigned task list by grouped linked tasks
+    const allUnassignedTaskLists = createUnassignedTaskLists(allUnassignedTasks);
+    // Prepend the unassigned tasks list
+    return allUnassignedTaskLists.concat(allTaskLists);
   }, [allTaskLists, allUnassignedTasks]);
 
+  // @TODO Review this function..!!
   const navigateToSelectedTask = task => {
     const taskList = getTaskTaskList(task, mergedTaskListsWithUnassigned);
     // task is one the the task lists' tasks, so taskList is always defined
