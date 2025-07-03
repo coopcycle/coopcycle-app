@@ -11,6 +11,13 @@ import { getUserTaskList } from './taskListUtils';
  * @param {Object} b - Task
  */
 export function tasksSort(a, b) {
+  if(a.metadata?.order_number
+      && b.metadata?.order_number
+      && a.metadata?.order_number === b.metadata?.order_number
+  ) {
+    return a.metadata.delivery_position -b.metadata.delivery_position;
+  }
+
   if (moment(a.before).isSame(b.before) && a.type === 'PICKUP') {
     return -1
   } else {
@@ -62,7 +69,7 @@ export function withLinkedTasks(task, allTasks) {
   const groups = groupLinkedTasks(allTasks);
   const newTasks = [];
 
-  if (Object.prototype.hasOwnProperty.call(groups, task['@id'])) {
+  if (groups[task['@id']]) {
     groups[task['@id']].forEach(taskId => {
       const t = _.find(allTasks, t => t['@id'] === taskId);
       newTasks.push(t);

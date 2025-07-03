@@ -27,6 +27,7 @@ import { navigateToTask } from '../../../navigation/utils';
 import { selectTaskLists, selectTasksEntities, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
+import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
@@ -91,17 +92,19 @@ export default function GroupedTasks({
   } = useSetTaskListItems();
 
   const onTaskClick = useCallback(isUnassignedTaskList => task => {
-    // If task is unassigned, related tasks are unassigned tasks
+    // If task is unassigned, related tasks are order's tasks
     // If task is assigned, related tasks are task's task list's tasks
     if (isUnassignedTaskList) {
-      navigateToTask(navigation, route, task, allUnassignedTasks);
+      const allTasks = Object.values(tasksEntities);
+      const allRelatedTasks = withLinkedTasks(task, allTasks);
+      navigateToTask(navigation, route, task, allRelatedTasks);
     } else {
       const username = task.assignedTo;
       const taskList = getUserTaskList(username, allTaskLists)
       const relatedTasks = getTaskListTasks(taskList, tasksEntities);
       navigateToTask(navigation, route, task, relatedTasks);
     }
-  }, [allTaskLists, allUnassignedTasks, navigation, route, tasksEntities]);
+  }, [allTaskLists, navigation, route, tasksEntities]);
 
   const assignTaskWithRelatedTasksHandler = useCallback(isUnassignedTaskList => task => {
     const onItemPress = user => onSelectNewAssignation(
