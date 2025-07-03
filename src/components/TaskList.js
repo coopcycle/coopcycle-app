@@ -100,6 +100,9 @@ const TaskList = ({
         refreshing={refreshing}
         onRefresh={onRefresh}
         ItemSeparatorComponent={ItemSeparatorComponent}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+        windowSize={3}
       />
       {multipleSelectionIcon && onFabButtonPressed && (
         <ItemsBulkFabButton
