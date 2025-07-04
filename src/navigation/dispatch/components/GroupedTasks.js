@@ -28,7 +28,7 @@ import {
 import {
   darkGreyColor,
   darkRedColor,
-  whiteColor,
+  whiteColor
 } from '../../../styles/common';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import {
@@ -256,7 +256,14 @@ export default function GroupedTasks({
                     {section.title}
                   </Text>
                 </View>
-                <Text>{section.data.length}</Text>
+                {section.isUnassignedTaskList 
+                  ? <Text style={{ color: section.textColor }}>
+                    ({section.data.length} {t('TASKS')})
+                  </Text>
+                  : <Text style={{ color: darkGreyColor }} >
+                    {section.data.length}
+                  </Text>
+                }
               </View>
               {section.data.length === 0 ? null : (
                 <Icon

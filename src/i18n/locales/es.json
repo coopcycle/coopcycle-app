@@ -213,7 +213,7 @@
         "NOTIFICATION_ORDER_CREATED_TITLE": "Nuevo pedido",
         "NOTIFICATION_ORDER_CREATED_DESC": "Un nuevo pedido para {{date}} ha sido creado",
         "UNASSIGNED_TASKS": "Sin asignar",
-        "DISPATCH_UNASSIGNED_TASKS": "Nuevas tareas",
+        "DISPATCH_UNASSIGNED_TASKS": "Nuevos pedidos",
         "DISPATCH_TASK_LISTS": "Asignadas",
         "DISPATCH_TASK_LIST": "Asignada a {{username}}",
         "DISPATCH_ADD_TASK_LIST": "Añadir un usuario",
