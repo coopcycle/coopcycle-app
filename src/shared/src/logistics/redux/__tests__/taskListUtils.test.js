@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import {
   buildSelectedTasks,
+  createUnassignedTaskLists,
   getTaskListTasks,
   getTasksListIdsToEdit,
   getTasksListsToEdit,
@@ -9,6 +10,7 @@ import {
   withLinkedTasksForTaskList,
 } from '../taskListUtils.js';
 import { getTaskListWithItems, getTaskWithPrevious } from '../testsUtils.js';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants.js';
 
 
 const usernames = [
@@ -420,6 +422,52 @@ describe('taskListUtils', () => {
           '/api/task_lists/4': tasks,
         },
       });
+    });
+  });
+
+  describe('createUnassignedTaskLists', () => {
+    it('should split all the given unassigned tasks into a list of TaskList by related tasks', () => {
+      const result = createUnassignedTaskLists(allTasks);
+
+      expect(result).toEqual([
+        {
+          "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
+          "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
+          "isUnassiged": true,
+          "items": [
+            {"@id": "/api/tasks/1", "assignedTo": "username2", "hasIncidents": false, "id": 1, "orgName": "", "previous": null, "status": "", "tags": []},
+            {"@id": "/api/tasks/2", "assignedTo": "username2", "hasIncidents": false, "id": 2, "orgName": "", "previous": "/api/tasks/1", "status": "", "tags": []}
+          ],
+          "username": null,
+          "color": "#424242",
+        },
+        {
+          "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
+          "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
+          "isUnassiged": true,
+          "items": [
+            {"@id": "/api/tasks/3", "assignedTo": "username3", "hasIncidents": false, "id": 3, "orgName": "", "previous": null, "status": "", "tags": []},
+            {"@id": "/api/tasks/4", "assignedTo": "username3", "hasIncidents": false, "id": 4, "orgName": "", "previous": "/api/tasks/3", "status": "", "tags": []},
+            {"@id": "/api/tasks/5", "assignedTo": "username3", "hasIncidents": false, "id": 5, "orgName": "", "previous": "/api/tasks/4", "status": "", "tags": []},
+            {"@id": "/api/tasks/6", "assignedTo": "username4", "hasIncidents": false, "id": 6, "orgName": "", "previous": "/api/tasks/5", "status": "", "tags": []},
+            {"@id": "/api/tasks/7", "assignedTo": "username4", "hasIncidents": false, "id": 7, "orgName": "", "previous": "/api/tasks/6", "status": "", "tags": []}
+          ],
+          "username": null,
+          "color": "#424242",
+        },
+        {
+          "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
+          "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
+          "isUnassiged": true,
+          "items": [
+            { "@id": "/api/tasks/10", "assignedTo": "", "hasIncidents": false, "id": 10, "orgName": "", "previous": "/api/tasks/9", "status": "", "tags": []},
+            {"@id": "/api/tasks/8", "assignedTo": "username5", "hasIncidents": false, "id": 8, "orgName": "", "previous": null, "status": "", "tags": []},
+            { "@id": "/api/tasks/9", "assignedTo": "username6", "hasIncidents": false, "id": 9, "orgName": "", "previous": "/api/tasks/8", "status": "", "tags": []}
+          ],
+          "username": null,
+          "color": "#424242",
+        }
+      ]);
     });
   });
 });

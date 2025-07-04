@@ -13,8 +13,7 @@ import {
   addOrder,
   addTask,
   clearSelectedTasks,
-  removeOrder,
-  removeTask
+  removeTasksAndOrders,
 } from '../../../redux/Dispatch/updateSelectedTasksSlice';
 import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
 import {
@@ -22,15 +21,20 @@ import {
   darkRedColor,
   whiteColor
 } from '../../../styles/common';
-import { createTempTaskList, getLinkedTasks, getTaskListTasks, getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
-import { navigateToTask } from '../../../navigation/utils';
+import {
+  createTempTaskList,
+  getLinkedTasks,
+  getTaskListTasks,
+  getTasksListIdsToEdit,
+} from '../../../shared/src/logistics/redux/taskListUtils';
 import { selectTaskLists, selectTasksEntities, selectTasksWithColor } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
-import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import useNavigateToTask from '../useNavigateToTask';
+
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -46,6 +50,12 @@ export default function GroupedTasks({
   const tasksWithColor = useSelector(selectTasksWithColor);
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
+  const navigateToTask = useNavigateToTask({
+    allTaskLists,
+    navigation,
+    route,
+    tasksEntities,
+  });
 
   // Combine unassigned tasks and task lists to use in SectionList
   const sections = useMemo(() => [
@@ -93,28 +103,19 @@ export default function GroupedTasks({
   });
 
   const onTaskClick = useCallback(isUnassignedTaskList => task => {
-    // If task is unassigned, related tasks are order's tasks
-    // If task is assigned, related tasks are task's task list's tasks
-    if (isUnassignedTaskList) {
-      const allTasks = Object.values(tasksEntities);
-      const allRelatedTasks = withLinkedTasks(task, allTasks);
-      navigateToTask(navigation, route, task, allRelatedTasks);
-    } else {
-      const username = task.assignedTo;
-      const taskList = getUserTaskList(username, allTaskLists)
-      const relatedTasks = getTaskListTasks(taskList, tasksEntities);
-      navigateToTask(navigation, route, task, relatedTasks);
-    }
-  }, [allTaskLists, navigation, route, tasksEntities]);
+    navigateToTask(isUnassignedTaskList, task);
+  }, [navigateToTask]);
 
   const assignTaskWithRelatedTasksHandler = useCallback(isUnassignedTaskList => task => {
-    const onItemPress = user => onSelectNewAssignation(
-      () => (isUnassignedTaskList ? assignTaskWithRelatedTasks : reassignTaskWithRelatedTasks)(task, user),
-    );
+    const onItemPress = user =>
+      onSelectNewAssignation(() =>
+        (isUnassignedTaskList
+          ? assignTaskWithRelatedTasks
+          : reassignTaskWithRelatedTasks)(task, user),
+      );
 
-    const onUnassignButtonPress = () => onSelectNewAssignation(
-      () => unassignTaskWithRelatedTasks(task),
-    );
+    const onUnassignButtonPress = () =>
+      onSelectNewAssignation(() => unassignTaskWithRelatedTasks(task));
 
     navigation.navigate('DispatchPickUser', {
       onItemPress,
@@ -124,13 +125,13 @@ export default function GroupedTasks({
   }, [onSelectNewAssignation, assignTaskWithRelatedTasks, navigation, reassignTaskWithRelatedTasks, unassignTaskWithRelatedTasks]);
 
   const assignTaskHandler = useCallback(isUnassignedTaskList => task => {
-    const onItemPress = user => onSelectNewAssignation(
-      () => (isUnassignedTaskList ? assignTask : reassignTask)(task, user),
-    );
+    const onItemPress = user =>
+      onSelectNewAssignation(() =>
+        (isUnassignedTaskList ? assignTask : reassignTask)(task, user),
+      );
 
-    const onUnassignButtonPress = () => onSelectNewAssignation(
-      () => unassignTask(task),
-    );
+    const onUnassignButtonPress = () =>
+      onSelectNewAssignation(() => unassignTask(task));
 
     navigation.navigate('DispatchPickUser', {
       onItemPress,
@@ -145,15 +146,9 @@ export default function GroupedTasks({
   }, [navigation]);
 
   const handleOnSwipeToLeft = useCallback(taskListId => task => {
-    const allTasks = Object.values(tasksEntities);
-    const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
-
-    Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
-      tasks.forEach(taskToAdd => {
-        dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
-      });
-    });
-  }, [allTaskLists, dispatch, tasksEntities]);
+    const tasksByTaskList = getLinkedTasks(task, taskListId);
+    dispatch(addOrder(tasksByTaskList));
+  }, [dispatch]);
 
   const handleOnSwipeToRight = useCallback(taskListId => task => {
     dispatch(addTask({ task, taskListId }));
@@ -161,38 +156,30 @@ export default function GroupedTasks({
 
   const handleOnSwipeClose = useCallback((section, task) => {
     const taskListId = section.taskListId;
-    const allTasks = Object.values(tasksEntities);
-    const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
+    const tasksByTaskList = getLinkedTasks(task, taskListId);
 
-    Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
-      tasks.forEach(taskToRemove => {
-        const taskId = taskToRemove['@id'];
-        dispatch(removeOrder({ taskId, taskListId: listId }));
-        dispatch(removeTask({ taskId, taskListId: listId }));
-      });
-    });
-  }, [allTaskLists, dispatch, tasksEntities]);
+    dispatch(removeTasksAndOrders(tasksByTaskList));
+  }, [dispatch]);
 
   const handleBulkAssignButtonPress = useCallback((selectedTasks) => {
     const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
-    const showUnassignButton = (
+    const showUnassignButton =
       tasksListIdsToEdit.length > 0 &&
-      tasksListIdsToEdit.some(id => id !== UNASSIGNED_TASKS_LIST_ID)
-    );
+      tasksListIdsToEdit.some(id => id !== UNASSIGNED_TASKS_LIST_ID);
 
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => {
         onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks, user);
           dispatch(clearSelectedTasks());
-        })
+        });
       },
       showUnassignButton,
       onUnassignButtonPress: () => {
         onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks);
           dispatch(clearSelectedTasks());
-        })
+        });
       },
     });
   }, [onSelectNewAssignation, bulkEditTasks, dispatch, navigation]);
@@ -270,6 +257,7 @@ export default function GroupedTasks({
 }
 
 function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
+  const { t } = useTranslation();
   const bgHighlightColor = useBackgroundHighlightColor();
 
   // Disabled animation for now..!
@@ -312,21 +300,29 @@ function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
               style={{
                 color: section.textColor,
               }}>
-              {section.title}
-            </Text>
-          </View>
-          <Text>{section.count}</Text>
+                {section.title}
+              </Text>
+            </View>
+            {section.isUnassignedTaskList
+              ? <Text style={{ color: section.textColor }}>
+                ({section.data.length} {t('TASKS')})
+              </Text>
+              : <Text style={{ color: darkGreyColor }} >
+                {section.data.length}
+              </Text>
+            }
         </View>
-        {section.count === 0 ? null :
-        <Icon
-          as={FontAwesome}
-          testID={`${section.id}:toggler`}
-          name={
-            collapsedSections.has(section.title)
-              ? 'angle-down'
-              : 'angle-up'
-          }
-        />}
+        {section.data.length === 0 ? null : (
+          <Icon
+            as={FontAwesome}
+            testID={`${section.id}:toggler`}
+            name={
+              collapsedSections.has(section.title)
+                ? 'angle-down'
+                : 'angle-up'
+            }
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
