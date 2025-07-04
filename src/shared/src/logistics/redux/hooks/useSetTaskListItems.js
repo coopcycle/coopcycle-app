@@ -7,6 +7,9 @@ import {
   assignTasksRequest,
   assignTasksSuccess,
   assignTasksWithUiUpdateSuccess,
+  disableCentrifugoUpdateForTasksIds,
+  disableCentrifugoUpdateForUsers,
+  restoreCentrifugoUpdate,
   unassignTasksWithUiUpdateSuccess,
   updateTaskListsSuccess,
   updateTourSuccess,
@@ -169,13 +172,17 @@ export default function useSetTaskListItems({
     );
 
     if (isJustUnassign) {
+      dispatch(restoreCentrifugoUpdate());
       return unassignResolve;
     }
 
     const tasksToAssign = _.flatten(Object.values(taskListToEdit));
 
-    return _assignTasks(tasksToAssign, user);
-  }, [_assignTasks, _unassignTasks, allTaskLists, allTasks]);
+    const result = await _assignTasks(tasksToAssign, user);
+    dispatch(restoreCentrifugoUpdate());
+
+    return result;
+  }, [_assignTasks, _unassignTasks, allTaskLists, allTasks, dispatch]);
 
   /**
    * Unassign tasks from a single/same courier
@@ -193,21 +200,27 @@ export default function useSetTaskListItems({
     const itemsToUnassignIdsSet = new Set(itemsToUnassignIds);
     const allItemIdsToAssign = userItemIds.filter(itemId => !itemsToUnassignIdsSet.has(itemId));
 
+    dispatch(disableCentrifugoUpdateForTasksIds(itemsToUnassignIds));
+    dispatch(disableCentrifugoUpdateForUsers(user.username));
+
     return _updateUnassigningItems(
       allItemIdsToAssign,
       user,
       itemsToUnassignIds,
       isJustUnassign,
     );
-  }, [_updateUnassigningItems, allTaskLists]);
+  }, [_updateUnassigningItems, allTaskLists, dispatch]);
 
   const _assignTasks = useCallback((tasks, user) => {
     const userItemIds = getTaskListItemIds(user.username, allTaskLists);
     const itemsToAssignIds = tasks.map(task => task['@id']);
     const allItemsToAssign = _.uniq([...userItemIds, ...itemsToAssignIds]);
 
+    dispatch(disableCentrifugoUpdateForTasksIds(itemsToAssignIds));
+    dispatch(disableCentrifugoUpdateForUsers(user.username));
+
     return _updateAssigningItems(allItemsToAssign, user);
-  }, [_updateAssigningItems, allTaskLists]);
+  }, [_updateAssigningItems, allTaskLists, dispatch]);
 
   const _updateUnassigningItems = useCallback((newItemIds, user, removedItemIds, isJustUnassign) => {
     const previousToursTasksIndex = _.cloneDeep(toursTasksIndex);
