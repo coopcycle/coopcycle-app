@@ -131,6 +131,7 @@ class TasksMapView extends Component {
     }
   }
 
+  // @TODO This function counts unassigned tasks even if they are hidden by the filter the user applied
   renderCluster(cluster, onPress) {
     const pointCount = cluster.pointCount,
       coordinate = cluster.coordinate,
@@ -203,6 +204,12 @@ class TasksMapView extends Component {
   }
 
   renderMarker(task) {
+    // Get the corresponding task list and see if it is an unassigned one
+    const taskList = getTaskTaskList(task, this.props.taskLists);
+    if (taskList.isUnassiged && this.props.isHideUnassignedFromMap) {
+      return null;
+    }
+
     const { width } = Dimensions.get('window');
 
     if (!this.markers.has(task['@id'])) {
@@ -210,8 +217,6 @@ class TasksMapView extends Component {
     }
 
     const warnings = this._getWarnings(task);
-
-    const taskList = getTaskTaskList(task, this.props.taskLists);
 
     return (
       <Marker
@@ -254,16 +259,21 @@ class TasksMapView extends Component {
       return null;
     }
 
-    return taskLists.map(taskList => (
-      this.props.isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID ? null : (
+    return taskLists.map(taskList => {
+      if (taskList.isUnassiged && this.props.isHideUnassignedFromMap) {
+        return null;
+      }
+
+      return (
         <Polyline
           coordinates={this.getCoordinates(taskList)}
           strokeWidth={3}
           strokeColor={taskList.color}
           key={taskList.id}
+          lineDashPattern={taskList.isUnassiged ? [20, 10] : null}
         />
       )
-    ));
+    });
   }
 
   renderModal() {
