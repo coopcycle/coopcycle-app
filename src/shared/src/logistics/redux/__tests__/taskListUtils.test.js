@@ -386,7 +386,7 @@ describe('taskListUtils', () => {
         {
           "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
           "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
-          "isUnassiged": true,
+          "isUnassignedTaskList": true,
           "items": [
             {"@id": "/api/tasks/1", "assignedTo": "username2", "hasIncidents": false, "id": 1, "orgName": "", "previous": null, "status": "", "tags": []},
             {"@id": "/api/tasks/2", "assignedTo": "username2", "hasIncidents": false, "id": 2, "orgName": "", "previous": "/api/tasks/1", "status": "", "tags": []}
@@ -397,7 +397,7 @@ describe('taskListUtils', () => {
         {
           "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
           "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
-          "isUnassiged": true,
+          "isUnassignedTaskList": true,
           "items": [
             {"@id": "/api/tasks/3", "assignedTo": "username3", "hasIncidents": false, "id": 3, "orgName": "", "previous": null, "status": "", "tags": []},
             {"@id": "/api/tasks/4", "assignedTo": "username3", "hasIncidents": false, "id": 4, "orgName": "", "previous": "/api/tasks/3", "status": "", "tags": []},
@@ -411,7 +411,7 @@ describe('taskListUtils', () => {
         {
           "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
           "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
-          "isUnassiged": true,
+          "isUnassignedTaskList": true,
           "items": [
             { "@id": "/api/tasks/10", "assignedTo": "", "hasIncidents": false, "id": 10, "orgName": "", "previous": "/api/tasks/9", "status": "", "tags": []},
             {"@id": "/api/tasks/8", "assignedTo": "username5", "hasIncidents": false, "id": 8, "orgName": "", "previous": null, "status": "", "tags": []},

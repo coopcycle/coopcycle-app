@@ -206,7 +206,7 @@ class TasksMapView extends Component {
   renderMarker(task) {
     // Get the corresponding task list and see if it is an unassigned one
     const taskList = getTaskTaskList(task, this.props.taskLists);
-    if (taskList.isUnassiged && this.props.isHideUnassignedFromMap) {
+    if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
       return null;
     }
 
@@ -260,7 +260,7 @@ class TasksMapView extends Component {
     }
 
     return taskLists.map(taskList => {
-      if (taskList.isUnassiged && this.props.isHideUnassignedFromMap) {
+      if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
         return null;
       }
 
@@ -270,7 +270,7 @@ class TasksMapView extends Component {
           strokeWidth={3}
           strokeColor={taskList.color}
           key={taskList.id}
-          lineDashPattern={taskList.isUnassiged ? [20, 10] : null}
+          lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : null}
         />
       )
     });

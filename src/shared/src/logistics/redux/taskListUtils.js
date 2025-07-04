@@ -62,7 +62,7 @@ export function createUnassignedTaskLists(allUnassignedTasks) {
         items: tasks,
         color: darkGreyColor,
         // This property below will be used into the map view to show/hide unassigned tasks
-        isUnassiged: true,
+        isUnassignedTaskList: true,
         // The one below is needed/used to search by username at getTaskTaskList->getUserTaskList functions
         username: null,
       });

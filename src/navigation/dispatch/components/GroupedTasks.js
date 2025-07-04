@@ -22,6 +22,7 @@ import {
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import {
+  createUnassignedTaskLists,
   getTasksListIdsToEdit,
   getUserTaskList,
 } from '../../../shared/src/logistics/redux/taskListUtils';
@@ -55,29 +56,34 @@ export default function GroupedTasks({
   const bgHighlightColor = useBackgroundHighlightColor();
 
   // Combine unassigned tasks and task lists to use in SectionList
+  const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
   const sections = [
     {
-      backgroundColor: whiteColor,
-      data: unassignedTasks,
       id: UNASSIGNED_TASKS_LIST_ID,
-      isUnassignedTaskList: true,
       taskListId: UNASSIGNED_TASKS_LIST_ID,
+      data: unassignedTasks,
+      tasksCount: unassignedTasks.length,
+      ordersCount: unassignedTaskLists.length,
+      isUnassignedTaskList: true,
+      backgroundColor: whiteColor,
       textColor: darkGreyColor,
       title: t('DISPATCH_UNASSIGNED_TASKS'),
     },
     ...taskLists.map(taskList => ({
-      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-      data: taskList.items,
       id: `${taskList.username.toLowerCase()}TasksList`,
-      isUnassignedTaskList: false,
       taskListId: taskList['@id'],
+      data: taskList.items,
+      tasksCount: taskList.items.length,
+      ordersCount: 0,
+      isUnassignedTaskList: false,
+      backgroundColor: taskList.color ? taskList.color : darkGreyColor,
       textColor: whiteColor,
       title: taskList.username,
     })),
   ];
 
   const filteredSections = hideEmptyTaskLists
-    ? sections.filter(section => section.data.length > 0)
+    ? sections.filter(section => section.tasksCount > 0)
     : sections;
 
   // collapsable
@@ -256,16 +262,14 @@ export default function GroupedTasks({
                     {section.title}
                   </Text>
                 </View>
-                {section.isUnassignedTaskList 
-                  ? <Text style={{ color: section.textColor }}>
-                    ({section.data.length} {t('TASKS')})
+                <Text style={{ color: darkGreyColor }}>
+                    {section.isUnassignedTaskList
+                      ? `${section.ordersCount}   (${section.tasksCount} ${t('TASKS').toLowerCase()})`
+                      : section.tasksCount
+                    }
                   </Text>
-                  : <Text style={{ color: darkGreyColor }} >
-                    {section.data.length}
-                  </Text>
-                }
               </View>
-              {section.data.length === 0 ? null : (
+              {section.tasksCount === 0 ? null : (
                 <Icon
                   as={FontAwesome}
                   testID={`${section.id}:toggler`}
