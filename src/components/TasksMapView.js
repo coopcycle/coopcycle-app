@@ -107,9 +107,10 @@ class TasksMapView extends Component {
       mapHeight: 0,
     };
 
-    this.renderCluster = this.renderCluster.bind(this);
     this.renderMarker = this.renderMarker.bind(this);
+    this.renderCluster = this.renderCluster.bind(this);
     this.onClusterPress = this.onClusterPress.bind(this);
+    this.map = null;
 
     const [latitude, longitude] = this.props.mapCenter;
 
@@ -131,28 +132,37 @@ class TasksMapView extends Component {
     }
   }
 
-  // @TODO This function counts unassigned tasks even if they are hidden by the filter the user applied
+  // @TODO Do NOT cluster if the address is NOT exactly the same..!
   renderCluster(cluster, onPress) {
-    const pointCount = cluster.pointCount,
-      coordinate = cluster.coordinate,
-      clusterId = cluster.clusterId;
+    const clusterId = cluster.clusterId;
+    const coordinate = cluster.coordinate;
 
-    return (
+    // Let's correctly count the markers, removing unassigned ones if the filter is enabled
+    const clusteringEngine = this.map.getClusteringEngine();
+    const clusteredPoints = clusteringEngine.getLeaves(clusterId, 1000);
+    const count = clusteredPoints.reduce((acc, point) => {
+      return acc + (this.props.isHideUnassignedFromMap && point.properties && !point.properties.item.isAssigned ? 0 : 1);
+    }, 0);
+
+    return (count === 0 ? null :
       <Marker
         identifier={`cluster-${clusterId}`}
         coordinate={coordinate}
         onPress={onPress}
         tracksViewChanges={false}>
         <View style={styles.clusterContainer}>
-          <Text style={styles.clusterText}>{pointCount}</Text>
+          <Text style={styles.clusterText}>{count}</Text>
         </View>
       </Marker>
     );
   }
 
   onClusterPress(clusterId, markers) {
-    if (markers.length > 1 && hasSameLocation(markers)) {
-      this.setState({ isModalVisible: true, modalMarkers: markers });
+    // Let's correctly set the clustered markers
+    const modalMarkers = this.props.isHideUnassignedFromMap ? markers.filter((task) => task.isAssigned) : markers;
+
+    if (modalMarkers.length > 1 && hasSameLocation(modalMarkers)) {
+      this.setState({ isModalVisible: true, modalMarkers });
     }
   }
 
@@ -354,9 +364,10 @@ class TasksMapView extends Component {
             loadingBackgroundColor={'#eeeeee'}
             onMapReady={() => this.onMapReady(onMapReady)}
             edgePadding={edgePadding}
-            renderCluster={this.renderCluster}
             renderMarker={this.renderMarker}
+            renderCluster={this.renderCluster}
             onClusterPress={this.onClusterPress}
+            ref={(r) => { this.map = r }}
             {...otherProps}>
             {this.props.children}
             {this.renderPolylines(taskLists)}
