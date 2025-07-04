@@ -22,7 +22,7 @@ import {
   darkRedColor,
   whiteColor
 } from '../../../styles/common';
-import { createTempTaskList, getTaskListTasks, getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
+import { createTempTaskList, getLinkedTasks, getTaskListTasks, getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
 import { selectTaskLists, selectTasksEntities, selectTasksWithColor } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
@@ -81,7 +81,6 @@ export default function GroupedTasks({
   // Update tasks functions
   const {
     assignTask,
-    getLinkedTasks,
     bulkEditTasks,
     assignTaskWithRelatedTasks,
     reassignTask,
@@ -146,14 +145,15 @@ export default function GroupedTasks({
   }, [navigation]);
 
   const handleOnSwipeToLeft = useCallback(taskListId => task => {
-    const tasksByTaskList = getLinkedTasks(task, taskListId);
+    const allTasks = Object.values(tasksEntities);
+    const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
 
     Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
       tasks.forEach(taskToAdd => {
         dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
       });
     });
-  }, [dispatch, getLinkedTasks]);
+  }, [allTaskLists, dispatch, tasksEntities]);
 
   const handleOnSwipeToRight = useCallback(taskListId => task => {
     dispatch(addTask({ task, taskListId }));
@@ -161,7 +161,8 @@ export default function GroupedTasks({
 
   const handleOnSwipeClose = useCallback((section, task) => {
     const taskListId = section.taskListId;
-    const tasksByTaskList = getLinkedTasks(task, taskListId);
+    const allTasks = Object.values(tasksEntities);
+    const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
 
     Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
       tasks.forEach(taskToRemove => {
@@ -170,7 +171,7 @@ export default function GroupedTasks({
         dispatch(removeTask({ taskId, taskListId: listId }));
       });
     });
-  }, [dispatch, getLinkedTasks]);
+  }, [allTaskLists, dispatch, tasksEntities]);
 
   const handleBulkAssignButtonPress = useCallback((selectedTasks) => {
     const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);

@@ -96,6 +96,19 @@ export function getTasksListIdsToEdit(selectedTasks) {
   return _.uniq([... ordersTasksListIds, ...tasksTasksListIds])
 }
 
+export function getLinkedTasks(task, taskListId, allTasks, allTaskLists) {
+  return getTasksListsToEdit(
+    {
+      orders: {
+        [taskListId]: [task]
+      },
+      tasks: {}
+    },
+    allTasks,
+    allTaskLists
+  );
+};
+
 export function getUserTaskList(username, allTaskLists) {
   return allTaskLists.find(taskList => taskList.username === username);
 }
