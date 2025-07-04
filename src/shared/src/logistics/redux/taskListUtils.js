@@ -51,6 +51,7 @@ export function createUnassignedTaskLists(allUnassignedTasks) {
       }
 
       const tasks = linkedTaskIds.map(linkedTaskId => {
+        // Update the task index
         acc.tasks[linkedTaskId] = taskId;
         // Return the task object with all its data
         return allUnassignedTasks.find(task => task['@id'] === linkedTaskId);
@@ -117,9 +118,9 @@ export function getUserTaskList(username, allTaskLists) {
   return allTaskLists.find(taskList => taskList.username === username);
 }
 
+// Find the 1st task list that contains the task
 export function getTaskTaskList(task, allTaskLists) {
-  const username = task.assignedTo;
-  return getUserTaskList(username, allTaskLists);
+  return allTaskLists.find(taskList => (taskList.items || []).find(item => item['@id'] === task['@id']));
 }
 
 function getTaskListIdForTask(task, allTaskLists) {

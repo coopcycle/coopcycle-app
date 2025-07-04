@@ -61,7 +61,6 @@ export default function TasksMap({ navigation, route }) {
     return allUnassignedTaskLists.concat(allTaskLists);
   }, [allTaskLists, allUnassignedTasks]);
 
-  // @TODO Review this function..!!
   const navigateToSelectedTask = task => {
     const taskList = getTaskTaskList(task, mergedTaskListsWithUnassigned);
     // task is one the the task lists' tasks, so taskList is always defined
