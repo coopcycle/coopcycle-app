@@ -24,7 +24,7 @@ import {
 } from '../../../styles/common';
 import { createTempTaskList, getTaskListTasks, getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
-import { selectTaskLists, selectTasksEntities, selectTasksWithColor, selectUnassignedTasksNotCancelled } from '../../../shared/logistics/redux';
+import { selectTaskLists, selectTasksEntities, selectTasksWithColor } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
@@ -45,7 +45,6 @@ export default function GroupedTasks({
   const navigation = useNavigation();
   const tasksWithColor = useSelector(selectTasksWithColor);
   const tasksEntities = useSelector(selectTasksEntities);
-  const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const allTaskLists = useSelector(selectTaskLists);
 
   // Combine unassigned tasks and task lists to use in SectionList
@@ -89,7 +88,10 @@ export default function GroupedTasks({
     reassignTaskWithRelatedTasks,
     unassignTask,
     unassignTaskWithRelatedTasks,
-  } = useSetTaskListItems();
+  } = useSetTaskListItems({
+    allTaskLists,
+    tasksEntities,
+  });
 
   const onTaskClick = useCallback(isUnassignedTaskList => task => {
     // If task is unassigned, related tasks are order's tasks
