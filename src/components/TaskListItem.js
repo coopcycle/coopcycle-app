@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
 import PropTypes from 'prop-types';
-import React, { forwardRef, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
@@ -278,7 +278,7 @@ const ItemTouchable = ({ children, style, ...otherProps }) => {
   );
 };
 
-const TaskListItem = forwardRef(({
+const TaskListItem = ({
   task,
   color,
   index,
@@ -295,7 +295,7 @@ const TaskListItem = forwardRef(({
   onSwipedToLeft,
   onSwipedToRight,
   onSwipeClosed,
-}, ref) => {
+}) => {
   const { t } = useTranslation()
   const taskTitle = task.orgName
     ? task.metadata.order_number
@@ -510,7 +510,7 @@ const TaskListItem = forwardRef(({
       </HStack>
     </SwipeRow>
   );
-});
+};
 
 TaskListItem.propTypes = {
   task: PropTypes.object.isRequired,
