@@ -12,7 +12,8 @@ import {
   View,
 } from 'react-native';
 import { withTranslation } from 'react-i18next';
-import ClusteredMapView from 'react-native-maps-super-cluster';
+// import ClusteredMapView from 'react-native-maps-super-cluster';
+import MapView from 'react-native-maps';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
 
@@ -75,14 +76,14 @@ const edgePadding = {
   right: 20,
 };
 
-const hasSameLocation = markers => {
-  const coordsArray = markers.map(
-    m => `${m.location.latitude};${m.location.longitude}`,
-  );
-  const coordsArrayUniq = _.uniq(coordsArray);
+// const hasSameLocation = markers => {
+//   const coordsArray = markers.map(
+//     m => `${m.location.latitude};${m.location.longitude}`,
+//   );
+//   const coordsArrayUniq = _.uniq(coordsArray);
 
-  return coordsArrayUniq.length === 1;
-};
+//   return coordsArrayUniq.length === 1;
+// };
 
 const addressName = task => {
   const customerName = task.address.firstName
@@ -108,8 +109,8 @@ class TasksMapView extends Component {
     };
 
     this.renderMarker = this.renderMarker.bind(this);
-    this.renderCluster = this.renderCluster.bind(this);
-    this.onClusterPress = this.onClusterPress.bind(this);
+    // this.renderCluster = this.renderCluster.bind(this);
+    // this.onClusterPress = this.onClusterPress.bind(this);
     this.map = null;
 
     const [latitude, longitude] = this.props.mapCenter;
@@ -133,38 +134,38 @@ class TasksMapView extends Component {
   }
 
   // @TODO Do NOT cluster if the address is NOT exactly the same..!
-  renderCluster(cluster, onPress) {
-    const clusterId = cluster.clusterId;
-    const coordinate = cluster.coordinate;
+  // renderCluster(cluster, onPress) {
+  //   const clusterId = cluster.clusterId;
+  //   const coordinate = cluster.coordinate;
 
-    // Let's correctly count the markers, removing unassigned ones if the filter is enabled
-    const clusteringEngine = this.map.getClusteringEngine();
-    const clusteredPoints = clusteringEngine.getLeaves(clusterId, 1000);
-    const count = clusteredPoints.reduce((acc, point) => {
-      return acc + (this.props.isHideUnassignedFromMap && point.properties && !point.properties.item.isAssigned ? 0 : 1);
-    }, 0);
+  //   // Let's correctly count the markers, removing unassigned ones if the filter is enabled
+  //   const clusteringEngine = this.map.getClusteringEngine();
+  //   const clusteredPoints = clusteringEngine.getLeaves(clusterId, 1000);
+  //   const count = clusteredPoints.reduce((acc, point) => {
+  //     return acc + (this.props.isHideUnassignedFromMap && point.properties && !point.properties.item.isAssigned ? 0 : 1);
+  //   }, 0);
 
-    return (count === 0 ? null :
-      <Marker
-        identifier={`cluster-${clusterId}`}
-        coordinate={coordinate}
-        onPress={onPress}
-        tracksViewChanges={false}>
-        <View style={styles.clusterContainer}>
-          <Text style={styles.clusterText}>{count}</Text>
-        </View>
-      </Marker>
-    );
-  }
+  //   return (count === 0 ? null :
+  //     <Marker
+  //       identifier={`cluster-${clusterId}`}
+  //       coordinate={coordinate}
+  //       onPress={onPress}
+  //       tracksViewChanges={false}>
+  //       <View style={styles.clusterContainer}>
+  //         <Text style={styles.clusterText}>{count}</Text>
+  //       </View>
+  //     </Marker>
+  //   );
+  // }
 
-  onClusterPress(clusterId, markers) {
-    // Let's correctly set the clustered markers
-    const modalMarkers = this.props.isHideUnassignedFromMap ? markers.filter((task) => task.isAssigned) : markers;
+  // onClusterPress(clusterId, markers) {
+  //   // Let's correctly set the clustered markers
+  //   const modalMarkers = this.props.isHideUnassignedFromMap ? markers.filter((task) => task.isAssigned) : markers;
 
-    if (modalMarkers.length > 1 && hasSameLocation(modalMarkers)) {
-      this.setState({ isModalVisible: true, modalMarkers });
-    }
-  }
+  //   if (modalMarkers.length > 1 && hasSameLocation(modalMarkers)) {
+  //     this.setState({ isModalVisible: true, modalMarkers });
+  //   }
+  // }
 
   _onModalItemPress(item) {
     this.setState(
@@ -213,7 +214,7 @@ class TasksMapView extends Component {
     return warnings;
   }
 
-  renderMarker(task) {
+  renderMarker(task, index) {
     // Get the corresponding task list and see if it is an unassigned one
     const taskList = getTaskTaskList(task, this.props.taskLists);
     if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
@@ -231,7 +232,7 @@ class TasksMapView extends Component {
     return (
       <Marker
         identifier={task['@id']}
-        key={task['@id']}
+        key={`${task['@id']}-${index}`}
         coordinate={task.address.geo}
         flat={true}
         ref={this.markers.get(task['@id'])}
@@ -349,12 +350,13 @@ class TasksMapView extends Component {
           this.setState({ mapHeight: event.nativeEvent.layout.height })
         }>
         {this.state.mapHeight && this.state.mapHeight > 0 ? (
-          <ClusteredMapView
-            data={data}
+          <MapView
+            // data={data}
             style={[styles.map, { marginBottom: this.state.marginBottom, flex: 1, minHeight: '100%', widht: '100%' }]}
             width={width}
             height={this.state.mapHeight}
             initialRegion={this.initialRegion}
+            clusteringEnabled={false}
             zoomEnabled={true}
             zoomControlEnabled={true}
             showsUserLocation
@@ -364,14 +366,15 @@ class TasksMapView extends Component {
             loadingBackgroundColor={'#eeeeee'}
             onMapReady={() => this.onMapReady(onMapReady)}
             edgePadding={edgePadding}
-            renderMarker={this.renderMarker}
-            renderCluster={this.renderCluster}
-            onClusterPress={this.onClusterPress}
+            // renderMarker={this.renderMarker}
+            // renderCluster={this.renderCluster}
+            // onClusterPress={this.onClusterPress}
             ref={(r) => { this.map = r }}
             {...otherProps}>
-            {this.props.children}
+            {data.map(this.renderMarker)}
             {this.renderPolylines(taskLists)}
-          </ClusteredMapView>
+            {this.props.children}
+          </MapView>
         ) : null}
         {this.renderModal()}
       </View>
