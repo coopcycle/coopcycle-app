@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { taskExists } from '../../shared/src/logistics/redux/taskUtils';
 
 const initialState = {
   orders: {},
@@ -11,16 +12,46 @@ const updateSelectedTasksSlice = createSlice({
   reducers: {
     addOrder: (state, { payload: tasksByTaskList }) => {
       Object.entries(tasksByTaskList).forEach(([taskListId, tasks]) => {
-        state.orders[taskListId] = tasks;
+        if (state.tasks[taskListId]) {
+          const incomingTaskIds = new Set(tasks.map(t => t['@id']));
+          state.tasks[taskListId] = state.tasks[taskListId].filter(
+            t => !incomingTaskIds.has(t['@id']),
+          );
+          if (state.tasks[taskListId].length === 0) {
+            delete state.tasks[taskListId];
+          }
+        }
+
+        if (!state.orders[taskListId]) {
+          state.orders[taskListId] = tasks;
+        } else {
+          const existingTasks = state.orders[taskListId];
+          const newUniqueTasks = tasks.filter(
+            t => !taskExists(existingTasks, t),
+          );
+          state.orders[taskListId] = [...existingTasks, ...newUniqueTasks];
+        }
       });
     },
     addTask: (state, { payload: { task, taskListId } }) => {
+      const ordersForTaskList = state.orders[taskListId];
+      if (ordersForTaskList) {
+        state.orders[taskListId] = ordersForTaskList.filter(
+          t => t['@id'] !== task['@id'],
+        );
+
+        if (state.orders[taskListId].length === 0) {
+          delete state.orders[taskListId];
+        }
+      }
       if (!state.tasks[taskListId]) {
         state.tasks[taskListId] = [];
       }
-      state.tasks[taskListId].push(task);
+      
+      if (!taskExists(state.tasks[taskListId], task)) {
+        state.tasks[taskListId].push(task);
+      }
     },
-
     removeOrder: (state, { payload: tasksByTaskList }) => {
       Object.entries(tasksByTaskList).forEach(([taskListId, tasks]) => {
         const list = state.orders[taskListId];
