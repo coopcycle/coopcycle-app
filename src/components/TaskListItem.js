@@ -25,7 +25,7 @@ import {
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-import { selectAllTasksIdsFromOrders } from '../redux/Dispatch/selectors';
+import { selectAllTasksIdsFromOrders, selectAllTasksIdsFromTasks, selectSelectedTasks } from '../redux/Dispatch/selectors';
 import {
   blackColor,
   lightGreyColor,
@@ -296,7 +296,7 @@ const TaskListItem = ({
   onSwipedToRight,
   onSwipeClosed,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const taskTitle = task.orgName
     ? task.metadata.order_number
       ? task.orgName
@@ -333,22 +333,28 @@ const TaskListItem = ({
 
   const swipeRow = useRef(null);
 
-  const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
-  const shouldAlsoSwipe = allTasksIdsFromOrders.includes(task.id);
-
   useEffect(() => {
     if (task.status === 'DONE') {
       swipeRow.current?.closeRow();
     }
   }, [task.status]);
 
+  // swipeLeft
+  const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
+  const shouldSwipeLeft = allTasksIdsFromOrders.includes(task.id);
+  // swipeRight
+  const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks)
+  const shouldSwipeRight = allTasksIdsFromTasks.includes(task.id)
+  console.log('...', allTasksIdsFromTasks)
   useEffect(() => {
-    if (shouldAlsoSwipe) {
-      swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-    } else {
-      swipeRow.current?.closeRow?.();
-    }
-  }, [shouldAlsoSwipe, buttonWidth]);
+  if (shouldSwipeLeft) {
+    swipeRow.current?.manuallySwipeRow?.(buttonWidth);
+  } else if (shouldSwipeRight) {
+    swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
+  }
+}, [shouldSwipeLeft, shouldSwipeRight, buttonWidth]);
+
+  
 
   function _onRowOpen(toValue) {
     if (toValue > 0 && onSwipedToLeft) {
@@ -363,7 +369,6 @@ const TaskListItem = ({
       onSwipeClosed();
     }
   }
-
 
   return (
     <SwipeRow

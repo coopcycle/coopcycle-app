@@ -54,3 +54,14 @@ export const selectAllTasksIdsFromOrders = createSelector(
     );
   }
 );
+
+export const selectAllTasksIdsFromTasks = createSelector(
+  selectSelectedTasks,
+  selectedTasks => {
+    const tasks = selectedTasks?.tasks || {};
+
+    return Object.values(tasks).flatMap(taskList =>
+      Object.values(taskList).map(task => task.id)
+    );
+  }
+);
