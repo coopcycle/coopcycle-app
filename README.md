@@ -1,7 +1,7 @@
 CoopCycle
 =========
 
-[![Build Status](https://github.com/coopcycle/coopcycle-app/workflows/Build/badge.svg)](https://github.com/coopcycle/coopcycle-app/actions)
+![Build Status](https://github.com/coopcycle/coopcycle-app/actions/workflows/test_android.yml/badge.svg) ![Build Status](https://github.com/coopcycle/coopcycle-app/actions/workflows/test_ios.yml/badge.svg)
 
 Prerequisites
 -------------
