@@ -12,16 +12,6 @@ const updateSelectedTasksSlice = createSlice({
   reducers: {
     addOrder: (state, { payload: tasksByTaskList }) => {
       Object.entries(tasksByTaskList).forEach(([taskListId, tasks]) => {
-        if (state.tasks[taskListId]) {
-          const incomingTaskIds = new Set(tasks.map(t => t['@id']));
-          state.tasks[taskListId] = state.tasks[taskListId].filter(
-            t => !incomingTaskIds.has(t['@id']),
-          );
-          if (state.tasks[taskListId].length === 0) {
-            delete state.tasks[taskListId];
-          }
-        }
-
         if (!state.orders[taskListId]) {
           state.orders[taskListId] = tasks;
         } else {
@@ -34,16 +24,6 @@ const updateSelectedTasksSlice = createSlice({
       });
     },
     addTask: (state, { payload: { task, taskListId } }) => {
-      const ordersForTaskList = state.orders[taskListId];
-      if (ordersForTaskList) {
-        state.orders[taskListId] = ordersForTaskList.filter(
-          t => t['@id'] !== task['@id'],
-        );
-
-        if (state.orders[taskListId].length === 0) {
-          delete state.orders[taskListId];
-        }
-      }
       if (!state.tasks[taskListId]) {
         state.tasks[taskListId] = [];
       }
