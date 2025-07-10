@@ -37,6 +37,7 @@ import {
   assignTaskIconName,
 } from '../../task/styles/common';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
+import { selectAllTasksIdsFromOrders, selectAllTasksIdsFromTasks } from '../../../redux/Dispatch/selectors';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -191,9 +192,18 @@ export default function GroupedTasks({
     });
   };
 
-  const allowToSelect = task => {
-    return task.status !== 'DONE';
-  };
+  const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
+  const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks)
+
+  const enableSwipeLeft = task => {
+    const alreadySwipedLeft = allTasksIdsFromOrders.includes(task['@id']);
+  return task.status !== 'DONE' && !alreadySwipedLeft;
+  }
+
+  const enableSwipeRight = task => {
+    const alreadySwipedLeft = allTasksIdsFromTasks.includes(task['@id']);
+  return task.status !== 'DONE' && !alreadySwipedLeft;
+  }
 
   const swipeLeftConfiguration = section => ({
     onPressLeft: assignTaskWithRelatedTasksHandler(
@@ -201,7 +211,7 @@ export default function GroupedTasks({
     ),
     onSwipeToLeft: task => handleOnSwipeToLeft(task, section.taskListId),
     swipeOutLeftBackgroundColor: darkRedColor,
-    swipeOutLeftEnabled: allowToSelect,
+    swipeOutLeftEnabled: enableSwipeLeft,
     swipeOutLeftIconName: assignOrderIconName,
   });
 
@@ -209,7 +219,7 @@ export default function GroupedTasks({
     onPressRight: assignTaskHandler(section.isUnassignedTaskList),
     onSwipeToRight: task => handleOnSwipeToRight(task, section.taskListId),
     swipeOutRightBackgroundColor: darkRedColor,
-    swipeOutRightEnabled: allowToSelect,
+    swipeOutRightEnabled: enableSwipeRight,
     swipeOutRightIconName: assignTaskIconName,
   });
 
