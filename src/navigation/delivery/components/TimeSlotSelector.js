@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 8,
-    alignItems: 'center',
+    alignItems: 'stretch',
     marginBottom: 10,
   },
   button: {
