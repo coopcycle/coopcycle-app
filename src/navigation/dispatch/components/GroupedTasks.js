@@ -29,7 +29,7 @@ import {
 import {
   darkGreyColor,
   darkRedColor,
-  whiteColor
+  whiteColor,
 } from '../../../styles/common';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import {
@@ -37,7 +37,6 @@ import {
   assignTaskIconName,
 } from '../../task/styles/common';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
-import { selectAllTasksIdsFromOrders, selectAllTasksIdsFromTasks } from '../../../redux/Dispatch/selectors';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -192,26 +191,12 @@ export default function GroupedTasks({
     });
   };
 
-  const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
-  const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks)
-
-  const enableSwipeLeft = task => {
-    const alreadySwipedLeft = allTasksIdsFromOrders.includes(task['@id']);
-  return task.status !== 'DONE' && !alreadySwipedLeft;
-  }
-
-  const enableSwipeRight = task => {
-    const alreadySwipedLeft = allTasksIdsFromTasks.includes(task['@id']);
-  return task.status !== 'DONE' && !alreadySwipedLeft;
-  }
-
   const swipeLeftConfiguration = section => ({
     onPressLeft: assignTaskWithRelatedTasksHandler(
       section.isUnassignedTaskList,
     ),
     onSwipeToLeft: task => handleOnSwipeToLeft(task, section.taskListId),
     swipeOutLeftBackgroundColor: darkRedColor,
-    swipeOutLeftEnabled: enableSwipeLeft,
     swipeOutLeftIconName: assignOrderIconName,
   });
 
@@ -219,7 +204,6 @@ export default function GroupedTasks({
     onPressRight: assignTaskHandler(section.isUnassignedTaskList),
     onSwipeToRight: task => handleOnSwipeToRight(task, section.taskListId),
     swipeOutRightBackgroundColor: darkRedColor,
-    swipeOutRightEnabled: enableSwipeRight,
     swipeOutRightIconName: assignTaskIconName,
   });
 
@@ -273,11 +257,12 @@ export default function GroupedTasks({
                   </Text>
                 </View>
                 <Text style={{ color: darkGreyColor }}>
-                    {section.isUnassignedTaskList
-                      ? `${section.ordersCount}   (${section.tasksCount} ${t('TASKS').toLowerCase()})`
-                      : section.tasksCount
-                    }
-                  </Text>
+                  {section.isUnassignedTaskList
+                    ? `${section.ordersCount}   (${section.tasksCount} ${t(
+                        'TASKS',
+                      ).toLowerCase()})`
+                    : section.tasksCount}
+                </Text>
               </View>
               {section.tasksCount === 0 ? null : (
                 <Icon

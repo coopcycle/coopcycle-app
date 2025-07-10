@@ -18,10 +18,8 @@ const TaskList = ({
   onTaskClick = () => {},
   refreshing = false,
   swipeOutLeftBackgroundColor,
-  swipeOutLeftEnabled,
   swipeOutLeftIconName,
   swipeOutRightBackgroundColor,
-  swipeOutRightEnabled,
   swipeOutRightIconName,
   tasks,
   tasksWithColor,
@@ -36,7 +34,6 @@ const TaskList = ({
   };
 
   const swipeLeftConfiguration = task => ({
-    disableLeftSwipe: !swipeOutLeftEnabled(task),
     onPressLeft: () => onPressLeft(task),
     onSwipedToLeft: () => _handleSwipeToLeft(task),
     swipeOutLeftBackgroundColor,
@@ -44,7 +41,6 @@ const TaskList = ({
   });
 
   const swipeRightConfiguration = task => ({
-    disableRightSwipe: !swipeOutRightEnabled(task),
     onPressRight: () => onPressRight(task),
     onSwipedToRight: () => _handleSwipeToRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
