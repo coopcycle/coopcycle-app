@@ -9,10 +9,8 @@ import {
   clearTasksFilter,
   filterTasks,
   selectAreDoneTasksHidden,
-  selectIsHideUnassignedFromMap,
   selectIsPolylineOn,
   selectTasksChangedAlertSound,
-  setHideUnassignedFromMap,
   setPolylineOn,
   setTasksChangedAlertSound,
 } from '../../redux/Courier';
@@ -34,7 +32,6 @@ export default function TasksFilters() {
   const areDoneTasksHidden = useSelector(selectAreDoneTasksHidden);
   const areIncidentsHidden = useSelector(selectAreIncidentsHidden);
   const tasksChangedAlertSound = useSelector(selectTasksChangedAlertSound);
-  const isHideUnassignedFromMap = useSelector(selectIsHideUnassignedFromMap);
   const isPolylineOn = useSelector(selectIsPolylineOn);
 
   function toggleDisplayDone(isHidden) {
@@ -57,11 +54,7 @@ export default function TasksFilters() {
     dispatch(setTasksChangedAlertSound(enabled));
   }
 
-  function toggleHideUnassignedFromMap(disabled) {
-    dispatch(setHideUnassignedFromMap(disabled));
-  }
-
-  function togglePolylineOnMap(enabled) {
+  function togglePolylineOn(enabled) {
     dispatch(setPolylineOn(enabled));
   }
 
@@ -82,13 +75,8 @@ export default function TasksFilters() {
       isChecked: tasksChangedAlertSound,
     },
     {
-      label: t('TASKS_HIDE_UNASSIGNED'),
-      onToggle: toggleHideUnassignedFromMap,
-      isChecked: isHideUnassignedFromMap,
-    },
-    {
       label: t('TASKS_SHOW_POLYLINE'),
-      onToggle: togglePolylineOnMap,
+      onToggle: togglePolylineOn,
       isChecked: isPolylineOn,
     },
     {

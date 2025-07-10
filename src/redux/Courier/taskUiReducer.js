@@ -7,7 +7,6 @@ import {
   CHANGE_DATE,
   CLEAR_TASK_FILTER,
   LOAD_TASKS_REQUEST,
-  SET_HIDE_UNASSIGNED_FROM_MAP,
   SET_KEEP_AWAKE,
   SET_POLYLINE_ON,
   SET_SIGNATURE_SCREEN_FIRST,
@@ -25,7 +24,6 @@ const tasksUiInitialState = {
   excludeFilters: [], // Key-value pairs of active filters (e.g. status: 'done')
   tasksChangedAlertSound: true,
   keepAwake: false,
-  isHideUnassignedFromMap: false,
   isPolylineOn: true,
   signatureScreenFirst: false,
 };
@@ -55,12 +53,6 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
       return {
         ...state,
         keepAwake: action.payload,
-      };
-
-    case SET_HIDE_UNASSIGNED_FROM_MAP:
-      return {
-        ...state,
-        isHideUnassignedFromMap: action.payload,
       };
 
     case SET_POLYLINE_ON:

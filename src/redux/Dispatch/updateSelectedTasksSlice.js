@@ -9,48 +9,67 @@ const updateSelectedTasksSlice = createSlice({
   name: 'selectedTasks',
   initialState,
   reducers: {
-    addOrder: (state, { payload: tasksByTaskList }) => {
-      Object.entries(tasksByTaskList).forEach(([taskListId, tasks]) => {
-        state.orders[taskListId] = tasks;
-      });
+    // TODO on swipe, add linked tasks to selectedTask state
+    // getTasksListsToEdit?
+
+    // add remove
+    addOrder: (state, { payload: { task, taskListId } }) => {
+      // remove if it's in selectedTasks.tasks
+      // TODO also has to remove linked tasks
+      const selectedTasksForTaskList = state.tasks[taskListId];
+
+      if (selectedTasksForTaskList) {
+        state.tasks[taskListId] = selectedTasksForTaskList.filter(
+          t => t.id !== task.id,
+        );
+
+        if (state.tasks[taskListId].length === 0) {
+          delete state.tasks[taskListId];
+        }
+      }
+
+      if (!state.orders[taskListId]) {
+        state.orders[taskListId] = [];
+      }
+      state.orders[taskListId].push(task);
     },
     addTask: (state, { payload: { task, taskListId } }) => {
+      // remove if it's in selectedTasks.orders
+      const selectedTasksForTaskList = state.orders[taskListId];
+
+      if (selectedTasksForTaskList) {
+        state.orders[taskListId] = selectedTasksForTaskList.filter(
+          t => t.id !== task.id,
+        );
+
+        if (state.orders[taskListId].length === 0) {
+          delete state.orders[taskListId];
+        }
+      }
       if (!state.tasks[taskListId]) {
         state.tasks[taskListId] = [];
       }
       state.tasks[taskListId].push(task);
     },
 
-    removeOrder: (state, { payload: tasksByTaskList }) => {
-      Object.entries(tasksByTaskList).forEach(([taskListId, tasks]) => {
-        const list = state.orders[taskListId];
-        if (!list) return;
+    removeOrder: (state, { payload: { taskId, taskListId } }) => {
+      const list = state.orders[taskListId];
+      if (!list) return;
 
-        const taskIdsToRemove = tasks.map(t => t['@id']);
-        state.orders[taskListId] = list.filter(
-          t => !taskIdsToRemove.includes(t['@id']),
-        );
-
-        if (state.orders[taskListId].length === 0) {
-          delete state.orders[taskListId];
-        }
-      });
+      state.orders[taskListId] = list.filter(t => t['@id'] !== taskId);
+      if (state.orders[taskListId].length === 0) {
+        delete state.orders[taskListId];
+      }
     },
 
-    removeTask: (state, { payload: tasksByTaskList }) => {
-      Object.entries(tasksByTaskList).forEach(([taskListId, tasks]) => {
-        const list = state.tasks[taskListId];
-        if (!list) return;
+    removeTask: (state, { payload: { taskId, taskListId } }) => {
+      const list = state.tasks[taskListId];
+      if (!list) return;
 
-        const taskIdsToRemove = tasks.map(t => t['@id']);
-        state.tasks[taskListId] = list.filter(
-          t => !taskIdsToRemove.includes(t['@id']),
-        );
-
-        if (state.tasks[taskListId].length === 0) {
-          delete state.tasks[taskListId];
-        }
-      });
+      state.tasks[taskListId] = list.filter(t => t['@id'] !== taskId);
+      if (state.tasks[taskListId].length === 0) {
+        delete state.tasks[taskListId];
+      }
     },
 
     clearSelectedTasks: selectedTasks => {
@@ -67,10 +86,5 @@ export const {
   removeTask,
   clearSelectedTasks,
 } = updateSelectedTasksSlice.actions;
-
-export const removeTasksAndOrders = tasksByTaskList => dispatch => {
-  dispatch(removeOrder(tasksByTaskList));
-  dispatch(removeTask(tasksByTaskList));
-};
 
 export default updateSelectedTasksSlice.reducer;

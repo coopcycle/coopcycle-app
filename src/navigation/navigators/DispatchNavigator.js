@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { StyleSheet,TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
@@ -20,8 +20,6 @@ import NavigationHolder from '../../NavigationHolder';
 import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
-import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
-
 
 
 const Tab = createBottomTabNavigator();
@@ -163,13 +161,6 @@ export default function DispatchNavigator({
     navigation.navigate('DispatchAllTasks');
     dispatch(createDeliverySuccess(newDelivery));
   };
-
-  useEffect(() => {
-    const clearSelectedTasksState = navigation.addListener('blur', () => {
-      dispatch(clearSelectedTasks());
-    });
-    return clearSelectedTasksState;
-  }, [navigation, dispatch]);
 
   return (
     <DeliveryCallbackProvider callback={deliveryCallback}>

@@ -47,16 +47,3 @@ export const selectFilteredTaskLists = filters => createSelector(
 );
 
 export const selectKeywordFilters = state => state.dispatch.ui.keywordFilters;
-
-export const selectSelectedTasks = state => state.dispatch.ui.selectedTasks;
-
-export const selectAllTasksIdsFromOrders = createSelector(
-  selectSelectedTasks,
-  selectedTasks => {
-    const orders = selectedTasks?.orders || {};
-
-    return Object.values(orders).flatMap(taskList =>
-      Object.values(taskList).map(task => task.id)
-    );
-  }
-);

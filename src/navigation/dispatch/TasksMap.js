@@ -3,20 +3,19 @@ import { Text, View } from 'native-base';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { createUnassignedTaskLists } from '../../shared/src/logistics/redux/taskListUtils';
+import { getTaskListTasks, getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import { navigateToTask } from '../utils';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
 import {
   selectSelectedDate,
   selectTaskLists,
   selectTasksEntities,
-  selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
 import { selectDispatchUiTaskFilters } from '../../redux/Dispatch/selectors';
 import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import TasksMapView from '../../components/TasksMapView';
-import useNavigateToTask from './useNavigateToTask';
 
 const styles = StyleSheet.create({
   newDeliveryBarDate: {
@@ -45,16 +44,9 @@ export default function TasksMap({ navigation, route }) {
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
   const allTaskLists = useSelector(selectTaskLists);
   const tasksEntities = useSelector(selectTasksEntities);
-  const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
   const bgHighlightColor = useBackgroundHighlightColor()
-  const navigateToTask = useNavigateToTask({
-    allTaskLists,
-    navigation,
-    route,
-    tasksEntities,
-  });
 
   const { isFetching } = useAllTasks(selectedDate);
 
@@ -62,15 +54,11 @@ export default function TasksMap({ navigation, route }) {
     return defaultCoordinates.split(',').map(parseFloat);
   }, [defaultCoordinates]);
 
-  const mergedTaskListsWithUnassigned = useMemo(() => {
-    // Split the unassigned task list by grouped linked tasks
-    const allUnassignedTaskLists = createUnassignedTaskLists(allUnassignedTasks);
-    // Prepend the unassigned tasks list
-    return allUnassignedTaskLists.concat(allTaskLists);
-  }, [allTaskLists, allUnassignedTasks]);
-
   const navigateToSelectedTask = task => {
-    navigateToTask(!!task.assignedTo, task);
+    // task is one the the task lists' tasks, so taskList is always defined
+    const taskList = getTaskTaskList(task, allTaskLists);
+    const relatedTasks = getTaskListTasks(taskList, tasksEntities);
+    navigateToTask(navigation, route, task, relatedTasks);
   };
 
   return (
@@ -87,7 +75,7 @@ export default function TasksMap({ navigation, route }) {
       <View style={styles.mapContainer}>
         <TasksMapView
           mapCenter={mapCenter}
-          taskLists={mergedTaskListsWithUnassigned}
+          taskLists={allTaskLists}
           onMarkerCalloutPress={navigateToSelectedTask}
           uiFilters={uiFilters}
         />

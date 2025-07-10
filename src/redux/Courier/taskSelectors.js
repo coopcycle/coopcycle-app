@@ -21,7 +21,6 @@ export const selectIsTasksLoadingFailure = state =>
 export const selectIsTaskCompleteFailure = state =>
   state.entities.tasks.completeTaskFetchError;
 export const selectTaskFilters = state => state.ui.tasks.excludeFilters;
-export const selectIsHideUnassignedFromMap = state => state.ui.tasks.isHideUnassignedFromMap;
 export const selectIsPolylineOn = state => state.ui.tasks.isPolylineOn;
 export const selectTasksChangedAlertSound = state =>
   state.ui.tasks.tasksChangedAlertSound;

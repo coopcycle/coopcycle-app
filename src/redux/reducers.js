@@ -67,7 +67,6 @@ const tasksUiPersistConfig = {
     'excludeFilters',
     'tasksChangedAlertSound',
     'keepAwake',
-    'isHideUnassignedFromMap',
     'isPolylineOn',
     'signatureScreenFirst',
   ],
