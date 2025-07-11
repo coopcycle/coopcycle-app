@@ -4,6 +4,7 @@ import {
   buildSelectedTasks,
   createUnassignedTaskLists,
   getTaskListTasks,
+  getTaskTaskList,
   getTasksListIdsToEdit,
   getTasksListsToEdit,
   replaceItemsWithItemIds,
@@ -368,6 +369,24 @@ describe('taskListUtils', () => {
       ].sort());
     });
   })
+
+  describe('getTaskTaskList', () => {
+    it('should return undefined if Task does not belong to any TaskList', () => {
+      const task = allTasks[10];
+
+      const result = getTaskTaskList(task, allTaskLists);
+
+      expect(result).toEqual(undefined);
+    });
+
+    it("should return task's tasklist if Task belongs to any TaskList", () => {
+      const task = allTasks[0];
+
+      const result = getTaskTaskList(task, allTaskLists);
+
+      expect(result).toEqual(allTaskLists[1]);
+    });
+  });
 
   describe('buildSelectedTasks', () => {
     it('should return an empty object for orders and tasks if no order or task is provided', () => {

@@ -149,7 +149,7 @@ export function getUserTaskList(username, allTaskLists) {
 
 // Find the 1st task list that contains the task
 export function getTaskTaskList(task, allTaskLists) {
-  return allTaskLists.find(taskList => (taskList.items || []).find(item => item['@id'] === task['@id']));
+  return allTaskLists.find(taskList => (taskList.tasksIds || []).find(id => id === task['@id']));
 }
 
 function getTaskListIdForTask(task, allTaskLists) {
