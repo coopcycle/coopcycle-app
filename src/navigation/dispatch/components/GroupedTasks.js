@@ -309,7 +309,6 @@ export default function GroupedTasks({
       <BulkEditTasksFloatingButton
         onPress={handleBulkAssignButtonPress}
         iconName="user-circle"
-        //ref={bulkEditTasksFloatingButtonRef}
       />
     </>
   );
