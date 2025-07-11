@@ -112,9 +112,9 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
       }
     }
 
-    if (_.isEmpty(values.contactName)) {
-      errors.contactName = t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME');
-    }
+    // if (_.isEmpty(values.contactName)) {
+    //   errors.contactName = t('STORE_NEW_DELIVERY_ERROR.EMPTY_CONTACT_NAME');
+    // }
 
     if (!validAddress) {
       errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
@@ -261,7 +261,8 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_CONTACT_NAME')}
+              {t('STORE_NEW_DELIVERY_CONTACT_NAME')}{' '}
+              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
             </Text>
             <FormInput
               autoCorrect={false}
