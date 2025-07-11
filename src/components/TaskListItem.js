@@ -288,8 +288,6 @@ const TaskListItem = ({
   onPress = () => {},
   onPressLeft = () => {},
   onPressRight = () => {},
-  disableLeftSwipe,
-  disableRightSwipe,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIconName,
   swipeOutRightBackgroundColor,
@@ -344,9 +342,9 @@ const TaskListItem = ({
 
   // swipeLeft
   const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
-  const shouldSwipeLeft = allTasksIdsFromOrders.includes(task.id);
+  const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
   const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
-  const shouldSwipeRight = allTasksIdsFromTasks.includes(task.id);
+  const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
 
   const prevShouldSwipeLeftRef = useRef();
 
@@ -378,11 +376,15 @@ const TaskListItem = ({
       onSwipeClosed();
     }
   }
+  const allowSwipeLeft =
+    task.status !== 'DONE' && !allTasksIdsFromOrders.includes(task['@id']);
+  const allowSwipeRight =
+    task.status !== 'DONE' && !allTasksIdsFromTasks.includes(task['@id']);
 
   return (
     <SwipeRow
-      disableRightSwipe={disableRightSwipe}
-      disableLeftSwipe={disableLeftSwipe}
+      disableLeftSwipe={!allowSwipeLeft}
+      disableRightSwipe={!allowSwipeRight}
       leftOpenValue={buttonWidth}
       stopLeftSwipe={visibleButtonWidth}
       rightOpenValue={-buttonWidth}
@@ -417,7 +419,7 @@ const TaskListItem = ({
           }}
           testID={`${taskTestId}:right`}
           width={visibleButtonWidth}>
-          <SwipeButton iconName={swipeOutRightIconName} width={buttonWidth} />
+          <SwipeButton iconName={swipeOutRightIconName} size={8} width={buttonWidth} />
         </SwipeButtonContainer>
       </View>
       <HStack

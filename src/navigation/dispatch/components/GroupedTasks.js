@@ -30,7 +30,7 @@ import {
 import {
   darkGreyColor,
   darkRedColor,
-  whiteColor
+  whiteColor,
 } from '../../../styles/common';
 import { navigateToTask } from '../../../navigation/utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
@@ -219,7 +219,6 @@ export default function GroupedTasks({
     onPressRight: assignTaskHandler(section.isUnassignedTaskList),
     onSwipeToRight: handleOnSwipeToRight(section.taskListId),
     swipeOutRightBackgroundColor: darkRedColor,
-    swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: assignTaskIconName,
   }), [assignTaskHandler, handleOnSwipeToRight]);
 
@@ -334,11 +333,12 @@ function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
                   </Text>
                 </View>
                 <Text style={{ color: darkGreyColor }}>
-                    {section.isUnassignedTaskList
-                      ? `${section.ordersCount}   (${section.tasksCount} ${t('TASKS').toLowerCase()})`
-                      : section.tasksCount
-                    }
-                  </Text>
+                  {section.isUnassignedTaskList
+                    ? `${section.ordersCount}   (${section.tasksCount} ${t(
+                        'TASKS',
+                      ).toLowerCase()})`
+                    : section.tasksCount}
+                </Text>
               </View>
             </Text>
               {section.tasksCount === 0 ? null : (

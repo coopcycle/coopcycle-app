@@ -56,7 +56,7 @@ export const selectAllTasksIdsFromOrders = createSelector(
     const orders = selectedTasks?.orders || {};
 
     return Object.values(orders).flatMap(taskList =>
-      Object.values(taskList).map(task => task.id)
+      Object.values(taskList).map(task => task['@id'])
     );
   }
 );
@@ -67,7 +67,7 @@ export const selectAllTasksIdsFromTasks = createSelector(
     const tasks = selectedTasks?.tasks || {};
 
     return Object.values(tasks).flatMap(taskList =>
-      Object.values(taskList).map(task => task.id)
+      Object.values(taskList).map(task => task['@id'])
     );
   }
 );
