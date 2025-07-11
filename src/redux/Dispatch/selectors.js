@@ -2,12 +2,12 @@ import { createSelector } from 'reselect';
 
 import { filterTasks } from '../logistics/utils';
 import { getTaskListTasks } from '../../shared/src/logistics/redux/taskListUtils';
-import { selectTaskFilters } from '../Courier/taskSelectors';
 import {
   selectTaskLists,
   selectTasksEntities,
   selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
+import { selectTaskFilters } from '../Courier/taskSelectors';
 
 
 export const selectIsDispatchFetching = createSelector(
@@ -47,3 +47,27 @@ export const selectFilteredTaskLists = filters => createSelector(
 );
 
 export const selectKeywordFilters = state => state.dispatch.ui.keywordFilters;
+
+export const selectSelectedTasks = state => state.dispatch.ui.selectedTasks;
+
+export const selectAllTasksIdsFromOrders = createSelector(
+  selectSelectedTasks,
+  selectedTasks => {
+    const orders = selectedTasks?.orders || {};
+
+    return Object.values(orders).flatMap(taskList =>
+      Object.values(taskList).map(task => task.id)
+    );
+  }
+);
+
+export const selectAllTasksIdsFromTasks = createSelector(
+  selectSelectedTasks,
+  selectedTasks => {
+    const tasks = selectedTasks?.tasks || {};
+
+    return Object.values(tasks).flatMap(taskList =>
+      Object.values(taskList).map(task => task.id)
+    );
+  }
+);

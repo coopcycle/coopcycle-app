@@ -13,24 +13,38 @@ import {
   addOrder,
   addTask,
   clearSelectedTasks,
-  removeOrder,
-  removeTask
+  removeTasksAndOrders,
 } from '../../../redux/Dispatch/updateSelectedTasksSlice';
-import { assignOrderIconName, assignTaskIconName } from '../../task/styles/common';
+import {
+  assignOrderIconName,
+  assignTaskIconName,
+} from '../../task/styles/common';
+import {
+  createTempTaskList,
+  createUnassignedTaskLists,
+  getLinkedTasks,
+  getTaskListTasks,
+  getTasksListIdsToEdit,
+  getUserTaskList,
+} from '../../../shared/src/logistics/redux/taskListUtils';
 import {
   darkGreyColor,
   darkRedColor,
   whiteColor
 } from '../../../styles/common';
-import { createTempTaskList, getLinkedTasks, getTaskListTasks, getTasksListIdsToEdit, getUserTaskList } from '../../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../../navigation/utils';
-import { selectTaskLists, selectTasksEntities, selectTasksWithColor } from '../../../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
+import {
+  selectTaskLists,
+  selectTasksEntities,
+  selectTasksWithColor,
+} from '../../../shared/logistics/redux';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -47,32 +61,35 @@ export default function GroupedTasks({
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
 
+  const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
   // Combine unassigned tasks and task lists to use in SectionList
   const sections = useMemo(() => [
     {
       backgroundColor: whiteColor,
-      count: unassignedTasks.length,
       data: [createTempTaskList(UNASSIGNED_TASKS_LIST_ID, unassignedTasks)],
       id: UNASSIGNED_TASKS_LIST_ID,
       isUnassignedTaskList: true,
+      ordersCount: unassignedTaskLists.length,
       taskListId: UNASSIGNED_TASKS_LIST_ID,
+      tasksCount: unassignedTasks.length,
       textColor: darkGreyColor,
       title: t('DISPATCH_UNASSIGNED_TASKS'),
     },
     ...taskLists.map(taskList => ({
       backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-      count: taskList.tasksIds.length,
       data: [taskList],
       id: `${taskList.username.toLowerCase()}TasksList`,
       isUnassignedTaskList: false,
+      ordersCount: 0,
       taskListId: taskList['@id'],
+      tasksCount: taskList.tasksIds.length,
       textColor: whiteColor,
       title: taskList.username,
     })),
-  ], [t, taskLists, unassignedTasks]);
+  ], [t, taskLists, unassignedTaskLists.length, unassignedTasks]);
 
   const filteredSections = hideEmptyTaskLists
-    ? sections.filter(section => section.data.length > 0)
+    ? sections.filter(section => section.tasksCount > 0)
     : sections;
 
   // collapsable
@@ -148,11 +165,7 @@ export default function GroupedTasks({
     const allTasks = Object.values(tasksEntities);
     const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
 
-    Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
-      tasks.forEach(taskToAdd => {
-        dispatch(addOrder({ task: taskToAdd, taskListId: listId }));
-      });
-    });
+    dispatch(addOrder(tasksByTaskList));
   }, [allTaskLists, dispatch, tasksEntities]);
 
   const handleOnSwipeToRight = useCallback(taskListId => task => {
@@ -164,35 +177,28 @@ export default function GroupedTasks({
     const allTasks = Object.values(tasksEntities);
     const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
 
-    Object.entries(tasksByTaskList).forEach(([listId, tasks]) => {
-      tasks.forEach(taskToRemove => {
-        const taskId = taskToRemove['@id'];
-        dispatch(removeOrder({ taskId, taskListId: listId }));
-        dispatch(removeTask({ taskId, taskListId: listId }));
-      });
-    });
+    dispatch(removeTasksAndOrders(tasksByTaskList));
   }, [allTaskLists, dispatch, tasksEntities]);
 
   const handleBulkAssignButtonPress = useCallback((selectedTasks) => {
     const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
-    const showUnassignButton = (
+    const showUnassignButton =
       tasksListIdsToEdit.length > 0 &&
-      tasksListIdsToEdit.some(id => id !== UNASSIGNED_TASKS_LIST_ID)
-    );
+      tasksListIdsToEdit.some(id => id !== UNASSIGNED_TASKS_LIST_ID);
 
     navigation.navigate('DispatchPickUser', {
       onItemPress: user => {
         onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks, user);
           dispatch(clearSelectedTasks());
-        })
+        });
       },
       showUnassignButton,
       onUnassignButtonPress: () => {
         onSelectNewAssignation(async () => {
           await bulkEditTasks(selectedTasks);
           dispatch(clearSelectedTasks());
-        })
+        });
       },
     });
   }, [onSelectNewAssignation, bulkEditTasks, dispatch, navigation]);
@@ -312,21 +318,42 @@ function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
               style={{
                 color: section.textColor,
               }}>
-              {section.title}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View
+                  style={{
+                    backgroundColor: section.backgroundColor,
+                    borderRadius: 4,
+                    marginEnd: 8,
+                    padding: 4,
+                  }}>
+                  <Text
+                    style={{
+                      color: section.textColor,
+                    }}>
+                    {section.title}
+                  </Text>
+                </View>
+                <Text style={{ color: darkGreyColor }}>
+                    {section.isUnassignedTaskList
+                      ? `${section.ordersCount}   (${section.tasksCount} ${t('TASKS').toLowerCase()})`
+                      : section.tasksCount
+                    }
+                  </Text>
+              </View>
             </Text>
+              {section.tasksCount === 0 ? null : (
+                <Icon
+                  as={FontAwesome}
+                  testID={`${section.id}:toggler`}
+                  name={
+                    collapsedSections.has(section.title)
+                      ? 'angle-down'
+                      : 'angle-up'
+                  }
+                />
+              )}
           </View>
-          <Text>{section.count}</Text>
         </View>
-        {section.count === 0 ? null :
-        <Icon
-          as={FontAwesome}
-          testID={`${section.id}:toggler`}
-          name={
-            collapsedSections.has(section.title)
-              ? 'angle-down'
-              : 'angle-up'
-          }
-        />}
       </TouchableOpacity>
     </View>
   );

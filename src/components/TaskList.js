@@ -29,14 +29,14 @@ const TaskList = ({
 }) => {
   const bulkFabButton = useRef(null);
 
-  const taskColor = (task) => {
+  const taskColor = task => {
     let tasksWithColorSafe = tasksWithColor ?? [];
     return Object.prototype.hasOwnProperty.call(tasksWithColorSafe, task['@id'])
       ? tasksWithColor[task['@id']]
       : '#ffffff';
   };
 
-  const swipeLeftConfiguration = (task) => ({
+  const swipeLeftConfiguration = task => ({
     disableLeftSwipe: !swipeOutLeftEnabled(task),
     onPressLeft: () => onPressLeft(task),
     onSwipedToLeft: () => _handleSwipeToLeft(task),
@@ -44,7 +44,7 @@ const TaskList = ({
     swipeOutLeftIconName,
   });
 
-  const swipeRightConfiguration = (task) => ({
+  const swipeRightConfiguration = task => ({
     disableRightSwipe: !swipeOutRightEnabled(task),
     onPressRight: () => onPressRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
@@ -53,21 +53,30 @@ const TaskList = ({
     swipeOutRightIconName,
   });
 
-  const _handleSwipeToLeft = useCallback((task) => {
-    bulkFabButton.current?.addItem(task);
-    onSwipeToLeft(task);
-  }, [onSwipeToLeft]);
+  const _handleSwipeToLeft = useCallback(
+    task => {
+      bulkFabButton.current?.addItem(task);
+      onSwipeToLeft(task);
+    },
+    [onSwipeToLeft],
+  );
 
-  const _handleSwipeToRight = useCallback((task) => {
-    onSwipeToRight(task);
-  }, [onSwipeToRight]);
+  const _handleSwipeToRight = useCallback(
+    task => {
+      onSwipeToRight(task);
+    },
+    [onSwipeToRight],
+  );
 
-  const _handleSwipeClosed = useCallback((task) => {
-    bulkFabButton.current?.removeItem(task);
-    onSwipeClosed(task);
-  }, [onSwipeClosed]);
+  const _handleSwipeClosed = useCallback(
+    task => {
+      bulkFabButton.current?.removeItem(task);
+      onSwipeClosed(task);
+    },
+    [onSwipeClosed],
+  );
 
-  const onFabButtonPressed = (items) => {
+  const onFabButtonPressed = items => {
     onMultipleSelectionAction(items);
   };
 
@@ -107,7 +116,7 @@ const TaskList = ({
       {multipleSelectionIcon && onFabButtonPressed && (
         <ItemsBulkFabButton
           iconName={multipleSelectionIcon}
-          onPressed={(items) => onFabButtonPressed(items)}
+          onPressed={items => onFabButtonPressed(items)}
           ref={bulkFabButton}
         />
       )}

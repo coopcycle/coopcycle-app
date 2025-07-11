@@ -5,6 +5,7 @@ import { areSameDates } from '../../utils/dates';
 import { Calendar } from '../../components/Calendar';
 import { changeDate } from '../../redux/Dispatch/actions';
 import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux';
+import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
 
 
 export default function DateScreen({ navigation }) {
@@ -14,6 +15,7 @@ export default function DateScreen({ navigation }) {
   const onDateChange = date => {
     if(!areSameDates(new Date(date), new Date(selectedDate))) {
       dispatch(changeDate(date));
+      dispatch(clearSelectedTasks())
     }
 
     navigation.goBack();

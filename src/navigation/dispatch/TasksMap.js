@@ -3,13 +3,18 @@ import { Text, View } from 'native-base';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { getTaskListTasks, getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import {
+  createUnassignedTaskLists,
+  getTaskListTasks,
+  getTaskTaskList,
+} from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../utils';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
 import {
   selectSelectedDate,
   selectTaskLists,
   selectTasksEntities,
+  selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
 import { selectDispatchUiTaskFilters } from '../../redux/Dispatch/selectors';
 import { useAllTasks } from './useAllTasks';
@@ -44,6 +49,7 @@ export default function TasksMap({ navigation, route }) {
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
   const allTaskLists = useSelector(selectTaskLists);
   const tasksEntities = useSelector(selectTasksEntities);
+  const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
   const bgHighlightColor = useBackgroundHighlightColor()
@@ -53,6 +59,13 @@ export default function TasksMap({ navigation, route }) {
   const mapCenter = useMemo(() => {
     return defaultCoordinates.split(',').map(parseFloat);
   }, [defaultCoordinates]);
+
+  const mergedTaskListsWithUnassigned = useMemo(() => {
+    // Split the unassigned task list by grouped linked tasks
+    const allUnassignedTaskLists = createUnassignedTaskLists(allUnassignedTasks);
+    // Prepend the unassigned tasks list
+    return allUnassignedTaskLists.concat(allTaskLists);
+  }, [allTaskLists, allUnassignedTasks]);
 
   const navigateToSelectedTask = task => {
     // task is one the the task lists' tasks, so taskList is always defined
@@ -75,7 +88,7 @@ export default function TasksMap({ navigation, route }) {
       <View style={styles.mapContainer}>
         <TasksMapView
           mapCenter={mapCenter}
-          taskLists={allTaskLists}
+          taskLists={mergedTaskListsWithUnassigned}
           onMarkerCalloutPress={navigateToSelectedTask}
           uiFilters={uiFilters}
         />
