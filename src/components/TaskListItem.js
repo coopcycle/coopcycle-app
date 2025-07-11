@@ -258,7 +258,7 @@ const SwipeButtonContainer = ({
 const SwipeButton = ({ iconName, width }) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={FontAwesome} name={iconName} style={{ color: '#ffffff' }} />
+    <Icon as={FontAwesome} name={iconName} style={{ color: '#ffffff', width: 40 }} />
   </View>
 );
 
