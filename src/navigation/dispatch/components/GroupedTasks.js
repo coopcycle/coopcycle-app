@@ -275,6 +275,8 @@ export default function GroupedTasks({
 }
 
 function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
+  const { t } = useTranslation();
+
   const bgHighlightColor = useBackgroundHighlightColor();
 
   // Disabled animation for now..!
@@ -317,43 +319,28 @@ function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
               style={{
                 color: section.textColor,
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View
-                  style={{
-                    backgroundColor: section.backgroundColor,
-                    borderRadius: 4,
-                    marginEnd: 8,
-                    padding: 4,
-                  }}>
-                  <Text
-                    style={{
-                      color: section.textColor,
-                    }}>
-                    {section.title}
-                  </Text>
-                </View>
-                <Text style={{ color: darkGreyColor }}>
-                  {section.isUnassignedTaskList
-                    ? `${section.ordersCount}   (${section.tasksCount} ${t(
-                        'TASKS',
-                      ).toLowerCase()})`
-                    : section.tasksCount}
-                </Text>
-              </View>
+              {section.title}
             </Text>
-              {section.tasksCount === 0 ? null : (
-                <Icon
-                  as={FontAwesome}
-                  testID={`${section.id}:toggler`}
-                  name={
-                    collapsedSections.has(section.title)
-                      ? 'angle-down'
-                      : 'angle-up'
-                  }
-                />
-              )}
           </View>
+          <Text style={{ color: darkGreyColor }}>
+            {section.isUnassignedTaskList
+              ? `${section.ordersCount}   (${section.tasksCount} ${t(
+                  'TASKS',
+                ).toLowerCase()})`
+              : section.tasksCount}
+          </Text>
         </View>
+        {section.tasksCount === 0 ? null : (
+          <Icon
+            as={FontAwesome}
+            testID={`${section.id}:toggler`}
+            name={
+              collapsedSections.has(section.title)
+                ? 'angle-down'
+                : 'angle-up'
+            }
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
