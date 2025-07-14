@@ -1,10 +1,11 @@
+import { SwipeListView } from 'react-native-swipe-list-view';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { SwipeListView } from 'react-native-swipe-list-view';
 
-import ItemSeparatorComponent from './ItemSeparator';
 import ItemsBulkFabButton from './ItemsBulkFabButton';
+import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
+
 
 const TaskList = ({
   id,
@@ -74,16 +75,16 @@ const TaskList = ({
     bulkFabButton.current?.updateItems(doneTasks);
   }, [tasks]);
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item: task, index }) => {
     return (
       <TaskListItem
-        task={item}
+        task={task}
         index={index}
-        color={item.color}
+        color={task.color}
         taskListId={id}
-        onPress={() => onTaskClick(item)}
-        {...swipeLeftConfiguration(item)}
-        {...swipeRightConfiguration(item)}
+        onPress={() => onTaskClick(task)}
+        {...swipeLeftConfiguration(task)}
+        {...swipeRightConfiguration(task)}
       />
     );
   };
@@ -129,7 +130,6 @@ TaskList.propTypes = {
   swipeOutRightEnabled: PropTypes.func,
   swipeOutRightIconName: PropTypes.string,
   tasks: PropTypes.array.isRequired,
-  tasksWithColor: PropTypes.object,
 };
 
 export default TaskList;

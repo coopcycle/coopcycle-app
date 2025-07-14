@@ -55,17 +55,17 @@ export const selectTaskLists = createSelector(
       let newTaskList = { ...taskList };
 
       const orderedItems = taskList.itemIds.flatMap(itemId => {
-          const maybeTour = toursById[itemId];
+        const maybeTour = toursById[itemId];
 
-          if (maybeTour) {
-            return maybeTour.items;
-          }
+        if (maybeTour) {
+          return maybeTour.items;
+        }
 
-          if (itemId.includes('/api/tasks/')){
-            return [itemId];
-          }
+        if (itemId.includes('/api/tasks/')){
+          return [itemId];
+        }
 
-          return [];
+        return [];
       });
       newTaskList.tasksIds = _.uniq(orderedItems);
 

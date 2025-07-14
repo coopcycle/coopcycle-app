@@ -1,8 +1,4 @@
-import moment from 'moment';
 import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
-import PropTypes from 'prop-types';
-import React, { forwardRef, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
   StyleSheet,
@@ -12,11 +8,21 @@ import {
   useColorScheme,
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { forwardRef, useEffect, useRef } from 'react';
 
-import { useSelector } from 'react-redux';
-import CoopcyleLogo from '../../assets/images/logo.svg';
+import {
+  blackColor,
+  lightGreyColor,
+  redColor,
+  whiteColor,
+  yellowColor,
+} from '../styles/common';
 import {
   commentsIconName,
   doingIconName,
@@ -25,20 +31,14 @@ import {
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
+import { formatPrice } from '../utils/formatting';
+import { minutes } from '../utils/dates';
+import { PaymentMethodInList } from './PaymentMethodInfo';
 import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
-import {
-  blackColor,
-  lightGreyColor,
-  redColor,
-  whiteColor,
-  yellowColor,
-} from '../styles/common';
-import { minutes } from '../utils/dates';
-import { formatPrice } from '../utils/formatting';
-import { PaymentMethodInList } from './PaymentMethodInfo';
+import CoopcyleLogo from '../../assets/images/logo.svg';
 
 const cardBorderRadius = 2.5;
 
@@ -296,7 +296,7 @@ const TaskListItem = forwardRef(({
   onSwipedToLeft,
   onSwipedToRight,
   onSwipeClosed,
-}, ref) => {
+}, _ref) => {
   const { t } = useTranslation();
   const taskTitle = task.orgName
     ? task.metadata.order_number
@@ -346,41 +346,26 @@ const TaskListItem = forwardRef(({
   const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
   const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
 
- /*  useEffect(() => {
-    if (shouldSwipeLeft) {
-      swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-    } else if (prevShouldSwipeLeftRef.current || !shouldSwipeRight) {
-      swipeRow.current?.closeRow?.();
-    }
-    prevShouldSwipeLeftRef.current = shouldSwipeLeft;
-  }, [shouldSwipeRight, shouldSwipeLeft, buttonWidth]);
-
-  useEffect(() => {
-    if (shouldSwipeRight) {
-      swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
-    } 
-  }, [shouldSwipeRight, buttonWidth]); */
-
   const prevShouldSwipeLeftRef = useRef();
   const prevShouldSwipeRightRef = useRef();
 
   useEffect(() => {
-  if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
-    swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-  } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
-    swipeRow.current?.closeRow?.();
-  }
-  prevShouldSwipeLeftRef.current = shouldSwipeLeft;
-}, [shouldSwipeLeft, buttonWidth]);
+    if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
+      swipeRow.current?.manuallySwipeRow?.(buttonWidth);
+    } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
+      swipeRow.current?.closeRow?.();
+    }
+    prevShouldSwipeLeftRef.current = shouldSwipeLeft;
+  }, [shouldSwipeLeft, buttonWidth]);
 
-useEffect(() => {
-  if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
-    swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
-  } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
-    swipeRow.current?.closeRow?.();
-  }
-  prevShouldSwipeRightRef.current = shouldSwipeRight;
-}, [shouldSwipeRight, buttonWidth]);
+  useEffect(() => {
+    if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
+      swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
+    } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
+      swipeRow.current?.closeRow?.();
+    }
+    prevShouldSwipeRightRef.current = shouldSwipeRight;
+  }, [shouldSwipeRight, buttonWidth]);
 
   function _onRowOpen(toValue) {
     if (toValue > 0 && onSwipedToLeft) {

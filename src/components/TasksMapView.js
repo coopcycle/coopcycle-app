@@ -279,7 +279,6 @@ class TasksMapView extends Component {
         return null;
       }
 
-
       return (
         <Polyline
           coordinates={this.getCoordinates(taskList)}
@@ -338,10 +337,10 @@ class TasksMapView extends Component {
       ) {
         return [];
       }
-      const taskListTasks = getTaskListTasks(taskList, tasksEntities);
-      const items = uiFilters ? filterTasks(taskListTasks, uiFilters) : taskListTasks;
+      const tasks = getTaskListTasks(taskList, tasksEntities);
+      const filteredTasks = uiFilters ? filterTasks(tasks, uiFilters) : tasks;
 
-      return items.map(task => ({
+      return filteredTasks.map(task => ({
         ...task,
         location: task.address.geo,
       }));

@@ -216,6 +216,7 @@ export default function GroupedTasks({
   const swipeRightConfiguration = useCallback(section => ({
     onPressRight: assignTaskHandler(section.isUnassignedTaskList),
     onSwipeToRight: handleOnSwipeToRight(section.taskListId),
+    swipeOutRightEnabled: allowToSelect,
     swipeOutRightBackgroundColor: darkRedColor,
     swipeOutRightIconName: assignTaskIconName,
   }), [assignTaskHandler, handleOnSwipeToRight]);

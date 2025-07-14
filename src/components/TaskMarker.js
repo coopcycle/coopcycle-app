@@ -15,7 +15,6 @@ import {
   taskTypeIconName,
 } from '../navigation/task/styles/common';
 
-
 const container = {
   margin: 10,
   alignItems: 'center',

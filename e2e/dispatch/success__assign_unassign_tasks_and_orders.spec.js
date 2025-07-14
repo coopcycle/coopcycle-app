@@ -224,7 +224,6 @@ describeif(device.getPlatform() === 'android')
 
     // Select order #2, and task #6 from USER_ZAK
     await swipeRightTask(`${USER_ZAK}TasksList`, 0); // Entire order #3 from task #7
-    await swipeLeftTask(`${USER_ZAK}TasksList`, 1); // Just task #6 (the order above already includes this one)
     await swipeRightTask(`${USER_ZAK}TasksList`, 3); // Entire order #2 from task #5
 
     // Unassign all selected tasks/orders
