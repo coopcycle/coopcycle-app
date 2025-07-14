@@ -22,13 +22,9 @@ export function getTaskListTasks(taskList, tasksEntities) {
     return taskList.items;
   }
 
-  const tasks = taskList.tasksIds.map(taskId => {
-    const maybeTask = tasksEntities[taskId];
-
-    return maybeTask;
-  }).filter(maybeTask => maybeTask);
-
-  return tasks;
+  return taskList.tasksIds
+    .map(taskId => tasksEntities[taskId])
+    .filter(maybeTask => maybeTask);
 }
 
 export function createCurrentTaskList(items = []) {
@@ -77,6 +73,7 @@ export function createUnassignedTaskLists(allUnassignedTasks) {
       '@id': `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
       id: `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
       items: tasks,
+      tasksIds: tasks.map(task => task['@id']),
       color: darkGreyColor,
       // This property below will be used into the map view to show/hide unassigned tasks
       isUnassignedTaskList: true,
@@ -155,7 +152,7 @@ export function getUserTaskList(username, allTaskLists) {
  * @returns {TaskList|undefined} The task list that contains the specified task, or undefined if not found.
 */
 export function getTaskListByTask(task, allTaskLists) {
-  return allTaskLists.find(taskList => (taskList.tasksIds || []).find(id => id === task['@id']));
+  return allTaskLists.find(taskList => (taskList.tasksIds || (taskList.items.map(t => t['@id'])) || []).find(id => id === task['@id']));
 }
 
 function getTaskListIdForTask(task, allTaskLists) {

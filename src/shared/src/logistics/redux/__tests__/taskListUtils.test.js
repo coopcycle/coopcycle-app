@@ -457,6 +457,7 @@ describe('taskListUtils', () => {
             {"@id": "/api/tasks/1", "assignedTo": "username2", "hasIncidents": false, "id": 1, "orgName": "", "previous": null, "status": "", "tags": []},
             {"@id": "/api/tasks/2", "assignedTo": "username2", "hasIncidents": false, "id": 2, "orgName": "", "previous": "/api/tasks/1", "status": "", "tags": []}
           ],
+          "tasksIds": ["/api/tasks/1", "/api/tasks/2"],
           "username": null,
           "color": "#424242",
         },
@@ -471,6 +472,7 @@ describe('taskListUtils', () => {
             {"@id": "/api/tasks/6", "assignedTo": "username4", "hasIncidents": false, "id": 6, "orgName": "", "previous": "/api/tasks/5", "status": "", "tags": []},
             {"@id": "/api/tasks/7", "assignedTo": "username4", "hasIncidents": false, "id": 7, "orgName": "", "previous": "/api/tasks/6", "status": "", "tags": []}
           ],
+          "tasksIds": ["/api/tasks/3", "/api/tasks/4", "/api/tasks/5", "/api/tasks/6", "/api/tasks/7"],
           "username": null,
           "color": "#424242",
         },
@@ -483,6 +485,7 @@ describe('taskListUtils', () => {
             {"@id": "/api/tasks/8", "assignedTo": "username5", "hasIncidents": false, "id": 8, "orgName": "", "previous": null, "status": "", "tags": []},
             { "@id": "/api/tasks/9", "assignedTo": "username6", "hasIncidents": false, "id": 9, "orgName": "", "previous": "/api/tasks/8", "status": "", "tags": []}
           ],
+          "tasksIds": ["/api/tasks/10", "/api/tasks/8", "/api/tasks/9"],
           "username": null,
           "color": "#424242",
         }
