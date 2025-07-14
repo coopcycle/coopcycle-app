@@ -69,7 +69,7 @@ export default function TasksMap({ navigation, route }) {
 
   const navigateToSelectedTask = task => {
     // task is one the the task lists' tasks, so taskList is always defined
-    const taskList = getTaskListByTask(task, allTaskLists);
+    const taskList = getTaskListByTask(task, mergedTaskListsWithUnassigned);
     const relatedTasks = getTaskListTasks(taskList, tasksEntities);
     navigateToTask(navigation, route, task, relatedTasks);
   };
