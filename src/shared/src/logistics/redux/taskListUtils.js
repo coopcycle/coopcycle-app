@@ -147,7 +147,13 @@ export function getUserTaskList(username, allTaskLists) {
   return allTaskLists.find(taskList => taskList.username === username);
 }
 
-// Find the 1st task list that contains the task
+/**
+ * Find the 1st task list that contains the task
+ *
+ * @param {Task} task - The task object to search for. Expected to have an '@id' property.
+ * @param {Array<TaskList>} allTaskLists - An array of all task list objects to search through.
+ * @returns {TaskList|undefined} The task list that contains the specified task, or undefined if not found.
+*/
 export function getTaskListByTask(task, allTaskLists) {
   return allTaskLists.find(taskList => (taskList.tasksIds || []).find(id => id === task['@id']));
 }

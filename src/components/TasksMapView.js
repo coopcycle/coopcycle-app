@@ -218,7 +218,7 @@ class TasksMapView extends Component {
   renderMarker(task, index) {
     // Get the corresponding task list and see if it is an unassigned one
     const taskList = getTaskListByTask(task, this.props.taskLists);
-    if (this.props.isHideUnassignedFromMap && taskList.isUnassignedTaskList) {
+    if (this.props.isHideUnassignedFromMap && !taskList) {
       return null;
     }
 
@@ -390,9 +390,7 @@ class TasksMapView extends Component {
               this.map = r;
             }}
             {...otherProps}>
-            {data
-              .map((task, index) => this.renderMarker(task, index))
-              .filter(Boolean)}
+            {data.map(this.renderMarker)}
             {this.renderPolylines(taskLists)}
             {this.props.children}
           </MapView>
