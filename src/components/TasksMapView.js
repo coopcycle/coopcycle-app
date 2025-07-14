@@ -218,7 +218,7 @@ class TasksMapView extends Component {
   renderMarker(task, index) {
     // Get the corresponding task list and see if it is an unassigned one
     const taskList = getTaskListByTask(task, this.props.taskLists);
-    if (this.props.isHideUnassignedFromMap && !taskList) {
+    if (this.props.isHideUnassignedFromMap && !taskList.isUnassignedTaskList) {
       return null;
     }
 
@@ -331,10 +331,7 @@ class TasksMapView extends Component {
     // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
     const data = _.flatMap(taskLists, taskList => {
       // Do not parse unassigned tasks if the filter is enabled
-      if (
-        this.props.isHideUnassignedFromMap &&
-        taskList.id === UNASSIGNED_TASKS_LIST_ID
-      ) {
+      if (this.props.isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID) {
         return [];
       }
       const tasks = getTaskListTasks(taskList, tasksEntities);
