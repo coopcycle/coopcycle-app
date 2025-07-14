@@ -148,12 +148,12 @@ export function getUserTaskList(username, allTaskLists) {
 }
 
 // Find the 1st task list that contains the task
-export function getTaskTaskList(task, allTaskLists) {
+export function getTaskListByTask(task, allTaskLists) {
   return allTaskLists.find(taskList => (taskList.tasksIds || []).find(id => id === task['@id']));
 }
 
 function getTaskListIdForTask(task, allTaskLists) {
-  const taskList = getTaskTaskList(task, allTaskLists);
+  const taskList = getTaskListByTask(task, allTaskLists);
   const key = taskList ? taskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
 
   return key;

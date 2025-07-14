@@ -18,7 +18,7 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
 
 import { filterTasks } from '../redux/logistics/utils';
-import { getTaskListTasks, getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
+import { getTaskListByTask, getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
 import { selectIsHideUnassignedFromMap, selectIsPolylineOn } from '../redux/Courier';
@@ -217,8 +217,8 @@ class TasksMapView extends Component {
 
   renderMarker(task, index) {
     // Get the corresponding task list and see if it is an unassigned one
-    const taskList = getTaskTaskList(task, this.props.taskLists);
-    if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
+    const taskList = getTaskListByTask(task, this.props.taskLists);
+    if (this.props.isHideUnassignedFromMap && taskList.isUnassignedTaskList) {
       return null;
     }
 

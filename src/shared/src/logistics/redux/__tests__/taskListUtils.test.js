@@ -3,8 +3,8 @@ import _ from 'lodash';
 import {
   buildSelectedTasks,
   createUnassignedTaskLists,
+  getTaskListByTask,
   getTaskListTasks,
-  getTaskTaskList,
   getTasksListIdsToEdit,
   getTasksListsToEdit,
   replaceItemsWithItemIds,
@@ -370,11 +370,11 @@ describe('taskListUtils', () => {
     });
   })
 
-  describe('getTaskTaskList', () => {
+  describe('getTaskListByTask', () => {
     it('should return undefined if Task does not belong to any TaskList', () => {
       const task = allTasks[10];
 
-      const result = getTaskTaskList(task, allTaskLists);
+      const result = getTaskListByTask(task, allTaskLists);
 
       expect(result).toEqual(undefined);
     });
@@ -382,7 +382,7 @@ describe('taskListUtils', () => {
     it("should return task's tasklist if Task belongs to any TaskList", () => {
       const task = allTasks[0];
 
-      const result = getTaskTaskList(task, allTaskLists);
+      const result = getTaskListByTask(task, allTaskLists);
 
       expect(result).toEqual(allTaskLists[1]);
     });

@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 
 import {
   createUnassignedTaskLists,
+  getTaskListByTask,
   getTaskListTasks,
-  getTaskTaskList,
 } from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../utils';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
@@ -69,7 +69,7 @@ export default function TasksMap({ navigation, route }) {
 
   const navigateToSelectedTask = task => {
     // task is one the the task lists' tasks, so taskList is always defined
-    const taskList = getTaskTaskList(task, allTaskLists);
+    const taskList = getTaskListByTask(task, allTaskLists);
     const relatedTasks = getTaskListTasks(taskList, tasksEntities);
     navigateToTask(navigation, route, task, relatedTasks);
   };
