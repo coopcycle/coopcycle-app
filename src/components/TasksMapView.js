@@ -218,7 +218,7 @@ class TasksMapView extends Component {
   renderMarker(task, index) {
     // Get the corresponding task list and see if it is an unassigned one
     const taskList = task.taskList;
-    if (this.props.isHideUnassignedFromMap && !taskList.isUnassignedTaskList) {
+    if (this.props.isHideUnassignedFromMap && taskList.isUnassignedTaskList) {
       return null;
     }
 
