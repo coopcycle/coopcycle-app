@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
@@ -258,7 +258,7 @@ const SwipeButtonContainer = ({
 const SwipeButton = ({ iconName, width }) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={FontAwesome} name={iconName} style={{ color: '#ffffff' }} />
+    <Icon as={FontAwesome} name={iconName} style={{ color: '#ffffff', width: 40 }} />
   </View>
 );
 
@@ -281,7 +281,7 @@ const ItemTouchable = ({ children, style, ...otherProps }) => {
   );
 };
 
-const TaskListItem = ({
+const TaskListItem = forwardRef(({
   task,
   color,
   index,
@@ -296,7 +296,7 @@ const TaskListItem = ({
   onSwipedToLeft,
   onSwipedToRight,
   onSwipeClosed,
-}) => {
+}, ref) => {
   const { t } = useTranslation();
   const taskTitle = task.orgName
     ? task.metadata.order_number
@@ -346,22 +346,41 @@ const TaskListItem = ({
   const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
   const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
 
-  const prevShouldSwipeLeftRef = useRef();
-
-  useEffect(() => {
+ /*  useEffect(() => {
     if (shouldSwipeLeft) {
       swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-    } else if (prevShouldSwipeLeftRef.current) {
+    } else if (prevShouldSwipeLeftRef.current || !shouldSwipeRight) {
       swipeRow.current?.closeRow?.();
     }
     prevShouldSwipeLeftRef.current = shouldSwipeLeft;
-  }, [shouldSwipeLeft, buttonWidth]);
+  }, [shouldSwipeRight, shouldSwipeLeft, buttonWidth]);
 
   useEffect(() => {
     if (shouldSwipeRight) {
       swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
-    }
-  }, [shouldSwipeRight, buttonWidth]);
+    } 
+  }, [shouldSwipeRight, buttonWidth]); */
+
+  const prevShouldSwipeLeftRef = useRef();
+  const prevShouldSwipeRightRef = useRef();
+
+  useEffect(() => {
+  if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
+    swipeRow.current?.manuallySwipeRow?.(buttonWidth);
+  } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
+    swipeRow.current?.closeRow?.();
+  }
+  prevShouldSwipeLeftRef.current = shouldSwipeLeft;
+}, [shouldSwipeLeft, buttonWidth]);
+
+useEffect(() => {
+  if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
+    swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
+  } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
+    swipeRow.current?.closeRow?.();
+  }
+  prevShouldSwipeRightRef.current = shouldSwipeRight;
+}, [shouldSwipeRight, buttonWidth]);
 
   function _onRowOpen(toValue) {
     if (toValue > 0 && onSwipedToLeft) {
@@ -526,7 +545,7 @@ const TaskListItem = ({
       </HStack>
     </SwipeRow>
   );
-};
+});
 
 TaskListItem.propTypes = {
   task: PropTypes.object.isRequired,

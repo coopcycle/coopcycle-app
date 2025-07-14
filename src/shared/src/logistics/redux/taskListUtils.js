@@ -59,35 +59,35 @@ export function createTempTaskList(username, items = []) {
 
 export function createUnassignedTaskLists(allUnassignedTasks) {
   // Split the unassigned task list by grouped linked tasks
-    const linkedTasks = groupLinkedTasks(allUnassignedTasks);
+  const linkedTasks = groupLinkedTasks(allUnassignedTasks);
 
-    const {unassignedTaskLists} = Object.entries(linkedTasks).reduce((acc, [taskId, linkedTaskIds]) => {
-      if (linkedTaskIds.some((linkedTaskId) => acc.tasks[linkedTaskId] !== undefined)) {
-        return acc; // These tasks were already linked to a tasklist
-      }
+  const {unassignedTaskLists} = Object.entries(linkedTasks).reduce((acc, [taskId, linkedTaskIds]) => {
+    if (linkedTaskIds.some((linkedTaskId) => acc.tasks[linkedTaskId] !== undefined)) {
+      return acc; // These tasks were already linked to a tasklist
+    }
 
-      const tasks = linkedTaskIds.map(linkedTaskId => {
-        // Update the task index
-        acc.tasks[linkedTaskId] = taskId;
-        // Return the task object with all its data
-        return allUnassignedTasks.find(task => task['@id'] === linkedTaskId);
-      });
+    const tasks = linkedTaskIds.map(linkedTaskId => {
+      // Update the task index
+      acc.tasks[linkedTaskId] = taskId;
+      // Return the task object with all its data
+      return allUnassignedTasks.find(task => task['@id'] === linkedTaskId);
+    });
 
-      acc.unassignedTaskLists.push({
-        '@id': `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
-        id: `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
-        items: tasks,
-        color: darkGreyColor,
-        // This property below will be used into the map view to show/hide unassigned tasks
-        isUnassignedTaskList: true,
-        // The one below is needed/used to search by username at getTaskTaskList->getUserTaskList functions
-        username: null,
-      });
+    acc.unassignedTaskLists.push({
+      '@id': `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
+      id: `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
+      items: tasks,
+      color: darkGreyColor,
+      // This property below will be used into the map view to show/hide unassigned tasks
+      isUnassignedTaskList: true,
+      // The one below is needed/used to search by username at getTaskTaskList->getUserTaskList functions
+      username: null,
+    });
 
-      return acc;
-    }, {tasks: {/*Just and index*/}, unassignedTaskLists: [/*The resultant task lists*/]});
+    return acc;
+  }, {tasks: {/*Just and index*/}, unassignedTaskLists: [/*The resultant task lists*/]});
 
-    return unassignedTaskLists;
+  return unassignedTaskLists;
 }
 
 // NOTE: This function is only used from the function `getTasksListsToEdit`
