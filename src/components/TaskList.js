@@ -23,16 +23,8 @@ const TaskList = ({
   swipeOutRightBackgroundColor,
   swipeOutRightIconName,
   tasks,
-  tasksWithColor,
 }) => {
   const bulkFabButton = useRef(null);
-
-  const taskColor = task => {
-    let tasksWithColorSafe = tasksWithColor ?? [];
-    return Object.prototype.hasOwnProperty.call(tasksWithColorSafe, task['@id'])
-      ? tasksWithColor[task['@id']]
-      : '#ffffff';
-  };
 
   const swipeLeftConfiguration = task => ({
     onPressLeft: () => onPressLeft(task),
@@ -87,7 +79,7 @@ const TaskList = ({
       <TaskListItem
         task={item}
         index={index}
-        color={taskColor(item)}
+        color={item.color}
         taskListId={id}
         onPress={() => onTaskClick(item)}
         {...swipeLeftConfiguration(item)}

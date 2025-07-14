@@ -1,12 +1,18 @@
 import {
   filterTasksByKeyword,
   getAssignedTask,
+  getTasksWithColor,
   getToursToUpdate,
   groupLinkedTasks,
+  mapToColor,
   taskIncludesKeyword,
   tasksToIds,
 } from '../taskUtils.js';
-import { getTaskWithAssignedTo, getTaskWithStoreName, getTaskWithTags } from '../testsUtils.js';
+import {
+  getTaskWithAssignedTo,
+  getTaskWithStoreName,
+  getTaskWithTags,
+} from '../testsUtils.js';
 
 describe('taskUtils', () => {
   describe('groupLinkedTasks', () => {
@@ -191,6 +197,76 @@ describe('taskUtils', () => {
       });
     });
   });
+
+  describe('getTasksWithColor', () => {
+    it('should map every task with its corresponding color', () => {
+      const tasks = [
+        {
+          '@id': '/api/tasks/1',
+          id: 1,
+          next: '/api/tasks/2',
+        },
+        {
+          '@id': '/api/tasks/2',
+          id: 2,
+          previous: '/api/tasks/1',
+        },
+        {
+          '@id': '/api/tasks/3',
+          id: 3
+        },
+      ];
+
+      const coloredTasks = getTasksWithColor(tasks);
+
+      expect(coloredTasks).toEqual([
+        {
+          '@id': '/api/tasks/1',
+          id: 1,
+          next: '/api/tasks/2',
+          color: '#6c87e0',
+        },
+        {
+          '@id': '/api/tasks/2',
+          id: 2,
+          previous: '/api/tasks/1',
+          color: '#6c87e0',
+        },
+        {
+          '@id': '/api/tasks/3',
+          id: 3,
+          color: '#ffffff',
+        },
+      ]);
+    });
+  });
+
+  describe('mapToColor', () => {
+    it('should contain key', () => {
+      const tasks = [
+        {
+          '@id': '/api/tasks/1',
+          id: 1,
+          next: '/api/tasks/2',
+        },
+        {
+          '@id': '/api/tasks/2',
+          id: 2,
+          previous: '/api/tasks/1',
+        },
+        {
+          '@id': '/api/tasks/3',
+          id: 3
+        },
+      ];
+      const taskColors = mapToColor(tasks);
+
+      const taskIds = tasks.map(task => task['@id']);
+      Object.keys(taskColors).forEach(key => {
+        expect(taskIds).toContain(key);
+      });
+    })
+  })
 
   describe('tasksToIds', () => {
     it('should map tasks to task ids', () => {
@@ -422,7 +498,7 @@ describe('taskUtils', () => {
     ])('should return tasks that have searchString in assignedTo', (searchString) => {
       const result = filterTasksByKeyword(tasks, searchString);
 
-      expect(result).toEqual(tasks.slice(1,2));
+      expect(result).toEqual(tasks.slice(1, 2));
     });
 
     it.each([
@@ -430,7 +506,7 @@ describe('taskUtils', () => {
     ])('should return tasks that have searchString in store name', (searchString) => {
       const result = filterTasksByKeyword(tasks, searchString);
 
-      expect(result).toEqual(tasks.slice(4,5));
+      expect(result).toEqual(tasks.slice(4, 5));
     });
 
     it.each([
@@ -438,7 +514,7 @@ describe('taskUtils', () => {
     ])('should return tasks that have searchString in any tag', (searchString) => {
       const result = filterTasksByKeyword(tasks, searchString);
 
-      expect(result).toEqual(tasks.slice(7,8));
+      expect(result).toEqual(tasks.slice(7, 8));
     });
   });
 

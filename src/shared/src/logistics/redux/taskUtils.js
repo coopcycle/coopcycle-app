@@ -81,11 +81,41 @@ export function withLinkedTasks(task, allTasks) {
   return newTasks.sort(tasksSort);
 }
 
-// TODO: calculate just once task's color when tasks are saved on state
 export function mapToColor(tasks) {
   return mapValues(groupLinkedTasks(tasks), taskIds =>
     colorHash.hex(taskIds.join(' ')),
   );
+}
+
+function getTaskColorFromTasks(tasks, taskId) {
+  return tasks[taskId] || '#ffffff'
+}
+
+export function getTasksWithColor(tasks) {
+  const taskColors = mapToColor(tasks);
+
+  return tasks.map(task => {
+    return addColorToTask(task, taskColors);
+  });
+}
+
+export function getTaskWithColor(task, tasks) {
+  const taskId = task['@id'];
+  const exists = tasks.some(t => t['@id'] === taskId);
+  const allTasks = exists ? tasks : [...tasks, task];
+  const taskColors = mapToColor(allTasks);
+
+  return addColorToTask(task, taskColors);
+}
+
+function addColorToTask(task, taskColors) {
+  const taskId = task['@id'];
+  const color = getTaskColorFromTasks(taskColors, taskId);
+
+  return {
+    ...task,
+    color,
+  }
 }
 
 export function tasksToIds(tasks) {

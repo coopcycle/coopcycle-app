@@ -11,7 +11,6 @@ export {
   selectSelectedDate,
   selectTaskLists,
   selectTasksEntities,
-  selectTasksWithColor,
   selectToursTasksIndex,
   selectUnassignedTasks,
   selectUnassignedTasksNotCancelled,

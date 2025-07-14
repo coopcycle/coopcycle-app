@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 
-import { mapToColor } from './taskUtils';
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
 
 
@@ -37,11 +36,6 @@ export const selectAssignedTasks = createSelector(
 export const selectUnassignedTasks = createSelector(
   selectAllTasks,
   allTasks => allTasks.filter(task => !task.isAssigned)
-);
-
-export const selectTasksWithColor = createSelector(
-  selectAllTasks,
-  allTasks => mapToColor(allTasks),
 );
 
 export const selectUnassignedTasksNotCancelled = createSelector(

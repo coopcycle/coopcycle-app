@@ -37,7 +37,6 @@ import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import {
   selectTaskLists,
   selectTasksEntities,
-  selectTasksWithColor,
 } from '../../../shared/logistics/redux';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
@@ -57,7 +56,6 @@ export default function GroupedTasks({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const tasksWithColor = useSelector(selectTasksWithColor);
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
 
@@ -239,7 +237,6 @@ export default function GroupedTasks({
           id={section.id}
           onTaskClick={onTaskClick(section.isUnassignedTaskList)}
           tasks={tasks}
-          tasksWithColor={tasksWithColor}
           onSwipeClosed={(task) =>{handleOnSwipeClose(section, task)}}
           {...swipeLeftConfiguration(section)}
           {...swipeRightConfiguration(section)}
@@ -248,7 +245,7 @@ export default function GroupedTasks({
     }
 
     return null;
-  }, [collapsedSections, handleOnSwipeClose, isFetching, onTaskClick, swipeLeftConfiguration, swipeRightConfiguration, tasksEntities, tasksWithColor]);
+  }, [collapsedSections, handleOnSwipeClose, isFetching, onTaskClick, swipeLeftConfiguration, swipeRightConfiguration, tasksEntities]);
 
   return (
     <>

@@ -57,11 +57,13 @@ describe('taskEntityReducers', () => {
             '@id': '/api/tasks/1',
             id: 1,
             isAssigned: false,
+            color: '#ffffff',
           },
           '/api/tasks/2': {
             '@id': '/api/tasks/2',
             id: 2,
             isAssigned: false,
+            color: '#ffffff',
           },
         },
       });
@@ -103,12 +105,14 @@ describe('taskEntityReducers', () => {
             id: 1,
             isAssigned: false,
             comments: 'new comment',
+            color: '#ffffff',
           },
           '/api/tasks/2': {
             '@id': '/api/tasks/2',
             id: 2,
             isAssigned: false,
             comments: 'new comment',
+            color: '#ffffff',
           },
         },
       });
@@ -136,6 +140,7 @@ describe('taskEntityReducers', () => {
             '@id': '/api/tasks/1',
             id: 1,
             isAssigned: false,
+            color: '#ffffff',
           },
         },
       });

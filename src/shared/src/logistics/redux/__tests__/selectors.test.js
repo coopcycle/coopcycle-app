@@ -3,7 +3,6 @@ import {
   selectAssignedTasks,
   selectSelectedDate,
   selectTaskLists,
-  selectTasksWithColor,
   selectUnassignedTasks,
 } from '../selectors';
 
@@ -473,15 +472,6 @@ describe('Selectors', () => {
           id: 8,
         },
       ]);
-    });
-  });
-
-  describe('selectTasksWithColor', () => {
-    it('should return tasks with a color tag', () => {
-      expect(selectTasksWithColor(baseState)).toEqual({
-        '/api/tasks/1': '#6c87e0',
-        '/api/tasks/2': '#6c87e0',
-      });
     });
   });
 });
