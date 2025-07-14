@@ -22,7 +22,13 @@ const container = {
 };
 
 const markerColor = (task, taskList) => {
-  const color = taskList.isUnassignedTaskList ? lightGreyColor : darkGreyColor;
+  let color = darkGreyColor;
+
+  if (task.tags.length > 0) {
+    color = task.tags[0].color;
+  } else if (taskList?.isUnassignedTaskList) {
+    color = lightGreyColor;
+  }
 
   switch (task.status) {
     case 'DONE':

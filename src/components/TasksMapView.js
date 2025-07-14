@@ -18,7 +18,7 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
 
 import { filterTasks } from '../redux/logistics/utils';
-import { getTaskListByTask, getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
+import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
 import { selectIsHideUnassignedFromMap, selectIsPolylineOn } from '../redux/Courier';
