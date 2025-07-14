@@ -52,8 +52,12 @@ export const connectToSandbox = async (url = "sandbox-fr.coopcycle.org") => {
   return await connectToInstance("sandbox-fr.coopcycle.org");
 };
 
-export const connectToLocalInstance = async () => {
+export const connectToLocalDevInstance = async () => {
   return await connectToInstance(getLocalInstanceUrl());
+};
+
+export const connectToLocalTestInstance = async () => {
+  return await connectToInstance(getLocalTestInstanceUrl());
 };
 
 const connectToInstance = async (url) => {
@@ -70,7 +74,8 @@ const connectToInstance = async (url) => {
   } catch (e) {}
 };
 
-const getLocalInstanceUrl = () => `http://${getLocalIpAddress()}:9080`;
+const getLocalInstanceUrl = () => `http://${getLocalIpAddress()}`;
+const getLocalTestInstanceUrl = () => `${getLocalInstanceUrl()}:9080`;
 
 const getLocalIpAddress = () => {
   const interfaces = os.networkInterfaces();
@@ -98,7 +103,7 @@ export const loadFixturesWithSetup = (fixtures) => {
 export const loadFixturesAndConnect = async (fixtures, setup = false) => {
   return ifandroid(() => {
     loadFixtures(fixtures, setup);
-    return connectToLocalInstance();
+    return connectToLocalTestInstance();
   }, () => {
     //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
     return connectToSandbox();
@@ -220,7 +225,7 @@ export const closeRestaurantForToday = async (username, password) => {
   try {
     // Get API token
     const loginResponse = await axios.post(
-      `${getLocalInstanceUrl()}/api/login_check`,
+      `${getLocalTestInstanceUrl()}/api/login_check`,
       {
         _username: username,
         _password: password,
@@ -236,7 +241,7 @@ export const closeRestaurantForToday = async (username, password) => {
 
     // Get list of restaurants
     const myRestaurantsResponse = await axios.get(
-      `${getLocalInstanceUrl()}/api/me/restaurants`,
+      `${getLocalTestInstanceUrl()}/api/me/restaurants`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -249,7 +254,7 @@ export const closeRestaurantForToday = async (username, password) => {
     // Close each restaurant
     for (const restaurant of restaurants) {
       await axios.put(
-        `${getLocalInstanceUrl()}/api/restaurants/${restaurant.id}/close`,
+        `${getLocalTestInstanceUrl()}/api/restaurants/${restaurant.id}/close`,
         {},
         {
           headers: {
@@ -289,7 +294,7 @@ export const selectAutocompleteAddress = async (
 export const typeTextQuick = async (elemIdOrObj, text) => {
   const isElemId = typeof elemIdOrObj === 'string';
   const elem = () => isElemId ? element(by.id(elemIdOrObj)) : elemIdOrObj;
-  console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}`);
+  console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}..`);
 
   if (text.length > 1) {
     await elem().replaceText(text.slice(0, -1));
