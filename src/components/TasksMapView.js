@@ -1,8 +1,8 @@
-import _  from 'lodash';
+import _ from 'lodash';
 import { Callout, Marker, Polyline } from 'react-native-maps';
 import { Component, createRef } from 'react';
 import { connect } from 'react-redux';
-import { decode }from '@mapbox/polyline';
+import { decode } from '@mapbox/polyline';
 import {
   Dimensions,
   FlatList,
@@ -21,7 +21,10 @@ import { filterTasks } from '../redux/logistics/utils';
 import { getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
-import { selectIsHideUnassignedFromMap, selectIsPolylineOn } from '../redux/Courier';
+import {
+  selectIsHideUnassignedFromMap,
+  selectIsPolylineOn,
+} from '../redux/Courier';
 import TaskCallout from './TaskCallout';
 import TaskMarker from './TaskMarker';
 import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
@@ -253,10 +256,10 @@ class TasksMapView extends Component {
   }
 
   getCoordinates(taskList) {
-    if(taskList.polyline) {
+    if (taskList.polyline) {
       const decodedCoordinates = decode(taskList.polyline).map(coords => ({
         latitude: coords[0],
-        longitude: coords[1]
+        longitude: coords[1],
       }));
 
       return decodedCoordinates;
@@ -274,16 +277,17 @@ class TasksMapView extends Component {
       if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
         return null;
       }
+      
 
       return (
         <Polyline
           coordinates={this.getCoordinates(taskList)}
           strokeWidth={3}
           strokeColor={taskList.color}
-          key={taskList.id}
+          key={`polyline-${taskList.id}`}
           lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : null}
         />
-      )
+      );
     });
   }
 
@@ -316,21 +320,21 @@ class TasksMapView extends Component {
   }
 
   render() {
-    const {
-      onMapReady,
-      taskLists,
-      uiFilters,
-      ...otherProps
-    } = this.props;
+    const { onMapReady, taskLists, uiFilters, ...otherProps } = this.props;
 
     // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
-    const data = _.flatMap(taskLists, (taskList) => {
+    const data = _.flatMap(taskLists, taskList => {
       // Do not parse unassigned tasks if the filter is enabled
-      if (this.props.isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID) {
+      if (
+        this.props.isHideUnassignedFromMap &&
+        taskList.id === UNASSIGNED_TASKS_LIST_ID
+      ) {
         return [];
       }
 
-      const items = uiFilters ? filterTasks(taskList.items, uiFilters) : taskList.items;
+      const items = uiFilters
+        ? filterTasks(taskList.items, uiFilters)
+        : taskList.items;
 
       return items.map(task => ({
         ...task,
@@ -352,7 +356,15 @@ class TasksMapView extends Component {
         {this.state.mapHeight && this.state.mapHeight > 0 ? (
           <MapView
             // data={data}
-            style={[styles.map, { marginBottom: this.state.marginBottom, flex: 1, minHeight: '100%', widht: '100%' }]}
+            style={[
+              styles.map,
+              {
+                marginBottom: this.state.marginBottom,
+                flex: 1,
+                minHeight: '100%',
+                widht: '100%',
+              },
+            ]}
             width={width}
             height={this.state.mapHeight}
             initialRegion={this.initialRegion}
@@ -369,9 +381,13 @@ class TasksMapView extends Component {
             // renderMarker={this.renderMarker}
             // renderCluster={this.renderCluster}
             // onClusterPress={this.onClusterPress}
-            ref={(r) => { this.map = r }}
+            ref={r => {
+              this.map = r;
+            }}
             {...otherProps}>
-            {data.map(this.renderMarker)}
+            {data
+              .map((task, index) => this.renderMarker(task, index))
+              .filter(Boolean)}
             {this.renderPolylines(taskLists)}
             {this.props.children}
           </MapView>
