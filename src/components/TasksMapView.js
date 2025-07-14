@@ -277,7 +277,6 @@ class TasksMapView extends Component {
       if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
         return null;
       }
-      
 
       return (
         <Polyline
@@ -385,9 +384,7 @@ class TasksMapView extends Component {
               this.map = r;
             }}
             {...otherProps}>
-            {data
-              .map((task, index) => this.renderMarker(task, index))
-              .filter(Boolean)}
+            {data.map(this.renderMarker)}
             {this.renderPolylines(taskLists)}
             {this.props.children}
           </MapView>

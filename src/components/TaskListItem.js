@@ -296,7 +296,7 @@ const TaskListItem = forwardRef(({
   onSwipedToLeft,
   onSwipedToRight,
   onSwipeClosed,
-}, ref) => {
+}, _ref) => {
   const { t } = useTranslation();
   const taskTitle = task.orgName
     ? task.metadata.order_number
@@ -346,41 +346,26 @@ const TaskListItem = forwardRef(({
   const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
   const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
 
- /*  useEffect(() => {
-    if (shouldSwipeLeft) {
-      swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-    } else if (prevShouldSwipeLeftRef.current || !shouldSwipeRight) {
-      swipeRow.current?.closeRow?.();
-    }
-    prevShouldSwipeLeftRef.current = shouldSwipeLeft;
-  }, [shouldSwipeRight, shouldSwipeLeft, buttonWidth]);
-
-  useEffect(() => {
-    if (shouldSwipeRight) {
-      swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
-    } 
-  }, [shouldSwipeRight, buttonWidth]); */
-
   const prevShouldSwipeLeftRef = useRef();
   const prevShouldSwipeRightRef = useRef();
 
   useEffect(() => {
-  if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
-    swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-  } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
-    swipeRow.current?.closeRow?.();
-  }
-  prevShouldSwipeLeftRef.current = shouldSwipeLeft;
-}, [shouldSwipeLeft, buttonWidth]);
+    if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
+      swipeRow.current?.manuallySwipeRow?.(buttonWidth);
+    } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
+      swipeRow.current?.closeRow?.();
+    }
+    prevShouldSwipeLeftRef.current = shouldSwipeLeft;
+  }, [shouldSwipeLeft, buttonWidth]);
 
-useEffect(() => {
-  if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
-    swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
-  } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
-    swipeRow.current?.closeRow?.();
-  }
-  prevShouldSwipeRightRef.current = shouldSwipeRight;
-}, [shouldSwipeRight, buttonWidth]);
+  useEffect(() => {
+    if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
+      swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
+    } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
+      swipeRow.current?.closeRow?.();
+    }
+    prevShouldSwipeRightRef.current = shouldSwipeRight;
+  }, [shouldSwipeRight, buttonWidth]);
 
   function _onRowOpen(toValue) {
     if (toValue > 0 && onSwipedToLeft) {
