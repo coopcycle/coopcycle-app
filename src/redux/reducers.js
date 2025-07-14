@@ -20,7 +20,7 @@ import { persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import reduceReducers from 'reduce-reducers';
 
-import { apiSlice } from './api/slice'
+import { apiSlice } from './api/slice';
 import { appReducer } from './App';
 import { createTaskItemsTransform } from './util';
 import {
@@ -29,10 +29,8 @@ import {
   taskListEntityReducers as coreTaskListEntityReducers,
   uiReducers as coreUiReducers,
 } from '../coopcycle-frontend-js/logistics/redux';
-import {
-  tasksEntityReducer,
-  tasksUiReducer,
-} from './Courier';
+
+import { tasksEntityReducer, tasksUiReducer } from './Courier';
 import accountReducer from './Account/reducers';
 import appDateReducer from './logistics/dateReducer';
 import appDispatchReducer from './Dispatch/reducers';
@@ -44,6 +42,9 @@ import checkoutReducer from './Checkout/reducers';
 import deliveryReducer from './Delivery/reducers';
 import restaurantReducer from './Restaurant/reducers';
 import storeReducer from './Store/reducers';
+import keywordFiltersReducer from './Dispatch/keywordFiltersSlice';
+import selectedTasksReducer from './Dispatch/updateSelectedTasksSlice';
+
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
@@ -66,6 +67,7 @@ const tasksUiPersistConfig = {
     'excludeFilters',
     'tasksChangedAlertSound',
     'keepAwake',
+    'isHideUnassignedFromMap',
     'isPolylineOn',
     'signatureScreenFirst',
   ],
@@ -127,7 +129,7 @@ const appPersistConfig = {
     'firstRun',
     'resumeCheckoutAfterActivation',
     'isSpinnerDelayEnabled',
-    'isBarcodeEnabled'
+    'isBarcodeEnabled',
   ],
   migrate: state => {
     if (!state) {
@@ -182,14 +184,17 @@ export default combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
   }),
   //todo move more properties from appDispatchReducer into `logistics` state
-  dispatch: appDispatchReducer,
+  dispatch: combineReducers({
+    ...appDispatchReducer,
+    ui: combineReducers({
+      keywordFilters: keywordFiltersReducer,
+      selectedTasks: selectedTasksReducer,
+    }),
+  }),
   logistics: combineReducers({
     date: reduceReducers(coreDateReducer, appDateReducer),
     entities: combineReducers({
-      tasks: reduceReducers(
-        coreTaskEntityReducers,
-        appTaskEntityReducers,
-      ),
+      tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),
       taskLists: reduceReducers(
         coreTaskListEntityReducers,
         appTaskListEntityReducers,

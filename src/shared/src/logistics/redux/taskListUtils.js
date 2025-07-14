@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { withLinkedTasks } from './taskUtils';
+import { groupLinkedTasks, withLinkedTasks } from './taskUtils';
+import { darkGreyColor } from '../../../../styles/common';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../constants';
 
 
@@ -38,6 +39,39 @@ export function createTempTaskList(username, items = []) {
     username,
     items,
   };
+}
+
+export function createUnassignedTaskLists(allUnassignedTasks) {
+  // Split the unassigned task list by grouped linked tasks
+  const linkedTasks = groupLinkedTasks(allUnassignedTasks);
+
+  const {unassignedTaskLists} = Object.entries(linkedTasks).reduce((acc, [taskId, linkedTaskIds]) => {
+    if (linkedTaskIds.some((linkedTaskId) => acc.tasks[linkedTaskId] !== undefined)) {
+      return acc; // These tasks were already linked to a tasklist
+    }
+
+    const tasks = linkedTaskIds.map(linkedTaskId => {
+      // Update the task index
+      acc.tasks[linkedTaskId] = taskId;
+      // Return the task object with all its data
+      return allUnassignedTasks.find(task => task['@id'] === linkedTaskId);
+    });
+
+    acc.unassignedTaskLists.push({
+      '@id': `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
+      id: `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
+      items: tasks,
+      color: darkGreyColor,
+      // This property below will be used into the map view to show/hide unassigned tasks
+      isUnassignedTaskList: true,
+      // The one below is needed/used to search by username at getTaskTaskList->getUserTaskList functions
+      username: null,
+    });
+
+    return acc;
+  }, {tasks: {/*Just and index*/}, unassignedTaskLists: [/*The resultant task lists*/]});
+
+  return unassignedTaskLists;
 }
 
 // NOTE: This function is only used from the function `getTasksListsToEdit`
@@ -84,9 +118,9 @@ export function getUserTaskList(username, allTaskLists) {
   return allTaskLists.find(taskList => taskList.username === username);
 }
 
+// Find the 1st task list that contains the task
 export function getTaskTaskList(task, allTaskLists) {
-  const username = task.assignedTo;
-  return getUserTaskList(username, allTaskLists);
+  return allTaskLists.find(taskList => (taskList.items || []).find(item => item['@id'] === task['@id']));
 }
 
 function getTaskListIdForTask(task, allTaskLists) {

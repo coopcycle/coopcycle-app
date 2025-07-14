@@ -245,6 +245,7 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const success = isSuccessRoute(route);
 
@@ -267,6 +268,9 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
       }
 
     }
+
+    // Disable the button
+    setIsDisabled(true);
 
     if (success) {
       if (tasks && tasks.length) {
@@ -309,6 +313,7 @@ const SubmitButton = ({ task, tasks, notes, contactName, failureReason, validate
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={isDisabled}
       style={{ alignItems: 'center', backgroundColor: footerBgColor }}
       testID="task:finishButton">
       <HStack py="3" alignItems="center">

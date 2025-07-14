@@ -6,7 +6,7 @@ import ColorHash from 'color-hash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { isKeywordFilterNegative } from "../../../redux/logistics/utils";
-import { removeKeywordFilter } from "../../../redux/Dispatch/actions";
+import { removeKeywordFilter } from "../../../redux/Dispatch/keywordFiltersSlice";
 import { selectKeywordFilters } from "../../../redux/Dispatch/selectors";
 import { whiteColor } from "../../../styles/common";
 

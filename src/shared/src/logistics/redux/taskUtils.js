@@ -160,3 +160,6 @@ function standardIncludes(originalString, keyword) {
 
   return originalString.toLowerCase().includes(lowercaseKeyword);
 }
+export function taskExists(list, task) {
+  return list.some(t => t['@id'] === task['@id']);
+}

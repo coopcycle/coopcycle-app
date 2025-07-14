@@ -146,6 +146,19 @@ export default function useSetTaskListItems() {
     return bulkEditTasks(selectedTasks, user);
   }
 
+  const getLinkedTasks = (task, taskListId) => {
+  return getTasksListsToEdit(
+    {
+      orders: {
+        [taskListId]: [task]
+      },
+      tasks: {}
+    },
+    allTasks,
+    allTaskLists
+  );
+};
+
   /**
    * Edit several tasks at once (and also their linked tasks)
    * @param {Array.Objects} tasks - Task to be un/assigned
@@ -278,6 +291,7 @@ export default function useSetTaskListItems() {
 
   return {
     assignTask,
+    getLinkedTasks,
     bulkEditTasks,
     assignTaskWithRelatedTasks,
     isError,

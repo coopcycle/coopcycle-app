@@ -1,7 +1,7 @@
 // Source file for common logic related to how task is presented to a user (UI)
 
-const assignOrderIconName = 'cube';
-const assignTaskIconName = 'user-circle';
+const assignOrderIconName = 'cubes';
+const assignTaskIconName = 'cube';
 const commentsIconName = 'comments';
 const doingIconName = 'play';
 const doneIconName = 'check';
