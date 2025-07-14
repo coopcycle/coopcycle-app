@@ -1,4 +1,4 @@
-.PHONY: setup start start-fresh android ios test test-only e2e-build-android e2e-build-ios e2e-android e2e-android-only e2e-ios e2e-ios-only adb emulator login run-admin-login run-dispatcher-login
+.PHONY: setup start start-fresh android ios test test-only e2e-build-android e2e-build-ios e2e-android e2e-android-only e2e-ios e2e-ios-only adb emulator
 
 ENV_FILE ?= .env
 
@@ -64,10 +64,3 @@ adb:
 emulator: ANDROID_SDK_ROOT?=~/Android/Sdk
 emulator:
 	@clear && ${ANDROID_SDK_ROOT}/emulator/emulator -avd Pixel_6_API_28
-
-# SHORTCUTS FOR ANDROID EMULATOR:
-login: run-admin-login
-run-admin-login:
-	@detox test ./e2e/support/shortcut-admin-login.spec.js -c android.emu.debug
-run-dispatcher-login:
-	@detox test ./e2e/support/shortcut-dispatcher-login.spec.js -c android.emu.debug
