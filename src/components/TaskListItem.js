@@ -200,16 +200,15 @@ const TaskStatusIcon = ({ task }) => {
 };
 
 const TaskPriorityStatus = ({ task }) => {
+  const timeDifference = moment().diff(task.doneBefore);
   let backgroundColor = whiteColor;
-  const now = moment();
-  const timeDifference = now.diff(task.doneBefore);
 
   if (timeDifference < minutes(10)) {
     backgroundColor = '#FFC300';
-  }
-
-  if (timeDifference < minutes(0)) {
+  } else if (timeDifference < minutes(0)) {
     backgroundColor = '#B42205';
+  } else {
+    return null;
   }
 
   return (
