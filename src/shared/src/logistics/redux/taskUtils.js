@@ -87,10 +87,6 @@ export function mapToColor(tasks) {
   );
 }
 
-function getTaskColorFromTasks(tasks, taskId) {
-  return tasks[taskId] || '#ffffff'
-}
-
 export function getTasksWithColor(tasks) {
   const taskColors = mapToColor(tasks);
 
@@ -110,7 +106,7 @@ export function getTaskWithColor(task, tasks) {
 
 function addColorToTask(task, taskColors) {
   const taskId = task['@id'];
-  const color = getTaskColorFromTasks(taskColors, taskId);
+  const color = task.color || taskColors[taskId] || '#ffffff';
 
   return {
     ...task,
