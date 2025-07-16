@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -40,10 +40,10 @@ export default function useSetTaskListItems({
   tasksEntities,
 }) {
   const allTasks = Object.values(tasksEntities);
+  const allTasksRef = useRef([])
   const allTours = useSelector(selectAllTours);
   const toursTasksIndex = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
-
   const dispatch = useDispatch();
 
   const [
@@ -78,6 +78,10 @@ export default function useSetTaskListItems({
     () => isErrorSetTaskListItems || isErrorSetTourItems,
     [isErrorSetTaskListItems, isErrorSetTourItems]
   );
+
+  useEffect(() => {
+    allTasksRef.current = Object.values(tasksEntities);
+  }, [tasksEntities]);
 
   useEffect(() => {
     if (isLoading) {
@@ -272,7 +276,7 @@ export default function useSetTaskListItems({
 
   const _updateTasks = useCallback((itemIds, user, updateUi) => {
     const itemIdsSet = new Set(itemIds);
-    const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
+    const tasks = allTasksRef.current.filter(task => itemIdsSet.has(task['@id']));
     const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
 
     if (updateUi) {
@@ -280,14 +284,14 @@ export default function useSetTaskListItems({
     } else {
       dispatch(assignTasksSuccess(newUserTasks));
     }
-  }, [allTasks, dispatch]);
+  }, [dispatch]);
 
   const _updateRemovedTasks = useCallback((removedTasks) => {
     const itemIdsSet = new Set(removedTasks);
-    const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
+    const tasks = allTasksRef.current.filter(task => itemIdsSet.has(task['@id']));
     const newUnassignedTasks = tasks.map(task => getAssignedTask(task));
     dispatch(unassignTasksWithUiUpdateSuccess(newUnassignedTasks));
-  }, [allTasks, dispatch]);
+  }, [dispatch]);
 
   return {
     assignTask,
