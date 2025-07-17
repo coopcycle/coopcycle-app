@@ -116,7 +116,7 @@ export default function GroupedTasks({
       navigateToTask(navigation, route, task, allRelatedTasks);
     } else {
       const username = task.assignedTo;
-      const taskList = getUserTaskList(username, allTaskLists)
+      const taskList = getUserTaskList(username, allTaskLists);
       const relatedTasks = getTaskListTasks(taskList, tasksEntities);
       navigateToTask(navigation, route, task, relatedTasks);
     }
@@ -254,9 +254,9 @@ export default function GroupedTasks({
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
         keyboardShouldPersistTaps="handled"
-        initialNumToRender={1}
-        maxToRenderPerBatch={1}
-        windowSize={3}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+        windowSize={11}
         renderSectionHeader={renderSectionHeader}
         keyExtractor={(item, index) => item['@id']}
         renderItem={renderItem}
