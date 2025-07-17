@@ -37,8 +37,9 @@ import {
 
 export default function useSetTaskListItems({
   allTaskLists,
-  allTasks,
+  tasksEntities,
 }) {
+  const allTasksRef = useRef([])
   const allTours = useSelector(selectAllTours);
   const toursTasksIndex = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
@@ -77,6 +78,9 @@ export default function useSetTaskListItems({
     [isErrorSetTaskListItems, isErrorSetTourItems]
   );
 
+  useEffect(() => {
+    allTasksRef.current = Object.values(tasksEntities);
+  }, [tasksEntities]);
 
   useEffect(() => {
     if (isLoading) {
@@ -155,7 +159,7 @@ export default function useSetTaskListItems({
    */
   const bulkEditTasks = useCallback(async (selectedTasks, user) => {
     const isJustUnassign = !user;
-    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
+    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTasksRef.current, allTaskLists);
     const taskListToUnassign = { ...taskListToEdit };
 
     if (user) { // Skip unassigning the user that is going to be assigned later
@@ -181,7 +185,7 @@ export default function useSetTaskListItems({
     dispatch(restoreCentrifugoUpdate());
 
     return result;
-  }, [_assignTasks, _unassignTasks, allTaskLists, allTasks, dispatch]);
+  }, [_assignTasks, _unassignTasks, allTaskLists, dispatch]);
 
   /**
    * Unassign tasks from a single/same courier
@@ -271,7 +275,7 @@ export default function useSetTaskListItems({
 
   const _updateTasks = useCallback((itemIds, user, updateUi) => {
     const itemIdsSet = new Set(itemIds);
-    const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
+    const tasks = allTasksRef.current.filter(task => itemIdsSet.has(task['@id']));
     const newUserTasks = tasks.map(task => getAssignedTask(task, user.username));
 
     if (updateUi) {
@@ -279,14 +283,14 @@ export default function useSetTaskListItems({
     } else {
       dispatch(assignTasksSuccess(newUserTasks));
     }
-  }, [allTasks, dispatch]);
+  }, [dispatch]);
 
   const _updateRemovedTasks = useCallback((removedTasks) => {
     const itemIdsSet = new Set(removedTasks);
-    const tasks = allTasks.filter(task => itemIdsSet.has(task['@id']));
+    const tasks = allTasksRef.current.filter(task => itemIdsSet.has(task['@id']));
     const newUnassignedTasks = tasks.map(task => getAssignedTask(task));
     dispatch(unassignTasksWithUiUpdateSuccess(newUnassignedTasks));
-  }, [allTasks, dispatch]);
+  }, [dispatch]);
 
   return {
     assignTask,

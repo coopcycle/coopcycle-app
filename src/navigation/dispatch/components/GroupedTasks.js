@@ -104,7 +104,7 @@ export default function GroupedTasks({
     unassignTaskWithRelatedTasks,
   } = useSetTaskListItems({
     allTaskLists,
-    allTasks: Object.values(tasksEntities),
+    tasksEntities,
   });
 
   const onTaskClick = useCallback(isUnassignedTaskList => task => {
