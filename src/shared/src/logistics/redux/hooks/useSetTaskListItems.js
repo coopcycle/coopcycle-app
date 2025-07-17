@@ -155,7 +155,7 @@ export default function useSetTaskListItems({
    */
   const bulkEditTasks = useCallback(async (selectedTasks, user) => {
     const isJustUnassign = !user;
-    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
+    const taskListToEdit = getTasksListsToEdit(selectedTasks, allTasksRef.current, allTaskLists);
     const taskListToUnassign = { ...taskListToEdit };
 
     if (user) { // Skip unassigning the user that is going to be assigned later
@@ -181,7 +181,7 @@ export default function useSetTaskListItems({
     dispatch(restoreCentrifugoUpdate());
 
     return result;
-  }, [_assignTasks, _unassignTasks, allTaskLists, allTasks, dispatch]);
+  }, [_assignTasks, _unassignTasks, allTaskLists, dispatch]);
 
   /**
    * Unassign tasks from a single/same courier
