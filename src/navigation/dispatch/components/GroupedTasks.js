@@ -254,9 +254,9 @@ export default function GroupedTasks({
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
         keyboardShouldPersistTaps="handled"
-        initialNumToRender={6}
-        maxToRenderPerBatch={6}
-        windowSize={11}
+        initialNumToRender={1}
+        maxToRenderPerBatch={1}
+        windowSize={3}
         renderSectionHeader={renderSectionHeader}
         keyExtractor={(item, index) => item['@id']}
         renderItem={renderItem}
