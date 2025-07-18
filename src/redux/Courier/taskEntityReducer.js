@@ -37,6 +37,10 @@ import {
 } from '../../shared/logistics/redux';
 import { filterHasIncidents } from '../logistics/filters';
 import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
+import {
+  getTaskWithColor,
+  getTasksWithColor,
+} from '../../shared/src/logistics/redux/taskUtils';
 
 /*
  * Intital state shape for the task entity reducer
@@ -75,17 +79,18 @@ const tasksEntityInitialState = {
   signatures: [], // Array of base64 encoded signatures
 };
 
-function replaceItem(state, payload) {
-  const index = _.findIndex(state, item => item['@id'] === payload['@id']);
+function replaceItem(tasks, payload) {
+  const index = _.findIndex(tasks, item => item['@id'] === payload['@id']);
 
   if (index !== -1) {
-    const newState = state.slice(0);
-    newState.splice(index, 1, payload);
+    const task = getTaskWithColor(payload, tasks);
+    const newState = tasks.slice(0);
+    newState.splice(index, 1, task);
 
     return newState;
   }
 
-  return state;
+  return tasks;
 }
 
 
@@ -103,7 +108,7 @@ function replaceItems(prevItems, items) {
   return prevItems.map(prevItem => {
     const toReplace = items.find(i => i['@id'] === prevItem['@id']);
     if (toReplace) {
-      return toReplace;
+      return getTaskWithColor(toReplace, prevItems);
     }
     return prevItem;
   });
@@ -324,7 +329,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt.toString(),
         items: {
           ...state.items,
-          [action.payload.date]: action.payload.items,
+          [action.payload.date]: getTasksWithColor(action.payload.items),
         },
       };
     }
@@ -337,7 +342,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt.toString(),
         items: {
           ...state.items,
-          [action.payload.date]: action.payload.items,
+          [action.payload.date]: getTasksWithColor(action.payload.items),
         },
       };
 
@@ -378,7 +383,7 @@ const processWsMsg = (state, action) => {
           ...state,
           items: {
             ...state.items,
-            [taskList.date]: taskList.items,
+            [taskList.date]: getTasksWithColor(taskList.items),
           },
         };
     }

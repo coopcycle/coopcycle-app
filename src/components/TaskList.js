@@ -1,9 +1,11 @@
+import { SwipeListView } from 'react-native-swipe-list-view';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import ItemSeparatorComponent from './ItemSeparator';
+
 import ItemsBulkFabButton from './ItemsBulkFabButton';
+import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
+
 
 const TaskList = ({
   id,
@@ -22,16 +24,8 @@ const TaskList = ({
   swipeOutRightBackgroundColor,
   swipeOutRightIconName,
   tasks,
-  tasksWithColor,
 }) => {
   const bulkFabButton = useRef(null);
-
-  const taskColor = task => {
-    let tasksWithColorSafe = tasksWithColor ?? [];
-    return Object.prototype.hasOwnProperty.call(tasksWithColorSafe, task['@id'])
-      ? tasksWithColor[task['@id']]
-      : '#ffffff';
-  };
 
   const swipeLeftConfiguration = task => ({
     onPressLeft: () => onPressLeft(task),
@@ -42,8 +36,8 @@ const TaskList = ({
 
   const swipeRightConfiguration = task => ({
     onPressRight: () => onPressRight(task),
-    onSwipedToRight: () => _handleSwipeToRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
+    onSwipedToRight: () => _handleSwipeToRight(task),
     swipeOutRightBackgroundColor,
     swipeOutRightIconName,
   });
@@ -81,16 +75,16 @@ const TaskList = ({
     bulkFabButton.current?.updateItems(doneTasks);
   }, [tasks]);
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item: task, index }) => {
     return (
       <TaskListItem
-        task={item}
+        task={task}
         index={index}
-        color={taskColor(item)}
+        color={task.color}
         taskListId={id}
-        onPress={() => onTaskClick(item)}
-        {...swipeLeftConfiguration(item)}
-        {...swipeRightConfiguration(item)}
+        onPress={() => onTaskClick(task)}
+        {...swipeLeftConfiguration(task)}
+        {...swipeRightConfiguration(task)}
       />
     );
   };
@@ -104,6 +98,9 @@ const TaskList = ({
         refreshing={refreshing}
         onRefresh={onRefresh}
         ItemSeparatorComponent={ItemSeparatorComponent}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+        windowSize={3}
       />
       {multipleSelectionIcon && onFabButtonPressed && (
         <ItemsBulkFabButton
@@ -133,7 +130,6 @@ TaskList.propTypes = {
   swipeOutRightEnabled: PropTypes.func,
   swipeOutRightIconName: PropTypes.string,
   tasks: PropTypes.array.isRequired,
-  tasksWithColor: PropTypes.object,
 };
 
 export default TaskList;

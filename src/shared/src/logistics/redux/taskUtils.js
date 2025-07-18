@@ -11,6 +11,13 @@ import { getUserTaskList } from './taskListUtils';
  * @param {Object} b - Task
  */
 export function tasksSort(a, b) {
+  if(a.metadata?.order_number
+      && b.metadata?.order_number
+      && a.metadata?.order_number === b.metadata?.order_number
+  ) {
+    return a.metadata.delivery_position -b.metadata.delivery_position;
+  }
+
   if (moment(a.before).isSame(b.before) && a.type === 'PICKUP') {
     return -1
   } else {
@@ -62,7 +69,7 @@ export function withLinkedTasks(task, allTasks) {
   const groups = groupLinkedTasks(allTasks);
   const newTasks = [];
 
-  if (Object.prototype.hasOwnProperty.call(groups, task['@id'])) {
+  if (groups[task['@id']]) {
     groups[task['@id']].forEach(taskId => {
       const t = _.find(allTasks, t => t['@id'] === taskId);
       newTasks.push(t);
@@ -74,30 +81,43 @@ export function withLinkedTasks(task, allTasks) {
   return newTasks.sort(tasksSort);
 }
 
-export function withUnassignedLinkedTasks(task, allTasks) {
-  return withLinkedTasks(task, allTasks).filter(t => !t.assignedTo)
-}
-
-export function withAssignedLinkedTasks(task, allTasks) {
-  return withLinkedTasks(task, allTasks).filter(t => t.assignedTo)
-}
-
 export function mapToColor(tasks) {
   return mapValues(groupLinkedTasks(tasks), taskIds =>
     colorHash.hex(taskIds.join(' ')),
   );
 }
 
+export function getTasksWithColor(tasks) {
+  const taskColors = mapToColor(tasks);
+
+  return tasks.map(task => {
+    return addColorToTask(task, taskColors);
+  });
+}
+
+export function getTaskWithColor(task, tasks) {
+  const taskId = task['@id'];
+  const exists = tasks.some(t => t['@id'] === taskId);
+  const allTasks = exists ? tasks : [...tasks, task];
+  const taskColors = mapToColor(allTasks);
+
+  return addColorToTask(task, taskColors);
+}
+
+function addColorToTask(task, taskColors) {
+  const taskId = task['@id'];
+  const color = task.color || taskColors[taskId] || '#ffffff';
+
+  return {
+    ...task,
+    color,
+  }
+}
+
 export function tasksToIds(tasks) {
   return tasks.map(item =>
     item['@type'] === 'TaskCollectionItem' ? item.task : item['@id'],
   );
-}
-
-export function getTaskListItems(username, allTaskLists) {
-  const userTaskList = getUserTaskList(username, allTaskLists);
-
-  return userTaskList ? userTaskList.items : [];
 }
 
 export function getTaskListItemIds(username, allTaskLists) {

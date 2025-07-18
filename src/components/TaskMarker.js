@@ -1,4 +1,5 @@
 import { Icon, Text } from 'native-base';
+import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -13,7 +14,6 @@ import {
   failedIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
-// import { mapToColor } from '../shared/src/logistics/redux/taskUtils';
 
 const container = {
   margin: 10,
@@ -26,15 +26,9 @@ const markerColor = (task, taskList) => {
 
   if (task.tags.length > 0) {
     color = task.tags[0].color;
-  } else if (taskList.isUnassignedTaskList) {
+  } else if (taskList?.isUnassignedTaskList) {
     color = lightGreyColor;
   }
-
-  // TODO / FIXME: Sometimes `taskList` is undefined
-  // if (taskList && taskList.items) {
-  //   const taskListColors = mapToColor(taskList.items);
-  //   color = taskListColors[task['@id']] || color;
-  // }
 
   switch (task.status) {
     case 'DONE':

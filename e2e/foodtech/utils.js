@@ -1,7 +1,7 @@
 import {
   addProduct,
   chooseRestaurant,
-  connectToLocalInstance,
+  connectToLocalTestInstance,
   connectToSandbox,
   ifandroid,
   loadFixtures,
@@ -21,7 +21,7 @@ export async function loadCheckoutFixturesAndConnect(enableGuest = true) {
         'craue:setting:create --section="general" --name="guest_checkout_enabled" --value="1" --force'
       );
     }
-    return connectToLocalInstance();
+    return connectToLocalTestInstance();
   }, () => {
     //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
     return connectToSandbox();

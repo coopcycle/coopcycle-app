@@ -18,16 +18,14 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
 
 import { filterTasks } from '../redux/logistics/utils';
-import { getTaskTaskList } from '../shared/src/logistics/redux/taskListUtils';
+import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
-import {
-  selectIsHideUnassignedFromMap,
-  selectIsPolylineOn,
-} from '../redux/Courier';
+import { selectIsHideUnassignedFromMap, selectIsPolylineOn } from '../redux/Courier';
+import { selectTasksEntities } from '../shared/logistics/redux';
+import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
 import TaskCallout from './TaskCallout';
 import TaskMarker from './TaskMarker';
-import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
 
 const clusterContainerSize = 40;
 
@@ -219,8 +217,8 @@ class TasksMapView extends Component {
 
   renderMarker(task, index) {
     // Get the corresponding task list and see if it is an unassigned one
-    const taskList = getTaskTaskList(task, this.props.taskLists);
-    if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
+    const taskList = task.taskList;
+    if (this.props.isHideUnassignedFromMap && taskList.isUnassignedTaskList) {
       return null;
     }
 
@@ -265,7 +263,10 @@ class TasksMapView extends Component {
       return decodedCoordinates;
     }
 
-    return taskList.items.map(task => task.address.geo);
+    const {tasksEntities} = this.props;
+    const taskListTasks = getTaskListTasks(taskList, tasksEntities);
+
+    return taskListTasks.map(task => task.address.geo);
   }
 
   renderPolylines(taskLists) {
@@ -319,25 +320,28 @@ class TasksMapView extends Component {
   }
 
   render() {
-    const { onMapReady, taskLists, uiFilters, ...otherProps } = this.props;
+    const {
+      onMapReady,
+      taskLists,
+      uiFilters,
+      tasksEntities,
+      ...otherProps
+    } = this.props;
 
     // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
+    // Also they must have a "taskList" attribute for markers
     const data = _.flatMap(taskLists, taskList => {
       // Do not parse unassigned tasks if the filter is enabled
-      if (
-        this.props.isHideUnassignedFromMap &&
-        taskList.id === UNASSIGNED_TASKS_LIST_ID
-      ) {
+      if (this.props.isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID) {
         return [];
       }
+      const tasks = getTaskListTasks(taskList, tasksEntities);
+      const filteredTasks = uiFilters ? filterTasks(tasks, uiFilters) : tasks;
 
-      const items = uiFilters
-        ? filterTasks(taskList.items, uiFilters)
-        : taskList.items;
-
-      return items.map(task => ({
+      return filteredTasks.map(task => ({
         ...task,
         location: task.address.geo,
+        taskList,
       }));
     });
 
@@ -399,6 +403,7 @@ function mapStateToProps(state) {
   return {
     isHideUnassignedFromMap: selectIsHideUnassignedFromMap(state),
     isPolylineOn: selectIsPolylineOn(state),
+    tasksEntities: selectTasksEntities(state),
   };
 }
 

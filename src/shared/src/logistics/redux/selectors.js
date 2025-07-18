@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 
-import { mapToColor } from './taskUtils';
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
 
 
@@ -22,6 +21,7 @@ const tourSelectors = tourAdapter.getSelectors(
 export const selectSelectedDate = state => state.logistics.date;
 
 export const selectAllTasks = taskSelectors.selectAll;
+export const selectTasksEntities = taskSelectors.selectEntities;
 
 export const selectAllTours = tourSelectors.selectAll;
 
@@ -38,11 +38,6 @@ export const selectUnassignedTasks = createSelector(
   allTasks => allTasks.filter(task => !task.isAssigned)
 );
 
-export const selectTasksWithColor = createSelector(
-  selectAllTasks,
-  allTasks => mapToColor(allTasks),
-);
-
 export const selectUnassignedTasksNotCancelled = createSelector(
   selectUnassignedTasks,
   tasks =>
@@ -52,37 +47,27 @@ export const selectUnassignedTasksNotCancelled = createSelector(
 
 // Selections for TaskLists
 
-// FIXME
-// This is not optimized
-// Each time any task is updated, the tasks lists are looped over
-// Also, it generates copies all the time
-// Replace this with a selectTaskListItemsByUsername selector, used by the <TaskList> component
-// https://redux.js.org/tutorials/essentials/part-6-performance-normalization#memoizing-selector-functions
 export const selectTaskLists = createSelector(
   taskListSelectors.selectAll,
-  taskSelectors.selectEntities,
   tourSelectors.selectEntities,
-  (taskLists, tasksById, toursById) =>
+  (taskLists, toursById) =>
     taskLists.map(taskList => {
       let newTaskList = { ...taskList };
 
       const orderedItems = taskList.itemIds.flatMap(itemId => {
-        const maybeTask = tasksById[itemId];
-
-        if (maybeTask) {
-          return [maybeTask];
-        }
-
         const maybeTour = toursById[itemId];
 
         if (maybeTour) {
-          return maybeTour.items.map(taskId => tasksById[taskId]);
+          return maybeTour.items;
+        }
+
+        if (itemId.includes('/api/tasks/')){
+          return [itemId];
         }
 
         return [];
       });
-
-      newTaskList.items = _.uniqBy(orderedItems, '@id');
+      newTaskList.tasksIds = _.uniq(orderedItems);
 
       return newTaskList;
     }),

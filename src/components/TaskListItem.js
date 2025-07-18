@@ -1,8 +1,4 @@
-import moment from 'moment';
 import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
-import PropTypes from 'prop-types';
-import React, { forwardRef, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
   StyleSheet,
@@ -12,11 +8,21 @@ import {
   useColorScheme,
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { forwardRef, useEffect, useRef } from 'react';
 
-import { useSelector } from 'react-redux';
-import CoopcyleLogo from '../../assets/images/logo.svg';
+import {
+  blackColor,
+  lightGreyColor,
+  redColor,
+  whiteColor,
+  yellowColor,
+} from '../styles/common';
 import {
   commentsIconName,
   doingIconName,
@@ -25,20 +31,14 @@ import {
   incidentIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
+import { formatPrice } from '../utils/formatting';
+import { minutes } from '../utils/dates';
+import { PaymentMethodInList } from './PaymentMethodInfo';
 import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
-import {
-  blackColor,
-  lightGreyColor,
-  redColor,
-  whiteColor,
-  yellowColor,
-} from '../styles/common';
-import { minutes } from '../utils/dates';
-import { formatPrice } from '../utils/formatting';
-import { PaymentMethodInList } from './PaymentMethodInfo';
+import CoopcyleLogo from '../../assets/images/logo.svg';
 
 const cardBorderRadius = 2.5;
 
@@ -200,16 +200,15 @@ const TaskStatusIcon = ({ task }) => {
 };
 
 const TaskPriorityStatus = ({ task }) => {
+  const timeDifference = moment().diff(task.doneBefore);
   let backgroundColor = whiteColor;
-  const now = moment();
-  const timeDifference = now.diff(task.doneBefore);
 
   if (timeDifference < minutes(10)) {
     backgroundColor = '#FFC300';
-  }
-
-  if (timeDifference < minutes(0)) {
+  } else if (timeDifference < minutes(0)) {
     backgroundColor = '#B42205';
+  } else {
+    return null;
   }
 
   return (

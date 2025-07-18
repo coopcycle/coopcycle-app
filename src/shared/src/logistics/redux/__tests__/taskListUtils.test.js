@@ -3,6 +3,8 @@ import _ from 'lodash';
 import {
   buildSelectedTasks,
   createUnassignedTaskLists,
+  getTaskListByTask,
+  getTaskListTasks,
   getTasksListIdsToEdit,
   getTasksListsToEdit,
   replaceItemsWithItemIds,
@@ -62,20 +64,66 @@ function sortTasksListItems(tasksListIdsToEdit) {
 describe('taskListUtils', () => {
   describe('replaceItemsWithItemIds', () => {
     it('should remove items and add itemIds in a task list', () => {
-      const taskList = {
-        '@id': '/api/task_lists/1',
-        username: 'bot_1',
-        items: ['/api/tasks/1', '/api/tasks/2'],
-      };
+      const taskList = allTaskLists[3];
 
       const result = replaceItemsWithItemIds(taskList);
 
-      expect(result).toEqual({
-        '@id': '/api/task_lists/1',
-        username: 'bot_1',
-        itemIds: ['/api/tasks/1', '/api/tasks/2'],
-      });
+      const expected = {
+        ...taskList,
+        itemIds: taskList.items,
+      };
+      delete expected.items;
+
+      expect(result).toEqual(expected);
       expect(result).not.toBe(taskList);
+    });
+  });
+
+  describe('getTaskListTasks', () => {
+    it('should return empty if no tasks are loaded', () => {
+      const taskList = allTaskLists[3];
+
+      const tasksEntities = {};
+
+      const result = getTaskListTasks(taskList, tasksEntities);
+
+      expect(result).toEqual([]);
+    });
+
+    it('should return a partial list if some tasks are loaded', () => {
+      const taskList = allTaskLists[3];
+
+      const tasksEntities = {
+        '/api/tasks/3': allTasks[3],
+        '/api/tasks/4': allTasks[4],
+      };
+
+      const result = getTaskListTasks(taskList, tasksEntities);
+
+      expect(result).toEqual([
+        allTasks[3],
+        allTasks[4],
+      ]);
+    });
+
+    it('should return all tasks if all tasks are loaded', () => {
+      const taskList = allTaskLists[3];
+
+      const tasksEntities = {
+        '/api/tasks/2': allTasks[2],
+        '/api/tasks/3': allTasks[3],
+        '/api/tasks/4': allTasks[4],
+        '/api/tasks/5': allTasks[5],
+        '/api/tasks/6': allTasks[6],
+      };
+
+      const result = getTaskListTasks(taskList, tasksEntities);
+
+      expect(result).toEqual([
+        allTasks[3],
+        allTasks[4],
+        allTasks[5],
+      ]);
     });
   });
 
@@ -322,6 +370,24 @@ describe('taskListUtils', () => {
     });
   })
 
+  describe('getTaskListByTask', () => {
+    it('should return undefined if Task does not belong to any TaskList', () => {
+      const task = allTasks[10];
+
+      const result = getTaskListByTask(task, allTaskLists);
+
+      expect(result).toEqual(undefined);
+    });
+
+    it("should return task's tasklist if Task belongs to any TaskList", () => {
+      const task = allTasks[0];
+
+      const result = getTaskListByTask(task, allTaskLists);
+
+      expect(result).toEqual(allTaskLists[1]);
+    });
+  });
+
   describe('buildSelectedTasks', () => {
     it('should return an empty object for orders and tasks if no order or task is provided', () => {
       const orders = [];
@@ -391,6 +457,7 @@ describe('taskListUtils', () => {
             {"@id": "/api/tasks/1", "assignedTo": "username2", "hasIncidents": false, "id": 1, "orgName": "", "previous": null, "status": "", "tags": []},
             {"@id": "/api/tasks/2", "assignedTo": "username2", "hasIncidents": false, "id": 2, "orgName": "", "previous": "/api/tasks/1", "status": "", "tags": []}
           ],
+          "tasksIds": ["/api/tasks/1", "/api/tasks/2"],
           "username": null,
           "color": "#424242",
         },
@@ -405,6 +472,7 @@ describe('taskListUtils', () => {
             {"@id": "/api/tasks/6", "assignedTo": "username4", "hasIncidents": false, "id": 6, "orgName": "", "previous": "/api/tasks/5", "status": "", "tags": []},
             {"@id": "/api/tasks/7", "assignedTo": "username4", "hasIncidents": false, "id": 7, "orgName": "", "previous": "/api/tasks/6", "status": "", "tags": []}
           ],
+          "tasksIds": ["/api/tasks/3", "/api/tasks/4", "/api/tasks/5", "/api/tasks/6", "/api/tasks/7"],
           "username": null,
           "color": "#424242",
         },
@@ -417,6 +485,7 @@ describe('taskListUtils', () => {
             {"@id": "/api/tasks/8", "assignedTo": "username5", "hasIncidents": false, "id": 8, "orgName": "", "previous": null, "status": "", "tags": []},
             { "@id": "/api/tasks/9", "assignedTo": "username6", "hasIncidents": false, "id": 9, "orgName": "", "previous": "/api/tasks/8", "status": "", "tags": []}
           ],
+          "tasksIds": ["/api/tasks/10", "/api/tasks/8", "/api/tasks/9"],
           "username": null,
           "color": "#424242",
         }

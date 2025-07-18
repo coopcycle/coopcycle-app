@@ -3,12 +3,17 @@ import { Text, View } from 'native-base';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { createUnassignedTaskLists, getTaskTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import {
+  createUnassignedTaskLists,
+  getTaskListByTask,
+  getTaskListTasks,
+} from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../utils';
 import { selectSettingsLatLng } from '../../redux/App/selectors';
 import {
   selectSelectedDate,
   selectTaskLists,
+  selectTasksEntities,
   selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
 import { selectDispatchUiTaskFilters } from '../../redux/Dispatch/selectors';
@@ -43,6 +48,7 @@ const styles = StyleSheet.create({
 export default function TasksMap({ navigation, route }) {
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
   const allTaskLists = useSelector(selectTaskLists);
+  const tasksEntities = useSelector(selectTasksEntities);
   const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
@@ -62,9 +68,10 @@ export default function TasksMap({ navigation, route }) {
   }, [allTaskLists, allUnassignedTasks]);
 
   const navigateToSelectedTask = task => {
-    const taskList = getTaskTaskList(task, mergedTaskListsWithUnassigned);
     // task is one the the task lists' tasks, so taskList is always defined
-    navigateToTask(navigation, route, task, taskList.items);
+    const taskList = getTaskListByTask(task, mergedTaskListsWithUnassigned);
+    const relatedTasks = getTaskListTasks(taskList, tasksEntities);
+    navigateToTask(navigation, route, task, relatedTasks);
   };
 
   return (
