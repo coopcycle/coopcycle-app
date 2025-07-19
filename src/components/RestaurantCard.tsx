@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'native-base';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TextProps, View } from 'react-native';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
 import { useBackgroundContainerColor } from '../styles/theme';
 import { isRestaurantOrderingAvailable } from '../utils/checkout';
@@ -11,7 +11,7 @@ import { RestaurantNotAvailableBannerOverlay } from './RestaurantBannerOverlay';
 
 const logoSize = 64;
 
-const OneLineText = props => (
+const OneLineText = (props: TextProps) => (
   <Text
     numberOfLines={props.numberOfLines || 1}
     ellipsizeMode="tail"
@@ -90,7 +90,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export const RestaurantCard = ({ restaurant }) => {
+type Restaurant = {
+  name: string;
+  description: string | null;
+  address: {
+    streetAddress: string;
+  };
+  image: string;
+  bannerImage: string;
+  badges: string[];
+  tags: string[];
+}
+
+type Props = {
+  restaurant: Restaurant;
+};
+
+export const RestaurantCard = ({ restaurant } : Props) => {
   const backgroundColor = useBackgroundContainerColor();
   const isAvailable = isRestaurantOrderingAvailable(restaurant);
 
