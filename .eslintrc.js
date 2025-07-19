@@ -1,7 +1,18 @@
 module.exports = {
   root: true,
-  extends: ['eslint:recommended', '@react-native', 'prettier'],
-  plugins: ['eslint-plugin-react-compiler'],
+  extends: ['eslint:recommended', '@react-native', 'plugin:@typescript-eslint/recommended-type-checked', 'prettier'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    projectService: true,
+    tsconfigRootDir: __dirname,
+  },
+  plugins: ['eslint-plugin-react-compiler', '@typescript-eslint'],
+  overrides: [
+    {
+      files: ['**/*.js'],
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+    },
+  ],
   rules: {
     //FIXME: fix warnings reported by this rule and increase the severity to 'error'
     'no-irregular-whitespace': 'warn',
