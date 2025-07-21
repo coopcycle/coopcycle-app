@@ -15,7 +15,7 @@ export function isSameDayTour(tour, date) {
 
 export function getTaskTitle(task) {
   return task.orgName
-    ? task.metadata.order_number
+    ? task.metadata?.order_number
       ? task.orgName
       : `${task.orgName} - ${i18n.t('TASK_WITH_ID', { id: task.id })}`
     : i18n.t('TASK_WITH_ID', { id: task.id });
