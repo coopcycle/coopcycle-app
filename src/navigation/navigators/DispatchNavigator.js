@@ -246,6 +246,13 @@ export default function DispatchNavigator({
             title: i18n.t('DISPATCH_DATE'),
           }}
         />
+        <RootStack.Screen
+          name="DispatchOrderDetails"
+          component={screens.DispatchOrderDetails}
+          options={{
+            headerShown: true,
+          }}
+        />
       </RootStack.Navigator>
     </DeliveryCallbackProvider>
   );

@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function getOrderId(task) {
+export function getOrderId(task) {
   const id =
     task.metadata?.delivery_position && task.metadata?.order_number
       ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
@@ -93,7 +93,7 @@ function getOrderId(task) {
   return id;
 }
 
-const OrderInfo = ({ task, color, width }) => {
+const OrderInfo = ({ task, color, width, onPress }) => {
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
@@ -101,7 +101,7 @@ const OrderInfo = ({ task, color, width }) => {
 
   return (
     <ItemTouchable
-      onPress={() => console.log('order info pressed')}
+      onPress={() => onPress()}
       style={{
         alignItems: 'center',
         backgroundColor,
@@ -285,6 +285,7 @@ const TaskListItem = forwardRef(({
   color,
   index,
   onPress = () => {},
+  onOrderPress = () => {},
   onPressLeft = () => {},
   onPressRight = () => {},
   swipeOutLeftBackgroundColor,
@@ -434,7 +435,7 @@ const TaskListItem = forwardRef(({
           borderBottomRightRadius: cardBorderRadius,
         }}
         {...itemProps}>
-        <OrderInfo color={color} task={task} width={buttonWidth} />
+        <OrderInfo color={color} task={task} width={buttonWidth} onPress={onOrderPress} />
         <ItemTouchable
           onPress={onPress}
           testID={taskTestId}
