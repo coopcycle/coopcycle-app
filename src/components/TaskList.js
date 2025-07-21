@@ -24,6 +24,7 @@ const TaskList = ({
   swipeOutRightBackgroundColor,
   swipeOutRightIconName,
   tasks,
+  appendTaskListTestID = "",
 }) => {
   const bulkFabButton = useRef(null);
 
@@ -78,10 +79,11 @@ const TaskList = ({
   const renderItem = ({ item: task, index }) => {
     return (
       <TaskListItem
+        taskListId={id}
+        appendTaskListTestID={appendTaskListTestID}
         task={task}
         index={index}
         color={task.color}
-        taskListId={id}
         onPress={() => onTaskClick(task)}
         {...swipeLeftConfiguration(task)}
         {...swipeRightConfiguration(task)}

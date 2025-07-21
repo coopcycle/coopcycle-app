@@ -274,7 +274,7 @@ class TasksMapView extends Component {
       return null;
     }
 
-    return taskLists.map(taskList => {
+    return taskLists.map((taskList, index) => {
       if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
         return null;
       }
@@ -284,7 +284,7 @@ class TasksMapView extends Component {
           coordinates={this.getCoordinates(taskList)}
           strokeWidth={3}
           strokeColor={taskList.color}
-          key={`polyline-${taskList.id}`}
+          key={`polyline-${taskList.id}-${index}`}
           lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : null}
         />
       );
