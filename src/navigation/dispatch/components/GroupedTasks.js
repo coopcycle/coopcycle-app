@@ -43,7 +43,7 @@ import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
-import { getOrderId } from '../../../components/TaskListItem';
+import { getOrderId } from '../../../utils/tasks';
 
 
 export default function GroupedTasks({
