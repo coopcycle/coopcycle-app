@@ -70,11 +70,13 @@ export default function TasksFilters() {
       label: t('HIDE_DONE_TASKS'),
       onToggle: () => toggleDisplayDone(areDoneTasksHidden),
       isChecked: areDoneTasksHidden,
+      testID: 'hideDoneTasksSwitch',
     },
     {
       label: t('HIDE_INCIDENTS_TASKS'),
       onToggle: () => toggleDisplayIncidents(areIncidentsHidden),
       isChecked: areIncidentsHidden,
+      testID: 'hideIncidentsSwitch',
     },
     {
       label: t('TASKS_CHANGED_ALERT_SOUND'),
@@ -85,15 +87,18 @@ export default function TasksFilters() {
       label: t('TASKS_HIDE_UNASSIGNED'),
       onToggle: toggleHideUnassignedFromMap,
       isChecked: isHideUnassignedFromMap,
+      testID: 'toggleUnassignedFromMapSwitch',
     },
     {
       label: t('TASKS_SHOW_POLYLINE'),
       onToggle: togglePolylineOnMap,
       isChecked: isPolylineOn,
+      testID: 'togglePolylinesFromMapSwitch',
     },
     {
       label: t('FILTER_BY_KEYWORDS'),
       isFilterByKeywordsSection: true,
+      testID: 'showKeywordsFiltersButton',
     }
   ];
 
@@ -103,7 +108,7 @@ export default function TasksFilters() {
 
   return (
     <BasicSafeAreaView>
-      <View style={styles.view}>
+      <View style={styles.view} testID='dispatchTasksFiltersView'>
         <FlatList
           data={sections}
           keyExtractor={(item, index) => item.label}
@@ -117,20 +122,20 @@ export default function TasksFilters() {
 
 function SettingsItemInner({ item }) {
   return item.isFilterByKeywordsSection
-    ? <FilterByKeywords />
+    ? <FilterByKeywords item={item}/>
     : <SettingsItemSwitch item={item}/>;
 }
 
-function SettingsItemSwitch({item}) {
+function SettingsItemSwitch({ item }) {
   return (
     <HStack alignItems="center" justifyContent="space-between" py="3">
       <Text>{item.label}</Text>
-      <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
+      <Switch onToggle={item.onToggle} isChecked={item.isChecked} testID={item.testID || ""} />
     </HStack>
   );
 }
 
-function FilterByKeywords() {
+function FilterByKeywords({ item }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -139,7 +144,7 @@ function FilterByKeywords() {
   }
 
   return (
-    <TouchableOpacity onPress={navigateToKeywordsFilters}>
+    <TouchableOpacity onPress={navigateToKeywordsFilters} testID={item.testID || ""}>
       <HStack alignItems="center" justifyContent="space-between" py="3">
         <Text>{t('FILTER_BY_KEYWORDS')}</Text>
         <Icon

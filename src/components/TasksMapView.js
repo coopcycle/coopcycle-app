@@ -228,12 +228,13 @@ class TasksMapView extends Component {
       this.markers.set(task['@id'], createRef());
     }
 
+    const key = `taskmarker-${task.id}-${index}`;
     const warnings = this._getWarnings(task);
 
     return (
       <Marker
         identifier={task['@id']}
-        key={`${task['@id']}-${index}`}
+        key={key}
         coordinate={task.address.geo}
         flat={true}
         ref={this.markers.get(task['@id'])}
@@ -243,6 +244,7 @@ class TasksMapView extends Component {
           taskList={taskList}
           type="status"
           hasWarnings={warnings.length}
+          testID={key}
         />
         <Callout
           onPress={() => this.onCalloutPress(task)}

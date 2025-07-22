@@ -56,6 +56,7 @@ function CustomTabBar({ navigation }) {
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={showMapButton ? goToTasksMap : goToTasksList}
+        testID="toggleTasksMapListButton"
       >
         <Icon as={FontAwesome} name={showMapButton ? "map" : "list"} style={{ color }} />
       </TouchableOpacity>
@@ -69,6 +70,7 @@ function CustomTabBar({ navigation }) {
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
+        testID="showTasksFiltersButton"
       >
         <Icon as={FontAwesome} name="filter" style={{ color }} />
         {keywordFilters.length > 0 && (

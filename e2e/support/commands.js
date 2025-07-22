@@ -346,6 +346,11 @@ export const waitToExist = (testID, timeout = 5000) => {
   return timeout ? elem.withTimeout(timeout) : elem;
 };
 
+export const expectToNotExist = (testID) => {
+  console.log(`Waiting for element with testID "${testID}" to NOT exist..`);
+  return expect(element(by.id(testID))).not.toExist();
+};
+
 export const sleep = (timeout) => {
   console.log(`Sleeping for ${timeout} ms..`);
   return new Promise(resolve => setTimeout(resolve, timeout));

@@ -102,7 +102,8 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', 'Marley\n');
     await waitToBeVisible('dispatchTasksSearchResults');
 
-    // Verify task #3 was found on USER_JANE's task list
+    // Verify tasks were found on different task lists
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #11");
     await expect(getTaskTitleElement(`${USER_JANE}TasksListSearchResults`, 0)).toHaveText("Acme - Task #3");
   });
 
