@@ -23,8 +23,8 @@ const container = {
 const markerColor = (task) => {
   let color = darkGreyColor;
 
-  if (task.isAssigned) {
-    color = task.color;
+  if (task.tags.length > 0) {
+    color = task.tags[0].color;
   } else if (!task.isAssigned) {
     color = lightGreyColor;
   }
