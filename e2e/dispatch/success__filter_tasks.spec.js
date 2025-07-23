@@ -1,3 +1,4 @@
+import { UNASSIGNED_TASKS_LIST_ID } from "../../src/shared/src/constants";
 import {
   describeif,
   expectToNotExist,
@@ -5,6 +6,7 @@ import {
   swipeRight,
   tapById,
   tapByText,
+  typeTextQuick,
   waitToBeVisible,
   waitToExist,
 } from "../support/commands";
@@ -135,6 +137,77 @@ describeif(device.getPlatform() === 'android')
     await expectToNotExist('taskmarker-7-1');
     // TODO FIX: If we don't force the task list update, ALL MARKERS DISAPPEAR!!!!!!!!!!
     await waitToExist('taskmarker-3-7');
+
+    //////////////
+    // Show line linking tasks
+    //////////////
+
+    // Verify polylines are on the map
+    // TODO FIXME: Tried a lot but I can't find the polyline by testID although it's rendered..!!
+    // await waitToExist('polyline-1-3');
+
+    // Open the filters screen and disable "Show line linking tasks"
+    await tapById('showTasksFiltersButton');
+    await waitToBeVisible('dispatchTasksFiltersView');
+    await tapById('togglePolylinesFromMapSwitch');
+
+    // Go back
+    await device.pressBack();
+
+    // Verify polylines are NOT on the map
+    await expectToNotExist('polyline-1-3');
+
+    //////////////
+    // Filter by keywords
+    //////////////
+
+    // Close the map screen
+    await tapById('toggleTasksMapListButton');
+
+    // Open the filters screen and enter one keyword
+    await tapById('showTasksFiltersButton');
+    await waitToBeVisible('dispatchTasksFiltersView');
+    await tapById('showKeywordsFiltersButton');
+    await waitToBeVisible('keywordsFilterView');
+    await typeTextQuick('searchTextInput', 'Task #1\n');
+
+    // Go back
+    await tapById('keywordsFilterGoToAllTasksButton');
+
+    // Verify tasks were found
+    await toggleSectionUnassigned();
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #11");
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #10");
+
+    // Open the filters screen and enter another keyword
+    await tapById('showTasksFiltersButton');
+    await waitToBeVisible('dispatchTasksFiltersView');
+    await tapById('showKeywordsFiltersButton');
+
+    await waitToBeVisible('keywordsFilterView');
+    await typeTextQuick('searchTextInput', '-#11\n');
+
+    // Go back
+    await tapById('keywordsFilterGoToAllTasksButton');
+
+    // Verify only one task was found
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #10");
+
+    // Open the filters screen and remove all keywords
+    await tapById('showTasksFiltersButton');
+    await waitToBeVisible('dispatchTasksFiltersView');
+    await tapById('showKeywordsFiltersButton');
+    await waitToBeVisible('keywordsFilterView');
+    await tapById('active-filter-1');
+    await tapById('active-filter-0');
+
+    // Go back
+    await tapById('keywordsFilterGoToAllTasksButton');
+
+    // Verify all previous tasks are back again..!
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #7");
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #9");
+    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 2)).toHaveText("Acme - Task #11");
   });
 
 });

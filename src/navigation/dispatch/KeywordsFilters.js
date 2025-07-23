@@ -32,7 +32,7 @@ export default function KeywordsFilters() {
 
   return (
     <BasicSafeAreaView>
-      <View style={styles.view}>
+      <View style={styles.view} testID="keywordsFilterView">
         <Text style={styles.searchExplanation}>
           {t('KEYWORD_FILTERS_SEARCH_EXPLANATION')}
         </Text>
@@ -48,6 +48,7 @@ export default function KeywordsFilters() {
       <TouchableOpacity
         style={styles.goToAllTasksButton}
         onPress={goToAllTasks}
+        testID="keywordsFilterGoToAllTasksButton"
       >
         <Text style={styles.buttonText}>
           {t('KEYWORD_FILTERS_APPLY_FILTERS')}

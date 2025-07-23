@@ -281,12 +281,15 @@ class TasksMapView extends Component {
         return null;
       }
 
+      const key = `polyline-${taskList.id}-${index}`;
+
       return (
         <Polyline
+          key={key}
+          testID={key}
           coordinates={this.getCoordinates(taskList)}
           strokeWidth={3}
           strokeColor={taskList.color}
-          key={`polyline-${taskList.id}-${index}`}
           lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : null}
         />
       );

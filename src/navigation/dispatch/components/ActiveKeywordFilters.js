@@ -22,9 +22,10 @@ export default function ActiveKeywordFilters({
       {keywordFilters.length === 0
         ? <NoFiltersPlaceholder />
         : <Box style={styles.activeFiltersContainer}>
-            {keywordFilters.map(filter => (
-              <ActiveFilter filter={filter} key={filter.keyword}/>
-            ))}
+            {keywordFilters.map((filter, index) => {
+              const key = `active-filter-${index}`;
+              return <ActiveFilter filter={filter} key={key} testID={key}/>
+            })}
           </Box>
       }
     </Box>
