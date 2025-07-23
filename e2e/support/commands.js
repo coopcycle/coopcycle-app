@@ -334,6 +334,13 @@ export const swipeLeft = async (testID, timeout = 0) => {
   return element(by.id(testID));
 };
 
+export const swipeDown = async (testID, timeout = 0) => {
+  console.log(`Swiping down element with testID "${testID}"`);
+  await waitToBeVisible(testID, timeout);
+  await element(by.id(testID)).swipe('down');
+  return element(by.id(testID));
+};
+
 export const waitToBeVisible = (testID, timeout = 5000) => {
   console.log(`Waiting for element with testID "${testID}" to be visible${timeout ? ` for ${timeout}ms` : ''}..`);
   const elem = waitFor(element(by.id(testID))).toBeVisible();

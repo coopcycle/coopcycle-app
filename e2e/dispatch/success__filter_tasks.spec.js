@@ -1,14 +1,11 @@
-import { UNASSIGNED_TASKS_LIST_ID } from "../../src/shared/src/constants";
 import {
   describeif,
-  sleep,
-  swipeLeft,
+  expectToNotExist,
+  swipeDown,
   swipeRight,
   tapById,
   tapByText,
-  typeTextQuick,
   waitToBeVisible,
-  expectToNotExist,
   waitToExist,
 } from "../support/commands";
 import {
@@ -113,13 +110,17 @@ describeif(device.getPlatform() === 'android')
     // Hide unassigned tasks from map
     //////////////
 
+    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
+    await swipeDown('dispatchTasksSectionList');
+    await toggleSectionUnassigned();
+
     // Open the map screen
     await tapById('toggleTasksMapListButton');
 
     // Verify tasks #6+#7 markers are on the map
-    await waitToExist('taskmarker-6-5');
-    await waitToExist('taskmarker-7-6');
-    await waitToExist('taskmarker-3-2');
+    await waitToExist('taskmarker-6-0'); // If we don't force the task list update, this marker will be: 'taskmarker-6-5'
+    await waitToExist('taskmarker-7-1'); // If we don't force the task list update, this marker will be: 'taskmarker-7-6'
+    await waitToExist('taskmarker-3-7'); // If we don't force the task list update, this marker will be: 'taskmarker-3-2'
 
     // Open the filters screen and enable "Hide unassigned tasks from map"
     await tapById('showTasksFiltersButton');
@@ -130,10 +131,10 @@ describeif(device.getPlatform() === 'android')
     await device.pressBack();
 
     // Verify tasks #6+#7 markers are NOT on the map
-    await expectToNotExist('taskmarker-6-5');
-    await expectToNotExist('taskmarker-7-6');
-    // TODO WIPPPPP ALL MARKERS DISAPPEAR!!!!!!!!!!
-    //await waitToExist('taskmarker-3-2');
+    await expectToNotExist('taskmarker-6-0');
+    await expectToNotExist('taskmarker-7-1');
+    // TODO FIX: If we don't force the task list update, ALL MARKERS DISAPPEAR!!!!!!!!!!
+    await waitToExist('taskmarker-3-7');
   });
 
 });

@@ -264,6 +264,7 @@ export default function GroupedTasks({
         renderItem={renderItem}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
+        testID="dispatchTasksSectionList"
       />
       <BulkEditTasksFloatingButton
         onPress={handleBulkAssignButtonPress}
