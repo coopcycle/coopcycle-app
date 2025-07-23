@@ -6,7 +6,7 @@ import TaskMarker from '../../../components/TaskMarker';
 
 const zoomLevel = 15;
 
-const MiniMap = ({ task, taskList, onLayout, aspectRatio }) => {
+const MiniMap = ({ task, onLayout, aspectRatio }) => {
   // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
   const distanceDelta = Math.exp(Math.log(360) - zoomLevel * Math.LN2);
 
@@ -33,7 +33,7 @@ const MiniMap = ({ task, taskList, onLayout, aspectRatio }) => {
         key={task['@id']}
         coordinate={task.address.geo}
         flat={true}>
-        <TaskMarker task={task} taskList={taskList}/>
+        <TaskMarker task={task} />
       </Marker>
     </MapView>
   );

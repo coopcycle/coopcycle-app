@@ -110,8 +110,6 @@ class Task extends Component {
     }
 
     const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks || [];
-    const taskList = createCurrentTaskList(tasks);
     const { mapDimensions } = this.state;
 
     let aspectRatio = 1;
@@ -123,7 +121,6 @@ class Task extends Component {
     return (
       <TaskMiniMap
         task={task}
-        taskList={taskList}
         onLayout={this._onMapLayout.bind(this)}
         aspectRatio={aspectRatio}
       />

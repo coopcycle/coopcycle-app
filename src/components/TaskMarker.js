@@ -1,5 +1,4 @@
 import { Icon, Text } from 'native-base';
-import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -21,12 +20,12 @@ const container = {
   justifyContent: 'center',
 };
 
-const markerColor = (task, taskList) => {
+const markerColor = (task) => {
   let color = darkGreyColor;
 
-  if (task.tags.length > 0) {
-    color = task.tags[0].color;
-  } else if (taskList?.isUnassignedTaskList) {
+  if (task.isAssigned) {
+    color = task.color;
+  } else if (!task.isAssigned) {
     color = lightGreyColor;
   }
 
@@ -54,12 +53,12 @@ const markerOpacity = task => {
 const containerSize = 32;
 const background = whiteColor;
 
-const backgroundStyle = (task, taskList) => {
+const backgroundStyle = (task) => {
   return {
     width: containerSize,
     height: containerSize,
     backgroundColor: background,
-    borderColor: markerColor(task, taskList),
+    borderColor: markerColor(task),
     opacity: markerOpacity(task),
     borderWidth: 2,
     borderStyle: 'solid',
@@ -71,10 +70,10 @@ const backgroundStyle = (task, taskList) => {
   };
 };
 
-const iconStyle = (task, taskList) => {
+const iconStyle = (task) => {
   return {
     position: 'absolute',
-    color: markerColor(task, taskList),
+    color: markerColor(task),
     opacity: markerOpacity(task),
   };
 };
@@ -108,12 +107,12 @@ const warnIconStyle = () => {
   };
 };
 
-export default ({ task, taskList, type, hasWarnings }) => {
+export default ({ task, type, hasWarnings }) => {
   const _iconName = iconName(task, type);
 
   return (
     <View style={container}>
-      <View style={backgroundStyle(task, taskList)} />
+      <View style={backgroundStyle(task)} />
       {hasWarnings ? (
         <Text bold style={warnIconStyle()}>
           .
@@ -122,7 +121,7 @@ export default ({ task, taskList, type, hasWarnings }) => {
       <Icon
         as={FontAwesome}
         name={_iconName}
-        style={iconStyle(task, taskList)}
+        style={iconStyle(task)}
         size="xs"
         testID={`taskMarker-${_iconName}`}
       />
