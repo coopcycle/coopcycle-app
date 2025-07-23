@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { selectAllTasks } from '../../shared/logistics/redux';
+import MiniMap from '../task/components/MiniMap';
+import { getAspectRatio } from '../task/components/mapUtils';
 
 const DispatchOrderDetails = ({ route }) => {
+  const [mapDimensions, setMapDimensions] = useState({ height: 0, width: 0 });
+  const aspectRatio = useMemo(() => getAspectRatio(mapDimensions), [mapDimensions]);
   const orderId = route.params.order;
   const tasks = useSelector(selectAllTasks);
 
@@ -12,10 +16,18 @@ const DispatchOrderDetails = ({ route }) => {
     task => task.metadata.order_number === orderId,
   );
 
+  const handleLayout = (e) => {
+    const { width, height } = e.nativeEvent.layout;
+    setMapDimensions({height, width});
+  };
+
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
-        <View>
+        <View style={{height:'35%'}}>
+          <MiniMap tasks={filteredTasksByOrderId} onLayout={handleLayout} aspectRatio={aspectRatio} />
+        </View>
+        <ScrollView style={{height: '55%'}}>
           {filteredTasksByOrderId.map(task => {
             return (
               <>
@@ -29,9 +41,9 @@ const DispatchOrderDetails = ({ route }) => {
               </>
             );
           })}
-        </View>
+        </ScrollView>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
