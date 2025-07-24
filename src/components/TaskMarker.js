@@ -107,7 +107,7 @@ const warnIconStyle = () => {
   };
 };
 
-export default ({ task, type, hasWarnings }) => {
+export default ({ task, type, hasWarnings, testID }) => {
   const _iconName = iconName(task, type);
 
   return (
@@ -123,7 +123,6 @@ export default ({ task, type, hasWarnings }) => {
         name={_iconName}
         style={iconStyle(task)}
         size="xs"
-        testID={`taskMarker-${_iconName}`}
       />
     </View>
   );

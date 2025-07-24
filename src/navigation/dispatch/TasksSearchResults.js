@@ -28,6 +28,7 @@ export default function TasksSearchResults({
       const tasks = getTaskListTasks(taskList, tasksEntities);
       const filteredTasks = filterTasksByKeyword(tasks, route.params.searchQuery)
       filteredTaskList.tasksIds = filteredTasks.map(task => task['@id']);
+      filteredTaskList.appendTaskListTestID = "SearchResults";
 
       return filteredTaskList;
     })
@@ -35,7 +36,7 @@ export default function TasksSearchResults({
 
   return (
     <BasicSafeAreaView>
-      <View style={styles.view}>
+      <View style={styles.view} testID="dispatchTasksSearchResults">
         <Text style={styles.text}>Search results for '{route.params.searchQuery}'</Text>
       </View>
       <GroupedTasks

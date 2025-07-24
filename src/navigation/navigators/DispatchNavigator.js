@@ -54,34 +54,24 @@ function CustomTabBar({ navigation }) {
 
   return (
     <View style={[customTabBarStyles.tabBarContainer, { backgroundColor: bgColor }]}>
-      { showMapButton
-        ? (
-          <TouchableOpacity
-            style={customTabBarStyles.tabButton}
-            onPress={goToTasksMap}
-          >
-            <Icon as={FontAwesome} name="map" style={{ color }} />
-          </TouchableOpacity>
-        )
-        : (
-          <TouchableOpacity
-            style={customTabBarStyles.tabButton}
-            onPress={goToTasksList}
-          >
-            <Icon as={FontAwesome} name="list" style={{ color }} />
-          </TouchableOpacity>
-        )
-      }
+      <TouchableOpacity
+        style={customTabBarStyles.tabButton}
+        onPress={showMapButton ? goToTasksMap : goToTasksList}
+        testID="toggleTasksMapListButton"
+      >
+        <Icon as={FontAwesome} name={showMapButton ? "map" : "list"} style={{ color }} />
+      </TouchableOpacity>
       <SearchInput
         style={customTabBarStyles.searchInput}
         onChangeText={setSearchQuery}
         onSubmitEditing={handleSearchSubmit}
-        placeholder="Search"
+        placeholder={i18n.t('SEARCH_TAB')}
         value={searchQuery}
       />
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
+        testID="showTasksFiltersButton"
       >
         <Icon as={FontAwesome} name="filter" style={{ color }} />
         {keywordFilters.length > 0 && (

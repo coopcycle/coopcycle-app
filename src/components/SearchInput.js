@@ -1,6 +1,7 @@
 import { Box, Icon } from 'native-base';
 import { StyleSheet, TextInput } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { blackColor, darkGreyColor } from '../styles/common';
 
 
 export default function SearchInput({
@@ -17,17 +18,18 @@ export default function SearchInput({
         as={FontAwesome}
         name="search"
         size={6}
-        color="#000000"
+        color={blackColor}
         style={styles.searchIcon}
       />
       <TextInput
         style={styles.searchInput}
         placeholder={placeholder}
-        placeholderTextColor="#000000"
+        placeholderTextColor={darkGreyColor}
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         returnKeyType="search"
+        testID="searchTextInput"
       />
     </Box>
   );
