@@ -108,12 +108,12 @@ const warnIconStyle = () => {
   };
 };
 
-export default ({ task, taskList, type, hasWarnings }) => {
+export default ({ task, taskList, type, hasWarnings, testID }) => {
   const _iconName = iconName(task, type);
 
   return (
     <View style={container}>
-      <View style={backgroundStyle(task, taskList)} />
+      <View style={backgroundStyle(task, taskList)} testID={testID || `taskmarker-${task.id}-${taskList?.id || 'unassigned'}`} />
       {hasWarnings ? (
         <Text bold style={warnIconStyle()}>
           .
@@ -124,7 +124,6 @@ export default ({ task, taskList, type, hasWarnings }) => {
         name={_iconName}
         style={iconStyle(task, taskList)}
         size="xs"
-        testID={`taskMarker-${_iconName}`}
       />
     </View>
   );

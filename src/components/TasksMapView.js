@@ -228,12 +228,13 @@ class TasksMapView extends Component {
       this.markers.set(task['@id'], createRef());
     }
 
+    const key = `taskmarker-${task.id}-${index}`;
     const warnings = this._getWarnings(task);
 
     return (
       <Marker
         identifier={task['@id']}
-        key={`${task['@id']}-${index}`}
+        key={key}
         coordinate={task.address.geo}
         flat={true}
         ref={this.markers.get(task['@id'])}
@@ -243,6 +244,7 @@ class TasksMapView extends Component {
           taskList={taskList}
           type="status"
           hasWarnings={warnings.length}
+          testID={key}
         />
         <Callout
           onPress={() => this.onCalloutPress(task)}
@@ -274,17 +276,20 @@ class TasksMapView extends Component {
       return null;
     }
 
-    return taskLists.map(taskList => {
+    return taskLists.map((taskList, index) => {
       if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
         return null;
       }
 
+      const key = `polyline-${taskList.id}-${index}`;
+
       return (
         <Polyline
+          key={key}
+          testID={key}
           coordinates={this.getCoordinates(taskList)}
           strokeWidth={3}
           strokeColor={taskList.color}
-          key={`polyline-${taskList.id}`}
           lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : null}
         />
       );
