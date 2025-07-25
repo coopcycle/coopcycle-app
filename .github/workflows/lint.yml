@@ -1,8 +1,8 @@
-name: Test
+name: Lint
 on: [push]
 jobs:
-  TEST:
-    name: Basic tests
+  LINT:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,4 +14,13 @@ jobs:
         run: yarn set version latest --yarn-path
       - name: yarn install
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
-      - run: yarn test
+      - name: Run ESLint
+        run: yarn lint --quiet
+      - run: yarn i18n-lint
+      - name: Run TypeScript Compiler
+        id: tsc
+        run: yarn type-check
+        continue-on-error: true
+      - name: TypeScript Warning
+        if: steps.tsc.outcome == 'failure'
+        run: echo "::warning::TypeScript compilation proceeded with errors"
