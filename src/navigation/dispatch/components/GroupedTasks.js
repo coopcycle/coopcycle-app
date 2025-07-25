@@ -77,6 +77,7 @@ export default function GroupedTasks({
       backgroundColor: taskList.color ? taskList.color : darkGreyColor,
       data: [taskList],
       id: `${taskList.username.toLowerCase()}TasksList`,
+      appendTaskListTestID: taskList.appendTaskListTestID,
       isUnassignedTaskList: false,
       ordersCount: 0,
       taskListId: taskList['@id'],
@@ -238,6 +239,7 @@ export default function GroupedTasks({
           id={section.id}
           onTaskClick={onTaskClick(section.isUnassignedTaskList)}
           tasks={tasks}
+          appendTaskListTestID={section.appendTaskListTestID}
           onSwipeClosed={(task) =>{handleOnSwipeClose(section, task)}}
           {...swipeLeftConfiguration(section)}
           {...swipeRightConfiguration(section)}
@@ -262,6 +264,7 @@ export default function GroupedTasks({
         renderItem={renderItem}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
+        testID="dispatchTasksSectionList"
       />
       <BulkEditTasksFloatingButton
         onPress={handleBulkAssignButtonPress}

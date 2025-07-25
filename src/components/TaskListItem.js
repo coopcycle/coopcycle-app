@@ -39,6 +39,7 @@ import {
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
 import CoopcyleLogo from '../../assets/images/logo.svg';
+import { getTaskTitle } from '../shared/src/utils';
 
 const cardBorderRadius = 2.5;
 
@@ -284,6 +285,8 @@ const TaskListItem = forwardRef(({
   task,
   color,
   index,
+  taskListId,
+  appendTaskListTestID = "",
   onPress = () => {},
   onPressLeft = () => {},
   onPressRight = () => {},
@@ -291,17 +294,11 @@ const TaskListItem = forwardRef(({
   swipeOutLeftIconName,
   swipeOutRightBackgroundColor,
   swipeOutRightIconName,
-  taskListId,
   onSwipedToLeft,
   onSwipedToRight,
   onSwipeClosed,
 }, _ref) => {
-  const { t } = useTranslation();
-  const taskTitle = task.orgName
-    ? task.metadata.order_number
-      ? task.orgName
-      : `${task.orgName} - ${t('TASK_WITH_ID', { id: task.id })}`
-    : t('TASK_WITH_ID', { id: task.id });
+  const taskTitle = getTaskTitle(task);
 
   const address = task.address?.contactName
     ? task.address?.name
@@ -311,7 +308,7 @@ const TaskListItem = forwardRef(({
     ? task.address.name
     : null;
 
-  const taskTestId = `${taskListId}:task:${index}`;
+  const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
   const textStyle = [styles.text];
   const itemProps = {};
   const swipeButtonsProps = {};

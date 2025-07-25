@@ -3,6 +3,7 @@ import ColorHash from 'color-hash';
 import moment from 'moment';
 
 import { getUserTaskList } from './taskListUtils';
+import { getTaskTitle } from '../../utils';
 
 
 /**
@@ -159,6 +160,7 @@ export function filterTasksByKeyword(tasks, keyword) {
 export function taskIncludesKeyword(task, keyword) {
   return standardIncludes(task.assignedTo, keyword)
     || standardIncludes(task.orgName, keyword)
+    || standardIncludes(getTaskTitle(task), keyword)
     || task.tags.reduce((acc, tag) => acc || standardIncludes(tag.name, keyword), false);
 }
 
