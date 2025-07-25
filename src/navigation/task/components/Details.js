@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { Box, Button, HStack, Icon, Text } from 'native-base';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
@@ -6,7 +5,6 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import Foundation from 'react-native-vector-icons/Foundation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -17,52 +15,13 @@ import {
   loadIconKey,
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
-
-const Detail = ({ item }) => {
-  const { iconType, iconName, text, component, onPress } = item;
-
-  let touchableOpacityProps = {};
-  if (onPress) {
-    touchableOpacityProps = { onPress };
-  }
-
-  const body = (
-    <Box flex={1} p="2">
-      {text ? <Text fontSize="xs">{text}</Text> : null}
-      {component && component}
-    </Box>
-  );
-
-  return (
-    <TouchableOpacity style={{ flex: 1 }} {...touchableOpacityProps}>
-      <HStack alignItems="center" justifyContent="center" p="2">
-        <Icon
-          as={iconType ? iconType : Ionicons}
-          name={iconName}
-          style={{ color: '#ccc' }}
-        />
-        {body}
-        {onPress && (
-          <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
-        )}
-      </HStack>
-    </TouchableOpacity>
-  );
-};
+import { getAddress, getName, getTimeFrame } from './utils';
+import Detail from './Detail';
 
 const Details = ({ task, t }) => {
-  const timeframe =
-    moment(task.doneAfter).format('LT') +
-    ' - ' +
-    moment(task.doneBefore).format('LT');
-  let address = task.address.name
-    ? [task.address.name, task.address.streetAddress].join(' - ')
-    : task.address.streetAddress;
-  const name = [task.address.firstName, task.address.lastName]
-    .filter(function (item) {
-      return item;
-    })
-    .join(' ');
+  const timeframe = getTimeFrame(task);
+  let address = getAddress(task)
+  const name = getName(task)
   address = name ? [name, address].join(' - ') : address;
 
   const items = [

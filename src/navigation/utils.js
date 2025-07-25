@@ -1,5 +1,9 @@
 let navigateAfter = null;
 
+export const navigateToOrder = (navigation, order) => {
+  navigation.navigate('DispatchOrderDetails', { order })
+}
+
 export const navigateToTask = (navigation, route, task, tasks = []) => {
   if (route !== null && route.name !== 'TaskHome') {
     navigateAfter = route.name;

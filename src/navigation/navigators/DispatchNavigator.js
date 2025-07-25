@@ -16,9 +16,10 @@ import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
 import i18n from '../../i18n';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
+import OrderTitle from '../../components/OrderTitle';
+import SearchInput from '../../components/SearchInput';
 import NavigationHolder from '../../NavigationHolder';
 import screens, { headerLeft } from '..';
-import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
 
@@ -235,6 +236,14 @@ export default function DispatchNavigator({
           options={{
             title: i18n.t('DISPATCH_DATE'),
           }}
+        />
+        <RootStack.Screen
+          name="DispatchOrderDetails"
+          component={screens.DispatchOrderDetails}
+          options={({route}) => ({
+            title: <OrderTitle order={route.params?.order} />,
+            headerShown: true,
+          })}
         />
       </RootStack.Navigator>
     </DeliveryCallbackProvider>

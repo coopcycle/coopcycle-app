@@ -18,6 +18,7 @@ const TaskList = ({
   onSwipeToLeft = () => {},
   onSwipeToRight = () => {},
   onTaskClick = () => {},
+  onOrderClick = () => {},
   refreshing = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIconName,
@@ -85,6 +86,7 @@ const TaskList = ({
         index={index}
         color={task.color}
         onPress={() => onTaskClick(task)}
+        onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}
         {...swipeRightConfiguration(task)}
       />
@@ -125,6 +127,7 @@ TaskList.propTypes = {
   onSwipeToLeft: PropTypes.func,
   onSwipeToRight: PropTypes.func,
   onTaskClick: PropTypes.func.isRequired,
+  onOrderClick: PropTypes.func.isRequired,
   swipeOutLeftBackgroundColor: PropTypes.string,
   swipeOutLeftEnabled: PropTypes.func,
   swipeOutLeftIconName: PropTypes.string,
