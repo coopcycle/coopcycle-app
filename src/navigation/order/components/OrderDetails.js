@@ -15,7 +15,7 @@ import { getOrderTimeFrame } from '../../task/components/utils';
 import Detail from '../../../components/Detail';
 
 const OrderDetails = ({ tasks, t }) => {
-  const task = tasks[0];
+  const firstTask = tasks[0];
   const timeframe = getOrderTimeFrame(tasks);
   // TODO: Set items inside state, check task properties in useEffect hook.
   const items = [
@@ -25,36 +25,35 @@ const OrderDetails = ({ tasks, t }) => {
     },
   ];
 
-  // Displays Recipient data (name, phone and any other useful data).
-  if (isDropoff(task.type)) {
-    if (task.address.telephone) {
+  if (isSingleTask(tasks) && isDropoff(firstTask)) {
+    if (firstTask.address.telephone) {
       items.push({
         iconName: 'call',
-        text: task.address.telephone,
-        onPress: () => phonecall(task.address.telephone, true),
+        text: firstTask.address.telephone,
+        onPress: () => phonecall(firstTask.address.telephone, true),
       });
     }
 
-    if (task.address.description) {
+    if (firstTask.address.description || firstTask.address.streetAddress) {
       items.push({
         iconName: 'information-circle',
-        text: task.address.description,
+        text: firstTask.address.description || firstTask.address.streetAddress,
       });
     }
   }
 
   if (
-    task.metadata &&
-    task.metadata.payment_method &&
-    isDisplayPaymentMethodInList(task.metadata.payment_method)
+    firstTask.metadata &&
+    firstTask.metadata.payment_method &&
+    isDisplayPaymentMethodInList(firstTask.metadata.payment_method)
   ) {
     items.push({
-      iconName: loadIconKey(task.metadata.payment_method),
+      iconName: loadIconKey(firstTask.metadata.payment_method),
       iconType: Foundation,
       text:
-        t(loadDescriptionTranslationKey(task.metadata.payment_method)) +
-        (task.metadata.order_total
-          ? `: ${formatPrice(task.metadata.order_total)}`
+        t(loadDescriptionTranslationKey(firstTask.metadata.payment_method)) +
+        (firstTask.metadata.order_total
+          ? `: ${formatPrice(firstTask.metadata.order_total)}`
           : ''),
     });
   }
@@ -68,6 +67,7 @@ const OrderDetails = ({ tasks, t }) => {
     />
   );
 };
+
 const isPickup = task => {
   return task.type === 'PICKUP';
 };
@@ -75,5 +75,9 @@ const isPickup = task => {
 const isDropoff = task => {
   return task.type === 'DROPOFF';
 };
+
+const isSingleTask = tasks => {
+  return tasks.length === 1
+}
 
 export default withTranslation()(OrderDetails);
