@@ -1,17 +1,17 @@
-import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList } from 'native-base';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from 'react';
 
-import i18n from '../../i18n';
-import { selectAllTasks } from '../../shared/logistics/redux';
-import MiniMap from '../task/components/MiniMap';
 import { getAspectRatio } from '../task/components/mapUtils';
-import Details from '../task/components/Details';
-import OrderDetails from './components/OrderDetails';
 import { getTaskTitle } from '../../shared/src/utils';
 import { navigateToTask } from '../utils';
+import { selectTasksByOrder } from '../../redux/logistics/selectors';
+import Details from '../task/components/Details';
+import i18n from '../../i18n';
+import MiniMap from '../task/components/MiniMap';
+import OrderDetails from './components/OrderDetails';
 
 const OrderInfo = ({ route }) => {
   const navigation = useNavigation();
@@ -20,13 +20,8 @@ const OrderInfo = ({ route }) => {
     () => getAspectRatio(mapDimensions),
     [mapDimensions],
   );
-  const tasks = useSelector(selectAllTasks);
-
   const orderId = route.params.order;
-
-  const filteredTasksByOrderId = tasks.filter(
-    task => task.metadata.order_number === orderId,
-  );
+  const tasks = useSelector(selectTasksByOrder(orderId));
 
   const handleLayout = e => {
     const { width, height } = e.nativeEvent.layout;
@@ -34,8 +29,8 @@ const OrderInfo = ({ route }) => {
   };
 
     const handleTaskTitleClick = useCallback(task => {
-      navigateToTask(navigation, route, task, filteredTasksByOrderId)
-    }, [navigation, route, filteredTasksByOrderId])
+      navigateToTask(navigation, route, task, tasks)
+    }, [navigation, route, tasks])
 
   const renderItem = ({ item }) => (
     <View>
@@ -58,11 +53,11 @@ const OrderInfo = ({ route }) => {
   return (
     <View>
       <View style={{ height: '35%' }} onLayout={handleLayout}>
-        <MiniMap tasks={filteredTasksByOrderId} aspectRatio={aspectRatio} />
+        <MiniMap tasks={tasks} aspectRatio={aspectRatio} />
       </View>
       <FlatList
         style={{height: '55%'}}
-        data={filteredTasksByOrderId}
+        data={tasks}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 50 }}
@@ -77,7 +72,7 @@ const OrderInfo = ({ route }) => {
               }}>
               {i18n.t('DETAILS')}
             </Text>
-            <OrderDetails tasks={filteredTasksByOrderId} />
+            <OrderDetails tasks={tasks} />
           </View>
         }
       />
