@@ -9,11 +9,11 @@ import { selectAllTasks } from '../../shared/logistics/redux';
 import MiniMap from '../task/components/MiniMap';
 import { getAspectRatio } from '../task/components/mapUtils';
 import Details from '../task/components/Details';
-import OrderDetails from '../task/components/OrderDetails';
+import OrderDetails from './components/OrderDetails';
 import { getTaskTitle } from '../../shared/src/utils';
 import { navigateToTask } from '../utils';
 
-const DispatchOrderDetails = ({ route }) => {
+const OrderInfo = ({ route }) => {
   const navigation = useNavigation();
   const [mapDimensions, setMapDimensions] = useState({ height: 0, width: 0 });
   const aspectRatio = useMemo(
@@ -85,4 +85,4 @@ const DispatchOrderDetails = ({ route }) => {
   );
 };
 
-export default DispatchOrderDetails;
+export default OrderInfo;

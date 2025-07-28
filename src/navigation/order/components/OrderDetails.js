@@ -11,13 +11,13 @@ import {
   loadIconKey,
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
-import { getOrderTimeFrame } from './utils';
-import Detail from './Detail';
+import { getOrderTimeFrame } from '../../task/components/utils';
+import Detail from '../../../components/Detail';
 
 const OrderDetails = ({ tasks, t }) => {
   const task = tasks[0];
   const timeframe = getOrderTimeFrame(tasks);
-
+  // TODO: Set items inside state, check task properties in useEffect hook.
   const items = [
     {
       iconName: 'time',
@@ -26,7 +26,7 @@ const OrderDetails = ({ tasks, t }) => {
   ];
 
   // Displays Recipient data (name, phone and any other useful data).
-  if (tasks.length === 1 && isDropoff(task.type)) {
+  if (isDropoff(task.type)) {
     if (task.address.telephone) {
       items.push({
         iconName: 'call',
@@ -67,6 +67,9 @@ const OrderDetails = ({ tasks, t }) => {
       ItemSeparatorComponent={ItemSeparator}
     />
   );
+};
+const isPickup = task => {
+  return task.type === 'PICKUP';
 };
 
 const isDropoff = task => {

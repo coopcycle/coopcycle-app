@@ -16,7 +16,7 @@ import {
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
 import { getAddress, getName, getTimeFrame } from './utils';
-import Detail from './Detail';
+import Detail from '../../../components/Detail';
 
 const Details = ({ task, t }) => {
   const timeframe = getTimeFrame(task);
