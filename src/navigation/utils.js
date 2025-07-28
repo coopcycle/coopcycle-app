@@ -1,7 +1,11 @@
 let navigateAfter = null;
 
 export const navigateToOrder = (navigation, order) => {
-  navigation.navigate('DispatchOrderDetails', { order })
+  const params = {
+    order
+  }
+  
+  navigation.navigate('Order', { screen:'OrderInfo', params })
 }
 
 export const navigateToTask = (navigation, route, task, tasks = []) => {

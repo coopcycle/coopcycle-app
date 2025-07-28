@@ -5,11 +5,12 @@ import HeaderButton from '../components/HeaderButton';
 import DispatchAllTasks from './dispatch/AllTasks';
 import DispatchDate from './dispatch/Date';
 import DispatchKeywordsFilters from './dispatch/KeywordsFilters';
-import DispatchOrderDetails from './dispatch/DispatchOrderDetails'
 import DispatchPickUser from './dispatch/PickUser';
 import DispatchTasksFilters from './dispatch/TasksFilters';
 import DispatchTasksMap from './dispatch/TasksMap';
 import DispatchTasksSearchResults from './dispatch/TasksSearchResults';
+
+import OrderInfo from './order/OrderInfo'
 
 import TaskComplete from './task/Complete';
 import TaskPhoto from './task/Photo';
@@ -137,7 +138,7 @@ export default {
   DispatchTasksFilters,
   DispatchTasksMap,
   DispatchTasksSearchResults,
-  DispatchOrderDetails,
+  OrderInfo,
   NewDeliveryStore,
   NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,
