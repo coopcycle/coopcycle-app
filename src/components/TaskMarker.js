@@ -112,7 +112,7 @@ export default ({ task, type, hasWarnings, testID }) => {
 
   return (
     <View style={container}>
-      <View style={backgroundStyle(task)} />
+      <View style={backgroundStyle(task)} testID={testID || `taskmarker-${task.id}`} />
       {hasWarnings ? (
         <Text bold style={warnIconStyle()}>
           .

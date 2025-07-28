@@ -10,7 +10,7 @@ import { navigateToTask } from '../utils';
 import { selectTasksByOrder } from '../../redux/logistics/selectors';
 import Details from '../task/components/Details';
 import i18n from '../../i18n';
-import MiniMap from '../task/components/MiniMap';
+import TaskMiniMap from '../task/components/MiniMap';
 import OrderDetails from './components/OrderDetails';
 
 const OrderInfo = ({ route }) => {
@@ -53,7 +53,7 @@ const OrderInfo = ({ route }) => {
   return (
     <View>
       <View style={{ height: '35%' }} onLayout={handleLayout}>
-        <MiniMap tasks={tasks} aspectRatio={aspectRatio} />
+        <TaskMiniMap tasks={tasks} aspectRatio={aspectRatio} />
       </View>
       <FlatList
         style={{height: '55%'}}

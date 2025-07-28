@@ -110,7 +110,7 @@ class Task extends Component {
     }
 
     const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks
+    const tasks = this.props.route.params?.tasks || (task ? [task] : []);
     const { mapDimensions } = this.state;
 
     const aspectRatio = getAspectRatio(mapDimensions)

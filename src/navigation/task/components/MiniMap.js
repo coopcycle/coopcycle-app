@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-
 import TaskMarker from '../../../components/TaskMarker';
 import { getRegionForTasks } from './mapUtils';
 
@@ -12,18 +11,20 @@ const MiniMap = ({ tasks, onLayout, aspectRatio }) => {
 
   const region = getRegionForTasks(tasks, zoomLevel, aspectRatio);
 
-  const renderPolyline = (tasks) => {
-    const firstTask = tasks[0]
-    const key = `polyline-${firstTask.id}`;    
+  const renderPolyline = () => {
+    const firstTask = tasks[0];
+    const key = `polyline-${firstTask.id}`;
     const coords = tasks.map(task => task.address.geo);
-    return (<Polyline
-          key={key}
-          testID={key}
-          coordinates={coords}
-          strokeWidth={3}
-          strokeColor={firstTask.color}
-          lineDashPattern={!firstTask.isAssigned ? [20, 10] : null }
-        />)
+    return (
+      <Polyline
+        key={key}
+        testID={key}
+        coordinates={coords}
+        strokeWidth={3}
+        strokeColor={firstTask.color}
+        lineDashPattern={!firstTask.isAssigned ? [20, 10] : null }
+      />
+    );
   }
   return (
     <MapView
@@ -45,10 +46,9 @@ const MiniMap = ({ tasks, onLayout, aspectRatio }) => {
             flat={true}>
             <TaskMarker task={task} />
           </Marker>
-          
         );
       })}
-      {renderPolyline(tasks)}
+      {renderPolyline()}
     </MapView>
   );
 };
