@@ -111,9 +111,9 @@ export default function GroupedTasks({
 
 
   const onOrderClick = useCallback(task => {
-    const orderId = getOrderId(task)
-    navigateToOrder(navigation, orderId)
-  }, [navigation])
+    const orderId = getOrderId(task);
+    navigateToOrder(navigation, orderId);
+  }, [navigation]);
 
   const onTaskClick = useCallback(isUnassignedTaskList => task => {
     // If task is unassigned, related tasks are order's tasks
@@ -244,10 +244,10 @@ export default function GroupedTasks({
       return (
         <TaskList
           id={section.id}
-          onTaskClick={onTaskClick(section.isUnassignedTaskList)}
-          onOrderClick={onOrderClick}
           tasks={tasks}
           appendTaskListTestID={section.appendTaskListTestID}
+          onTaskClick={onTaskClick(section.isUnassignedTaskList)}
+          onOrderClick={onOrderClick}
           onSwipeClosed={(task) =>{handleOnSwipeClose(section, task)}}
           {...swipeLeftConfiguration(section)}
           {...swipeRightConfiguration(section)}

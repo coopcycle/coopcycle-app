@@ -4,7 +4,7 @@ import React from 'react';
 
 import { doneIconName, incidentIconName } from '../task/styles/common';
 import { greenColor, yellowColor } from '../../styles/common';
-import { navigateToCompleteTask, navigateToTask } from '../../navigation/utils';
+import { navigateToCompleteTask, navigateToOrder, navigateToTask } from '../../navigation/utils';
 import {
   selectFilteredTasks,
   selectTaskSelectedDate,
@@ -14,6 +14,7 @@ import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
+import { getOrderId } from '../../utils/tasks';
 
 
 const styles = StyleSheet.create({
@@ -80,6 +81,7 @@ export default function TaskListPage({ navigation, route }) {
           refreshing={isFetching}
           onRefresh={() => refetch()}
           onTaskClick={task => navigateToTask(navigation, route, task, tasks)}
+          onOrderClick={task => navigateToOrder(navigation, getOrderId(task))}
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
           multipleSelectionIcon={doneIconName}

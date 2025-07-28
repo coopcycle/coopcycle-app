@@ -8,5 +8,5 @@ export function getOrderIdWithPosition(task) {
 }
 
 export function getOrderId(task) {
-  return task.metadata?.order_number
+  return task.metadata?.order_number;
 }

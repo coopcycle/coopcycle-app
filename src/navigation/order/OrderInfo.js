@@ -58,7 +58,7 @@ const OrderInfo = ({ route }) => {
       <FlatList
         style={{height: '55%'}}
         data={tasks}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 50 }}
         ListHeaderComponent={

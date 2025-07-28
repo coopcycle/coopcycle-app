@@ -11,6 +11,7 @@ import TrackingIcon from '../../components/TrackingIcon';
 import i18n from '../../i18n';
 import { useBaseTextColor } from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
+import OrderNavigator from './OrderNavigator';
 import TaskNavigator from './TaskNavigator';
 import { useSelector } from 'react-redux';
 import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
@@ -209,6 +210,13 @@ export default () => {
         component={BarcodeNavigator}
         options={{
           headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="Order"
+        component={OrderNavigator}
+        options={{
+          headerShown: false
         }}
       />
     </RootStack.Navigator>

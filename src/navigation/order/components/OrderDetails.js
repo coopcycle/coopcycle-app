@@ -61,7 +61,7 @@ const OrderDetails = ({ tasks, t }) => {
   return (
     <FlatList
       data={items}
-      keyExtractor={(item, index) => item.iconName}
+      keyExtractor={(item, index) => `${item.iconName}-${index}`}
       renderItem={({ item }) => <Detail item={item} />}
       ItemSeparatorComponent={ItemSeparator}
     />
