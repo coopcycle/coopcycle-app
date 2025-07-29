@@ -6,15 +6,15 @@ import { getRegionForTasks } from './mapUtils';
 
 const zoomLevel = 15;
 
-const MiniMap = ({ tasks, onLayout, aspectRatio }) => {
+const MiniMap = ({ task, tasks, onLayout, aspectRatio }) => {
   // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
 
-  const region = getRegionForTasks(tasks, zoomLevel, aspectRatio);
+  const region = getRegionForTasks(task ? [task] : tasks, zoomLevel, aspectRatio);
 
   const renderPolyline = () => {
     const firstTask = tasks[0];
     const key = `polyline-${firstTask.id}`;
-    const coords = tasks.map(task => task.address.geo);
+    const coords = tasks.map(t => t.address.geo);
     return (
       <Polyline
         key={key}
@@ -26,6 +26,7 @@ const MiniMap = ({ tasks, onLayout, aspectRatio }) => {
       />
     );
   }
+
   return (
     <MapView
       style={styles.map}
@@ -37,14 +38,14 @@ const MiniMap = ({ tasks, onLayout, aspectRatio }) => {
       initialRegion={region}
       region={region}
       onLayout={onLayout}>
-      {tasks.map(task => {
+      {tasks.map(t => {
         return (
           <Marker
-            identifier={task['@id']}
-            key={task['@id']}
-            coordinate={task.address.geo}
+            identifier={t['@id']}
+            key={t['@id']}
+            coordinate={t.address.geo}
             flat={true}>
-            <TaskMarker task={task} />
+            <TaskMarker task={t} />
           </Marker>
         );
       })}
