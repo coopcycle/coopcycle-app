@@ -1,12 +1,13 @@
-import { Button, Text } from 'native-base';
+import { Button, FlatList, HStack, Icon } from 'native-base';
+import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { FlatList, View } from 'react-native';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import Foundation from 'react-native-vector-icons/Foundation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
@@ -16,13 +17,26 @@ import {
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
 import { getAddress, getName, getTimeFrame } from './utils';
+import { getTaskTitle } from '../../../shared/src/utils';
 import Detail from '../../../components/Detail';
 
-const Details = ({ task, t }) => {
+const Details = ({ task, onTaskTitleClick, t }) => {
   const timeframe = getTimeFrame(task);
   let address = getAddress(task)
   const name = getName(task)
   address = name ? [name, address].join(' - ') : address;
+
+  const renderTaskTitle = () => (
+    <Text
+      style={{
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingLeft: 10,
+        marginVertical: 10,
+      }}>
+      {getTaskTitle(task)} (#{task.id})
+    </Text>
+  );
 
   const items = [
     {
@@ -138,12 +152,23 @@ const Details = ({ task, t }) => {
   }
 
   return (
-    <FlatList
-      data={items}
-      keyExtractor={(item, index) => `task-detail-${item.iconName}-${index}`}
-      renderItem={({ item }) => <Detail item={item} />}
-      ItemSeparatorComponent={ItemSeparator}
-    />
+    <View style={{ flex: 1 }}>
+      {onTaskTitleClick && (
+        <TouchableOpacity onPress={() => {onTaskTitleClick(task)}} style={{ flex: 1 }}>
+          <HStack alignItems="center" justifyContent="space-between" p="2">
+            {renderTaskTitle()}
+            <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
+          </HStack>
+        </TouchableOpacity>
+      )}
+      {!onTaskTitleClick && renderTaskTitle()}
+      <FlatList
+        data={items}
+        keyExtractor={(item, index) => `task-detail-${item.iconName}-${index}`}
+        renderItem={({ item }) => <Detail item={item} />}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+    </View>
   );
 };
 

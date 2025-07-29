@@ -1,12 +1,10 @@
-import { FlatList, HStack, Icon } from 'native-base';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { FlatList } from 'native-base';
+import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import React, { useCallback, useMemo, useState } from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { getAspectRatio } from '../task/components/mapUtils';
-import { getTaskTitle } from '../../shared/src/utils';
 import { navigateToTask } from '../utils';
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/logistics/selectors';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
@@ -36,45 +34,24 @@ const OrderInfo = ({ route }) => {
       navigateToTask(navigation, route, task, tasks)
     }, [navigation, route, tasks])
 
-  const renderItem = ({ item }) => (
-    <View>
-      <TouchableOpacity onPress={() => {handleTaskTitleClick(item)}} style={{ flex: 1 }}>
-        <HStack alignItems="center" justifyContent="space-between" p="2">
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 18,
-              paddingLeft: 10,
-              marginVertical: 20,
-            }}>
-            {getTaskTitle(item)}
-          </Text>
-          <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
-        </HStack>
-      </TouchableOpacity>
-      <Details task={item} />
-    </View>
-  );
-
   return (
     <View>
       <View style={{ height: '35%' }} onLayout={handleLayout}>
         <TaskMiniMap tasks={tasks} aspectRatio={aspectRatio} />
       </View>
       <FlatList
-        style={{height: '55%'}}
+        style={{height: '65%'}}
         data={tasks}
         keyExtractor={(item, index) => `${item.id}-${index}`}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 50 }}
+        renderItem={({ item }) => <Details task={item} onTaskTitleClick={handleTaskTitleClick} />}
         ListHeaderComponent={
           <View key={'order-header'}>
             <Text
-              key={'order-title-header'}
+              key={'order-title-header-details'}
               style={{
                 fontWeight: 'bold',
-                fontSize: 18,
-                paddingLeft: 10,
+                fontSize: 20,
+                paddingLeft: 20,
                 marginVertical: 10,
               }}>
               {i18n.t('DETAILS')}
