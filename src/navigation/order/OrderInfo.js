@@ -68,8 +68,9 @@ const OrderInfo = ({ route }) => {
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 50 }}
         ListHeaderComponent={
-          <View>
+          <View key={'order-header'}>
             <Text
+              key={'order-title-header'}
               style={{
                 fontWeight: 'bold',
                 fontSize: 18,
@@ -78,7 +79,7 @@ const OrderInfo = ({ route }) => {
               }}>
               {i18n.t('DETAILS')}
             </Text>
-            <OrderDetails tasks={tasks} />
+            <OrderDetails key={'order-details-header'} tasks={tasks} />
           </View>
         }
       />
