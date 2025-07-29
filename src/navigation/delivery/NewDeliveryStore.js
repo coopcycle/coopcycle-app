@@ -75,7 +75,7 @@ const NewDeliveryStore = (props) => {
 
   // TODO: We should do something about the "KeyboardAdjustView" solution..!
   return (
-    <KeyboardAdjustView style={{ flex: 1 }} androidBehavior={'padding'}>
+    <KeyboardAdjustView style={{ flex: 1 }}>
       <SafeAreaView
         style={{
           flex: 1,
