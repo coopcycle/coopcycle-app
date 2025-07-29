@@ -1,8 +1,9 @@
-import { FlatList } from 'native-base';
+import { FlatList, HStack, Icon } from 'native-base';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import React, { useCallback, useMemo, useState } from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { getAspectRatio } from '../task/components/mapUtils';
 import { getTaskTitle } from '../../shared/src/utils';
@@ -37,17 +38,19 @@ const OrderInfo = ({ route }) => {
 
   const renderItem = ({ item }) => (
     <View>
-      <TouchableOpacity>
-        <Text
-          onPress={() => {handleTaskTitleClick(item)}}
-          style={{
-            fontWeight: 'bold',
-            fontSize: 18,
-            paddingLeft: 10,
-            marginVertical: 20,
-          }}>
-          {getTaskTitle(item)}
-        </Text>
+      <TouchableOpacity onPress={() => {handleTaskTitleClick(item)}} style={{ flex: 1 }}>
+        <HStack alignItems="center" justifyContent="space-between" p="2">
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 18,
+              paddingLeft: 10,
+              marginVertical: 20,
+            }}>
+            {getTaskTitle(item)}
+          </Text>
+          <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
+        </HStack>
       </TouchableOpacity>
       <Details task={item} />
     </View>

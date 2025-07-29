@@ -1,7 +1,7 @@
-import { Box, Button, HStack, Icon, Text } from 'native-base';
+import { Button, Text } from 'native-base';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import Foundation from 'react-native-vector-icons/Foundation';
