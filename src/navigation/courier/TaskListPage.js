@@ -1,20 +1,17 @@
+import { useMemo } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import React from 'react';
 
 import { doneIconName, incidentIconName } from '../task/styles/common';
-import { greenColor, yellowColor } from '../../styles/common';
+import { blueColor, greenColor, yellowColor } from '../../styles/common';
 import { navigateToCompleteTask, navigateToOrder, navigateToTask } from '../../navigation/utils';
-import {
-  selectFilteredTasks,
-  selectTaskSelectedDate,
-  selectTasksWithColor,
-} from '../../redux/Courier';
+import { selectFilteredTasks, selectTaskSelectedDate } from '../../redux/Courier';
 import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
 import { getOrderId } from '../../utils/tasks';
+import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 
 
 const styles = StyleSheet.create({
@@ -33,7 +30,13 @@ const styles = StyleSheet.create({
 export default function TaskListPage({ navigation, route }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
-  const tasksWithColor = useSelector(selectTasksWithColor);
+  const courierTaskList = useMemo(() => {
+    const taskList = createCurrentTaskList(tasks);
+    // Override color for courier
+    taskList.color = blueColor;
+
+    return taskList;
+  }, [tasks]);
   const isFromCourier = true;
 
   const containerStyle = [styles.container];
@@ -77,11 +80,11 @@ export default function TaskListPage({ navigation, route }) {
       {tasks.length > 0 && (
         <TaskList
           id="courierTaskList"
-          tasks={tasks}
-          tasksWithColor={tasksWithColor}
+          // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
+          tasks={courierTaskList.items}
           refreshing={isFetching}
           onRefresh={() => refetch()}
-          onTaskClick={task => navigateToTask(navigation, route, task, tasks)}
+          onTaskClick={task => navigateToTask(navigation, route, task, courierTaskList.items)}
           onOrderClick={task => navigateToOrder(navigation, getOrderId(task), isFromCourier)}
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}

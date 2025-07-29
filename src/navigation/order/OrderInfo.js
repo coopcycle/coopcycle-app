@@ -13,6 +13,8 @@ import Details from '../task/components/Details';
 import i18n from '../../i18n';
 import TaskMiniMap from '../task/components/MiniMap';
 import OrderDetails from './components/OrderDetails';
+import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
+import { blueColor } from '../../styles/common';
 
 const OrderInfo = ({ route }) => {
   const navigation = useNavigation();
@@ -23,7 +25,16 @@ const OrderInfo = ({ route }) => {
   );
   const {orderId, isFromCourier } = route.params;
   const selectSelector = isFromCourier ? selectTasksByOrderCourier : selectTasksByOrderLogistics;
-  const tasks = useSelector(selectSelector(orderId));
+  const orderTasks = useSelector(selectSelector(orderId));
+  // Ugly workaround for colors for courier
+  const tasks = useMemo(() => {
+    if (isFromCourier) {
+      const taskList = createCurrentTaskList(orderTasks);
+      // Override color for courier
+      return taskList.items.map(task => ({...task, color: blueColor}));
+    }
+    return orderTasks;
+  }, [orderTasks, isFromCourier]);
 
   const handleLayout = e => {
     const { width, height } = e.nativeEvent.layout;
