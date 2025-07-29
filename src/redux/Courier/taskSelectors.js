@@ -53,6 +53,13 @@ export const selectFilteredTasks = createSelector(
   (filters, tasks) => filterTasks(tasks, filters),
 );
 
+export const selectFilteredTasksByOrder = orderId => createSelector(
+  selectFilteredTasks,
+  filteredTasks => filteredTasks
+    .filter(task => task.metadata.order_number === orderId)
+    .sort((a,b) => a.metadata.delivery_position - b.metadata.delivery_position)
+);
+
 /**
  * @param   {State}   state Redux state
  * @returns {Boolean}       Is the { status: 'done' } filter active?

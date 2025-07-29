@@ -7,7 +7,9 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { getAspectRatio } from '../task/components/mapUtils';
 import { getTaskTitle } from '../../shared/src/utils';
 import { navigateToTask } from '../utils';
-import { selectTasksByOrder } from '../../redux/logistics/selectors';
+import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/logistics/selectors';
+import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
+
 import Details from '../task/components/Details';
 import i18n from '../../i18n';
 import TaskMiniMap from '../task/components/MiniMap';
@@ -20,8 +22,9 @@ const OrderInfo = ({ route }) => {
     () => getAspectRatio(mapDimensions),
     [mapDimensions],
   );
-  const orderId = route.params.order;
-  const tasks = useSelector(selectTasksByOrder(orderId));
+  const {orderId, isFromCourier } = route.params;
+  const selectSelector = isFromCourier ? selectTasksByOrderCourier : selectTasksByOrderLogistics;
+  const tasks = useSelector(selectSelector(orderId));
 
   const handleLayout = e => {
     const { width, height } = e.nativeEvent.layout;

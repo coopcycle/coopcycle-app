@@ -18,7 +18,7 @@ export default () => {
         name="OrderInfo"
         component={screens.OrderInfo}
         options={({ route }) => ({
-          title: <OrderTitle order={route.params?.order} />,
+          title: <OrderTitle order={route.params?.orderId} />,
           headerShown: true,
         })}
       />

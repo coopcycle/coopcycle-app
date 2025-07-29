@@ -34,6 +34,7 @@ export default function TaskListPage({ navigation, route }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const tasksWithColor = useSelector(selectTasksWithColor);
+  const isFromCourier = true;
 
   const containerStyle = [styles.container];
   if (tasks.length === 0) {
@@ -81,7 +82,7 @@ export default function TaskListPage({ navigation, route }) {
           refreshing={isFetching}
           onRefresh={() => refetch()}
           onTaskClick={task => navigateToTask(navigation, route, task, tasks)}
-          onOrderClick={task => navigateToOrder(navigation, getOrderId(task))}
+          onOrderClick={task => navigateToOrder(navigation, getOrderId(task), isFromCourier)}
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
           multipleSelectionIcon={doneIconName}
