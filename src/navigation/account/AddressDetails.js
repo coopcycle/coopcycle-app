@@ -25,7 +25,7 @@ class AddressDetails extends Component {
     };
 
     return (
-      <KeyboardAdjustView style={{ flex: 1 }} androidBehavior={''}>
+      <KeyboardAdjustView style={{ flex: 1 }}>
         <MapView
           style={{
             height: width * 0.55,
