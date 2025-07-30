@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   spacer: {
     alignItems: 'center',
-    padding: 20,
+    padding: 4,
   },
 });
 
