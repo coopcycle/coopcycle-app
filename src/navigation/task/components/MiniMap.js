@@ -1,21 +1,31 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import TaskMarker from '../../../components/TaskMarker';
+import { getRegionForTasks } from './mapUtils';
 
 const zoomLevel = 15;
 
-const MiniMap = ({ task, taskList, onLayout, aspectRatio }) => {
+const MiniMap = ({ task, tasks, onLayout, aspectRatio }) => {
   // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
-  const distanceDelta = Math.exp(Math.log(360) - zoomLevel * Math.LN2);
 
-  const region = {
-    latitude: task.address.geo.latitude,
-    longitude: task.address.geo.longitude,
-    latitudeDelta: distanceDelta,
-    longitudeDelta: distanceDelta * aspectRatio,
-  };
+  const region = getRegionForTasks(task ? [task] : tasks, zoomLevel, aspectRatio);
+
+  const renderPolyline = () => {
+    const firstTask = tasks[0];
+    const key = `polyline-${firstTask.id}`;
+    const coords = tasks.map(t => t.address.geo);
+    return (
+      <Polyline
+        key={key}
+        testID={key}
+        coordinates={coords}
+        strokeWidth={3}
+        strokeColor={firstTask.color}
+        lineDashPattern={!firstTask.isAssigned ? [20, 10] : null }
+      />
+    );
+  }
 
   return (
     <MapView
@@ -28,13 +38,18 @@ const MiniMap = ({ task, taskList, onLayout, aspectRatio }) => {
       initialRegion={region}
       region={region}
       onLayout={onLayout}>
-      <Marker
-        identifier={task['@id']}
-        key={task['@id']}
-        coordinate={task.address.geo}
-        flat={true}>
-        <TaskMarker task={task} taskList={taskList}/>
-      </Marker>
+      {tasks.map(t => {
+        return (
+          <Marker
+            identifier={t['@id']}
+            key={t['@id']}
+            coordinate={t.address.geo}
+            flat={true}>
+            <TaskMarker task={t} />
+          </Marker>
+        );
+      })}
+      {renderPolyline()}
     </MapView>
   );
 };

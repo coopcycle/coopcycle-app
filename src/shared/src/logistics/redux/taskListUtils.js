@@ -31,6 +31,7 @@ export function createCurrentTaskList(items = []) {
   const username = 'current';
   const assignedItems = items.map(item => ({
     ...item,
+    isAssigned: true,
     assignedTo: username,
   }));
 

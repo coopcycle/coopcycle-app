@@ -1,14 +1,13 @@
-import moment from 'moment';
-import { Box, Button, HStack, Icon, Text } from 'native-base';
+import { Button, FlatList, HStack, Icon } from 'native-base';
+import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { FlatList, TouchableOpacity, View } from 'react-native';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import Foundation from 'react-native-vector-icons/Foundation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
@@ -17,53 +16,27 @@ import {
   loadIconKey,
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
+import { getAddress, getName, getTimeFrame } from './utils';
+import { getTaskTitle } from '../../../shared/src/utils';
+import Detail from '../../../components/Detail';
 
-const Detail = ({ item }) => {
-  const { iconType, iconName, text, component, onPress } = item;
-
-  let touchableOpacityProps = {};
-  if (onPress) {
-    touchableOpacityProps = { onPress };
-  }
-
-  const body = (
-    <Box flex={1} p="2">
-      {text ? <Text fontSize="xs">{text}</Text> : null}
-      {component && component}
-    </Box>
-  );
-
-  return (
-    <TouchableOpacity style={{ flex: 1 }} {...touchableOpacityProps}>
-      <HStack alignItems="center" justifyContent="center" p="2">
-        <Icon
-          as={iconType ? iconType : Ionicons}
-          name={iconName}
-          style={{ color: '#ccc' }}
-        />
-        {body}
-        {onPress && (
-          <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
-        )}
-      </HStack>
-    </TouchableOpacity>
-  );
-};
-
-const Details = ({ task, t }) => {
-  const timeframe =
-    moment(task.doneAfter).format('LT') +
-    ' - ' +
-    moment(task.doneBefore).format('LT');
-  let address = task.address.name
-    ? [task.address.name, task.address.streetAddress].join(' - ')
-    : task.address.streetAddress;
-  const name = [task.address.firstName, task.address.lastName]
-    .filter(function (item) {
-      return item;
-    })
-    .join(' ');
+const Details = ({ task, onTaskTitleClick, t }) => {
+  const timeframe = getTimeFrame(task);
+  let address = getAddress(task)
+  const name = getName(task)
   address = name ? [name, address].join(' - ') : address;
+
+  const renderTaskTitle = () => (
+    <Text
+      style={{
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingLeft: 10,
+        marginVertical: 10,
+      }}>
+      {getTaskTitle(task)} (#{task.id})
+    </Text>
+  );
 
   const items = [
     {
@@ -179,12 +152,23 @@ const Details = ({ task, t }) => {
   }
 
   return (
-    <FlatList
-      data={items}
-      keyExtractor={(item, index) => item.iconName}
-      renderItem={({ item }) => <Detail item={item} />}
-      ItemSeparatorComponent={ItemSeparator}
-    />
+    <View style={{ flex: 1 }}>
+      {onTaskTitleClick && (
+        <TouchableOpacity onPress={() => {onTaskTitleClick(task)}} style={{ flex: 1 }}>
+          <HStack alignItems="center" justifyContent="space-between" p="2">
+            {renderTaskTitle()}
+            <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
+          </HStack>
+        </TouchableOpacity>
+      )}
+      {!onTaskTitleClick && renderTaskTitle()}
+      <FlatList
+        data={items}
+        keyExtractor={(item, index) => `task-detail-${item.iconName}-${index}`}
+        renderItem={({ item }) => <Detail item={item} />}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+    </View>
   );
 };
 

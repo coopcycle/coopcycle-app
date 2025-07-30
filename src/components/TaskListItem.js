@@ -40,6 +40,7 @@ import {
 } from '../redux/Dispatch/selectors';
 import CoopcyleLogo from '../../assets/images/logo.svg';
 import { getTaskTitle } from '../shared/src/utils';
+import { getOrderIdWithPosition } from '../utils/tasks';
 
 const cardBorderRadius = 2.5;
 
@@ -85,24 +86,15 @@ const styles = StyleSheet.create({
   },
 });
 
-function getOrderId(task) {
-  const id =
-    task.metadata?.delivery_position && task.metadata?.order_number
-      ? `${task.metadata.order_number}-${task.metadata.delivery_position}`
-      : task.metadata.order_number || '';
-
-  return id;
-}
-
-const OrderInfo = ({ task, color, width }) => {
+const OrderInfo = ({ task, color, width, onPress }) => {
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
-  const orderId = getOrderId(task);
+  const orderId = getOrderIdWithPosition(task);
 
   return (
     <ItemTouchable
-      onPress={() => console.log('order info pressed')}
+      onPress={() => onPress()}
       style={{
         alignItems: 'center',
         backgroundColor,
@@ -288,6 +280,7 @@ const TaskListItem = forwardRef(({
   taskListId,
   appendTaskListTestID = "",
   onPress = () => {},
+  onOrderPress = () => {},
   onPressLeft = () => {},
   onPressRight = () => {},
   swipeOutLeftBackgroundColor,
@@ -431,7 +424,7 @@ const TaskListItem = forwardRef(({
           borderBottomRightRadius: cardBorderRadius,
         }}
         {...itemProps}>
-        <OrderInfo color={color} task={task} width={buttonWidth} />
+        <OrderInfo color={color} task={task} width={buttonWidth} onPress={onOrderPress} />
         <ItemTouchable
           onPress={onPress}
           testID={taskTestId}

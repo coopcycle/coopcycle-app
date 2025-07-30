@@ -241,7 +241,6 @@ class TasksMapView extends Component {
         tracksViewChanges={false}>
         <TaskMarker
           task={task}
-          taskList={taskList}
           type="status"
           hasWarnings={warnings.length}
           testID={key}

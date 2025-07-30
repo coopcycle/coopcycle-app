@@ -32,7 +32,7 @@ import {
   darkRedColor,
   whiteColor,
 } from '../../../styles/common';
-import { navigateToTask } from '../../../navigation/utils';
+import { navigateToOrder, navigateToTask } from '../../../navigation/utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import {
   selectTaskLists,
@@ -43,6 +43,7 @@ import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
+import { getOrderId } from '../../../utils/tasks';
 
 
 export default function GroupedTasks({
@@ -107,6 +108,12 @@ export default function GroupedTasks({
     allTaskLists,
     tasksEntities,
   });
+
+
+  const onOrderClick = useCallback(task => {
+    const orderId = getOrderId(task);
+    navigateToOrder(navigation, orderId);
+  }, [navigation]);
 
   const onTaskClick = useCallback(isUnassignedTaskList => task => {
     // If task is unassigned, related tasks are order's tasks
@@ -237,9 +244,10 @@ export default function GroupedTasks({
       return (
         <TaskList
           id={section.id}
-          onTaskClick={onTaskClick(section.isUnassignedTaskList)}
           tasks={tasks}
           appendTaskListTestID={section.appendTaskListTestID}
+          onTaskClick={onTaskClick(section.isUnassignedTaskList)}
+          onOrderClick={onOrderClick}
           onSwipeClosed={(task) =>{handleOnSwipeClose(section, task)}}
           {...swipeLeftConfiguration(section)}
           {...swipeRightConfiguration(section)}
@@ -248,7 +256,7 @@ export default function GroupedTasks({
     }
 
     return null;
-  }, [collapsedSections, handleOnSwipeClose, isFetching, onTaskClick, swipeLeftConfiguration, swipeRightConfiguration, tasksEntities]);
+  }, [collapsedSections, handleOnSwipeClose, isFetching, onTaskClick, onOrderClick, swipeLeftConfiguration, swipeRightConfiguration, tasksEntities]);
 
   return (
     <>

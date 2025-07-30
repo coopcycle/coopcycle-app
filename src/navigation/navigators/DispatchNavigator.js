@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
@@ -17,11 +18,10 @@ import HeaderRightButton from '../dispatch/HeaderRightButton';
 import i18n from '../../i18n';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import NavigationHolder from '../../NavigationHolder';
+import OrderNavigator from './OrderNavigator';
 import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
-import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
-
 
 
 const Tab = createBottomTabNavigator();
@@ -234,6 +234,13 @@ export default function DispatchNavigator({
           component={screens.DispatchDate}
           options={{
             title: i18n.t('DISPATCH_DATE'),
+          }}
+        />
+        <RootStack.Screen
+          name="Order"
+          component={OrderNavigator}
+          options={{
+            headerShown: false
           }}
         />
       </RootStack.Navigator>

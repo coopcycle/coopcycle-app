@@ -58,7 +58,9 @@ function TaskMapPage({ navigation, route }) {
 
   const courierTaskList = useMemo(() => {
     const taskList = createCurrentTaskList(tasks);
+    // Override color for courier
     taskList.color = blueColor;
+    taskList.items = taskList.items.map(task => ({...task, color: blueColor}));
 
     return taskList;
   }, [tasks]);
@@ -79,7 +81,8 @@ function TaskMapPage({ navigation, route }) {
           mapCenter={mapCenter}
           taskLists={[courierTaskList]}
           onMarkerCalloutPress={task =>
-            navigateToTask(navigation, route, task, tasks)
+            // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
+            navigateToTask(navigation, route, task, courierTaskList.items)
           }
         />
         {isFetching ? (
