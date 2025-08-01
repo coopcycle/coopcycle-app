@@ -5,7 +5,6 @@ import { darkGreyColor } from '../../../../styles/common';
 import { groupLinkedTasks, withLinkedTasks } from './taskUtils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../constants';
 
-
 export function replaceItemsWithItemIds(taskList) {
   let entity = {
     ...taskList,
@@ -58,32 +57,46 @@ export function createUnassignedTaskLists(allUnassignedTasks) {
   // Split the unassigned task list by grouped linked tasks
   const linkedTasks = groupLinkedTasks(allUnassignedTasks);
 
-  const {unassignedTaskLists} = Object.entries(linkedTasks).reduce((acc, [taskId, linkedTaskIds]) => {
-    if (linkedTaskIds.some((linkedTaskId) => acc.tasks[linkedTaskId] !== undefined)) {
-      return acc; // These tasks were already linked to a tasklist
-    }
+  const { unassignedTaskLists } = Object.entries(linkedTasks).reduce(
+    (acc, [taskId, linkedTaskIds]) => {
+      if (
+        linkedTaskIds.some(
+          linkedTaskId => acc.tasks[linkedTaskId] !== undefined,
+        )
+      ) {
+        return acc; // These tasks were already linked to a tasklist
+      }
 
-    const tasks = linkedTaskIds.map(linkedTaskId => {
-      // Update the task index
-      acc.tasks[linkedTaskId] = taskId;
-      // Return the task object with all its data
-      return allUnassignedTasks.find(task => task['@id'] === linkedTaskId);
-    });
+      const tasks = linkedTaskIds.map(linkedTaskId => {
+        // Update the task index
+        acc.tasks[linkedTaskId] = taskId;
+        // Return the task object with all its data
+        return allUnassignedTasks.find(task => task['@id'] === linkedTaskId);
+      });
 
-    acc.unassignedTaskLists.push({
-      '@id': `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
-      id: `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
-      items: tasks,
-      tasksIds: tasks.map(task => task['@id']),
-      color: darkGreyColor,
-      // This property below will be used into the map view to show/hide unassigned tasks
-      isUnassignedTaskList: true,
-      // The one below is needed/used to search by username at getTaskTaskList->getUserTaskList functions
-      username: null,
-    });
+      acc.unassignedTaskLists.push({
+        '@id': `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
+        id: `${UNASSIGNED_TASKS_LIST_ID}-${taskId}`,
+        items: tasks,
+        tasksIds: tasks.map(task => task['@id']),
+        color: darkGreyColor,
+        // This property below will be used into the map view to show/hide unassigned tasks
+        isUnassignedTaskList: true,
+        // The one below is needed/used to search by username at getTaskTaskList->getUserTaskList functions
+        username: null,
+      });
 
-    return acc;
-  }, {tasks: {/*Just and index*/}, unassignedTaskLists: [/*The resultant task lists*/]});
+      return acc;
+    },
+    {
+      tasks: {
+        /*Just and index*/
+      },
+      unassignedTaskLists: [
+        /*The resultant task lists*/
+      ],
+    },
+  );
 
   return unassignedTaskLists;
 }
@@ -96,10 +109,12 @@ export function withLinkedTasksForTaskList(orders, allTasks, allTaskLists) {
       const allRelatedTasks = withLinkedTasks(task, allTasks);
 
       allRelatedTasks.forEach(relatedTask => {
-        const foundRelatedTaskList = allTaskLists.find(
-          taskList => taskList.tasksIds.includes(relatedTask['@id'])
+        const foundRelatedTaskList = allTaskLists.find(taskList =>
+          taskList.tasksIds.includes(relatedTask['@id']),
         );
-        const accKey = foundRelatedTaskList ? foundRelatedTaskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
+        const accKey = foundRelatedTaskList
+          ? foundRelatedTaskList['@id']
+          : UNASSIGNED_TASKS_LIST_ID;
         acc[accKey] = (acc[accKey] || []).concat(relatedTask);
       });
     });
@@ -112,12 +127,12 @@ export function getTasksListsToEdit(selectedTasks, allTasks, allTaskLists) {
   const ordersByTaskList = withLinkedTasksForTaskList(
     selectedTasks.orders,
     allTasks,
-    allTaskLists
+    allTaskLists,
   );
   const tasksByTaskList = selectedTasks.tasks;
 
   return _.mergeWith(ordersByTaskList, tasksByTaskList, (orders, tasks) => {
-    return _.uniqBy([... (orders || []), ...(tasks || [])], '@id')
+    return _.uniqBy([...(orders || []), ...(tasks || [])], '@id');
   });
 }
 
@@ -125,21 +140,21 @@ export function getTasksListIdsToEdit(selectedTasks) {
   const ordersTasksListIds = Object.keys(selectedTasks.orders);
   const tasksTasksListIds = Object.keys(selectedTasks.tasks);
 
-  return _.uniq([... ordersTasksListIds, ...tasksTasksListIds])
+  return _.uniq([...ordersTasksListIds, ...tasksTasksListIds]);
 }
 
 export function getLinkedTasks(task, taskListId, allTasks, allTaskLists) {
   return getTasksListsToEdit(
     {
       orders: {
-        [taskListId]: [task]
+        [taskListId]: [task],
       },
-      tasks: {}
+      tasks: {},
     },
     allTasks,
-    allTaskLists
+    allTaskLists,
   );
-};
+}
 
 export function getUserTaskList(username, allTaskLists) {
   return allTaskLists.find(taskList => taskList.username === username);
@@ -151,9 +166,13 @@ export function getUserTaskList(username, allTaskLists) {
  * @param {Task} task - The task object to search for. Expected to have an '@id' property.
  * @param {Array<TaskList>} allTaskLists - An array of all task list objects to search through.
  * @returns {TaskList|undefined} The task list that contains the specified task, or undefined if not found.
-*/
+ */
 export function getTaskListByTask(task, allTaskLists) {
-  return allTaskLists.find(taskList => (taskList.tasksIds || (taskList.items.map(t => t['@id'])) || []).find(id => id === task['@id']));
+  return allTaskLists.find(taskList =>
+    (taskList.tasksIds || taskList.items.map(t => t['@id']) || []).find(
+      id => id === task['@id'],
+    ),
+  );
 }
 
 function getTaskListIdForTask(task, allTaskLists) {

@@ -213,7 +213,7 @@ describe('taskUtils', () => {
         },
         {
           '@id': '/api/tasks/3',
-          id: 3
+          id: 3,
         },
       ];
 
@@ -256,7 +256,7 @@ describe('taskUtils', () => {
         },
         {
           '@id': '/api/tasks/3',
-          id: 3
+          id: 3,
         },
       ];
       const taskColors = mapToColor(tasks);
@@ -265,8 +265,8 @@ describe('taskUtils', () => {
       Object.keys(taskColors).forEach(key => {
         expect(taskIds).toContain(key);
       });
-    })
-  })
+    });
+  });
 
   describe('tasksToIds', () => {
     it('should map tasks to task ids', () => {
@@ -376,10 +376,7 @@ describe('taskUtils', () => {
 
   describe('getToursToUpdate', () => {
     it('should return empty if there is no tours', () => {
-      const itemIds = [
-        '/api/tasks/1',
-        '/api/tasks/2',
-      ];
+      const itemIds = ['/api/tasks/1', '/api/tasks/2'];
       const toursIndexes = {
         tasks: {},
         tours: {},
@@ -405,10 +402,7 @@ describe('taskUtils', () => {
     });
 
     it('should return only the tour that have the items ids and remove them', () => {
-      const itemIds = [
-        '/api/tasks/1',
-        '/api/tasks/2',
-      ];
+      const itemIds = ['/api/tasks/1', '/api/tasks/2'];
       const toursIndexes = {
         tasks: {
           '/api/tasks/1': '/api/tours/1',
@@ -425,28 +419,19 @@ describe('taskUtils', () => {
             '/api/tasks/3',
             '/api/tasks/4',
           ],
-          '/api/tours/2': [
-            '/api/tasks/5',
-            '/api/tasks/6',
-          ],
+          '/api/tours/2': ['/api/tasks/5', '/api/tasks/6'],
         },
       };
 
       const result = getToursToUpdate(itemIds, toursIndexes);
 
       expect(result).toEqual({
-        '/api/tours/1': [
-          '/api/tasks/3',
-          '/api/tasks/4',
-        ],
+        '/api/tours/1': ['/api/tasks/3', '/api/tasks/4'],
       });
     });
 
     it('should return empty if no tour has the items ids', () => {
-      const itemIds = [
-        '/api/tasks/7',
-        '/api/tasks/8',
-      ];
+      const itemIds = ['/api/tasks/7', '/api/tasks/8'];
       const toursIndexes = {
         tasks: {
           '/api/tasks/1': '/api/tours/1',
@@ -455,14 +440,8 @@ describe('taskUtils', () => {
           '/api/tasks/6': '/api/tours/2',
         },
         tours: {
-          '/api/tours/1': [
-            '/api/tasks/1',
-            '/api/tasks/2',
-          ],
-          '/api/tours/2': [
-            '/api/tasks/3',
-            '/api/tasks/4',
-          ],
+          '/api/tours/1': ['/api/tasks/1', '/api/tasks/2'],
+          '/api/tours/2': ['/api/tasks/3', '/api/tasks/4'],
         },
       };
 
@@ -493,29 +472,32 @@ describe('taskUtils', () => {
       expect(result).toEqual(tasks);
     });
 
-    it.each([
-      'bob', 'Bob', 'BOB'
-    ])('should return tasks that have searchString in assignedTo', (searchString) => {
-      const result = filterTasksByKeyword(tasks, searchString);
+    it.each(['bob', 'Bob', 'BOB'])(
+      'should return tasks that have searchString in assignedTo',
+      searchString => {
+        const result = filterTasksByKeyword(tasks, searchString);
 
-      expect(result).toEqual(tasks.slice(1, 2));
-    });
+        expect(result).toEqual(tasks.slice(1, 2));
+      },
+    );
 
-    it.each([
-      'bullanga', 'Bullanga', 'BULLANGA'
-    ])('should return tasks that have searchString in store name', (searchString) => {
-      const result = filterTasksByKeyword(tasks, searchString);
+    it.each(['bullanga', 'Bullanga', 'BULLANGA'])(
+      'should return tasks that have searchString in store name',
+      searchString => {
+        const result = filterTasksByKeyword(tasks, searchString);
 
-      expect(result).toEqual(tasks.slice(4, 5));
-    });
+        expect(result).toEqual(tasks.slice(4, 5));
+      },
+    );
 
-    it.each([
-      'bbb', 'BBB',
-    ])('should return tasks that have searchString in any tag', (searchString) => {
-      const result = filterTasksByKeyword(tasks, searchString);
+    it.each(['bbb', 'BBB'])(
+      'should return tasks that have searchString in any tag',
+      searchString => {
+        const result = filterTasksByKeyword(tasks, searchString);
 
-      expect(result).toEqual(tasks.slice(7, 8));
-    });
+        expect(result).toEqual(tasks.slice(7, 8));
+      },
+    );
   });
 
   describe('taskIncludesKeyword', () => {
@@ -531,24 +513,30 @@ describe('taskUtils', () => {
     it.each([
       ['Alba', true],
       ['not', false],
-    ])('should return if keyword is included in assignedTo', (keyword, expected) => {
-      const task = getTaskWithAssignedTo('Assigned to Alba');
+    ])(
+      'should return if keyword is included in assignedTo',
+      (keyword, expected) => {
+        const task = getTaskWithAssignedTo('Assigned to Alba');
 
-      const result = taskIncludesKeyword(task, keyword);
+        const result = taskIncludesKeyword(task, keyword);
 
-      expect(result).toBe(expected);
-    });
+        expect(result).toBe(expected);
+      },
+    );
 
     it.each([
       ['Acme', true],
       ['not', false],
-    ])('should return if keyword is included in store name', (keyword, expected) => {
-      const task = getTaskWithStoreName('Store name ACME');
+    ])(
+      'should return if keyword is included in store name',
+      (keyword, expected) => {
+        const task = getTaskWithStoreName('Store name ACME');
 
-      const result = taskIncludesKeyword(task, keyword);
+        const result = taskIncludesKeyword(task, keyword);
 
-      expect(result).toBe(expected);
-    });
+        expect(result).toBe(expected);
+      },
+    );
 
     it.each([
       ['aa', true],

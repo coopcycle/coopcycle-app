@@ -306,8 +306,8 @@ const TaskListItem = forwardRef(
         ? `${task.address.contactName} - ${task.address.name}`
         : task.address.contactName
       : task.address?.name
-      ? task.address.name
-      : null;
+        ? task.address.name
+        : null;
 
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];

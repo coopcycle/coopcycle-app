@@ -3,7 +3,6 @@ import { createSelector } from 'reselect';
 
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
 
-
 // Selectors
 
 const taskSelectors = taskAdapter.getSelectors(
@@ -25,17 +24,14 @@ export const selectTasksEntities = taskSelectors.selectEntities;
 
 export const selectAllTours = tourSelectors.selectAll;
 
-
 // Selections for Tasks
 
-export const selectAssignedTasks = createSelector(
-  selectAllTasks,
-  allTasks => allTasks.filter(task => task.isAssigned)
+export const selectAssignedTasks = createSelector(selectAllTasks, allTasks =>
+  allTasks.filter(task => task.isAssigned),
 );
 
-export const selectUnassignedTasks = createSelector(
-  selectAllTasks,
-  allTasks => allTasks.filter(task => !task.isAssigned)
+export const selectUnassignedTasks = createSelector(selectAllTasks, allTasks =>
+  allTasks.filter(task => !task.isAssigned),
 );
 
 export const selectUnassignedTasksNotCancelled = createSelector(
@@ -43,7 +39,6 @@ export const selectUnassignedTasksNotCancelled = createSelector(
   tasks =>
     _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
 );
-
 
 // Selections for TaskLists
 
@@ -61,7 +56,7 @@ export const selectTaskLists = createSelector(
           return maybeTour.items;
         }
 
-        if (itemId.includes('/api/tasks/')){
+        if (itemId.includes('/api/tasks/')) {
           return [itemId];
         }
 
@@ -73,7 +68,6 @@ export const selectTaskLists = createSelector(
     }),
 );
 
-
 // Selections for Tours
 
 // Returns a tours/tasks index with the format:
@@ -83,19 +77,23 @@ export const selectTaskLists = createSelector(
 // }
 export const selectToursTasksIndex = createSelector(
   tourSelectors.selectEntities,
-  (tours) => {
-    return Object.values(tours).reduce((acc, tour) => {
-      const tourId = tour['@id'];
-      acc.tours[tourId] = (tour.items || []).map(taskId => {
-        acc.tasks[taskId] = tourId;
-        return taskId;
-      });
-      return acc;
-    }, { // Initial index values
-      tours: {},
-      tasks: {},
-    });
-  }
+  tours => {
+    return Object.values(tours).reduce(
+      (acc, tour) => {
+        const tourId = tour['@id'];
+        acc.tours[tourId] = (tour.items || []).map(taskId => {
+          acc.tasks[taskId] = tourId;
+          return taskId;
+        });
+        return acc;
+      },
+      {
+        // Initial index values
+        tours: {},
+        tasks: {},
+      },
+    );
+  },
 );
 
 const selectTaskListByUsername = (state, props) =>

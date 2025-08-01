@@ -5,25 +5,25 @@ import moment from 'moment';
 import { getUserTaskList } from './taskListUtils';
 import { getTaskTitle } from '../../utils';
 
-
 /**
  * Utility function to sort a list of tasks
  * @param {Object} a - Task
  * @param {Object} b - Task
  */
 export function tasksSort(a, b) {
-  if(a.metadata?.order_number
-      && b.metadata?.order_number
-      && a.metadata?.order_number === b.metadata?.order_number
+  if (
+    a.metadata?.order_number &&
+    b.metadata?.order_number &&
+    a.metadata?.order_number === b.metadata?.order_number
   ) {
-    return a.metadata.delivery_position -b.metadata.delivery_position;
+    return a.metadata.delivery_position - b.metadata.delivery_position;
   }
 
   if (moment(a.before).isSame(b.before) && a.type === 'PICKUP') {
-    return -1
+    return -1;
   } else {
     // put on top of the list the tasks that have an end of delivery window that finishes sooner
-    return moment(a.before).isBefore(b.before) ? -1 : 1
+    return moment(a.before).isBefore(b.before) ? -1 : 1;
   }
 }
 
@@ -112,7 +112,7 @@ function addColorToTask(task, taskColors) {
   return {
     ...task,
     color,
-  }
+  };
 }
 
 export function tasksToIds(tasks) {
@@ -141,7 +141,9 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
     if (tourId) {
       // Initialize with all the indexed tour tasks if not already present
       // and remove the taskId from the tour tasks
-      acc[tourId] = (acc[tourId] || toursTasksIndex.tours[tourId]).filter(tourTaskId => tourTaskId !== taskId);
+      acc[tourId] = (acc[tourId] || toursTasksIndex.tours[tourId]).filter(
+        tourTaskId => tourTaskId !== taskId,
+      );
     }
     return acc;
   }, {});
@@ -154,23 +156,34 @@ export function filterTasksByKeyword(tasks, keyword) {
     return tasks;
   }
 
-  return tasks.filter(task => taskIncludesKeyword(task, keyword) || taskIncludesKeywordInOrder(task, keyword));
+  return tasks.filter(
+    task =>
+      taskIncludesKeyword(task, keyword) ||
+      taskIncludesKeywordInOrder(task, keyword),
+  );
 }
 
 export function taskIncludesKeyword(task, keyword) {
-  return standardIncludes(task.assignedTo, keyword)
-    || standardIncludes(task.orgName, keyword)
-    || standardIncludes(getTaskTitle(task), keyword)
-    || task.tags.reduce((acc, tag) => acc || standardIncludes(tag.name, keyword), false);
+  return (
+    standardIncludes(task.assignedTo, keyword) ||
+    standardIncludes(task.orgName, keyword) ||
+    standardIncludes(getTaskTitle(task), keyword) ||
+    task.tags.reduce(
+      (acc, tag) => acc || standardIncludes(tag.name, keyword),
+      false,
+    )
+  );
 }
 
 export function taskIncludesKeywordInOrder(task, keyword) {
-  return standardIncludes(task.metadata?.order_number, keyword)
-    || standardIncludes(task.address?.contactName, keyword)
-    || standardIncludes(task.address?.firstName, keyword)
-    || standardIncludes(task.address?.lastName, keyword)
-    || standardIncludes(task.address?.name, keyword)
-    || standardIncludes(task.address?.streetAddress, keyword)
+  return (
+    standardIncludes(task.metadata?.order_number, keyword) ||
+    standardIncludes(task.address?.contactName, keyword) ||
+    standardIncludes(task.address?.firstName, keyword) ||
+    standardIncludes(task.address?.lastName, keyword) ||
+    standardIncludes(task.address?.name, keyword) ||
+    standardIncludes(task.address?.streetAddress, keyword)
+  );
 }
 
 function standardIncludes(originalString, keyword) {

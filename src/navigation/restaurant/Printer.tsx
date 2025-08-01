@@ -187,9 +187,8 @@ class Printer extends Component {
       const missingPermissions = await getMissingAndroidPermissions();
 
       if (missingPermissions.length > 0) {
-        const granted = await PermissionsAndroid.requestMultiple(
-          missingPermissions,
-        );
+        const granted =
+          await PermissionsAndroid.requestMultiple(missingPermissions);
         const allPermissionsGranted = _.values(granted).every(
           value => value === PermissionsAndroid.RESULTS.GRANTED,
         );

@@ -16,8 +16,8 @@ export default function ModalFormWrapper({
   const buttonLabel = disabled
     ? disabledMessage
     : isSubmit
-    ? t('SUBMIT')
-    : t('NEXT');
+      ? t('SUBMIT')
+      : t('NEXT');
 
   return (
     <SafeAreaView
