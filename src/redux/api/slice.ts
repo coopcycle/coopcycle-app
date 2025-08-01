@@ -1,11 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQueryWithReauth } from './baseQuery';
-import {
-  fetchAllRecordsUsingFetchWithBQ,
-  sortByName,
-  sortByString,
-} from '../util';
+import { sortByName, sortByString } from '../util';
+import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 
 // Define our single API slice object
 export const apiSlice = createApi({
