@@ -13,7 +13,6 @@ import {
 import { getTaskListWithItems, getTaskWithPrevious } from '../testsUtils.js';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants.js';
 
-
 const usernames = [
   'username0',
   'username1',
@@ -38,7 +37,7 @@ const allTasks = [
   getTaskWithPreviousWithUsernames(7, 4, 6),
   getTaskWithPreviousWithUsernames(8, 5),
   getTaskWithPreviousWithUsernames(9, 6, 8),
-  getTaskWithPreviousWithUsernames(10, null, 9)
+  getTaskWithPreviousWithUsernames(10, null, 9),
 ];
 
 const allTaskLists = [
@@ -52,13 +51,10 @@ const allTaskLists = [
 ];
 
 function sortTasksListItems(tasksListIdsToEdit) {
-  return Object.keys(tasksListIdsToEdit).reduce(
-    (res, key) => {
-      res[key] = _.sortBy([...tasksListIdsToEdit[key]], '@id');
-      return res;
-    },
-    {}
-  );
+  return Object.keys(tasksListIdsToEdit).reduce((res, key) => {
+    res[key] = _.sortBy([...tasksListIdsToEdit[key]], '@id');
+    return res;
+  }, {});
 }
 
 describe('taskListUtils', () => {
@@ -100,10 +96,7 @@ describe('taskListUtils', () => {
 
       const result = getTaskListTasks(taskList, tasksEntities);
 
-      expect(result).toEqual([
-        allTasks[3],
-        allTasks[4],
-      ]);
+      expect(result).toEqual([allTasks[3], allTasks[4]]);
     });
 
     it('should return all tasks if all tasks are loaded', () => {
@@ -119,11 +112,7 @@ describe('taskListUtils', () => {
 
       const result = getTaskListTasks(taskList, tasksEntities);
 
-      expect(result).toEqual([
-        allTasks[3],
-        allTasks[4],
-        allTasks[5],
-      ]);
+      expect(result).toEqual([allTasks[3], allTasks[4], allTasks[5]]);
     });
   });
 
@@ -155,10 +144,12 @@ describe('taskListUtils', () => {
 
       const result = withLinkedTasksForTaskList(orders, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(sortTasksListItems({
-        '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
-        '/api/task_lists/4': [allTasks[6], allTasks[7]]
-      }));
+      expect(sortTasksListItems(result)).toEqual(
+        sortTasksListItems({
+          '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
+          '/api/task_lists/4': [allTasks[6], allTasks[7]],
+        }),
+      );
     });
 
     it('should return an object with tasks for two taskLists with related tasks', () => {
@@ -169,36 +160,46 @@ describe('taskListUtils', () => {
 
       const result = withLinkedTasksForTaskList(orders, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(sortTasksListItems({
-        '/api/task_lists/2': [allTasks[1], allTasks[2]],
-        '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
-        '/api/task_lists/4': [allTasks[6], allTasks[7]]
-      }));
+      expect(sortTasksListItems(result)).toEqual(
+        sortTasksListItems({
+          '/api/task_lists/2': [allTasks[1], allTasks[2]],
+          '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
+          '/api/task_lists/4': [allTasks[6], allTasks[7]],
+        }),
+      );
     });
 
     it('should return an object with tasks for taskList including unassigned', () => {
       const orders = {
-        '/api/task_lists/5': [allTasks[8]]
+        '/api/task_lists/5': [allTasks[8]],
       };
 
       const result = withLinkedTasksForTaskList(orders, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(({
-        'UNASSIGNED_TASKS_LIST': [allTasks[10]],
+      expect(sortTasksListItems(result)).toEqual({
+        UNASSIGNED_TASKS_LIST: [allTasks[10]],
         '/api/task_lists/5': [allTasks[8]],
-        '/api/task_lists/6': [allTasks[9]]
-      }));
+        '/api/task_lists/6': [allTasks[9]],
+      });
 
       const orders2 = {
-        '/api/task_lists/6': [allTasks[9]]
+        '/api/task_lists/6': [allTasks[9]],
       };
-      const result2 = withLinkedTasksForTaskList(orders2, allTasks, allTaskLists);
+      const result2 = withLinkedTasksForTaskList(
+        orders2,
+        allTasks,
+        allTaskLists,
+      );
       expect(sortTasksListItems(result2)).toEqual(sortTasksListItems(result));
 
       const orders3 = {
-        'UNASSIGNED_TASKS_LIST': [allTasks[10]]
+        UNASSIGNED_TASKS_LIST: [allTasks[10]],
       };
-      const result3 = withLinkedTasksForTaskList(orders3, allTasks, allTaskLists);
+      const result3 = withLinkedTasksForTaskList(
+        orders3,
+        allTasks,
+        allTaskLists,
+      );
       expect(sortTasksListItems(result3)).toEqual(sortTasksListItems(result));
     });
   });
@@ -225,9 +226,11 @@ describe('taskListUtils', () => {
 
       const result = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(sortTasksListItems({
-        '/api/task_lists/2': [allTasks[1], allTasks[2]],
-      }));
+      expect(sortTasksListItems(result)).toEqual(
+        sortTasksListItems({
+          '/api/task_lists/2': [allTasks[1], allTasks[2]],
+        }),
+      );
     });
 
     it('should return an object with tasks order by taskLists', () => {
@@ -242,11 +245,13 @@ describe('taskListUtils', () => {
 
       const result = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(sortTasksListItems({
-        '/api/task_lists/1': [allTasks[0]],
-        '/api/task_lists/2': [allTasks[1], allTasks[2]],
-        '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
-      }));
+      expect(sortTasksListItems(result)).toEqual(
+        sortTasksListItems({
+          '/api/task_lists/1': [allTasks[0]],
+          '/api/task_lists/2': [allTasks[1], allTasks[2]],
+          '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
+        }),
+      );
     });
 
     it('should return an object with several orders tasks by taskLists with related tasks', () => {
@@ -260,11 +265,13 @@ describe('taskListUtils', () => {
 
       const result = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(sortTasksListItems({
-        '/api/task_lists/2': [allTasks[1], allTasks[2]],
-        '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
-        '/api/task_lists/4': [allTasks[6], allTasks[7]],
-      }));
+      expect(sortTasksListItems(result)).toEqual(
+        sortTasksListItems({
+          '/api/task_lists/2': [allTasks[1], allTasks[2]],
+          '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
+          '/api/task_lists/4': [allTasks[6], allTasks[7]],
+        }),
+      );
     });
 
     it('should return an object with several orders tasks by taskLists with related tasks and tasks', () => {
@@ -281,12 +288,14 @@ describe('taskListUtils', () => {
 
       const result = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(sortTasksListItems({
-        '/api/task_lists/1': [allTasks[0]],
-        '/api/task_lists/2': [allTasks[2]],
-        '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
-        '/api/task_lists/4': [allTasks[6], allTasks[7]]
-      }));
+      expect(sortTasksListItems(result)).toEqual(
+        sortTasksListItems({
+          '/api/task_lists/1': [allTasks[0]],
+          '/api/task_lists/2': [allTasks[2]],
+          '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
+          '/api/task_lists/4': [allTasks[6], allTasks[7]],
+        }),
+      );
     });
 
     it('should return an object with several tasks by taskLists with related tasks and tasks for the same taskList including unassigned', () => {
@@ -296,7 +305,7 @@ describe('taskListUtils', () => {
           '/api/task_lists/3': [allTasks[4]],
         },
         tasks: {
-          'UNASSIGNED_TASKS_LIST': [allTasks[10]],
+          UNASSIGNED_TASKS_LIST: [allTasks[10]],
           '/api/task_lists/1': [allTasks[0]],
           '/api/task_lists/3': [allTasks[5]],
         },
@@ -304,13 +313,15 @@ describe('taskListUtils', () => {
 
       const result = getTasksListsToEdit(selectedTasks, allTasks, allTaskLists);
 
-      expect(sortTasksListItems(result)).toEqual(sortTasksListItems({
-        'UNASSIGNED_TASKS_LIST': [allTasks[10]],
-        '/api/task_lists/1': [allTasks[0]],
-        '/api/task_lists/2': [allTasks[1], allTasks[2]],
-        '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
-        '/api/task_lists/4': [allTasks[6], allTasks[7]]
-      }));
+      expect(sortTasksListItems(result)).toEqual(
+        sortTasksListItems({
+          UNASSIGNED_TASKS_LIST: [allTasks[10]],
+          '/api/task_lists/1': [allTasks[0]],
+          '/api/task_lists/2': [allTasks[1], allTasks[2]],
+          '/api/task_lists/3': [allTasks[3], allTasks[4], allTasks[5]],
+          '/api/task_lists/4': [allTasks[6], allTasks[7]],
+        }),
+      );
     });
   });
 
@@ -340,12 +351,14 @@ describe('taskListUtils', () => {
 
       const result = getTasksListIdsToEdit(selectedTasks);
 
-      expect(result.sort()).toEqual([
-        '/api/task_lists/1',
-        '/api/task_lists/2',
-        '/api/task_lists/3',
-        '/api/task_lists/4',
-      ].sort());
+      expect(result.sort()).toEqual(
+        [
+          '/api/task_lists/1',
+          '/api/task_lists/2',
+          '/api/task_lists/3',
+          '/api/task_lists/4',
+        ].sort(),
+      );
     });
 
     it('should return the union list for selected tasks with orders and tasks selected for the same task lists', () => {
@@ -362,13 +375,11 @@ describe('taskListUtils', () => {
 
       const result = getTasksListIdsToEdit(selectedTasks);
 
-      expect(result.sort()).toEqual([
-        '/api/task_lists/1',
-        '/api/task_lists/2',
-        '/api/task_lists/3',
-      ].sort());
+      expect(result.sort()).toEqual(
+        ['/api/task_lists/1', '/api/task_lists/2', '/api/task_lists/3'].sort(),
+      );
     });
-  })
+  });
 
   describe('getTaskListByTask', () => {
     it('should return undefined if Task does not belong to any TaskList', () => {
@@ -397,7 +408,7 @@ describe('taskListUtils', () => {
 
       expect(result).toEqual({
         orders: {},
-        tasks: {}
+        tasks: {},
       });
     });
 
@@ -450,45 +461,141 @@ describe('taskListUtils', () => {
 
       expect(result).toEqual([
         {
-          "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
-          "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
-          "isUnassignedTaskList": true,
-          "items": [
-            {"@id": "/api/tasks/1", "assignedTo": "username2", "hasIncidents": false, "id": 1, "orgName": "", "previous": null, "status": "", "tags": []},
-            {"@id": "/api/tasks/2", "assignedTo": "username2", "hasIncidents": false, "id": 2, "orgName": "", "previous": "/api/tasks/1", "status": "", "tags": []}
+          '@id': `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
+          id: `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/2`,
+          isUnassignedTaskList: true,
+          items: [
+            {
+              '@id': '/api/tasks/1',
+              assignedTo: 'username2',
+              hasIncidents: false,
+              id: 1,
+              orgName: '',
+              previous: null,
+              status: '',
+              tags: [],
+            },
+            {
+              '@id': '/api/tasks/2',
+              assignedTo: 'username2',
+              hasIncidents: false,
+              id: 2,
+              orgName: '',
+              previous: '/api/tasks/1',
+              status: '',
+              tags: [],
+            },
           ],
-          "tasksIds": ["/api/tasks/1", "/api/tasks/2"],
-          "username": null,
-          "color": "#424242",
+          tasksIds: ['/api/tasks/1', '/api/tasks/2'],
+          username: null,
+          color: '#424242',
         },
         {
-          "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
-          "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
-          "isUnassignedTaskList": true,
-          "items": [
-            {"@id": "/api/tasks/3", "assignedTo": "username3", "hasIncidents": false, "id": 3, "orgName": "", "previous": null, "status": "", "tags": []},
-            {"@id": "/api/tasks/4", "assignedTo": "username3", "hasIncidents": false, "id": 4, "orgName": "", "previous": "/api/tasks/3", "status": "", "tags": []},
-            {"@id": "/api/tasks/5", "assignedTo": "username3", "hasIncidents": false, "id": 5, "orgName": "", "previous": "/api/tasks/4", "status": "", "tags": []},
-            {"@id": "/api/tasks/6", "assignedTo": "username4", "hasIncidents": false, "id": 6, "orgName": "", "previous": "/api/tasks/5", "status": "", "tags": []},
-            {"@id": "/api/tasks/7", "assignedTo": "username4", "hasIncidents": false, "id": 7, "orgName": "", "previous": "/api/tasks/6", "status": "", "tags": []}
+          '@id': `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
+          id: `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/4`,
+          isUnassignedTaskList: true,
+          items: [
+            {
+              '@id': '/api/tasks/3',
+              assignedTo: 'username3',
+              hasIncidents: false,
+              id: 3,
+              orgName: '',
+              previous: null,
+              status: '',
+              tags: [],
+            },
+            {
+              '@id': '/api/tasks/4',
+              assignedTo: 'username3',
+              hasIncidents: false,
+              id: 4,
+              orgName: '',
+              previous: '/api/tasks/3',
+              status: '',
+              tags: [],
+            },
+            {
+              '@id': '/api/tasks/5',
+              assignedTo: 'username3',
+              hasIncidents: false,
+              id: 5,
+              orgName: '',
+              previous: '/api/tasks/4',
+              status: '',
+              tags: [],
+            },
+            {
+              '@id': '/api/tasks/6',
+              assignedTo: 'username4',
+              hasIncidents: false,
+              id: 6,
+              orgName: '',
+              previous: '/api/tasks/5',
+              status: '',
+              tags: [],
+            },
+            {
+              '@id': '/api/tasks/7',
+              assignedTo: 'username4',
+              hasIncidents: false,
+              id: 7,
+              orgName: '',
+              previous: '/api/tasks/6',
+              status: '',
+              tags: [],
+            },
           ],
-          "tasksIds": ["/api/tasks/3", "/api/tasks/4", "/api/tasks/5", "/api/tasks/6", "/api/tasks/7"],
-          "username": null,
-          "color": "#424242",
+          tasksIds: [
+            '/api/tasks/3',
+            '/api/tasks/4',
+            '/api/tasks/5',
+            '/api/tasks/6',
+            '/api/tasks/7',
+          ],
+          username: null,
+          color: '#424242',
         },
         {
-          "@id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
-          "id": `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
-          "isUnassignedTaskList": true,
-          "items": [
-            { "@id": "/api/tasks/10", "assignedTo": "", "hasIncidents": false, "id": 10, "orgName": "", "previous": "/api/tasks/9", "status": "", "tags": []},
-            {"@id": "/api/tasks/8", "assignedTo": "username5", "hasIncidents": false, "id": 8, "orgName": "", "previous": null, "status": "", "tags": []},
-            { "@id": "/api/tasks/9", "assignedTo": "username6", "hasIncidents": false, "id": 9, "orgName": "", "previous": "/api/tasks/8", "status": "", "tags": []}
+          '@id': `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
+          id: `${UNASSIGNED_TASKS_LIST_ID}-/api/tasks/9`,
+          isUnassignedTaskList: true,
+          items: [
+            {
+              '@id': '/api/tasks/10',
+              assignedTo: '',
+              hasIncidents: false,
+              id: 10,
+              orgName: '',
+              previous: '/api/tasks/9',
+              status: '',
+              tags: [],
+            },
+            {
+              '@id': '/api/tasks/8',
+              assignedTo: 'username5',
+              hasIncidents: false,
+              id: 8,
+              orgName: '',
+              previous: null,
+              status: '',
+              tags: [],
+            },
+            {
+              '@id': '/api/tasks/9',
+              assignedTo: 'username6',
+              hasIncidents: false,
+              id: 9,
+              orgName: '',
+              previous: '/api/tasks/8',
+              status: '',
+              tags: [],
+            },
           ],
-          "tasksIds": ["/api/tasks/10", "/api/tasks/8", "/api/tasks/9"],
-          "username": null,
-          "color": "#424242",
-        }
+          tasksIds: ['/api/tasks/10', '/api/tasks/8', '/api/tasks/9'],
+          username: null,
+          color: '#424242',
+        },
       ]);
     });
   });

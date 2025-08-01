@@ -571,9 +571,8 @@ export function register(
 export function confirmRegistration(token) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
-    const checkoutToResumeAfterActivation = selectResumeCheckoutAfterActivation(
-      getState(),
-    );
+    const checkoutToResumeAfterActivation =
+      selectResumeCheckoutAfterActivation(getState());
 
     dispatch(authenticationRequest());
 
@@ -701,9 +700,8 @@ export function resetPassword(
 export function setNewPassword(token, password) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
-    const checkoutToResumeAfterActivation = selectResumeCheckoutAfterActivation(
-      getState(),
-    );
+    const checkoutToResumeAfterActivation =
+      selectResumeCheckoutAfterActivation(getState());
 
     dispatch(authenticationRequest());
 

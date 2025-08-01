@@ -16,7 +16,16 @@ describe('Selectors', () => {
       date,
       entities: {
         tasks: {
-          ids: ['/api/tasks/1', '/api/tasks/2', '/api/tasks/3', '/api/tasks/4', '/api/tasks/5', '/api/tasks/6', '/api/tasks/7', '/api/tasks/8'],
+          ids: [
+            '/api/tasks/1',
+            '/api/tasks/2',
+            '/api/tasks/3',
+            '/api/tasks/4',
+            '/api/tasks/5',
+            '/api/tasks/6',
+            '/api/tasks/7',
+            '/api/tasks/8',
+          ],
           entities: {
             // TaskList 1
             '/api/tasks/1': {
@@ -88,7 +97,7 @@ describe('Selectors', () => {
           },
         },
         tours: {
-          ids: ['/api/tours/1', '/api/tours/2',],
+          ids: ['/api/tours/1', '/api/tours/2'],
           entities: {
             // TaskList 3
             '/api/tours/1': {
@@ -99,7 +108,7 @@ describe('Selectors', () => {
               '@id': '/api/tours/2',
               items: ['/api/tasks/7'],
             },
-          }
+          },
         },
       },
       ui: {
@@ -119,38 +128,21 @@ describe('Selectors', () => {
       expect(selectTaskLists(baseState)).toEqual([
         {
           '@id': '/api/task_lists/1',
-          itemIds: [
-            '/api/tasks/1',
-            '/api/tasks/2',
-          ],
-          tasksIds: [
-            '/api/tasks/1',
-            '/api/tasks/2',
-          ],
+          itemIds: ['/api/tasks/1', '/api/tasks/2'],
+          tasksIds: ['/api/tasks/1', '/api/tasks/2'],
           username: 'bot_1',
         },
         {
           '@id': '/api/task_lists/2',
           username: 'bot_2',
-          itemIds: [
-            '/api/tasks/3',
-          ],
-          tasksIds: [
-            '/api/tasks/3',
-          ],
+          itemIds: ['/api/tasks/3'],
+          tasksIds: ['/api/tasks/3'],
         },
         {
           '@id': '/api/task_lists/3',
           username: 'bot_3',
-          itemIds: [
-            '/api/tasks/4',
-            '/api/tours/1',
-          ],
-          tasksIds: [
-            '/api/tasks/4',
-            '/api/tasks/5',
-            '/api/tasks/6',
-          ],
+          itemIds: ['/api/tasks/4', '/api/tours/1'],
+          tasksIds: ['/api/tasks/4', '/api/tasks/5', '/api/tasks/6'],
         },
       ]);
     });
@@ -205,13 +197,8 @@ describe('Selectors', () => {
         {
           '@id': '/api/task_lists/10',
           username: 'bot_10',
-          itemIds: [
-            '/api/tours/10',
-          ],
-          tasksIds: [
-            '/api/tasks/9',
-            '/api/tasks/10',
-          ],
+          itemIds: ['/api/tours/10'],
+          tasksIds: ['/api/tasks/9', '/api/tasks/10'],
         },
       ]);
     });
@@ -260,12 +247,12 @@ describe('Selectors', () => {
       const taskList3 = result.find(tl => tl['@id'] === '/api/task_lists/3');
 
       expect(taskList3.tasksIds).toEqual([
-          '/api/tasks/6',
-          '/api/tasks/5',
-          '/api/tasks/4',
-          '/api/tasks/3',
-          '/api/tasks/2',
-          '/api/tasks/1',
+        '/api/tasks/6',
+        '/api/tasks/5',
+        '/api/tasks/4',
+        '/api/tasks/3',
+        '/api/tasks/2',
+        '/api/tasks/1',
       ]);
     });
 
@@ -288,9 +275,9 @@ describe('Selectors', () => {
                   '@id': '/api/task_lists/4',
                   username: 'bot_4',
                   itemIds: [
-                    '/api/tours/1',    // task 1
-                    '/api/tasks/2',    // individual task
-                    '/api/tours/2',    // task 3, task 4
+                    '/api/tours/1', // task 1
+                    '/api/tasks/2', // individual task
+                    '/api/tours/2', // task 3, task 4
                   ],
                 },
               },
@@ -317,10 +304,10 @@ describe('Selectors', () => {
       const taskList4 = result.find(tl => tl['@id'] === '/api/task_lists/4');
 
       expect(taskList4.tasksIds).toEqual([
-          '/api/tasks/1',
-          '/api/tasks/2',
-          '/api/tasks/3',
-          '/api/tasks/4',
+        '/api/tasks/1',
+        '/api/tasks/2',
+        '/api/tasks/3',
+        '/api/tasks/4',
       ]);
     });
 
@@ -342,11 +329,7 @@ describe('Selectors', () => {
                 '/api/task_lists/4': {
                   '@id': '/api/task_lists/4',
                   username: 'bot_4',
-                  itemIds: [
-                    '/api/tasks/1',
-                    '/api/tours/1',
-                    '/api/tasks/2',
-                  ],
+                  itemIds: ['/api/tasks/1', '/api/tours/1', '/api/tasks/2'],
                 },
               },
             },
@@ -367,10 +350,7 @@ describe('Selectors', () => {
       const result = selectTaskLists(customState);
       const taskList4 = result.find(tl => tl['@id'] === '/api/task_lists/4');
 
-      expect(taskList4.tasksIds).toEqual([
-          '/api/tasks/1',
-          '/api/tasks/2',
-      ]);
+      expect(taskList4.tasksIds).toEqual(['/api/tasks/1', '/api/tasks/2']);
     });
   });
 

@@ -13,9 +13,9 @@ describe('taskListEntityReducers', () => {
           createTaskListSuccess({
             '@id': '/api/task_lists/1',
             username: 'bot_1',
-            items: ['/api/tasks/1', '/api/tasks/2', ],
-          })
-        )
+            items: ['/api/tasks/1', '/api/tasks/2'],
+          }),
+        ),
       ).toEqual({
         ids: ['bot_1'],
         entities: {

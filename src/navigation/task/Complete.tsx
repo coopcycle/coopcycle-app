@@ -155,12 +155,15 @@ const MultipleTasksLabel = ({ tasks }) => {
 
   return (
     <Text mt={2} ml={3}>
-      {tasks.reduce((label, task, idx) => {
-        const taskIdentifier = task?.metadata?.order_number
-          ? `${task.metadata.order_number}-${task?.metadata?.delivery_position}`
-          : task.id;
-        return `${label}${idx !== 0 ? ',' : ''} #${taskIdentifier}`;
-      }, `${t('COMPLETE_TASKS')}: `)}
+      {tasks.reduce(
+        (label, task, idx) => {
+          const taskIdentifier = task?.metadata?.order_number
+            ? `${task.metadata.order_number}-${task?.metadata?.delivery_position}`
+            : task.id;
+          return `${label}${idx !== 0 ? ',' : ''} #${taskIdentifier}`;
+        },
+        `${t('COMPLETE_TASKS')}: `,
+      )}
     </Text>
   );
 };

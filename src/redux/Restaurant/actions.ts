@@ -688,8 +688,8 @@ function errorToString(e) {
   return e.message
     ? e.message
     : e.toString && typeof e.toString === 'function'
-    ? e.toString()
-    : e;
+      ? e.toString()
+      : e;
 }
 
 export function printOrderById(orderId) {
