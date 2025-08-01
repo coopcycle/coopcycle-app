@@ -56,7 +56,7 @@ PODS:
     - ExpoModulesCore
   - Expo (52.0.46):
     - ExpoModulesCore
-  - ExpoAdapterFBSDKNext (12.2.0):
+  - ExpoAdapterFBSDKNext (13.4.1):
     - ExpoModulesCore
     - FBSDKCoreKit
     - React-Core
@@ -96,21 +96,21 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - fast_float (6.1.4)
-  - FBAEMKit (16.3.1):
-    - FBSDKCoreKit_Basics (= 16.3.1)
+  - FBAEMKit (18.0.0):
+    - FBSDKCoreKit_Basics (= 18.0.0)
   - FBLazyVector (0.76.9)
-  - FBSDKCoreKit (16.3.1):
-    - FBAEMKit (= 16.3.1)
-    - FBSDKCoreKit_Basics (= 16.3.1)
-  - FBSDKCoreKit_Basics (16.3.1)
-  - FBSDKGamingServicesKit (16.3.1):
-    - FBSDKCoreKit (= 16.3.1)
-    - FBSDKCoreKit_Basics (= 16.3.1)
-    - FBSDKShareKit (= 16.3.1)
-  - FBSDKLoginKit (16.3.1):
-    - FBSDKCoreKit (= 16.3.1)
-  - FBSDKShareKit (16.3.1):
-    - FBSDKCoreKit (= 16.3.1)
+  - FBSDKCoreKit (18.0.0):
+    - FBAEMKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit_Basics (18.0.0)
+  - FBSDKGamingServicesKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+    - FBSDKShareKit (= 18.0.0)
+  - FBSDKLoginKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
+  - FBSDKShareKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
   - Firebase/Analytics (11.11.0):
     - Firebase/Core
   - Firebase/Core (11.11.0):
@@ -161,7 +161,7 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
-  - FirebaseRemoteConfigInterop (11.12.0)
+  - FirebaseRemoteConfigInterop (11.15.0)
   - FirebaseSessions (11.11.0):
     - FirebaseCore (~> 11.11.0)
     - FirebaseCoreExtension (~> 11.11.0)
@@ -1553,20 +1553,20 @@ PODS:
     - react-native-config/App (= 1.5.5)
   - react-native-config/App (1.5.5):
     - React-Core
-  - react-native-fbsdk-next (12.2.0):
+  - react-native-fbsdk-next (13.4.1):
     - React-Core
-    - react-native-fbsdk-next/Core (= 12.2.0)
-    - react-native-fbsdk-next/Login (= 12.2.0)
-    - react-native-fbsdk-next/Share (= 12.2.0)
-  - react-native-fbsdk-next/Core (12.2.0):
-    - FBSDKCoreKit (~> 16.3.1)
+    - react-native-fbsdk-next/Core (= 13.4.1)
+    - react-native-fbsdk-next/Login (= 13.4.1)
+    - react-native-fbsdk-next/Share (= 13.4.1)
+  - react-native-fbsdk-next/Core (13.4.1):
+    - FBSDKCoreKit (~> 18.0)
     - React-Core
-  - react-native-fbsdk-next/Login (12.2.0):
-    - FBSDKLoginKit (~> 16.3.1)
+  - react-native-fbsdk-next/Login (13.4.1):
+    - FBSDKLoginKit (~> 18.0)
     - React-Core
-  - react-native-fbsdk-next/Share (12.2.0):
-    - FBSDKGamingServicesKit (~> 16.3.1)
-    - FBSDKShareKit (~> 16.3.1)
+  - react-native-fbsdk-next/Share (13.4.1):
+    - FBSDKGamingServicesKit (~> 18.0)
+    - FBSDKShareKit (~> 18.0)
     - React-Core
   - react-native-get-random-values (1.11.0):
     - React-Core
@@ -2864,7 +2864,7 @@ SPEC CHECKSUMS:
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   EXConstants: fcfc75800824ac2d5c592b5bc74130bad17b146b
   Expo: a6ff273c618506b12129a0d06f2a08201bfbcf43
-  ExpoAdapterFBSDKNext: 304f7faf6f019b6df77a3573a264db85f2a3ebc0
+  ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
   ExpoAsset: 48386d40d53a8c1738929b3ed509bcad595b5516
   ExpoCamera: 0a3e78de7b1ca8c438ee6784fa6f22c5b1b36966
   ExpoFileSystem: 42d363d3b96f9afab980dcef60d5657a4443c655
@@ -2872,13 +2872,13 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: b0171a73665bfcefcfcc311742a72a956e6aa680
   ExpoModulesCore: c3e810e874b33139221bea656743f106a2826f47
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
-  FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
+  FBAEMKit: e34530df538b8eb8aeb53c35867715ba6c63ef0c
   FBLazyVector: 7605ea4810e0e10ae4815292433c09bf4324ba45
-  FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942
-  FBSDKCoreKit_Basics: cd7b5f5d1e8868c26706917919d058999ca672c3
-  FBSDKGamingServicesKit: fb0dcf086e8ca51f5a0074908edb783dba286af0
-  FBSDKLoginKit: 572cca0bc6c90067ef197187697cb3b584310c52
-  FBSDKShareKit: d9269157b4e9620f0bc1a461c5ead35a65cede9a
+  FBSDKCoreKit: d3f479a69127acebb1c6aad91c1a33907bcf6c2f
+  FBSDKCoreKit_Basics: 017b6dc2a1862024815a8229e75661e627ac1e29
+  FBSDKGamingServicesKit: cdb625419879a651d07906d8f874fc76291be660
+  FBSDKLoginKit: 5875762d1fe09ddcb05d03365d4f5dc34413843d
+  FBSDKShareKit: 082d1b087d6481af36f8d8433542f25f2fc2c8dd
   Firebase: 6a8f201c61eda24e98f1ce2b44b1b9c2caf525cc
   FirebaseAnalytics: acfa848bf81e1a4dbf60ef1f0eddd7328fe6673e
   FirebaseCore: 2321536f9c423b1f857e047a82b8a42abc6d9e2c
@@ -2886,7 +2886,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: 31ee350d87b30a9349e907f84bf49ef8e6791e5a
   FirebaseCrashlytics: 5058c465e10782f54337b394c37254e0595174e9
   FirebaseInstallations: 781e0e37aa0e1c92b44d00e739aba79ad31b2dba
-  FirebaseRemoteConfigInterop: 82b81fd06ee550cbeff40004e2c106daedf73e38
+  FirebaseRemoteConfigInterop: 1c6135e8a094cc6368949f5faeeca7ee8948b8aa
   FirebaseSessions: f5c6bfeb66a7202deaf33352017bb6365e395820
   fmt: 01b82d4ca6470831d1cc0852a1af644be019e8f6
   glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
@@ -2936,7 +2936,7 @@ SPEC CHECKSUMS:
   react-native-ble-manager: 9b2df5891d2ad0bb6e3e684096f32dda3c89f504
   react-native-blob-util: fcba876f9489cc37b6bb7642538a4b28ec542b66
   react-native-config: 644074ab88db883fcfaa584f03520ec29589d7df
-  react-native-fbsdk-next: ddf303a27fa0a9598639a6f421036f6b9f0483c3
+  react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-maps: 9febd31278b35cd21e4fad2cf6fa708993be5dab
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
