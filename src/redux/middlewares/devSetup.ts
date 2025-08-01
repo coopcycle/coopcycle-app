@@ -1,5 +1,3 @@
-import { applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import reactotron from 'reactotron-react-native';
 import rdiff from 'recursive-diff';
@@ -68,8 +66,12 @@ export default function configureForDevelopment(middlewaresList) {
 
   middlewares.push(logger);
 
-  return composeWithDevTools(
-    applyMiddleware(...middlewares),
-    ReactotronConfig.createEnhancer(),
-  );
+  return middlewares;
+
+  //TODO; fix ReactotronConfig
+
+  // return composeWithDevTools(
+  //   applyMiddleware(...middlewares),
+  //   ReactotronConfig.createEnhancer(),
+  // );
 }

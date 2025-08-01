@@ -1,5 +1,5 @@
-import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import ReduxAsyncQueue from 'redux-async-queue';
 
 import { persistStore } from 'redux-persist';
@@ -19,12 +19,10 @@ import { filterExpiredCarts } from './Checkout/middlewares';
 import SoundMiddleware from './middlewares/SoundMiddleware';
 import { notifyOnNewOrderCreated } from './Restaurant/middlewares';
 import { apiSlice } from './api/slice';
-import { setupListeners } from '@reduxjs/toolkit/query';
 import { setupListenersReactNative } from './setupListenersReactNative';
 import AppStateMiddleware from './middlewares/AppStateMiddleware';
 
 const middlewares = [
-  thunk,
   ReduxAsyncQueue,
   NetInfoMiddleware,
   AppStateMiddleware,
@@ -52,11 +50,15 @@ const middlewaresProxy = middlewaresList => {
   if (__DEV__) {
     return require('./middlewares/devSetup').default(middlewaresList);
   } else {
-    return applyMiddleware(...middlewaresList);
+    return middlewaresList;
   }
 };
 
-const store = createStore(reducers, middlewaresProxy(middlewares));
+const store = configureStore({
+  reducer: reducers,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(middlewaresProxy(middlewares)),
+});
 
 // enable support for refetchOnFocus and refetchOnReconnect behaviors
 // they are disabled by default and need to be enabled explicitly for each hook/action
