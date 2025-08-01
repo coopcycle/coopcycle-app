@@ -130,7 +130,7 @@ export const apiSlice = createApi({
         if (result.error) {
           return { error: result.error };
         }
-        return { data: sortByName(result) };
+        return { data: sortByName(result.data) };
       },
     }),
     getMyTasks: builder.query({
