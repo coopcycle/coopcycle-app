@@ -20,6 +20,12 @@ module.exports = {
     'no-case-declarations': 'warn',
     //FIXME: fix warnings reported by this rule and increase the severity to 'error'
     'no-async-promise-executor': 'warn',
+    //FIXME: fix warnings reported by this rule and increase the severity to 'error'
+    'no-var': 'warn',
+    //FIXME: fix warnings reported by this rule and increase the severity to 'error'
+    'prefer-const': 'warn',
+    //FIXME: fix warnings reported by this rule and increase the severity to 'error'
+    'prefer-rest-params': 'warn',
 
     'no-prototype-builtins': 'warn',
 
