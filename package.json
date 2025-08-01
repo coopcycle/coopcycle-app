@@ -84,7 +84,7 @@
     "react-native-config": "^1.5.3",
     "react-native-dropdownalert": "^4.5.1",
     "react-native-email-link": "^1.16.1",
-    "react-native-fbsdk-next": "^12.1.0",
+    "react-native-fbsdk-next": "^13.4.1",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-get-random-values": "^1.11.0",
     "react-native-inappbrowser-reborn": "^3.7.0",
