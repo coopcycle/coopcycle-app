@@ -23,15 +23,17 @@ const OrderInfo = ({ route }) => {
     () => getAspectRatio(mapDimensions),
     [mapDimensions],
   );
-  const {orderId, isFromCourier } = route.params;
-  const selectSelector = isFromCourier ? selectTasksByOrderCourier : selectTasksByOrderLogistics;
+  const { orderId, isFromCourier } = route.params;
+  const selectSelector = isFromCourier
+    ? selectTasksByOrderCourier
+    : selectTasksByOrderLogistics;
   const orderTasks = useSelector(selectSelector(orderId));
   // Ugly workaround for colors for courier
   const tasks = useMemo(() => {
     if (isFromCourier) {
       const taskList = createCurrentTaskList(orderTasks);
       // Override color for courier
-      return taskList.items.map(task => ({...task, color: blueColor}));
+      return taskList.items.map(task => ({ ...task, color: blueColor }));
     }
     return orderTasks;
   }, [orderTasks, isFromCourier]);
@@ -41,9 +43,12 @@ const OrderInfo = ({ route }) => {
     setMapDimensions({ height, width });
   };
 
-    const handleTaskTitleClick = useCallback(task => {
-      navigateToTask(navigation, route, task, tasks)
-    }, [navigation, route, tasks])
+  const handleTaskTitleClick = useCallback(
+    task => {
+      navigateToTask(navigation, route, task, tasks);
+    },
+    [navigation, route, tasks],
+  );
 
   return (
     <View>
@@ -51,10 +56,12 @@ const OrderInfo = ({ route }) => {
         <TaskMiniMap tasks={tasks} aspectRatio={aspectRatio} />
       </View>
       <FlatList
-        style={{height: '65%'}}
+        style={{ height: '65%' }}
         data={tasks}
         keyExtractor={(item, index) => `${item.id}-${index}`}
-        renderItem={({ item }) => <Details task={item} onTaskTitleClick={handleTaskTitleClick} />}
+        renderItem={({ item }) => (
+          <Details task={item} onTaskTitleClick={handleTaskTitleClick} />
+        )}
         ListHeaderComponent={
           <View key={'order-header'}>
             <Text

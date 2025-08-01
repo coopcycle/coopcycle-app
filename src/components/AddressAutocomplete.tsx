@@ -49,21 +49,21 @@ const fuseOptions = {
 };
 
 function AddressAutocomplete({
-    country,
-    t,
-    value,
-    addresses = [],
-    minChars = 3,
-    renderRight = () => <View />,
-    containerStyle,
-    inputContainerStyle,
-    listContainerStyle,
-    style,
-    flatListProps,
-    onSelectAddress,
-    placeholder,
-    ...otherProps
-  }) {
+  country,
+  t,
+  value,
+  addresses = [],
+  minChars = 3,
+  renderRight = () => <View />,
+  containerStyle,
+  inputContainerStyle,
+  listContainerStyle,
+  style,
+  flatListProps,
+  onSelectAddress,
+  placeholder,
+  ...otherProps
+}) {
   const props = arguments[0];
 
   const [query, setQuery] = useState(
@@ -216,7 +216,7 @@ function AddressAutocomplete({
       types: 'geocode',
       locationrestriction: {
         southWest: props.southWest,
-        northEast: props.northEast
+        northEast: props.northEast,
       },
       sessiontoken: newSessionToken,
     };
@@ -230,7 +230,12 @@ function AddressAutocomplete({
       const queryParams = {
         key: Config.GOOGLE_MAPS_BROWSER_KEY,
         languageCode: localeDetector(),
-        fields: ['addressComponents', 'location', 'formattedAddress', 'types'].join(',') // need to be specified explictly
+        fields: [
+          'addressComponents',
+          'location',
+          'formattedAddress',
+          'types',
+        ].join(','), // need to be specified explictly
       };
 
       // Réinitialiser le sessionToken après la sélection
@@ -238,20 +243,22 @@ function AddressAutocomplete({
 
       // Appel à l'API Google Place Details
       axios
-      .get(
-        `https://places.googleapis.com/v1/places/${item.place_id}?${qs.stringify(
-          queryParams,
-        )}`
-      )
-      .then(response => {
-        setQuery(item.description);
-        setResults([]);
-        const formattedAddress = AddressUtils.createAddressFromGoogleDetails(response.data)
-        props.onSelectAddress(formattedAddress);
-      })
-      .catch(error => {
-        console.log('AddressAutocomplete; _onItemPress', error);
-      });
+        .get(
+          `https://places.googleapis.com/v1/places/${
+            item.place_id
+          }?${qs.stringify(queryParams)}`,
+        )
+        .then(response => {
+          setQuery(item.description);
+          setResults([]);
+          const formattedAddress = AddressUtils.createAddressFromGoogleDetails(
+            response.data,
+          );
+          props.onSelectAddress(formattedAddress);
+        })
+        .catch(error => {
+          console.log('AddressAutocomplete; _onItemPress', error);
+        });
     }
 
     if (item.type === 'postcode') {
@@ -363,7 +370,8 @@ function AddressAutocomplete({
   const renderTextInput = inputProps => (
     <View style={styles.textInput}>
       <View style={styles.textInput}>
-        <Input _stack={{ style: {} }}
+        <Input
+          _stack={{ style: {} }}
           {...inputProps}
           style={[
             inputProps.style,

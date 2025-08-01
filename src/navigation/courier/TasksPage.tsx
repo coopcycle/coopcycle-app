@@ -1,7 +1,4 @@
-import {
-  activateKeepAwakeAsync,
-  deactivateKeepAwake,
-} from 'expo-keep-awake';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import {
   ActivityIndicator,
   InteractionManager,
@@ -31,7 +28,6 @@ import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TasksMapView from '../../components/TasksMapView';
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -60,7 +56,10 @@ function TaskMapPage({ navigation, route }) {
     const taskList = createCurrentTaskList(tasks);
     // Override color for courier
     taskList.color = blueColor;
-    taskList.items = taskList.items.map(task => ({...task, color: blueColor}));
+    taskList.items = taskList.items.map(task => ({
+      ...task,
+      color: blueColor,
+    }));
 
     return taskList;
   }, [tasks]);

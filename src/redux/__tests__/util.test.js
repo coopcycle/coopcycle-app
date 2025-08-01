@@ -4,7 +4,7 @@ import {
   actionMatchCreator,
   createTaskItemsTransform,
   fetchAllRecordsUsingFetchWithBQ,
-  idfromUrl
+  idfromUrl,
 } from '../util';
 
 describe('Redux | util', () => {
@@ -65,21 +65,22 @@ describe('Redux | util', () => {
   });
 
   describe('fetchAllRecordsUsingFetchWithBQ', () => {
-    const members = [
-      {'@id': '/api/stores/1'},
-      {'@id': '/api/stores/2'}
-    ];
+    const members = [{ '@id': '/api/stores/1' }, { '@id': '/api/stores/2' }];
 
     it('should return all items that fits in the first page', async () => {
       const fetchWithBQ = jest.fn();
       fetchWithBQ.mockResolvedValue({
         data: {
-        'hydra:totalItems': 2,
-        'hydra:member': members
-        }
+          'hydra:totalItems': 2,
+          'hydra:member': members,
+        },
       });
 
-      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 10);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(
+        fetchWithBQ,
+        '/api/stores',
+        10,
+      );
       expect(rs).toEqual(members);
       expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
@@ -89,11 +90,15 @@ describe('Redux | util', () => {
       fetchWithBQ.mockResolvedValue({
         data: {
           'hydra:totalItems': 6,
-          'hydra:member': members
-        }
+          'hydra:member': members,
+        },
       });
 
-      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 2);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(
+        fetchWithBQ,
+        '/api/stores',
+        2,
+      );
       expect(rs).toEqual([...members, ...members, ...members]);
       expect(fetchWithBQ).toHaveBeenCalledTimes(3);
     });
@@ -103,11 +108,15 @@ describe('Redux | util', () => {
       fetchWithBQ.mockResolvedValue({
         data: {
           'hydra:totalItems': 5,
-          'hydra:member': members
-        }
+          'hydra:member': members,
+        },
       });
 
-      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 7);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(
+        fetchWithBQ,
+        '/api/stores',
+        7,
+      );
       expect(rs).toEqual(members);
       expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
@@ -117,11 +126,15 @@ describe('Redux | util', () => {
       fetchWithBQ.mockResolvedValue({
         data: {
           'hydra:totalItems': 2,
-          'hydra:member': members
-        }
+          'hydra:member': members,
+        },
       });
 
-      const rs = await fetchAllRecordsUsingFetchWithBQ(fetchWithBQ, '/api/stores', 1);
+      const rs = await fetchAllRecordsUsingFetchWithBQ(
+        fetchWithBQ,
+        '/api/stores',
+        1,
+      );
       expect(rs).toEqual(members);
       expect(fetchWithBQ).toHaveBeenCalledTimes(1);
     });
@@ -134,7 +147,10 @@ describe('Redux | util', () => {
 
       const action = actionCreator1('some value');
 
-      const result = actionMatchCreator(action, [actionCreator1, actionCreator2]);
+      const result = actionMatchCreator(action, [
+        actionCreator1,
+        actionCreator2,
+      ]);
 
       expect(result).toBeTruthy();
     });
@@ -146,7 +162,10 @@ describe('Redux | util', () => {
 
       const action = actionCreator1('some value');
 
-      const result = actionMatchCreator(action, [actionCreator2, actionCreator3]);
+      const result = actionMatchCreator(action, [
+        actionCreator2,
+        actionCreator3,
+      ]);
 
       expect(result).toBeFalsy();
     });

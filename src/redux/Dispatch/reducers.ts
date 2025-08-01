@@ -1,8 +1,5 @@
 import { actionMatchCreator } from '../util';
-import {
-  initialized,
-  loadUsersSuccess,
-} from './actions';
+import { initialized, loadUsersSuccess } from './actions';
 
 function initializedReducer(state = false, action = {}) {
   if (actionMatchCreator(action, [initialized])) {

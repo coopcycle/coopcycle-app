@@ -8,17 +8,16 @@ import {
 import { useHeaderHeight } from '@react-navigation/elements';
 
 const HeaderHeightAwareKeyboardAvoidingView = ({ children }) => {
-
   const headerHeight = useHeaderHeight();
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={ headerHeight + StatusBar.currentHeight }
+      keyboardVerticalOffset={headerHeight + StatusBar.currentHeight}
       style={{ flex: 1 }}>
-      { children }
+      {children}
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
-export default HeaderHeightAwareKeyboardAvoidingView
+export default HeaderHeightAwareKeyboardAvoidingView;

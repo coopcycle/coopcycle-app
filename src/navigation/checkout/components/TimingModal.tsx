@@ -116,7 +116,7 @@ class TimingModal extends Component {
     onFulfillmentMethodChange: () => {},
     onSchedule: () => {},
     onSkip: () => {},
-  }
+  };
 }
 
 TimingModal.propTypes = {

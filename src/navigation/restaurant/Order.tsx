@@ -22,7 +22,7 @@ import {
   selectPrinter,
 } from '../../redux/Restaurant/selectors';
 import { DatadogLogger } from '../../Datadog';
-import BasicSafeAreaView from '../../components/BasicSafeAreaView'
+import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 
 const OrderNotes = ({ order }) => {
   if (order.notes) {

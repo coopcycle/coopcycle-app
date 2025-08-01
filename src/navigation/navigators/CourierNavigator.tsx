@@ -216,7 +216,7 @@ export default () => {
         name="Order"
         component={OrderNavigator}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
     </RootStack.Navigator>

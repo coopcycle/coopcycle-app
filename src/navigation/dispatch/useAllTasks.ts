@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { useEffect, useMemo } from "react";
+import { useDispatch } from 'react-redux';
+import { useEffect, useMemo } from 'react';
 
 import {
   loadTaskListsFailure,
@@ -8,15 +8,17 @@ import {
   loadTasksSuccess,
   loadUsersFailure,
   loadUsersSuccess,
-} from "../../redux/Dispatch/actions";
+} from '../../redux/Dispatch/actions';
 import {
   useGetCourierUsersQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,
   useGetToursQuery,
-} from "../../redux/api/slice";
-import { loadToursFailure, loadToursSuccess } from "../../shared/logistics/redux";
-
+} from '../../redux/api/slice';
+import {
+  loadToursFailure,
+  loadToursSuccess,
+} from '../../shared/logistics/redux';
 
 export function useAllTasks(date) {
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ export function useAllTasks(date) {
     data: courierUsers,
     isError: isErrorCourierUsers,
     isLoading: isLoadingCourierUsers,
-    isFetching: isFetchingCourierUsers
+    isFetching: isFetchingCourierUsers,
   } = useGetCourierUsersQuery();
 
   const {
@@ -53,19 +55,48 @@ export function useAllTasks(date) {
   } = useGetToursQuery(date);
 
   const isError = useMemo(() => {
-    return isErrorCourierUsers || isErrorTaskLists || isErrorTasks || isErrorTours;
+    return (
+      isErrorCourierUsers || isErrorTaskLists || isErrorTasks || isErrorTours
+    );
   }, [isErrorCourierUsers, isErrorTaskLists, isErrorTasks, isErrorTours]);
 
   const isLoading = useMemo(() => {
-    return isLoadingCourierUsers || isLoadingTaskLists || isLoadingTasks || isLoadingTours;
-  }, [isLoadingCourierUsers, isLoadingTaskLists, isLoadingTasks, isLoadingTours]);
+    return (
+      isLoadingCourierUsers ||
+      isLoadingTaskLists ||
+      isLoadingTasks ||
+      isLoadingTours
+    );
+  }, [
+    isLoadingCourierUsers,
+    isLoadingTaskLists,
+    isLoadingTasks,
+    isLoadingTours,
+  ]);
 
   const isFetching = useMemo(() => {
-    return isFetchingCourierUsers || isFetchingTaskLists || isFetchingTasks || isFetchingTours;
-  }, [isFetchingCourierUsers, isFetchingTaskLists, isFetchingTasks, isFetchingTours]);
+    return (
+      isFetchingCourierUsers ||
+      isFetchingTaskLists ||
+      isFetchingTasks ||
+      isFetchingTours
+    );
+  }, [
+    isFetchingCourierUsers,
+    isFetchingTaskLists,
+    isFetchingTasks,
+    isFetchingTours,
+  ]);
 
   useEffect(() => {
-    if (!isFetching && !isError && courierUsers && taskLists && tasks && tours) {
+    if (
+      !isFetching &&
+      !isError &&
+      courierUsers &&
+      taskLists &&
+      tasks &&
+      tours
+    ) {
       dispatch(loadTaskListsSuccess(taskLists));
       dispatch(loadTasksSuccess(tasks));
       dispatch(loadToursSuccess(tours));
@@ -74,7 +105,7 @@ export function useAllTasks(date) {
   }, [courierUsers, dispatch, isError, isFetching, taskLists, tasks, tours]);
 
   useEffect(() => {
-    if(isError) {
+    if (isError) {
       dispatch(loadTasksFailure());
       dispatch(loadTaskListsFailure());
       dispatch(loadToursFailure());

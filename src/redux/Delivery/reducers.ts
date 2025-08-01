@@ -9,11 +9,10 @@ import {
   LOAD_TIME_SLOTS_SUCCESS,
   LOAD_TIME_SLOT_CHOICES_SUCCESS,
   SET_STORE,
-  SET_STORES
-} from "./actions"
+  SET_STORES,
+} from './actions';
 import { formatPrice } from '../../utils/formatting';
 import { LOGOUT_SUCCESS } from '../App/actions';
-
 
 const initialState = {
   addresses: [],
@@ -25,7 +24,7 @@ const initialState = {
   stores: [],
   timeSlotChoices: [],
   timeSlots: [],
-}
+};
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
@@ -86,14 +85,14 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         store: action.payload,
-      }
+      };
 
     case SET_STORES:
       return {
         ...state,
         stores: action.payload,
-      }
+      };
   }
 
   return state;
-}
+};

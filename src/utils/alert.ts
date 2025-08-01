@@ -2,7 +2,6 @@ import { Alert } from 'react-native';
 
 import i18n from '../i18n';
 
-
 export function showAlert(error, title = i18n.t('FAILED')) {
   let message = i18n.t('TRY_LATER');
 
@@ -13,10 +12,7 @@ export function showAlert(error, title = i18n.t('FAILED')) {
     message = error;
   }
 
-  return Alert.alert(
-    title,
-    message,
-    [{ text: 'OK', onPress: () => { } }],
-    { cancelable: false }
-  );
+  return Alert.alert(title, message, [{ text: 'OK', onPress: () => {} }], {
+    cancelable: false,
+  });
 }

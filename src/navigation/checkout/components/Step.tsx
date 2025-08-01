@@ -60,7 +60,7 @@ class Step extends Component {
     activeLabel: '',
     loadingLabel: '',
     errorLabel: '',
-  }
+  };
 }
 
 Step.propTypes = {

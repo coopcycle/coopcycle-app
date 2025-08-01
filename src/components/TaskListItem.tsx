@@ -250,7 +250,11 @@ const SwipeButtonContainer = ({
 const SwipeButton = ({ iconName, width }) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={FontAwesome} name={iconName} style={{ color: '#ffffff', width: 40 }} />
+    <Icon
+      as={FontAwesome}
+      name={iconName}
+      style={{ color: '#ffffff', width: 40 }}
+    />
   </View>
 );
 
@@ -273,253 +277,267 @@ const ItemTouchable = ({ children, style, ...otherProps }) => {
   );
 };
 
-const TaskListItem = forwardRef(({
-  task,
-  color,
-  index,
-  taskListId,
-  appendTaskListTestID = "",
-  onPress = () => {},
-  onOrderPress = () => {},
-  onPressLeft = () => {},
-  onPressRight = () => {},
-  swipeOutLeftBackgroundColor,
-  swipeOutLeftIconName,
-  swipeOutRightBackgroundColor,
-  swipeOutRightIconName,
-  onSwipedToLeft,
-  onSwipedToRight,
-  onSwipeClosed,
-}, _ref) => {
-  const taskTitle = getTaskTitle(task);
+const TaskListItem = forwardRef(
+  (
+    {
+      task,
+      color,
+      index,
+      taskListId,
+      appendTaskListTestID = '',
+      onPress = () => {},
+      onOrderPress = () => {},
+      onPressLeft = () => {},
+      onPressRight = () => {},
+      swipeOutLeftBackgroundColor,
+      swipeOutLeftIconName,
+      swipeOutRightBackgroundColor,
+      swipeOutRightIconName,
+      onSwipedToLeft,
+      onSwipedToRight,
+      onSwipeClosed,
+    },
+    _ref,
+  ) => {
+    const taskTitle = getTaskTitle(task);
 
-  const address = task.address?.contactName
-    ? task.address?.name
-      ? `${task.address.contactName} - ${task.address.name}`
-      : task.address.contactName
-    : task.address?.name
-    ? task.address.name
-    : null;
+    const address = task.address?.contactName
+      ? task.address?.name
+        ? `${task.address.contactName} - ${task.address.name}`
+        : task.address.contactName
+      : task.address?.name
+      ? task.address.name
+      : null;
 
-  const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
-  const textStyle = [styles.text];
-  const itemProps = {};
-  const swipeButtonsProps = {};
+    const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
+    const textStyle = [styles.text];
+    const itemProps = {};
+    const swipeButtonsProps = {};
 
-  if (task.status === 'DONE' || task.status === 'FAILED') {
-    itemProps.opacity = 0.4;
-    swipeButtonsProps.display = 'none';
-  }
-
-  if (task.status === 'FAILED') {
-    textStyle.push(styles.textDanger);
-  }
-
-  const marginHorizontal = 6;
-  const { width } = Dimensions.get('window');
-  const cardWidth = width - marginHorizontal * 2;
-  const buttonWidth = cardWidth / 4;
-  const visibleButtonWidth = buttonWidth + 25;
-
-  const swipeRow = useRef(null);
-
-  useEffect(() => {
-    if (task.status === 'DONE') {
-      swipeRow.current?.closeRow();
+    if (task.status === 'DONE' || task.status === 'FAILED') {
+      itemProps.opacity = 0.4;
+      swipeButtonsProps.display = 'none';
     }
-  }, [task.status]);
 
-  // swipeLeft
-  const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
-  const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
-  const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
-  const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
-
-  const prevShouldSwipeLeftRef = useRef();
-  const prevShouldSwipeRightRef = useRef();
-
-  useEffect(() => {
-    if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
-      swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-    } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
-      swipeRow.current?.closeRow?.();
+    if (task.status === 'FAILED') {
+      textStyle.push(styles.textDanger);
     }
-    prevShouldSwipeLeftRef.current = shouldSwipeLeft;
-  }, [shouldSwipeLeft, buttonWidth]);
 
-  useEffect(() => {
-    if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
-      swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
-    } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
-      swipeRow.current?.closeRow?.();
+    const marginHorizontal = 6;
+    const { width } = Dimensions.get('window');
+    const cardWidth = width - marginHorizontal * 2;
+    const buttonWidth = cardWidth / 4;
+    const visibleButtonWidth = buttonWidth + 25;
+
+    const swipeRow = useRef(null);
+
+    useEffect(() => {
+      if (task.status === 'DONE') {
+        swipeRow.current?.closeRow();
+      }
+    }, [task.status]);
+
+    // swipeLeft
+    const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
+    const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
+    const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
+    const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
+
+    const prevShouldSwipeLeftRef = useRef();
+    const prevShouldSwipeRightRef = useRef();
+
+    useEffect(() => {
+      if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
+        swipeRow.current?.manuallySwipeRow?.(buttonWidth);
+      } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
+        swipeRow.current?.closeRow?.();
+      }
+      prevShouldSwipeLeftRef.current = shouldSwipeLeft;
+    }, [shouldSwipeLeft, buttonWidth]);
+
+    useEffect(() => {
+      if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
+        swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
+      } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
+        swipeRow.current?.closeRow?.();
+      }
+      prevShouldSwipeRightRef.current = shouldSwipeRight;
+    }, [shouldSwipeRight, buttonWidth]);
+
+    function _onRowOpen(toValue) {
+      if (toValue > 0 && onSwipedToLeft) {
+        onSwipedToLeft();
+      } else if (toValue < 0 && onSwipedToRight) {
+        onSwipedToRight();
+      }
     }
-    prevShouldSwipeRightRef.current = shouldSwipeRight;
-  }, [shouldSwipeRight, buttonWidth]);
 
-  function _onRowOpen(toValue) {
-    if (toValue > 0 && onSwipedToLeft) {
-      onSwipedToLeft();
-    } else if (toValue < 0 && onSwipedToRight) {
-      onSwipedToRight();
+    function _onRowClose() {
+      if (onSwipeClosed) {
+        onSwipeClosed();
+      }
     }
-  }
+    const allowSwipeLeft =
+      task.status !== 'DONE' && !allTasksIdsFromOrders.includes(task['@id']);
+    const allowSwipeRight =
+      task.status !== 'DONE' && !allTasksIdsFromTasks.includes(task['@id']);
 
-  function _onRowClose() {
-    if (onSwipeClosed) {
-      onSwipeClosed();
-    }
-  }
-  const allowSwipeLeft =
-    task.status !== 'DONE' && !allTasksIdsFromOrders.includes(task['@id']);
-  const allowSwipeRight =
-    task.status !== 'DONE' && !allTasksIdsFromTasks.includes(task['@id']);
-
-  return (
-    <SwipeRow
-      disableLeftSwipe={!allowSwipeLeft}
-      disableRightSwipe={!allowSwipeRight}
-      leftOpenValue={buttonWidth}
-      stopLeftSwipe={visibleButtonWidth}
-      rightOpenValue={-buttonWidth}
-      stopRightSwipe={-visibleButtonWidth}
-      onRowOpen={toValue => _onRowOpen(toValue)}
-      onRowClose={_onRowClose}
-      ref={swipeRow}
-      style={{
-        borderRadius: cardBorderRadius,
-        marginVertical: 1.5,
-        marginLeft: marginHorizontal,
-        marginRight: marginHorizontal,
-      }}>
-      <View style={{ ...styles.rowBack, ...swipeButtonsProps }}>
-        <SwipeButtonContainer
-          backgroundColor={swipeOutLeftBackgroundColor}
-          left
-          onPress={() => {
-            swipeRow.current.closeRow();
-            onPressLeft();
-          }}
-          testID={`${taskTestId}:left`}
-          width={visibleButtonWidth}>
-          <SwipeButton iconName={swipeOutLeftIconName} width={buttonWidth} />
-        </SwipeButtonContainer>
-        <SwipeButtonContainer
-          backgroundColor={swipeOutRightBackgroundColor}
-          right
-          onPress={() => {
-            swipeRow.current.closeRow();
-            onPressRight();
-          }}
-          testID={`${taskTestId}:right`}
-          width={visibleButtonWidth}>
-          <SwipeButton iconName={swipeOutRightIconName} size={8} width={buttonWidth} />
-        </SwipeButtonContainer>
-      </View>
-      <HStack
+    return (
+      <SwipeRow
+        disableLeftSwipe={!allowSwipeLeft}
+        disableRightSwipe={!allowSwipeRight}
+        leftOpenValue={buttonWidth}
+        stopLeftSwipe={visibleButtonWidth}
+        rightOpenValue={-buttonWidth}
+        stopRightSwipe={-visibleButtonWidth}
+        onRowOpen={toValue => _onRowOpen(toValue)}
+        onRowClose={_onRowClose}
+        ref={swipeRow}
         style={{
-          flex: 1,
-          alignItems: 'stretch',
-          minHeight: buttonWidth,
-          borderTopRightRadius: cardBorderRadius,
-          borderBottomRightRadius: cardBorderRadius,
-        }}
-        {...itemProps}>
-        <OrderInfo color={color} task={task} width={buttonWidth} onPress={onOrderPress} />
-        <ItemTouchable
-          onPress={onPress}
-          testID={taskTestId}
+          borderRadius: cardBorderRadius,
+          marginVertical: 1.5,
+          marginLeft: marginHorizontal,
+          marginRight: marginHorizontal,
+        }}>
+        <View style={{ ...styles.rowBack, ...swipeButtonsProps }}>
+          <SwipeButtonContainer
+            backgroundColor={swipeOutLeftBackgroundColor}
+            left
+            onPress={() => {
+              swipeRow.current.closeRow();
+              onPressLeft();
+            }}
+            testID={`${taskTestId}:left`}
+            width={visibleButtonWidth}>
+            <SwipeButton iconName={swipeOutLeftIconName} width={buttonWidth} />
+          </SwipeButtonContainer>
+          <SwipeButtonContainer
+            backgroundColor={swipeOutRightBackgroundColor}
+            right
+            onPress={() => {
+              swipeRow.current.closeRow();
+              onPressRight();
+            }}
+            testID={`${taskTestId}:right`}
+            width={visibleButtonWidth}>
+            <SwipeButton
+              iconName={swipeOutRightIconName}
+              size={8}
+              width={buttonWidth}
+            />
+          </SwipeButtonContainer>
+        </View>
+        <HStack
           style={{
-            borderBottomRightRadius: cardBorderRadius,
+            flex: 1,
+            alignItems: 'stretch',
+            minHeight: buttonWidth,
             borderTopRightRadius: cardBorderRadius,
-            paddingLeft: 12,
-            width: cardWidth - buttonWidth,
-          }}>
-          <HStack
+            borderBottomRightRadius: cardBorderRadius,
+          }}
+          {...itemProps}>
+          <OrderInfo
+            color={color}
+            task={task}
+            width={buttonWidth}
+            onPress={onOrderPress}
+          />
+          <ItemTouchable
+            onPress={onPress}
+            testID={taskTestId}
             style={{
-              height: '100%',
+              borderBottomRightRadius: cardBorderRadius,
+              borderTopRightRadius: cardBorderRadius,
+              paddingLeft: 12,
+              width: cardWidth - buttonWidth,
             }}>
-            <VStack flex={1} py="3" px="1">
-              <HStack alignItems="center">
-                <TaskTypeIcon task={task} />
-                <Text
-                  testID={`${taskTestId}:title`}
-                  style={styles.textBold}
-                  numberOfLines={1}>
-                  {taskTitle}
-                </Text>
-                <TaskStatusIcon task={task} />
-              </HStack>
-              {address && (
-                <Text style={textStyle} numberOfLines={1}>
-                  {address}
-                </Text>
-              )}
-              <Text numberOfLines={1} style={textStyle}>
-                {task.address?.streetAddress}
-              </Text>
-              <HStack alignItems="center">
-                <Text pr="2" style={textStyle}>
-                  {moment(task.doneAfter).format('LT')} -{' '}
-                  {moment(task.doneBefore).format('LT')}
-                </Text>
-                {task.address?.description &&
-                task.address?.description.length ? (
-                  <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
-                ) : null}
-                {task.metadata && task.metadata?.payment_method && (
-                  <PaymentMethodInList
-                    paymentMethod={task.metadata.payment_method}
-                  />
-                )}
-                {task.metadata && task.metadata.zero_waste && (
-                  <Icon as={FontAwesome5} name="recycle" size="sm" />
-                )}
-              </HStack>
-              {task.tags && task.tags.length ? (
-                <HStack style={styles.tagsWrapper}>
-                  {task.tags.map(tag => (
-                    <Text
-                      key={tag.slug}
-                      style={[
-                        styles.textStyle,
-                        styles.tag,
-                        {
-                          backgroundColor: tag.color,
-                        },
-                      ]}>
-                      {tag.name}
-                    </Text>
-                  ))}
-                  <Icon
-                    as={FontAwesome}
-                    name={commentsIconName}
-                    style={{
-                      paddingHorizontal: 4,
-                      fontSize: 14,
-                    }}
-                  />
+            <HStack
+              style={{
+                height: '100%',
+              }}>
+              <VStack flex={1} py="3" px="1">
+                <HStack alignItems="center">
+                  <TaskTypeIcon task={task} />
+                  <Text
+                    testID={`${taskTestId}:title`}
+                    style={styles.textBold}
+                    numberOfLines={1}>
+                    {taskTitle}
+                  </Text>
+                  <TaskStatusIcon task={task} />
                 </HStack>
-              ) : null}
-            </VStack>
-            {task.hasIncidents && (
-              <Icon
-                as={FontAwesome}
-                name={incidentIconName}
-                style={{
-                  alignSelf: 'center',
-                  borderRadius: 5,
-                  color: redColor,
-                  marginRight: 12,
-                }}
-              />
-            )}
-            <TaskPriorityStatus task={task} />
-          </HStack>
-        </ItemTouchable>
-      </HStack>
-    </SwipeRow>
-  );
-});
+                {address && (
+                  <Text style={textStyle} numberOfLines={1}>
+                    {address}
+                  </Text>
+                )}
+                <Text numberOfLines={1} style={textStyle}>
+                  {task.address?.streetAddress}
+                </Text>
+                <HStack alignItems="center">
+                  <Text pr="2" style={textStyle}>
+                    {moment(task.doneAfter).format('LT')} -{' '}
+                    {moment(task.doneBefore).format('LT')}
+                  </Text>
+                  {task.address?.description &&
+                  task.address?.description.length ? (
+                    <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
+                  ) : null}
+                  {task.metadata && task.metadata?.payment_method && (
+                    <PaymentMethodInList
+                      paymentMethod={task.metadata.payment_method}
+                    />
+                  )}
+                  {task.metadata && task.metadata.zero_waste && (
+                    <Icon as={FontAwesome5} name="recycle" size="sm" />
+                  )}
+                </HStack>
+                {task.tags && task.tags.length ? (
+                  <HStack style={styles.tagsWrapper}>
+                    {task.tags.map(tag => (
+                      <Text
+                        key={tag.slug}
+                        style={[
+                          styles.textStyle,
+                          styles.tag,
+                          {
+                            backgroundColor: tag.color,
+                          },
+                        ]}>
+                        {tag.name}
+                      </Text>
+                    ))}
+                    <Icon
+                      as={FontAwesome}
+                      name={commentsIconName}
+                      style={{
+                        paddingHorizontal: 4,
+                        fontSize: 14,
+                      }}
+                    />
+                  </HStack>
+                ) : null}
+              </VStack>
+              {task.hasIncidents && (
+                <Icon
+                  as={FontAwesome}
+                  name={incidentIconName}
+                  style={{
+                    alignSelf: 'center',
+                    borderRadius: 5,
+                    color: redColor,
+                    marginRight: 12,
+                  }}
+                />
+              )}
+              <TaskPriorityStatus task={task} />
+            </HStack>
+          </ItemTouchable>
+        </HStack>
+      </SwipeRow>
+    );
+  },
+);
 
 TaskListItem.propTypes = {
   task: PropTypes.object.isRequired,

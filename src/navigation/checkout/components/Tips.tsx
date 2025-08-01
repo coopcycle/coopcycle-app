@@ -16,11 +16,7 @@ const TipCart = props => (
   </Pressable>
 );
 
-function Tips({
-    onTip,
-    value = 0,
-    values = [0, 100, 200, 400],
-  }) {
+function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
   const [tip, setTip] = useState(value);
   const [advancedView, setAdvancedView] = useState(!values.includes(tip));
   const { t } = useTranslation();

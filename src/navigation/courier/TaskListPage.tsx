@@ -4,15 +4,21 @@ import { useSelector } from 'react-redux';
 
 import { doneIconName, incidentIconName } from '../task/styles/common';
 import { blueColor, greenColor, yellowColor } from '../../styles/common';
-import { navigateToCompleteTask, navigateToOrder, navigateToTask } from '../../navigation/utils';
-import { selectFilteredTasks, selectTaskSelectedDate } from '../../redux/Courier';
+import {
+  navigateToCompleteTask,
+  navigateToOrder,
+  navigateToTask,
+} from '../../navigation/utils';
+import {
+  selectFilteredTasks,
+  selectTaskSelectedDate,
+} from '../../redux/Courier';
 import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
 import { getOrderId } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
-
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -53,14 +59,16 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   const swipeLeftConfiguration = {
-    onPressLeft: task => navigateToCompleteTask(navigation, route, task, [], true),
+    onPressLeft: task =>
+      navigateToCompleteTask(navigation, route, task, [], true),
     swipeOutLeftBackgroundColor: greenColor,
     swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIconName: doneIconName,
   };
 
   const swipeRightConfiguration = {
-    onPressRight: task => navigateToCompleteTask(navigation, route, task, [], false),
+    onPressRight: task =>
+      navigateToCompleteTask(navigation, route, task, [], false),
     swipeOutRightBackgroundColor: yellowColor,
     swipeOutRightEnabled: allowToSelect,
     swipeOutRightIconName: incidentIconName,
@@ -84,8 +92,12 @@ export default function TaskListPage({ navigation, route }) {
           tasks={courierTaskList.items}
           refreshing={isFetching}
           onRefresh={() => refetch()}
-          onTaskClick={task => navigateToTask(navigation, route, task, courierTaskList.items)}
-          onOrderClick={task => navigateToOrder(navigation, getOrderId(task), isFromCourier)}
+          onTaskClick={task =>
+            navigateToTask(navigation, route, task, courierTaskList.items)
+          }
+          onOrderClick={task =>
+            navigateToOrder(navigation, getOrderId(task), isFromCourier)
+          }
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
           multipleSelectionIcon={doneIconName}

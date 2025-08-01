@@ -1,11 +1,6 @@
 import { actionMatchCreator } from '../util';
-import {
-  changeDate,
-  loadTasksSuccess,
-} from '../Dispatch/actions';
-import {
-  SET_USER,
-} from '../App/actions';
+import { changeDate, loadTasksSuccess } from '../Dispatch/actions';
+import { SET_USER } from '../App/actions';
 import {
   assignTaskSuccess,
   assignTasksSuccess,
@@ -32,32 +27,37 @@ export default (state = initialState, action) => {
     return initialState;
   }
 
-  if (actionMatchCreator(action, [
-    loadTasksSuccess,
-  ])) {
+  if (actionMatchCreator(action, [loadTasksSuccess])) {
     const tasks = getTasksWithColor(action.payload);
     return taskAdapter.setAll(state, tasks);
   }
 
-  if (actionMatchCreator(action, [
-    assignTaskSuccess,
-    cancelTaskSuccess,
-    createTaskSuccess,
-    markTaskDoneSuccess,
-    markTaskFailedSuccess,
-    startTaskSuccess,
-    unassignTaskSuccess,
-    updateTaskSuccess,
-  ])) {
-    const task = getTaskWithColor(action.payload, Object.values(state.entities));
+  if (
+    actionMatchCreator(action, [
+      assignTaskSuccess,
+      cancelTaskSuccess,
+      createTaskSuccess,
+      markTaskDoneSuccess,
+      markTaskFailedSuccess,
+      startTaskSuccess,
+      unassignTaskSuccess,
+      updateTaskSuccess,
+    ])
+  ) {
+    const task = getTaskWithColor(
+      action.payload,
+      Object.values(state.entities),
+    );
     return taskAdapter.upsertOne(state, task);
   }
 
-  if (actionMatchCreator(action, [
-    assignTasksSuccess,
-    assignTasksWithUiUpdateSuccess,
-    unassignTasksWithUiUpdateSuccess,
-  ])) {
+  if (
+    actionMatchCreator(action, [
+      assignTasksSuccess,
+      assignTasksWithUiUpdateSuccess,
+      unassignTasksWithUiUpdateSuccess,
+    ])
+  ) {
     if (action.payload) {
       const tasks = getTasksWithColor(action.payload);
       return taskAdapter.upsertMany(state, tasks);

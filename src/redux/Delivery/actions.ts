@@ -1,16 +1,16 @@
 import _ from 'lodash';
-import { createAction } from "@reduxjs/toolkit";
+import { createAction } from '@reduxjs/toolkit';
 
 import { setLoading } from '../App/actions';
-import { selectTimeSlots } from "./selectors";
-
+import { selectTimeSlots } from './selectors';
 
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
 export const GET_PRICE_SUCCESS = '@delivery/GET_PRICE_SUCCESS';
 export const LOAD_ADDRESSES_SUCCESS = '@delivery/LOAD_ADDRESSES_SUCCESS';
 export const LOAD_PACKAGES_SUCCESS = '@delivery/LOAD_PACKAGES_SUCCESS';
-export const LOAD_TIME_SLOT_CHOICES_SUCCESS = '@delivery/LOAD_TIME_SLOT_CHOICES_SUCCESS';
+export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
+  '@delivery/LOAD_TIME_SLOT_CHOICES_SUCCESS';
 export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
@@ -21,7 +21,9 @@ export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
 export const getPriceError = createAction(GET_PRICE_ERROR);
 export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
 export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
-export const loadTimeSlotChoicesSuccess = createAction(LOAD_TIME_SLOT_CHOICES_SUCCESS);
+export const loadTimeSlotChoicesSuccess = createAction(
+  LOAD_TIME_SLOT_CHOICES_SUCCESS,
+);
 export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
@@ -32,9 +34,9 @@ const loadAddressesSuccess = createAction(
   LOAD_ADDRESSES_SUCCESS,
   (store, addresses) => ({
     payload: {
-        store,
-        addresses,
-    }
+      store,
+      addresses,
+    },
   }),
 );
 

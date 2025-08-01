@@ -8,7 +8,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance();
 
-const Comp = ({ order, isPrinterConnected, onPrinterClick, printOrder, disablePrintButton }) => {
+const Comp = ({
+  order,
+  isPrinterConnected,
+  onPrinterClick,
+  printOrder,
+  disablePrintButton,
+}) => {
   const { t } = useTranslation();
 
   let phoneNumber;

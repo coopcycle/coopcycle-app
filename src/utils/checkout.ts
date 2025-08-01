@@ -37,7 +37,6 @@ function timingAsText(timing, now) {
 }
 
 export function getNextShippingTime(restaurant) {
-
   const timing = restaurant.timing.delivery || restaurant.timing.collection;
 
   if (!timing) {
@@ -56,7 +55,6 @@ export function getNextShippingTime(restaurant) {
 
   return timing;
 }
-
 
 export function getNextShippingTimeAsText(restaurant, now) {
   now = now || moment();
@@ -109,9 +107,7 @@ export function shouldShowPreOrder(restaurant) {
   }
 
   const timing = getNextShippingTime(restaurant);
-  const duration = moment.duration(
-    moment(timing.range[0]).diff(moment()),
-  );
+  const duration = moment.duration(moment(timing.range[0]).diff(moment()));
 
   return duration.asHours() > 0.75;
 }

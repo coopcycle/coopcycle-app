@@ -73,7 +73,6 @@ class CreditCardClassComponent extends Component {
   }
 
   async _onSubmit(values) {
-
     // Hack to "blur" CardField before unmounting (we actually focus on the other field)
     // This avoids the app crashing under iOS after payment
     // https://github.com/stripe/stripe-react-native/issues/1732
@@ -340,7 +339,11 @@ function mapStateToProps(state, ownProps) {
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
     errors: selectCheckoutError(state),
     user: state.app.user,
-    shouldLoadPaymentDetails: ownProps.hasOwnProperty('shouldLoadPaymentDetails') ? ownProps.shouldLoadPaymentDetails : true,
+    shouldLoadPaymentDetails: ownProps.hasOwnProperty(
+      'shouldLoadPaymentDetails',
+    )
+      ? ownProps.shouldLoadPaymentDetails
+      : true,
   };
 }
 

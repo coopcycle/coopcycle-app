@@ -27,7 +27,7 @@ const updateSelectedTasksSlice = createSlice({
       if (!state.tasks[taskListId]) {
         state.tasks[taskListId] = [];
       }
-      
+
       if (!taskExists(state.tasks[taskListId], task)) {
         state.tasks[taskListId].push(task);
       }

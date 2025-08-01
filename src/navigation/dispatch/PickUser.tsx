@@ -19,9 +19,7 @@ class PickUser extends Component {
         testID={`assignTo:${user.username}`}
         style={styles.item}>
         <Avatar baseURL={this.props.baseURL} username={user.username} />
-        <Text style={styles.itemText}>
-          {user.username}
-        </Text>
+        <Text style={styles.itemText}>{user.username}</Text>
         <Icon as={FontAwesome} name="arrow-right" size="sm" />
       </TouchableOpacity>
     );

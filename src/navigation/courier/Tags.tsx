@@ -49,7 +49,9 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleDisplayTag: (tag, hidden) =>
       dispatch(
-        hidden ? clearTasksFilter(filterByTag(tag)) : filterTasks(filterByTag(tag)),
+        hidden
+          ? clearTasksFilter(filterByTag(tag))
+          : filterTasks(filterByTag(tag)),
       ),
   };
 }

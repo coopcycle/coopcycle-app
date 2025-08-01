@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
-const SvgComponent = (props) => (
+const SvgComponent = props => (
   <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" {...props}>
     <G clipPath="url(#a)" transform="matrix(.8452 0 0 .8452 -108.611 5.39)">
       <G>
@@ -28,6 +28,6 @@ const SvgComponent = (props) => (
       </G>
     </G>
   </Svg>
-)
+);
 
-export default SvgComponent
+export default SvgComponent;

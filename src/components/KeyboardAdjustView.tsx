@@ -12,15 +12,9 @@ import { AvoidSoftInputView } from 'react-native-avoid-softinput';
  * @param children; one of the child should be a ScrollView
  * @param style
  */
-export default function KeyboardAdjustView({
-  children,
-  style,
-  testID,
-}) {
-
+export default function KeyboardAdjustView({ children, style, testID }) {
   const windowDimensions = useWindowDimensions();
   const [viewHeight, setViewHeight] = useState(0);
-
 
   const onLayout = event => {
     const currentFrame = event.nativeEvent.layout;
@@ -30,14 +24,14 @@ export default function KeyboardAdjustView({
   };
 
   if (Platform.OS === 'android') {
-      // AndroidManifest.xml updated to adjustResize to handle keyboard positioning
-      // conflicts with KeyboardAvoidingView eliminated
-      
-      return (
-        <View style={[style, { flex: 1 }]} onLayout={onLayout} testID={testID}>
-          {children}
-        </View>
-      );
+    // AndroidManifest.xml updated to adjustResize to handle keyboard positioning
+    // conflicts with KeyboardAvoidingView eliminated
+
+    return (
+      <View style={[style, { flex: 1 }]} onLayout={onLayout} testID={testID}>
+        {children}
+      </View>
+    );
   } else if (Platform.OS === 'ios') {
     // on iOS we need to adjust the view and put the focused text input above the keyboard manually
 

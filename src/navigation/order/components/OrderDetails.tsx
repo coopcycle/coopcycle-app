@@ -20,7 +20,7 @@ const OrderDetails = ({ tasks, t }) => {
   // TODO: Set items inside state, check task properties in useEffect hook.
   const items = [
     {
-      id:'timeframe',
+      id: 'timeframe',
       iconName: 'time',
       text: timeframe,
     },
@@ -29,7 +29,7 @@ const OrderDetails = ({ tasks, t }) => {
   if (isSingleTask(tasks) && isDropoff(firstTask)) {
     if (firstTask.address.telephone) {
       items.push({
-        id:'telephone',
+        id: 'telephone',
         iconName: 'call',
         text: firstTask.address.telephone,
         onPress: () => phonecall(firstTask.address.telephone, true),
@@ -38,7 +38,7 @@ const OrderDetails = ({ tasks, t }) => {
 
     if (firstTask.address.description || firstTask.address.streetAddress) {
       items.push({
-        id:'information-circle',
+        id: 'information-circle',
         iconName: 'information-circle',
         text: firstTask.address.description || firstTask.address.streetAddress,
       });
@@ -51,7 +51,7 @@ const OrderDetails = ({ tasks, t }) => {
     isDisplayPaymentMethodInList(firstTask.metadata.payment_method)
   ) {
     items.push({
-      id:'payment-method',
+      id: 'payment-method',
       iconName: loadIconKey(firstTask.metadata.payment_method),
       iconType: Foundation,
       text:
@@ -65,8 +65,8 @@ const OrderDetails = ({ tasks, t }) => {
   return (
     <FlatList
       data={items}
-      keyExtractor={ (item) => `order-detail-${item.id}`}
-      renderItem={({ item }) => <Detail item={item} />} 
+      keyExtractor={item => `order-detail-${item.id}`}
+      renderItem={({ item }) => <Detail item={item} />}
       ItemSeparatorComponent={ItemSeparator}
     />
   );
@@ -81,7 +81,7 @@ const isDropoff = task => {
 };
 
 const isSingleTask = tasks => {
-  return tasks.length === 1
-}
+  return tasks.length === 1;
+};
 
 export default withTranslation()(OrderDetails);

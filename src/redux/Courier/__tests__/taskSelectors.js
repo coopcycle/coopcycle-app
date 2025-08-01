@@ -1,10 +1,7 @@
 import { cloneDeep, merge } from 'lodash';
 import moment from 'moment';
 
-import {
-  filterStatusDone,
-  filterStatusFailed,
-} from '../../logistics/filters';
+import { filterStatusDone, filterStatusFailed } from '../../logistics/filters';
 import {
   selectAreDoneTasksHidden,
   selectAreFailedTasksHidden,
@@ -70,7 +67,7 @@ describe('Task Selectors', () => {
   });
 
   describe('selectAreDoneTasksHidden', () => {
-    test("correctly indicates presence of filterStatusDone filter", () => {
+    test('correctly indicates presence of filterStatusDone filter', () => {
       const state = cloneDeep(baseState);
       expect(selectAreDoneTasksHidden(state)).toBe(false);
 
@@ -82,7 +79,7 @@ describe('Task Selectors', () => {
   });
 
   describe('selectAreFailedTasksHidden', () => {
-    test("correctly indicates presence of filterStatusDone filter", () => {
+    test('correctly indicates presence of filterStatusDone filter', () => {
       const state = cloneDeep(baseState);
       expect(selectAreFailedTasksHidden(state)).toBe(false);
 

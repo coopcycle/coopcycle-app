@@ -48,7 +48,7 @@ export const PaymentMethodInList = ({ paymentMethod }) => {
   }
 
   return <Icon as={Foundation} name={loadIconKey(paymentMethod)} />;
-}
+};
 
 export const PaymentMethodInOrderDetails = ({ paymentMethod }) => {
   const { t } = useTranslation();

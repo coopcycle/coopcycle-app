@@ -6,7 +6,6 @@ import ItemsBulkFabButton from './ItemsBulkFabButton';
 import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
 
-
 const TaskList = ({
   id,
   multipleSelectionIcon,
@@ -25,7 +24,7 @@ const TaskList = ({
   swipeOutRightBackgroundColor,
   swipeOutRightIconName,
   tasks,
-  appendTaskListTestID = "",
+  appendTaskListTestID = '',
 }) => {
   const bulkFabButton = useRef(null);
 

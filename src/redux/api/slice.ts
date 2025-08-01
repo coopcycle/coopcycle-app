@@ -1,8 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQueryWithReauth } from './baseQuery';
-import { fetchAllRecordsUsingFetchWithBQ, sortByName, sortByString } from '../util';
-
+import {
+  fetchAllRecordsUsingFetchWithBQ,
+  sortByName,
+  sortByString,
+} from '../util';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -15,10 +18,10 @@ export const apiSlice = createApi({
       query: date => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
-          date: date.format('YYYY-MM-DD')
+          date: date.format('YYYY-MM-DD'),
         },
         method: 'POST',
-        body: {}
+        body: {},
       }),
     }),
     getTasks: builder.query({
@@ -29,10 +32,11 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD'),
-          });
+          },
+        );
 
-        return result ? { data: result } : { error: "result.error" };
-      }
+        return result ? { data: result } : { error: 'result.error' };
+      },
     }),
     getTaskLists: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
@@ -41,10 +45,11 @@ export const apiSlice = createApi({
           'api/task_lists',
           100,
           {
-            date: date.format('YYYY-MM-DD')
-          });
+            date: date.format('YYYY-MM-DD'),
+          },
+        );
 
-        return result ? { data: result } : { error: "result.error" };
+        return result ? { data: result } : { error: 'result.error' };
       },
     }),
     getTaskListsV2: builder.query({
@@ -55,20 +60,23 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD'),
-          });
+          },
+        );
 
-        return result ? { data: result } : { error: "result.error" };
+        return result ? { data: result } : { error: 'result.error' };
       },
     }),
     setTaskListItems: builder.mutation({
       query: ({ items, username, date }) => {
         const mutation = {
-          url: `/api/task_lists/set_items/${date.format('YYYY-MM-DD')}/${username}`,
+          url: `/api/task_lists/set_items/${date.format(
+            'YYYY-MM-DD',
+          )}/${username}`,
           method: 'PUT',
           headers: {
             'Content-Type': 'application/ld+json',
           },
-          body: JSON.stringify({ items })
+          body: JSON.stringify({ items }),
         };
 
         return mutation;
@@ -82,7 +90,7 @@ export const apiSlice = createApi({
           headers: {
             'Content-Type': 'application/ld+json',
           },
-          body: JSON.stringify({ tasks: tourTasks })
+          body: JSON.stringify({ tasks: tourTasks }),
         };
 
         return mutation;
@@ -96,9 +104,10 @@ export const apiSlice = createApi({
           100,
           {
             date: date.format('YYYY-MM-DD'),
-          });
+          },
+        );
 
-        return result ? { data: result } : { error: "result.error" };
+        return result ? { data: result } : { error: 'result.error' };
       },
     }),
     getCourierUsers: builder.query({
@@ -108,11 +117,13 @@ export const apiSlice = createApi({
           '/api/users',
           100,
           {
-            'roles[]': 'ROLE_COURIER'
-          }
+            'roles[]': 'ROLE_COURIER',
+          },
         );
 
-        return result ? { data: sortByString(result, 'username') } : { error: "result.error" };
+        return result
+          ? { data: sortByString(result, 'username') }
+          : { error: 'result.error' };
       },
     }),
     getStores: builder.query({
@@ -123,8 +134,10 @@ export const apiSlice = createApi({
           100,
         );
 
-        return result ? { data: sortByName(result) } : { error: "result.error" };
-      }
+        return result
+          ? { data: sortByName(result) }
+          : { error: 'result.error' };
+      },
     }),
     getMyTasks: builder.query({
       query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,

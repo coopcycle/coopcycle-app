@@ -1110,7 +1110,7 @@ export function checkout(
   cardholderName,
   savedPaymentMethodId = null,
   saveCard = false,
-  paygreenPaymentOrderID = null
+  paygreenPaymentOrderID = null,
 ) {
   return async (dispatch, getState) => {
     dispatch(checkoutRequest());
@@ -1128,7 +1128,7 @@ export function checkout(
         .put(
           cart['@id'] + '/pay',
           {
-            paymentOrderId: paygreenPaymentOrderID
+            paymentOrderId: paygreenPaymentOrderID,
           },
           {
             headers: selectCheckoutAuthorizationHeaders(
@@ -1884,7 +1884,6 @@ export function updateLoopeatReturns(returns) {
 }
 
 export function updateEdenredCredentials(accessToken, refreshToken) {
-
   return (dispatch, getState) => {
     const { cart, token } = selectCart(getState());
     const httpClient = selectHttpClient(getState());
@@ -1896,7 +1895,7 @@ export function updateEdenredCredentials(accessToken, refreshToken) {
         cart['@id'] + '/edenred_credentials',
         {
           accessToken,
-          refreshToken
+          refreshToken,
         },
         {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
@@ -1904,14 +1903,13 @@ export function updateEdenredCredentials(accessToken, refreshToken) {
       )
       .then(res => {
         dispatch(updateCartSuccess(res));
-        dispatch(loadPaymentDetails())
+        dispatch(loadPaymentDetails());
       })
       .catch(e => dispatch(checkoutFailure(e)));
   };
 }
 
 export function setPaymentMethod(paymentMethod, cb) {
-
   return (dispatch, getState) => {
     const { cart, token } = selectCart(getState());
     const httpClient = selectHttpClient(getState());
@@ -1922,7 +1920,7 @@ export function setPaymentMethod(paymentMethod, cb) {
       .put(
         cart['@id'] + '/payment',
         {
-          paymentMethod
+          paymentMethod,
         },
         {
           headers: selectCheckoutAuthorizationHeaders(getState(), cart, token),
@@ -1934,16 +1932,14 @@ export function setPaymentMethod(paymentMethod, cb) {
         // TODO Use the payments returned
         // https://github.com/coopcycle/coopcycle-app/issues/1925
         dispatch(updateCartSuccess(cart));
-        cb(res)
+        cb(res);
       })
       .catch(e => dispatch(checkoutFailure(e)));
   };
 }
 
 export function loadPaymentDetailsOrAuthorizeEdenred() {
-
   return (dispatch, getState) => {
-
     const cart = selectCart(getState())?.cart;
     const { baseURL, settings } = getState().app;
 
@@ -1969,11 +1965,15 @@ export function loadPaymentDetailsOrAuthorizeEdenred() {
         dangerouslyAllowInsecureHttpRequests: __DEV__,
         useNonce: false,
         usePKCE: false,
-      }).then(result => {
-        dispatch(updateEdenredCredentials(result.accessToken, result.refreshToken));
-      }).catch(error => {
-        NavigationHolder.navigate('CheckoutPaymentMethodCard');
-      });
+      })
+        .then(result => {
+          dispatch(
+            updateEdenredCredentials(result.accessToken, result.refreshToken),
+          );
+        })
+        .catch(error => {
+          NavigationHolder.navigate('CheckoutPaymentMethodCard');
+        });
     }
   };
 }

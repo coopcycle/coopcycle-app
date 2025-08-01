@@ -24,7 +24,6 @@ import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
 
-
 function NewDeliveryPickupAddress({ navigation }) {
   const [validAddress, setValidAddress] = useState(false);
   const [address, setAddress] = useState(null);

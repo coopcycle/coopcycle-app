@@ -12,7 +12,8 @@ export default function FormInput(props) {
   const borderColor = useBackgroundHighlightColor();
 
   return (
-    <Input _stack={{ style: {} }}
+    <Input
+      _stack={{ style: {} }}
       {...props}
       style={[
         styles.input,

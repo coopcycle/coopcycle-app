@@ -221,9 +221,7 @@ function Restaurant(props) {
           <Text bold padding={3}>
             {i18n.t('RESTAURANT_OPENING_HOURS')}
           </Text>
-          <OpeningHours
-            openingHoursSpecification={openingHoursSpecification}
-          />
+          <OpeningHours openingHoursSpecification={openingHoursSpecification} />
         </Box>
         <Pressable
           onPress={() => {

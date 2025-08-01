@@ -18,7 +18,7 @@ import {
   REPORT_INCIDENT_REQUEST,
   REPORT_INCIDENT_SUCCESS,
 } from './taskActions';
-import { apiSlice } from '../api/slice'
+import { apiSlice } from '../api/slice';
 import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
 import {
   DEP_ASSIGN_TASK_SUCCESS,
@@ -93,12 +93,13 @@ function replaceItem(tasks, payload) {
   return tasks;
 }
 
-
 function updateItem(prevItems, id, payload) {
   const index = prevItems.findIndex(item => item['@id'] === id);
 
   if (index !== -1) {
-    return prevItems.map((item, i) => (i === index ? { ...item, ...payload } : item));
+    return prevItems.map((item, i) =>
+      i === index ? { ...item, ...payload } : item,
+    );
   }
 
   return prevItems;
@@ -118,11 +119,13 @@ export const tasksEntityReducer = (
   state = tasksEntityInitialState,
   action = {},
 ) => {
-  if (actionMatchCreator(action, [
-    startTaskRequest,
-    markTaskDoneRequest,
-    markTaskFailedRequest,
-  ])) {
+  if (
+    actionMatchCreator(action, [
+      startTaskRequest,
+      markTaskDoneRequest,
+      markTaskFailedRequest,
+    ])
+  ) {
     return {
       ...state,
       loadTasksFetchError: false,
@@ -131,11 +134,13 @@ export const tasksEntityReducer = (
     };
   }
 
-  if (actionMatchCreator(action, [
-    startTaskSuccess,
-    markTaskDoneSuccess,
-    markTaskFailedSuccess,
-  ])) {
+  if (
+    actionMatchCreator(action, [
+      startTaskSuccess,
+      markTaskDoneSuccess,
+      markTaskFailedSuccess,
+    ])
+  ) {
     return {
       ...state,
       isFetching: false,
@@ -145,11 +150,13 @@ export const tasksEntityReducer = (
     };
   }
 
-  if (actionMatchCreator(action, [
-    startTaskFailure,
-    markTaskDoneFailure,
-    markTaskFailedFailure,
-  ])) {
+  if (
+    actionMatchCreator(action, [
+      startTaskFailure,
+      markTaskDoneFailure,
+      markTaskFailedFailure,
+    ])
+  ) {
     return {
       ...state,
       completeTaskFetchError: action.payload || action.error,
@@ -181,8 +188,7 @@ export const tasksEntityReducer = (
         items: _.mapValues(state.items, tasks =>
           updateItem(tasks, action.payload.task, filterHasIncidents),
         ),
-      }
-
+      };
 
     case DEP_UPDATE_TASK_SUCCESS:
       return {

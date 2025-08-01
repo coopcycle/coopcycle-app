@@ -1,12 +1,5 @@
 import _ from 'lodash';
-import {
-  Button,
-  Center,
-  HStack,
-  Icon,
-  Pressable,
-  Text,
-} from 'native-base';
+import { Button, Center, HStack, Icon, Pressable, Text } from 'native-base';
 import React, { Component } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import {
@@ -521,9 +514,10 @@ class Summary extends Component {
               style={styles.btnGrey}>
               <SimpleCheckbox
                 testID="reusablePackagingCheckbox"
-                isChecked={ cart.reusablePackagingEnabled }
-                onPress={ () => this.toggleReusablePackaging() }
-                accessibilityLabel={ reusablePackagingAction.description } />
+                isChecked={cart.reusablePackagingEnabled}
+                onPress={() => this.toggleReusablePackaging()}
+                accessibilityLabel={reusablePackagingAction.description}
+              />
               <Text>{reusablePackagingAction.description}</Text>
             </HStack>
           )}

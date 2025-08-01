@@ -78,7 +78,7 @@ function PrinterComponent({ devices, isScanning, _onPressScan }) {
   const printNumberOfCopies = useSelector(
     selectAutoAcceptOrdersPrintNumberOfCopies,
   );
-  const isSumniPrinter = useSelector(selectIsSunmiPrinter)
+  const isSumniPrinter = useSelector(selectIsSunmiPrinter);
 
   const backgroundColor = useBackgroundContainerColor();
 
@@ -97,9 +97,13 @@ function PrinterComponent({ devices, isScanning, _onPressScan }) {
   const hasItems = !isScanning && items.length > 0;
 
   if (isSumniPrinter) {
-    return(<View style={styles.item}>
-        <Text>The device has an internal Sunmi Printer, no need to connect it</Text>
-      </View>)
+    return (
+      <View style={styles.item}>
+        <Text>
+          The device has an internal Sunmi Printer, no need to connect it
+        </Text>
+      </View>
+    );
   }
 
   if (!hasItems) {

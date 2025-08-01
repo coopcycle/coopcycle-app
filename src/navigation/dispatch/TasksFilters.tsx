@@ -22,10 +22,9 @@ import {
 } from '../../redux/logistics/filters';
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 import ActiveKeywordFilters from './components/ActiveKeywordFilters';
-import BasicSafeAreaView from "../../components/BasicSafeAreaView";
+import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import ItemSeparatorComponent from '../../components/ItemSeparator';
 import { blackColor } from '../../styles/common';
-
 
 export default function TasksFilters() {
   const { t } = useTranslation();
@@ -99,16 +98,14 @@ export default function TasksFilters() {
       label: t('FILTER_BY_KEYWORDS'),
       isFilterByKeywordsSection: true,
       testID: 'showKeywordsFiltersButton',
-    }
+    },
   ];
 
-  const renderItem = ({item}) => (
-    <SettingsItemInner item={item}/>
-  );
+  const renderItem = ({ item }) => <SettingsItemInner item={item} />;
 
   return (
     <BasicSafeAreaView>
-      <View style={styles.view} testID='dispatchTasksFiltersView'>
+      <View style={styles.view} testID="dispatchTasksFiltersView">
         <FlatList
           data={sections}
           keyExtractor={(item, index) => item.label}
@@ -117,20 +114,26 @@ export default function TasksFilters() {
         />
       </View>
     </BasicSafeAreaView>
-  )
+  );
 }
 
 function SettingsItemInner({ item }) {
-  return item.isFilterByKeywordsSection
-    ? <FilterByKeywords item={item}/>
-    : <SettingsItemSwitch item={item}/>;
+  return item.isFilterByKeywordsSection ? (
+    <FilterByKeywords item={item} />
+  ) : (
+    <SettingsItemSwitch item={item} />
+  );
 }
 
 function SettingsItemSwitch({ item }) {
   return (
     <HStack alignItems="center" justifyContent="space-between" py="3">
       <Text>{item.label}</Text>
-      <Switch onToggle={item.onToggle} isChecked={item.isChecked} testID={item.testID || ""} />
+      <Switch
+        onToggle={item.onToggle}
+        isChecked={item.isChecked}
+        testID={item.testID || ''}
+      />
     </HStack>
   );
 }
@@ -141,10 +144,12 @@ function FilterByKeywords({ item }) {
 
   const navigateToKeywordsFilters = () => {
     navigation.navigate('DispatchKeywordsFilters');
-  }
+  };
 
   return (
-    <TouchableOpacity onPress={navigateToKeywordsFilters} testID={item.testID || ""}>
+    <TouchableOpacity
+      onPress={navigateToKeywordsFilters}
+      testID={item.testID || ''}>
       <HStack alignItems="center" justifyContent="space-between" py="3">
         <Text>{t('FILTER_BY_KEYWORDS')}</Text>
         <Icon

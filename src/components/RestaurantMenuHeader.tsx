@@ -41,7 +41,10 @@ const RestaurantMenuHeader = ({
   const activeBorderBottomColor = usePrimaryColor();
 
   const scrollToSection = index => {
-    sectionRef.current.scrollToIndex({ index: index + offsetSectionsCount, viewOffset: 16 });
+    sectionRef.current.scrollToIndex({
+      index: index + offsetSectionsCount,
+      viewOffset: 16,
+    });
   };
 
   useEffect(() => {

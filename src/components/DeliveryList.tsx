@@ -107,7 +107,9 @@ class DeliveryList extends Component {
             />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.textSmall}>{`#${item.orderNumber ? item.orderNumber : item.id}`}</Text>
+            <Text style={styles.textSmall}>{`#${
+              item.orderNumber ? item.orderNumber : item.id
+            }`}</Text>
           </View>
           <View style={[styles.details, { flex: 6 }]}>
             {this.renderItemCaption(item)}
@@ -187,7 +189,7 @@ class DeliveryList extends Component {
     loading: false,
     refreshing: false,
     onRefresh: () => {},
-  }
+  };
 }
 
 DeliveryList.propTypes = {

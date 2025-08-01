@@ -10,7 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AddressAutocomplete from '../../components/AddressAutocomplete';
 import { assertDelivery } from '../../redux/Delivery/actions';
-import { selectAddresses, selectAssertDeliveryError, selectStore } from '../../redux/Delivery/selectors';
+import {
+  selectAddresses,
+  selectAssertDeliveryError,
+  selectStore,
+} from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
@@ -19,7 +23,6 @@ import {
 import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
-
 
 function NewDeliveryDropoffAddress({ navigation, route }) {
   const [validAddress, setValidAddress] = useState(false);
@@ -381,6 +384,5 @@ const styles = StyleSheet.create({
     minHeight: 25 * 3,
   },
 });
-
 
 export default NewDeliveryDropoffAddress;

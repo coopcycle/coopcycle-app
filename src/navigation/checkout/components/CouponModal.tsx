@@ -50,7 +50,8 @@ class CouponModal extends Component {
                     <FormControl.Label>
                       {this.props.t('VOUCHER_CODE')}
                     </FormControl.Label>
-                    <Input _stack={{ style: {} }}
+                    <Input
+                      _stack={{ style: {} }}
                       autoCorrect={false}
                       autoCapitalize="none"
                       style={{ height: 40 }}

@@ -214,15 +214,17 @@ class DrawerContent extends Component {
               motto={this.props.motto}
               navigate={this.props.showAbout}
             />
-            {(this.props.email ||this.props.phoneNumber) &&
+            {(this.props.email || this.props.phoneNumber) && (
               <HStack
                 w="100%"
                 alignItems="left"
                 justifyContent={'space-between'}
-                mb="4"
-              >
-                <Text>{ this.props.t('CONTACT_US') }</Text>
-                <Box w="80px" justifyContent={'space-between'} flexDirection="row">
+                mb="4">
+                <Text>{this.props.t('CONTACT_US')}</Text>
+                <Box
+                  w="80px"
+                  justifyContent={'space-between'}
+                  flexDirection="row">
                   {this.props.email && (
                     <Mailto email={this.props.email}>
                       <Icon as={AntDesign} name="mail" size="sm" />
@@ -238,29 +240,23 @@ class DrawerContent extends Component {
                   )}
                 </Box>
               </HStack>
-            } 
+            )}
             <HStack
-                w="100%"
-                alignItems="center"
-                justifyContent="space-between"
-                mb="4"
-              >
+              w="100%"
+              alignItems="center"
+              justifyContent="space-between"
+              mb="4">
               <Pressable onPress={navigateToTerms}>
-                <Text>
-                  {this.props.t('TERMS_OF_SERVICE')}
-                </Text>
+                <Text>{this.props.t('TERMS_OF_SERVICE')}</Text>
               </Pressable>
             </HStack>
             <HStack
-                w="100%"
-                alignItems="center"
-                justifyContent="space-between"
-                mb="4"
-              >
+              w="100%"
+              alignItems="center"
+              justifyContent="space-between"
+              mb="4">
               <Pressable onPress={navigateToPricacy}>
-                <Text>
-                  {this.props.t('PRIVACY')}
-                </Text>
+                <Text>{this.props.t('PRIVACY')}</Text>
               </Pressable>
             </HStack>
             <Pressable onPress={onAppVersionPress}>

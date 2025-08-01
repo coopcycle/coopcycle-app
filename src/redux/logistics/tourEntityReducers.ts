@@ -1,34 +1,26 @@
-import {
-  changeDate,
-} from "../Dispatch/actions";
+import { changeDate } from '../Dispatch/actions';
 import {
   createTourSuccess,
   deleteTourSuccess,
   loadToursSuccess,
   tourAdapter,
   updateTourSuccess,
-} from "../../shared/logistics/redux";
-import { actionMatchCreator } from "../util";
-import { SET_USER } from "../App/actions";
+} from '../../shared/logistics/redux';
+import { actionMatchCreator } from '../util';
+import { SET_USER } from '../App/actions';
 
-
-const initialState = tourAdapter.getInitialState()
+const initialState = tourAdapter.getInitialState();
 
 export default (state = initialState, action) => {
   if (changeDate.match(action) || action.type === SET_USER) {
     return initialState;
   }
 
-  if (actionMatchCreator(action, [
-    loadToursSuccess,
-  ])) {
+  if (actionMatchCreator(action, [loadToursSuccess])) {
     return tourAdapter.upsertMany(state, action.payload);
   }
 
-  if (actionMatchCreator(action, [
-    createTourSuccess,
-    updateTourSuccess,
-  ])) {
+  if (actionMatchCreator(action, [createTourSuccess, updateTourSuccess])) {
     return tourAdapter.upsertOne(state, action.payload);
   }
 
@@ -37,4 +29,4 @@ export default (state = initialState, action) => {
   }
 
   return state;
-}
+};

@@ -314,24 +314,22 @@ describe('Redux | Tasks | Actions', () => {
     });
 
     // Make sure to return the promise
-    return store
-      .dispatch(markTaskFailed(task, notes, reason))
-      .then(() => {
-        const actions = store.getActions();
+    return store.dispatch(markTaskFailed(task, notes, reason)).then(() => {
+      const actions = store.getActions();
 
-        expect(actions).toContainEqual(markTaskFailedRequest(task));
-        expect(actions).toContainEqual(clearFiles());
-        expect(actions).toContainEqual(markTaskFailedSuccess(resolveValue));
+      expect(actions).toContainEqual(markTaskFailedRequest(task));
+      expect(actions).toContainEqual(clearFiles());
+      expect(actions).toContainEqual(markTaskFailedSuccess(resolveValue));
 
-        expect(client.put).toHaveBeenCalledTimes(1);
-        expect(client.put).not.toHaveBeenCalledWith(task['@id'], {
-          images: [],
-        });
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, {
-          notes,
-          reason,
-        });
+      expect(client.put).toHaveBeenCalledTimes(1);
+      expect(client.put).not.toHaveBeenCalledWith(task['@id'], {
+        images: [],
       });
+      expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, {
+        notes,
+        reason,
+      });
+    });
   });
 
   test('markTaskFailed | Failed request', () => {
@@ -356,22 +354,20 @@ describe('Redux | Tasks | Actions', () => {
     });
 
     // Make sure to return the promise
-    return store
-      .dispatch(markTaskFailed(task, notes, reason))
-      .then(() => {
-        const actions = store.getActions();
+    return store.dispatch(markTaskFailed(task, notes, reason)).then(() => {
+      const actions = store.getActions();
 
-        expect(actions).toContainEqual(markTaskFailedRequest(task));
-        expect(actions).toContainEqual(markTaskFailedFailure(rejectValue));
+      expect(actions).toContainEqual(markTaskFailedRequest(task));
+      expect(actions).toContainEqual(markTaskFailedFailure(rejectValue));
 
-        expect(client.put).toHaveBeenCalledTimes(1);
-        expect(client.put).not.toHaveBeenCalledWith(task['@id'], {
-          images: [],
-        });
-        expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, {
-          notes,
-          reason,
-        });
+      expect(client.put).toHaveBeenCalledTimes(1);
+      expect(client.put).not.toHaveBeenCalledWith(task['@id'], {
+        images: [],
       });
+      expect(client.put).toHaveBeenCalledWith(`${task['@id']}/failed`, {
+        notes,
+        reason,
+      });
+    });
   });
 });

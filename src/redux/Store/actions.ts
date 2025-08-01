@@ -11,7 +11,6 @@ export const SET_LOADING_MORE = '@store/SET_LOADING_MORE';
 export const SET_REFRESHING = '@store/SET_REFRESHING';
 export const INIT_SUCCESS = '@store/INIT_SUCCESS';
 
-
 export const createDeliverySuccess = createAction(CREATE_DELIVERY_SUCCESS);
 export const loadDeliveriesSuccess = createAction(
   LOAD_DELIVERIES_SUCCESS,
@@ -140,14 +139,10 @@ export function init(store) {
       .then(values => {
         const [deliveries] = values;
         dispatch(
-          initSuccess(
-            store,
-            deliveries['hydra:member'],
-            {
-              next: deliveries['hydra:view']['hydra:next'],
-              totalItems: deliveries['hydra:totalItems'],
-            },
-          ),
+          initSuccess(store, deliveries['hydra:member'], {
+            next: deliveries['hydra:view']['hydra:next'],
+            totalItems: deliveries['hydra:totalItems'],
+          }),
         );
         dispatch(setLoading(false));
         dispatch(setRefreshing(false));

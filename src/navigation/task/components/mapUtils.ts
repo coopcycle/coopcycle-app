@@ -28,10 +28,10 @@ export const getRegionForTasks = (tasks, zoomLevel, aspectRatio = 1) => {
   };
 };
 
-export const getAspectRatio = (mapDimensions) => {
+export const getAspectRatio = mapDimensions => {
   let aspectRatio = 1;
   if (mapDimensions.height > 0) {
-      aspectRatio = mapDimensions.width / mapDimensions.height;
-    }
+    aspectRatio = mapDimensions.width / mapDimensions.height;
+  }
   return aspectRatio;
-}
+};

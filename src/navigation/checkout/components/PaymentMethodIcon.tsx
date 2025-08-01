@@ -11,14 +11,8 @@ const icons = {
 };
 
 const PaymentMethodIcon = ({ type }) => {
-
   if (Object.keys(icons).includes(type)) {
-
-    return (<Icon
-      as={Foundation}
-      name={icons[type]}
-      mr="2"
-    />)
+    return <Icon as={Foundation} name={icons[type]} mr="2" />;
   }
 
   if (type === 'conecs') {
@@ -26,7 +20,7 @@ const PaymentMethodIcon = ({ type }) => {
       <Icon size="xl" mr="2">
         <ConecsIcon />
       </Icon>
-    )
+    );
   }
 
   if (type === 'restoflash') {
@@ -35,9 +29,10 @@ const PaymentMethodIcon = ({ type }) => {
         <Image
           resizeMode="contain"
           source={require('../../../../assets/images/restoflash.png')}
-          style={{ width: 30, height: 30 }} />
+          style={{ width: 30, height: 30 }}
+        />
       </Box>
-    )
+    );
   }
 
   if (type === 'swile') {
@@ -46,9 +41,10 @@ const PaymentMethodIcon = ({ type }) => {
         <Image
           resizeMode="contain"
           source={require('../../../../assets/images/Swile_black.png')}
-          style={{ width: 40, height: 40 }} />
+          style={{ width: 40, height: 40 }}
+        />
       </Box>
-    )
+    );
   }
 
   if (type === 'edenred' || type === 'edenred+card') {
@@ -60,9 +56,8 @@ const PaymentMethodIcon = ({ type }) => {
           id="Layer_1"
           x={0}
           y={0}
-          fill={ '#000000' }
-          viewBox="0 0 413.24 265.47"
-        >
+          fill={'#000000'}
+          viewBox="0 0 413.24 265.47">
           <Path
             d="M160.43 117.34c-6.79 0-11.1 4.42-12.44 10.28h24.16c-.82-6.47-5.35-10.28-11.72-10.28zM95.86 119.91c-8.64 0-14.09 5.96-14.09 14.29 0 8.23 5.55 14.39 14.09 14.39s14.29-5.86 14.29-14.39c0-8.53-5.76-14.29-14.29-14.29z"
             className="st0"
@@ -73,10 +68,10 @@ const PaymentMethodIcon = ({ type }) => {
           />
         </Svg>
       </Icon>
-    )
+    );
   }
 
-  return null
-}
+  return null;
+};
 
 export default PaymentMethodIcon;

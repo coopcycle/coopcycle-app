@@ -197,7 +197,7 @@ class OrderItems extends Component {
   static defaultProps = {
     withDeliveryTotal: false,
     withTotals: true,
-  }
+  };
 }
 
 OrderItems.propTypes = {

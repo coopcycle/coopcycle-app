@@ -215,7 +215,7 @@ export default (state = initialState, action = {}) => {
         },
         // After a successful checkout, we may ask again to enable zero waste
         // https://github.com/coopcycle/coopcycle-app/issues/1824
-        shouldAskToEnableReusablePackaging: true
+        shouldAskToEnableReusablePackaging: true,
       };
 
     case INIT_CART_FAILURE:
@@ -300,7 +300,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isFetching: false,
-        errors: []
+        errors: [],
       };
 
     case SHOW_ADDRESS_MODAL:

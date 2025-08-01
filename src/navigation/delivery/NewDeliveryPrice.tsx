@@ -7,11 +7,13 @@ import { useTranslation } from 'react-i18next';
 
 import { createDelivery } from '../../redux/Delivery/actions';
 import { getPrice } from '../../redux/Delivery/actions';
-import { selectPrice, selectPriceExcludingTax } from '../../redux/Delivery/selectors';
+import {
+  selectPrice,
+  selectPriceExcludingTax,
+} from '../../redux/Delivery/selectors';
 import { useDeliveryCallback } from './contexts/DeliveryCallbackContext';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
-
 
 function NewDeliveryPrice({ route }) {
   const dispatch = useDispatch();
@@ -21,11 +23,11 @@ function NewDeliveryPrice({ route }) {
   const price = useSelector(selectPrice);
   const priceExcludingTax = useSelector(selectPriceExcludingTax);
 
-  const { deliveryCallback } = useDeliveryCallback()
+  const { deliveryCallback } = useDeliveryCallback();
 
   useEffect(() => {
     dispatch(getPrice(delivery));
-  }, [delivery, dispatch])
+  }, [delivery, dispatch]);
 
   function submit(values) {
     if (price === null || priceExcludingTax === null) return;

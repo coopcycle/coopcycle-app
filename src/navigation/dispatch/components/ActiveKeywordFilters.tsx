@@ -1,33 +1,30 @@
-import { Box, HStack, Icon, Text } from "native-base";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { Box, HStack, Icon, Text } from 'native-base';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ColorHash from 'color-hash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { isKeywordFilterNegative } from "../../../redux/logistics/utils";
-import { removeKeywordFilter } from "../../../redux/Dispatch/keywordFiltersSlice";
-import { selectKeywordFilters } from "../../../redux/Dispatch/selectors";
-import { whiteColor } from "../../../styles/common";
+import { isKeywordFilterNegative } from '../../../redux/logistics/utils';
+import { removeKeywordFilter } from '../../../redux/Dispatch/keywordFiltersSlice';
+import { selectKeywordFilters } from '../../../redux/Dispatch/selectors';
+import { whiteColor } from '../../../styles/common';
 
-
-export default function ActiveKeywordFilters({
-  style,
-  ...props
-}) {
+export default function ActiveKeywordFilters({ style, ...props }) {
   const keywordFilters = useSelector(selectKeywordFilters);
 
   return (
     <Box style={[style, styles.container]} {...props}>
-      {keywordFilters.length === 0
-        ? <NoFiltersPlaceholder />
-        : <Box style={styles.activeFiltersContainer}>
-            {keywordFilters.map((filter, index) => {
-              const key = `active-filter-${index}`;
-              return <ActiveFilter filter={filter} key={key} testID={key}/>
-            })}
-          </Box>
-      }
+      {keywordFilters.length === 0 ? (
+        <NoFiltersPlaceholder />
+      ) : (
+        <Box style={styles.activeFiltersContainer}>
+          {keywordFilters.map((filter, index) => {
+            const key = `active-filter-${index}`;
+            return <ActiveFilter filter={filter} key={key} testID={key} />;
+          })}
+        </Box>
+      )}
     </Box>
   );
 }
@@ -35,19 +32,12 @@ export default function ActiveKeywordFilters({
 function NoFiltersPlaceholder() {
   const { t } = useTranslation();
 
-  return (
-    <Text style={styles.noFiltersLabel}>
-      {t('NO_KEYWORDS_FILTERS')}
-    </Text>
-  );
+  return <Text style={styles.noFiltersLabel}>{t('NO_KEYWORDS_FILTERS')}</Text>;
 }
 
 const colorHash = new ColorHash();
 
-function ActiveFilter({
-  filter,
-  ...props
-}) {
+function ActiveFilter({ filter, ...props }) {
   const dispatch = useDispatch();
 
   const isNegative = isKeywordFilterNegative(filter);
@@ -58,20 +48,18 @@ function ActiveFilter({
 
   const removeFilter = () => {
     dispatch(removeKeywordFilter(filter.keyword));
-  }
+  };
 
   return (
     <TouchableOpacity onPress={removeFilter} {...props}>
       <HStack
         style={styles.activeFilter}
         backgroundColor={secondaryColor}
-        borderColor={color}
-      >
+        borderColor={color}>
         <Text
           style={styles.activeFilterLabel}
           color={mainColor}
-          borderRightColor={mainColor}
-        >
+          borderRightColor={mainColor}>
           {filter.keyword}
         </Text>
         <Icon
@@ -118,5 +106,5 @@ const styles = StyleSheet.create({
   },
   activeFilterClose: {
     marginLeft: 6,
-  }
+  },
 });

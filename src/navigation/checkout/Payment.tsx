@@ -8,7 +8,7 @@ import parseUrl from 'url-parse';
 
 import {
   loadPaymentMethods,
-  setPaymentMethod
+  setPaymentMethod,
 } from '../../redux/Checkout/actions';
 import {
   selectCart,
@@ -27,53 +27,71 @@ const routesByCardGateway = {
   // 'mercadopago': 'CheckoutMercadopago',
 };
 
-const inAppBrowserOptions = {}
+const inAppBrowserOptions = {};
 
-const CreditCard = ({ cart, paymentMethods, paymentGateway, loadPaymentMethods, setPaymentMethod }) => {
-
+const CreditCard = ({
+  cart,
+  paymentMethods,
+  paymentGateway,
+  loadPaymentMethods,
+  setPaymentMethod,
+}) => {
   const navigation = useNavigation();
 
-  const onPaymentMethodSelected = useCallback((type) => {
-    const cardRoute = Object.prototype.hasOwnProperty.call(routesByCardGateway, paymentGateway) ?
-      routesByCardGateway[paymentGateway] : 'CheckoutPaymentMethodCard';
+  const onPaymentMethodSelected = useCallback(
+    type => {
+      const cardRoute = Object.prototype.hasOwnProperty.call(
+        routesByCardGateway,
+        paymentGateway,
+      )
+        ? routesByCardGateway[paymentGateway]
+        : 'CheckoutPaymentMethodCard';
 
-    const routesByMethod = {
-      cash_on_delivery: 'CheckoutPaymentMethodCashOnDelivery',
-      card: cardRoute,
-      edenred: 'CheckoutPaymentMethodEdenred',
-      'edenred+card': 'CheckoutPaymentMethodEdenred',
-    };
+      const routesByMethod = {
+        cash_on_delivery: 'CheckoutPaymentMethodCashOnDelivery',
+        card: cardRoute,
+        edenred: 'CheckoutPaymentMethodEdenred',
+        'edenred+card': 'CheckoutPaymentMethodEdenred',
+      };
 
-    setPaymentMethod(type, async (result) => {
-      if (result.redirectUrl) {
-        try {
-          if (await InAppBrowser.isAvailable()) {
-            // https://github.com/proyecto26/react-native-inappbrowser/issues/131#issuecomment-663492025
-            await InAppBrowser.closeAuth();
-            InAppBrowser.openAuth(result.redirectUrl, 'coopcycle://', inAppBrowserOptions)
-              .then((response) => {
+      setPaymentMethod(type, async result => {
+        if (result.redirectUrl) {
+          try {
+            if (await InAppBrowser.isAvailable()) {
+              // https://github.com/proyecto26/react-native-inappbrowser/issues/131#issuecomment-663492025
+              await InAppBrowser.closeAuth();
+              InAppBrowser.openAuth(
+                result.redirectUrl,
+                'coopcycle://',
+                inAppBrowserOptions,
+              ).then(response => {
                 if (response.type === 'success' && response.url) {
                   const { hostname, pathname } = parseUrl(response.url, true);
-                  if (hostname === 'paygreen' && (pathname === '/cancel' || pathname === '/return')) {
-                    Linking.openURL(response.url)
+                  if (
+                    hostname === 'paygreen' &&
+                    (pathname === '/cancel' || pathname === '/return')
+                  ) {
+                    Linking.openURL(response.url);
                   }
                 }
               });
-          } else {
+            } else {
+              Linking.openURL(result.redirectUrl);
+            }
+          } catch (e) {
             Linking.openURL(result.redirectUrl);
           }
-        } catch (e) {
-          Linking.openURL(result.redirectUrl);
+        } else {
+          navigation.navigate(routesByMethod[type]);
         }
-      } else {
-        navigation.navigate(routesByMethod[type]);
-      }
-    })
-  }, [ navigation, paymentGateway, setPaymentMethod ]);
+      });
+    },
+    [navigation, paymentGateway, setPaymentMethod],
+  );
 
   useEffect(() => {
     loadPaymentMethods();
-  }, [ loadPaymentMethods ])
+  }, [loadPaymentMethods]);
 
   if (!cart || paymentMethods.length === 0) {
     return <View />;
@@ -109,7 +127,7 @@ const CreditCard = ({ cart, paymentMethods, paymentGateway, loadPaymentMethods, 
       />
     </Center>
   );
-}
+};
 
 function mapStateToProps(state, ownProps) {
   const cart = selectCart(state)?.cart;
@@ -123,7 +141,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     loadPaymentMethods: () => dispatch(loadPaymentMethods()),
-    setPaymentMethod: (paymentMethod, cb) => dispatch(setPaymentMethod(paymentMethod, cb)),
+    setPaymentMethod: (paymentMethod, cb) =>
+      dispatch(setPaymentMethod(paymentMethod, cb)),
   };
 }
 

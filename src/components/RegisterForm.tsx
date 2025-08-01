@@ -438,7 +438,8 @@ class RegisterForm extends React.Component {
                       key={input.name}
                       isInvalid={hasError}>
                       <FormControl.Label>{input.label}</FormControl.Label>
-                      <Input _stack={{ style: {} }}
+                      <Input
+                        _stack={{ style: {} }}
                         testID={`registerForm.${input.name}`}
                         ref={component =>
                           this._inputComponents.set(input.name, component)

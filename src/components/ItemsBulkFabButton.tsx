@@ -45,7 +45,7 @@ class ItemsBulkFabButton extends Component {
         name={iconName}
         size="sm"
         onPress={() => onPressed(this.state.items)}
-        testID='bulkAssignButton'
+        testID="bulkAssignButton"
       />
     );
   }

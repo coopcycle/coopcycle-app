@@ -20,7 +20,7 @@ const container = {
   justifyContent: 'center',
 };
 
-const markerColor = (task) => {
+const markerColor = task => {
   let color = darkGreyColor;
 
   if (task.tags.length > 0) {
@@ -53,7 +53,7 @@ const markerOpacity = task => {
 const containerSize = 32;
 const background = whiteColor;
 
-const backgroundStyle = (task) => {
+const backgroundStyle = task => {
   return {
     width: containerSize,
     height: containerSize,
@@ -70,7 +70,7 @@ const backgroundStyle = (task) => {
   };
 };
 
-const iconStyle = (task) => {
+const iconStyle = task => {
   return {
     position: 'absolute',
     color: markerColor(task),
@@ -112,7 +112,10 @@ export default ({ task, type, hasWarnings, testID }) => {
 
   return (
     <View style={container}>
-      <View style={backgroundStyle(task)} testID={testID || `taskmarker-${task.id}`} />
+      <View
+        style={backgroundStyle(task)}
+        testID={testID || `taskmarker-${task.id}`}
+      />
       {hasWarnings ? (
         <Text bold style={warnIconStyle()}>
           .

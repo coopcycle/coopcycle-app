@@ -97,7 +97,7 @@ class CartFooterButton extends Component {
   static defaultProps = {
     isLoading: false,
     disabled: false,
-  }
+  };
 }
 
 CartFooterButton.propTypes = {

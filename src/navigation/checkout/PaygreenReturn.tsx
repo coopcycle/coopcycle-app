@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { checkout } from '../../redux/Checkout/actions';
 
 export default () => {
-
   const route = useRoute();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -17,11 +16,11 @@ export default () => {
 
   useEffect(() => {
     dispatch(checkout('', null, false, route.params.po_id));
-  }, [ dispatch, route.params.po_id ]);
+  }, [dispatch, route.params.po_id]);
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{ t('PAYGREEN_RETURN_TEXT') }</Text>
+      <Text>{t('PAYGREEN_RETURN_TEXT')}</Text>
     </View>
-  )
-}
+  );
+};

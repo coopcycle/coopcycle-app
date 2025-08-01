@@ -100,13 +100,13 @@ type Restaurant = {
   bannerImage: string;
   badges: string[];
   tags: string[];
-}
+};
 
 type Props = {
   restaurant: Restaurant;
 };
 
-export const RestaurantCard = ({ restaurant } : Props) => {
+export const RestaurantCard = ({ restaurant }: Props) => {
   const backgroundColor = useBackgroundContainerColor();
   const isAvailable = isRestaurantOrderingAvailable(restaurant);
 

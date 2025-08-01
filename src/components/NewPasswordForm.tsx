@@ -112,7 +112,8 @@ class NewPasswordForm extends React.Component {
               <View key={input.name}>
                 <FormControl stackedLabel {...itemProps}>
                   <FormControl.Label>{input.label}</FormControl.Label>
-                  <Input _stack={{ style: {} }}
+                  <Input
+                    _stack={{ style: {} }}
                     ref={component =>
                       this._inputComponents.set(input.name, component)
                     }

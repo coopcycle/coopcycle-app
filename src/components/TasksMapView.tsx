@@ -21,7 +21,10 @@ import { filterTasks } from '../redux/logistics/utils';
 import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
 import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
-import { selectIsHideUnassignedFromMap, selectIsPolylineOn } from '../redux/Courier';
+import {
+  selectIsHideUnassignedFromMap,
+  selectIsPolylineOn,
+} from '../redux/Courier';
 import { selectTasksEntities } from '../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
 import TaskCallout from './TaskCallout';
@@ -264,7 +267,7 @@ class TasksMapView extends Component {
       return decodedCoordinates;
     }
 
-    const {tasksEntities} = this.props;
+    const { tasksEntities } = this.props;
     const taskListTasks = getTaskListTasks(taskList, tasksEntities);
 
     return taskListTasks.map(task => task.address.geo);
@@ -324,19 +327,17 @@ class TasksMapView extends Component {
   }
 
   render() {
-    const {
-      onMapReady,
-      taskLists,
-      uiFilters,
-      tasksEntities,
-      ...otherProps
-    } = this.props;
+    const { onMapReady, taskLists, uiFilters, tasksEntities, ...otherProps } =
+      this.props;
 
     // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
     // Also they must have a "taskList" attribute for markers
     const data = _.flatMap(taskLists, taskList => {
       // Do not parse unassigned tasks if the filter is enabled
-      if (this.props.isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID) {
+      if (
+        this.props.isHideUnassignedFromMap &&
+        taskList.id === UNASSIGNED_TASKS_LIST_ID
+      ) {
         return [];
       }
       const tasks = getTaskListTasks(taskList, tasksEntities);

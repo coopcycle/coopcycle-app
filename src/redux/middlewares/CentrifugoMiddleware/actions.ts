@@ -1,5 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
-import { updateTask, updateTaskList, updateTour } from '../../../shared/logistics/redux';
+import {
+  updateTask,
+  updateTaskList,
+  updateTour,
+} from '../../../shared/logistics/redux';
 
 export const CENTRIFUGO_MESSAGE = '@centrifugo/MESSAGE';
 

@@ -21,10 +21,7 @@ import {
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
 } from '../../redux/Courier';
-import {
-  doneIconName,
-  incidentIconName,
-} from '../task/styles/common';
+import { doneIconName, incidentIconName } from '../task/styles/common';
 import {
   filterHasIncidents,
   filterStatusDone,

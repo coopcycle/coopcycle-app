@@ -40,7 +40,7 @@ class CartFooter extends Component {
 
   static defaultProps = {
     disabled: false,
-  }
+  };
 }
 
 CartFooter.propTypes = {

@@ -45,7 +45,6 @@ import storeReducer from './Store/reducers';
 import keywordFiltersReducer from './Dispatch/keywordFiltersSlice';
 import selectedTasksReducer from './Dispatch/updateSelectedTasksSlice';
 
-
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
   storage: AsyncStorage,

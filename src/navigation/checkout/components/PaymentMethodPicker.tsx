@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Svg, { Path, G } from 'react-native-svg';
-import PaymentMethodIcon from './PaymentMethodIcon'
+import PaymentMethodIcon from './PaymentMethodIcon';
 
 const styles = StyleSheet.create({
   heading: {
@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-
 
 const PaymentMethodPicker = ({ methods, onSelect, disabled }) => {
   const { t } = useTranslation();
@@ -39,7 +38,7 @@ const PaymentMethodPicker = ({ methods, onSelect, disabled }) => {
               { backgroundColor: colorMode === 'dark' ? '#3f3f3f' : '#f7f7f7' },
             ]}
             onPress={() => onSelect(method.type)}>
-            <PaymentMethodIcon type={ method.type } />
+            <PaymentMethodIcon type={method.type} />
             <Text>{t(`PAYMENT_METHOD.${method.type}`)}</Text>
           </Pressable>
         ))}

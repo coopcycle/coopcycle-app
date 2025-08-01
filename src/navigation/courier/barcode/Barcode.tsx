@@ -166,9 +166,7 @@ function BarcodePage({
             {
               text: t('TASK_COMPLETE_ALERT_NEGATIVE'),
               onPress: () => {
-                _startTask(httpClient, task_id)
-                  .then(resolve)
-                  .catch(reject);
+                _startTask(httpClient, task_id).then(resolve).catch(reject);
               },
             },
             {
@@ -180,7 +178,7 @@ function BarcodePage({
       });
     },
     [t, httpClient],
-  )
+  );
 
   const warningMultiplePackages = ({ count, details }) =>
     new Promise((resolve, _reject) => {
@@ -243,7 +241,14 @@ function BarcodePage({
           return;
       }
     },
-    [entity, navigation, taskLists, askToAssign, askToUnassign, askToStartPickup],
+    [
+      entity,
+      navigation,
+      taskLists,
+      askToAssign,
+      askToUnassign,
+      askToStartPickup,
+    ],
   );
 
   useEffect(() => {
@@ -281,7 +286,8 @@ function BarcodePage({
         onBackdropPress={() => setShowNoteModal(false)}>
         <FormControl>
           <FormControl.Label>{t('NOTES')}</FormControl.Label>
-          <TextArea _stack={{ style: {} }}
+          <TextArea
+            _stack={{ style: {} }}
             autoFocus
             onChange={e => (note.current = e.nativeEvent.text)}
           />
@@ -303,14 +309,17 @@ function BarcodePage({
           disabled={showNoteModal || clientActionsQueue.length > 0}
           onScanned={async code => {
             if (clientActionsQueue.length > 0) return;
-            const { entity, client_action: { action = null, payload = null } = {}, token_action } = await _fetchBarcode(
-              httpClient,
-              code,
-            );
+            const {
+              entity,
+              client_action: { action = null, payload = null } = {},
+              token_action,
+            } = await _fetchBarcode(httpClient, code);
             setBarcode(code);
             setEntity(entity);
 
-            const multi_package_action = checkMultiplePackages(entity?.barcodes?.packages);
+            const multi_package_action = checkMultiplePackages(
+              entity?.barcodes?.packages,
+            );
             setClientActionsQueue(
               [
                 ...clientActionsQueue,
@@ -322,10 +331,10 @@ function BarcodePage({
         />
         <ScrollView
           style={{ paddingHorizontal: 20, marginVertical: 20 }}
-        // If the auto-scan trigger is anoying maybe add later
-        // the possibility to scan when touching the screen
-        // onTouchStart={() => console.log(">>>>>>>>>> enter")}
-        // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
+          // If the auto-scan trigger is anoying maybe add later
+          // the possibility to scan when touching the screen
+          // onTouchStart={() => console.log(">>>>>>>>>> enter")}
+          // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
         >
           <View style={styles.section}>
             <Badge>{entity?.status ? t(`TASK_${entity.status}`) : '-'}</Badge>

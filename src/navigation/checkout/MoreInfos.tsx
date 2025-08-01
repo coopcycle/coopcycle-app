@@ -205,7 +205,8 @@ class MoreInfos extends Component {
                   {!this.props.isAuthenticated && this._userIsGuest() && (
                     <FormControl mb="2">
                       <FormControl.Label>Email</FormControl.Label>
-                      <Input _stack={{ style: {} }}
+                      <Input
+                        _stack={{ style: {} }}
                         testID="guestCheckoutEmail"
                         autoCorrect={false}
                         keyboardType="email-address"
@@ -231,7 +232,8 @@ class MoreInfos extends Component {
                     <FormControl.Label>
                       {this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
                     </FormControl.Label>
-                    <Input _stack={{ style: {} }}
+                    <Input
+                      _stack={{ style: {} }}
                       testID="checkoutTelephone"
                       autoCorrect={false}
                       keyboardType="phone-pad"
@@ -262,7 +264,8 @@ class MoreInfos extends Component {
                       <FormControl.Label>
                         {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}
                       </FormControl.Label>
-                      <TextArea _stack={{ style: {} }}
+                      <TextArea
+                        _stack={{ style: {} }}
                         autoCorrect={false}
                         totalLines={3}
                         onChangeText={handleChange('address.description')}
@@ -279,7 +282,8 @@ class MoreInfos extends Component {
                     <FormControl.Label>
                       {this.props.t('CHECKOUT_ORDER_NOTES')}
                     </FormControl.Label>
-                    <TextArea _stack={{ style: {} }}
+                    <TextArea
+                      _stack={{ style: {} }}
                       autoCorrect={false}
                       totalLines={3}
                       onChangeText={handleChange('notes')}

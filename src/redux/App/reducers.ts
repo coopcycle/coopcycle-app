@@ -218,7 +218,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         shouldNotificationBeDisplayed: action.payload,
-      }
+      };
     }
 
     case CLEAR_NOTIFICATIONS:
@@ -386,7 +386,7 @@ export default (state = initialState, action = {}) => {
     case BACKGROUND_PERMISSION_DISCLOSED:
       return {
         ...state,
-        hasDisclosedBackgroundPermission: action.payload
+        hasDisclosedBackgroundPermission: action.payload,
       };
 
     case SET_MODAL:
@@ -480,7 +480,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isBarcodeEnabled: action.payload,
-      }
+      };
 
     case appStateChanged.type:
       return {

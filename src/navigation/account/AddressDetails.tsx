@@ -45,7 +45,8 @@ class AddressDetails extends Component {
           <Divider style={{ margin: 10 }} />
           <FormControl mb="5">
             <FormControl.Label>{this.props.t('NAME')}</FormControl.Label>
-            <Input _stack={{ style: {} }}
+            <Input
+              _stack={{ style: {} }}
               onChange={({ nativeEvent: { text } }) =>
                 this.setState({ name: text })
               }
@@ -56,7 +57,8 @@ class AddressDetails extends Component {
             <FormControl.Label>
               {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}
             </FormControl.Label>
-            <Input _stack={{ style: {} }}
+            <Input
+              _stack={{ style: {} }}
               multiline
               numberOfLines={3}
               onChange={({ nativeEvent: { text } }) =>

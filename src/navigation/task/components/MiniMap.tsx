@@ -9,7 +9,11 @@ const zoomLevel = 15;
 const MiniMap = ({ task, tasks, onLayout, aspectRatio }) => {
   // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
 
-  const region = getRegionForTasks(task ? [task] : tasks, zoomLevel, aspectRatio);
+  const region = getRegionForTasks(
+    task ? [task] : tasks,
+    zoomLevel,
+    aspectRatio,
+  );
 
   const renderPolyline = () => {
     const firstTask = tasks[0];
@@ -22,10 +26,10 @@ const MiniMap = ({ task, tasks, onLayout, aspectRatio }) => {
         coordinates={coords}
         strokeWidth={3}
         strokeColor={firstTask.color}
-        lineDashPattern={!firstTask.isAssigned ? [20, 10] : null }
+        lineDashPattern={!firstTask.isAssigned ? [20, 10] : null}
       />
     );
-  }
+  };
 
   return (
     <MapView

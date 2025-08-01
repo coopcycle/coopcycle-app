@@ -43,7 +43,8 @@ export const SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS =
   '@app/SAVE_PUSH_NOTIFICATION_TOKEN_SUCCESS';
 export const DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS =
   '@app/DELETE_PUSH_NOTIFICATION_TOKEN_SUCCESS';
-export const SHOULD_NOTIFICATION_BE_DISPLAYED = '@app/SHOULD_NOTIFICATION_BE_DISPLAYED';
+export const SHOULD_NOTIFICATION_BE_DISPLAYED =
+  '@app/SHOULD_NOTIFICATION_BE_DISPLAYED';
 
 export const LOGIN = '@app/LOGIN';
 export const SET_LOADING = '@app/SET_LOADING';
@@ -169,7 +170,7 @@ export const deletePushNotificationTokenSuccess = createFsAction(
 );
 export const shouldNotificationBeDisplayed = createFsAction(
   SHOULD_NOTIFICATION_BE_DISPLAYED,
-)
+);
 
 const _loadMyStoresSuccess = createFsAction(LOAD_MY_STORES_SUCCESS);
 
@@ -376,7 +377,7 @@ function loadAll(getState) {
 }
 
 export function selectServer(server) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     dispatch(setLoading(true));
     dispatch(_clearSelectServerError());
 
@@ -610,7 +611,7 @@ export function forgotPassword() {
 }
 
 export function guestModeOn() {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const user = new AppUser(
       null, // username
       null, // email

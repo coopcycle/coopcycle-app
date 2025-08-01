@@ -22,8 +22,8 @@ import Detail from '../../../components/Detail';
 
 const Details = ({ task, onTaskTitleClick, t }) => {
   const timeframe = getTimeFrame(task);
-  let address = getAddress(task)
-  const name = getName(task)
+  let address = getAddress(task);
+  const name = getName(task);
   address = name ? [name, address].join(' - ') : address;
 
   const renderTaskTitle = () => (
@@ -154,10 +154,18 @@ const Details = ({ task, onTaskTitleClick, t }) => {
   return (
     <View style={{ flex: 1 }}>
       {onTaskTitleClick && (
-        <TouchableOpacity onPress={() => {onTaskTitleClick(task)}} style={{ flex: 1 }}>
+        <TouchableOpacity
+          onPress={() => {
+            onTaskTitleClick(task);
+          }}
+          style={{ flex: 1 }}>
           <HStack alignItems="center" justifyContent="space-between" p="2">
             {renderTaskTitle()}
-            <Icon as={Ionicons} name="arrow-forward" style={{ color: '#ccc' }} />
+            <Icon
+              as={Ionicons}
+              name="arrow-forward"
+              style={{ color: '#ccc' }}
+            />
           </HStack>
         </TouchableOpacity>
       )}

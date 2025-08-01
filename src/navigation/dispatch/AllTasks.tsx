@@ -19,7 +19,6 @@ import { useBackgroundHighlightColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import GroupedTasks from './components/GroupedTasks';
 
-
 export default function AllTasks({ navigation, route }) {
   const { t } = useTranslation();
 
@@ -27,18 +26,20 @@ export default function AllTasks({ navigation, route }) {
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
   const keywordFilters = useSelector(selectKeywordFilters);
   const allFilters = [...uiFilters, ...keywordFilters];
-  const unassignedTasks = useSelector(selectFilteredUnassignedTasksNotCancelled(allFilters));
+  const unassignedTasks = useSelector(
+    selectFilteredUnassignedTasksNotCancelled(allFilters),
+  );
   const taskLists = useSelector(selectFilteredTaskLists(allFilters));
 
   const dispatch = useDispatch();
 
   const { isFetching, isError, refetch } = useAllTasks(selectedDate);
-  const bgHighlightColor = useBackgroundHighlightColor()
+  const bgHighlightColor = useBackgroundHighlightColor();
 
   const handleRefetch = () => {
-    refetch()
+    refetch();
     dispatch(clearSelectedTasks());
-  }
+  };
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -69,9 +70,7 @@ export default function AllTasks({ navigation, route }) {
         <AddButton
           testID="dispatchNewDelivery"
           onPress={() => navigation.navigate('DispatchNewDelivery')}>
-          <Text style={{ fontWeight: '700' }}>
-            {selectedDate.format('ll')}
-          </Text>
+          <Text style={{ fontWeight: '700' }}>{selectedDate.format('ll')}</Text>
         </AddButton>
       </View>
       <GroupedTasks

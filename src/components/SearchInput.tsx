@@ -3,11 +3,10 @@ import { StyleSheet, TextInput } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { blackColor, darkGreyColor } from '../styles/common';
 
-
 export default function SearchInput({
   onChangeText,
   onSubmitEditing,
-  placeholder="Search",
+  placeholder = 'Search',
   value,
   style,
   ...props

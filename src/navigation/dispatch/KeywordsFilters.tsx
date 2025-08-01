@@ -1,16 +1,15 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Text, View } from "native-base";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { addKeywordFilter } from "../../redux/Dispatch/keywordFiltersSlice";
-import { greenColor, whiteColor } from "../../styles/common";
-import { useDispatch } from "react-redux";
-import ActiveKeywordFilters from "./components/ActiveKeywordFilters";
-import BasicSafeAreaView from "../../components/BasicSafeAreaView";
-import SearchInput from "../../components/SearchInput";
-
+import { addKeywordFilter } from '../../redux/Dispatch/keywordFiltersSlice';
+import { greenColor, whiteColor } from '../../styles/common';
+import { useDispatch } from 'react-redux';
+import ActiveKeywordFilters from './components/ActiveKeywordFilters';
+import BasicSafeAreaView from '../../components/BasicSafeAreaView';
+import SearchInput from '../../components/SearchInput';
 
 export default function KeywordsFilters() {
   const { t } = useTranslation();
@@ -48,14 +47,13 @@ export default function KeywordsFilters() {
       <TouchableOpacity
         style={styles.goToAllTasksButton}
         onPress={goToAllTasks}
-        testID="keywordsFilterGoToAllTasksButton"
-      >
+        testID="keywordsFilterGoToAllTasksButton">
         <Text style={styles.buttonText}>
           {t('KEYWORD_FILTERS_APPLY_FILTERS')}
         </Text>
       </TouchableOpacity>
     </BasicSafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

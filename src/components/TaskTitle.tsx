@@ -7,22 +7,26 @@ const TaskTitle = ({ task }) => {
 
   // fallback when task is not defined, not sure if it can happen
   if (!task) {
-    DatadogLogger.warn('Task props in TaskTitle is not defined')
-    return <>{t('TASK')}</>
+    DatadogLogger.warn('Task props in TaskTitle is not defined');
+    return <>{t('TASK')}</>;
   }
 
   return (
     <React.Fragment>
-      { task.metadata?.order_number ?
+      {task.metadata?.order_number ? (
         <>
-          {
-            task.metadata?.delivery_position ?
-            <>{t('ORDER_NUMBER', { number: task.metadata.order_number })}-{task.metadata.delivery_position}</>
-            : <>{t('ORDER_NUMBER', { number: task.metadata.order_number })}</>
-          }
+          {task.metadata?.delivery_position ? (
+            <>
+              {t('ORDER_NUMBER', { number: task.metadata.order_number })}-
+              {task.metadata.delivery_position}
+            </>
+          ) : (
+            <>{t('ORDER_NUMBER', { number: task.metadata.order_number })}</>
+          )}
         </>
-        : <>{t('TASK_WITH_ID', { id: task.id })}</>
-      }
+      ) : (
+        <>{t('TASK_WITH_ID', { id: task.id })}</>
+      )}
     </React.Fragment>
   );
 };

@@ -7,9 +7,7 @@ import { DEP_CHANGE_DATE } from '../../shared/logistics/redux';
 const initialState = moment();
 
 export default (state = initialState, action) => {
-  if (actionMatchCreator(action, [
-    changeDate,
-  ])) {
+  if (actionMatchCreator(action, [changeDate])) {
     return action.payload;
   }
 

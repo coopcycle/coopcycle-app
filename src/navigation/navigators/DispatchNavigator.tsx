@@ -2,7 +2,7 @@ import { Circle, Icon } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { StyleSheet,TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -12,7 +12,10 @@ import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { selectKeywordFilters } from '../../redux/Dispatch/selectors';
-import { useBackgroundContainerColor, useBaseTextColor } from '../../styles/theme';
+import {
+  useBackgroundContainerColor,
+  useBaseTextColor,
+} from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
 import i18n from '../../i18n';
@@ -22,7 +25,6 @@ import OrderNavigator from './OrderNavigator';
 import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
-
 
 const Tab = createBottomTabNavigator();
 
@@ -44,21 +46,28 @@ function CustomTabBar({ navigation }) {
   const goToTasksMap = () => {
     setShowMapButton(false);
     navigation.navigate('DispatchTasksMap');
-  }
+  };
 
   const goToTasksList = () => {
     setShowMapButton(true);
-    navigation.navigate('DispatchAllTasks')
-  }
+    navigation.navigate('DispatchAllTasks');
+  };
 
   return (
-    <View style={[customTabBarStyles.tabBarContainer, { backgroundColor: bgColor }]}>
+    <View
+      style={[
+        customTabBarStyles.tabBarContainer,
+        { backgroundColor: bgColor },
+      ]}>
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={showMapButton ? goToTasksMap : goToTasksList}
-        testID="toggleTasksMapListButton"
-      >
-        <Icon as={FontAwesome} name={showMapButton ? "map" : "list"} style={{ color }} />
+        testID="toggleTasksMapListButton">
+        <Icon
+          as={FontAwesome}
+          name={showMapButton ? 'map' : 'list'}
+          style={{ color }}
+        />
       </TouchableOpacity>
       <SearchInput
         style={customTabBarStyles.searchInput}
@@ -70,14 +79,10 @@ function CustomTabBar({ navigation }) {
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
-        testID="showTasksFiltersButton"
-      >
+        testID="showTasksFiltersButton">
         <Icon as={FontAwesome} name="filter" style={{ color }} />
         {keywordFilters.length > 0 && (
-          <Circle
-            size={3}
-            style={customTabBarStyles.filtersEnabled}
-          />
+          <Circle size={3} style={customTabBarStyles.filtersEnabled} />
         )}
       </TouchableOpacity>
     </View>
@@ -105,15 +110,14 @@ const customTabBarStyles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 10,
-  }
+  },
 });
 
 function Tabs() {
-
   return (
     <KeyboardAdjustView style={{ flex: 1 }}>
       <Tab.Navigator
-        tabBar={(props) => <CustomTabBar {...props} />}
+        tabBar={props => <CustomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: false,
@@ -137,13 +141,11 @@ function Tabs() {
       </Tab.Navigator>
     </KeyboardAdjustView>
   );
-};
+}
 
 const RootStack = createStackNavigator();
 
-export default function DispatchNavigator({
-  navigation,
-}) {
+export default function DispatchNavigator({ navigation }) {
   const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
@@ -240,10 +242,10 @@ export default function DispatchNavigator({
           name="Order"
           component={OrderNavigator}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
       </RootStack.Navigator>
     </DeliveryCallbackProvider>
   );
-};
+}

@@ -12,7 +12,6 @@ import moment from 'moment';
 import { filterTasks } from '../logistics/utils';
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
 
-
 /* Simple Selectors */
 export const selectTaskSelectedDate = state => state.ui.tasks.selectedDate;
 export const selectIsTasksLoading = state => state.entities.tasks.isFetching;
@@ -21,7 +20,8 @@ export const selectIsTasksLoadingFailure = state =>
 export const selectIsTaskCompleteFailure = state =>
   state.entities.tasks.completeTaskFetchError;
 export const selectTaskFilters = state => state.ui.tasks.excludeFilters;
-export const selectIsHideUnassignedFromMap = state => state.ui.tasks.isHideUnassignedFromMap;
+export const selectIsHideUnassignedFromMap = state =>
+  state.ui.tasks.isHideUnassignedFromMap;
 export const selectIsPolylineOn = state => state.ui.tasks.isPolylineOn;
 export const selectTasksChangedAlertSound = state =>
   state.ui.tasks.tasksChangedAlertSound;
@@ -53,12 +53,14 @@ export const selectFilteredTasks = createSelector(
   (filters, tasks) => filterTasks(tasks, filters),
 );
 
-export const selectFilteredTasksByOrder = orderId => createSelector(
-  selectFilteredTasks,
-  filteredTasks => filteredTasks
-    .filter(task => task.metadata.order_number === orderId)
-    .sort((a,b) => a.metadata.delivery_position - b.metadata.delivery_position)
-);
+export const selectFilteredTasksByOrder = orderId =>
+  createSelector(selectFilteredTasks, filteredTasks =>
+    filteredTasks
+      .filter(task => task.metadata.order_number === orderId)
+      .sort(
+        (a, b) => a.metadata.delivery_position - b.metadata.delivery_position,
+      ),
+  );
 
 /**
  * @param   {State}   state Redux state
@@ -81,7 +83,7 @@ export const selectAreFailedTasksHidden = createSelector(
 export const selectAreIncidentsHidden = createSelector(
   selectTaskFilters,
   filters => filters.some(f => f.hasIncidents),
-)
+);
 
 /**
  * @param   {State} state Redux state

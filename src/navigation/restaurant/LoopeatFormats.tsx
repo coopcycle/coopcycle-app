@@ -62,7 +62,8 @@ function LoopeatFormats({
                         alignItems="center"
                         justifyContent="space-between">
                         <Text>{format.format_name}</Text>
-                        <Input _stack={{ style: {} }}
+                        <Input
+                          _stack={{ style: {} }}
                           w="25%"
                           keyboardType="number-pad"
                           returnKeyType="done"

@@ -11,7 +11,7 @@ import NotificationModal from './NotificationModal';
 import {
   selectNotificationsToDisplay,
   selectNotificationsWithSound,
-  selectShouldNotificationBeDisplayed
+  selectShouldNotificationBeDisplayed,
 } from '../redux/App/selectors';
 import { AppState } from 'react-native';
 
@@ -27,7 +27,9 @@ const NOTIFICATION_DURATION_MS = 10000;
 export default function NotificationHandler() {
   const notificationsToDisplay = useSelector(selectNotificationsToDisplay);
   const notificationsWithSound = useSelector(selectNotificationsWithSound);
-  const shouldNotificationBeDisplayed = useSelector(selectShouldNotificationBeDisplayed);
+  const shouldNotificationBeDisplayed = useSelector(
+    selectShouldNotificationBeDisplayed,
+  );
 
   const hasNotifications = useMemo(
     () =>
@@ -59,7 +61,8 @@ export default function NotificationHandler() {
     if (
       shouldNotificationBeDisplayed &&
       hasNotificationsWithSound &&
-      AppState.currentState === 'active') {
+      AppState.currentState === 'active'
+    ) {
       dispatch(startSound());
     } else {
       dispatch(stopSound());

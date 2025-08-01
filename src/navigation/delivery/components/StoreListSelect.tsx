@@ -2,7 +2,7 @@ import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { Icon, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import React from 'react'
+import React from 'react';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 
@@ -10,7 +10,7 @@ export default function StoreListSelect({
   stores,
   onSelectStore,
   isRefreshing,
-  onRefreshStores
+  onRefreshStores,
 }) {
   const styles = StyleSheet.create({
     item: {
@@ -27,20 +27,17 @@ export default function StoreListSelect({
     },
   });
 
-
   const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
         onPress={() => onSelectStore(item)}
         style={styles.item}
         testID={`dispatch:storeList:${index}`}>
-        <Text style={styles.itemLabel}>
-          {item.name}
-        </Text>
+        <Text style={styles.itemLabel}>{item.name}</Text>
         <Icon as={FontAwesome} name="arrow-right" />
       </TouchableOpacity>
     );
-  }
+  };
 
   return (
     <FlatList
@@ -49,10 +46,8 @@ export default function StoreListSelect({
       renderItem={renderItem}
       ItemSeparatorComponent={ItemSeparator}
       refreshControl={
-        <RefreshControl
-          refreshing={isRefreshing}
-          onRefresh={onRefreshStores}
-        />}
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefreshStores} />
+      }
     />
-  )
+  );
 }

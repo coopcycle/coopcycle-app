@@ -9,21 +9,15 @@ const keywordFiltersSlice = createSlice({
   initialState,
   reducers: {
     addKeywordFilter: (state, { payload: filter }) => {
-      return _.uniqBy(
-        [...state, filterByKeyword(filter)],
-        'keyword',
-      );
+      return _.uniqBy([...state, filterByKeyword(filter)], 'keyword');
     },
     removeKeywordFilter: (state, { payload: filter }) => {
-      return state.filter(f => f.keyword !== filter)
+      return state.filter(f => f.keyword !== filter);
     },
-  }
-})
+  },
+});
 
-
-export const {
-  addKeywordFilter,
-  removeKeywordFilter,
-} = keywordFiltersSlice.actions;
+export const { addKeywordFilter, removeKeywordFilter } =
+  keywordFiltersSlice.actions;
 
 export default keywordFiltersSlice.reducer;

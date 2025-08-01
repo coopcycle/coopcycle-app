@@ -52,7 +52,7 @@ export default function TasksMap({ navigation, route }) {
   const allUnassignedTasks = useSelector(selectUnassignedTasksNotCancelled);
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
-  const bgHighlightColor = useBackgroundHighlightColor()
+  const bgHighlightColor = useBackgroundHighlightColor();
 
   const { isFetching } = useAllTasks(selectedDate);
 
@@ -62,7 +62,8 @@ export default function TasksMap({ navigation, route }) {
 
   const mergedTaskListsWithUnassigned = useMemo(() => {
     // Split the unassigned task list by grouped linked tasks
-    const allUnassignedTaskLists = createUnassignedTaskLists(allUnassignedTasks);
+    const allUnassignedTaskLists =
+      createUnassignedTaskLists(allUnassignedTasks);
     // Prepend the unassigned tasks list
     return allUnassignedTaskLists.concat(allTaskLists);
   }, [allTaskLists, allUnassignedTasks]);
@@ -76,7 +77,7 @@ export default function TasksMap({ navigation, route }) {
 
   return (
     <>
-      <View style={{backgroundColor: bgHighlightColor}}>
+      <View style={{ backgroundColor: bgHighlightColor }}>
         <AddButton
           testID="dispatchNewDelivery"
           onPress={() => navigation.navigate('DispatchNewDelivery')}>
