@@ -111,7 +111,7 @@ export const apiSlice = createApi({
         );
 
         if (result.error) {
-          return { error: result.error };
+          return result;
         }
         return { data: sortByString(result.data, 'username') };
       },
@@ -125,7 +125,7 @@ export const apiSlice = createApi({
         );
 
         if (result.error) {
-          return { error: result.error };
+          return result;
         }
         return { data: sortByName(result.data) };
       },
