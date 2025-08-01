@@ -1,8 +1,5 @@
 import { createTaskSuccess } from '../../../shared/logistics/redux';
-import {
-  changeDate,
-  loadTasksSuccess,
-} from '../../Dispatch/actions';
+import { changeDate, loadTasksSuccess } from '../../Dispatch/actions';
 import { default as taskEntityReducers } from '../taskEntityReducers';
 
 describe('taskEntityReducers', () => {
@@ -21,7 +18,7 @@ describe('taskEntityReducers', () => {
             },
           },
           changeDate('2020-11-03T23:00:00.000Z'),
-        )
+        ),
       ).toEqual({
         ids: [],
         entities: {},
@@ -49,7 +46,7 @@ describe('taskEntityReducers', () => {
               isAssigned: false,
             },
           ]),
-        )
+        ),
       ).toEqual({
         ids: ['/api/tasks/1', '/api/tasks/2'],
         entities: {
@@ -57,11 +54,13 @@ describe('taskEntityReducers', () => {
             '@id': '/api/tasks/1',
             id: 1,
             isAssigned: false,
+            color: '#ffffff',
           },
           '/api/tasks/2': {
             '@id': '/api/tasks/2',
             id: 2,
             isAssigned: false,
+            color: '#ffffff',
           },
         },
       });
@@ -103,12 +102,14 @@ describe('taskEntityReducers', () => {
             id: 1,
             isAssigned: false,
             comments: 'new comment',
+            color: '#ffffff',
           },
           '/api/tasks/2': {
             '@id': '/api/tasks/2',
             id: 2,
             isAssigned: false,
             comments: 'new comment',
+            color: '#ffffff',
           },
         },
       });
@@ -136,6 +137,7 @@ describe('taskEntityReducers', () => {
             '@id': '/api/tasks/1',
             id: 1,
             isAssigned: false,
+            color: '#ffffff',
           },
         },
       });

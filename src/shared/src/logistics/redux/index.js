@@ -10,9 +10,10 @@ export {
   selectAssignedTasks,
   selectSelectedDate,
   selectTaskLists,
-  selectTasksWithColor,
+  selectTasksEntities,
   selectToursTasksIndex,
   selectUnassignedTasks,
+  selectUnassignedTasksNotCancelled,
 } from './selectors';
 
 export * from './actions';

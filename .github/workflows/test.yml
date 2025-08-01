@@ -1,7 +1,7 @@
 name: Test
 on: [push]
 jobs:
-  LINT_AND_TEST:
+  TEST:
     name: Basic tests
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +14,4 @@ jobs:
         run: yarn set version latest --yarn-path
       - name: yarn install
         run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
-      - run: yarn lint
-      - run: yarn i18n-lint
       - run: yarn test

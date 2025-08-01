@@ -31,9 +31,14 @@ export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
 export const assignTasksFailure = createAction('@logistics/ASSIGN_TASKS_FAILURE');
 export const assignTasksRequest = createAction('@logistics/ASSIGN_TASKS_REQUEST');
 export const assignTasksSuccess = createAction('@logistics/ASSIGN_TASKS_SUCCESS');
+
 export const assignTasksWithUiUpdateSuccess = createAction('@logistics/ASSIGN_TASKS_WITH_UI_UPDATE_SUCCESS');
 
 export const unassignTasksWithUiUpdateSuccess = createAction('@logistics/UNASSIGN_TASKS_WITH_UI_UPDATE_SUCCESS');
+
+export const disableCentrifugoUpdateForTasksIds = createAction('@logistics/DISABLE_CENTRIFUGO_UPDATE_FOR_TASKS_IDS');
+export const disableCentrifugoUpdateForUsers = createAction('@logistics/DISABLE_CENTRIFUGO_UPDATE_FOR_USER');
+export const restoreCentrifugoUpdate = createAction('@logistics/RESTORE_CENTRIFUGO_UPDATE');
 
 export const startTaskRequest = createAction('@logistics/START_TASK_REQUEST');
 export const startTaskSuccess = createAction('@logistics/START_TASK_SUCCESS');
@@ -61,7 +66,14 @@ export const updateTourSuccess = createAction('@logistics/UPDATE_TOUR_SUCCESS');
 
 export function updateTask(action, task) {
   return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
+    const prevState = getState();
+    let date = selectSelectedDate(prevState);
+
+    if (prevState.logistics.ui.disabledCentrifugoUpdatesForTasksIds.length > 0
+      && prevState.logistics.ui.disabledCentrifugoUpdatesForTasksIds.includes(task['@id'])
+    ) {
+      return;
+    }
 
     if (isSameDayTask(task, date)) {
       switch (action) {
@@ -96,7 +108,14 @@ export function updateTask(action, task) {
 
 export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
+    const prevState = getState();
+    let date = selectSelectedDate(prevState);
+
+    if (prevState.logistics.ui.disabledCentrifugoUpdatesForUsers.length > 0
+      && prevState.logistics.ui.disabledCentrifugoUpdatesForUsers.includes(taskList.username)
+    ) {
+      return;
+    }
 
     if (isSameDayTaskList(taskList, date)) {
       switch (action) {

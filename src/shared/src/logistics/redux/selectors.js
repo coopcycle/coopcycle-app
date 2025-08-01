@@ -1,7 +1,10 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
+
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
-import { mapToColor } from './taskUtils';
+
+
+// Selectors
 
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,
@@ -13,11 +16,17 @@ const tourSelectors = tourAdapter.getSelectors(
   state => state.logistics.entities.tours,
 );
 
+// Base selections
+
 export const selectSelectedDate = state => state.logistics.date;
 
 export const selectAllTasks = taskSelectors.selectAll;
+export const selectTasksEntities = taskSelectors.selectEntities;
 
 export const selectAllTours = tourSelectors.selectAll;
+
+
+// Selections for Tasks
 
 export const selectAssignedTasks = createSelector(
   selectAllTasks,
@@ -29,46 +38,43 @@ export const selectUnassignedTasks = createSelector(
   allTasks => allTasks.filter(task => !task.isAssigned)
 );
 
-export const selectTasksWithColor = createSelector(
-  selectAllTasks,
-  allTasks => mapToColor(allTasks),
+export const selectUnassignedTasksNotCancelled = createSelector(
+  selectUnassignedTasks,
+  tasks =>
+    _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
 );
 
-// FIXME
-// This is not optimized
-// Each time any task is updated, the tasks lists are looped over
-// Also, it generates copies all the time
-// Replace this with a selectTaskListItemsByUsername selector, used by the <TaskList> component
-// https://redux.js.org/tutorials/essentials/part-6-performance-normalization#memoizing-selector-functions
+
+// Selections for TaskLists
+
 export const selectTaskLists = createSelector(
   taskListSelectors.selectAll,
-  taskSelectors.selectEntities,
   tourSelectors.selectEntities,
-  (taskLists, tasksById, toursById) =>
+  (taskLists, toursById) =>
     taskLists.map(taskList => {
       let newTaskList = { ...taskList };
 
       const orderedItems = taskList.itemIds.flatMap(itemId => {
-        const maybeTask = tasksById[itemId];
-
-        if (maybeTask) {
-          return [maybeTask];
-        }
-
         const maybeTour = toursById[itemId];
 
         if (maybeTour) {
-          return maybeTour.items.map(taskId => tasksById[taskId]);
+          return maybeTour.items;
+        }
+
+        if (itemId.includes('/api/tasks/')){
+          return [itemId];
         }
 
         return [];
       });
-
-      newTaskList.items = _.uniqBy(orderedItems, '@id');
+      newTaskList.tasksIds = _.uniq(orderedItems);
 
       return newTaskList;
     }),
 );
+
+
+// Selections for Tours
 
 // Returns a tours/tasks index with the format:
 // {
