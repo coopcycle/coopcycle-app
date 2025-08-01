@@ -1,5 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import thunk from 'redux-thunk';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import AppUser from '../../../AppUser';
 import appReducer from '../../App/reducers';
 import { message as wsMessage } from '../../middlewares/CentrifugoMiddleware/actions';
@@ -23,11 +22,12 @@ describe('notifyOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     });
 
-    const store = createStore(
+    const store = configureStore({
       reducer,
       preloadedState,
-      applyMiddleware(notifyOnNewOrderCreated),
-    );
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat([notifyOnNewOrderCreated]),
+    });
 
     store.dispatch(
       loadOrdersSuccess([{ '@id': '/api/orders/1', state: 'new' }]),
@@ -67,11 +67,12 @@ describe('notifyOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     });
 
-    const store = createStore(
+    const store = configureStore({
       reducer,
       preloadedState,
-      applyMiddleware(notifyOnNewOrderCreated),
-    );
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat([notifyOnNewOrderCreated]),
+    });
 
     store.dispatch(loadOrderSuccess({ '@id': '/api/orders/1', state: 'new' }));
 
@@ -116,11 +117,12 @@ describe('notifyOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     });
 
-    const store = createStore(
+    const store = configureStore({
       reducer,
       preloadedState,
-      applyMiddleware(thunk, notifyOnNewOrderCreated),
-    );
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat([notifyOnNewOrderCreated]),
+    });
 
     store.dispatch(
       wsMessage({
@@ -163,11 +165,12 @@ describe('notifyOnNewOrderCreated', () => {
       restaurant: restaurantReducer,
     });
 
-    const store = createStore(
+    const store = configureStore({
       reducer,
       preloadedState,
-      applyMiddleware(notifyOnNewOrderCreated),
-    );
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat([notifyOnNewOrderCreated]),
+    });
 
     store.dispatch(loadOrderSuccess({ '@id': '/api/orders/1', state: 'new' }));
 

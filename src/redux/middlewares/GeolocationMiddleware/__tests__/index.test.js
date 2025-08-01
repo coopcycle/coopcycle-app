@@ -1,7 +1,6 @@
 import BackgroundGeolocation from 'react-native-background-geolocation';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createAction } from 'redux-actions';
-import thunk from 'redux-thunk';
 
 import AppUser from '../../../../AppUser';
 import { SET_USER } from '../../../../redux/App/actions';
@@ -43,11 +42,12 @@ describe('GeolocationMiddleware', () => {
       app: appReducer,
     });
 
-    const store = createStore(
+    const store = configureStore({
       reducer,
       preloadedState,
-      applyMiddleware(middleware),
-    );
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat([middleware]),
+    });
 
     const user = new AppUser('foo', 'foo@coopcycle.org', '123456', [
       'ROLE_COURIER',
@@ -79,11 +79,12 @@ describe('GeolocationMiddleware', () => {
       app: appReducer,
     });
 
-    const store = createStore(
+    const store = configureStore({
       reducer,
       preloadedState,
-      applyMiddleware(...[thunk, middleware]),
-    );
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat([middleware]),
+    });
 
     return new Promise((resolve, reject) => {
       BackgroundGeolocation.ready.mockImplementation((options, callback) => {
@@ -133,11 +134,12 @@ describe('GeolocationMiddleware', () => {
       app: appReducer,
     });
 
-    const store = createStore(
+    const store = configureStore({
       reducer,
       preloadedState,
-      applyMiddleware(middleware),
-    );
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat([middleware]),
+    });
 
     store.dispatch(setUser(null));
 

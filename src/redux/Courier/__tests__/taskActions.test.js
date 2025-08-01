@@ -1,6 +1,5 @@
 import moment from 'moment';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 
 import {
   LOAD_TASKS_FAILURE,
@@ -22,14 +21,30 @@ import {
   markTaskFailedRequest,
   markTaskFailedSuccess,
 } from '../../../shared/logistics/redux';
+import reducers from '../../reducers';
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
 jest.useFakeTimers({ legacyFakeTimers: true });
 
-// https://github.com/dmitry-zaets/redux-mock-store#asynchronous-actions
-const middlewares = [thunk];
-const mockStore = configureStore(middlewares);
+// Custom middleware to track dispatched actions
+const actionTrackerMiddleware = () => {
+  let trackedActions = [];
+
+  const middleware = () => next => action => {
+    trackedActions.push(action);
+    return next(action);
+  };
+
+  const getActions = () => trackedActions;
+  const clearActions = () => (trackedActions = []);
+
+  return {
+    actionTracker: middleware,
+    getActions,
+    clearActions,
+  };
+};
 
 describe('Redux | Tasks | Actions', () => {
   [
@@ -64,8 +79,11 @@ describe('Redux | Tasks | Actions', () => {
 
     client.get.mockResolvedValue(resolveValue);
 
-    const store = mockStore({
-      app: { httpClient: client },
+    const store = configureStore({
+      reducer: reducers,
+      preloadedState: {
+        app: { httpClient: client },
+      },
     });
 
     const thk = loadTasks(date);
@@ -108,8 +126,11 @@ describe('Redux | Tasks | Actions', () => {
 
     client.get.mockResolvedValue(resolveValue);
 
-    const store = mockStore({
-      app: { httpClient: client },
+    const store = configureStore({
+      reducer: reducers,
+      preloadedState: {
+        app: { httpClient: client },
+      },
     });
 
     const thk = loadTasks(date);
@@ -148,8 +169,11 @@ describe('Redux | Tasks | Actions', () => {
 
     client.get.mockReturnValue(Promise.reject(rejectValue));
 
-    const store = mockStore({
-      app: { httpClient: client },
+    const store = configureStore({
+      reducer: reducers,
+      preloadedState: {
+        app: { httpClient: client },
+      },
     });
 
     const thk = loadTasks(date);
@@ -186,19 +210,25 @@ describe('Redux | Tasks | Actions', () => {
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
 
-    const store = mockStore({
-      app: { httpClient: client },
-      entities: {
-        tasks: {
-          signatures: [],
-          pictures: [],
+    const { actionTracker, getActions } = actionTrackerMiddleware();
+    const store = configureStore({
+      reducer: reducers,
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(actionTracker),
+      preloadedState: {
+        app: { httpClient: client },
+        entities: {
+          tasks: {
+            signatures: [],
+            pictures: [],
+          },
         },
       },
     });
 
     // Make sure to return the promise
     return store.dispatch(markTaskDone(task, notes)).then(() => {
-      const actions = store.getActions();
+      const actions = getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
       expect(actions).toContainEqual(clearFiles());
@@ -227,19 +257,25 @@ describe('Redux | Tasks | Actions', () => {
     client.put.mockResolvedValue(resolveValue);
     client.uploadFileAsync.mockResolvedValue();
 
-    const store = mockStore({
-      app: { httpClient: client },
-      entities: {
-        tasks: {
-          signatures: ['123456'],
-          pictures: [],
+    const { actionTracker, getActions } = actionTrackerMiddleware();
+    const store = configureStore({
+      reducer: reducers,
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(actionTracker),
+      preloadedState: {
+        app: { httpClient: client },
+        entities: {
+          tasks: {
+            signatures: ['123456'],
+            pictures: [],
+          },
         },
       },
     });
 
     // Make sure to return the promise
     return store.dispatch(markTaskDone(task, notes)).then(() => {
-      const actions = store.getActions();
+      const actions = getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
       expect(actions).toContainEqual(clearFiles());
@@ -267,19 +303,25 @@ describe('Redux | Tasks | Actions', () => {
     };
     client.put.mockRejectedValue(rejectValue);
 
-    const store = mockStore({
-      app: { httpClient: client },
-      entities: {
-        tasks: {
-          signatures: [],
-          pictures: [],
+    const { actionTracker, getActions } = actionTrackerMiddleware();
+    const store = configureStore({
+      reducer: reducers,
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(actionTracker),
+      preloadedState: {
+        app: { httpClient: client },
+        entities: {
+          tasks: {
+            signatures: [],
+            pictures: [],
+          },
         },
       },
     });
 
     // Make sure to return the promise
     return store.dispatch(markTaskDone(task, notes)).then(() => {
-      const actions = store.getActions();
+      const actions = getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
       expect(actions).toContainEqual(markTaskDoneFailure(rejectValue));
@@ -303,19 +345,25 @@ describe('Redux | Tasks | Actions', () => {
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
 
-    const store = mockStore({
-      app: { httpClient: client },
-      entities: {
-        tasks: {
-          signatures: [],
-          pictures: [],
+    const { actionTracker, getActions } = actionTrackerMiddleware();
+    const store = configureStore({
+      reducer: reducers,
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(actionTracker),
+      preloadedState: {
+        app: { httpClient: client },
+        entities: {
+          tasks: {
+            signatures: [],
+            pictures: [],
+          },
         },
       },
     });
 
     // Make sure to return the promise
     return store.dispatch(markTaskFailed(task, notes, reason)).then(() => {
-      const actions = store.getActions();
+      const actions = getActions();
 
       expect(actions).toContainEqual(markTaskFailedRequest(task));
       expect(actions).toContainEqual(clearFiles());
@@ -343,19 +391,25 @@ describe('Redux | Tasks | Actions', () => {
     };
     client.put.mockRejectedValue(rejectValue);
 
-    const store = mockStore({
-      app: { httpClient: client },
-      entities: {
-        tasks: {
-          signatures: [],
-          pictures: [],
+    const { actionTracker, getActions } = actionTrackerMiddleware();
+    const store = configureStore({
+      reducer: reducers,
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(actionTracker),
+      preloadedState: {
+        app: { httpClient: client },
+        entities: {
+          tasks: {
+            signatures: [],
+            pictures: [],
+          },
         },
       },
     });
 
     // Make sure to return the promise
     return store.dispatch(markTaskFailed(task, notes, reason)).then(() => {
-      const actions = store.getActions();
+      const actions = getActions();
 
       expect(actions).toContainEqual(markTaskFailedRequest(task));
       expect(actions).toContainEqual(markTaskFailedFailure(rejectValue));
