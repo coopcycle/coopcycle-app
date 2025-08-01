@@ -4,7 +4,7 @@ import rdiff from 'recursive-diff';
 
 import Config from 'react-native-config';
 
-import ReactotronConfig from '../../../ReactotronConfig';
+import ReactotronConfig from '../../ReactotronConfig';
 
 function logger(storeAPI) {
   return function wrapDispatch(next) {
@@ -54,7 +54,7 @@ function logger(storeAPI) {
   };
 }
 
-export default function configureForDevelopment(middlewaresList) {
+export function middlewares(middlewaresList) {
   const middlewares = [...middlewaresList];
 
   middlewares.push(
@@ -67,11 +67,8 @@ export default function configureForDevelopment(middlewaresList) {
   middlewares.push(logger);
 
   return middlewares;
+}
 
-  //TODO; fix ReactotronConfig
-
-  // return composeWithDevTools(
-  //   applyMiddleware(...middlewares),
-  //   ReactotronConfig.createEnhancer(),
-  // );
+export function enhancers(enhancersList) {
+  return [...enhancersList, ReactotronConfig.createEnhancer()];
 }

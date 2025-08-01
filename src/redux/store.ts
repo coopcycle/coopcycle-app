@@ -48,9 +48,17 @@ if (!Config.DEFAULT_SERVER) {
 
 const middlewaresProxy = middlewaresList => {
   if (__DEV__) {
-    return require('./middlewares/devSetup').default(middlewaresList);
+    return require('./devSetup.ts').middlewares(middlewaresList);
   } else {
     return middlewaresList;
+  }
+};
+
+const enhancersProxy = enhancersList => {
+  if (__DEV__) {
+    return require('./devSetup.ts').enhancers(enhancersList);
+  } else {
+    return enhancersList;
   }
 };
 
@@ -58,6 +66,8 @@ const store = configureStore({
   reducer: reducers,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(middlewaresProxy(middlewares)),
+  enhancers: getDefaultEnhancers =>
+    getDefaultEnhancers().concat(enhancersProxy([])),
 });
 
 // enable support for refetchOnFocus and refetchOnReconnect behaviors
