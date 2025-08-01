@@ -12306,10 +12306,10 @@ react-native-email-link@^1.16.1:
   resolved "https://registry.yarnpkg.com/react-native-email-link/-/react-native-email-link-1.16.1.tgz#e46f2f0baa1343e05618abdd1248f42e0baf8e9b"
   integrity sha512-uTolJXOa6HKPEiRAQuLKN/OhVwUA4xS++yPV6YiCtRBWxl2q3FUlrJt1G6plfMAEU4qNhmwZnH3tCJ9WNYIDhg==
 
-react-native-fbsdk-next@^12.1.0:
-  version "12.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-12.2.0.tgz#e2e0680ea2684293fe58e2f39b84b1a70d0e3fed"
-  integrity sha512-kLHT/gFvZil9l+c5zB+GefGXLcISJsuTrhL/8M29lbsfBBgwK8M+kT09skbkNPTP5PcFR7Q5sIHERxMvr7UuLQ==
+react-native-fbsdk-next@^13.4.1:
+  version "13.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-13.4.1.tgz#e2cb0d0c40ac00abcecceb2ee24473e74c9d8e18"
+  integrity sha512-Cto+oF0FJyvxKDjKyLKI5DgnLCeeRlXvVQb8qw0XesT1Xune1ijDWAnvt9fy6wXJ4G7K510xKkcSUsbK/KyPhg==
 
 react-native-fit-image@^1.5.5:
   version "1.5.5"
