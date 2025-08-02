@@ -752,7 +752,7 @@ const checkServer = function (server) {
   });
 };
 
-module.exports = {
+export default {
   checkServer,
   createClient: (httpBaseURL, options) => {
     return new Client(httpBaseURL, options);
