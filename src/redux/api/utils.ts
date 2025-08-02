@@ -1,9 +1,9 @@
-// import { HydraCollection } from './types';
+import { HydraCollection } from './types';
 import {
   BaseQueryFn,
-  // FetchBaseQueryError,
-  // FetchBaseQueryMeta,
-  // QueryReturnValue,
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+  QueryReturnValue,
 } from '@reduxjs/toolkit/query';
 
 /**
@@ -14,21 +14,18 @@ export async function fetchAllRecordsUsingFetchWithBQ<T>(
   url: string,
   itemsPerPage: number,
   otherParams: Record<string, string> | null = null,
-  //FIXME: QueryReturnValue requires redux toolkit 2.0
-  // ): Promise<
-  //   QueryReturnValue<T[], FetchBaseQueryError, FetchBaseQueryMeta | undefined>
-  // > {
-) {
+): Promise<
+  QueryReturnValue<T[], FetchBaseQueryError, FetchBaseQueryMeta | undefined>
+> {
   const fetch = async (
     page: number,
-    //FIXME: QueryReturnValue requires redux toolkit 2.0
-    // ): Promise<
-    //   QueryReturnValue<
-    //     HydraCollection<T>,
-    //     FetchBaseQueryError,
-    //     FetchBaseQueryMeta | undefined
-    //   >
-  ) => {
+  ): Promise<
+    QueryReturnValue<
+      HydraCollection<T>,
+      FetchBaseQueryError,
+      FetchBaseQueryMeta | undefined
+    >
+  > => {
     const params = new URLSearchParams({
       pagination: 'true',
       page: page.toString(),

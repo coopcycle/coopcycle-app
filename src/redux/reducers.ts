@@ -15,7 +15,7 @@
  *
  * Initial state-shapes are provided in each individual reducer file.
  */
-import { combineReducers } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import reduceReducers from 'reduce-reducers';
