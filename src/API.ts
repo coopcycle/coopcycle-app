@@ -752,9 +752,11 @@ const checkServer = function (server) {
   });
 };
 
+export const createClient = (httpBaseURL, options) => {
+  return new Client(httpBaseURL, options);
+};
+
 export default {
   checkServer,
-  createClient: (httpBaseURL, options) => {
-    return new Client(httpBaseURL, options);
-  },
+  createClient,
 };
