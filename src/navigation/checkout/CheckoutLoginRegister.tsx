@@ -1,7 +1,7 @@
 import { Button, Text } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import AuthenticateContainer from '../../components/AuthenticateContainer';
@@ -14,10 +14,34 @@ import {
 } from '../../redux/App/actions';
 
 class LoginRegister extends Component {
+  state = {
+    isKeyboardVisible: false,
+  };
+
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  keyboardDidShow = () => {
+    this.setState({ isKeyboardVisible: true });
+  };
+
+  keyboardDidHide = () => {
+    this.setState({ isKeyboardVisible: false });
+  };
+
   render() {
+    const { isKeyboardVisible } = this.state;
+    const { guestCheckoutEnabled } = this.props;
     return (
       <AuthenticateContainer>
-        {this.props.guestCheckoutEnabled && (
+        {!isKeyboardVisible && guestCheckoutEnabled && (
           <>
             <View
               style={{
@@ -36,11 +60,12 @@ class LoginRegister extends Component {
             <Text mt="4">{this.props.t('OR')}</Text>
           </>
         )}
+        {!isKeyboardVisible &&
         <View style={{ padding: 20 }}>
           <Text style={{ textAlign: 'center' }} note>
             {this.props.t('CHECKOUT_LOGIN_DISCLAIMER')}
           </Text>
-        </View>
+        </View>}
         <AuthenticateForm
           onLogin={(email, password) =>
             this.props.login(email, password, false)
