@@ -48,7 +48,7 @@ class LoginForm extends Component {
   }
 
   _validate(values) {
-    let errors = {};
+    const errors = {};
 
     if (_.isEmpty(values.email)) {
       errors.email = i18n.t('INVALID_USERNAME');
@@ -117,179 +117,181 @@ class LoginForm extends Component {
 
           return (
             <Column flex={1}>
-              <ScrollView>
-                <FormControl isInvalid={hasError('email')}>
-                  <FormControl.Label>
-                    {this.props.t('USERNAME')}
-                  </FormControl.Label>
-                  <Input
-                    _stack={{ style: {} }}
-                    testID="loginUsername"
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    style={{ height: 40 }}
-                    returnKeyType="next"
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    onSubmitEditing={() => this._passwordInput.focus()}
-                  />
-                  {hasError('email') && this.renderError(getError('email'))}
-                </FormControl>
-                <FormControl isInvalid={hasError('password')}>
-                  <FormControl.Label>
-                    {this.props.t('PASSWORD')}
-                  </FormControl.Label>
-                  <Input
-                    _stack={{ style: {} }}
-                    testID="loginPassword"
-                    ref={component => {
-                      this._passwordInput = component;
-                    }}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    secureTextEntry={true}
-                    style={{ height: 40 }}
-                    returnKeyType="done"
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    onSubmitEditing={handleSubmit}
-                  />
-                  {hasError('password') &&
-                    this.renderError(getError('password'))}
-                </FormControl>
-                <Button
-                  size="sm"
-                  variant="link"
-                  onPress={this.props.onForgotPassword}>
-                  {this.props.t('FORGOT_PASSWORD')}
-                </Button>
-              </ScrollView>
-              <View style={{ marginTop: 20 }}>
-                <Button block onPress={handleSubmit} testID="loginSubmit">
-                  {this.props.t('SUBMIT')}
-                </Button>
-              </View>
-              {this.props.withFacebook ? (
-                <Box mt="2" mb="2">
-                  <FacebookButton
-                    onPress={() => {
-                      LoginManager.logInWithPermissions([
-                        'public_profile',
-                        'email',
-                      ]).then(
-                        result => {
-                          if (result.isCancelled) {
-                            console.log('Login cancelled');
-                          } else {
-                            // Cross-platform way of retrieving email
-                            // https://github.com/thebergamo/react-native-fbsdk-next#get-profile-information
-                            // https://github.com/thebergamo/react-native-fbsdk-next/issues/78#issuecomment-888085735
-                            AccessToken.getCurrentAccessToken().then(data =>
-                              this.props.loginWithFacebook(
-                                data.accessToken.toString(),
-                              ),
-                            );
-                          }
-                        },
-                        error => {
-                          console.log(error);
-                        },
-                      );
-                    }}
-                  />
-                </Box>
-              ) : null}
-              {this.props.withGoogle ? (
-                <GoogleSigninButton
-                  style={{
-                    width: '100%',
-                  }}
-                  size={GoogleSigninButton.Size.Wide}
-                  color={GoogleSigninButton.Color.Dark}
-                  onPress={() => {
-                    this.props.clearErrors();
-                    GoogleSignin.hasPlayServices()
-                      .then(() => GoogleSignin.signIn())
-                      .then(userInfo => {
-                        this.props.googleSignIn(userInfo.idToken);
-                      })
-                      .catch(e => {
-                        console.log(`Google Signin; error code: ${e.code};`, e);
-                        this.props.authenticationFailure(
-                          this.props.t('TRY_LATER'),
-                        );
-                      });
-                  }}
-                  disabled={false}
-                />
-              ) : null}
-              {/*
-          Sign In with Apple is disabled until we find a solution
-          https://github.com/coopcycle/coopcycle-app/issues/1490
-          */}
-              {Platform.OS === 'ios' && false && (
-                <AppleButton
-                  buttonStyle={AppleButton.Style.WHITE}
-                  buttonType={AppleButton.Type.SIGN_IN}
-                  style={{
-                    width: '100%', // You must specify a width
-                    height: 40, // You must specify a height
-                    marginTop: 10,
-                  }}
-                  onPress={() => {
-                    appleAuth
-                      .performRequest({
-                        requestedOperation: appleAuth.Operation.LOGIN,
-                        requestedScopes: [
-                          appleAuth.Scope.EMAIL,
-                          appleAuth.Scope.FULL_NAME,
-                        ],
-                      })
-                      .then(appleAuthRequestResponse => {
-                        const identityToken =
-                          appleAuthRequestResponse.identityToken;
-
-                        // The var appleAuthRequestResponse will contain the email only on the fist login
-                        // This is why we always decode the identityToken, that always contains the email
-                        // https://github.com/invertase/react-native-apple-authentication#faqs
-                        const tokenData = jwtDecode(identityToken);
-
-                        // If the user has chosen "Hide my email",
-                        // we will receive an email address like "sdfsdf@privaterelay.appleid.com"
-                        // We can't identify the user with such an email
-                        // https://sarunw.com/posts/sign-in-with-apple-2/
-                        // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/authenticating_users_with_sign_in_with_apple
-                        const hasHiddenEmail =
-                          true === tokenData.is_private_email ||
-                          tokenData.email.endsWith('privaterelay.appleid.com');
-
-                        if (hasHiddenEmail) {
-                          this.props.authenticationFailure(
-                            this.props.t('APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR'),
+              <ScrollView contentContainerStyle={{ flexGrow: 1, gap: 20, paddingHorizontal: 20 }}>
+                <View style={{ flex: 1 }}>
+                  <FormControl isInvalid={hasError('email')}>
+                    <FormControl.Label>
+                      {this.props.t('USERNAME')}
+                    </FormControl.Label>
+                    <Input
+                      _stack={{ style: {} }}
+                      testID="loginUsername"
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      style={{ height: 40 }}
+                      returnKeyType="next"
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      onSubmitEditing={() => this._passwordInput.focus()}
+                    />
+                    {hasError('email') && this.renderError(getError('email'))}
+                  </FormControl>
+                  <FormControl isInvalid={hasError('password')}>
+                    <FormControl.Label>
+                      {this.props.t('PASSWORD')}
+                    </FormControl.Label>
+                    <Input
+                      _stack={{ style: {} }}
+                      testID="loginPassword"
+                      ref={component => {
+                        this._passwordInput = component;
+                      }}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      secureTextEntry={true}
+                      style={{ height: 40 }}
+                      returnKeyType="done"
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      onSubmitEditing={handleSubmit}
+                    />
+                    {hasError('password') &&
+                      this.renderError(getError('password'))}
+                  </FormControl>
+                  <Button
+                    size="sm"
+                    variant="link"
+                    onPress={this.props.onForgotPassword}>
+                    {this.props.t('FORGOT_PASSWORD')}
+                  </Button>
+                </View>
+                <View>
+                  <Button block onPress={handleSubmit} testID="loginSubmit">
+                    {this.props.t('SUBMIT')}
+                  </Button>
+                  {this.props.withFacebook ? (
+                    <Box mt="2" mb="2">
+                      <FacebookButton
+                        onPress={() => {
+                          LoginManager.logInWithPermissions([
+                            'public_profile',
+                            'email',
+                          ]).then(
+                            result => {
+                              if (result.isCancelled) {
+                                console.log('Login cancelled');
+                              } else {
+                                // Cross-platform way of retrieving email
+                                // https://github.com/thebergamo/react-native-fbsdk-next#get-profile-information
+                                // https://github.com/thebergamo/react-native-fbsdk-next/issues/78#issuecomment-888085735
+                                AccessToken.getCurrentAccessToken().then(data =>
+                                  this.props.loginWithFacebook(
+                                    data.accessToken.toString(),
+                                  ),
+                                );
+                              }
+                            },
+                            error => {
+                              console.log(error);
+                            },
                           );
-                          return;
-                        }
-
-                        // get current authentication state for user
-                        // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-                        appleAuth
-                          .getCredentialStateForUser(
-                            appleAuthRequestResponse.user,
-                          )
-                          .then(credentialState => {
-                            console.log('credentialState', credentialState);
-                            // use credentialState response to ensure the user is authenticated
-                            if (
-                              credentialState === appleAuth.State.AUTHORIZED
-                            ) {
-                              // user is authenticated
-                              this.props.signInWithApple(identityToken);
-                            }
+                        }}
+                      />
+                    </Box>
+                  ) : null}
+                  {this.props.withGoogle ? (
+                    <GoogleSigninButton
+                      style={{
+                        width: '100%',
+                      }}
+                      size={GoogleSigninButton.Size.Wide}
+                      color={GoogleSigninButton.Color.Dark}
+                      onPress={() => {
+                        this.props.clearErrors();
+                        GoogleSignin.hasPlayServices()
+                          .then(() => GoogleSignin.signIn())
+                          .then(userInfo => {
+                            this.props.googleSignIn(userInfo.idToken);
+                          })
+                          .catch(e => {
+                            console.log(`Google Signin; error code: ${e.code};`, e);
+                            this.props.authenticationFailure(
+                              this.props.t('TRY_LATER'),
+                            );
                           });
-                      });
-                  }}
-                />
-              )}
+                      }}
+                      disabled={false}
+                    />
+                  ) : null}
+                  {/*
+              Sign In with Apple is disabled until we find a solution
+              https://github.com/coopcycle/coopcycle-app/issues/1490
+              */}
+                  {Platform.OS === 'ios' && false && (
+                    <AppleButton
+                      buttonStyle={AppleButton.Style.WHITE}
+                      buttonType={AppleButton.Type.SIGN_IN}
+                      style={{
+                        width: '100%', // You must specify a width
+                        height: 40, // You must specify a height
+                        marginTop: 10,
+                      }}
+                      onPress={() => {
+                        appleAuth
+                          .performRequest({
+                            requestedOperation: appleAuth.Operation.LOGIN,
+                            requestedScopes: [
+                              appleAuth.Scope.EMAIL,
+                              appleAuth.Scope.FULL_NAME,
+                            ],
+                          })
+                          .then(appleAuthRequestResponse => {
+                            const identityToken =
+                              appleAuthRequestResponse.identityToken;
+
+                            // The var appleAuthRequestResponse will contain the email only on the fist login
+                            // This is why we always decode the identityToken, that always contains the email
+                            // https://github.com/invertase/react-native-apple-authentication#faqs
+                            const tokenData = jwtDecode(identityToken);
+
+                            // If the user has chosen "Hide my email",
+                            // we will receive an email address like "sdfsdf@privaterelay.appleid.com"
+                            // We can't identify the user with such an email
+                            // https://sarunw.com/posts/sign-in-with-apple-2/
+                            // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/authenticating_users_with_sign_in_with_apple
+                            const hasHiddenEmail =
+                              tokenData.is_private_email === true ||
+                              tokenData.email.endsWith('privaterelay.appleid.com');
+
+                            if (hasHiddenEmail) {
+                              this.props.authenticationFailure(
+                                this.props.t('APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR'),
+                              );
+                              return;
+                            }
+
+                            // get current authentication state for user
+                            // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+                            appleAuth
+                              .getCredentialStateForUser(
+                                appleAuthRequestResponse.user,
+                              )
+                              .then(credentialState => {
+                                console.log('credentialState', credentialState);
+                                // use credentialState response to ensure the user is authenticated
+                                if (
+                                  credentialState === appleAuth.State.AUTHORIZED
+                                ) {
+                                  // user is authenticated
+                                  this.props.signInWithApple(identityToken);
+                                }
+                              });
+                          });
+                      }}
+                    />
+                  )}
+                </View>
+              </ScrollView>
             </Column>
           );
         }}
