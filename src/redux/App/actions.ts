@@ -319,7 +319,8 @@ function loadAll(getState) {
   const defaultValues = [[], []];
 
   return new Promise(resolve => {
-    const { httpClient, user } = getState().app;
+    const httpClient = selectHttpClient(getState())
+    const { user } = getState().app;
 
     if (user && user.isAuthenticated()) {
       if (
@@ -422,7 +423,7 @@ export function bootstrap(baseURL, user, loader = true) {
     dispatch(setBaseURL(baseURL));
     updateUserProperties(user);
 
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     try {
       // We check if the token is still valid
@@ -477,8 +478,7 @@ export function login(
   navigateOnSuccess,
 ) {
   return async (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(authenticationRequest());
 
@@ -533,8 +533,7 @@ export function register(
   resumeCheckoutAfterActivation = false,
 ) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(authenticationRequest());
 
@@ -673,8 +672,7 @@ export function resetPassword(
   resumeCheckoutAfterActivation,
 ) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(resetPasswordRequest());
 
@@ -751,8 +749,7 @@ export function resetServer() {
 
 export function loginWithFacebook(accessToken, navigate = true) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(authenticationRequest());
 
@@ -781,8 +778,7 @@ export function loginWithFacebook(accessToken, navigate = true) {
 
 export function signInWithApple(identityToken, navigate = true) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(authenticationRequest());
 
@@ -811,8 +807,7 @@ export function signInWithApple(identityToken, navigate = true) {
 
 export function googleSignIn(idToken, navigate = true) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(authenticationRequest());
 
@@ -841,8 +836,7 @@ export function googleSignIn(idToken, navigate = true) {
 
 export function loadTermsAndConditions(lang) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(loadTermsAndConditionsRequest());
 
@@ -860,8 +854,7 @@ export function loadTermsAndConditions(lang) {
 
 export function loadPrivacyPolicy(lang) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(loadPrivacyPolicyRequest());
 

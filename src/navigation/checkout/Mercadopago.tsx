@@ -7,6 +7,7 @@ import {
   checkoutRequest,
   mercadopagoCheckout,
 } from '../../redux/Checkout/actions';
+import { selectHttpClient } from '../../redux/App/selectors.ts';
 
 function Mercadopago({
   cart,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
 });
 
 function createHttpClient(state) {
-  const { httpClient } = state.app;
+  const httpClient = selectHttpClient(state);
   if (httpClient.credentials.token && httpClient.credentials.refreshToken) {
     return httpClient;
   }

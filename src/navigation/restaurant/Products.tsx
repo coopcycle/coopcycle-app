@@ -11,6 +11,7 @@ import {
   loadMoreProducts,
   loadProducts,
 } from '../../redux/Restaurant/actions';
+import { selectHttpClient } from '../../redux/App/selectors.ts';
 
 class ProductsScreen extends Component {
   componentDidMount() {
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient,
+    httpClient: selectHttpClient(state),
     restaurant: state.restaurant.restaurant,
     products: state.restaurant.products.sort((a, b) =>
       a.name < b.name ? -1 : 1,

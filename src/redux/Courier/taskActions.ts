@@ -172,7 +172,7 @@ export function navigateAndLoadTasks(selectedDate) {
 
 export function loadTasks(selectedDate, refresh = false, cb) {
   return function (dispatch, getState) {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(loadTasksRequest(selectedDate, refresh));
 
@@ -429,7 +429,7 @@ export function startTask(task, cb) {
   return function (dispatch, getState) {
     dispatch(startTaskRequest(task));
 
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     httpClient
       .put(task['@id'] + '/start', {})

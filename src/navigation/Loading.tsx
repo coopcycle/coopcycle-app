@@ -11,7 +11,10 @@ import { bootstrap, closeModal, setServers } from '../redux/App/actions';
 
 import Config from 'react-native-config';
 import Modal from 'react-native-modal';
-import { selectIsSpinnerDelayEnabled } from '../redux/App/selectors';
+import {
+  selectHttpClient,
+  selectIsSpinnerDelayEnabled,
+} from '../redux/App/selectors';
 import Server from './account/components/Server';
 import DrawerNavigator from './navigators/DrawerNavigator';
 import HomeNavigator from './navigators/HomeNavigator';
@@ -184,7 +187,7 @@ function mapStateToProps(state) {
   return {
     loading: state.app.loading,
     baseURL: state.app.baseURL,
-    httpClient: state.app.httpClient,
+    httpClient: selectHttpClient(state),
     modal: state.app.modal,
     customBuild: selectCustomBuild(state),
     firstRun: state.app.firstRun,

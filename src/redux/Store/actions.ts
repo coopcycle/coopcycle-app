@@ -3,6 +3,7 @@ import { createAction } from 'redux-actions';
 
 import { setLoading } from '../App/actions';
 import { selectStore } from './selectors';
+import { selectHttpClient } from '../App/selectors.ts';
 
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS';
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS';
@@ -43,7 +44,7 @@ export const setRefreshing = createAction(SET_REFRESHING);
 export function loadDeliveries(store, refresh = false) {
   return (dispatch, getState) => {
     const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     refresh ? dispatch(setRefreshing(true)) : dispatch(setLoading(false));
 
@@ -69,7 +70,7 @@ export function loadDeliveries(store, refresh = false) {
 export function loadMoreDeliveries() {
   return (dispatch, getState) => {
     const { app, store } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
     const { deliveries, pagination, loadingMore } = store;
 
     if (loadingMore) {
@@ -106,7 +107,7 @@ export function loadMoreDeliveries() {
 export function loadTasks(delivery) {
   return (dispatch, getState) => {
     const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(setLoading(true));
 
@@ -129,7 +130,7 @@ export function loadTasks(delivery) {
 export function init(store) {
   return (dispatch, getState) => {
     const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(setLoading(false));
 
