@@ -97,8 +97,9 @@ const TaskList = ({
       <SwipeListView
         data={tasks}
         keyExtractor={(item, index) => {
-          let tagNames = item['tags'].map((t) => t.name)
-          return `${item['@id']}-${tagNames.length === 0 ? "no_tag": tagNames.join("-")}`}}
+          const tagNames = (item['tags'] || []).map((t) => t.name);
+          return `${item['@id']}-${tagNames.length === 0 ? "no_tag": tagNames.join("-")}`;
+        }}
         renderItem={renderItem}
         refreshing={refreshing}
         onRefresh={onRefresh}
@@ -110,7 +111,7 @@ const TaskList = ({
       {multipleSelectionIcon && onFabButtonPressed && (
         <ItemsBulkFabButton
           iconName={multipleSelectionIcon}
-          onPressed={items => onFabButtonPressed(items)}
+          onPressed={onFabButtonPressed}
           ref={bulkFabButton}
         />
       )}
