@@ -7,7 +7,7 @@ import {
   checkoutRequest,
   mercadopagoCheckout,
 } from '../../redux/Checkout/actions';
-import { selectHttpClient } from '../../redux/App/selectors.ts';
+import { selectHttpClient, selectUser } from '../../redux/App/selectors.ts';
 
 function Mercadopago({
   cart,
@@ -99,7 +99,7 @@ function mapStateToProps(state) {
     restaurant: state.checkout.restaurant,
     token: state.checkout.token,
     httpClient: createHttpClient(state),
-    user: state.app.user,
+    user: selectUser(state),
   };
 }
 

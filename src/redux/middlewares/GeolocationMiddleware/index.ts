@@ -6,7 +6,7 @@ import {
   backgroundPermissionDisclosed,
   setBackgroundGeolocationEnabled,
 } from '../../App/actions';
-import { selectIsAuthenticated } from '../../App/selectors';
+import { selectIsAuthenticated, selectUser } from '../../App/selectors';
 import { defaultHeaders } from '../../../utils/headers';
 
 // https://github.com/transistorsoft/rn-background-geolocation-demo/blob/1e63c8b5162c123c4961710d339bf9f9507a6893/src/home/HomeView.tsx#L156-L182
@@ -54,7 +54,7 @@ export default ({ getState, dispatch }) => {
     const result = next(action);
     const state = getState();
 
-    const hasUserChanged = state.app.user !== prevState.app.user;
+    const hasUserChanged = selectUser(state) !== selectUser(prevState);
 
     if (!hasUserChanged) {
       return result;
@@ -62,8 +62,8 @@ export default ({ getState, dispatch }) => {
 
     if (
       selectIsAuthenticated(state) &&
-      state.app.user &&
-      state.app.user.hasRole('ROLE_COURIER')
+      selectUser(state) &&
+      selectUser(state).hasRole('ROLE_COURIER')
     ) {
       BackgroundGeolocation.ready(
         {
@@ -79,8 +79,8 @@ export default ({ getState, dispatch }) => {
           // https://transistorsoft.github.io/react-native-background-geolocation/interfaces/_react_native_background_geolocation_.config.html#authorization
           authorization: {
             strategy: 'JWT',
-            accessToken: state.app.user.token,
-            refreshToken: state.app.user.refreshToken,
+            accessToken: selectUser(state).token,
+            refreshToken: selectUser(state).refreshToken,
             refreshUrl: `${state.app.baseURL}/api/token/refresh`,
             refreshPayload: {
               refresh_token: '{refreshToken}',

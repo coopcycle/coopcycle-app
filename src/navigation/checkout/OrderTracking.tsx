@@ -18,6 +18,7 @@ import {
 import { deleteCart } from '../../redux/Checkout/actions';
 import { primaryColor } from '../../styles/common';
 import Step from './components/Step';
+import { selectUser } from '../../redux/App/selectors.ts';
 
 export function orderToStep(order) {
   const eventType = [
@@ -288,7 +289,7 @@ function mapStateToProps(state, ownProps) {
       state.account.orders,
       o => o.number === ownProps.route.params.order,
     ),
-    user: state.app.user,
+    user: selectUser(state),
     phoneNumber: state.app.settings.phone_number,
     loading: state.app.loading,
     orderConfirmMessage: state.app.settings.order_confirm_message,

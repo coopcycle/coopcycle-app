@@ -11,7 +11,7 @@ import { deleteUser } from '../../redux/Account/actions';
 import { logout } from '../../redux/App/actions';
 import {
   selectCustomBuild,
-  selectIsAuthenticated,
+  selectIsAuthenticated, selectUser,
 } from '../../redux/App/selectors';
 import LoginRegister from './AccountLoginRegister';
 import Server from './components/Server';
@@ -123,7 +123,7 @@ class AccountHome extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.app.user,
+    user: selectUser(state),
     isAuthenticated: selectIsAuthenticated(state),
     customBuild: selectCustomBuild(state),
   };

@@ -25,6 +25,7 @@ import {
   selectInitialRouteName,
   selectIsAuthenticated,
   selectResumeCheckoutAfterActivation,
+  selectUser,
 } from './selectors';
 import { DatadogSdk } from '../../Datadog';
 
@@ -320,7 +321,7 @@ function loadAll(getState) {
 
   return new Promise(resolve => {
     const httpClient = selectHttpClient(getState())
-    const { user } = getState().app;
+    const user = selectUser(getState());
 
     if (user && user.isAuthenticated()) {
       if (
@@ -518,7 +519,7 @@ export function login(
 
 export function logout() {
   return async (dispatch, getState) => {
-    const { user } = getState().app;
+    const user = selectUser(getState());
 
     dispatch(logoutRequest());
     await user.logout();
@@ -734,7 +735,7 @@ export function setNewPassword(token, password) {
 
 export function resetServer() {
   return async (dispatch, getState) => {
-    const { user } = getState().app;
+    const user = selectUser(getState());
 
     if (user) {
       dispatch(logoutRequest());
