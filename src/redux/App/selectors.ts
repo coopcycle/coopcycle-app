@@ -10,8 +10,9 @@ import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
 import { Platform } from 'react-native';
+import { httpClientService } from '../../services/httpClientService';
 
-export const selectHttpClient = state => state.app.httpClient;
+export const selectHttpClient = () => httpClientService.getClient();
 
 export const selectCustomBuild = state => state.app.customBuild;
 

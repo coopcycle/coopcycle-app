@@ -1,12 +1,11 @@
 import { createAction } from 'redux-actions';
 
-import API from '../../../API';
 import AppUser from '../../../AppUser';
 
-import { SET_HTTP_CLIENT, SET_USER, setModal } from '../../App/actions';
+import { SET_USER, setModal } from '../../App/actions';
 import { selectIsAuthenticated, selectUser } from '../../App/selectors';
+import { httpClientService } from '../../../services/httpClientService';
 
-const setHttpClient = createAction(SET_HTTP_CLIENT);
 export const setUser = createAction(SET_USER);
 
 export default ({ getState, dispatch }) => {
@@ -22,55 +21,57 @@ export default ({ getState, dispatch }) => {
 
     if (hasBaseURLChanged || hasUserChanged || hasAuthenticationChanged) {
       if (state.app.baseURL) {
-        const httpClient = API.createClient(state.app.baseURL, {
-          token: selectUser(state) ? selectUser(state).token : '',
-          refreshToken: selectUser(state) ? selectUser(state).refreshToken : '',
-          onCredentialsUpdated: credentials => {
-            const user = new AppUser(
-              credentials.username,
-              credentials.email,
-              credentials.token,
-              credentials.roles,
-              credentials.refreshToken,
-              credentials.enabled,
-            );
+        const user = selectUser(state);
 
-            dispatch(setUser(user));
-
-            user.save().then(() => console.log('Credentials saved!'));
-          },
-          onTokenRefreshed: (token, refreshToken) => {
-            const { username, email, roles, enabled } = selectUser(state);
-
-            const user = new AppUser(
-              username,
-              email,
-              token,
-              roles,
-              refreshToken,
-              enabled,
-            );
-
-            dispatch(setUser(user));
-
-            user.save().then(() => console.log('Credentials saved!'));
-          },
-          onMaintenance: message => {
-            if (message) {
-              dispatch(
-                setModal({
-                  show: true,
-                  skippable: false,
-                  content: message,
-                }),
+        httpClientService.updateClient(
+          state.app.baseURL,
+          user ? user.token : '',
+          user ? user.refreshToken : '',
+          {
+            onCredentialsUpdated: (credentials: any) => {
+              const newUser = new AppUser(
+                credentials.username,
+                credentials.email,
+                credentials.token,
+                credentials.roles,
+                credentials.refreshToken,
+                credentials.enabled,
               );
-            }
-          },
-        });
 
-        dispatch(setHttpClient(httpClient));
+              dispatch(setUser(newUser));
+              newUser.save().then(() => console.log('Credentials saved!'));
+            },
+            onTokenRefreshed: (token: string, refreshToken: string) => {
+              const { username, email, roles, enabled } =
+                selectUser(getState());
+
+              const newUser = new AppUser(
+                username,
+                email,
+                token,
+                roles,
+                refreshToken,
+                enabled,
+              );
+
+              dispatch(setUser(newUser));
+              newUser.save().then(() => console.log('Credentials saved!'));
+            },
+            onMaintenance: (message: string) => {
+              if (message) {
+                dispatch(
+                  setModal({
+                    show: true,
+                    skippable: false,
+                    content: message,
+                  }),
+                );
+              }
+            },
+          },
+        );
       } else {
-        dispatch(setHttpClient(null));
+        httpClientService.clear();
       }
     }
 

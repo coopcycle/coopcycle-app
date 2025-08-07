@@ -34,7 +34,6 @@ import { DatadogSdk } from '../../Datadog';
  */
 
 export const SET_BASE_URL = 'SET_BASE_URL';
-export const SET_HTTP_CLIENT = 'SET_HTTP_CLIENT';
 export const SET_USER = 'SET_USER';
 export const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE';
 

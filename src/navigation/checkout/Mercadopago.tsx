@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
 
 function createHttpClient(state) {
   const httpClient = selectHttpClient(state);
-  if (httpClient.credentials.token && httpClient.credentials.refreshToken) {
+  if (httpClient && httpClient.credentials.token && httpClient.credentials.refreshToken) {
     return httpClient;
   }
 
   const { token } = state.checkout;
 
-  return httpClient.cloneWithToken(token);
+  return httpClient ? httpClient.cloneWithToken(token) : null;
 }
 
 function mapStateToProps(state) {

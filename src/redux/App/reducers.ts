@@ -47,7 +47,6 @@ import {
   SET_BACKGROUND_GEOLOCATION_ENABLED,
   SET_BASE_URL,
   SET_CURRENT_ROUTE,
-  SET_HTTP_CLIENT,
   SET_INTERNET_REACHABLE,
   SET_LOADING,
   SET_MODAL,
@@ -68,7 +67,6 @@ const initialState = {
   firstRun: true,
   isWsOpen: false,
   baseURL: null,
-  httpClient: null,
   user: null,
   currentRoute: null,
   appState: AppState.currentState,
@@ -156,11 +154,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         baseURL: action.payload,
       };
-    case SET_HTTP_CLIENT:
-      return {
-        ...state,
-        httpClient: action.payload,
-      };
+
     case SET_USER:
       return {
         ...state,
