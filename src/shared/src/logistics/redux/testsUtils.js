@@ -17,30 +17,29 @@ function Task({
     previous,
     status: status || '',
     tags: tags || [],
-    ...props
+    ...props,
   };
-};
+}
 
-function TaskList({
-  id,
-  ...props
-}) {
+function TaskList({ id, ...props }) {
   return {
     '@id': `/api/task_lists/${id}`,
     id,
-    ...props
+    ...props,
   };
-};
-
-export const getTaskWithPrevious = usernames => (id, usernameId, previous = null) => {
-  const username = usernames[usernameId];
-
-  return Task({
-    id,
-    previous: previous ? `/api/tasks/${previous}` : null,
-    assignedTo: username,
-  });
 }
+
+export const getTaskWithPrevious =
+  usernames =>
+  (id, usernameId, previous = null) => {
+    const username = usernames[usernameId];
+
+    return Task({
+      id,
+      previous: previous ? `/api/tasks/${previous}` : null,
+      assignedTo: username,
+    });
+  };
 
 export function getTaskWithAssignedTo(assignedTo) {
   return Task({
@@ -56,7 +55,7 @@ export function getTaskWithStoreName(orgName) {
 
 export function getTaskWithTags(tags) {
   return Task({
-    tags: tags.map(tag => ({name: tag})),
+    tags: tags.map(tag => ({ name: tag })),
   });
 }
 
@@ -79,5 +78,5 @@ export const getTaskListWithItems = usernames => (id, items) => {
     id,
     tasksIds: items.map(item => item['@id']),
     username,
-  })
-}
+  });
+};

@@ -1,11 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQueryWithReauth } from './baseQuery';
-import {
-  fetchAllRecordsUsingFetchWithBQ,
-  sortByName,
-  sortByString,
-} from '../util';
+import { sortByName, sortByString } from '../util';
+import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -26,7 +23,7 @@ export const apiSlice = createApi({
     }),
     getTasks: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsUsingFetchWithBQ(
+        return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/tasks',
           100,
@@ -34,13 +31,11 @@ export const apiSlice = createApi({
             date: date.format('YYYY-MM-DD'),
           },
         );
-
-        return result ? { data: result } : { error: 'result.error' };
       },
     }),
     getTaskLists: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsUsingFetchWithBQ(
+        return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/task_lists',
           100,
@@ -48,13 +43,11 @@ export const apiSlice = createApi({
             date: date.format('YYYY-MM-DD'),
           },
         );
-
-        return result ? { data: result } : { error: 'result.error' };
       },
     }),
     getTaskListsV2: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsUsingFetchWithBQ(
+        return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/task_lists/v2',
           100,
@@ -62,8 +55,6 @@ export const apiSlice = createApi({
             date: date.format('YYYY-MM-DD'),
           },
         );
-
-        return result ? { data: result } : { error: 'result.error' };
       },
     }),
     setTaskListItems: builder.mutation({
@@ -98,7 +89,7 @@ export const apiSlice = createApi({
     }),
     getTours: builder.query({
       async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsUsingFetchWithBQ(
+        return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/tours',
           100,
@@ -106,8 +97,6 @@ export const apiSlice = createApi({
             date: date.format('YYYY-MM-DD'),
           },
         );
-
-        return result ? { data: result } : { error: 'result.error' };
       },
     }),
     getCourierUsers: builder.query({
@@ -121,9 +110,10 @@ export const apiSlice = createApi({
           },
         );
 
-        return result
-          ? { data: sortByString(result, 'username') }
-          : { error: 'result.error' };
+        if (result.error) {
+          return result;
+        }
+        return { data: sortByString(result.data, 'username') };
       },
     }),
     getStores: builder.query({
@@ -134,9 +124,10 @@ export const apiSlice = createApi({
           100,
         );
 
-        return result
-          ? { data: sortByName(result) }
-          : { error: 'result.error' };
+        if (result.error) {
+          return result;
+        }
+        return { data: sortByName(result.data) };
       },
     }),
     getMyTasks: builder.query({

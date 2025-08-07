@@ -27,8 +27,8 @@ const WebSocketIndicator = () => {
         {connected
           ? t('WAITING_FOR_ORDER')
           : connecting
-          ? t('CONN_LOST')
-          : t('CONN_LOST_IDLE')}
+            ? t('CONN_LOST')
+            : t('CONN_LOST_IDLE')}
       </Text>
       {connected ? (
         <ActivityIndicator size="small" color="white" animating={true} />

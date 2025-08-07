@@ -24,22 +24,19 @@ export default (state = initialState, action) => {
     };
   }
 
-  if(actionMatchCreator(action, [
-    createTaskListSuccess,
-    createTaskListFailure,
-  ])) {
+  if (
+    actionMatchCreator(action, [createTaskListSuccess, createTaskListFailure])
+  ) {
     return {
       ...state,
       taskListsLoading: false,
     };
   }
 
-  if (actionMatchCreator(action, [
-    disableCentrifugoUpdateForTasksIds,
-  ])) {
+  if (actionMatchCreator(action, [disableCentrifugoUpdateForTasksIds])) {
     const disabledCentrifugoUpdatesForTasksIds = _.uniq([
       ...action.payload,
-      ...state.disabledCentrifugoUpdatesForTasksIds
+      ...state.disabledCentrifugoUpdatesForTasksIds,
     ]);
 
     return {
@@ -48,12 +45,10 @@ export default (state = initialState, action) => {
     };
   }
 
-  if (actionMatchCreator(action, [
-    disableCentrifugoUpdateForUsers,
-  ])) {
+  if (actionMatchCreator(action, [disableCentrifugoUpdateForUsers])) {
     const disabledCentrifugoUpdatesForUsers = _.uniq([
       action.payload,
-      ...state.disabledCentrifugoUpdatesForUsers
+      ...state.disabledCentrifugoUpdatesForUsers,
     ]);
 
     return {
@@ -62,13 +57,13 @@ export default (state = initialState, action) => {
     };
   }
 
-  if (actionMatchCreator(action, [
-    restoreCentrifugoUpdate,
-  ])) {
+  if (actionMatchCreator(action, [restoreCentrifugoUpdate])) {
     return {
       ...state,
-      disabledCentrifugoUpdatesForTasksIds: initialState.disabledCentrifugoUpdatesForTasksIds,
-      disabledCentrifugoUpdatesForUsers: initialState.disabledCentrifugoUpdatesForUsers,
+      disabledCentrifugoUpdatesForTasksIds:
+        initialState.disabledCentrifugoUpdatesForTasksIds,
+      disabledCentrifugoUpdatesForUsers:
+        initialState.disabledCentrifugoUpdatesForUsers,
     };
   }
 

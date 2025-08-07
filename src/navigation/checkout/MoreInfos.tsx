@@ -86,9 +86,8 @@ class MoreInfos extends Component {
         telephone,
       };
     }
-    const { data: cart, error: updateCartFailed } = await this.props.updateCart(
-      payload,
-    );
+    const { data: cart, error: updateCartFailed } =
+      await this.props.updateCart(payload);
     if (updateCartFailed) {
       console.log('MoreInfos; updateCartFailed', updateCartFailed);
       this.setState({ isLoading: false });

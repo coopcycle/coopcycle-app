@@ -123,14 +123,13 @@ function Loopeat({ cart, updateLoopeatReturns }) {
                           r => r.format_id === item.format_id,
                         );
                         if (idx !== -1) {
-                          const newReturns = returns.map(function (
-                            ret,
-                            retIndex,
-                          ) {
-                            return retIndex === idx
-                              ? { ...ret, quantity: value }
-                              : ret;
-                          });
+                          const newReturns = returns.map(
+                            function (ret, retIndex) {
+                              return retIndex === idx
+                                ? { ...ret, quantity: value }
+                                : ret;
+                            },
+                          );
                           setReturns(newReturns);
                         }
                       }}
