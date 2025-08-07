@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 import { find } from 'lodash';
 import moment from 'moment';
 import _ from 'lodash';

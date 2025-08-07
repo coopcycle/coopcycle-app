@@ -5,7 +5,7 @@
  * Here we use `reselect`, which allows us to memoize computed property values,
  * benefitting performance.
  */
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 import { isEqual, uniqWith } from 'lodash';
 import moment from 'moment';
 
