@@ -41,6 +41,7 @@ import {
   getTaskWithColor,
   getTasksWithColor,
 } from '../../shared/src/logistics/redux/taskUtils';
+import { DateOnlyString } from '../../utils/date-types';
 
 /*
  * Intital state shape for the task entity reducer
@@ -49,7 +50,7 @@ const tasksEntityInitialState = {
   loadTasksFetchError: false, // Error object describing the error
   completeTaskFetchError: false, // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
-  date: moment().format('YYYY-MM-DD'), // YYYY-MM-DD
+  date: moment().format('YYYY-MM-DD') as DateOnlyString, // YYYY-MM-DD
   updatedAt: moment().toString(),
   items: {
     // Array of tasks, indexed by date
@@ -322,7 +323,7 @@ export const tasksEntityReducer = (
         loadTasksFetchError: false,
         completeTaskFetchError: false,
         // This is the date that is selected in the UI
-        date: action.meta.arg.originalArgs.format('YYYY-MM-DD'),
+        date: action.meta.arg.originalArgs,
         // isFetching: true,  # don't set isFetching flag to prevent global loading spinner for rtk query requests
       };
 

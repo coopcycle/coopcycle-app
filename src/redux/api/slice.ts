@@ -3,6 +3,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './baseQuery';
 import { sortByName, sortByString } from '../util';
 import { fetchAllRecordsUsingFetchWithBQ } from './utils';
+import { DateOnlyString } from '../../utils/date-types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -131,7 +132,7 @@ export const apiSlice = createApi({
       },
     }),
     getMyTasks: builder.query({
-      query: date => `api/me/tasks/${date.format('YYYY-MM-DD')}`,
+      query: (date: DateOnlyString) => `api/me/tasks/${date}`,
     }),
     getOrderTiming: builder.query({
       query: nodeId => `${nodeId}/timing`,
