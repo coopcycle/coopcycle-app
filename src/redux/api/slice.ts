@@ -13,57 +13,55 @@ export const apiSlice = createApi({
   // nodeId is passed in JSON-LD '@id' key, https://www.w3.org/TR/2014/REC-json-ld-20140116/#node-identifiers
   endpoints: builder => ({
     subscriptionGenerateOrders: builder.mutation({
-      query: date => ({
+      query: (date: DateOnlyString) => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
-          date: date.format('YYYY-MM-DD'),
+          date: date,
         },
         method: 'POST',
         body: {},
       }),
     }),
     getTasks: builder.query({
-      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/tasks',
           100,
           {
-            date: date.format('YYYY-MM-DD'),
+            date: date,
           },
         );
       },
     }),
     getTaskLists: builder.query({
-      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/task_lists',
           100,
           {
-            date: date.format('YYYY-MM-DD'),
+            date: date,
           },
         );
       },
     }),
     getTaskListsV2: builder.query({
-      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/task_lists/v2',
           100,
           {
-            date: date.format('YYYY-MM-DD'),
+            date: date,
           },
         );
       },
     }),
     setTaskListItems: builder.mutation({
-      query: ({ items, username, date }) => {
+      query: ({ items, username, date }: { items: string[]; username: string; date: DateOnlyString }) => {
         const mutation = {
-          url: `/api/task_lists/set_items/${date.format(
-            'YYYY-MM-DD',
-          )}/${username}`,
+          url: `/api/task_lists/set_items/${date}/${username}`,
           method: 'PUT',
           headers: {
             'Content-Type': 'application/ld+json',
@@ -89,13 +87,13 @@ export const apiSlice = createApi({
       },
     }),
     getTours: builder.query({
-      async queryFn(date, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/tours',
           100,
           {
-            date: date.format('YYYY-MM-DD'),
+            date: date,
           },
         );
       },
