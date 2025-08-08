@@ -187,7 +187,7 @@ export function loadTasks(selectedDate: moment.Moment, refresh = false, cb = nul
             loadTasksSuccess(
               selectedDate.format('YYYY-MM-DD'),
               res.items,
-              moment.parseZone(res.updatedAt),
+              res.updatedAt,
             ),
           );
         } else {

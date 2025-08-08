@@ -51,7 +51,7 @@ const tasksEntityInitialState = {
   completeTaskFetchError: false, // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
   date: moment().format('YYYY-MM-DD') as DateOnlyString, // YYYY-MM-DD
-  updatedAt: moment().toString(),
+  updatedAt: moment().toISOString(),
   items: {
     // Array of tasks, indexed by date
     // 'YYYY-MM-DD': [
@@ -333,7 +333,7 @@ export const tasksEntityReducer = (
         ...state,
         loadTasksFetchError: false,
         isFetching: false,
-        updatedAt: action.payload.updatedAt.toString(),
+        updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
           [action.payload.date]: getTasksWithColor(action.payload.items),
@@ -346,7 +346,7 @@ export const tasksEntityReducer = (
         ...state,
         loadTasksFetchError: false,
         isFetching: false,
-        updatedAt: action.payload.updatedAt.toString(),
+        updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
           [action.payload.date]: getTasksWithColor(action.payload.items),

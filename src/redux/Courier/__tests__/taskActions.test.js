@@ -107,7 +107,7 @@ describe('Redux | Tasks | Actions', () => {
           payload: expect.objectContaining({
             date: date.format('YYYY-MM-DD'),
             items: resolveValue['hydra:member'],
-            updatedAt: expect.any(moment),
+            updatedAt: expect.any(String),
           }),
         }),
       );
@@ -121,7 +121,7 @@ describe('Redux | Tasks | Actions', () => {
     const resolveValue = {
       '@type': 'TaskList',
       items: [{ '@id': '/api/tasks/1' }],
-      updatedAt: moment().format(),
+      updatedAt: moment().toISOString(),
     };
 
     client.get.mockResolvedValue(resolveValue);
@@ -154,7 +154,7 @@ describe('Redux | Tasks | Actions', () => {
           payload: expect.objectContaining({
             date: date.format('YYYY-MM-DD'),
             items: resolveValue.items,
-            updatedAt: expect.any(moment),
+            updatedAt: expect.any(String),
           }),
         }),
       );
