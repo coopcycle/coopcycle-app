@@ -394,7 +394,7 @@ export function selectServer(server) {
           .then(() => {
             const user = new AppUser(null, null, null, null, null, false);
 
-            dispatch(setUser(user));
+            dispatch(setUser({...user}));
             dispatch(setBaseURL(baseURL));
           })
           .then(() => dispatch(_clearSelectServerError()))
@@ -419,7 +419,7 @@ export function bootstrap(baseURL, user, loader = true) {
       setCurrencyCode(settings.currency_code);
     }
 
-    dispatch(setUser(user));
+    dispatch(setUser({...user}));
     dispatch(setBaseURL(baseURL));
     updateUserProperties(user);
 
@@ -619,7 +619,7 @@ export function guestModeOn() {
       true, // enabled
       true, // guest
     );
-    dispatch(setUser(user));
+    dispatch(setUser({...user}));
     console.log('User is in guest mode');
   };
 }

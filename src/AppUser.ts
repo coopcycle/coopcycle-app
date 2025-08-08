@@ -2,12 +2,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
 
 class AppUser {
+  username: string | null;
+  email: string | null;
+  token: string | null;
+  roles: string[] | null;
+  refreshToken: string | null;
+  enabled: boolean;
+  guest: boolean;
+
   constructor(
-    username,
-    email,
-    token,
-    roles,
-    refreshToken,
+    username: string | null,
+    email: string | null,
+    token: string | null,
+    roles: string[] | null,
+    refreshToken: string | null,
     enabled = true,
     guest = false,
   ) {

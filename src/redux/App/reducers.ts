@@ -62,7 +62,63 @@ import {
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 
-const initialState = {
+type User = {
+  username: string | null;
+  email: string | null;
+  token: string | null;
+  roles: string[] | null;
+  refreshToken: string | null;
+  enabled: boolean;
+  guest: boolean;
+};
+
+type AppState = {
+  customBuild: boolean;
+  firstRun: boolean;
+  isWsOpen: boolean;
+  baseURL: string | null;
+  user: User | null;
+  currentRoute: string | null;
+  appState: string;
+  pushNotificationToken: string | null;
+  pushNotificationTokenSaved: boolean | null;
+  shouldNotificationBeDisplayed: boolean;
+  loading: boolean;
+  notifications;
+  lastAuthenticationError: string | null;
+  forgotPassword: {
+    inputError: string | null;
+    nonInputError: string | null;
+    requested: boolean;
+  };
+  resumeCheckoutAfterActivation: string | null;
+  servers;
+  selectServerError: string | null;
+  settings;
+  isInternetReachable: boolean;
+  registrationErrors;
+  loginByEmailErrors;
+  isBackgroundGeolocationEnabled: boolean;
+  hasDisclosedBackgroundPermission: boolean;
+  isCentrifugoConnecting: boolean;
+  isCentrifugoConnected: boolean;
+  modal: {
+    show: boolean;
+    skippable: boolean;
+    content;
+    type: string;
+  };
+  termsAndConditionsAccepted: boolean;
+  privacyPolicyAccepted: boolean;
+  loadingTerms: boolean;
+  loadingPrivacyPolicy: boolean;
+  termsAndConditionsText: string;
+  privacyPolicyText: string;
+  isSpinnerDelayEnabled: boolean;
+  isBarcodeEnabled: boolean;
+};
+
+const initialState: AppState = {
   customBuild: !!Config.DEFAULT_SERVER,
   firstRun: true,
   isWsOpen: false,

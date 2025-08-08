@@ -38,7 +38,7 @@ export default ({ getState, dispatch }) => {
                 credentials.enabled,
               );
 
-              dispatch(setUser(newUser));
+              dispatch(setUser({...newUser}));
               newUser.save().then(() => console.log('Credentials saved!'));
             },
             onTokenRefreshed: (token: string, refreshToken: string) => {
@@ -54,7 +54,7 @@ export default ({ getState, dispatch }) => {
                 enabled,
               );
 
-              dispatch(setUser(newUser));
+              dispatch(setUser({...newUser}));
               newUser.save().then(() => console.log('Credentials saved!'));
             },
             onMaintenance: (message: string) => {
