@@ -4,7 +4,9 @@ import { actionMatchCreator } from '../util';
 import { changeDate } from '../Dispatch/actions';
 import { DEP_CHANGE_DATE } from '../../shared/logistics/redux';
 
-const initialState = moment();
+type DateState = string
+
+const initialState: DateState = moment().toISOString();
 
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [changeDate])) {

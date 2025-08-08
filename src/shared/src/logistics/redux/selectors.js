@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { createSelector } from '@reduxjs/toolkit';
 
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
+import moment from 'moment';
 
 // Selectors
 
@@ -17,7 +18,11 @@ const tourSelectors = tourAdapter.getSelectors(
 
 // Base selections
 
-export const selectSelectedDate = state => state.logistics.date;
+const _selectSelectedDate = state => state.logistics.date;
+export const selectSelectedDate = createSelector(
+  _selectSelectedDate,
+  date => moment(date),
+);
 
 export const selectAllTasks = taskSelectors.selectAll;
 export const selectTasksEntities = taskSelectors.selectEntities;
