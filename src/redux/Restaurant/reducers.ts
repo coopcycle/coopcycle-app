@@ -79,12 +79,36 @@ import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware/actions'
 
 import { EVENT as EVENT_ORDER, STATE } from '../../domain/Order';
 
-const initialState = {
+type RestaurantState = {
+  fetchError;
+  isFetching: boolean;
+  orders;
+  myRestaurants;
+  date: string;
+  status: string;
+  restaurant;
+  nextProductsPage;
+  hasMoreProducts: boolean;
+  products;
+  menus;
+  bluetoothEnabled: boolean;
+  isScanningBluetooth: boolean;
+  printer;
+  productOptions;
+  isSunmiPrinter: boolean;
+  bluetoothStarted: boolean;
+  loopeatFormats;
+  ordersToPrint;
+  printingOrderId;
+  preferences;
+};
+
+const initialState: RestaurantState = {
   fetchError: null, // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
   orders: [], // Array of orders
   myRestaurants: [], // Array of restaurants
-  date: moment(),
+  date: moment().toISOString(),
   status: 'available',
   restaurant: null,
   nextProductsPage: null,
