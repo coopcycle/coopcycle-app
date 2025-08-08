@@ -310,7 +310,7 @@ export const tasksEntityReducer = (
         completeTaskFetchError: false,
         // This is the date that is selected in the UI
         date: action.payload.date
-          ? action.payload.date.format('YYYY-MM-DD')
+          ? moment(action.payload.date).format('YYYY-MM-DD')
           : moment().format('YYYY-MM-DD'),
         isFetching: true,
       };

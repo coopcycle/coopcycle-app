@@ -99,7 +99,7 @@ describe('Redux | Tasks | Actions', () => {
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenCalledWith({
         type: LOAD_TASKS_REQUEST,
-        payload: { date, refresh: false },
+        payload: { date: date.toISOString(), refresh: false },
       });
       expect(dispatch).toHaveBeenLastCalledWith(
         expect.objectContaining({
@@ -146,7 +146,7 @@ describe('Redux | Tasks | Actions', () => {
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenCalledWith({
         type: LOAD_TASKS_REQUEST,
-        payload: { date, refresh: false },
+        payload: { date: date.toISOString(), refresh: false },
       });
       expect(dispatch).toHaveBeenLastCalledWith(
         expect.objectContaining({
@@ -189,7 +189,7 @@ describe('Redux | Tasks | Actions', () => {
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenCalledWith({
         type: LOAD_TASKS_REQUEST,
-        payload: date,
+        payload: { date: date.toISOString() },
       });
       expect(dispatch).toHaveBeenLastCalledWith({
         type: LOAD_TASKS_FAILURE,

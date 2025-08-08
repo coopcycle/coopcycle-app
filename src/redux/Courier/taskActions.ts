@@ -57,7 +57,7 @@ export const CHANGE_DATE = 'CHANGE_DATE';
  */
 export const loadTasksRequest = createAction(
   LOAD_TASKS_REQUEST,
-  (date, refresh = false) => ({ date, refresh }),
+  (date: string, refresh = false) => ({ date, refresh }),
 );
 export const loadTasksSuccess = createAction(
   LOAD_TASKS_SUCCESS,
@@ -170,11 +170,11 @@ export function navigateAndLoadTasks(selectedDate) {
   };
 }
 
-export function loadTasks(selectedDate, refresh = false, cb) {
+export function loadTasks(selectedDate: moment.Moment, refresh = false, cb = null) {
   return function (dispatch, getState) {
     const httpClient = selectHttpClient(getState())
 
-    dispatch(loadTasksRequest(selectedDate, refresh));
+    dispatch(loadTasksRequest(selectedDate.toISOString(), refresh));
 
     return httpClient
       .get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
