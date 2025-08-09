@@ -9,6 +9,7 @@ import {
   selectInitialRouteName,
   selectIsAuthenticated,
   selectShowRestaurantsDrawerItem,
+  selectUser,
 } from '../../redux/App/selectors';
 import { useStackNavigatorScreenOptions } from '../styles';
 
@@ -110,7 +111,7 @@ const FeatureFlagsNavigator = () => {
 };
 
 function mapStateToProps(state) {
-  const user = state.app.user;
+  const user = selectUser(state);
 
   return {
     isAuthenticated: selectIsAuthenticated(state),

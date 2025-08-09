@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectAllTasks } from '../../shared/logistics/redux';
 
 export const selectTasksByOrder = orderId =>

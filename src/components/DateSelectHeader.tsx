@@ -65,8 +65,7 @@ function Button({ iconName, onPress }) {
 }
 
 export default function DateSelectHeader({ navigate }) {
-  const _selectedDate = useSelector(selectTaskSelectedDate);
-  const selectedDate = moment(_selectedDate);
+  const selectedDate = useSelector(selectTaskSelectedDate);
 
   const isTodaySelected = selectedDate.isSame(moment(), 'day');
 
@@ -78,8 +77,8 @@ export default function DateSelectHeader({ navigate }) {
     navigate('CourierDate');
   };
 
-  const onChangeDate = date => {
-    dispatch(changeDate(date));
+  const onChangeDate = (date: moment.Moment) => {
+    dispatch(changeDate(date.toISOString()));
     dispatch(loadTasks(date));
   };
 

@@ -265,7 +265,13 @@ describe('Redux | Checkout | Selectors', () => {
   describe('selectCheckoutAuthorizationHeaders', () => {
     describe('a user with an account', () => {
       const user = {
-        isAuthenticated: () => true,
+        username: 'bob',
+        email: 'bob@coopcycle.org',
+        token: '123456',
+        refreshToken: '123456',
+        roles: ['ROLE_USER'],
+        enabled: true,
+        guest: false,
       };
 
       describe('cart is assigned to a user', () => {
@@ -309,8 +315,13 @@ describe('Redux | Checkout | Selectors', () => {
 
     describe('a user in a guest mode', () => {
       const user = {
-        isAuthenticated: () => false,
-        isGuest: () => true,
+        username: null,
+        email: null,
+        token: null,
+        refreshToken: null,
+        roles: [],
+        enabled: false,
+        guest: true,
       };
 
       describe('cart is assigned to a user', () => {
@@ -356,8 +367,13 @@ describe('Redux | Checkout | Selectors', () => {
 
     describe('unauthenticated user (!= guest mode)', () => {
       const user = {
-        isAuthenticated: () => false,
-        isGuest: () => false,
+        username: null,
+        email: null,
+        token: null,
+        refreshToken: null,
+        roles: [],
+        enabled: false,
+        guest: false,
       };
 
       it('should use a session token', () => {

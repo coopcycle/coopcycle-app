@@ -15,13 +15,23 @@ import {
   SET_TASK_FILTER,
 } from './taskActions';
 
+type TaskUiState = {
+  selectedDate: string;
+  excludeFilters;
+  tasksChangedAlertSound: boolean;
+  keepAwake: boolean;
+  isHideUnassignedFromMap: boolean;
+  isPolylineOn: boolean;
+  signatureScreenFirst: boolean;
+};
+
 /*
  * Intital state shape for the task UI reducer
  * Data related to the presentation of task-related components
  * but not directly related to the entity itself goes here
  */
-const tasksUiInitialState = {
-  selectedDate: moment(), // Date selected by the user
+const tasksUiInitialState: TaskUiState = {
+  selectedDate: moment().toISOString(), // Date selected by the user
   excludeFilters: [], // Key-value pairs of active filters (e.g. status: 'done')
   tasksChangedAlertSound: true,
   keepAwake: false,
@@ -35,7 +45,7 @@ export const tasksUiReducer = (state = tasksUiInitialState, action = {}) => {
     case LOAD_TASKS_REQUEST:
       return {
         ...state,
-        selectedDate: action.payload.date || moment(),
+        selectedDate: action.payload.date || moment().toISOString(),
       };
 
     case ADD_TASK_FILTER:

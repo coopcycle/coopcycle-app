@@ -362,7 +362,7 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
 // This action may be dispatched several times "recursively"
 export function addItem(restaurant, item, quantity = 1, options) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
     const { address, cart, token, isAddressOK } = getState().checkout;
 
     const fulfillmentMethod = selectCartFulfillmentMethod(getState());
@@ -854,7 +854,7 @@ function syncAddress(cart, address) {
 
 export function setAddress(address, cart = null) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     if (cart?.restaurant) {
       dispatch(setCheckoutLoading(true));
@@ -886,7 +886,7 @@ export function setAddress(address, cart = null) {
 
 function wrapRestaurantsWithTiming(restaurants) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     const promises = restaurants.map(
       restaurant =>
@@ -910,7 +910,7 @@ function wrapRestaurantsWithTiming(restaurants) {
 
 export function searchRestaurantsForAddress(address, options = {}) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     let queryString = `coordinate=${address.geo.latitude},${address.geo.longitude}`;
     dispatch(loadRestaurantsRequest());
@@ -934,7 +934,7 @@ export function searchRestaurantsForAddress(address, options = {}) {
 
 export function searchRestaurants(options = {}) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(loadRestaurantsRequest());
 
@@ -1756,7 +1756,7 @@ export function loadPaymentDetails() {
 
 export function loadStripeSavedPaymentMethods() {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(loadStripeSavedPaymentMethodsRequest());
 
@@ -1769,7 +1769,7 @@ export function loadStripeSavedPaymentMethods() {
 
 export function generateInvoice(order, address) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
     const { streetAddress: billingAddress } = address;
 
     dispatch(setLoading(true));
@@ -1797,8 +1797,9 @@ export function generateInvoice(order, address) {
 
 export function shareInvoice(order) {
   return (dispatch, getState) => {
-    const { settings, httpClient } = getState().app;
+    const { settings } = getState().app;
     const { number } = order;
+    const httpClient = selectHttpClient(getState())
 
     httpClient
       .get(`${order['@id']}/invoice`)
@@ -1818,7 +1819,7 @@ export function shareInvoice(order) {
 
 export function search(q) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(searchRequest());
 
@@ -1831,7 +1832,7 @@ export function search(q) {
 
 export function loadAndNavigateToRestaurante(id) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     dispatch(getRestaurantRequest());
 

@@ -44,6 +44,7 @@ import {
 import AddressUtils from '../../utils/Address';
 import OpeningHours from './components/OpeningHours';
 import RestaurantProfile from './components/RestaurantProfile';
+import { selectHttpClient } from '../../redux/App/selectors.ts';
 
 const LoadingPhantom = props => (
   <HStack w="95%" space={6} p="4">
@@ -286,7 +287,7 @@ function mapStateToProps(state, ownProps) {
     address: state.checkout.address,
     loadingItems: state.checkout.itemRequestStack,
     isExpiredSessionModalVisible: state.checkout.isExpiredSessionModalVisible,
-    httpClient: state.app.httpClient,
+    httpClient: selectHttpClient(state),
     fulfillmentMethods: selectFulfillmentMethods(state),
     fulfillmentMethod: selectCartFulfillmentMethod(state),
   };

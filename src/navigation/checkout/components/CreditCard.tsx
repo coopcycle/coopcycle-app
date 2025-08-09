@@ -21,7 +21,10 @@ import {
   selectCart,
   selectCheckoutError,
 } from '../../../redux/Checkout/selectors';
-import { selectStripePublishableKey } from '../../../redux/App/selectors';
+import {
+  selectStripePublishableKey,
+  selectUser,
+} from '../../../redux/App/selectors';
 
 const ColorSchemeAwareCardField = props => {
   const colorScheme = useColorScheme();
@@ -338,7 +341,7 @@ function mapStateToProps(state, ownProps) {
     stripePaymentMethods: state.checkout.stripePaymentMethods || [],
     stripePaymentMethodsLoaded: state.checkout.stripePaymentMethodsLoaded,
     errors: selectCheckoutError(state),
-    user: state.app.user,
+    user: selectUser(state),
     shouldLoadPaymentDetails: ownProps.hasOwnProperty(
       'shouldLoadPaymentDetails',
     )

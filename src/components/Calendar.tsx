@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text } from 'react-native';
 import { Calendar as RNCalendar } from 'react-native-calendars';
 import { primaryColor, whiteColor } from '../styles/common';
+import { CalendarProps } from 'react-native-calendars/src/calendar';
 
 const styles = StyleSheet.create({
   todayContainer: {
@@ -20,7 +21,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export function Calendar(props) {
+type Props = {
+  onDateSelect: (date: moment.Moment) => void;
+} & CalendarProps;
+
+export function Calendar(props: Props) {
   const { t } = useTranslation();
 
   const calendarProps = {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 import { Calendar } from '../../components/Calendar';
 import { changeDate } from '../../redux/Dispatch/actions';
@@ -9,8 +10,8 @@ export default function DateScreen({ navigation }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const dispatch = useDispatch();
 
-  const onDateChange = date => {
-    dispatch(changeDate(date));
+  const onDateChange = (date: moment.Moment) => {
+    dispatch(changeDate(date.toISOString()));
     dispatch(loadTasks(date));
     navigation.goBack();
   };

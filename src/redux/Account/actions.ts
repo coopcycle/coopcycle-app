@@ -114,7 +114,7 @@ export function loadAddresses() {
       return;
     }
 
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     return httpClient.get('/api/me').then(res => {
       dispatch(loadAddressesSuccess(res.addresses));
@@ -124,7 +124,7 @@ export function loadAddresses() {
 
 export function newAddress(address) {
   return function (dispatch, getState) {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState())
 
     if (!_.has(address, 'isPrecise') || !address.isPrecise) {
       return;
@@ -149,7 +149,7 @@ export function newAddress(address) {
 
 export function loadPersonalInfo() {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
 
@@ -239,7 +239,7 @@ export function unsubscribe(order) {
 
 export function deleteUser() {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
 

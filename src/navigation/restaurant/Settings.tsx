@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
 import { changeStatus, closeRestaurant } from '../../redux/Restaurant/actions';
 import { selectSpecialOpeningHoursSpecificationForToday } from '../../redux/Restaurant/selectors';
+import { selectHttpClient } from '../../redux/App/selectors.ts';
 
 class SettingsScreen extends Component {
   constructor(props) {
@@ -156,7 +157,7 @@ class SettingsScreen extends Component {
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient,
+    httpClient: selectHttpClient(state),
     restaurant: state.restaurant.restaurant,
     restaurants: state.restaurant.myRestaurants,
     specialOpeningHoursSpecificationForToday:

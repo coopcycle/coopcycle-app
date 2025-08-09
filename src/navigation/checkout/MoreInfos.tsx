@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 import validate from 'validate.js';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
-import { selectIsAuthenticated } from '../../redux/App/selectors';
+import { selectIsAuthenticated, selectUser } from '../../redux/App/selectors';
 import {
   assignCustomer,
   checkTimeRange,
@@ -341,7 +341,7 @@ function mapStateToProps(state, ownProps) {
         ? cart?.shippingAddress?.telephone || ''
         : '',
     email: state.checkout.guest ? state.checkout.guest.email : '',
-    user: state.app.user,
+    user: selectUser(state),
     isAuthenticated: selectIsAuthenticated(state),
     isValid: selectIsValid(state),
   };

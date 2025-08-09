@@ -9,7 +9,7 @@ import {
 import moment from '../../../moment';
 
 describe('Selectors', () => {
-  let date = moment().format('YYYY-MM-DD');
+  const date = moment().toISOString();
 
   let baseState = {
     logistics: {
@@ -119,7 +119,7 @@ describe('Selectors', () => {
 
   describe('selectSelectedDate', () => {
     it('should return selected date', () => {
-      expect(selectSelectedDate(baseState)).toEqual(date);
+      expect(selectSelectedDate(baseState)).toEqual(moment(date));
     });
   });
 

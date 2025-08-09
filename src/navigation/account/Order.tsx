@@ -16,6 +16,7 @@ import {
   showAddressModal,
 } from '../../redux/Checkout/actions';
 import AddressModal from '../checkout/components/AddressModal';
+import { selectHttpClient } from '../../redux/App/selectors.ts';
 
 class OrderPage extends Component {
   renderDetail(order) {
@@ -104,7 +105,7 @@ function mapStateToProps(state, ownProps) {
     location: state.app.settings.latlng,
     country: state.app.settings.country,
     brandName: state.app.settings.brand_name,
-    httpClient: state.app.httpClient,
+    httpClient: selectHttpClient(state),
   };
 }
 

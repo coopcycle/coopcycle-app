@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 
 import i18n from '../../i18n';
 import Address from '../../utils/Address';

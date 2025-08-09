@@ -15,6 +15,7 @@ import {
 import { isSameDayTask } from '../../shared/src/utils';
 import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
+import { selectHttpClient } from '../App/selectors.ts';
 
 /*
  * Action Creators
@@ -56,7 +57,7 @@ export function initialize() {
 
 export function createTaskList(date, user) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(createTaskListRequest());
 
@@ -72,7 +73,7 @@ export function createTaskList(date, user) {
 
 export function createTask(task) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(createTaskRequest());
 

@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useEffect, useMemo } from 'react';
+import moment from 'moment';
 
 import {
   loadTaskListsFailure,
@@ -19,9 +20,13 @@ import {
   loadToursFailure,
   loadToursSuccess,
 } from '../../shared/logistics/redux';
+import { DateOnlyString } from '../../utils/date-types';
 
-export function useAllTasks(date) {
+export function useAllTasks(date: moment.Moment) {
   const dispatch = useDispatch();
+  const dateOnlyString = useMemo(() => {
+    return date.format('YYYY-MM-DD') as DateOnlyString;
+  }, [date]);
 
   const {
     data: courierUsers,
@@ -36,7 +41,7 @@ export function useAllTasks(date) {
     isFetching: isFetchingTaskLists,
     isLoading: isLoadingTaskLists,
     refetch: refetchTaskLists,
-  } = useGetTaskListsV2Query(date);
+  } = useGetTaskListsV2Query(dateOnlyString);
 
   const {
     data: tasks,
@@ -44,7 +49,7 @@ export function useAllTasks(date) {
     isFetching: isFetchingTasks,
     isLoading: isLoadingTasks,
     refetch: refetchTasks,
-  } = useGetTasksQuery(date);
+  } = useGetTasksQuery(dateOnlyString);
 
   const {
     data: tours,
@@ -52,7 +57,7 @@ export function useAllTasks(date) {
     isFetching: isFetchingTours,
     isLoading: isLoadingTours,
     refetch: refetchTours,
-  } = useGetToursQuery(date);
+  } = useGetToursQuery(dateOnlyString);
 
   const isError = useMemo(() => {
     return (

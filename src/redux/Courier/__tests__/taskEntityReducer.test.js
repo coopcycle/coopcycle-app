@@ -113,7 +113,7 @@ describe('Redux | Tasks | Reducers', () => {
       const date = now.format('YYYY-MM-DD');
       const newState = tasksEntityReducer(
         prevState,
-        loadTasksSuccess(date, tasks, now),
+        loadTasksSuccess(date, tasks, now.toISOString()),
       );
       const fullState = { entities: { tasks: newState } };
 
@@ -121,11 +121,13 @@ describe('Redux | Tasks | Reducers', () => {
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
       const restNewState = omit(newState, [
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
 
       expect(selectIsTasksLoading(fullState)).toBe(false);

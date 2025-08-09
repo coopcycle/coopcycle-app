@@ -25,6 +25,7 @@ import Mailto from '../../components/Mailto';
 import {
   selectIsAuthenticated,
   selectShowRestaurantsDrawerItem,
+  selectUser,
 } from '../../redux/App/selectors';
 
 const phoneNumberUtil = PhoneNumberUtil.getInstance();
@@ -299,7 +300,7 @@ function mapStateToProps(state) {
   );
 
   return {
-    user: state.app.user,
+    user: selectUser(state),
     isAuthenticated: selectIsAuthenticated(state),
     restaurants: state.restaurant.myRestaurants,
     stores: state.store.myStores,

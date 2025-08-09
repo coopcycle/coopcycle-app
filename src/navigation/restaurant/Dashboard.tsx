@@ -175,7 +175,7 @@ export default function DashboardPage({ navigation, route }) {
       <DatePickerHeader
         date={date}
         onCalendarClick={() => navigate('RestaurantDate')}
-        onTodayClick={() => dispatch(changeDate(moment()))}
+        onTodayClick={() => dispatch(changeDate(moment().toISOString()))}
       />
       <OrderList
         onItemClick={order => navigate('RestaurantOrder', { order })}
