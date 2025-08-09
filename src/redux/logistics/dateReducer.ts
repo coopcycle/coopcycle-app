@@ -3,10 +3,11 @@ import { moment } from '../../coopcycle-frontend-js';
 import { actionMatchCreator } from '../util';
 import { changeDate } from '../Dispatch/actions';
 import { DEP_CHANGE_DATE } from '../../shared/logistics/redux';
+import { DateISOString } from '../../utils/date-types';
 
-type DateState = string
+type DateState = DateISOString;
 
-const initialState: DateState = moment().toISOString();
+const initialState: DateState = moment().toISOString() as DateISOString;
 
 export default (state = initialState, action) => {
   if (actionMatchCreator(action, [changeDate])) {

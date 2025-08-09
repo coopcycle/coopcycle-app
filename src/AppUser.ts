@@ -83,7 +83,7 @@ class AppUser {
   }
 
   isAuthenticated() {
-    return this.username && this.token && this.enabled;
+    return Boolean(this.username && this.token) && this.enabled;
   }
 
   isGuest() {

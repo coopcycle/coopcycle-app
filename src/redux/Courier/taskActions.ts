@@ -21,6 +21,7 @@ import {
   startTaskRequest,
   startTaskSuccess,
 } from '../../shared/logistics/redux';
+import { DateISOString } from '../../utils/date-types';
 
 /*
  * Action Types
@@ -57,7 +58,7 @@ export const CHANGE_DATE = 'CHANGE_DATE';
  */
 export const loadTasksRequest = createAction(
   LOAD_TASKS_REQUEST,
-  (date: string, refresh = false) => ({ date, refresh }),
+  (date: DateISOString, refresh = false) => ({ date, refresh }),
 );
 export const loadTasksSuccess = createAction(
   LOAD_TASKS_SUCCESS,
@@ -196,7 +197,7 @@ export function loadTasks(selectedDate: moment.Moment, refresh = false, cb = nul
             loadTasksSuccess(
               selectedDate.format('YYYY-MM-DD'),
               res['hydra:member'],
-              moment(),
+              moment().toISOString(),
             ),
           );
         }

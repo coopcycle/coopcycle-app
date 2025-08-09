@@ -41,6 +41,13 @@ class HttpClientService {
   }
 
   /**
+   * Use for testing purposes only!
+   */
+  setTestClient(httpClient) {
+    this.httpClient = httpClient;
+  }
+
+  /**
    * Clears the current HTTP client
    */
   clear() {

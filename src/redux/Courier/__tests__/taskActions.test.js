@@ -22,6 +22,7 @@ import {
   markTaskFailedSuccess,
 } from '../../../shared/logistics/redux';
 import reducers from '../../reducers';
+import { httpClientService } from '../../../services/httpClientService';
 
 // As we may be using setTimeout(), we need to mock timers
 // @see https://jestjs.io/docs/en/timer-mocks.html
@@ -78,11 +79,11 @@ describe('Redux | Tasks | Actions', () => {
     };
 
     client.get.mockResolvedValue(resolveValue);
+    httpClientService.setTestClient(client);
 
     const store = configureStore({
       reducer: reducers,
       preloadedState: {
-        app: { httpClient: client },
       },
     });
 
@@ -125,11 +126,11 @@ describe('Redux | Tasks | Actions', () => {
     };
 
     client.get.mockResolvedValue(resolveValue);
+    httpClientService.setTestClient(client);
 
     const store = configureStore({
       reducer: reducers,
       preloadedState: {
-        app: { httpClient: client },
       },
     });
 
@@ -168,11 +169,11 @@ describe('Redux | Tasks | Actions', () => {
     const rejectValue = new Error('test error');
 
     client.get.mockReturnValue(Promise.reject(rejectValue));
+    httpClientService.setTestClient(client);
 
     const store = configureStore({
       reducer: reducers,
       preloadedState: {
-        app: { httpClient: client },
       },
     });
 
@@ -209,6 +210,7 @@ describe('Redux | Tasks | Actions', () => {
     };
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
+    httpClientService.setTestClient(client);
 
     const { actionTracker, getActions } = actionTrackerMiddleware();
     const store = configureStore({
@@ -216,7 +218,6 @@ describe('Redux | Tasks | Actions', () => {
       middleware: getDefaultMiddleware =>
         getDefaultMiddleware().concat(actionTracker),
       preloadedState: {
-        app: { httpClient: client },
         entities: {
           tasks: {
             signatures: [],
@@ -256,6 +257,7 @@ describe('Redux | Tasks | Actions', () => {
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
     client.uploadFileAsync.mockResolvedValue();
+    httpClientService.setTestClient(client);
 
     const { actionTracker, getActions } = actionTrackerMiddleware();
     const store = configureStore({
@@ -263,7 +265,6 @@ describe('Redux | Tasks | Actions', () => {
       middleware: getDefaultMiddleware =>
         getDefaultMiddleware().concat(actionTracker),
       preloadedState: {
-        app: { httpClient: client },
         entities: {
           tasks: {
             signatures: ['123456'],
@@ -302,6 +303,7 @@ describe('Redux | Tasks | Actions', () => {
       execUploadTask: jest.fn(),
     };
     client.put.mockRejectedValue(rejectValue);
+    httpClientService.setTestClient(client);
 
     const { actionTracker, getActions } = actionTrackerMiddleware();
     const store = configureStore({
@@ -309,7 +311,6 @@ describe('Redux | Tasks | Actions', () => {
       middleware: getDefaultMiddleware =>
         getDefaultMiddleware().concat(actionTracker),
       preloadedState: {
-        app: { httpClient: client },
         entities: {
           tasks: {
             signatures: [],
@@ -344,6 +345,7 @@ describe('Redux | Tasks | Actions', () => {
     };
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
+    httpClientService.setTestClient(client);
 
     const { actionTracker, getActions } = actionTrackerMiddleware();
     const store = configureStore({
@@ -351,7 +353,6 @@ describe('Redux | Tasks | Actions', () => {
       middleware: getDefaultMiddleware =>
         getDefaultMiddleware().concat(actionTracker),
       preloadedState: {
-        app: { httpClient: client },
         entities: {
           tasks: {
             signatures: [],
@@ -390,6 +391,7 @@ describe('Redux | Tasks | Actions', () => {
       put: jest.fn(),
     };
     client.put.mockRejectedValue(rejectValue);
+    httpClientService.setTestClient(client);
 
     const { actionTracker, getActions } = actionTrackerMiddleware();
     const store = configureStore({
@@ -397,7 +399,6 @@ describe('Redux | Tasks | Actions', () => {
       middleware: getDefaultMiddleware =>
         getDefaultMiddleware().concat(actionTracker),
       preloadedState: {
-        app: { httpClient: client },
         entities: {
           tasks: {
             signatures: [],

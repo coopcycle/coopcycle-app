@@ -113,7 +113,7 @@ describe('Redux | Tasks | Reducers', () => {
       const date = now.format('YYYY-MM-DD');
       const newState = tasksEntityReducer(
         prevState,
-        loadTasksSuccess(date, tasks, now),
+        loadTasksSuccess(date, tasks, now.toISOString()),
       );
       const fullState = { entities: { tasks: newState } };
 
