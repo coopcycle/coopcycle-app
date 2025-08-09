@@ -121,11 +121,13 @@ describe('Redux | Tasks | Reducers', () => {
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
       const restNewState = omit(newState, [
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
 
       expect(selectIsTasksLoading(fullState)).toBe(false);
