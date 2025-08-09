@@ -761,9 +761,32 @@ const checkServer = function (server) {
   });
 };
 
-export const createClient = (httpBaseURL, options) => {
+export const createClient = (httpBaseURL, options): HttpClient => {
   return new Client(httpBaseURL, options);
 };
+
+export type HttpClient = {
+  get: (uri: string, options?) => Promise;
+  post: (uri: string, data, options?) => Promise;
+  put: (uri: string, data, options?) => Promise;
+  delete: (uri: string, options?) => Promise;
+  request: (method: string, uri: string, data, options?) => Promise;
+  uploadFileAsync: (uri: string, file, options?) => Promise;
+  execUploadTask: (uploadTasks, retry?) => Promise;
+  getBaseURL: () => string;
+  getToken: () => string;
+  cloneWithToken: (token: string) => HttpClient;
+  refreshToken: () => Promise;
+  checkToken: () => Promise;
+  register: (data) => Promise;
+  confirmRegistration: (token: string) => Promise;
+  resetPassword: (username: string) => Promise;
+  setNewPassword: (token: string, password: string) => Promise;
+  login: (username: string, password: string) => Promise;
+  loginWithFacebook: (accessToken: string) => Promise;
+  signInWithApple: (identityToken: string) => Promise;
+  googleSignIn: (idToken: string) => Promise;
+}
 
 export default {
   checkServer,

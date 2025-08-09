@@ -1,7 +1,7 @@
-import API from '../API';
+import API, { ApiUser, HttpClient } from '../API';
 
 class HttpClientService {
-  private httpClient = null;
+  private httpClient: HttpClient | null = null;
 
   /**
    * Creates or updates the HTTP client based on the provided configuration
@@ -11,7 +11,7 @@ class HttpClientService {
     token: string = '',
     refreshToken: string = '',
     callbacks: {
-      onCredentialsUpdated?: (credentials) => void;
+      onCredentialsUpdated?: (credentials: ApiUser) => void;
       onTokenRefreshed?: (token: string, refreshToken: string) => void;
       onMaintenance?: (message: string) => void;
     } = {},
@@ -36,14 +36,14 @@ class HttpClientService {
   /**
    * Gets the current HTTP client instance
    */
-  getClient() {
+  getClient(): HttpClient | null {
     return this.httpClient;
   }
 
   /**
    * Use for testing purposes only!
    */
-  setTestClient(httpClient) {
+  setTestClient(httpClient: HttpClient) {
     this.httpClient = httpClient;
   }
 
