@@ -28,6 +28,15 @@ function onTokenRefreshError(e) {
   errorSubscribers = [];
 }
 
+export type ApiUser = {
+  username: string;
+  email: string;
+  token: string;
+  refreshToken: string;
+  roles: string[];
+  enabled: boolean;
+};
+
 function Client(httpBaseURL, options = {}) {
   this.httpBaseURL = httpBaseURL;
 
@@ -490,7 +499,7 @@ Client.prototype.googleSignIn = function (idToken) {
     });
 };
 
-function credentialsToUser(credentials) {
+function credentialsToUser(credentials) : ApiUser {
   const enabled = credentials.hasOwnProperty('enabled')
     ? credentials.enabled
     : true;

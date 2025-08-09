@@ -5,14 +5,16 @@ import AppUser from '../../../AppUser';
 import { SET_USER, setModal } from '../../App/actions';
 import { selectIsAuthenticated, selectUser } from '../../App/selectors';
 import { httpClientService } from '../../../services/httpClientService';
+import { ApiUser } from '../../../API.ts';
+import { RootState } from '../../store.ts';
 
 export const setUser = createAction(SET_USER);
 
 export default ({ getState, dispatch }) => {
   return next => action => {
-    const prevState = getState();
+    const prevState = getState() as RootState;
     const result = next(action);
-    const state = getState();
+    const state = getState() as RootState;
 
     const hasBaseURLChanged = prevState.app.baseURL !== state.app.baseURL;
     const hasUserChanged = selectUser(prevState) !== selectUser(state);
@@ -25,10 +27,10 @@ export default ({ getState, dispatch }) => {
 
         httpClientService.updateClient(
           state.app.baseURL,
-          user ? user.token : '',
-          user ? user.refreshToken : '',
+          user?.token ?? '',
+          user?.refreshToken  ?? '',
           {
-            onCredentialsUpdated: (credentials: any) => {
+            onCredentialsUpdated: (credentials: ApiUser) => {
               const newUser = new AppUser(
                 credentials.username,
                 credentials.email,
@@ -43,7 +45,7 @@ export default ({ getState, dispatch }) => {
             },
             onTokenRefreshed: (token: string, refreshToken: string) => {
               const { username, email, roles, enabled } =
-                selectUser(getState());
+                selectUser(getState() as RootState);
 
               const newUser = new AppUser(
                 username,
