@@ -64,7 +64,7 @@ export const CHANGE_STATUS_SUCCESS = 'CHANGE_STATUS_SUCCESS';
 export const CHANGE_STATUS_FAILURE = 'CHANGE_STATUS_FAILURE';
 
 export const CHANGE_RESTAURANT = 'CHANGE_RESTAURANT';
-export const CHANGE_DATE = 'CHANGE_DATE';
+export const CHANGE_DATE = '@restaurant/CHANGE_DATE';
 
 export const LOAD_PRODUCTS_REQUEST = 'LOAD_PRODUCTS_REQUEST';
 export const LOAD_PRODUCTS_SUCCESS = 'LOAD_PRODUCTS_SUCCESS';
@@ -291,7 +291,7 @@ export const setPrintNumberOfCopies = createAction(
 
 export function loadMyRestaurants() {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
     dispatch(loadMyRestaurantsRequest());
 
     return httpClient
@@ -303,7 +303,7 @@ export function loadMyRestaurants() {
 
 export function loadOrders(restaurant, date, cb) {
   return function (dispatch, getState) {
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
     dispatch(loadOrdersRequest());
 
     return httpClient
@@ -320,8 +320,7 @@ export function loadOrders(restaurant, date, cb) {
 
 export function loadMenus(restaurant, date) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadMenusRequest());
 
@@ -334,8 +333,7 @@ export function loadMenus(restaurant, date) {
 
 export function activateMenu(restaurant, menu) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadMenusRequest());
 
@@ -370,8 +368,8 @@ function gotoOrder(restaurant, order) {
 
 export function loadOrder(order, cb) {
   return function (dispatch, getState) {
-    const { app, restaurant } = getState();
-    const { httpClient } = app;
+    const { restaurant } = getState();
+    const httpClient = selectHttpClient(getState());
 
     const sameOrder = _.find(restaurant.orders, o => o['@id'] === order);
 
@@ -405,8 +403,8 @@ export function loadOrder(order, cb) {
 
 export function loadOrderAndNavigate(order, cb) {
   return function (dispatch, getState) {
-    const { app, restaurant } = getState();
-    const { httpClient } = app;
+    const { restaurant } = getState();
+    const httpClient = selectHttpClient(getState());
 
     const sameOrder = _.find(restaurant.orders, o => o['@id'] === order);
 
@@ -440,8 +438,7 @@ export function loadOrderAndNavigate(order, cb) {
 
 export function acceptOrder(order, cb) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(acceptOrderRequest());
 
@@ -489,8 +486,7 @@ export const finishPreparing = createAsyncThunk(
 
 export function refuseOrder(order, reason, cb) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(refuseOrderRequest());
 
@@ -506,8 +502,7 @@ export function refuseOrder(order, reason, cb) {
 
 export function delayOrder(order, delay, cb) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(delayOrderRequest());
 
@@ -523,8 +518,7 @@ export function delayOrder(order, delay, cb) {
 
 export function fulfillOrder(order, cb) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(fulfillOrderRequest());
 
@@ -542,8 +536,7 @@ export function fulfillOrder(order, cb) {
 
 export function cancelOrder(order, reason, cb) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(cancelOrderRequest());
 
@@ -569,8 +562,7 @@ export function cancelOrder(order, reason, cb) {
 
 export function changeStatus(restaurant, state) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(changeStatusRequest());
 
@@ -609,7 +601,7 @@ export function loadProducts(client, restaurant) {
 
 export function loadMoreProducts() {
   return function (dispatch, getState) {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState());
     const { nextProductsPage, hasMoreProducts } = getState().restaurant;
 
     if (!hasMoreProducts) {
@@ -650,8 +642,7 @@ export function changeProductEnabled(client, product, enabled) {
 
 export function closeRestaurant(restaurant) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(closeRestaurantRequest());
 
@@ -664,8 +655,7 @@ export function closeRestaurant(restaurant) {
 
 export function deleteOpeningHoursSpecification(openingHoursSpecification) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(deleteOpeningHoursSpecificationRequest());
 
@@ -906,8 +896,7 @@ export function disconnectPrinter(device, cb) {
 
 export function loadProductOptions(restaurant) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadProductsRequest());
 
@@ -922,8 +911,7 @@ export function loadProductOptions(restaurant) {
 
 export function changeProductOptionValueEnabled(productOptionValue, enabled) {
   return function (dispatch, getState) {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(
       changeProductOptionValueEnabledRequest(productOptionValue, enabled),
@@ -970,7 +958,7 @@ export function bluetoothStartScan() {
 
 export function loadLoopeatFormats(order) {
   return function (dispatch, getState) {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState());
 
     httpClient.get(order['@id'] + '/loopeat_formats').then(res => {
       dispatch(setLoopeatFormats(order, res.items));
@@ -980,7 +968,7 @@ export function loadLoopeatFormats(order) {
 
 export function updateLoopeatFormats(order, loopeatFormats, cb) {
   return (dispatch, getState) => {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState());
 
     httpClient
       .put(order['@id'] + '/loopeat_formats', {

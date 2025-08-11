@@ -1,4 +1,4 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { selectBaseURL, selectLoggedInUser } from '../App/selectors';
 import { Mutex } from 'async-mutex';
 import qs from 'qs';
@@ -115,7 +115,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
             );
 
             // store the new token
-            api.dispatch(setUser(updUser));
+            api.dispatch(setUser({ ...updUser }));
             await updUser.save();
             console.log('Credentials saved!');
 

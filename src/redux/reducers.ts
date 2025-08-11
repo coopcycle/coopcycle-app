@@ -15,7 +15,7 @@
  *
  * Initial state-shapes are provided in each individual reducer file.
  */
-import { combineReducers } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import reduceReducers from 'reduce-reducers';
@@ -24,7 +24,6 @@ import { apiSlice } from './api/slice';
 import { appReducer } from './App';
 import { createTaskItemsTransform } from './util';
 import {
-  dateReducer as coreDateReducer,
   taskEntityReducers as coreTaskEntityReducers,
   taskListEntityReducers as coreTaskListEntityReducers,
   uiReducers as coreUiReducers,
@@ -32,7 +31,7 @@ import {
 
 import { tasksEntityReducer, tasksUiReducer } from './Courier';
 import accountReducer from './Account/reducers';
-import appDateReducer from './logistics/dateReducer';
+import dateReducer from './logistics/dateReducer';
 import appDispatchReducer from './Dispatch/reducers';
 import appUiReducers from './logistics/uiReducers';
 import appTaskEntityReducers from './logistics/taskEntityReducers';
@@ -191,7 +190,7 @@ export default combineReducers({
     }),
   }),
   logistics: combineReducers({
-    date: reduceReducers(coreDateReducer, appDateReducer),
+    date: dateReducer,
     entities: combineReducers({
       tasks: reduceReducers(coreTaskEntityReducers, appTaskEntityReducers),
       taskLists: reduceReducers(

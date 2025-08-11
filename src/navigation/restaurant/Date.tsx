@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Calendar } from '../../components/Calendar';
 import { changeDate } from '../../redux/Restaurant/actions';
+import { selectDate } from '../../redux/Restaurant/selectors';
 
 class DateScreen extends Component {
   onDateChange(date) {
@@ -29,13 +30,13 @@ class DateScreen extends Component {
 
 function mapStateToProps(state) {
   return {
-    date: state.restaurant.date,
+    date: selectDate(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeDate: date => dispatch(changeDate(date)),
+    changeDate: date => dispatch(changeDate(date.toISOString())),
   };
 }
 

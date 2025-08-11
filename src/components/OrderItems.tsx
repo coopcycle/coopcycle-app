@@ -61,8 +61,8 @@ class OrderItems extends Component {
 
     return (
       <View>
-        {adjustments.map(adjustment => (
-          <Text style={textStyle} key={`ADJUSTMENT#${adjustment.id}`}>
+        {adjustments.map((adjustment, index) => (
+          <Text style={textStyle} key={`ADJUSTMENT#${index}`}>
             {adjustment.label}
           </Text>
         ))}

@@ -11,6 +11,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ItemSeparator from '../../components/ItemSeparator';
 import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions';
 import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors';
+import { selectHttpClient } from '../../redux/App/selectors';
 
 class OpeningHoursScreen extends Component {
   constructor(props) {
@@ -117,7 +118,7 @@ function mapStateToProps(state) {
   const { restaurant } = state.restaurant;
 
   return {
-    httpClient: state.app.httpClient,
+    httpClient: selectHttpClient(state),
     openingHoursSpecification: restaurant.openingHoursSpecification,
     restaurant,
     specialOpeningHoursSpecification:

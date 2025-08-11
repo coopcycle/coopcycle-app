@@ -41,6 +41,7 @@ import {
   getTaskWithColor,
   getTasksWithColor,
 } from '../../shared/src/logistics/redux/taskUtils';
+import { DateOnlyString } from '../../utils/date-types';
 
 /*
  * Intital state shape for the task entity reducer
@@ -49,8 +50,8 @@ const tasksEntityInitialState = {
   loadTasksFetchError: false, // Error object describing the error
   completeTaskFetchError: false, // Error object describing the error
   isFetching: false, // Flag indicating active HTTP request
-  date: moment().format('YYYY-MM-DD'), // YYYY-MM-DD
-  updatedAt: moment().toString(),
+  date: moment().format('YYYY-MM-DD') as DateOnlyString, // YYYY-MM-DD
+  updatedAt: moment().toISOString(),
   items: {
     // Array of tasks, indexed by date
     // 'YYYY-MM-DD': [
@@ -310,7 +311,7 @@ export const tasksEntityReducer = (
         completeTaskFetchError: false,
         // This is the date that is selected in the UI
         date: action.payload.date
-          ? action.payload.date.format('YYYY-MM-DD')
+          ? moment(action.payload.date).format('YYYY-MM-DD')
           : moment().format('YYYY-MM-DD'),
         isFetching: true,
       };
@@ -322,7 +323,7 @@ export const tasksEntityReducer = (
         loadTasksFetchError: false,
         completeTaskFetchError: false,
         // This is the date that is selected in the UI
-        date: action.meta.arg.originalArgs.format('YYYY-MM-DD'),
+        date: action.meta.arg.originalArgs,
         // isFetching: true,  # don't set isFetching flag to prevent global loading spinner for rtk query requests
       };
 
@@ -332,7 +333,7 @@ export const tasksEntityReducer = (
         ...state,
         loadTasksFetchError: false,
         isFetching: false,
-        updatedAt: action.payload.updatedAt.toString(),
+        updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
           [action.payload.date]: getTasksWithColor(action.payload.items),
@@ -345,7 +346,7 @@ export const tasksEntityReducer = (
         ...state,
         loadTasksFetchError: false,
         isFetching: false,
-        updatedAt: action.payload.updatedAt.toString(),
+        updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
           [action.payload.date]: getTasksWithColor(action.payload.items),

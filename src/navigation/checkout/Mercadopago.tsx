@@ -7,6 +7,7 @@ import {
   checkoutRequest,
   mercadopagoCheckout,
 } from '../../redux/Checkout/actions';
+import { selectHttpClient, selectUser } from '../../redux/App/selectors';
 
 function Mercadopago({
   cart,
@@ -82,14 +83,18 @@ const styles = StyleSheet.create({
 });
 
 function createHttpClient(state) {
-  const { httpClient } = state.app;
-  if (httpClient.credentials.token && httpClient.credentials.refreshToken) {
+  const httpClient = selectHttpClient(state);
+  if (
+    httpClient &&
+    httpClient.credentials.token &&
+    httpClient.credentials.refreshToken
+  ) {
     return httpClient;
   }
 
   const { token } = state.checkout;
 
-  return httpClient.cloneWithToken(token);
+  return httpClient ? httpClient.cloneWithToken(token) : null;
 }
 
 function mapStateToProps(state) {
@@ -98,7 +103,7 @@ function mapStateToProps(state) {
     restaurant: state.checkout.restaurant,
     token: state.checkout.token,
     httpClient: createHttpClient(state),
-    user: state.app.user,
+    user: selectUser(state),
   };
 }
 
@@ -110,7 +115,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-module.exports = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withTranslation()(Mercadopago));

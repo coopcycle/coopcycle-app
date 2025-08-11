@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 
 import { filterTasks } from '../logistics/utils';
 import { getTaskListTasks } from '../../shared/src/logistics/redux/taskListUtils';

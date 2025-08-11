@@ -117,7 +117,12 @@ class LoginForm extends Component {
 
           return (
             <Column flex={1}>
-              <ScrollView contentContainerStyle={{ flexGrow: 1, gap: 20, paddingHorizontal: 20 }}>
+              <ScrollView
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  gap: 20,
+                  paddingHorizontal: 20,
+                }}>
                 <View style={{ flex: 1 }}>
                   <FormControl isInvalid={hasError('email')}>
                     <FormControl.Label>
@@ -214,7 +219,10 @@ class LoginForm extends Component {
                             this.props.googleSignIn(userInfo.idToken);
                           })
                           .catch(e => {
-                            console.log(`Google Signin; error code: ${e.code};`, e);
+                            console.log(
+                              `Google Signin; error code: ${e.code};`,
+                              e,
+                            );
                             this.props.authenticationFailure(
                               this.props.t('TRY_LATER'),
                             );
@@ -261,11 +269,15 @@ class LoginForm extends Component {
                             // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/authenticating_users_with_sign_in_with_apple
                             const hasHiddenEmail =
                               tokenData.is_private_email === true ||
-                              tokenData.email.endsWith('privaterelay.appleid.com');
+                              tokenData.email.endsWith(
+                                'privaterelay.appleid.com',
+                              );
 
                             if (hasHiddenEmail) {
                               this.props.authenticationFailure(
-                                this.props.t('APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR'),
+                                this.props.t(
+                                  'APPLE_SIGN_IN_HIDE_MY_EMAIL_ERROR',
+                                ),
                               );
                               return;
                             }

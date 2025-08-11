@@ -22,6 +22,7 @@ import { useQuery } from 'react-query';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CameraView } from 'expo-camera';
 import { addPicture, reportIncident } from '../../../redux/Courier/taskActions';
+import { selectHttpClient } from '../../../redux/App/selectors';
 
 function BarcodeIncident({
   route,
@@ -198,7 +199,7 @@ function BarcodeIncident({
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient,
+    httpClient: selectHttpClient(state),
   };
 }
 

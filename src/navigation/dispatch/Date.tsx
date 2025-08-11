@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
+import moment from 'moment';
 
 import { areSameDates } from '../../utils/dates';
 import { Calendar } from '../../components/Calendar';
@@ -11,9 +12,9 @@ export default function DateScreen({ navigation }) {
   const selectedDate = useSelector(selectSelectedDate);
   const dispatch = useDispatch();
 
-  const onDateChange = date => {
+  const onDateChange = (date: moment.Moment) => {
     if (!areSameDates(new Date(date), new Date(selectedDate))) {
-      dispatch(changeDate(date));
+      dispatch(changeDate(date.toISOString()));
       dispatch(clearSelectedTasks());
     }
 

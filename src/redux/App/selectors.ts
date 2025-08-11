@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
+import { Platform } from 'react-native';
 
 import {
   selectIsTasksLoading,
@@ -9,14 +10,30 @@ import { selectIsDispatchFetching } from '../Dispatch/selectors';
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
-import { Platform } from 'react-native';
+import { httpClientService } from '../../services/httpClientService';
+import AppUser from '../../AppUser';
+import { RootState } from '../store';
 
-export const selectHttpClient = state => state.app.httpClient;
+export const selectHttpClient = () => httpClientService.getClient();
 
 export const selectCustomBuild = state => state.app.customBuild;
 
 // AppUser, for logged in user use selectLoggedInUser
-export const selectUser = state => state.app.user;
+const _selectUser = (state: RootState) => state.app.user;
+
+export const selectUser = createSelector(_selectUser, user =>
+  user
+    ? new AppUser(
+        user.username,
+        user.email,
+        user.token,
+        user.roles,
+        user.refreshToken,
+        user.enabled,
+        user.guest,
+      )
+    : null,
+);
 
 // a user with an account
 export const selectIsAuthenticated = createSelector(

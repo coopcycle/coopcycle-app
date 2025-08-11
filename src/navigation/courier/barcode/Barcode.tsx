@@ -21,6 +21,7 @@ import { navigateToTask } from '../../utils';
 import { selectTasks } from '../../../redux/Courier';
 import { shouldNotificationBeDisplayed } from '../../../redux/App/actions';
 import { Badge } from 'native-base';
+import { selectHttpClient, selectUser } from '../../../redux/App/selectors';
 
 async function _fetchBarcode(httpClient, barcode) {
   if (barcode) {
@@ -412,8 +413,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    httpClient: state.app.httpClient,
-    user: state.app.user,
+    httpClient: selectHttpClient(state),
+    user: selectUser(state),
     taskLists: selectTasks(state),
   };
 }

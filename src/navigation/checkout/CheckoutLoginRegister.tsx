@@ -19,8 +19,14 @@ class LoginRegister extends Component {
   };
 
   componentDidMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardDidHide,
+    );
   }
 
   componentWillUnmount() {
@@ -60,12 +66,13 @@ class LoginRegister extends Component {
             <Text mt="4">{this.props.t('OR')}</Text>
           </>
         )}
-        {!isKeyboardVisible &&
-        <View style={{ padding: 20 }}>
-          <Text style={{ textAlign: 'center' }} note>
-            {this.props.t('CHECKOUT_LOGIN_DISCLAIMER')}
-          </Text>
-        </View>}
+        {!isKeyboardVisible && (
+          <View style={{ padding: 20 }}>
+            <Text style={{ textAlign: 'center' }} note>
+              {this.props.t('CHECKOUT_LOGIN_DISCLAIMER')}
+            </Text>
+          </View>
+        )}
         <AuthenticateForm
           onLogin={(email, password) =>
             this.props.login(email, password, false)

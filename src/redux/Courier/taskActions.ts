@@ -21,6 +21,7 @@ import {
   startTaskRequest,
   startTaskSuccess,
 } from '../../shared/logistics/redux';
+import { DateISOString } from '../../utils/date-types';
 
 /*
  * Action Types
@@ -57,7 +58,7 @@ export const CHANGE_DATE = 'CHANGE_DATE';
  */
 export const loadTasksRequest = createAction(
   LOAD_TASKS_REQUEST,
-  (date, refresh = false) => ({ date, refresh }),
+  (date: DateISOString, refresh = false) => ({ date, refresh }),
 );
 export const loadTasksSuccess = createAction(
   LOAD_TASKS_SUCCESS,
@@ -170,11 +171,15 @@ export function navigateAndLoadTasks(selectedDate) {
   };
 }
 
-export function loadTasks(selectedDate, refresh = false, cb) {
+export function loadTasks(
+  selectedDate: moment.Moment,
+  refresh = false,
+  cb = null,
+) {
   return function (dispatch, getState) {
-    const { httpClient } = getState().app;
+    const httpClient = selectHttpClient(getState());
 
-    dispatch(loadTasksRequest(selectedDate, refresh));
+    dispatch(loadTasksRequest(selectedDate.toISOString(), refresh));
 
     return httpClient
       .get('/api/me/tasks/' + selectedDate.format('YYYY-MM-DD'))
@@ -187,7 +192,7 @@ export function loadTasks(selectedDate, refresh = false, cb) {
             loadTasksSuccess(
               selectedDate.format('YYYY-MM-DD'),
               res.items,
-              moment.parseZone(res.updatedAt),
+              res.updatedAt,
             ),
           );
         } else {
@@ -196,7 +201,7 @@ export function loadTasks(selectedDate, refresh = false, cb) {
             loadTasksSuccess(
               selectedDate.format('YYYY-MM-DD'),
               res['hydra:member'],
-              moment(),
+              moment().toISOString(),
             ),
           );
         }
@@ -429,7 +434,7 @@ export function startTask(task, cb) {
   return function (dispatch, getState) {
     dispatch(startTaskRequest(task));
 
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     httpClient
       .put(task['@id'] + '/start', {})

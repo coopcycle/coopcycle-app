@@ -307,7 +307,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
       return setTaskListItems({
         items: itemIds,
         username: user.username,
-        date: selectedDate,
+        date: selectedDate.format('YYYY-MM-DD'),
       });
     },
     [selectedDate, setTaskListItems],

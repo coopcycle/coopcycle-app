@@ -47,7 +47,6 @@ import {
   SET_BACKGROUND_GEOLOCATION_ENABLED,
   SET_BASE_URL,
   SET_CURRENT_ROUTE,
-  SET_HTTP_CLIENT,
   SET_INTERNET_REACHABLE,
   SET_LOADING,
   SET_MODAL,
@@ -63,12 +62,67 @@ import {
 import { EVENT as EVENT_ORDER } from '../../domain/Order';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 
-const initialState = {
+type User = {
+  username: string | null;
+  email: string | null;
+  token: string | null;
+  roles: string[] | null;
+  refreshToken: string | null;
+  enabled: boolean;
+  guest: boolean;
+};
+
+type AppState = {
+  customBuild: boolean;
+  firstRun: boolean;
+  isWsOpen: boolean;
+  baseURL: string | null;
+  user: User | null;
+  currentRoute: string | null;
+  appState: string;
+  pushNotificationToken: string | null;
+  pushNotificationTokenSaved: boolean | null;
+  shouldNotificationBeDisplayed: boolean;
+  loading: boolean;
+  notifications;
+  lastAuthenticationError: string | null;
+  forgotPassword: {
+    inputError: string | null;
+    nonInputError: string | null;
+    requested: boolean;
+  };
+  resumeCheckoutAfterActivation: string | null;
+  servers;
+  selectServerError: string | null;
+  settings;
+  isInternetReachable: boolean;
+  registrationErrors;
+  loginByEmailErrors;
+  isBackgroundGeolocationEnabled: boolean;
+  hasDisclosedBackgroundPermission: boolean;
+  isCentrifugoConnecting: boolean;
+  isCentrifugoConnected: boolean;
+  modal: {
+    show: boolean;
+    skippable: boolean;
+    content;
+    type: string;
+  };
+  termsAndConditionsAccepted: boolean;
+  privacyPolicyAccepted: boolean;
+  loadingTerms: boolean;
+  loadingPrivacyPolicy: boolean;
+  termsAndConditionsText: string;
+  privacyPolicyText: string;
+  isSpinnerDelayEnabled: boolean;
+  isBarcodeEnabled: boolean;
+};
+
+const initialState: AppState = {
   customBuild: !!Config.DEFAULT_SERVER,
   firstRun: true,
   isWsOpen: false,
   baseURL: null,
-  httpClient: null,
   user: null,
   currentRoute: null,
   appState: AppState.currentState,
@@ -156,11 +210,7 @@ export default (state = initialState, action = {}) => {
         ...state,
         baseURL: action.payload,
       };
-    case SET_HTTP_CLIENT:
-      return {
-        ...state,
-        httpClient: action.payload,
-      };
+
     case SET_USER:
       return {
         ...state,

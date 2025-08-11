@@ -25,6 +25,7 @@ import {
   selectInitialRouteName,
   selectIsAuthenticated,
   selectResumeCheckoutAfterActivation,
+  selectUser,
 } from './selectors';
 import { DatadogSdk } from '../../Datadog';
 
@@ -33,7 +34,6 @@ import { DatadogSdk } from '../../Datadog';
  */
 
 export const SET_BASE_URL = 'SET_BASE_URL';
-export const SET_HTTP_CLIENT = 'SET_HTTP_CLIENT';
 export const SET_USER = 'SET_USER';
 export const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE';
 
@@ -319,7 +319,8 @@ function loadAll(getState) {
   const defaultValues = [[], []];
 
   return new Promise(resolve => {
-    const { httpClient, user } = getState().app;
+    const httpClient = selectHttpClient(getState());
+    const user = selectUser(getState());
 
     if (user && user.isAuthenticated()) {
       if (
@@ -393,7 +394,7 @@ export function selectServer(server) {
           .then(() => {
             const user = new AppUser(null, null, null, null, null, false);
 
-            dispatch(setUser(user));
+            dispatch(setUser({ ...user }));
             dispatch(setBaseURL(baseURL));
           })
           .then(() => dispatch(_clearSelectServerError()))
@@ -418,11 +419,11 @@ export function bootstrap(baseURL, user, loader = true) {
       setCurrencyCode(settings.currency_code);
     }
 
-    dispatch(setUser(user));
+    dispatch(setUser({ ...user }));
     dispatch(setBaseURL(baseURL));
     updateUserProperties(user);
 
-    const httpClient = getState().app.httpClient;
+    const httpClient = selectHttpClient(getState());
 
     try {
       // We check if the token is still valid
@@ -477,8 +478,7 @@ export function login(
   navigateOnSuccess,
 ) {
   return async (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -518,7 +518,7 @@ export function login(
 
 export function logout() {
   return async (dispatch, getState) => {
-    const { user } = getState().app;
+    const user = selectUser(getState());
 
     dispatch(logoutRequest());
     await user.logout();
@@ -533,8 +533,7 @@ export function register(
   resumeCheckoutAfterActivation = false,
 ) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -620,7 +619,7 @@ export function guestModeOn() {
       true, // enabled
       true, // guest
     );
-    dispatch(setUser(user));
+    dispatch(setUser({ ...user }));
     console.log('User is in guest mode');
   };
 }
@@ -673,8 +672,7 @@ export function resetPassword(
   resumeCheckoutAfterActivation,
 ) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(resetPasswordRequest());
 
@@ -736,7 +734,7 @@ export function setNewPassword(token, password) {
 
 export function resetServer() {
   return async (dispatch, getState) => {
-    const { user } = getState().app;
+    const user = selectUser(getState());
 
     if (user) {
       dispatch(logoutRequest());
@@ -751,8 +749,7 @@ export function resetServer() {
 
 export function loginWithFacebook(accessToken, navigate = true) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -781,8 +778,7 @@ export function loginWithFacebook(accessToken, navigate = true) {
 
 export function signInWithApple(identityToken, navigate = true) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -811,8 +807,7 @@ export function signInWithApple(identityToken, navigate = true) {
 
 export function googleSignIn(idToken, navigate = true) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -841,8 +836,7 @@ export function googleSignIn(idToken, navigate = true) {
 
 export function loadTermsAndConditions(lang) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadTermsAndConditionsRequest());
 
@@ -860,8 +854,7 @@ export function loadTermsAndConditions(lang) {
 
 export function loadPrivacyPolicy(lang) {
   return (dispatch, getState) => {
-    const { app } = getState();
-    const { httpClient } = app;
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadPrivacyPolicyRequest());
 

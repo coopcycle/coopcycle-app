@@ -27,6 +27,7 @@ import {
 import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TasksMapView from '../../components/TasksMapView';
+import { DateOnlyString } from '../../utils/date-types';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,9 +69,12 @@ function TaskMapPage({ navigation, route }) {
     return latlng.split(',').map(parseFloat);
   }, [latlng]);
 
-  const { isFetching } = useGetMyTasksQuery(selectedDate, {
-    refetchOnFocus: true,
-  });
+  const { isFetching } = useGetMyTasksQuery(
+    selectedDate.format('YYYY-MM-DD') as DateOnlyString,
+    {
+      refetchOnFocus: true,
+    },
+  );
 
   return (
     <View style={styles.container}>

@@ -28,6 +28,15 @@ function onTokenRefreshError(e) {
   errorSubscribers = [];
 }
 
+export type ApiUser = {
+  username: string;
+  email: string;
+  token: string;
+  refreshToken: string;
+  roles: string[];
+  enabled: boolean;
+};
+
 function Client(httpBaseURL, options = {}) {
   this.httpBaseURL = httpBaseURL;
 
@@ -490,7 +499,7 @@ Client.prototype.googleSignIn = function (idToken) {
     });
 };
 
-function credentialsToUser(credentials) {
+function credentialsToUser(credentials): ApiUser {
   const enabled = credentials.hasOwnProperty('enabled')
     ? credentials.enabled
     : true;
@@ -752,9 +761,34 @@ const checkServer = function (server) {
   });
 };
 
-module.exports = {
+export const createClient = (httpBaseURL, options): HttpClient => {
+  return new Client(httpBaseURL, options);
+};
+
+export type HttpClient = {
+  get: (uri: string, options?) => Promise;
+  post: (uri: string, data, options?) => Promise;
+  put: (uri: string, data, options?) => Promise;
+  delete: (uri: string, options?) => Promise;
+  request: (method: string, uri: string, data, options?) => Promise;
+  uploadFileAsync: (uri: string, file, options?) => Promise;
+  execUploadTask: (uploadTasks, retry?) => Promise;
+  getBaseURL: () => string;
+  getToken: () => string;
+  cloneWithToken: (token: string) => HttpClient;
+  refreshToken: () => Promise;
+  checkToken: () => Promise;
+  register: (data) => Promise;
+  confirmRegistration: (token: string) => Promise;
+  resetPassword: (username: string) => Promise;
+  setNewPassword: (token: string, password: string) => Promise;
+  login: (username: string, password: string) => Promise;
+  loginWithFacebook: (accessToken: string) => Promise;
+  signInWithApple: (identityToken: string) => Promise;
+  googleSignIn: (idToken: string) => Promise;
+};
+
+export default {
   checkServer,
-  createClient: (httpBaseURL, options) => {
-    return new Client(httpBaseURL, options);
-  },
+  createClient,
 };

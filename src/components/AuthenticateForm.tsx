@@ -54,7 +54,10 @@ class AuthenticateForm extends Component {
     const btnLabel = formToDisplay === 'login' ? 'OR_REGISTER' : 'OR_LOGIN';
 
     return (
-      <View flex={1} style={{ width: '100%', paddingHorizontal: 20 }} justifyContent="center">
+      <View
+        flex={1}
+        style={{ width: '100%', paddingHorizontal: 20 }}
+        justifyContent="center">
         {this.renderMessage()}
         {this.renderForm()}
         <View style={{ marginTop: 10 }}>

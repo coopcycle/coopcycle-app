@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectTimeSlots } from '../Delivery/selectors';
 
 export const selectStore = state => state.store.store;
