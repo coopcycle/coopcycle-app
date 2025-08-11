@@ -115,7 +115,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
             );
 
             // store the new token
-            api.dispatch(setUser({...updUser}));
+            api.dispatch(setUser({ ...updUser }));
             await updUser.save();
             console.log('Credentials saved!');
 

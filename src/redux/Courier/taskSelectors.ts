@@ -14,7 +14,8 @@ import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
 import { RootState } from '../store.ts';
 
 /* Simple Selectors */
-const _selectTaskSelectedDate = (state: RootState) => state.ui.tasks.selectedDate;
+const _selectTaskSelectedDate = (state: RootState) =>
+  state.ui.tasks.selectedDate;
 export const selectTaskSelectedDate = createSelector(
   _selectTaskSelectedDate,
   date => moment(date),

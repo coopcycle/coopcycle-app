@@ -43,7 +43,7 @@ const loadAddressesSuccess = createAction(
 
 export function assertDelivery(delivery, onSuccess) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(assertDeliveryError(null));
     dispatch(setLoading(true));
@@ -63,7 +63,7 @@ export function assertDelivery(delivery, onSuccess) {
 
 export function createDelivery(delivery, onSuccess) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     if (delivery.dropoff.address['@id']) {
       delivery = {
@@ -91,7 +91,7 @@ export function createDelivery(delivery, onSuccess) {
 
 export function loadAddresses(store) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     return httpClient
       .get(`${store['@id']}/addresses`)
@@ -109,7 +109,7 @@ export function loadAddresses(store) {
 
 export function loadPackages(store) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
 
@@ -127,7 +127,7 @@ export function loadPackages(store) {
 
 export function loadTimeSlots(store) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
 
@@ -146,7 +146,7 @@ export function loadTimeSlots(store) {
 
 export function loadTimeSlotChoices(timeSlot) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
 
@@ -168,7 +168,7 @@ export function loadTimeSlot(store) {
       return;
     }
 
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     const timeSlot = _.find(
       selectTimeSlots(getState()),
@@ -194,7 +194,7 @@ export function loadTimeSlot(store) {
 
 export function getPrice(delivery) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
 

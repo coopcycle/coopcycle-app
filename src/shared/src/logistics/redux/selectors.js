@@ -19,9 +19,8 @@ const tourSelectors = tourAdapter.getSelectors(
 // Base selections
 
 const _selectSelectedDate = state => state.logistics.date;
-export const selectSelectedDate = createSelector(
-  _selectSelectedDate,
-  date => moment(date),
+export const selectSelectedDate = createSelector(_selectSelectedDate, date =>
+  moment(date),
 );
 
 export const selectAllTasks = taskSelectors.selectAll;

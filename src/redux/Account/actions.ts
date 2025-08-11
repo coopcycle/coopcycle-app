@@ -124,7 +124,7 @@ export function loadAddresses() {
 
 export function newAddress(address) {
   return function (dispatch, getState) {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     if (!_.has(address, 'isPrecise') || !address.isPrecise) {
       return;

@@ -319,7 +319,7 @@ function loadAll(getState) {
   const defaultValues = [[], []];
 
   return new Promise(resolve => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
     const user = selectUser(getState());
 
     if (user && user.isAuthenticated()) {
@@ -394,7 +394,7 @@ export function selectServer(server) {
           .then(() => {
             const user = new AppUser(null, null, null, null, null, false);
 
-            dispatch(setUser({...user}));
+            dispatch(setUser({ ...user }));
             dispatch(setBaseURL(baseURL));
           })
           .then(() => dispatch(_clearSelectServerError()))
@@ -419,7 +419,7 @@ export function bootstrap(baseURL, user, loader = true) {
       setCurrencyCode(settings.currency_code);
     }
 
-    dispatch(setUser({...user}));
+    dispatch(setUser({ ...user }));
     dispatch(setBaseURL(baseURL));
     updateUserProperties(user);
 
@@ -478,7 +478,7 @@ export function login(
   navigateOnSuccess,
 ) {
   return async (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -533,7 +533,7 @@ export function register(
   resumeCheckoutAfterActivation = false,
 ) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -619,7 +619,7 @@ export function guestModeOn() {
       true, // enabled
       true, // guest
     );
-    dispatch(setUser({...user}));
+    dispatch(setUser({ ...user }));
     console.log('User is in guest mode');
   };
 }
@@ -672,7 +672,7 @@ export function resetPassword(
   resumeCheckoutAfterActivation,
 ) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(resetPasswordRequest());
 
@@ -749,7 +749,7 @@ export function resetServer() {
 
 export function loginWithFacebook(accessToken, navigate = true) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -778,7 +778,7 @@ export function loginWithFacebook(accessToken, navigate = true) {
 
 export function signInWithApple(identityToken, navigate = true) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -807,7 +807,7 @@ export function signInWithApple(identityToken, navigate = true) {
 
 export function googleSignIn(idToken, navigate = true) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(authenticationRequest());
 
@@ -836,7 +836,7 @@ export function googleSignIn(idToken, navigate = true) {
 
 export function loadTermsAndConditions(lang) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadTermsAndConditionsRequest());
 
@@ -854,7 +854,7 @@ export function loadTermsAndConditions(lang) {
 
 export function loadPrivacyPolicy(lang) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadPrivacyPolicyRequest());
 

@@ -69,9 +69,12 @@ function TaskMapPage({ navigation, route }) {
     return latlng.split(',').map(parseFloat);
   }, [latlng]);
 
-  const { isFetching } = useGetMyTasksQuery(selectedDate.format('YYYY-MM-DD') as DateOnlyString, {
-    refetchOnFocus: true,
-  });
+  const { isFetching } = useGetMyTasksQuery(
+    selectedDate.format('YYYY-MM-DD') as DateOnlyString,
+    {
+      refetchOnFocus: true,
+    },
+  );
 
   return (
     <View style={styles.container}>

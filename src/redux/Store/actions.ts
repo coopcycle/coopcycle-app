@@ -43,7 +43,7 @@ export const setRefreshing = createAction(SET_REFRESHING);
 
 export function loadDeliveries(store, refresh = false) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     refresh ? dispatch(setRefreshing(true)) : dispatch(setLoading(false));
 
@@ -69,7 +69,7 @@ export function loadDeliveries(store, refresh = false) {
 export function loadMoreDeliveries() {
   return (dispatch, getState) => {
     const { store } = getState();
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
     const { deliveries, pagination, loadingMore } = store;
 
     if (loadingMore) {
@@ -105,7 +105,7 @@ export function loadMoreDeliveries() {
 
 export function loadTasks(delivery) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
 
@@ -127,7 +127,7 @@ export function loadTasks(delivery) {
 
 export function init(store) {
   return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(false));
 

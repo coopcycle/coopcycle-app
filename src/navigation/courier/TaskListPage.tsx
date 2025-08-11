@@ -51,9 +51,12 @@ export default function TaskListPage({ navigation, route }) {
     containerStyle.push(styles.containerEmpty);
   }
 
-  const { isFetching, refetch } = useGetMyTasksQuery(selectedDate.format('YYYY-MM-DD') as DateOnlyString, {
-    refetchOnFocus: true,
-  });
+  const { isFetching, refetch } = useGetMyTasksQuery(
+    selectedDate.format('YYYY-MM-DD') as DateOnlyString,
+    {
+      refetchOnFocus: true,
+    },
+  );
 
   const allowToSelect = task => {
     return task.status !== 'DONE';

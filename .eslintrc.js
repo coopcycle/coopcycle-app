@@ -1,6 +1,11 @@
 module.exports = {
   root: true,
-  extends: ['eslint:recommended', '@react-native', 'plugin:@typescript-eslint/recommended-type-checked', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    '@react-native',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'prettier',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     projectService: true,
@@ -34,7 +39,7 @@ module.exports = {
     // Allow inline styles
     'react-native/no-inline-styles': 'off',
 
-    "react/react-in-jsx-scope": "off",
+    'react/react-in-jsx-scope': 'off',
 
     'sort-imports': [
       'warn',

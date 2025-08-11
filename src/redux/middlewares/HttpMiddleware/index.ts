@@ -28,7 +28,7 @@ export default ({ getState, dispatch }) => {
         httpClientService.updateClient(
           state.app.baseURL,
           user?.token ?? '',
-          user?.refreshToken  ?? '',
+          user?.refreshToken ?? '',
           {
             onCredentialsUpdated: (credentials: ApiUser) => {
               const newUser = new AppUser(
@@ -40,12 +40,13 @@ export default ({ getState, dispatch }) => {
                 credentials.enabled,
               );
 
-              dispatch(setUser({...newUser}));
+              dispatch(setUser({ ...newUser }));
               newUser.save().then(() => console.log('Credentials saved!'));
             },
             onTokenRefreshed: (token: string, refreshToken: string) => {
-              const { username, email, roles, enabled } =
-                selectUser(getState() as RootState);
+              const { username, email, roles, enabled } = selectUser(
+                getState() as RootState,
+              );
 
               const newUser = new AppUser(
                 username,
@@ -56,7 +57,7 @@ export default ({ getState, dispatch }) => {
                 enabled,
               );
 
-              dispatch(setUser({...newUser}));
+              dispatch(setUser({ ...newUser }));
               newUser.save().then(() => console.log('Credentials saved!'));
             },
             onMaintenance: (message: string) => {

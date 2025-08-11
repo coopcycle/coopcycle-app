@@ -11,7 +11,8 @@ import { deleteUser } from '../../redux/Account/actions';
 import { logout } from '../../redux/App/actions';
 import {
   selectCustomBuild,
-  selectIsAuthenticated, selectUser,
+  selectIsAuthenticated,
+  selectUser,
 } from '../../redux/App/selectors';
 import LoginRegister from './AccountLoginRegister';
 import Server from './components/Server';

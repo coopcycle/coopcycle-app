@@ -83,8 +83,7 @@ describe('Redux | Tasks | Actions', () => {
 
     const store = configureStore({
       reducer: reducers,
-      preloadedState: {
-      },
+      preloadedState: {},
     });
 
     const thk = loadTasks(date);
@@ -130,8 +129,7 @@ describe('Redux | Tasks | Actions', () => {
 
     const store = configureStore({
       reducer: reducers,
-      preloadedState: {
-      },
+      preloadedState: {},
     });
 
     const thk = loadTasks(date);
@@ -173,8 +171,7 @@ describe('Redux | Tasks | Actions', () => {
 
     const store = configureStore({
       reducer: reducers,
-      preloadedState: {
-      },
+      preloadedState: {},
     });
 
     const thk = loadTasks(date);

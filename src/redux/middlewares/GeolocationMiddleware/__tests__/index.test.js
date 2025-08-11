@@ -52,7 +52,7 @@ describe('GeolocationMiddleware', () => {
     const user = new AppUser('foo', 'foo@coopcycle.org', '123456', [
       'ROLE_COURIER',
     ]);
-    store.dispatch(setUser({...user}));
+    store.dispatch(setUser({ ...user }));
 
     expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1);
     expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(0);
@@ -103,7 +103,7 @@ describe('GeolocationMiddleware', () => {
         'ROLE_COURIER',
       ]);
 
-      store.dispatch(setUser({...user}));
+      store.dispatch(setUser({ ...user }));
     }).then(() => {
       expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1);
       expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(1);

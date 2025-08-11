@@ -171,9 +171,13 @@ export function navigateAndLoadTasks(selectedDate) {
   };
 }
 
-export function loadTasks(selectedDate: moment.Moment, refresh = false, cb = null) {
+export function loadTasks(
+  selectedDate: moment.Moment,
+  refresh = false,
+  cb = null,
+) {
   return function (dispatch, getState) {
-    const httpClient = selectHttpClient(getState())
+    const httpClient = selectHttpClient(getState());
 
     dispatch(loadTasksRequest(selectedDate.toISOString(), refresh));
 

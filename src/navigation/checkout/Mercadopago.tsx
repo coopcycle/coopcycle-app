@@ -84,7 +84,11 @@ const styles = StyleSheet.create({
 
 function createHttpClient(state) {
   const httpClient = selectHttpClient(state);
-  if (httpClient && httpClient.credentials.token && httpClient.credentials.refreshToken) {
+  if (
+    httpClient &&
+    httpClient.credentials.token &&
+    httpClient.credentials.refreshToken
+  ) {
     return httpClient;
   }
 

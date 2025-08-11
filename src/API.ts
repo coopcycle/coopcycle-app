@@ -499,7 +499,7 @@ Client.prototype.googleSignIn = function (idToken) {
     });
 };
 
-function credentialsToUser(credentials) : ApiUser {
+function credentialsToUser(credentials): ApiUser {
   const enabled = credentials.hasOwnProperty('enabled')
     ? credentials.enabled
     : true;
@@ -786,7 +786,7 @@ export type HttpClient = {
   loginWithFacebook: (accessToken: string) => Promise;
   signInWithApple: (identityToken: string) => Promise;
   googleSignIn: (idToken: string) => Promise;
-}
+};
 
 export default {
   checkServer,

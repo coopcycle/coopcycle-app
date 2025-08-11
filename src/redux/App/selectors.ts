@@ -21,17 +21,18 @@ export const selectCustomBuild = state => state.app.customBuild;
 // AppUser, for logged in user use selectLoggedInUser
 const _selectUser = (state: RootState) => state.app.user;
 
-export const selectUser = createSelector(
-  _selectUser,
-  user => user ? new AppUser(
-    user.username,
-    user.email,
-    user.token,
-    user.roles,
-    user.refreshToken,
-    user.enabled,
-    user.guest,
-  ) : null,
+export const selectUser = createSelector(_selectUser, user =>
+  user
+    ? new AppUser(
+        user.username,
+        user.email,
+        user.token,
+        user.roles,
+        user.refreshToken,
+        user.enabled,
+        user.guest,
+      )
+    : null,
 );
 
 // a user with an account

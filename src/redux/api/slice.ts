@@ -23,7 +23,12 @@ export const apiSlice = createApi({
       }),
     }),
     getTasks: builder.query({
-      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(
+        date: DateOnlyString,
+        _queryApi,
+        _extraOptions,
+        fetchWithBQ,
+      ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/tasks',
@@ -35,7 +40,12 @@ export const apiSlice = createApi({
       },
     }),
     getTaskLists: builder.query({
-      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(
+        date: DateOnlyString,
+        _queryApi,
+        _extraOptions,
+        fetchWithBQ,
+      ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/task_lists',
@@ -47,7 +57,12 @@ export const apiSlice = createApi({
       },
     }),
     getTaskListsV2: builder.query({
-      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(
+        date: DateOnlyString,
+        _queryApi,
+        _extraOptions,
+        fetchWithBQ,
+      ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/task_lists/v2',
@@ -59,7 +74,15 @@ export const apiSlice = createApi({
       },
     }),
     setTaskListItems: builder.mutation({
-      query: ({ items, username, date }: { items: string[]; username: string; date: DateOnlyString }) => {
+      query: ({
+        items,
+        username,
+        date,
+      }: {
+        items: string[];
+        username: string;
+        date: DateOnlyString;
+      }) => {
         const mutation = {
           url: `/api/task_lists/set_items/${date}/${username}`,
           method: 'PUT',
@@ -87,7 +110,12 @@ export const apiSlice = createApi({
       },
     }),
     getTours: builder.query({
-      async queryFn(date: DateOnlyString, _queryApi, _extraOptions, fetchWithBQ) {
+      async queryFn(
+        date: DateOnlyString,
+        _queryApi,
+        _extraOptions,
+        fetchWithBQ,
+      ) {
         return await fetchAllRecordsUsingFetchWithBQ(
           fetchWithBQ,
           'api/tours',
