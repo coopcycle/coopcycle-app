@@ -3,7 +3,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { setLoading } from '../App/actions';
 import { selectTimeSlots } from './selectors';
-import { selectHttpClient } from '../App/selectors.ts';
+import { selectHttpClient } from '../App/selectors';
 
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';

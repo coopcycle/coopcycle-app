@@ -44,7 +44,7 @@ import {
 import AddressUtils from '../../utils/Address';
 import OpeningHours from './components/OpeningHours';
 import RestaurantProfile from './components/RestaurantProfile';
-import { selectHttpClient } from '../../redux/App/selectors.ts';
+import { selectHttpClient } from '../../redux/App/selectors';
 
 const LoadingPhantom = props => (
   <HStack w="95%" space={6} p="4">

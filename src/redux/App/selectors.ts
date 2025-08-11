@@ -12,7 +12,7 @@ import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { selectAutoAcceptOrdersEnabled } from '../Restaurant/selectors';
 import { httpClientService } from '../../services/httpClientService';
 import AppUser from '../../AppUser';
-import { RootState } from '../store.ts';
+import { RootState } from '../store';
 
 export const selectHttpClient = () => httpClientService.getClient();
 

@@ -18,7 +18,7 @@ import {
 import { deleteCart } from '../../redux/Checkout/actions';
 import { primaryColor } from '../../styles/common';
 import Step from './components/Step';
-import { selectUser } from '../../redux/App/selectors.ts';
+import { selectUser } from '../../redux/App/selectors';
 
 export function orderToStep(order) {
   const eventType = [

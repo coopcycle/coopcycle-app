@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Calendar } from '../../components/Calendar';
 import { changeDate } from '../../redux/Restaurant/actions';
-import { selectDate } from '../../redux/Restaurant/selectors.ts';
+import { selectDate } from '../../redux/Restaurant/selectors';
 
 class DateScreen extends Component {
   onDateChange(date) {

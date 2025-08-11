@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions';
 
 import { setLoading } from '../App/actions';
 import { selectStore } from './selectors';
-import { selectHttpClient } from '../App/selectors.ts';
+import { selectHttpClient } from '../App/selectors';
 
 export const LOAD_DELIVERIES_SUCCESS = '@store/LOAD_DELIVERIES_SUCCESS';
 export const CREATE_DELIVERY_SUCCESS = '@store/CREATE_DELIVERY_SUCCESS';

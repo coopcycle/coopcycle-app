@@ -11,7 +11,7 @@ import moment from 'moment';
 
 import { filterTasks } from '../logistics/utils';
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
-import { RootState } from '../store.ts';
+import { RootState } from '../store';
 
 /* Simple Selectors */
 const _selectTaskSelectedDate = (state: RootState) =>

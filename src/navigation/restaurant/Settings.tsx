@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
 import { changeStatus, closeRestaurant } from '../../redux/Restaurant/actions';
 import { selectSpecialOpeningHoursSpecificationForToday } from '../../redux/Restaurant/selectors';
-import { selectHttpClient } from '../../redux/App/selectors.ts';
+import { selectHttpClient } from '../../redux/App/selectors';
 
 class SettingsScreen extends Component {
   constructor(props) {

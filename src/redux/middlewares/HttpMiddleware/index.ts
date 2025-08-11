@@ -5,8 +5,8 @@ import AppUser from '../../../AppUser';
 import { SET_USER, setModal } from '../../App/actions';
 import { selectIsAuthenticated, selectUser } from '../../App/selectors';
 import { httpClientService } from '../../../services/httpClientService';
-import { ApiUser } from '../../../API.ts';
-import { RootState } from '../../store.ts';
+import { ApiUser } from '../../../API';
+import { RootState } from '../../store';
 
 export const setUser = createAction(SET_USER);
 

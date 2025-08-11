@@ -16,7 +16,7 @@ import {
   showAddressModal,
 } from '../../redux/Checkout/actions';
 import AddressModal from '../checkout/components/AddressModal';
-import { selectHttpClient } from '../../redux/App/selectors.ts';
+import { selectHttpClient } from '../../redux/App/selectors';
 
 class OrderPage extends Component {
   renderDetail(order) {

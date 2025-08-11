@@ -48,7 +48,7 @@ if (!Config.DEFAULT_SERVER) {
 
 const middlewaresProxy = middlewaresList => {
   if (__DEV__) {
-    return require('./devSetup.ts').middlewares(middlewaresList);
+    return require('./devSetup').middlewares(middlewaresList);
   } else {
     return middlewaresList;
   }
@@ -56,7 +56,7 @@ const middlewaresProxy = middlewaresList => {
 
 const enhancersProxy = enhancersList => {
   if (__DEV__) {
-    return require('./devSetup.ts').enhancers(enhancersList);
+    return require('./devSetup').enhancers(enhancersList);
   } else {
     return enhancersList;
   }

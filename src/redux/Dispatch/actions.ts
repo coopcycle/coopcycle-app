@@ -15,7 +15,7 @@ import {
 import { isSameDayTask } from '../../shared/src/utils';
 import { showAlert } from '../../utils/alert';
 import NavigationHolder from '../../NavigationHolder';
-import { selectHttpClient } from '../App/selectors.ts';
+import { selectHttpClient } from '../App/selectors';
 
 /*
  * Action Creators

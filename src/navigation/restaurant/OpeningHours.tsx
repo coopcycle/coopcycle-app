@@ -11,7 +11,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ItemSeparator from '../../components/ItemSeparator';
 import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions';
 import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors';
-import { selectHttpClient } from '../../redux/App/selectors.ts';
+import { selectHttpClient } from '../../redux/App/selectors';
 
 class OpeningHoursScreen extends Component {
   constructor(props) {

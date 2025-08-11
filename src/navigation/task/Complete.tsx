@@ -61,7 +61,7 @@ import {
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
 import { reportIncident } from '../../redux/Courier/taskActions';
-import { selectHttpClient } from '../../redux/App/selectors.ts';
+import { selectHttpClient } from '../../redux/App/selectors';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;

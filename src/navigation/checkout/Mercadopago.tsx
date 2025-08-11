@@ -7,7 +7,7 @@ import {
   checkoutRequest,
   mercadopagoCheckout,
 } from '../../redux/Checkout/actions';
-import { selectHttpClient, selectUser } from '../../redux/App/selectors.ts';
+import { selectHttpClient, selectUser } from '../../redux/App/selectors';
 
 function Mercadopago({
   cart,

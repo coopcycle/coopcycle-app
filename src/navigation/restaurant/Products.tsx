@@ -11,7 +11,7 @@ import {
   loadMoreProducts,
   loadProducts,
 } from '../../redux/Restaurant/actions';
-import { selectHttpClient } from '../../redux/App/selectors.ts';
+import { selectHttpClient } from '../../redux/App/selectors';
 
 class ProductsScreen extends Component {
   componentDidMount() {

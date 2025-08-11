@@ -4,7 +4,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { matchesDate } from '../../utils/order';
 import { EVENT, STATE } from '../../domain/Order';
-import { RootState } from '../store.ts';
+import { RootState } from '../store';
 
 export const selectRestaurant = state => state.restaurant.restaurant;
 const _selectDate = (state: RootState) => state.restaurant.date;
