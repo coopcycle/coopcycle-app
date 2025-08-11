@@ -25,7 +25,7 @@ export default ({ getState, dispatch }) => {
       if (state.app.baseURL) {
         const user = selectUser(state);
 
-        httpClientService.updateClient(
+        httpClientService.createClient(
           state.app.baseURL,
           user?.token ?? '',
           user?.refreshToken ?? '',

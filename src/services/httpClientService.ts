@@ -3,10 +3,7 @@ import API, { ApiUser, HttpClient } from '../API';
 class HttpClientService {
   private httpClient: HttpClient | null = null;
 
-  /**
-   * Creates or updates the HTTP client based on the provided configuration
-   */
-  updateClient(
+  createClient(
     baseURL: string | null,
     token: string = '',
     refreshToken: string = '',
