@@ -17,8 +17,8 @@ for (const [key, value] of Object.entries(defaultHeaders())) {
   axios.defaults.headers.common[key] = value;
 }
 
-import { NativeBaseProvider } from 'native-base';
 import tracker from './analytics/Tracker';
+import { UIProvider } from './providers/UIProvider';
 
 import {
   DarkTheme,
@@ -48,6 +48,11 @@ import DropdownAlert from 'react-native-dropdownalert';
 import DropdownHolder from './DropdownHolder';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
+import {
+  DatadogLogger,
+  DatadogWrapper,
+  navigationContainerOnReady,
+} from './Datadog';
 import { navigationRef } from './NavigationHolder';
 import FullScreenLoadingIndicator from './navigation/FullScreenLoadingIndicator';
 import RootView from './navigation/RootView';
@@ -55,12 +60,6 @@ import {
   AccountRegisterConfirmScreen,
   AccountResetPasswordNewPasswordScreen,
 } from './navigation/navigators/AccountNavigator';
-import { nativeBaseTheme } from './styles/theme';
-import {
-  DatadogLogger,
-  DatadogWrapper,
-  navigationContainerOnReady,
-} from './Datadog';
 
 if (Platform.OS === 'ios') {
   KeyboardManager.setEnable(false);
@@ -168,7 +167,7 @@ const App = () => {
 
   return (
     <DatadogWrapper>
-      <NativeBaseProvider theme={nativeBaseTheme}>
+      <UIProvider>
         <RootView>
           <Provider store={store}>
             <PersistGate
@@ -200,7 +199,7 @@ const App = () => {
             </PersistGate>
           </Provider>
         </RootView>
-      </NativeBaseProvider>
+      </UIProvider>
     </DatadogWrapper>
   );
 };
