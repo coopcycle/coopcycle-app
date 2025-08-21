@@ -32,6 +32,7 @@ import { getTaskTitle } from '../shared/src/utils';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import { TaskStatusIcon, TaskTypeIcon } from './TaskStatusIcon';
+import { selectIsCourier, selectUser } from '../redux/App/selectors';
 
 const cardBorderRadius = 2.5;
 
@@ -202,7 +203,9 @@ const TaskListItem = forwardRef(
         swipeRow.current?.closeRow();
       }
     }, [task.status]);
-
+    
+    const isDispatch = useSelector(selectUser)?.hasRole('ROLE_DISPATCHER');
+    const isCourier = useSelector(selectIsCourier);
     // swipeLeft
     const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
     const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
@@ -307,6 +310,8 @@ const TaskListItem = forwardRef(
             task={task}
             width={buttonWidth}
             onPress={onOrderPress}
+            isCourier={isCourier}
+            isDispatch={isDispatch}
           />
           <ItemTouchable
             onPress={onPress}

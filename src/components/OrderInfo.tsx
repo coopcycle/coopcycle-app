@@ -11,16 +11,19 @@ import {
 } from '../styles/common';
 import { Task } from '../types/Task';
 
-const isCashPayment = (task: Task) => {
-  return task.metadata.payment_method === 'CASH';
-}
-
-export const OrderInfo = ({ task, color, width, onPress }) => {
+export const OrderInfo = ({ task, color, width, onPress, isCourier = false, isDispatch = false }) => {
   const cardBorderRadius = 2.5;
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
   const orderId = getOrderIdWithPosition(task);
+
+  const shouldShowTotal = () => {
+    return (isCourier && isCashPayment(task)) || isDispatch;
+  }
+  const isCashPayment = (task: Task) => {
+    return task.metadata.payment_method === 'CASH';
+  }
 
   return (
     <ItemTouchable
@@ -46,7 +49,7 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
             }}>
             {orderId}
           </Text>
-          {task.metadata?.order_total && isCashPayment(task) ? (
+          {task.metadata?.order_total && shouldShowTotal() ? (
             <Text
               style={{
                 color: textColor,
