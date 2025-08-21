@@ -38,8 +38,8 @@ import {
 import { filterHasIncidents } from '../logistics/filters';
 import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 import {
+  getProcessedCourierOrders,
   getTaskWithColor,
-  getTasksWithColor,
 } from '../../shared/src/logistics/redux/taskUtils';
 import { DateOnlyString } from '../../utils/date-types';
 
@@ -232,7 +232,7 @@ export const tasksEntityReducer = (
       return state;
 
     case DEP_UNASSIGN_TASK_SUCCESS:
-      let task = _.find(
+      const task = _.find(
         state.items,
         item => item['@id'] === action.payload['@id'],
       );
@@ -336,7 +336,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
-          [action.payload.date]: getTasksWithColor(action.payload.items),
+          [action.payload.date]: getProcessedCourierOrders(action.payload.items),
         },
       };
     }
@@ -349,7 +349,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
-          [action.payload.date]: getTasksWithColor(action.payload.items),
+          [action.payload.date]: getProcessedCourierOrders(action.payload.items),
         },
       };
 
@@ -390,7 +390,7 @@ const processWsMsg = (state, action) => {
           ...state,
           items: {
             ...state.items,
-            [taskList.date]: getTasksWithColor(taskList.items),
+            [taskList.date]: getProcessedCourierOrders(taskList.items),
           },
         };
     }
