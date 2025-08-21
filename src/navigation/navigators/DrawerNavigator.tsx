@@ -1,0 +1,164 @@
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { connect } from 'react-redux';
+
+import { headerLeft } from '..';
+import i18n from '../../i18n';
+import {
+  selectInitialRouteName,
+  selectIsAuthenticated,
+  selectShowRestaurantsDrawerItem,
+  selectUser,
+} from '../../redux/App/selectors';
+import { useStackNavigatorScreenOptions } from '../styles';
+
+import DrawerContent from '../components/DrawerContent';
+
+import { HeaderBackButton } from '@react-navigation/elements';
+import About from '../home/About';
+import FeatureFlags from '../home/FeatureFlags';
+import Privacy from '../home/Privacy';
+import Terms from '../home/Terms';
+import AccountNavigator from './AccountNavigator';
+import CheckoutNavigator from './CheckoutNavigator';
+import CourierNavigator from './CourierNavigator';
+import DeliveryNavigator from './DeliveryNavigator';
+import DispatchNavigator from './DispatchNavigator';
+import RestaurantNavigator from './RestaurantNavigator';
+import StoreNavigator from './StoreNavigator';
+
+const AboutStack = createStackNavigator();
+
+const AboutNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <AboutStack.Navigator screenOptions={screenOptions}>
+      <AboutStack.Screen
+        name="AboutHome"
+        component={About}
+        options={({ navigation }) => ({
+          title: i18n.t('ABOUT'),
+          headerLeft: headerLeft(navigation),
+        })}
+      />
+    </AboutStack.Navigator>
+  );
+};
+
+const TermsStack = createStackNavigator();
+
+const TermsNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <TermsStack.Navigator screenOptions={screenOptions}>
+      <TermsStack.Screen
+        name="TermsHome"
+        component={Terms}
+        options={({ navigation }) => ({
+          title: i18n.t('TERMS_OF_SERVICE'),
+          headerLeft: props => (
+            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
+          ),
+        })}
+      />
+    </TermsStack.Navigator>
+  );
+};
+
+const PrivacyStack = createStackNavigator();
+
+const PrivacyNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <PrivacyStack.Navigator screenOptions={screenOptions}>
+      <PrivacyStack.Screen
+        name="PrivacyHome"
+        component={Privacy}
+        options={({ navigation }) => ({
+          title: i18n.t('PRIVACY'),
+          headerLeft: props => (
+            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
+          ),
+        })}
+      />
+    </PrivacyStack.Navigator>
+  );
+};
+
+const FeatureFlagsStack = createStackNavigator();
+
+const FeatureFlagsNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <FeatureFlagsStack.Navigator screenOptions={screenOptions}>
+      <FeatureFlagsStack.Screen
+        name="FeatureFlagsHome"
+        component={FeatureFlags}
+        options={({ navigation }) => ({
+          title: i18n.t('FEATURE_FLAGS'),
+          headerLeft: props => (
+            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
+          ),
+        })}
+      />
+    </FeatureFlagsStack.Navigator>
+  );
+};
+
+function mapStateToProps(state) {
+  const user = selectUser(state);
+
+  return {
+    isAuthenticated: selectIsAuthenticated(state),
+    user,
+    initialRouteName: selectInitialRouteName(state),
+    showRestaurantsDrawerItem: selectShowRestaurantsDrawerItem(state),
+  };
+}
+
+const Drawer = createDrawerNavigator();
+
+const DrawerNav = ({
+  initialRouteName,
+  user,
+  isAuthenticated,
+  showRestaurantsDrawerItem,
+}) => {
+  return (
+    <Drawer.Navigator
+      drawerContent={props => <DrawerContent {...props} />}
+      initialRouteName={initialRouteName}
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Drawer.Screen name="CheckoutNav" component={CheckoutNavigator} />
+      <Drawer.Screen name="DeliveryNav" component={DeliveryNavigator} />
+      <Drawer.Screen name="AccountNav" component={AccountNavigator} />
+      <Drawer.Screen name="AboutNav" component={AboutNavigator} />
+      <Drawer.Screen name="TermsNav" component={TermsNavigator} />
+      <Drawer.Screen name="PrivacyNav" component={PrivacyNavigator} />
+      <Drawer.Screen name="FeatureFlagsNav" component={FeatureFlagsNavigator} />
+
+      {isAuthenticated && user.hasRole('ROLE_COURIER') && (
+        <Drawer.Screen name="CourierNav" component={CourierNavigator} />
+      )}
+      {showRestaurantsDrawerItem && (
+        <Drawer.Screen name="RestaurantNav" component={RestaurantNavigator} />
+      )}
+      {isAuthenticated && user.hasRole('ROLE_STORE') && (
+        <Drawer.Screen name="StoreNav" component={StoreNavigator} />
+      )}
+      {isAuthenticated &&
+        (user.hasRole('ROLE_DISPATCHER') || user.hasRole('ROLE_ADMIN')) && (
+          <Drawer.Screen name="DispatchNav" component={DispatchNavigator} />
+        )}
+    </Drawer.Navigator>
+  );
+};
+
+export default connect(mapStateToProps)(DrawerNav);

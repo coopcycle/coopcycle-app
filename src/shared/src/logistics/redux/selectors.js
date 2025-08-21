@@ -1,8 +1,10 @@
 import _ from 'lodash';
-import { createSelector } from 'reselect';
-import { taskAdapter, taskListAdapter } from './adapters';
-import { assignedTasks } from './taskListUtils';
-import { mapToColor } from './taskUtils';
+import { createSelector } from '@reduxjs/toolkit';
+
+import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
+import moment from 'moment';
+
+// Selectors
 
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,
@@ -10,54 +12,92 @@ const taskSelectors = taskAdapter.getSelectors(
 const taskListSelectors = taskListAdapter.getSelectors(
   state => state.logistics.entities.taskLists,
 );
+const tourSelectors = tourAdapter.getSelectors(
+  state => state.logistics.entities.tours,
+);
 
-export const selectSelectedDate = state => state.logistics.date;
+// Base selections
 
-// FIXME
-// This is not optimized
-// Each time any task is updated, the tasks lists are looped over
-// Also, it generates copies all the time
-// Replace this with a selectTaskListItemsByUsername selector, used by the <TaskList> component
-// https://redux.js.org/tutorials/essentials/part-6-performance-normalization#memoizing-selector-functions
+const _selectSelectedDate = state => state.logistics.date;
+export const selectSelectedDate = createSelector(_selectSelectedDate, date =>
+  moment(date),
+);
+
+export const selectAllTasks = taskSelectors.selectAll;
+export const selectTasksEntities = taskSelectors.selectEntities;
+
+export const selectAllTours = tourSelectors.selectAll;
+
+// Selections for Tasks
+
+export const selectAssignedTasks = createSelector(selectAllTasks, allTasks =>
+  allTasks.filter(task => task.isAssigned),
+);
+
+export const selectUnassignedTasks = createSelector(selectAllTasks, allTasks =>
+  allTasks.filter(task => !task.isAssigned),
+);
+
+export const selectUnassignedTasksNotCancelled = createSelector(
+  selectUnassignedTasks,
+  tasks =>
+    _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
+);
+
+// Selections for TaskLists
+
 export const selectTaskLists = createSelector(
-  taskListSelectors.selectEntities,
-  taskSelectors.selectEntities,
-  (taskListsById, tasksById) =>
-    Object.values(taskListsById).map(taskList => {
+  taskListSelectors.selectAll,
+  tourSelectors.selectEntities,
+  (taskLists, toursById) =>
+    taskLists.map(taskList => {
       let newTaskList = { ...taskList };
-      delete newTaskList.itemIds;
 
-      newTaskList.items = taskList.itemIds
-        .filter(taskId =>
-          Object.prototype.hasOwnProperty.call(tasksById, taskId),
-        ) // a task with this id may be not loaded yet
-        .map(taskId => tasksById[taskId]);
+      const orderedItems = taskList.itemIds.flatMap(itemId => {
+        const maybeTour = toursById[itemId];
+
+        if (maybeTour) {
+          return maybeTour.items;
+        }
+
+        if (itemId.includes('/api/tasks/')) {
+          return [itemId];
+        }
+
+        return [];
+      });
+      newTaskList.tasksIds = _.uniq(orderedItems);
 
       return newTaskList;
     }),
 );
 
-export const selectAllTasks = taskSelectors.selectAll;
+// Selections for Tours
 
-export const selectAssignedTasks = createSelector(selectTaskLists, taskLists =>
-  assignedTasks(taskLists),
-);
-
-export const selectUnassignedTasks = createSelector(
-  selectAllTasks,
-  selectAssignedTasks,
-  (allTasks, assignedTasks) =>
-    _.filter(
-      allTasks,
-      task =>
-        assignedTasks.findIndex(
-          assignedTask => task['@id'] == assignedTask['@id'],
-        ) == -1,
-    ),
-);
-
-export const selectTasksWithColor = createSelector(selectAllTasks, allTasks =>
-  mapToColor(allTasks),
+// Returns a tours/tasks index with the format:
+// {
+//   tours: {tourId1: [taskId1, taskId2, ..], tourId2: [taskId3, ..]},
+//   tasks: {taskId1: tourId1, taskId2: tourId1, taskId3: tourId2, ..}
+// }
+export const selectToursTasksIndex = createSelector(
+  tourSelectors.selectEntities,
+  tours => {
+    return Object.values(tours).reduce(
+      (acc, tour) => {
+        const tourId = tour['@id'];
+        acc.tours[tourId] = (tour.items || []).map(taskId => {
+          acc.tasks[taskId] = tourId;
+          return taskId;
+        });
+        return acc;
+      },
+      {
+        // Initial index values
+        tours: {},
+        tasks: {},
+      },
+    );
+  },
 );
 
 const selectTaskListByUsername = (state, props) =>

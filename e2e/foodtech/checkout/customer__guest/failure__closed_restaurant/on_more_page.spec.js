@@ -1,127 +1,70 @@
 import {
-  addProduct,
-  chooseRestaurant,
   closeRestaurantForToday,
-  connectToLocalInstance,
-  connectToSandbox,
-  launchApp,
-  symfonyConsole,
+  describeif,
+  tapById,
+  typeTextQuick,
+  waitToBeVisible,
 } from '../../../../support/commands';
-import { describeif } from '../../../../utils';
+import {
+  loadCheckoutFixturesAndConnect,
+  selectCartItemsFromRestaurant,
+} from '../../../utils';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-describeif(device.getPlatform() === 'android')(
-  'checkout for customer guest user; Time range changed modal',
-  () => {
-    beforeEach(async () => {
-      await launchApp();
+describeif(device.getPlatform() === 'android')
+  ('checkout for customer guest user; Time range changed modal', () => {
 
-      if (device.getPlatform() === 'android') {
-        symfonyConsole(
-          'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
-        );
-        symfonyConsole(
-          'craue:setting:create --section="general" --name="guest_checkout_enabled" --value="1" --force',
-        );
-        await connectToLocalInstance();
-      } else {
-        //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-        await connectToSandbox();
-      }
+  beforeEach(async () => {
+    await loadCheckoutFixturesAndConnect();
+    await selectCartItemsFromRestaurant('Restaurant with cash on delivery');
+  });
 
-      // Enter address
-      await waitFor(element(by.id('askAddressAutocomplete')))
-        .toExist()
-        .withTimeout(5000);
-      await element(by.id('askAddressAutocomplete')).typeText(
-        '91 rue de rivoli paris',
+  describe('restaurant was closed while the customer had been on the More page', () => {
+
+    it(`should suggest to choose a new time range (Timing modal)`, async () => {
+      // Cart summary page
+      await tapById('cartSummarySubmit');
+
+      // Authentication page
+      await waitToBeVisible('loginUsername');
+
+      try {
+        await tapById('guestCheckoutButton');
+      } catch (e) {}
+
+      // More infos page
+      await waitToBeVisible('guestCheckoutEmail');
+      await waitToBeVisible('checkoutTelephone');
+      await waitToBeVisible('moreInfosSubmit');
+
+      await typeTextQuick('guestCheckoutEmail', 'e2e-mobile@demo.coopcycle.org');
+
+      // Append "\n" to make sure virtual keybord is hidden after entry
+      // https://github.com/wix/detox/issues/209
+      await typeTextQuick('checkoutTelephone', '0612345678\n');
+
+      await closeRestaurantForToday(
+        'restaurant_with_cash_on_delivery_owner',
+        '12345678',
       );
-      await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
 
-      // List of restaurants
-      await expect(element(by.id('restaurantList'))).toBeVisible();
-      await chooseRestaurant('Restaurant with cash on delivery');
+      await tapById('moreInfosSubmit');
 
-      // Restaurant page
-      await waitFor(element(by.id('restaurantData')))
-        .toExist()
-        .withTimeout(5000);
-      await waitFor(element(by.id('menuItem:0:0')))
-        .toExist()
-        .withTimeout(5000);
+      // Time range changed modal
+      await waitToBeVisible('timeRangeChangedModal');
 
-      // Add item
-      await addProduct('menuItem:0:0');
+      // Select a shipping time range
+      await tapById('setShippingTimeRange');
 
-      // Check if footer is present
-      await waitFor(element(by.id('cartFooter')))
-        .toExist()
-        .withTimeout(5000);
-      await expect(element(by.id('cartFooter'))).toBeVisible();
+      await tapById('moreInfosSubmit');
 
-      // Add 2 more items
-      await addProduct('menuItem:0:1');
-      await addProduct('menuItem:1:0');
+      // Payment picker page
+      await tapById('paymentMethod-cash_on_delivery', 10000);
 
-      await waitFor(element(by.id('cartSubmit')))
-        .toBeVisible()
-        .withTimeout(5000);
-      await element(by.id('cartSubmit')).tap();
+      // Cash on delivery page
+      await tapById('cashOnDeliverySubmit', 10000);
     });
 
-    describe('restaurant was closed while the customer had been on the More page', () => {
-      it(`should suggest to choose a new time range (Timing modal)`, async () => {
-        // Cart summary page
-        await element(by.id('cartSummarySubmit')).tap();
+  });
 
-        // Authentication page
-        await expect(element(by.id('loginUsername'))).toBeVisible();
-
-        try {
-          await element(by.id('guestCheckoutButton')).tap();
-        } catch (e) {}
-
-        // More infos page
-        await expect(element(by.id('guestCheckoutEmail'))).toBeVisible();
-        await expect(element(by.id('checkoutTelephone'))).toBeVisible();
-        await expect(element(by.id('moreInfosSubmit'))).toBeVisible();
-
-        await element(by.id('guestCheckoutEmail')).typeText(
-          'e2e-mobile@demo.coopcycle.org',
-        );
-
-        // Append "\n" to make sure virtual keybord is hidden after entry
-        // https://github.com/wix/detox/issues/209
-        await element(by.id('checkoutTelephone')).typeText('0612345678');
-        await element(by.id('checkoutTelephone')).typeText('\n');
-
-        await closeRestaurantForToday(
-          'restaurant_with_cash_on_delivery_owner',
-          '12345678',
-        );
-
-        await element(by.id('moreInfosSubmit')).tap();
-
-        // Time range changed modal
-        await waitFor(element(by.id('timeRangeChangedModal')))
-          .toBeVisible()
-          .withTimeout(5000);
-        // Select a shipping time range
-        await element(by.id('setShippingTimeRange')).tap();
-
-        await element(by.id('moreInfosSubmit')).tap();
-
-        // Payment picker page
-        await expect(
-          element(by.id('paymentMethod-cash_on_delivery')),
-        ).toBeVisible();
-        await element(by.id('paymentMethod-cash_on_delivery')).tap();
-
-        // Cash on delivery page
-        await waitFor(element(by.id('cashOnDeliverySubmit')))
-          .toExist()
-          .withTimeout(5000);
-      });
-    });
-  },
-);
+});

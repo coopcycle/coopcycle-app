@@ -1,0 +1,26 @@
+name: Lint
+on: [push]
+jobs:
+  LINT:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+      - name: Install latest yarn binary
+        run: yarn set version latest --yarn-path
+      - name: yarn install
+        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+      - name: Run ESLint
+        run: yarn lint --quiet
+      - run: yarn i18n-lint
+      - name: Run TypeScript Compiler
+        id: tsc
+        run: yarn type-check
+        continue-on-error: true
+      - name: TypeScript Warning
+        if: steps.tsc.outcome == 'failure'
+        run: echo "::warning::TypeScript compilation proceeded with errors"

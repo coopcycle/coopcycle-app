@@ -10,8 +10,10 @@ export {
   selectAssignedTasks,
   selectSelectedDate,
   selectTaskLists,
-  selectTasksWithColor,
+  selectTasksEntities,
+  selectToursTasksIndex,
   selectUnassignedTasks,
+  selectUnassignedTasksNotCancelled,
 } from './selectors';
 
 export * from './actions';
@@ -24,23 +26,19 @@ export const taskUtils = {
   groupLinkedTasks,
 };
 
-import { assignedTasks, replaceTasksWithIds } from './taskListUtils';
+import { assignedTasks, replaceItemsWithItemIds } from './taskListUtils';
 
 export const taskListUtils = {
-  replaceTasksWithIds,
+  replaceItemsWithItemIds,
   assignedTasks,
 };
 
 import {
-  addAssignedTask,
   findTaskListByTask,
   findTaskListByUsername,
-  removeUnassignedTask,
 } from './taskListEntityUtils';
 
 export const taskListEntityUtils = {
   findTaskListByTask,
   findTaskListByUsername,
-  addAssignedTask,
-  removeUnassignedTask,
 };

@@ -1,17 +1,20 @@
 import { omit } from 'lodash';
 import moment from 'moment';
+
 import { _message } from '../../middlewares/CentrifugoMiddleware/actions';
 import {
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
+} from '../taskActions';
+import {
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
   markTaskFailedFailure,
   markTaskFailedRequest,
   markTaskFailedSuccess,
-} from '../taskActions';
+} from '../../../shared/logistics/redux';
 import { tasksEntityReducer } from '../taskEntityReducer';
 import {
   selectIsTaskCompleteFailure,
@@ -98,18 +101,19 @@ describe('Redux | Tasks | Reducers', () => {
 
     test(`${loadTasksSuccess}`, () => {
       const tasks = [
-        { id: 1, assignedTo: 'bob' },
-        { id: 2, assignedTo: 'bob' },
+        { id: 1, assignedTo: 'bob', color: '#ffffff' },
+        { id: 2, assignedTo: 'bob', color: '#ffffff' },
       ];
       const prevState = {
         ...initialState,
         loadTasksFetchError: true,
         isFetching: true,
       };
-      const date = moment().format('YYYY-MM-DD');
+      const now = moment();
+      const date = now.format('YYYY-MM-DD');
       const newState = tasksEntityReducer(
         prevState,
-        loadTasksSuccess(date, tasks, moment()),
+        loadTasksSuccess(date, tasks, now.toISOString()),
       );
       const fullState = { entities: { tasks: newState } };
 
@@ -117,11 +121,13 @@ describe('Redux | Tasks | Reducers', () => {
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
       const restNewState = omit(newState, [
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
 
       expect(selectIsTasksLoading(fullState)).toBe(false);
@@ -133,7 +139,7 @@ describe('Redux | Tasks | Reducers', () => {
 
     [markTaskDoneSuccess, markTaskFailedSuccess].forEach(actionCreator => {
       test(`${actionCreator}`, () => {
-        const task = { id: 1, foo: 'bar' };
+        const task = { id: 1, foo: 'bar', color: '#ffffff' };
         const date = moment().format('YYYY-MM-DD');
         const prevState = {
           ...initialState,
@@ -184,12 +190,13 @@ describe('Redux | Tasks | Reducers', () => {
 
     test(`${_message} | task_list:updated`, () => {
       const date = moment().format('YYYY-MM-DD');
+      const username = 'some_username';
 
       const oldTasks = [{ '@id': '/api/tasks/1' }, { '@id': '/api/tasks/2' }];
       const newTasks = [
-        { '@id': '/api/tasks/1' },
-        { '@id': '/api/tasks/2' },
-        { '@id': '/api/tasks/3' },
+        { '@id': '/api/tasks/1', color: '#ffffff' },
+        { '@id': '/api/tasks/2', color: '#ffffff' },
+        { '@id': '/api/tasks/3', color: '#ffffff' },
       ];
       const wsMsg = {
         name: 'task_list:updated',
@@ -197,6 +204,7 @@ describe('Redux | Tasks | Reducers', () => {
           task_list: {
             date,
             items: newTasks,
+            username,
           },
         },
       };
@@ -207,6 +215,7 @@ describe('Redux | Tasks | Reducers', () => {
         items: {
           [date]: oldTasks,
         },
+        username,
       };
 
       const newState = tasksEntityReducer(prevState, _message(wsMsg));

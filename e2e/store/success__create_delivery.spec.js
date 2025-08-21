@@ -1,60 +1,56 @@
 import {
-  doLoginForUserWithRoleStore,
+  describeif,
+  selectAutocompleteAddress,
+  tapById,
+  typeTextQuick,
+  waitToBeVisible,
+} from "../support/commands";
+import {
   loadStoreFixture,
+  loginStoreUser,
 } from './utils';
-import { itif } from '../utils';
 
-describe('Store - Create delivery', () => {
+//FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
+describeif(device.getPlatform() === 'android')
+  ('Store - Create delivery', () => {
+
   beforeEach(async () => {
-    await device.reloadReactNative();
     await loadStoreFixture();
-    await doLoginForUserWithRoleStore();
+    await loginStoreUser();
   });
 
-  //FIXME: run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-  itif(device.getPlatform() === 'android')(
-    `should create a delivery for Store`,
-    async () => {
-    await expect(element(by.id('navigate_to_delivery'))).toBeVisible();
-    await element(by.id('navigate_to_delivery')).tap();
+  it('should create a delivery for a store', async () => {
+    await tapById('navigate_to_delivery');
 
     // Pickup address
 
     // Select default store's address and continue
-    await expect(element(by.id('delivery__next_button'))).toBeVisible();
-    await element(by.id('delivery__next_button')).tap();
+    await tapById('delivery__next_button');
 
     // Dropoff address
-
-    await expect(element(by.id('delivery__dropoff__address'))).toBeVisible();
-    await element(by.id('delivery__dropoff__address')).typeText('91 rue de rivoli paris');
-    await element(by.id('placeId:ChIJQ4sJbyFu5kcRbp6Sp6NLnog')).tap();
+    await selectAutocompleteAddress('delivery__dropoff__address');
 
     // Append "\n" to make sure virtual keyboard is hidden after entry
     // https://github.com/wix/detox/issues/209
-    await expect(element(by.id('delivery__dropoff__contact_name'))).toBeVisible();
-    await element(by.id('delivery__dropoff__contact_name')).typeText('Alice\n');
+    await waitToBeVisible('delivery__dropoff__contact_name');
+    await typeTextQuick('delivery__dropoff__contact_name', 'Alice\n');
 
-    await expect(element(by.id('delivery__dropoff__phone'))).toBeVisible();
-    await element(by.id('delivery__dropoff__phone')).typeText('0612345678\n');
+    await waitToBeVisible('delivery__dropoff__phone');
+    await typeTextQuick('delivery__dropoff__phone', '0612345678\n');
 
-    await expect(element(by.id('delivery__next_button'))).toBeVisible();
-    await element(by.id('delivery__next_button')).tap();
+    await tapById('delivery__next_button');
 
     // Delivery form
 
     // Select default values and continue
-    await expect(element(by.id('delivery__next_button'))).toBeVisible();
-    await element(by.id('delivery__next_button')).tap();
+    await tapById('delivery__next_button');
 
     // Price form
 
     // Select default values and continue
-    await expect(element(by.id('delivery__next_button'))).toBeVisible();
-    await element(by.id('delivery__next_button')).tap();
+    await tapById('delivery__next_button');
 
     // Return to Store screen and validate new delivery is accessible
-
     await expect(element(by.text('Alice'))).toBeVisible();
   });
 });

@@ -1,3 +1,5 @@
+import { createTaskSuccess } from '../../../shared/logistics/redux';
+import { changeDate, loadTasksSuccess } from '../../Dispatch/actions';
 import { default as taskEntityReducers } from '../taskEntityReducers';
 
 describe('taskEntityReducers', () => {
@@ -15,10 +17,7 @@ describe('taskEntityReducers', () => {
               },
             },
           },
-          {
-            type: 'CHANGE_DATE',
-            payload: '2020-11-03T23:00:00.000Z',
-          },
+          changeDate('2020-11-03T23:00:00.000Z'),
         ),
       ).toEqual({
         ids: [],
@@ -27,7 +26,7 @@ describe('taskEntityReducers', () => {
     });
   });
 
-  describe('LOAD_UNASSIGNED_TASKS_SUCCESS', () => {
+  describe('LOAD_TASKS_SUCCESS', () => {
     it('should add items', () => {
       expect(
         taskEntityReducers(
@@ -35,21 +34,18 @@ describe('taskEntityReducers', () => {
             ids: [],
             entities: {},
           },
-          {
-            type: 'LOAD_UNASSIGNED_TASKS_SUCCESS',
-            payload: [
-              {
-                '@id': '/api/tasks/1',
-                id: 1,
-                isAssigned: false,
-              },
-              {
-                '@id': '/api/tasks/2',
-                id: 2,
-                isAssigned: false,
-              },
-            ],
-          },
+          loadTasksSuccess([
+            {
+              '@id': '/api/tasks/1',
+              id: 1,
+              isAssigned: false,
+            },
+            {
+              '@id': '/api/tasks/2',
+              id: 2,
+              isAssigned: false,
+            },
+          ]),
         ),
       ).toEqual({
         ids: ['/api/tasks/1', '/api/tasks/2'],
@@ -58,11 +54,13 @@ describe('taskEntityReducers', () => {
             '@id': '/api/tasks/1',
             id: 1,
             isAssigned: false,
+            color: '#ffffff',
           },
           '/api/tasks/2': {
             '@id': '/api/tasks/2',
             id: 2,
             isAssigned: false,
+            color: '#ffffff',
           },
         },
       });
@@ -81,23 +79,20 @@ describe('taskEntityReducers', () => {
               },
             },
           },
-          {
-            type: 'LOAD_UNASSIGNED_TASKS_SUCCESS',
-            payload: [
-              {
-                '@id': '/api/tasks/1',
-                id: 1,
-                isAssigned: false,
-                comments: 'new comment',
-              },
-              {
-                '@id': '/api/tasks/2',
-                id: 2,
-                isAssigned: false,
-                comments: 'new comment',
-              },
-            ],
-          },
+          loadTasksSuccess([
+            {
+              '@id': '/api/tasks/1',
+              id: 1,
+              isAssigned: false,
+              comments: 'new comment',
+            },
+            {
+              '@id': '/api/tasks/2',
+              id: 2,
+              isAssigned: false,
+              comments: 'new comment',
+            },
+          ]),
         ),
       ).toEqual({
         ids: ['/api/tasks/1', '/api/tasks/2'],
@@ -107,71 +102,14 @@ describe('taskEntityReducers', () => {
             id: 1,
             isAssigned: false,
             comments: 'new comment',
+            color: '#ffffff',
           },
           '/api/tasks/2': {
             '@id': '/api/tasks/2',
             id: 2,
             isAssigned: false,
             comments: 'new comment',
-          },
-        },
-      });
-    });
-  });
-
-  describe('LOAD_TASK_LISTS_SUCCESS', () => {
-    it('should add items', () => {
-      expect(
-        taskEntityReducers(
-          {
-            ids: [],
-            entities: {},
-          },
-          {
-            type: 'LOAD_TASK_LISTS_SUCCESS',
-            payload: [
-              {
-                '@id': '/api/task_lists/1',
-                '@type': 'TaskList',
-                items: [
-                  {
-                    '@id': '/api/tasks/1',
-                    id: 1,
-                    isAssigned: true,
-                    assignedTo: 'bot_1',
-                  },
-                  {
-                    '@id': '/api/tasks/2',
-                    id: 2,
-                    isAssigned: true,
-                    assignedTo: 'bot_1',
-                  },
-                ],
-                username: 'bot_1',
-              },
-              {
-                '@id': '/api/task_lists/31',
-                '@type': 'TaskList',
-                items: [],
-                username: 'bot_12',
-              },
-            ],
-          },
-        ),
-      ).toEqual({
-        ids: ['/api/tasks/1', '/api/tasks/2'],
-        entities: {
-          '/api/tasks/1': {
-            '@id': '/api/tasks/1',
-            id: 1,
-            isAssigned: true,
-            assignedTo: 'bot_1',
-          },
-          '/api/tasks/2': {
-            '@id': '/api/tasks/2',
-            id: 2,
-            isAssigned: true,
-            assignedTo: 'bot_1',
+            color: '#ffffff',
           },
         },
       });
@@ -186,14 +124,11 @@ describe('taskEntityReducers', () => {
             ids: [],
             entities: {},
           },
-          {
-            type: 'CREATE_TASK_SUCCESS',
-            payload: {
-              '@id': '/api/tasks/1',
-              id: 1,
-              isAssigned: false,
-            },
-          },
+          createTaskSuccess({
+            '@id': '/api/tasks/1',
+            id: 1,
+            isAssigned: false,
+          }),
         ),
       ).toEqual({
         ids: ['/api/tasks/1'],
@@ -202,6 +137,7 @@ describe('taskEntityReducers', () => {
             '@id': '/api/tasks/1',
             id: 1,
             isAssigned: false,
+            color: '#ffffff',
           },
         },
       });

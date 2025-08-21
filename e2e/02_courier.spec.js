@@ -1,36 +1,40 @@
 import {
   authenticateWithCredentials,
-  connectToLocalInstance,
-  symfonyConsole,
+  describeif,
+  loadFixturesAndConnect,
+  tapById,
+  tapByText,
+  waitToBeVisible,
 } from './support/commands';
-import { describeif } from './utils'
 
 //FIXME: run these tests for iOS too (requires a local coopcycle-web instance)
-describeif(device.getPlatform() === 'android')('Courier', () => {
-  beforeEach(async () => {
-    symfonyConsole('coopcycle:fixtures:load -f cypress/fixtures/courier.yml');
+describeif(device.getPlatform() === 'android')
+  ('Courier', () => {
 
-    await device.reloadReactNative();
-    await connectToLocalInstance();
+  beforeEach(async () => {
+    await loadFixturesAndConnect('courier.yml');
+    await authenticateWithCredentials('jane', '12345678');
   });
 
   it(`should be able to login and see tasks`, async () => {
-    await authenticateWithCredentials('jane', '12345678');
-
     if (device.getPlatform() === 'android') {
-      // dismiss BACKGROUND_PERMISSION_DISCLOSURE alert
-      await element(by.text("I accept")).tap();
+      try {
+        // dismiss BACKGROUND_PERMISSION_DISCLOSURE alert
+        await tapByText('I accept');
+      } catch {}
 
-      // dismiss HMS Core alert
-      await element(by.text('OK')).tap();
+      try {
+        // dismiss HMS Core alert
+        await tapByText('OK');
+      } catch {}
     }
 
-    await expect(element(by.id('messengerTabMap'))).toBeVisible();
-    await expect(element(by.id('messengerTabList'))).toBeVisible();
+    await waitToBeVisible('messengerTabMap');
+    await waitToBeVisible('messengerTabList');
 
-    await element(by.id('messengerTabList')).tap();
+    await tapById('messengerTabList');
 
-    await expect(element(by.id('task:0'))).toBeVisible();
-    await expect(element(by.id('task:1'))).toBeVisible();
+    await waitToBeVisible('courierTaskList:task:0');
+    await waitToBeVisible('courierTaskList:task:1');
   });
 });

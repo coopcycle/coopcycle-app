@@ -1,5 +1,10 @@
 import moment from 'moment';
-import { createTaskItemsTransform, fetchAllRecords } from '../util';
+import { createAction } from '@reduxjs/toolkit';
+import {
+  actionMatchCreator,
+  createTaskItemsTransform,
+  idfromUrl,
+} from '../util';
 
 describe('Redux | util', () => {
   it('TaskItemsTransform | in', () => {
@@ -58,58 +63,47 @@ describe('Redux | util', () => {
     });
   });
 
-  describe('fetchAllRecords', () => {
-    const members = [
-      {'@id': '/api/stores/1'},
-      {'@id': '/api/stores/2'}
-    ];
+  describe('actionMatchCreator', () => {
+    it('should return TRUE if an action matches any action creator', () => {
+      const actionCreator1 = createAction('ACTION_1');
+      const actionCreator2 = createAction('ACTION_2');
 
-    it('should return all items that fits in the first page', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
-        'hydra:totalItems': 2,
-        'hydra:member': members
-      });
+      const action = actionCreator1('some value');
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 10);
-      expect(rs).toEqual(members);
-      expect(httpClient.get).toHaveBeenCalledTimes(1);
+      const result = actionMatchCreator(action, [
+        actionCreator1,
+        actionCreator2,
+      ]);
+
+      expect(result).toBeTruthy();
     });
 
-    it('should return all items from 3 request', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
-        'hydra:totalItems': 6,
-        'hydra:member': members
-      });
+    it('should return FALSE if an action doesnt match any action creator', () => {
+      const actionCreator1 = createAction('ACTION_1');
+      const actionCreator2 = createAction('ACTION_2');
+      const actionCreator3 = createAction('ACTION_3');
 
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 2);
-      expect(rs).toEqual([...members, ...members, ...members]);
-      expect(httpClient.get).toHaveBeenCalledTimes(3);
+      const action = actionCreator1('some value');
+
+      const result = actionMatchCreator(action, [
+        actionCreator2,
+        actionCreator3,
+      ]);
+
+      expect(result).toBeFalsy();
     });
+  });
 
-    it('should return all items from 1 request although totalItems is bigger than member.length but itemsPerPage is bigger', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
-        'hydra:totalItems': 5,
-        'hydra:member': members
-      });
-
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 7);
-      expect(rs).toEqual(members);
-      expect(httpClient.get).toHaveBeenCalledTimes(1);
-    });
-
-    it('should return all items from 1 request although totalItems is equal to member.length and itemsPerPage is lower', async () => {
-      const httpClient = {get: jest.fn()};
-      httpClient.get.mockResolvedValue({
-        'hydra:totalItems': 2,
-        'hydra:member': members
-      });
-
-      const rs = await fetchAllRecords(httpClient, '/api/stores', 1);
-      expect(rs).toEqual(members);
-      expect(httpClient.get).toHaveBeenCalledTimes(1);
+  describe('idfromUrl', () => {
+    it('should return the id from different url strings', () => {
+      expect(idfromUrl('1')).toEqual('1');
+      expect(idfromUrl('/11')).toEqual('11');
+      expect(idfromUrl('/api/121')).toEqual('121');
+      expect(idfromUrl('/api/item/1234')).toEqual('1234');
+      expect(idfromUrl('/api/item/12345/whatever')).toEqual('12345');
+      expect(idfromUrl('/api/item/1wrong345')).toEqual('1');
+      expect(idfromUrl('/api/item/33/something/22')).toEqual('33');
+      expect(idfromUrl('/api/item')).toEqual(null);
     });
   });
 });
