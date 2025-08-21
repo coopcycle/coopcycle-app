@@ -4,13 +4,14 @@ import moment from 'moment';
 
 import { getUserTaskList } from './taskListUtils';
 import { getTaskTitle } from '../../utils';
+import { Task } from '../../../../types/Task';
 
 /**
  * Utility function to sort a list of tasks
  * @param {Object} a - Task
  * @param {Object} b - Task
  */
-export function tasksSort(a, b) {
+export function tasksSort(a: Task, b: Task) {
   if (
     a.metadata?.order_number &&
     b.metadata?.order_number &&
@@ -29,7 +30,7 @@ export function tasksSort(a, b) {
 
 const colorHash = new ColorHash();
 
-export function groupLinkedTasks(tasks) {
+export function groupLinkedTasks(tasks: Task[]) {
   const copy = tasks.slice(0);
 
   const groups = {};
@@ -66,7 +67,7 @@ export function groupLinkedTasks(tasks) {
   });
 }
 
-export function withLinkedTasks(task, allTasks) {
+export function withLinkedTasks(task: Task, allTasks: Task[]) {
   const groups = groupLinkedTasks(allTasks);
   const newTasks = [];
 
@@ -82,21 +83,21 @@ export function withLinkedTasks(task, allTasks) {
   return newTasks.sort(tasksSort);
 }
 
-export function mapToColor(tasks) {
+export function mapToColor(tasks: Task[]) {
   return mapValues(groupLinkedTasks(tasks), taskIds =>
     colorHash.hex(taskIds.join(' ')),
   );
 }
 
-export function getTasksWithColor(tasks) {
+export function getTasksWithColor(tasks: Task[]) {
   const taskColors = mapToColor(tasks);
 
-  return tasks.map(task => {
+  return tasks.map((task: Task) => {
     return addColorToTask(task, taskColors);
   });
 }
 
-export function getTaskWithColor(task, tasks) {
+export function getTaskWithColor(task: Task, tasks: Task[]) {
   const taskId = task['@id'];
   const exists = tasks.some(t => t['@id'] === taskId);
   const allTasks = exists ? tasks : [...tasks, task];
@@ -105,7 +106,7 @@ export function getTaskWithColor(task, tasks) {
   return addColorToTask(task, taskColors);
 }
 
-function addColorToTask(task, taskColors) {
+function addColorToTask(task: Task, taskColors) {
   const taskId = task['@id'];
   const color = task.color || taskColors[taskId] || '#ffffff';
 
@@ -115,19 +116,19 @@ function addColorToTask(task, taskColors) {
   };
 }
 
-export function tasksToIds(tasks) {
+export function tasksToIds(tasks: Task[]) {
   return tasks.map(item =>
     item['@type'] === 'TaskCollectionItem' ? item.task : item['@id'],
   );
 }
 
-export function getTaskListItemIds(username, allTaskLists) {
+export function getTaskListItemIds(username: string, allTaskLists: Task[]) {
   const userTaskList = getUserTaskList(username, allTaskLists);
 
   return userTaskList ? userTaskList.itemIds : [];
 }
 
-export function getAssignedTask(task, username) {
+export function getAssignedTask(task: Task, username: string) {
   return {
     ...task,
     isAssigned: !!username,
@@ -151,7 +152,7 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
   return toursToUpdate;
 }
 
-export function filterTasksByKeyword(tasks, keyword) {
+export function filterTasksByKeyword(tasks: Task[], keyword: string) {
   if (keyword === '') {
     return tasks;
   }
@@ -163,7 +164,7 @@ export function filterTasksByKeyword(tasks, keyword) {
   );
 }
 
-export function taskIncludesKeyword(task, keyword) {
+export function taskIncludesKeyword(task: Task, keyword: string) {
   return (
     standardIncludes(task.assignedTo, keyword) ||
     standardIncludes(task.orgName, keyword) ||
@@ -175,7 +176,7 @@ export function taskIncludesKeyword(task, keyword) {
   );
 }
 
-export function taskIncludesKeywordInOrder(task, keyword) {
+export function taskIncludesKeywordInOrder(task: Task, keyword: string) {
   return (
     standardIncludes(task.metadata?.order_number, keyword) ||
     standardIncludes(task.address?.contactName, keyword) ||
@@ -186,7 +187,7 @@ export function taskIncludesKeywordInOrder(task, keyword) {
   );
 }
 
-function standardIncludes(originalString, keyword) {
+function standardIncludes(originalString: string, keyword: string) {
   if (!originalString) {
     return false;
   }
@@ -195,6 +196,72 @@ function standardIncludes(originalString, keyword) {
 
   return originalString.toLowerCase().includes(lowercaseKeyword);
 }
-export function taskExists(list, task) {
+export function taskExists(list: Task[], task: Task) {
   return list.some(t => t['@id'] === task['@id']);
+}
+
+export const getProcessedCourierOrders = (tasks: Task[]) => {
+  const tasksWithColor = getTasksWithColor(tasks);
+  return displayPricePerOrder(tasksWithColor);
+};
+
+/**
+ *
+ * @param tasks Task[]
+ * @returns Task[]
+ */
+export function displayPricePerOrder(tasks: Task[]): Task[] {
+  const tasksByOrder = groupTasksByOrder(tasks);
+  const processedOrders = Object.values(tasksByOrder).map(processOrder);
+  return processedOrders.flat();
+}
+
+const groupTasksByOrder = (tasks: Task[]): Record<string, Task[]> => {
+  return tasks.reduce((acc: any, task: Task) => {
+    const orderNumber = task.metadata.order_number;
+    if (!acc[orderNumber]) {
+      acc[orderNumber] = [];
+    }
+    acc[orderNumber].push(task);
+    return acc;
+  }, {});
+};
+
+const processOrder = (order: Task[]): Task[] => {
+  if (hasMultipleTasksOfType(order, 'PICKUP')) {
+    return setOrderTotal(order, 'DROPOFF');
+  }
+  if (hasMultipleTasksOfType(order, 'DROPOFF')) {
+    return setOrderTotal(order, 'PICKUP');
+  }
+  return order;
+};
+
+const setOrderTotal = (
+  order: Task[],
+  type: 'PICKUP' | 'DROPOFF',
+): Task[] => {
+  let isFirstTaskOfType = false;
+  return order.map(t => {
+    const shouldKeepOrderTotal = isSameTaskType(t, type) && !isFirstTaskOfType;
+    const newTask = { ...t };
+    if (shouldKeepOrderTotal) {
+      isFirstTaskOfType = true;
+      return newTask;
+    } else {
+      newTask.metadata = { ...newTask.metadata, order_total: null };
+    }
+    return newTask;
+  });
+};
+
+const hasMultipleTasksOfType = (
+  order: Task[],
+  type: 'PICKUP' | 'DROPOFF',
+): boolean => {
+  return order.filter(t => t.type === type).length > 1;
+};
+
+const isSameTaskType = (task: Task, type: 'PICKUP' | 'DROPOFF') => {
+  return task.type === type;
 }
