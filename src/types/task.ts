@@ -32,7 +32,7 @@ export interface TaskAddress {
   lastName: string | null;
   name: string | null;
   streetAddress: string;
-  telephone: string | null;
+  telephone: string;
 }
 
 /**
@@ -55,7 +55,6 @@ export interface TaskBarcode {
  * Package label interface
  */
 export interface PackageLabel {
-  // Define based on actual structure when available
   [key: string]: any;
 }
 
@@ -80,8 +79,6 @@ export interface TaskMetadata {
   order_total?: number;
   zero_waste?: boolean;
   payment_method?: string;
-  // Allow for additional metadata fields
-  [key: string]: any;
 }
 
 /**
@@ -102,8 +99,6 @@ export interface TaskIncident {
   title: string;
   description?: string;
   createdAt: string;
-  // Add other incident fields as needed
-  [key: string]: any;
 }
 
 /**
@@ -114,8 +109,6 @@ export interface TaskImage {
   url: string;
   thumbnail?: string;
   createdAt: string;
-  // Add other image fields as needed
-  [key: string]: any;
 }
 
 /**
@@ -127,8 +120,6 @@ export interface TaskAssignee {
   id: number;
   username: string;
   email?: string;
-  // Add other user fields as needed
-  [key: string]: any;
 }
 
 /**
@@ -139,8 +130,6 @@ export interface TaskGroup {
   '@type': string;
   id: number;
   name: string;
-  // Add other group fields as needed
-  [key: string]: any;
 }
 
 /**
@@ -180,7 +169,7 @@ export interface Task {
 
   // Packages and logistics
   packages: TaskPackage[];
-  weight: number | null;
+  weight: number; // Weight in the actual data is always a number (can be 0)
   doorstep: boolean;
 
   // Incidents and issues
