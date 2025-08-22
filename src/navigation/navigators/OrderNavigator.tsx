@@ -15,8 +15,8 @@ export default () => {
   return (
     <RootStack.Navigator screenOptions={screenOptions}>
       <RootStack.Screen
-        name="OrderInfo"
-        component={screens.OrderInfo}
+        name="Order"
+        component={screens.Order}
         options={({ route }) => ({
           title: <OrderTitle order={route.params?.orderId} />,
           headerShown: true,
