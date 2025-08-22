@@ -11,18 +11,15 @@ import {
 } from '../styles/common';
 import { Task } from '../types/Task';
 
-export const OrderInfo = ({ task, color, width, onPress, isCourier = false, isDispatch = false }) => {
+export const OrderInfo = ({ task, color, width, onPress, isFromCourier = false }) => {
   const cardBorderRadius = 2.5;
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
   const orderId = getOrderIdWithPosition(task);
 
-  const shouldShowTotal = () => {
-    return (isCourier && isCashPayment(task)) || isDispatch;
-  }
-  const isCashPayment = (task: Task) => {
-    return task.metadata.payment_method === 'CASH';
+  const shouldDisplayPrice = (task: Task, isFromCourier: boolean) : boolean => {
+    return isFromCourier ? task.metadata.payment_method === 'CASH' : true;
   }
 
   return (
@@ -49,7 +46,7 @@ export const OrderInfo = ({ task, color, width, onPress, isCourier = false, isDi
             }}>
             {orderId}
           </Text>
-          {task.metadata?.order_total && shouldShowTotal() ? (
+          {task.metadata?.order_total && shouldDisplayPrice(task, isFromCourier) ? (
             <Text
               style={{
                 color: textColor,

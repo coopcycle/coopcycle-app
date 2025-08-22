@@ -310,8 +310,7 @@ const TaskListItem = forwardRef(
             task={task}
             width={buttonWidth}
             onPress={onOrderPress}
-            isCourier={isCourier}
-            isDispatch={isDispatch}
+            isFromCourier={isFromCourier}
           />
           <ItemTouchable
             onPress={onPress}
