@@ -1,4 +1,5 @@
 import {
+  displayPricePerOrder,
   filterTasksByKeyword,
   getAssignedTask,
   getTasksWithColor,
@@ -549,4 +550,109 @@ describe('taskUtils', () => {
       expect(result).toBe(expected);
     });
   });
+
+  describe('displayPricePerOrder', () => {
+    it('should return tasks unchanged when no tasks have order_number', () => {
+      const tasks = [
+        { id: 1, type: 'PICKUP', metadata: {} },
+        { id: 2, type: 'DROPOFF', metadata: {} },
+      ];
+
+      const result = displayPricePerOrder(tasks);
+
+      expect(result).toEqual(tasks);
+    });
+
+    it('should return tasks unchanged when tasks have order_number but no multiple tasks of same type', () => {
+      const tasks = [
+        { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 2, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+      ];
+
+      const result = displayPricePerOrder(tasks);
+
+      expect(result).toEqual(tasks);
+    });
+
+    it('should set order_total to null for all but first DROPOFF when multiple PICKUPs in same order', () => {
+      const tasks = [
+        { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 2, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+      ];
+
+      const result = displayPricePerOrder(tasks);
+
+      expect(result).toEqual([
+        { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: null } },
+        { id: 2, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: null } },
+        { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+      ]);
+    });
+
+    it('should set order_total to null for all but first PICKUP when multiple DROPOFFs in same order', () => {
+      const tasks = [
+        { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 2, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+      ];
+
+      const result = displayPricePerOrder(tasks);
+
+      expect(result).toEqual([
+        { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 2, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: null } },
+        { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: null } },
+      ]);
+    });
+
+    it('should handle multiple orders independently', () => {
+      const tasks = [
+        // Order 1 - multiple PICKUPs
+        { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 2, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        
+        // Order 2 - multiple DROPOFFs
+        { id: 4, type: 'PICKUP', metadata: { order_number: 'ORD-002', order_total: 200 } },
+        { id: 5, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: 200 } },
+        { id: 6, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: 200 } },
+        
+        // Order 3 - no multiple tasks
+        { id: 7, type: 'PICKUP', metadata: { order_number: 'ORD-003', order_total: 300 } },
+        { id: 8, type: 'DROPOFF', metadata: { order_number: 'ORD-003', order_total: 300 } },
+      ];
+
+      const result = displayPricePerOrder(tasks);
+
+      expect(result).toEqual([
+        // Order 1 - first PICKUP keeps order_total
+        { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: null } },
+        { id: 2, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: null } },
+        { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+        
+        // Order 2 - first DROPOFF keeps order_total
+        { id: 4, type: 'PICKUP', metadata: { order_number: 'ORD-002', order_total: 200 } },
+        { id: 5, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: null } },
+        { id: 6, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: null } },
+        
+        // Order 3 - unchanged
+        { id: 7, type: 'PICKUP', metadata: { order_number: 'ORD-003', order_total: 300 } },
+        { id: 8, type: 'DROPOFF', metadata: { order_number: 'ORD-003', order_total: 300 } },
+      ]);
+    });
+
+    it('should handle tasks without metadata', () => {
+      const tasks = [
+        { id: 1, type: 'PICKUP' },
+        { id: 2, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
+      ];
+
+      const result = displayPricePerOrder(tasks);
+
+      expect(result).toEqual(tasks);
+    });
+  });
 });
+
+
