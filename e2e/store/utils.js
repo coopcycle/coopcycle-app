@@ -4,7 +4,7 @@ import {
 } from "../support/commands";
 
 export async function loadStoreFixture() {
-  await loadFixturesAndConnect('stores.yml');
+  await loadFixturesAndConnect('stores_legacy.yml');
 }
 
 export async function loginStoreUser() {

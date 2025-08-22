@@ -90,7 +90,7 @@ const getLocalIpAddress = () => {
 };
 
 export const loadFixtures = (fixtures, setup = false) => {
-  const basePath = "cypress/fixtures";
+  const basePath = "fixtures/ORM";
   const fixturesString = (Array.isArray(fixtures) ? fixtures : [fixtures]).map(f => `-f ${basePath}/${f}`).join(' ')
   console.log(`Loading fixture/s (setup: ${setup}): ${fixturesString}`);
   return symfonyConsole(`coopcycle:fixtures:load${setup ? ` -s ${basePath}/setup_default.yml` : ''} ${fixturesString}`)
