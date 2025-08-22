@@ -191,3 +191,5 @@ export const {
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
 } = apiSlice;
+
+export const clearApiState = apiSlice.util.resetApiState;
