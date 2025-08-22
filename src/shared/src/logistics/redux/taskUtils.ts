@@ -211,6 +211,9 @@ export const getProcessedOrders = (tasks: Task[]) => {
  * @returns Task[]
  */
 export function displayPricePerOrder(tasks: Task[]): Task[] {
+  if(tasks.some(t => t.metadata?.order_number === undefined)) {
+    return tasks;
+  }
   const tasksByOrder = groupTasksByOrder(tasks);
   const processedOrders = Object.values(tasksByOrder).map(processOrder);
   return processedOrders.flat();

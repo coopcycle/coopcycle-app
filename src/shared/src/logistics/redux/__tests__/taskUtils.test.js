@@ -7,7 +7,7 @@ import {
   mapToColor,
   taskIncludesKeyword,
   tasksToIds,
-} from '../taskUtils.js';
+} from '../taskUtils.ts';
 import {
   getTaskWithAssignedTo,
   getTaskWithStoreName,
@@ -270,7 +270,7 @@ describe('taskUtils', () => {
 
   describe('tasksToIds', () => {
     it('should map tasks to task ids', () => {
-      let tasks = [
+      const tasks = [
         {
           '@id': '/api/tasks/1',
           id: 1,
@@ -281,13 +281,13 @@ describe('taskUtils', () => {
         },
       ];
 
-      let ids = tasksToIds(tasks);
+      const ids = tasksToIds(tasks);
 
       expect(ids).toEqual(['/api/tasks/1', '/api/tasks/2']);
     });
 
     it('should map tasks to task ids with TaskCollectionItem', () => {
-      let tasks = [
+      const tasks = [
         {
           '@type': 'TaskCollectionItem',
           task: '/api/tasks/1',
@@ -298,7 +298,7 @@ describe('taskUtils', () => {
         },
       ];
 
-      let ids = tasksToIds(tasks);
+      const ids = tasksToIds(tasks);
 
       expect(ids).toEqual(['/api/tasks/1', '/api/tasks/2']);
     });
