@@ -94,6 +94,7 @@ export default function TaskListPage({ navigation, route }) {
           id="courierTaskList"
           // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
           tasks={courierTaskList.items}
+          isFromCourier={isFromCourier}
           refreshing={isFetching}
           onRefresh={() => refetch()}
           onTaskClick={task =>

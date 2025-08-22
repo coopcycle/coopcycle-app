@@ -25,6 +25,7 @@ const TaskList = ({
   swipeOutRightIconName,
   tasks,
   appendTaskListTestID = '',
+  isFromCourier = false,
 }) => {
   const bulkFabButton = useRef(null);
 
@@ -84,6 +85,7 @@ const TaskList = ({
         task={task}
         index={index}
         color={task.color}
+        isFromCourier={isFromCourier}
         onPress={() => onTaskClick(task)}
         onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}
@@ -97,7 +99,7 @@ const TaskList = ({
       <SwipeListView
         data={tasks}
         keyExtractor={(item, index) => {
-          const tagNames = (item['tags'] || []).map(t => t.name);
+          const tagNames = (item.tags || []).map(t => t.name);
           return `${item['@id']}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
         }}
         renderItem={renderItem}
