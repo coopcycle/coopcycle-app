@@ -79,6 +79,7 @@ export interface TaskMetadata {
   order_total?: number;
   zero_waste?: boolean;
   payment_method?: string;
+  order_distance?: string;
 }
 
 /**
@@ -164,7 +165,7 @@ export interface Task {
 
   // Content and description
   comments: string;
-  orgName: string;
+  orgName: string | null;
   metadata: TaskMetadata;
 
   // Packages and logistics
