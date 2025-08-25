@@ -9,7 +9,7 @@ import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
 
 export async function loadDispatchFixture() {
-  await loadFixturesAndConnect('dispatch.yml', true);
+  await loadFixturesAndConnect('dispatch_dashboard.yml', true);
 }
 
 export async function loginDispatcherUser() {

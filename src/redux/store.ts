@@ -21,6 +21,7 @@ import { notifyOnNewOrderCreated } from './Restaurant/middlewares';
 import { apiSlice } from './api/slice';
 import { setupListenersReactNative } from './setupListenersReactNative';
 import AppStateMiddleware from './middlewares/AppStateMiddleware';
+import { ApiStateMiddleware } from './api/stateMiddleware';
 
 const middlewares = [
   ReduxAsyncQueue,
@@ -28,6 +29,7 @@ const middlewares = [
   AppStateMiddleware,
   HttpMiddleware,
   apiSlice.middleware,
+  ApiStateMiddleware,
   PushNotificationMiddleware,
   CentrifugoMiddleware,
   SentryMiddleware,
