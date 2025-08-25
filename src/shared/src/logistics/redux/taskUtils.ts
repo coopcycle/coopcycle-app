@@ -4,14 +4,15 @@ import moment from 'moment';
 
 import { getUserTaskList } from './taskListUtils';
 import { getTaskTitle } from '../../utils';
-import { Task } from '../../../../types/Task';
+// WHEN TASK IS ADDED, uncomment the following line
+// import { Task } from '../../../../types/Task';
 
 /**
  * Utility function to sort a list of tasks
  * @param {Object} a - Task
  * @param {Object} b - Task
  */
-export function tasksSort(a: Task, b: Task) {
+export function tasksSort(a, b) {
   if (
     a.metadata?.order_number &&
     b.metadata?.order_number &&
@@ -30,7 +31,7 @@ export function tasksSort(a: Task, b: Task) {
 
 const colorHash = new ColorHash();
 
-export function groupLinkedTasks(tasks: Task[]) {
+export function groupLinkedTasks(tasks) {
   const copy = tasks.slice(0);
 
   const groups = {};
@@ -67,7 +68,7 @@ export function groupLinkedTasks(tasks: Task[]) {
   });
 }
 
-export function withLinkedTasks(task: Task, allTasks: Task[]) {
+export function withLinkedTasks(task, allTasks) {
   const groups = groupLinkedTasks(allTasks);
   const newTasks = [];
 
@@ -83,21 +84,21 @@ export function withLinkedTasks(task: Task, allTasks: Task[]) {
   return newTasks.sort(tasksSort);
 }
 
-export function mapToColor(tasks: Task[]) {
+export function mapToColor(tasks) {
   return mapValues(groupLinkedTasks(tasks), taskIds =>
     colorHash.hex(taskIds.join(' ')),
   );
 }
 
-export function getTasksWithColor(tasks: Task[]) {
+export function getTasksWithColor(tasks) {
   const taskColors = mapToColor(tasks);
 
-  return tasks.map((task: Task) => {
+  return tasks.map((task) => {
     return addColorToTask(task, taskColors);
   });
 }
 
-export function getTaskWithColor(task: Task, tasks: Task[]) {
+export function getTaskWithColor(task, tasks) {
   const taskId = task['@id'];
   const exists = tasks.some(t => t['@id'] === taskId);
   const allTasks = exists ? tasks : [...tasks, task];
@@ -106,7 +107,7 @@ export function getTaskWithColor(task: Task, tasks: Task[]) {
   return addColorToTask(task, taskColors);
 }
 
-function addColorToTask(task: Task, taskColors) {
+function addColorToTask(task, taskColors) {
   const taskId = task['@id'];
   const color = task.color || taskColors[taskId] || '#ffffff';
 
@@ -116,19 +117,19 @@ function addColorToTask(task: Task, taskColors) {
   };
 }
 
-export function tasksToIds(tasks: Task[]) {
+export function tasksToIds(tasks) {
   return tasks.map(item =>
     item['@type'] === 'TaskCollectionItem' ? item.task : item['@id'],
   );
 }
 
-export function getTaskListItemIds(username: string, allTaskLists: Task[]) {
+export function getTaskListItemIds(username: string, allTaskLists) {
   const userTaskList = getUserTaskList(username, allTaskLists);
 
   return userTaskList ? userTaskList.itemIds : [];
 }
 
-export function getAssignedTask(task: Task, username: string) {
+export function getAssignedTask(task, username: string) {
   return {
     ...task,
     isAssigned: !!username,
@@ -152,7 +153,7 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
   return toursToUpdate;
 }
 
-export function filterTasksByKeyword(tasks: Task[], keyword: string) {
+export function filterTasksByKeyword(tasks, keyword: string) {
   if (keyword === '') {
     return tasks;
   }
@@ -164,7 +165,7 @@ export function filterTasksByKeyword(tasks: Task[], keyword: string) {
   );
 }
 
-export function taskIncludesKeyword(task: Task, keyword: string) {
+export function taskIncludesKeyword(task, keyword: string) {
   return (
     standardIncludes(task.assignedTo, keyword) ||
     standardIncludes(task.orgName, keyword) ||
@@ -176,7 +177,7 @@ export function taskIncludesKeyword(task: Task, keyword: string) {
   );
 }
 
-export function taskIncludesKeywordInOrder(task: Task, keyword: string) {
+export function taskIncludesKeywordInOrder(task, keyword: string) {
   return (
     standardIncludes(task.metadata?.order_number, keyword) ||
     standardIncludes(task.address?.contactName, keyword) ||
@@ -196,21 +197,16 @@ function standardIncludes(originalString: string, keyword: string) {
 
   return originalString.toLowerCase().includes(lowercaseKeyword);
 }
-export function taskExists(list: Task[], task: Task) {
+export function taskExists(list, task) {
   return list.some(t => t['@id'] === task['@id']);
 }
 
-export const getProcessedOrders = (tasks: Task[]) => {
+export const getProcessedOrders = (tasks) => {
   const tasksWithColor = getTasksWithColor(tasks);
   return displayPricePerOrder(tasksWithColor);
 };
 
-/**
- *
- * @param tasks Task[]
- * @returns Task[]
- */
-export function displayPricePerOrder(tasks: Task[]): Task[] {
+export function displayPricePerOrder(tasks) {
   if(tasks.some(t => t.metadata?.order_number === undefined)) {
     return tasks;
   }
@@ -219,7 +215,7 @@ export function displayPricePerOrder(tasks: Task[]): Task[] {
   return processedOrders.flat();
 }
 
-const groupTasksByOrder = (tasks: Task[]): Record<string, Task[]> => {
+const groupTasksByOrder = (tasks): Record<string, []> => {
   return tasks.reduce((acc: any, task: Task) => {
     const orderNumber = task.metadata.order_number;
     if (!acc[orderNumber]) {
@@ -230,7 +226,7 @@ const groupTasksByOrder = (tasks: Task[]): Record<string, Task[]> => {
   }, {});
 };
 
-const processOrder = (order: Task[]): Task[] => {
+const processOrder = (order: []): [] => {
   if (hasMultipleTasksOfType(order, 'PICKUP')) {
     return setOrderTotal(order, 'DROPOFF');
   }
@@ -241,9 +237,9 @@ const processOrder = (order: Task[]): Task[] => {
 };
 
 const setOrderTotal = (
-  order: Task[],
+  order: [],
   type: 'PICKUP' | 'DROPOFF',
-): Task[] => {
+): [] => {
   let isFirstTaskOfType = false;
   return order.map(t => {
     const shouldKeepOrderTotal = isSameTaskType(t, type) && !isFirstTaskOfType;
@@ -259,12 +255,12 @@ const setOrderTotal = (
 };
 
 const hasMultipleTasksOfType = (
-  order: Task[],
+  order: [],
   type: 'PICKUP' | 'DROPOFF',
 ): boolean => {
   return order.filter(t => t.type === type).length > 1;
 };
 
-const isSameTaskType = (task: Task, type: 'PICKUP' | 'DROPOFF') => {
+const isSameTaskType = (task, type: 'PICKUP' | 'DROPOFF') => {
   return task.type === type;
 }
