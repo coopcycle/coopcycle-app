@@ -216,7 +216,7 @@ export function displayPricePerOrder(tasks) {
 }
 
 const groupTasksByOrder = (tasks): Record<string, []> => {
-  return tasks.reduce((acc: any, task: Task) => {
+  return tasks.reduce((acc, task) => {
     const orderNumber = task.metadata.order_number;
     if (!acc[orderNumber]) {
       acc[orderNumber] = [];
