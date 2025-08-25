@@ -42,7 +42,7 @@ const IconText: React.FC<IconTextProps> = ({
       <Text
         flex={1}
         size={textSize}
-        style={{ lineHeight: parseInt(textSize, 10) - 10 }}
+        style={{ lineHeight: 22 }}
         ellipsizeMode="tail">
         {text}
       </Text>

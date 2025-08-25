@@ -16,34 +16,62 @@ import Task from '../../types/task';
 import TaskMiniMap from '../task/components/MiniMap';
 import OrderAccordeon from './components/OrderAccordeon';
 import { RouteType } from './types';
+import {
+  commentsInOrder,
+  getOrderTitle,
+  getUniqueTagsFromTasks,
+  orderInfoInMetadata,
+  packagesInOrderSummery,
+} from './utils';
+import { Tasks } from '../../types/tasks';
+import { getOrderTimeFrame } from '../task/components/utils';
+import TaskTagsList from '../../components/TaskTagsList';
 
-const OrderHeader = () => {
+const OrderHeader = ({ tasks }: { tasks: Tasks }) => {
+  const orderTitle = getOrderTitle(tasks);
+  const packagesInOrder = packagesInOrderSummery(tasks);
+  const orderTimeframe = getOrderTimeFrame(tasks);
+  const orderPaymentMethod = orderInfoInMetadata(tasks, 'payment_method');
+  const orderDistance = orderInfoInMetadata(tasks, 'order_distance');
+  const orderTags = getUniqueTagsFromTasks(tasks);
+  const orderValue = orderInfoInMetadata(tasks, 'order_total');
+  const comments = commentsInOrder(tasks);
+
   return (
     <Box sx={{ gap: 12, padding: 24 }}>
       <Text size="2xl" bold>
-        Comercio - Luana Cuello
+        {orderTitle}
       </Text>
+      {orderTags.length > 0 && (
+        <>
+          <Divider />
+          <TaskTagsList taskTags={orderTags} />
+        </>
+      )}
       <Divider />
-      {/* order info esta hecho */}
-      <IconText text="19:00 - 20:00" iconName="clock" />
-      <Divider />
-      {/* order total - hacer un find, la primera que la tenga agarrarlo - payment_method */}
-      <IconText
-        text="€ 18,15 -  € 15,00 (Sin IVA) - efectivo"
-        iconName="money"
-      />
-      <Divider />
-      {/* el recorrido total no lo tenemos - taskmetada order_distance si existe */}
-      {/* paquetes de los pickup */}
-      <IconText
-        text="2.89km  - 2x1 GRANDE (Caja grande EUROBOX)"
-        iconName="box"
-      />
+      <IconText text={orderTimeframe} iconName="clock" />
       <Divider />
       <IconText
-        text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. "
-        iconName="comments"
+        text={`$ ${orderValue}${orderPaymentMethod ? ` - ${orderPaymentMethod}` : ''}`}
+        iconName="money-check-alt"
       />
+      {orderDistance && (
+        <>
+          <Divider />
+          <IconText text={`${orderDistance}`} iconName="route" />
+        </>
+      )}
+      <Divider />
+      <IconText
+        text={`Total amout: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
+        iconName="boxes"
+      />
+      {comments.length > 0 && (
+        <>
+          <Divider />
+          <IconText text={comments.join('\n')} iconName="comments" />
+        </>
+      )}
     </Box>
   );
 };
@@ -80,7 +108,6 @@ const Order = ({ route }: { route: RouteType }) => {
         <TaskMiniMap
           tasks={tasks}
           aspectRatio={aspectRatio}
-          /* task={tasks[0]} */
           onLayout={handleLayout}
         />
       </View>
@@ -93,7 +120,7 @@ const Order = ({ route }: { route: RouteType }) => {
             <OrderAccordeon task={item as Task} />
           </Box>
         )}
-        ListHeaderComponent={<OrderHeader />}
+        ListHeaderComponent={<OrderHeader tasks={tasks} />}
       />
     </View>
   );

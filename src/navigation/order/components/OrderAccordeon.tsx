@@ -20,20 +20,17 @@ import TaskTypeIcon from '../../../components/TaskTypeIcon';
 import { getTaskTitle } from '../../../shared/src/utils';
 import { greyColor, whiteColor } from '../../../styles/common';
 import { Task } from '../../../types/task';
-import { getTimeFrame } from '../../task/components/utils';
+import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
 
 interface OrderAccordeonProps {
   task: Task;
 }
 
 function OrderAccordeon({ task }: OrderAccordeonProps) {
+  const taskTitle = getTaskTitle(task);
   const timeframe = getTimeFrame(task);
   const address: string = task.address.streetAddress;
-  /* TODO CHECK PROPS - which are mandatory? */
-  /* type: mapear los packages y mostrar  type + name (si son iguales solo type) */
-  const packageType = 'Documents that fill a standard backpack';
-  /* do we have the name? */
-  const telephone = `${task.address.firstName} - ${task.address.telephone}`;
+  const packageType = getPackagesSummary(task);
   const comments: string = task.comments;
   return (
     <Box
@@ -78,9 +75,16 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                       sx={{
                         marginEnd: 4,
                       }}>
-                      <Box sx={{ marginEnd: 4, flexDirection: 'row' }}>
+                      <Box
+                        sx={{
+                          gap: 10,
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}>
                         <TaskTypeIcon task={task} />
-                        <Text size="2xl" bold>{`${getTaskTitle(task)}`}</Text>
+                        <Text size="2xl" style={{ lineHeight: 22 }} bold>
+                          {taskTitle}
+                        </Text>
                       </Box>
                       <Box
                         sx={{
@@ -126,25 +130,26 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                 ) : null}
                 <Divider />
                 <IconText
-                  iconName="map-marker"
+                  iconName="map-marker-alt"
                   text={task.address.streetAddress}
                 />
                 <Divider />
                 <IconText text={timeframe} iconName="clock" />
                 <Divider />
-                {/* TODO ICON NAME */}
-                <IconText text={packageType} iconName="box" />
-                <Divider />
-                {/* TODO ICON NAME */}
-                {telephone && (
+                <IconText text={packageType.text} iconName="box" />
+
+                {task.address.telephone && (
                   <>
-                    <IconText text={telephone} iconName="phone" />
                     <Divider />
+                    <IconText
+                      text={`${task.address.firstName} - ${task.address.telephone}`}
+                      iconName="phone"
+                    />
                   </>
                 )}
-                {/* TODO ICON NAME */}
-                {telephone && (
+                {comments && (
                   <>
+                    <Divider />
                     <IconText text={comments} iconName="comments" />
                   </>
                 )}
