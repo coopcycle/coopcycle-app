@@ -1,10 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Text, View } from 'native-base';
-import { SectionList, TouchableOpacity } from 'react-native';
+import { SectionList } from 'react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
   addOrder,
@@ -36,13 +34,13 @@ import {
   selectTaskLists,
   selectTasksEntities,
 } from '../../../shared/logistics/redux';
-import { useBackgroundHighlightColor } from '../../../styles/theme';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderId } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
+import { SectionHeader } from './SectionHeader';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -58,19 +56,9 @@ export default function GroupedTasks({
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
   const date = useSelector(selectSelectedDate)
-  const [
-    generateOrders,
-    {
-      isUninitialized,
-    },
-  ] = useRecurrenceRulesGenerateOrdersMutation()
+  const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation()
 
-  useEffect(() => {
-    if (!isUninitialized){
-      return;
-    }
-    generateOrders(date);
-  }, [generateOrders, isUninitialized, date]);
+  useEffect(() => {generateOrders(date)}, [generateOrders, date]);
 
   const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
   // Combine unassigned tasks and task lists to use in SectionList
@@ -369,75 +357,5 @@ export default function GroupedTasks({
         iconName="user-circle"
       />
     </>
-  );
-}
-
-function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
-  const { t } = useTranslation();
-
-  const bgHighlightColor = useBackgroundHighlightColor();
-
-  // Disabled animation for now..!
-  // if (Platform.OS === 'android') {
-  //   UIManager.setLayoutAnimationEnabledExperimental(true);
-  // }
-  const handleToggle = title => {
-    // Disabled animation for now..!
-    // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setCollapsedSections(() => {
-      const next = new Set(collapsedSections);
-      next[next.has(title) ? 'delete' : 'add'](title);
-      return next;
-    });
-  };
-
-  return (
-    <View style={{ backgroundColor: bgHighlightColor }}>
-      <TouchableOpacity
-        onPress={() => handleToggle(section.title)}
-        activeOpacity={0.5}
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          paddingHorizontal: 8,
-          paddingVertical: 4,
-          backgroundColor: whiteColor,
-          margin: 4,
-          borderRadius: 5,
-        }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View
-            style={{
-              backgroundColor: section.backgroundColor,
-              borderRadius: 4,
-              marginEnd: 8,
-              padding: 4,
-            }}>
-            <Text
-              style={{
-                color: section.textColor,
-              }}>
-              {section.title}
-            </Text>
-          </View>
-          <Text style={{ color: darkGreyColor }}>
-            {section.isUnassignedTaskList
-              ? `${section.ordersCount}   (${section.tasksCount} ${t(
-                  'TASKS',
-                ).toLowerCase()})`
-              : section.tasksCount}
-          </Text>
-        </View>
-        {section.tasksCount === 0 ? null : (
-          <Icon
-            as={FontAwesome}
-            testID={`${section.id}:toggler`}
-            name={
-              collapsedSections.has(section.title) ? 'angle-down' : 'angle-up'
-            }
-          />
-        )}
-      </TouchableOpacity>
-    </View>
   );
 }
