@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Text, View } from 'native-base';
 import { SectionList, TouchableOpacity } from 'react-native';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -32,6 +32,7 @@ import {
 import { navigateToOrder, navigateToTask } from '../../../navigation/utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
 import {
+  selectSelectedDate,
   selectTaskLists,
   selectTasksEntities,
 } from '../../../shared/logistics/redux';
@@ -41,6 +42,7 @@ import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderId } from '../../../utils/tasks';
+import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -55,6 +57,20 @@ export default function GroupedTasks({
   const navigation = useNavigation();
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
+  const date = useSelector(selectSelectedDate)
+  const [
+    generateOrders,
+    {
+      isUninitialized,
+    },
+  ] = useRecurrenceRulesGenerateOrdersMutation()
+
+  useEffect(() => {
+    if (!isUninitialized){
+      return;
+    }
+    generateOrders(date);
+  }, [generateOrders, isUninitialized, date]);
 
   const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
   // Combine unassigned tasks and task lists to use in SectionList

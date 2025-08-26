@@ -173,7 +173,15 @@ export const apiSlice = createApi({
         body: patch,
       }),
     }),
-  }),
+    recurrenceRulesGenerateOrders: builder.mutation ({
+      query: date => ({
+        url: 'api/recurrence_rules/generate_orders',
+        params: {
+          date: date.format('YYYY-MM-DD'),
+        },
+      }),
+    }),
+  })
 });
 
 // Export the auto-generated hook for the query endpoints
@@ -190,6 +198,7 @@ export const {
   useSetTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
+  useRecurrenceRulesGenerateOrdersMutation,
 } = apiSlice;
 
 export const clearApiState = apiSlice.util.resetApiState;
