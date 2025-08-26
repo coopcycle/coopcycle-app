@@ -150,6 +150,7 @@ const TaskListItem = forwardRef(
       task,
       color,
       index,
+      isFromCourier,
       taskListId,
       appendTaskListTestID = '',
       onPress = () => {},
@@ -204,8 +205,6 @@ const TaskListItem = forwardRef(
       }
     }, [task.status]);
     
-    const isDispatch = useSelector(selectUser)?.hasRole('ROLE_DISPATCHER');
-    const isCourier = useSelector(selectIsCourier);
     // swipeLeft
     const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
     const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
