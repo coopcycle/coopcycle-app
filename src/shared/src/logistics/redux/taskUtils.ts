@@ -211,11 +211,11 @@ export function displayPricePerOrder(tasks) {
     return tasks;
   }
   const tasksByOrder = groupTasksByOrder(tasks);
-  const processedOrders = Object.values(tasksByOrder).map(processOrder);
-  return processedOrders.flat();
+  const processedTasks = Object.values(tasksByOrder).map(processTasksOrderPrice);
+  return processedTasks.flat();
 }
 
-const groupTasksByOrder = (tasks): Record<string, []> => {
+const groupTasksByOrder = (tasks: []): Record<string, []> => {
   return tasks.reduce((acc, task) => {
     const orderNumber = task.metadata.order_number;
     if (!acc[orderNumber]) {
@@ -226,22 +226,22 @@ const groupTasksByOrder = (tasks): Record<string, []> => {
   }, {});
 };
 
-const processOrder = (order: []): [] => {
-  if (hasMultipleTasksOfType(order, 'PICKUP')) {
-    return setOrderTotal(order, 'DROPOFF');
+const processTasksOrderPrice = (tasks: []): [] => {
+  if (hasMultipleTasksOfType(tasks, 'PICKUP')) {
+    return setOrderTotal(tasks, 'DROPOFF');
   }
-  if (hasMultipleTasksOfType(order, 'DROPOFF')) {
-    return setOrderTotal(order, 'PICKUP');
+  if (hasMultipleTasksOfType(tasks, 'DROPOFF')) {
+    return setOrderTotal(tasks, 'PICKUP');
   }
-  return order;
+  return tasks;
 };
 
 const setOrderTotal = (
-  order: [],
+  tasks: [],
   type: 'PICKUP' | 'DROPOFF',
 ): [] => {
   let isFirstTaskOfType = false;
-  return order.map(t => {
+  return tasks.map(t => {
     const shouldKeepOrderTotal = isSameTaskType(t, type) && !isFirstTaskOfType;
     const newTask = { ...t };
     if (shouldKeepOrderTotal) {
@@ -255,10 +255,10 @@ const setOrderTotal = (
 };
 
 const hasMultipleTasksOfType = (
-  order: [],
+  tasks: [],
   type: 'PICKUP' | 'DROPOFF',
 ): boolean => {
-  return order.filter(t => t.type === type).length > 1;
+  return tasks.filter(t => t.type === type).length > 1;
 };
 
 const isSameTaskType = (task, type: 'PICKUP' | 'DROPOFF') => {
