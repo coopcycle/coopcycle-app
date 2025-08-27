@@ -38,7 +38,7 @@ import {
 import { filterHasIncidents } from '../logistics/filters';
 import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 import {
-  getProcessedOrders,
+  getProcessedTasks,
   getTaskWithColor,
 } from '../../shared/src/logistics/redux/taskUtils';
 import { DateOnlyString } from '../../utils/date-types';
@@ -336,7 +336,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
-          [action.payload.date]: getProcessedOrders(action.payload.items),
+          [action.payload.date]: getProcessedTasks(action.payload.items),
         },
       };
     }
@@ -349,7 +349,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
-          [action.payload.date]: getProcessedOrders(action.payload.items),
+          [action.payload.date]: getProcessedTasks(action.payload.items),
         },
       };
 
@@ -390,7 +390,7 @@ const processWsMsg = (state, action) => {
           ...state,
           items: {
             ...state.items,
-            [taskList.date]: getProcessedOrders(taskList.items),
+            [taskList.date]: getProcessedTasks(taskList.items),
           },
         };
     }

@@ -201,7 +201,7 @@ export function taskExists(list, task) {
   return list.some(t => t['@id'] === task['@id']);
 }
 
-export const getProcessedOrders = (tasks) => {
+export const getProcessedTasks = (tasks: []) => {
   const tasksWithColor = getTasksWithColor(tasks);
   return displayPricePerOrder(tasksWithColor);
 };
