@@ -174,10 +174,10 @@ export const apiSlice = createApi({
       }),
     }),
     recurrenceRulesGenerateOrders: builder.mutation ({
-      query: date => ({
+      query: (date: DateOnlyString) => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
-          date: date.format('YYYY-MM-DD'),
+          date,
         },
       }),
     }),
