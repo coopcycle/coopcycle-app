@@ -20,6 +20,7 @@ import TaskList from '../../components/TaskList';
 import { getOrderId } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { DateOnlyString } from '../../utils/date-types';
+import { CourierProvider } from './contexts/CourierContext';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -44,7 +45,7 @@ export default function TaskListPage({ navigation, route }) {
 
     return taskList;
   }, [tasks]);
-  const isFromCourier = true;
+  const isFromCourier = true
 
   const containerStyle = [styles.container];
   if (tasks.length === 0) {
@@ -87,6 +88,7 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   return (
+    <CourierProvider isFromCourier={isFromCourier}>
     <View style={containerStyle}>
       <DateSelectHeader navigate={navigation.navigate} />
       {tasks.length > 0 && (
@@ -94,7 +96,6 @@ export default function TaskListPage({ navigation, route }) {
           id="courierTaskList"
           // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
           tasks={courierTaskList.items}
-          isFromCourier={isFromCourier}
           refreshing={isFetching}
           onRefresh={() => refetch()}
           onTaskClick={task =>
@@ -120,5 +121,6 @@ export default function TaskListPage({ navigation, route }) {
         </>
       )}
     </View>
+    </CourierProvider>
   );
 }

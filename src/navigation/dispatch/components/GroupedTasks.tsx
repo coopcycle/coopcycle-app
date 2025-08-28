@@ -41,6 +41,7 @@ import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderId } from '../../../utils/tasks';
+import { NonCourierProvider } from '../../courier/contexts/CourierContext';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -333,7 +334,7 @@ export default function GroupedTasks({
   );
 
   return (
-    <>
+    <NonCourierProvider isFromCourier={false}>
       <SectionList
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
@@ -352,7 +353,7 @@ export default function GroupedTasks({
         onPress={handleBulkAssignButtonPress}
         iconName="user-circle"
       />
-    </>
+    </NonCourierProvider>
   );
 }
 

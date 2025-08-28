@@ -25,7 +25,6 @@ const TaskList = ({
   swipeOutRightIconName,
   tasks,
   appendTaskListTestID = '',
-  isFromCourier = false,
 }) => {
   const bulkFabButton = useRef(null);
 
@@ -85,7 +84,6 @@ const TaskList = ({
         task={task}
         index={index}
         color={task.color}
-        isFromCourier={isFromCourier}
         onPress={() => onTaskClick(task)}
         onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}

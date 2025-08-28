@@ -32,7 +32,6 @@ import { getTaskTitle } from '../shared/src/utils';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import { TaskStatusIcon, TaskTypeIcon } from './TaskStatusIcon';
-import { selectIsCourier, selectUser } from '../redux/App/selectors';
 
 const cardBorderRadius = 2.5;
 
@@ -150,7 +149,6 @@ const TaskListItem = forwardRef(
       task,
       color,
       index,
-      isFromCourier,
       taskListId,
       appendTaskListTestID = '',
       onPress = () => {},
@@ -309,7 +307,6 @@ const TaskListItem = forwardRef(
             task={task}
             width={buttonWidth}
             onPress={onOrderPress}
-            isFromCourier={isFromCourier}
           />
           <ItemTouchable
             onPress={onPress}
