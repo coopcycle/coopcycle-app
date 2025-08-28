@@ -93,7 +93,7 @@ export function mapToColor(tasks) {
 export function getTasksWithColor(tasks) {
   const taskColors = mapToColor(tasks);
 
-  return tasks.map((task) => {
+  return tasks.map(task => {
     return addColorToTask(task, taskColors);
   });
 }
@@ -207,16 +207,29 @@ export const getProcessedTasks = (tasks: any[]) => {
 };
 
 export function displayPricePerOrder(tasks: any[]) {
-  const tasksWithOrderNumber = tasks.filter(t => t.metadata?.order_number !== undefined);
-  const tasksWithoutOrderNumber = tasks.filter(t => t.metadata?.order_number === undefined);
-  
-  if(tasksWithOrderNumber.length === 0){ 
+
+  const tasksWithOrderNumber = tasks.filter(
+    t => t.metadata?.order_number !== undefined,
+  );
+
+  if (tasksWithOrderNumber.length === 0) {
     return tasks;
   }
 
   const tasksByOrder = groupTasksByOrder(tasksWithOrderNumber);
-  const processedTasks = Object.values(tasksByOrder).map(processTasksOrderPrice);
-  return processedTasks.flat().concat(tasksWithoutOrderNumber);
+  const processedTasks = Object.values(tasksByOrder).map(
+    processTasksOrderPrice,
+  );
+  const flattenedTasks = processedTasks.flat();
+
+  const processedMap = new Map(flattenedTasks.map(task => [task.id, task]));
+
+  return tasks.map(task => {
+    if (task.metadata?.order_number !== undefined) {
+      return processedMap.get(task.id) || task;
+    }
+    return task;
+  });
 }
 
 const groupTasksByOrder = (tasks: any[]): Record<string, []> => {
@@ -240,10 +253,7 @@ const processTasksOrderPrice = (tasks: any[]): [] => {
   return tasks;
 };
 
-const setOrderTotal = (
-  tasks: any[],
-  type: 'PICKUP' | 'DROPOFF',
-): [] => {
+const setOrderTotal = (tasks: any[], type: 'PICKUP' | 'DROPOFF'): [] => {
   let isFirstTaskOfType = false;
   return tasks.map(t => {
     const shouldKeepOrderTotal = isSameTaskType(t, type) && !isFirstTaskOfType;
@@ -267,4 +277,4 @@ const hasMultipleTasksOfType = (
 
 const isSameTaskType = (task, type: 'PICKUP' | 'DROPOFF') => {
   return task.type === type;
-}
+};
