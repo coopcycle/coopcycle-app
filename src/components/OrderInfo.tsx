@@ -10,16 +10,18 @@ import {
   whiteColor
 } from '../styles/common';
 import { Task } from '../types/Task';
+import { useCourier } from '../navigation/courier/contexts/CourierContext';
 
-export const OrderInfo = ({ task, color, width, onPress, isFromCourier = false }) => {
+export const OrderInfo = ({ task, color, width, onPress }) => {
   const cardBorderRadius = 2.5;
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
   const orderId = getOrderIdWithPosition(task);
+  const context = useCourier();
 
   const shouldDisplayPrice = (task: Task, isFromCourier: boolean) : boolean => {
-    return isFromCourier ? task.metadata.payment_method === 'CASH' : true;
+    return isFromCourier ? task.metadata?.order_total && task.metadata.payment_method === 'CASH' : task.metadata?.order_total;
   }
 
   return (
@@ -46,7 +48,7 @@ export const OrderInfo = ({ task, color, width, onPress, isFromCourier = false }
             }}>
             {orderId}
           </Text>
-          {task.metadata?.order_total && shouldDisplayPrice(task, isFromCourier) ? (
+          {shouldDisplayPrice(task, context.isFromCourier) ? (
             <Text
               style={{
                 color: textColor,
