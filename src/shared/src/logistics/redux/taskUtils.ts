@@ -206,7 +206,7 @@ export const getProcessedTasks = (tasks: []) => {
   return displayPricePerOrder(tasksWithColor);
 };
 
-export function displayPricePerOrder(tasks) {
+export function displayPricePerOrder(tasks: []) {
   if(tasks.some(t => t.metadata?.order_number === undefined)) {
     return tasks;
   }
