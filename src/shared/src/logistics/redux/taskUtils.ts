@@ -153,7 +153,7 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
   return toursToUpdate;
 }
 
-export function filterTasksByKeyword(tasks, keyword: string) {
+export function filterTasksByKeyword(tasks: any[], keyword: string) {
   if (keyword === '') {
     return tasks;
   }
@@ -201,21 +201,25 @@ export function taskExists(list, task) {
   return list.some(t => t['@id'] === task['@id']);
 }
 
-export const getProcessedTasks = (tasks: []) => {
+export const getProcessedTasks = (tasks: any[]) => {
   const tasksWithColor = getTasksWithColor(tasks);
   return displayPricePerOrder(tasksWithColor);
 };
 
-export function displayPricePerOrder(tasks: []) {
-  if(tasks.some(t => t.metadata?.order_number === undefined)) {
+export function displayPricePerOrder(tasks: any[]) {
+  const tasksWithOrderNumber = tasks.filter(t => t.metadata?.order_number !== undefined);
+  const tasksWithoutOrderNumber = tasks.filter(t => t.metadata?.order_number === undefined);
+  
+  if(tasksWithOrderNumber.length === 0){ 
     return tasks;
   }
-  const tasksByOrder = groupTasksByOrder(tasks);
+
+  const tasksByOrder = groupTasksByOrder(tasksWithOrderNumber);
   const processedTasks = Object.values(tasksByOrder).map(processTasksOrderPrice);
-  return processedTasks.flat();
+  return processedTasks.flat().concat(tasksWithoutOrderNumber);
 }
 
-const groupTasksByOrder = (tasks: []): Record<string, []> => {
+const groupTasksByOrder = (tasks: any[]): Record<string, []> => {
   return tasks.reduce((acc, task) => {
     const orderNumber = task.metadata.order_number;
     if (!acc[orderNumber]) {
@@ -226,7 +230,7 @@ const groupTasksByOrder = (tasks: []): Record<string, []> => {
   }, {});
 };
 
-const processTasksOrderPrice = (tasks: []): [] => {
+const processTasksOrderPrice = (tasks: any[]): [] => {
   if (hasMultipleTasksOfType(tasks, 'PICKUP')) {
     return setOrderTotal(tasks, 'DROPOFF');
   }
@@ -237,7 +241,7 @@ const processTasksOrderPrice = (tasks: []): [] => {
 };
 
 const setOrderTotal = (
-  tasks: [],
+  tasks: any[],
   type: 'PICKUP' | 'DROPOFF',
 ): [] => {
   let isFirstTaskOfType = false;
@@ -255,7 +259,7 @@ const setOrderTotal = (
 };
 
 const hasMultipleTasksOfType = (
-  tasks: [],
+  tasks: any[],
   type: 'PICKUP' | 'DROPOFF',
 ): boolean => {
   return tasks.filter(t => t.type === type).length > 1;
