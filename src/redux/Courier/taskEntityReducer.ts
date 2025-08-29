@@ -336,7 +336,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
-          [action.payload.date]: getProcessedTasks(action.payload.items),
+          [action.payload.date]: getProcessedTasks(action.payload.items, true),
         },
       };
     }
@@ -349,7 +349,7 @@ export const tasksEntityReducer = (
         updatedAt: action.payload.updatedAt,
         items: {
           ...state.items,
-          [action.payload.date]: getProcessedTasks(action.payload.items),
+          [action.payload.date]: getProcessedTasks(action.payload.items, true),
         },
       };
 
@@ -390,7 +390,7 @@ const processWsMsg = (state, action) => {
           ...state,
           items: {
             ...state.items,
-            [taskList.date]: getProcessedTasks(taskList.items),
+            [taskList.date]: getProcessedTasks(taskList.items, true),
           },
         };
     }
