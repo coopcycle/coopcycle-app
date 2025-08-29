@@ -21,7 +21,7 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
   const context = useCourier();
   const isFromCourier = context && context.isFromCourier;
 
-  const shouldDisplayPrice = (task: Task, isFromCourier: boolean) : boolean => {
+  const shouldDisplayPrice = (task: Task) : boolean => {
     return isFromCourier ? task.metadata?.order_total && task.metadata.payment_method === 'CASH' : task.metadata?.order_total;
   }
 
@@ -49,7 +49,7 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
             }}>
             {orderId}
           </Text>
-          {shouldDisplayPrice(task, isFromCourier) ? (
+          {shouldDisplayPrice(task) ? (
             <Text
               style={{
                 color: textColor,

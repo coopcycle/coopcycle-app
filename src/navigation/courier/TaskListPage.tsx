@@ -45,7 +45,6 @@ export default function TaskListPage({ navigation, route }) {
 
     return taskList;
   }, [tasks]);
-  const isFromCourier = true
 
   const containerStyle = [styles.container];
   if (tasks.length === 0) {
@@ -88,7 +87,7 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   return (
-    <CourierProvider isFromCourier={isFromCourier}>
+    <CourierProvider>
     <View style={containerStyle}>
       <DateSelectHeader navigate={navigation.navigate} />
       {tasks.length > 0 && (
@@ -102,7 +101,7 @@ export default function TaskListPage({ navigation, route }) {
             navigateToTask(navigation, route, task, courierTaskList.items)
           }
           onOrderClick={task =>
-            navigateToOrder(navigation, getOrderId(task), isFromCourier)
+            navigateToOrder(navigation, getOrderId(task), true)
           }
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}

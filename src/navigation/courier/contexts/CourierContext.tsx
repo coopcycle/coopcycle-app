@@ -2,7 +2,8 @@
 import { ReactNode, createContext, useContext } from 'react';
 
 export const CourierContext = createContext<CourierContextType>({
-  isFromCourier: false,
+  // We assume this context will always be used only from courier screens
+  isFromCourier: true,
 });
 
 export const useCourier = (): CourierContextType => {
@@ -21,15 +22,15 @@ const createCourierProvider = (): React.FC<CourierProviderProps> => {
         </CourierContext.Provider>
         );
     }
-} 
+}
 
 export const CourierProvider = createCourierProvider();
 
 interface CourierProviderProps {
     children: ReactNode,
-    isFromCourier: boolean,   
+    isFromCourier?: boolean,
 }
 
 interface CourierContextType {
-    isFromCourier: boolean
+    isFromCourier: boolean,
 }
