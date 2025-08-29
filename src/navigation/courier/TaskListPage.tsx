@@ -20,6 +20,7 @@ import TaskList from '../../components/TaskList';
 import { getOrderId } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { DateOnlyString } from '../../utils/date-types';
+import { CourierProvider } from './contexts/CourierContext';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -44,7 +45,6 @@ export default function TaskListPage({ navigation, route }) {
 
     return taskList;
   }, [tasks]);
-  const isFromCourier = true;
 
   const containerStyle = [styles.container];
   if (tasks.length === 0) {
@@ -87,6 +87,7 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   return (
+    <CourierProvider>
     <View style={containerStyle}>
       <DateSelectHeader navigate={navigation.navigate} />
       {tasks.length > 0 && (
@@ -100,7 +101,7 @@ export default function TaskListPage({ navigation, route }) {
             navigateToTask(navigation, route, task, courierTaskList.items)
           }
           onOrderClick={task =>
-            navigateToOrder(navigation, getOrderId(task), isFromCourier)
+            navigateToOrder(navigation, getOrderId(task), true)
           }
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
@@ -119,5 +120,6 @@ export default function TaskListPage({ navigation, route }) {
         </>
       )}
     </View>
+    </CourierProvider>
   );
 }
