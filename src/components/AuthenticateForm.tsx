@@ -1,4 +1,6 @@
-import { Button, Text, View } from 'native-base';
+import { View } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, StyleSheet } from 'react-native';
@@ -68,7 +70,7 @@ class AuthenticateForm extends Component {
               this.setState({ formToDisplay: alternateForm, message: '' })
             }
             testID="loginOrRegister">
-            {this.props.t(btnLabel)}
+            <ButtonText>{this.props.t(btnLabel)}</ButtonText>
           </Button>
         </View>
         {/* This empty view is for increasing the page height so the button appears above the menu bar */}

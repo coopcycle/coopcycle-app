@@ -1,4 +1,3 @@
-// import { Box, Button, Icon, Text } from 'native-base';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';

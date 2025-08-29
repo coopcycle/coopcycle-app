@@ -11,12 +11,12 @@ import jwtDecode from 'jwt-decode';
 import _ from 'lodash';
 import {
   Box,
-  Button,
   Column,
   FormControl,
   Input,
   ScrollView,
 } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, View } from 'react-native';
@@ -167,12 +167,12 @@ class LoginForm extends Component {
                     size="sm"
                     variant="link"
                     onPress={this.props.onForgotPassword}>
-                    {this.props.t('FORGOT_PASSWORD')}
+                    <ButtonText>{this.props.t('FORGOT_PASSWORD')}</ButtonText>
                   </Button>
                 </View>
                 <View>
                   <Button block onPress={handleSubmit} testID="loginSubmit">
-                    {this.props.t('SUBMIT')}
+                    <ButtonText>{this.props.t('SUBMIT')}</ButtonText>
                   </Button>
                   {this.props.withFacebook ? (
                     <Box mt="2" mb="2">
