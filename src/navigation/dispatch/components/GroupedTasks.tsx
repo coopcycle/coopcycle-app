@@ -58,7 +58,7 @@ export default function GroupedTasks({
   const date = useSelector(selectSelectedDate)
   const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation()
 
-  useEffect(() => {generateOrders(date)}, [generateOrders, date]);
+  useEffect(() => {generateOrders(date.format('YYYY-MM-DD'))}, [generateOrders, date]);
 
   const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
   // Combine unassigned tasks and task lists to use in SectionList
