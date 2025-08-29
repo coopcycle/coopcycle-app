@@ -19,6 +19,7 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
   const textColor = isDefaultColor ? blackColor : whiteColor;
   const orderId = getOrderIdWithPosition(task);
   const context = useCourier();
+  const isFromCourier = context && context.isFromCourier;
 
   const shouldDisplayPrice = (task: Task, isFromCourier: boolean) : boolean => {
     return isFromCourier ? task.metadata?.order_total && task.metadata.payment_method === 'CASH' : task.metadata?.order_total;
@@ -48,7 +49,7 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
             }}>
             {orderId}
           </Text>
-          {shouldDisplayPrice(task, context.isFromCourier) ? (
+          {shouldDisplayPrice(task, isFromCourier) ? (
             <Text
               style={{
                 color: textColor,

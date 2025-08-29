@@ -10,10 +10,10 @@ export const useCourier = (): CourierContextType => {
   return context;
 };
 
-const createCourierProvider = (isFromCourier: boolean): React.FC<CourierProviderProps> => {
+const createCourierProvider = (): React.FC<CourierProviderProps> => {
     return ({children}: CourierProviderProps) => {
         const value: CourierContextType = {
-            isFromCourier
+            isFromCourier: true
         }
         return(
         <CourierContext.Provider value={value}>
@@ -23,8 +23,7 @@ const createCourierProvider = (isFromCourier: boolean): React.FC<CourierProvider
     }
 } 
 
-export const CourierProvider = createCourierProvider(true);
-export const NonCourierProvider = createCourierProvider(false);
+export const CourierProvider = createCourierProvider();
 
 interface CourierProviderProps {
     children: ReactNode,
