@@ -153,7 +153,7 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
   return toursToUpdate;
 }
 
-export function filterTasksByKeyword(tasks: any[], keyword: string) {
+export function filterTasksByKeyword(tasks, keyword: string) {
   if (keyword === '') {
     return tasks;
   }
@@ -201,12 +201,12 @@ export function taskExists(list, task) {
   return list.some(t => t['@id'] === task['@id']);
 }
 
-export const getProcessedTasks = (tasks: any[]) => {
+export const getProcessedTasks = (tasks) => {
   const tasksWithColor = getTasksWithColor(tasks);
   return displayPricePerOrder(tasksWithColor);
 };
 
-export function displayPricePerOrder(tasks: any[]) {
+export function displayPricePerOrder(tasks) {
 
   const tasksWithOrderNumber = tasks.filter(
     t => t.metadata?.order_number !== undefined,
@@ -232,7 +232,7 @@ export function displayPricePerOrder(tasks: any[]) {
   });
 }
 
-const groupTasksByOrder = (tasks: any[]): Record<string, []> => {
+const groupTasksByOrder = (tasks): Record<string, []> => {
   return tasks.reduce((acc, task) => {
     const orderNumber = task.metadata.order_number;
     if (!acc[orderNumber]) {
@@ -243,7 +243,7 @@ const groupTasksByOrder = (tasks: any[]): Record<string, []> => {
   }, {});
 };
 
-const processTasksOrderPrice = (tasks: any[]): [] => {
+const processTasksOrderPrice = (tasks): [] => {
   if (hasMultipleTasksOfType(tasks, 'PICKUP')) {
     return setOrderTotal(tasks, 'DROPOFF');
   }
@@ -253,7 +253,7 @@ const processTasksOrderPrice = (tasks: any[]): [] => {
   return tasks;
 };
 
-const setOrderTotal = (tasks: any[], type: 'PICKUP' | 'DROPOFF'): [] => {
+const setOrderTotal = (tasks, type: 'PICKUP' | 'DROPOFF'): [] => {
   let isFirstTaskOfType = false;
   return tasks.map(t => {
     const shouldKeepOrderTotal = isSameTaskType(t, type) && !isFirstTaskOfType;
@@ -269,7 +269,7 @@ const setOrderTotal = (tasks: any[], type: 'PICKUP' | 'DROPOFF'): [] => {
 };
 
 const hasMultipleTasksOfType = (
-  tasks: any[],
+  tasks,
   type: 'PICKUP' | 'DROPOFF',
 ): boolean => {
   return tasks.filter(t => t.type === type).length > 1;
