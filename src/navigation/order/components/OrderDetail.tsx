@@ -1,0 +1,89 @@
+import React from 'react';
+
+import { Box, Divider, Text } from '../../../components/gluestack';
+
+import IconText from '../../../components/IconText';
+import TaskTagsList from '../../../components/TaskTagsList';
+import { Tasks } from '../../../types/tasks';
+import { getOrderTimeFrame } from '../../task/components/utils';
+import {
+  commentsInOrder,
+  getOrderTitle,
+  getUniqueTagsFromTasks,
+  orderInfoInMetadata,
+  packagesInOrderSummery,
+} from './../utils';
+import { blackColor } from '../../../styles/common';
+import { useTranslation } from 'react-i18next';
+
+const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
+  const { t } = useTranslation();
+  const orderTitle = getOrderTitle(tasks);
+  const packagesInOrder = packagesInOrderSummery(tasks);
+  const orderTimeframe = getOrderTimeFrame(tasks);
+  const orderPaymentMethod = orderInfoInMetadata(tasks, 'payment_method');
+  const orderDistance = orderInfoInMetadata(tasks, 'order_distance');
+  const orderTags = getUniqueTagsFromTasks(tasks);
+  const orderValue = orderInfoInMetadata(tasks, 'order_total');
+  const comments = commentsInOrder(tasks);
+
+  return (
+    <Box sx={{ gap: 12, padding: 24 }}>
+      <Text
+        size="lg"
+        style={{
+          textTransform: 'uppercase',
+          color: blackColor,
+        }}
+        bold>
+        {orderTitle}
+      </Text>
+      {orderTags.length > 0 && (
+        <>
+          <Divider />
+          <TaskTagsList taskTags={orderTags} />
+        </>
+      )}
+      <Divider />
+      <IconText
+        label={t('ORDER_SCHEDULE')}
+        text={orderTimeframe}
+        iconName="clock"
+      />
+      <Divider />
+      <IconText
+        label={t('ORDER_PRICE')}
+        text={`$ ${orderValue}${orderPaymentMethod ? ` - ${orderPaymentMethod}` : ''}`}
+        iconName="money-check-alt"
+      />
+      {orderDistance && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_DISTANCE')}
+            text={`${orderDistance}`}
+            iconName="route"
+          />
+        </>
+      )}
+      <Divider />
+      <IconText
+        label={t('ORDER_PACKAGES')}
+        text={`Total amout: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
+        iconName="boxes"
+      />
+      {comments.length > 0 && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_COMMENTS')}
+            text={comments.join('\n\n')}
+            iconName="comments"
+          />
+        </>
+      )}
+    </Box>
+  );
+};
+
+export default OrderDetail;

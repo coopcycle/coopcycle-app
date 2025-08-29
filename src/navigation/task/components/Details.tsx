@@ -16,7 +16,7 @@ import {
   loadIconKey,
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
-import { getAddress, getName, getTimeFrame } from './utils';
+import { getAddress, getName, getPackagesSummary, getTimeFrame } from './utils';
 import { getTaskTitle } from '../../../shared/src/utils';
 import Detail from '../../../components/Detail';
 
@@ -123,15 +123,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
   }
 
   if (task.packages && task.packages.length) {
-    const packagesSummary = task.packages.reduce(
-      ({ text, totalQuantity }, p) => {
-        const packageText = `${p.quantity} × ${p.name}`;
-        text = text.length ? `${text}\n${packageText}` : packageText;
-        totalQuantity += p.quantity;
-        return { text, totalQuantity };
-      },
-      { text: '', totalQuantity: 0 },
-    );
+    const packagesSummary = getPackagesSummary(task);
     items.push({
       iconName: 'cube',
       text: `${packagesSummary.text}`,

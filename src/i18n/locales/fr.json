@@ -300,7 +300,6 @@
     "STORE_NEW_DELIVERY_ADDRESS": "Adresse",
     "STORE_NEW_DELIVERY_SEARCH_CLIENT": "Rechercher un client",
     "STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT": "Entrez le nom du client",
-
     "STORE_NEW_DELIVERY_ADDRESS_HELP": "Entrez l'adresse de dépôt pour vérifier la faisabilité",
     "STORE_NEW_DELIVERY_PHONE_NUMBER": "Numéro de téléphone",
     "STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER": "Entrez un numéro de téléphone valide",
@@ -524,8 +523,8 @@
     "RESTAURANT_MORE_INFOS": "En savoir plus",
     "PRICE_EXCLUDING_TAX": "Prix hors taxes",
     "PRICE_TOTAL": "Prix total",
-		"PRICE_CALCULATION_FAILED": "Impossible de calculer le prix",
-		"PRICE_CALCULATION_FAILED_DISCLAIMER": "Le prix n’a pas pu être calculé, veuillez nous contacter pour résoudre le problème.",
+    "PRICE_CALCULATION_FAILED": "Impossible de calculer le prix",
+    "PRICE_CALCULATION_FAILED_DISCLAIMER": "Le prix n’a pas pu être calculé, veuillez nous contacter pour résoudre le problème.",
     "HIDE_INCIDENTS_TASKS": "Cacher les incidents",
     "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Le créneau horaire sélectionné nʼest plus disponible pour aujourdʼhui",
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "Les horaires dʼouverture ne permettent pas de commander pour aujourdʼhui",
@@ -558,5 +557,8 @@
     "ASK_TO_START_PICKUP_TITLE": "Tâche de ramassage",
     "ASK_TO_START_PICKUP_MESSAGE": "La tâche de ramassage n'est pas encore commencée.",
     "PAYGREEN_RETURN_TEXT": "Veuillez patienter pendant que nous traitons votre paiement…"
-  }
+  },
+  "ORDER_SCHEDULE": "Calendrier",
+  "ORDER_LOCATION": "Emplacement",
+  "ORDER_CLIENT": "Client"
 }

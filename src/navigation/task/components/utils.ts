@@ -29,3 +29,19 @@ export const getName = task => {
     })
     .join(' ');
 };
+
+export const getPackagesSummary = task => {
+  if (!task.packages || !task.packages.length) {
+    return { text: '', totalQuantity: 0 };
+  }
+
+  return task.packages.reduce(
+    ({ text, totalQuantity }, p) => {
+      const packageText = `${p.quantity} × ${p.name}`;
+      text = text.length ? `${text}\n${packageText}` : packageText;
+      totalQuantity += p.quantity;
+      return { text, totalQuantity };
+    },
+    { text: '', totalQuantity: 0 },
+  );
+};
