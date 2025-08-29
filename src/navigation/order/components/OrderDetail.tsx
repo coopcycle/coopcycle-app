@@ -13,8 +13,11 @@ import {
   orderInfoInMetadata,
   packagesInOrderSummery,
 } from './../utils';
+import { blackColor } from '../../../styles/common';
+import { useTranslation } from 'react-i18next';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
+  const { t } = useTranslation();
   const orderTitle = getOrderTitle(tasks);
   const packagesInOrder = packagesInOrderSummery(tasks);
   const orderTimeframe = getOrderTimeFrame(tasks);
@@ -26,7 +29,13 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
 
   return (
     <Box sx={{ gap: 12, padding: 24 }}>
-      <Text size="2xl" bold>
+      <Text
+        size="lg"
+        style={{
+          textTransform: 'uppercase',
+          color: blackColor,
+        }}
+        bold>
         {orderTitle}
       </Text>
       {orderTags.length > 0 && (
@@ -36,27 +45,41 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
         </>
       )}
       <Divider />
-      <IconText text={orderTimeframe} iconName="clock" />
+      <IconText
+        label={t('ORDER_SCHEDULE')}
+        text={orderTimeframe}
+        iconName="clock"
+      />
       <Divider />
       <IconText
+        label={t('ORDER_PRICE')}
         text={`$ ${orderValue}${orderPaymentMethod ? ` - ${orderPaymentMethod}` : ''}`}
         iconName="money-check-alt"
       />
       {orderDistance && (
         <>
           <Divider />
-          <IconText text={`${orderDistance}`} iconName="route" />
+          <IconText
+            label={t('ORDER_DISTANCE')}
+            text={`${orderDistance}`}
+            iconName="route"
+          />
         </>
       )}
       <Divider />
       <IconText
+        label={t('ORDER_PACKAGES')}
         text={`Total amout: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
         iconName="boxes"
       />
       {comments.length > 0 && (
         <>
           <Divider />
-          <IconText text={comments.join('\n')} iconName="comments" />
+          <IconText
+            label={t('ORDER_COMMENTS')}
+            text={comments.join('\n\n')}
+            iconName="comments"
+          />
         </>
       )}
     </Box>

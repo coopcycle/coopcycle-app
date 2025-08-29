@@ -18,15 +18,17 @@ import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
 import TaskTypeIcon from '../../../components/TaskTypeIcon';
 import { getTaskTitle } from '../../../shared/src/utils';
-import { greyColor, whiteColor } from '../../../styles/common';
+import { blackColor, greyColor, whiteColor } from '../../../styles/common';
 import { Task } from '../../../types/task';
 import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
+import { useTranslation } from 'react-i18next';
 
 interface OrderAccordeonProps {
   task: Task;
 }
 
 function OrderAccordeon({ task }: OrderAccordeonProps) {
+  const { t } = useTranslation();
   const taskTitle = getTaskTitle(task);
   const timeframe = getTimeFrame(task);
   const address: string = task.address.streetAddress;
@@ -79,10 +81,17 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                         sx={{
                           gap: 10,
                           flexDirection: 'row',
-                          alignItems: 'baseline',
+                          flexWrap: 'wrap',
                         }}>
-                        <TaskTypeIcon task={task} />
-                        <Text size="2xl" style={{ lineHeight: 22 }} bold>
+                        <TaskTypeIcon colored task={task} />
+                        <Text
+                          size="lg"
+                          style={{
+                            lineHeight: 22,
+                            textTransform: 'uppercase',
+                            color: blackColor,
+                          }}
+                          bold>
                           {taskTitle}
                         </Text>
                       </Box>
@@ -93,7 +102,9 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                           alignItems: 'center',
                         }}>
                         <Box>
-                          <Text bold>{timeframe}</Text>
+                          <Text bold style={{ color: blackColor }}>
+                            {timeframe}
+                          </Text>
                         </Box>
                         <Box
                           sx={{
@@ -102,7 +113,9 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                             paddingStart: 8,
                             flex: 1,
                           }}>
-                          <Text bold>{address}</Text>
+                          <Text bold style={{ color: blackColor }}>
+                            {address}
+                          </Text>
                         </Box>
                       </Box>
                     </AccordionTitleText>
@@ -130,18 +143,28 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                 ) : null}
                 <Divider />
                 <IconText
+                  label={t('ORDER_LOCATION')}
                   iconName="map-marker-alt"
                   text={task.address.streetAddress}
                 />
                 <Divider />
-                <IconText text={timeframe} iconName="clock" />
+                <IconText
+                  label={t('ORDER_SCHEDULE')}
+                  text={timeframe}
+                  iconName="clock"
+                />
                 <Divider />
-                <IconText text={packageType.text} iconName="box" />
+                <IconText
+                  label={t('ORDER_PACKAGES')}
+                  text={packageType.text}
+                  iconName="box"
+                />
 
                 {task.address.telephone && (
                   <>
                     <Divider />
                     <IconText
+                      label={t('ORDER_CLIENT')}
                       text={`${task.address.firstName} - ${task.address.telephone}`}
                       iconName="phone"
                     />
@@ -150,7 +173,11 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                 {comments && (
                   <>
                     <Divider />
-                    <IconText text={comments} iconName="comments" />
+                    <IconText
+                      label={t('ORDER_COMMENTS')}
+                      text={comments}
+                      iconName="comments"
+                    />
                   </>
                 )}
               </Box>

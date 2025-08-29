@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { HStack, Icon, Text } from './gluestack';
+import { Box, HStack, Icon, Text } from './gluestack';
 import { Text as GluestackText } from '@gluestack-ui/themed';
+import { blackColor, darkGreyColor } from '../styles/common';
 
 type TextSizeType = React.ComponentProps<typeof GluestackText>['size'];
 
 export interface IconTextProps {
   iconName: string;
+  label?: string | null;
   text: string;
   iconColor?: string;
   iconSize?: number;
@@ -20,8 +22,9 @@ export interface IconTextProps {
 const IconText: React.FC<IconTextProps> = ({
   iconName,
   text,
-  iconColor,
-  iconSize = 16,
+  label,
+  iconColor = darkGreyColor,
+  iconSize = 18,
   textSize = 'lg',
   onPress,
   disabled = false,
@@ -37,15 +40,29 @@ const IconText: React.FC<IconTextProps> = ({
         name={iconName}
         color={iconColor}
         size={iconSize}
-        style={{ paddingTop: 2 }}
+        style={{ paddingTop: 4 }}
       />
-      <Text
-        flex={1}
-        size={textSize}
-        style={{ lineHeight: 22 }}
-        ellipsizeMode="tail">
-        {text}
-      </Text>
+      <Box sx={{ flexDirection: 'column', flex: 1 }}>
+        {label && (
+          <Text
+            size="sm"
+            style={{
+              lineHeight: 22,
+              textTransform: 'uppercase',
+              color: blackColor,
+              fontWeight: 500,
+            }}>
+            {label}
+          </Text>
+        )}
+        <Text
+          size={textSize}
+          style={{
+            lineHeight: 22,
+          }}>
+          {text}
+        </Text>
+      </Box>
     </HStack>
   );
 

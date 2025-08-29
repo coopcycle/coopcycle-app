@@ -28,7 +28,7 @@ function TaskTagsList({ taskTags }: { taskTags: TaskTag[] }) {
 const styles = StyleSheet.create({
   tagsWrapper: {
     flexWrap: 'wrap',
-    gap: 2,
+    gap: 8,
   },
   tag: {
     paddingVertical: 4,
