@@ -3,17 +3,17 @@ import _ from 'lodash';
 import {
   Box,
   Center,
-  FlatList,
-  HStack,
-  Heading,
   Icon,
   Skeleton,
-  Text,
   VStack,
 } from 'native-base';
+import { Text } from '@/components/ui/text';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
 import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
+  FlatList,
   Pressable,
   StyleSheet,
   View,
@@ -228,7 +228,7 @@ function Restaurant(props) {
           onPress={() => {
             AddressUtils.openMap(restaurant.address, restaurant.name);
           }}>
-          <HStack space={3} style={cardStyle}>
+          <HStack space="md" style={cardStyle}>
             <Icon as={Ionicons} name="map" size={5} color={'blueGray.600'} />
             <Text>{restaurant.address.streetAddress}</Text>
           </HStack>
@@ -237,7 +237,7 @@ function Restaurant(props) {
           onPress={() => {
             phonecall(restaurant.telephone, true);
           }}>
-          <HStack space={3} style={cardStyle}>
+          <HStack space="md" style={cardStyle}>
             <Icon as={Ionicons} name="call" size={5} color={'blueGray.600'} />
             <Text>
               {i18n.t('CALL')} {restaurant.name}
