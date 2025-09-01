@@ -1,11 +1,9 @@
-import { Box, HStack, Icon, Text, VStack, useTheme } from 'native-base';
+import { Box, HStack, Icon, Text, VStack } from 'native-base';
 import {
   Dimensions,
   StyleSheet,
-  TouchableHighlight,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import { useSelector } from 'react-redux';
@@ -14,37 +12,30 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { forwardRef, useEffect, useRef } from 'react';
-import _ from 'lodash';
 
 import {
-  blackColor,
-  lightGreyColor,
   redColor,
   whiteColor,
   yellowColor,
 } from '../styles/common';
 import {
   commentsIconName,
-  doingIconName,
-  doneIconName,
-  failedIconName,
   incidentIconName,
-  taskTypeIconName,
 } from '../navigation/task/styles/common';
-import { formatPrice } from '../utils/formatting';
 import { minutes } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
 import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
-import CoopcyleLogo from '../../assets/images/logo.svg';
 import { getTaskTitle } from '../shared/src/utils';
-import { getOrderIdWithPosition } from '../utils/tasks';
+import { ItemTouchable } from './ItemTouchable';
+import { OrderInfo } from './OrderInfo';
+import { TaskStatusIcon, TaskTypeIcon } from './TaskStatusIcon';
 
 const cardBorderRadius = 2.5;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   text: {
     fontSize: 14,
   },
@@ -85,112 +76,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 });
-
-const OrderInfo = ({ task, color, width, onPress }) => {
-  const isDefaultColor = color === '#ffffff';
-  const backgroundColor = isDefaultColor ? lightGreyColor : color;
-  const textColor = isDefaultColor ? blackColor : whiteColor;
-  const orderId = getOrderIdWithPosition(task);
-
-  return (
-    <ItemTouchable
-      onPress={() => onPress()}
-      style={{
-        alignItems: 'center',
-        backgroundColor,
-        borderBottomLeftRadius: cardBorderRadius,
-        borderTopLeftRadius: cardBorderRadius,
-        gap: 12,
-        height: '100%',
-        justifyContent: 'center',
-        width,
-      }}>
-      {!_.isEmpty(orderId) ? (
-        <>
-          <Text
-            style={{
-              color: textColor,
-              fontSize: 24,
-              fontWeight: 700,
-              lineHeight: 24,
-            }}>
-            {orderId}
-          </Text>
-          {task.metadata?.order_total ? (
-            <Text
-              style={{
-                color: textColor,
-                fontSize: 15,
-                fontWeight: 700,
-                lineHeight: 15,
-              }}>
-              {formatPrice(task.metadata.order_total)}
-            </Text>
-          ) : null}
-        </>
-      ) : (
-        <CoopcyleLogo width={width * 0.5} height={width * 0.5} />
-      )}
-    </ItemTouchable>
-  );
-};
-
-const iconStyle = task => {
-  const style = [styles.icon];
-  if (task.status === 'FAILED') {
-    style.push(styles.iconDanger);
-  }
-
-  return style;
-};
-
-const TaskTypeIcon = ({ task }) => (
-  <Icon
-    as={FontAwesome}
-    style={iconStyle(task)}
-    name={taskTypeIconName(task)}
-  />
-);
-
-const TaskStatusIcon = ({ task }) => {
-  const color = '#000000'; // Make it invisible
-  const testID = `taskListItemIcon:${task.status}:${task.id}`;
-
-  switch (task.status) {
-    case 'DOING':
-      return (
-        <Icon
-          as={FontAwesome}
-          color={color}
-          name={doingIconName}
-          style={iconStyle(task)}
-          testID={testID}
-        />
-      );
-    case 'DONE':
-      return (
-        <Icon
-          as={FontAwesome}
-          color={color}
-          name={doneIconName}
-          style={iconStyle(task)}
-          testID={testID}
-        />
-      );
-    case 'FAILED':
-      return (
-        <Icon
-          as={FontAwesome}
-          color={color}
-          name={failedIconName}
-          style={iconStyle(task)}
-          testID={testID}
-        />
-      );
-    default:
-      return (<View />);
-  }
-};
 
 const TaskPriorityStatus = ({ task }) => {
   const timeDifference = moment().diff(task.doneBefore);
@@ -257,25 +142,6 @@ const SwipeButton = ({ iconName, width }) => (
     />
   </View>
 );
-
-const ItemTouchable = ({ children, style, ...otherProps }) => {
-  const colorScheme = useColorScheme();
-  const { colors } = useTheme();
-
-  return (
-    <TouchableHighlight
-      style={{
-        backgroundColor: colorScheme === 'dark' ? 'black' : 'white',
-        ...style,
-      }}
-      underlayColor={
-        colorScheme === 'dark' ? colors.gray['700'] : colors.gray['200']
-      }
-      {...otherProps}>
-      {children}
-    </TouchableHighlight>
-  );
-};
 
 const TaskListItem = forwardRef(
   (
