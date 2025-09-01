@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import { getUserTaskList } from './taskListUtils';
 import { getTaskTitle } from '../../utils';
+// WHEN TASK IS ADDED, uncomment the following line
+// import { Task } from '../../../../types/Task';
 
 /**
  * Utility function to sort a list of tasks
@@ -121,13 +123,13 @@ export function tasksToIds(tasks) {
   );
 }
 
-export function getTaskListItemIds(username, allTaskLists) {
+export function getTaskListItemIds(username: string, allTaskLists) {
   const userTaskList = getUserTaskList(username, allTaskLists);
 
   return userTaskList ? userTaskList.itemIds : [];
 }
 
-export function getAssignedTask(task, username) {
+export function getAssignedTask(task, username: string) {
   return {
     ...task,
     isAssigned: !!username,
@@ -151,7 +153,7 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
   return toursToUpdate;
 }
 
-export function filterTasksByKeyword(tasks, keyword) {
+export function filterTasksByKeyword(tasks, keyword: string) {
   if (keyword === '') {
     return tasks;
   }
@@ -163,7 +165,7 @@ export function filterTasksByKeyword(tasks, keyword) {
   );
 }
 
-export function taskIncludesKeyword(task, keyword) {
+export function taskIncludesKeyword(task, keyword: string) {
   return (
     standardIncludes(task.assignedTo, keyword) ||
     standardIncludes(task.orgName, keyword) ||
@@ -175,7 +177,7 @@ export function taskIncludesKeyword(task, keyword) {
   );
 }
 
-export function taskIncludesKeywordInOrder(task, keyword) {
+export function taskIncludesKeywordInOrder(task, keyword: string) {
   return (
     standardIncludes(task.metadata?.order_number, keyword) ||
     standardIncludes(task.address?.contactName, keyword) ||
@@ -186,7 +188,7 @@ export function taskIncludesKeywordInOrder(task, keyword) {
   );
 }
 
-function standardIncludes(originalString, keyword) {
+function standardIncludes(originalString: string, keyword: string) {
   if (!originalString) {
     return false;
   }
@@ -197,4 +199,97 @@ function standardIncludes(originalString, keyword) {
 }
 export function taskExists(list, task) {
   return list.some(t => t['@id'] === task['@id']);
+}
+
+export const getProcessedTasks = (tasks, isFromCourier: boolean = false) => {
+  const tasksWithColor = getTasksWithColor(tasks);
+  return displayPricePerOrder(tasksWithColor, isFromCourier);
+};
+
+export function displayPricePerOrder(tasks, isFromCourier: boolean) {
+  const tasksWithOrderNumber = tasks.filter(
+    t => t.metadata?.order_number !== undefined,
+  );
+
+  if (tasksWithOrderNumber.length === 0) {
+    return tasks;
+  }
+
+  const tasksByOrder = groupTasksByOrder(tasksWithOrderNumber);
+  const processedTasks = Object.values(tasksByOrder).map(
+    (tasks) => processTasksOrderPrice(tasks, isFromCourier)
+  );
+  const flattenedTasks = processedTasks.flat();
+
+  const processedMap = new Map(flattenedTasks.map(task => [task.id, task]));
+
+  return tasks.map(task => {
+    if (task.metadata?.order_number !== undefined) {
+      return processedMap.get(task.id) || task;
+    }
+    return task;
+  });
+}
+
+const groupTasksByOrder = (tasks): Record<string, []> => {
+  return tasks.reduce((acc, task) => {
+    const orderNumber = task.metadata.order_number;
+    if (!acc[orderNumber]) {
+      acc[orderNumber] = [];
+    }
+    acc[orderNumber].push(task);
+    return acc;
+  }, {});
+};
+
+const processTasksOrderPrice = (tasks, isFromCourier: boolean) => {
+  if (hasMultipleTasksOfType(tasks, 'PICKUP')) {
+    return applyOrderTotal(tasks, 'DROPOFF', isFromCourier);
+  }
+
+  if (hasMultipleTasksOfType(tasks, 'DROPOFF')) {
+    return applyOrderTotal(tasks, isFromCourier ? 'DROPOFF' : 'PICKUP', isFromCourier);
+  }
+
+  return applyOrderTotal(tasks, 'DROPOFF', isFromCourier, true);
+};
+
+const hasMultipleTasksOfType = (
+  tasks,
+  type: Type,
+): boolean => {
+  return tasks.filter(t => t.type === type).length > 1;
+};
+
+const isSameTaskType = (task, type: Type) => {
+  return task.type === type;
+};
+
+const applyOrderTotal = (
+  tasks,
+  type: Type,
+  isCourier: boolean,
+  isSingular: boolean = false,
+) => {
+  let hasKeptOrderTotal = false;
+
+  return tasks.map(t => {
+    const keepOrderTotal =
+    isCourier
+      ? isSameTaskType(t, 'DROPOFF')
+      : isSameTaskType(t, type) && (!hasKeptOrderTotal || isSingular);
+    const newTask = { ...t };
+
+    if (keepOrderTotal) {
+      hasKeptOrderTotal = true;
+    } else {
+      newTask.metadata = { ...newTask.metadata, order_total: null };
+    }
+
+    return newTask;
+  });
+};
+
+interface Type {
+  type: 'PICKUP' | 'DROPOFF',
 }
