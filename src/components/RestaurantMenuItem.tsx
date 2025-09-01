@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { Image, Text, View } from 'native-base';
+import { Image, Text } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useBackgroundContainerColor } from '../styles/theme';
 import { formatPrice } from '../utils/formatting';
 import { DietBadge, ZeroWasteBadge } from './RestaurantProductBadge';

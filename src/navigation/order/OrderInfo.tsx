@@ -1,5 +1,4 @@
-import { FlatList } from 'native-base';
-import { Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import React, { useCallback, useMemo, useState } from 'react';

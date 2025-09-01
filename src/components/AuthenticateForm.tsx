@@ -1,9 +1,8 @@
-import { View } from 'native-base';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { connect } from 'react-redux';
 import { clearAuthenticationErrors } from '../redux/App/actions';

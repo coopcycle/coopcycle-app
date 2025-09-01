@@ -1,4 +1,8 @@
-import { Box, HStack, Heading, Icon, Switch, Text } from 'native-base';
+import { Icon, Switch } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { SectionList, TouchableOpacity } from 'react-native';
@@ -30,8 +34,8 @@ import {
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 
 const SettingsItemInner = ({ item }) => (
-  <HStack alignItems="center" justifyContent="space-between" py="3">
-    <HStack alignItems="center">
+  <HStack className="align-center justify-between py-3">
+    <HStack className="align-center">
       <Icon size="sm" mr="1" as={FontAwesome} name={item.icon} />
       <Text>{item.label}</Text>
     </HStack>
@@ -128,7 +132,7 @@ const Settings = ({
   ];
 
   return (
-    <Box p="2">
+    <Box className="p-2">
       <SectionList
         sections={sections}
         keyExtractor={(item, index) => `setting-${index}`}

@@ -4,9 +4,9 @@ import {
   IconRecycle,
 } from '@tabler/icons-react-native';
 import i18next from 'i18next';
-import { Text, View, useColorModeValue } from 'native-base';
+import { Text, useColorModeValue } from 'native-base';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   badge: {

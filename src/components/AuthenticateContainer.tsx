@@ -1,6 +1,5 @@
-import { ScrollView } from 'native-base';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 /**
  * A hackish usage of a ScrollView to automatically hide the keyboard

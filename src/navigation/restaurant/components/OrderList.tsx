@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionList } from 'react-native';
+import { SectionList, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import {
@@ -16,7 +16,6 @@ import {
 } from '../../../redux/Restaurant/selectors';
 import OrderListItem from './OrderListItem';
 import OrderListSectionHeader from './OrderListSectionHeader';
-import { View } from 'native-base';
 
 export default function OrderList({ onItemClick }) {
   const autoAcceptOrdersEnabled = useSelector(selectAutoAcceptOrdersEnabled);
