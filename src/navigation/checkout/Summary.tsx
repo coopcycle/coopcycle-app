@@ -1,5 +1,8 @@
 import _ from 'lodash';
-import { Button, Center, HStack, Icon, Pressable, Text } from 'native-base';
+import { Button, Center, Icon } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import {
@@ -181,7 +184,7 @@ function ActionButton({
       style={styles.btnGrey}
       // Disable interaction while loading
       onPress={() => !isLoading && onPress()}>
-      <HStack p="3" justifyContent="space-between" alignItems="center">
+      <HStack className="p-3" justifyContent="space-between" alignItems="center">
         <Icon
           as={FontAwesome}
           name={iconName}
@@ -508,7 +511,7 @@ class Summary extends Component {
           </HStack>
           {reusablePackagingAction && (
             <HStack
-              p="3"
+              className="p-3"
               justifyContent="space-between"
               alignItems="center"
               style={styles.btnGrey}>
