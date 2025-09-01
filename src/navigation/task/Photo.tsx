@@ -1,5 +1,8 @@
 import { Camera, CameraView } from 'expo-camera';
-import { Button, Icon, IconButton, Text, VStack } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { Icon, IconButton } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
@@ -82,7 +85,7 @@ class Photo extends Component {
 
     return (
       <VStack flex={1}>
-        <VStack flex={1} p="2">
+        <VStack flex={1} className="p-2">
           <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
             {this.props.t('PHOTO_DISCLAIMER')}
           </Text>
@@ -132,9 +135,9 @@ class Photo extends Component {
             ) : null}
           </View>
         </VStack>
-        <VStack p="2">
+        <VStack className="p-2">
           <Button size="lg" onPress={this._saveImage.bind(this)}>
-            {this.props.t('PHOTO_ADD')}
+            <ButtonText>{this.props.t('PHOTO_ADD')}</ButtonText>
           </Button>
         </VStack>
       </VStack>

@@ -1,6 +1,10 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { HStack, Heading, Icon, Text, VStack } from 'native-base';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
+import { Icon } from 'native-base';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -79,9 +83,9 @@ class DeliveryDetail extends Component {
           </NavigationAwareMap>
         </View>
         <View style={{ flex: 2 }}>
-          <VStack p="3">
+          <VStack className="p-3">
             <Heading>{this.props.t('DELIVERY_DETAILS_TIME_SLOT')}</Heading>
-            <HStack py="2">
+            <HStack className="py-2">
               <Icon as={FontAwesome5} name="clock" size="sm" mr="2" />
               <Text style={styles.itemText}>
                 {humanizeTaskTime(delivery.dropoff)}
@@ -89,7 +93,7 @@ class DeliveryDetail extends Component {
             </HStack>
             <Heading>{this.props.t('DELIVERY_DETAILS_RECIPIENT')}</Heading>
             {recipientItems.map((item, i) => (
-              <HStack py="2" key={`recipient-${i}`}>
+              <HStack className="py-2" key={`recipient-${i}`}>
                 <Icon as={FontAwesome5} name={item.icon} size="sm" mr="2" />
                 <Text style={styles.itemText}>{item.text}</Text>
               </HStack>

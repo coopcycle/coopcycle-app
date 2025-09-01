@@ -2,15 +2,13 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import _ from 'lodash';
-import {
-  Box,
-  HStack,
-  Heading,
-  Icon,
-  Pressable,
-  Text,
-  VStack,
-} from 'native-base';
+import { Icon } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
+import { Pressable } from '@/components/ui/pressable';
+import { Heading } from '@/components/ui/heading';
 import React, { Component } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -75,7 +73,7 @@ const About = ({ brandName, motto, navigate }) => {
     : {};
 
   return (
-    <Box mb="4">
+    <Box className="mb-4">
       <TouchableOpacity {...props}>
         <VStack>
           <Heading size="sm" textAlign="center" mb="2">
@@ -209,23 +207,18 @@ class DrawerContent extends Component {
                 )}
             </DrawerContentScrollView>
           </View>
-          <VStack p="3" alignItems="center">
+          <VStack className="p-3 items-center">
             <About
               brandName={this.props.brandName}
               motto={this.props.motto}
               navigate={this.props.showAbout}
             />
             {(this.props.email || this.props.phoneNumber) && (
-              <HStack
-                w="100%"
-                alignItems="left"
-                justifyContent={'space-between'}
-                mb="4">
+              <HStack className="w-full items-left justify-between mb-4">
                 <Text>{this.props.t('CONTACT_US')}</Text>
                 <Box
-                  w="80px"
-                  justifyContent={'space-between'}
-                  flexDirection="row">
+                  style={{ width: '30%' }}
+                  className="justify-between flex-row">
                   {this.props.email && (
                     <Mailto email={this.props.email}>
                       <Icon as={AntDesign} name="mail" size="sm" />
@@ -242,20 +235,12 @@ class DrawerContent extends Component {
                 </Box>
               </HStack>
             )}
-            <HStack
-              w="100%"
-              alignItems="center"
-              justifyContent="space-between"
-              mb="4">
+            <HStack className="w-full items-center justify-between mb-4">
               <Pressable onPress={navigateToTerms}>
                 <Text>{this.props.t('TERMS_OF_SERVICE')}</Text>
               </Pressable>
             </HStack>
-            <HStack
-              w="100%"
-              alignItems="center"
-              justifyContent="space-between"
-              mb="4">
+            <HStack className="w-full items-center justify-between mb-4">
               <Pressable onPress={navigateToPricacy}>
                 <Text>{this.props.t('PRIVACY')}</Text>
               </Pressable>

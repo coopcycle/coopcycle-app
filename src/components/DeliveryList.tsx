@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { Icon, Text } from 'native-base';
+import { Icon, ChevronRightIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -99,8 +100,7 @@ class DeliveryList extends Component {
         style={styles.item}>
         <View style={styles.itemBody}>
           <View style={{ flex: 1 }}>
-            <Icon
-              as={FontAwesome5}
+            <FontAwesome5
               name="circle"
               solid
               style={{ color: stateColor(item.state), fontSize: 14 }}
@@ -122,11 +122,7 @@ class DeliveryList extends Component {
           </View>
         </View>
         <View>
-          <Icon
-            as={FontAwesome5}
-            name="chevron-right"
-            style={{ color: '#DDDDDD', fontSize: 18 }}
-          />
+          <Icon as={ChevronRightIcon} />
         </View>
       </TouchableOpacity>
     );

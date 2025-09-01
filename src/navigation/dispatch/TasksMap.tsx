@@ -1,5 +1,5 @@
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { Text, View } from 'native-base';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/text';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 

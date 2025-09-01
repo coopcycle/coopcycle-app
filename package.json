@@ -67,6 +67,7 @@
     "jwt-decode": "^3.1.2",
     "libphonenumber-js": "^1.11.12",
     "lodash": "^4.17.21",
+    "lucide-react-native": "^0.510.0",
     "moment": "^2.30.1",
     "moment-business-days": "^1.2.0",
     "moment-range": "^4.0.2",

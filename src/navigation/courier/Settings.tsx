@@ -35,8 +35,8 @@ import {
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 
 const SettingsItemInner = ({ item }) => (
-  <HStack className="align-center justify-between py-3">
-    <HStack className="align-center">
+  <HStack className="items-center justify-between py-3">
+    <HStack className="items-center">
       <Icon size="sm" mr="1" as={FontAwesome} name={item.icon} />
       <Text>{item.label}</Text>
     </HStack>
