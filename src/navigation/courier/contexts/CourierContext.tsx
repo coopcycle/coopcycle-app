@@ -1,14 +1,9 @@
-// contexts/CourierContext.js
 import { ReactNode, createContext, useContext } from 'react';
 
-export const CourierContext = createContext<CourierContextType>({
-  // We assume this context will always be used only from courier screens
-  isFromCourier: true,
-});
+export const CourierContext = createContext<CourierContextType | undefined>(undefined);
 
-export const useCourier = (): CourierContextType => {
-  const context = useContext(CourierContext);
-  return context;
+export const useCourier = (): CourierContextType | undefined => {
+  return useContext(CourierContext);
 };
 
 const createCourierProvider = (): React.FC<CourierProviderProps> => {
