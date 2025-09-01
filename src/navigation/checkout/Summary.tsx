@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { Button, Center, Icon } from 'native-base';
+import { Button, Icon } from 'native-base';
+import { Center } from '@/components/ui/center';
 import { HStack } from '@/components/ui/hstack';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
