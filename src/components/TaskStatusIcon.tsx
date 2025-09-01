@@ -27,7 +27,6 @@ export const TaskTypeIcon = ({ task }) => (
 );
 
 export const TaskStatusIcon = ({ task }) => {
-  const color = '#FFFFFF'; // Make it invisible
   const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
   switch (task.status) {
@@ -35,7 +34,6 @@ export const TaskStatusIcon = ({ task }) => {
       return (
         <Icon
           as={FontAwesome}
-          color={color}
           name={doingIconName}
           style={iconStyle(task)}
           testID={testID}
@@ -45,7 +43,6 @@ export const TaskStatusIcon = ({ task }) => {
       return (
         <Icon
           as={FontAwesome}
-          color={color}
           name={doneIconName}
           style={iconStyle(task)}
           testID={testID}
@@ -55,7 +52,6 @@ export const TaskStatusIcon = ({ task }) => {
       return (
         <Icon
           as={FontAwesome}
-          color={color}
           name={failedIconName}
           style={iconStyle(task)}
           testID={testID}
