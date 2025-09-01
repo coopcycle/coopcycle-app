@@ -1,12 +1,25 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import TaskMarker from '../../../components/TaskMarker';
 import { getRegionForTasks } from './mapUtils';
+import Task from '../../../types/task';
+import Tasks from '../../../types/tasks';
 
 const zoomLevel = 15;
 
-const MiniMap = ({ task, tasks, onLayout, aspectRatio }) => {
+export interface MiniMapProps {
+  task?: Task;
+  tasks: Tasks;
+  onLayout?: (event: LayoutChangeEvent) => void;
+  aspectRatio?: number;
+}
+const MiniMap: React.FC<MiniMapProps> = ({
+  task,
+  tasks,
+  onLayout,
+  aspectRatio,
+}) => {
   // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
 
   const region = getRegionForTasks(

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Accordion,
   AccordionContent,
@@ -18,10 +19,9 @@ import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
 import TaskTypeIcon from '../../../components/TaskTypeIcon';
 import { getTaskTitle } from '../../../shared/src/utils';
-import { blackColor, greyColor, whiteColor } from '../../../styles/common';
+import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
 import { Task } from '../../../types/task';
 import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
-import { useTranslation } from 'react-i18next';
 
 interface OrderAccordeonProps {
   task: Task;
@@ -34,6 +34,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
   const address: string = task.address.streetAddress;
   const packageType = getPackagesSummary(task);
   const comments: string = task.comments;
+  const headerText = useBlackAndWhiteTextColor();
   return (
     <Box
       sx={{
@@ -48,7 +49,6 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
         sx={{
           borderRadius: 12,
           overflow: 'hidden',
-          backgroundColor: whiteColor,
           shadowColor: '$shadowColor',
           shadowOffset: {
             width: 0,
@@ -63,7 +63,6 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
             sx={{
               borderTopLeftRadius: 12,
               borderTopRightRadius: 12,
-              backgroundColor: whiteColor,
             }}>
             <AccordionTrigger
               sx={{
@@ -89,7 +88,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                           style={{
                             lineHeight: 22,
                             textTransform: 'uppercase',
-                            color: blackColor,
+                            color: headerText,
                           }}
                           bold>
                           {taskTitle}
@@ -102,18 +101,18 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                           alignItems: 'center',
                         }}>
                         <Box>
-                          <Text bold style={{ color: blackColor }}>
+                          <Text bold style={{ color: headerText }}>
                             {timeframe}
                           </Text>
                         </Box>
                         <Box
                           sx={{
                             borderStartWidth: 1,
-                            borderStartColor: greyColor,
+                            borderStartColor: headerText,
                             paddingStart: 8,
                             flex: 1,
                           }}>
-                          <Text bold style={{ color: blackColor }}>
+                          <Text bold style={{ color: headerText }}>
                             {address}
                           </Text>
                         </Box>

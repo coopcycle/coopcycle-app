@@ -2,8 +2,10 @@ import React from 'react';
 
 import { Box, Divider, Text } from '../../../components/gluestack';
 
+import { useTranslation } from 'react-i18next';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
+import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
 import { Tasks } from '../../../types/tasks';
 import { getOrderTimeFrame } from '../../task/components/utils';
 import {
@@ -13,8 +15,6 @@ import {
   orderInfoInMetadata,
   packagesInOrderSummery,
 } from './../utils';
-import { blackColor } from '../../../styles/common';
-import { useTranslation } from 'react-i18next';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();
@@ -26,14 +26,14 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const orderTags = getUniqueTagsFromTasks(tasks);
   const orderValue = orderInfoInMetadata(tasks, 'order_total');
   const comments = commentsInOrder(tasks);
-
+  const titleColor = useBlackAndWhiteTextColor();
   return (
     <Box sx={{ gap: 12, padding: 24 }}>
       <Text
         size="lg"
         style={{
           textTransform: 'uppercase',
-          color: blackColor,
+          color: titleColor,
         }}
         bold>
         {orderTitle}
