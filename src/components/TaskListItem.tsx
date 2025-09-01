@@ -153,7 +153,7 @@ const TaskTypeIcon = ({ task }) => (
 );
 
 const TaskStatusIcon = ({ task }) => {
-  const color = '#FFFFFF'; // Make it invisible
+  const color = '#000000'; // Make it invisible
   const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
   switch (task.status) {
@@ -188,7 +188,7 @@ const TaskStatusIcon = ({ task }) => {
         />
       );
     default:
-      return <View />;
+      return (<View />);
   }
 };
 
@@ -464,7 +464,6 @@ const TaskListItem = forwardRef(
                     numberOfLines={1}>
                     {taskTitle}
                   </Text>
-                  <TaskStatusIcon task={task} />
                 </HStack>
                 {address && (
                   <Text style={textStyle} numberOfLines={1}>
@@ -474,11 +473,12 @@ const TaskListItem = forwardRef(
                 <Text numberOfLines={1} style={textStyle}>
                   {task.address?.streetAddress}
                 </Text>
-                <HStack alignItems="center">
+                <HStack alignItems="center" justifyContent="space-between">
                   <Text pr="2" style={textStyle}>
                     {moment(task.doneAfter).format('LT')} -{' '}
                     {moment(task.doneBefore).format('LT')}
                   </Text>
+                  <TaskStatusIcon task={task} />
                   {task.address?.description &&
                   task.address?.description.length ? (
                     <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
