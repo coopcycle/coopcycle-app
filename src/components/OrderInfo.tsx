@@ -1,5 +1,6 @@
 import { Text } from 'native-base';
 import {  } from 'react-native';
+import _ from 'lodash';
 import { ItemTouchable } from './ItemTouchable';
 import { getOrderIdWithPosition } from '../utils/tasks';
 import { formatPrice } from '../utils/formatting';
@@ -38,7 +39,7 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
         justifyContent: 'center',
         width,
       }}>
-      {orderId ? (
+      {!_.isEmpty(orderId) ? (
         <>
           <Text
             style={{

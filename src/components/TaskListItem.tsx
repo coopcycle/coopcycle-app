@@ -12,7 +12,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { forwardRef, useEffect, useRef } from 'react';
-import _ from 'lodash';
 
 import {
   redColor,
@@ -203,7 +202,7 @@ const TaskListItem = forwardRef(
         swipeRow.current?.closeRow();
       }
     }, [task.status]);
-    
+
     // swipeLeft
     const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
     const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
