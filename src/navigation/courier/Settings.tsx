@@ -1,8 +1,9 @@
-import { Icon, Switch } from 'native-base';
+import { Icon } from 'native-base';
 import { Box } from '@/components/ui/box';
 import { Heading } from '@/components/ui/heading';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
+import { Switch } from '@/components/ui/switch';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { SectionList, TouchableOpacity } from 'react-native';
@@ -40,7 +41,7 @@ const SettingsItemInner = ({ item }) => (
       <Text>{item.label}</Text>
     </HStack>
     {!item.onPress && (
-      <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
+      <Switch onToggle={item.onToggle} value={item.isChecked} />
     )}
     {item.onPress && <Icon size="sm" as={FontAwesome} name="arrow-right" />}
   </HStack>
