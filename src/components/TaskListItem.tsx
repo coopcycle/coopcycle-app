@@ -12,6 +12,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { forwardRef, useEffect, useRef } from 'react';
+import _ from 'lodash';
 
 import {
   redColor,
