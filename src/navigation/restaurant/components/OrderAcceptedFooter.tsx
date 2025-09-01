@@ -1,4 +1,5 @@
-import { HStack, Text } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';

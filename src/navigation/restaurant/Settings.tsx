@@ -1,15 +1,12 @@
-import {
-  Box,
-  FlatList,
-  HStack,
-  Icon,
-  Pressable,
-  Switch,
-  Text,
-} from 'native-base';
+import { Icon } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Pressable } from '@/components/ui/pressable';
+import { HStack } from '@/components/ui/hstack';
+import { Switch } from '@/components/ui/switch';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Alert, View } from 'react-native';
+import { Alert, FlatList, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
@@ -49,7 +46,7 @@ class SettingsScreen extends Component {
         label: this.props.t('RESTAURANT_SETTINGS_RUSH'),
         switch: (
           <Switch
-            isChecked={this.state.restaurantState === 'rush'}
+            value={this.state.restaurantState === 'rush'}
             onToggle={this._onRushValueChange.bind(this)}
           />
         ),
@@ -137,8 +134,8 @@ class SettingsScreen extends Component {
             }
 
             return (
-              <Pressable {...itemProps} py="3" px="2">
-                <HStack justifyContent="space-between">
+              <Pressable {...itemProps} className="py-3 px-2">
+                <HStack className="justify-between">
                   <HStack>
                     <Icon name={item.icon} as={FontAwesome} size="sm" mr="2" />
                     <Text>{item.label}</Text>
