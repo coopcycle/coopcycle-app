@@ -1,4 +1,4 @@
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
