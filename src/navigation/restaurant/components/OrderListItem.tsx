@@ -5,7 +5,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon, Row, Text } from 'native-base';
+import { Icon } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment/moment';
@@ -122,7 +124,7 @@ export default function OrderListItem({ order, onItemClick }) {
     <View style={styles.item}>
       <TouchableOpacity style={{ flex: 1 }} onPress={() => onItemClick(order)}>
         <View style={styles.content}>
-          <Row alignItems="center">
+          <HStack className="items-center">
             <View style={styles.number}>
               <OrderNumber order={order} />
             </View>
@@ -131,7 +133,7 @@ export default function OrderListItem({ order, onItemClick }) {
             {order.notes ? (
               <Icon as={FontAwesome} name="comments" size="xs" />
             ) : null}
-          </Row>
+          </HStack>
           <Text>{`${formatPrice(order.itemsTotal)}`}</Text>
           <Text>{moment.parseZone(order.pickupExpectedAt).format('LT')}</Text>
         </View>

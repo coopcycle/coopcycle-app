@@ -1,4 +1,6 @@
-import { HStack, Switch, Text } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Switch } from '@/components/ui/switch';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -24,10 +26,10 @@ class ProductsScreen extends Component {
 
   renderItem(item) {
     return (
-      <HStack p="3" justifyContent="space-between">
+      <HStack className="p-3 justify-between">
         <Text>{item.name}</Text>
         <Switch
-          isChecked={item.enabled}
+          value={item.enabled}
           onToggle={this._toggleProductEnabled.bind(this, item)}
         />
       </HStack>
