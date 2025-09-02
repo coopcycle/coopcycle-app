@@ -1,9 +1,11 @@
 import moment from 'moment';
-import { HStack, Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
+import { Clock } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import material from '../../../../native-base-theme/variables/material';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
@@ -45,6 +47,7 @@ const OrderHeading = ({
         borderBottomColor: '#CCCCCC',
       }}>
       <HStack
+        className="justify-between items-center p-2 mb-1"
         justifyContent="space-between"
         alignItems="center"
         style={styles.fulfillment}
@@ -66,7 +69,7 @@ const OrderHeading = ({
         </Text>
       </HStack>
       <View style={styles.timeline}>
-        <Icon as={FontAwesome} name="clock-o" />
+        <Icon as={Clock} size="xl" />
         <View style={{ alignItems: 'flex-end' }}>
           <Text>
             {t('RESTAURANT_ORDER_PREPARATION_EXPECTED_AT', {
