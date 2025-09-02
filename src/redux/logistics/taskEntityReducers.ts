@@ -16,8 +16,8 @@ import {
   updateTaskSuccess,
 } from '../../coopcycle-frontend-js/logistics/redux';
 import {
+  getProcessedTasks,
   getTaskWithColor,
-  getTasksWithColor,
 } from '../../shared/src/logistics/redux/taskUtils';
 
 const initialState = taskAdapter.getInitialState();
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
   }
 
   if (actionMatchCreator(action, [loadTasksSuccess])) {
-    const tasks = getTasksWithColor(action.payload);
+    const tasks = getProcessedTasks(action.payload);
     return taskAdapter.setAll(state, tasks);
   }
 
@@ -59,7 +59,7 @@ export default (state = initialState, action) => {
     ])
   ) {
     if (action.payload) {
-      const tasks = getTasksWithColor(action.payload);
+      const tasks = getProcessedTasks(action.payload);
       return taskAdapter.upsertMany(state, tasks);
     }
   }

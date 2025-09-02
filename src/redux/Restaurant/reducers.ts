@@ -268,6 +268,7 @@ export default (state = initialState, action = {}) => {
     case CLOSE_RESTAURANT_REQUEST:
     case DELETE_OPENING_HOURS_SPECIFICATION_REQUEST:
     case LOAD_MENUS_REQUEST:
+    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST:
       return {
         ...state,
         fetchError: false,
@@ -317,7 +318,6 @@ export default (state = initialState, action = {}) => {
         }),
       };
 
-    case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_REQUEST:
     case CHANGE_PRODUCT_OPTION_VALUE_ENABLED_SUCCESS:
       return {
         ...state,
