@@ -1,4 +1,4 @@
-import { Icon } from 'native-base';
+import { Icon } from '@/components/ui/icon';
 import { HStack } from '@/components/ui/hstack';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
@@ -6,7 +6,6 @@ import { Calendar, RefreshCw, ChevronRight } from 'lucide-react-native';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 class DatePickerHeader extends Component {
   render() {

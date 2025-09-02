@@ -5,13 +5,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon } from 'native-base';
+import { Icon, MessageCircleIcon, ArrowRightIcon } from '@/components/ui/icon';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment/moment';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderNumber from '../../../components/OrderNumber';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
@@ -131,7 +129,7 @@ export default function OrderListItem({ order, onItemClick }) {
             <OrderFulfillmentMethodIcon order={order} small />
             <PaymentMethodInList paymentMethod={order.paymentMethod} />
             {order.notes ? (
-              <Icon as={FontAwesome} name="comments" size="xs" />
+              <Icon as={MessageCircleIcon} size="sm" />
             ) : null}
           </HStack>
           <Text>{`${formatPrice(order.itemsTotal)}`}</Text>
@@ -160,10 +158,8 @@ export default function OrderListItem({ order, onItemClick }) {
             }
           }}>
           <Icon
-            size={5}
-            as={Ionicons}
+            as={ArrowRightIcon}
             style={styles.moveForwardIcon}
-            name="arrow-forward"
           />
         </TouchableOpacity>
       ) : null}

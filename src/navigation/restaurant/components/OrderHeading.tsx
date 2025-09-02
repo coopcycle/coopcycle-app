@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { Box } from '@/components/ui/box';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
@@ -7,7 +8,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import material from '../../../../native-base-theme/variables/material';
 import OrderFulfillmentMethodIcon from '../../../components/OrderFulfillmentMethodIcon';
 import { PaymentMethodInOrderDetails } from '../../../components/PaymentMethodInfo';
 import { resolveFulfillmentMethod } from '../../../utils/order';
@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: material.contentPadding,
     marginBottom: 10,
   },
 });
@@ -68,7 +67,7 @@ const OrderHeading = ({
           {t(`FULFILLMENT_METHOD.${resolveFulfillmentMethod(order)}`)}
         </Text>
       </HStack>
-      <View style={styles.timeline}>
+      <Box style={styles.timeline} className="px-2">
         <Icon as={Clock} size="xl" />
         <View style={{ alignItems: 'flex-end' }}>
           <Text>
@@ -82,7 +81,7 @@ const OrderHeading = ({
             })}
           </Text>
         </View>
-      </View>
+      </Box>
       <PaymentMethodInOrderDetails paymentMethod={order.paymentMethod} />
       <View style={{ marginBottom: 15 }}>
         <OrderButtons
