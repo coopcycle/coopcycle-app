@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useStackNavigatorScreenOptions } from '../styles';
 import OrderTitle from '../../components/OrderTitle';
 import screens from '..';
-import { Icon } from '../../components/gluestack';
 import useSetTaskListItems from '../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import {
   selectTaskLists,
@@ -17,6 +16,7 @@ import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlic
 import { buildSelectedTasks } from '../../shared/src/logistics/redux/taskListUtils';
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/logistics/selectors';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
+import Icon from '../../components/Icon';
 
 const RootStack = createStackNavigator();
 

@@ -1,5 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import IconText from '../../../components/IconText';
+import TaskTagsList from '../../../components/TaskTagsList';
+import TaskTypeIcon from '../../../components/TaskTypeIcon';
+import { getTaskTitle } from '../../../shared/src/utils';
+import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
+import { Task } from '../../../types/task';
+import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
+// TODO CHANGE
+import { ChevronDownIcon, ChevronUpIcon } from 'native-base/src/index';
+import { Box } from '../../../../components/ui/box';
 import {
   Accordion,
   AccordionContent,
@@ -9,19 +19,9 @@ import {
   AccordionItem,
   AccordionTitleText,
   AccordionTrigger,
-  Box,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Divider,
-  Text,
-} from '../../../components/gluestack';
-import IconText from '../../../components/IconText';
-import TaskTagsList from '../../../components/TaskTagsList';
-import TaskTypeIcon from '../../../components/TaskTypeIcon';
-import { getTaskTitle } from '../../../shared/src/utils';
-import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
-import { Task } from '../../../types/task';
-import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
+} from '../../../../components/ui/accordion';
+import { Text } from '../../../../components/ui/text';
+import { Divider } from '../../../../components/ui/divider';
 
 interface OrderAccordeonProps {
   task: Task;
@@ -37,16 +37,16 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
   const headerText = useBlackAndWhiteTextColor();
   return (
     <Box
-      sx={{
+      style={{
         marginBottom: 16,
       }}>
       <Accordion
         size="md"
-        variant="filled"
+        variant="unfilled"
         type="single"
         isCollapsible={true}
         isDisabled={false}
-        sx={{
+        style={{
           borderRadius: 12,
           overflow: 'hidden',
           shadowColor: '$shadowColor',
@@ -60,12 +60,12 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
         }}>
         <AccordionItem value="a">
           <AccordionHeader
-            sx={{
+            style={{
               borderTopLeftRadius: 12,
               borderTopRightRadius: 12,
             }}>
             <AccordionTrigger
-              sx={{
+              style={{
                 paddingHorizontal: 16,
                 paddingVertical: 12,
               }}>
@@ -73,11 +73,11 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                 return (
                   <>
                     <AccordionTitleText
-                      sx={{
+                      style={{
                         marginEnd: 4,
                       }}>
                       <Box
-                        sx={{
+                        style={{
                           gap: 10,
                           flexDirection: 'row',
                           flexWrap: 'wrap',
@@ -95,7 +95,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                         </Text>
                       </Box>
                       <Box
-                        sx={{
+                        style={{
                           flexDirection: 'row',
                           gap: 8,
                           alignItems: 'center',
@@ -106,7 +106,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                           </Text>
                         </Box>
                         <Box
-                          sx={{
+                          style={{
                             borderStartWidth: 1,
                             borderStartColor: headerText,
                             paddingStart: 8,
@@ -129,11 +129,11 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent
-            sx={{
+            style={{
               paddingHorizontal: 16,
             }}>
             <AccordionContentText>
-              <Box sx={{ gap: 12, width: '100%' }}>
+              <Box style={{ gap: 12, width: '100%' }}>
                 {task.tags && task.tags.length ? (
                   <>
                     <Divider />

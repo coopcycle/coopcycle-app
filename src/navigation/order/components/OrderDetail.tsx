@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box, Divider, Text } from '../../../components/gluestack';
-
 import { useTranslation } from 'react-i18next';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
@@ -15,6 +13,9 @@ import {
   orderInfoInMetadata,
   packagesInOrderSummery,
 } from './../utils';
+import { Box } from '../../../../components/ui/box';
+import { Text } from '../../../../components/ui/text';
+import { Divider } from '../../../../components/ui/divider';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const comments = commentsInOrder(tasks);
   const titleColor = useBlackAndWhiteTextColor();
   return (
-    <Box sx={{ gap: 12, padding: 24 }}>
+    <Box style={{ gap: 12, padding: 24 }}>
       <Text
         size="lg"
         style={{

@@ -2,7 +2,7 @@ import { StyleSheet, TextStyle } from 'react-native';
 import { taskTypeIconName } from '../navigation/task/styles/common';
 import { greenColor, redColor } from '../styles/common';
 import type { Task } from '../types/task';
-import { Icon } from './gluestack';
+import Icon from './Icon';
 
 interface TaskTypeIconProps {
   task: Pick<Task, 'status' | 'type'>;

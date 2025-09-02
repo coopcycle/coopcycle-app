@@ -1,4 +1,3 @@
-import { Text as GluestackText } from '@gluestack-ui/themed';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import {
@@ -6,9 +5,10 @@ import {
   useBlackAndWhiteTextColor,
   useIconColor,
 } from '../styles/gluestack-theme';
-import { Box, HStack, Icon, Text } from './gluestack';
-
-type TextSizeType = React.ComponentProps<typeof GluestackText>['size'];
+import { Box } from '../../components/ui/box';
+import { HStack } from '../../components/ui/hstack';
+import { Text } from '../../components/ui/text';
+import Icon from './Icon';
 
 export interface IconTextProps {
   iconName: string;
@@ -16,7 +16,7 @@ export interface IconTextProps {
   text: string;
   iconColor?: string;
   iconSize?: number;
-  textSize?: TextSizeType;
+  textSize?: number;
   gap?: number;
   onPress?: () => void;
   disabled?: boolean;
@@ -39,18 +39,14 @@ const IconText: React.FC<IconTextProps> = ({
   const labelTextColor = useBlackAndWhiteTextColor();
   const defaultIconColor = useIconColor();
   const content = (
-    <HStack
-      alignItems="flex-start"
-      space="md"
-      style={[styles.container]}
-      opacity={disabled ? 0.5 : 1}>
+    <HStack style={[styles.container, { opacity: disabled ? 0.5 : 1 }]}>
       <Icon
         name={iconName}
         color={iconColor || defaultIconColor}
         size={iconSize}
         style={{ paddingTop: 4 }}
       />
-      <Box sx={{ flexDirection: 'column', flex: 1 }}>
+      <Box style={{ flexDirection: 'column', flex: 1 }}>
         {label && (
           <Text
             size="sm"
@@ -93,6 +89,9 @@ const IconText: React.FC<IconTextProps> = ({
 const styles = StyleSheet.create({
   container: {
     minHeight: 24,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
   },
   touchable: {
     flex: 1,

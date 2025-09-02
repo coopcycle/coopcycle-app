@@ -1,13 +1,10 @@
-import { FlatList } from 'native-base';
 import React, { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/logistics/selectors';
 import { getAspectRatio } from '../task/components/mapUtils';
-
-import { Box } from '../../components/gluestack';
 
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { blueColor } from '../../styles/common';
@@ -16,6 +13,7 @@ import TaskMiniMap from '../task/components/MiniMap';
 import OrderAccordeon from './components/OrderAccordeon';
 import OrderDetail from './components/OrderDetail';
 import { RouteType } from './types';
+import { Box } from '../../../components/ui/box';
 
 const Order = ({ route }: { route: RouteType }) => {
   const [mapDimensions, setMapDimensions] = useState({ height: 0, width: 0 });
@@ -57,7 +55,7 @@ const Order = ({ route }: { route: RouteType }) => {
         data={tasks}
         keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({ item }) => (
-          <Box sx={{ paddingHorizontal: 12 }}>
+          <Box style={{ paddingHorizontal: 12 }}>
             <OrderAccordeon task={item as Task} />
           </Box>
         )}
