@@ -1,9 +1,9 @@
-import { useColorMode } from '@gluestack-style/react';
+import { useColorScheme } from 'nativewind';
 import { primaryColor } from './common';
 
 const useColorModeValue = <T>(lightValue: T, darkValue: T): T => {
-  const colorMode = useColorMode();
-  return colorMode === 'dark' ? darkValue : lightValue;
+  const { colorScheme } = useColorScheme();
+  return colorScheme === 'dark' ? darkValue : lightValue;
 };
 
 export const usePrimaryColor = () => {
