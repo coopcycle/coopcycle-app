@@ -98,7 +98,7 @@ const TaskList = ({
         data={tasks}
         keyExtractor={(item, index) => {
           const tagNames = (item.tags || []).map(t => t.name);
-          return `${item['@id']}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
+          return `${item['@id']}-${item.status}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
         }}
         renderItem={renderItem}
         refreshing={refreshing}
