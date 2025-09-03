@@ -31,12 +31,11 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   return (
     <Box style={{ gap: 12, padding: 24 }}>
       <Text
-        size="lg"
+        size="xl"
         style={{
           textTransform: 'uppercase',
           color: titleColor,
-        }}
-        bold>
+        }}>
         {orderTitle}
       </Text>
       {orderTags.length > 0 && (

@@ -1,3 +1,4 @@
+import '../global.css';
 import React, { createRef, useEffect } from 'react';
 import { LogBox, Platform, useColorScheme } from 'react-native';
 
