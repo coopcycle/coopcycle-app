@@ -1,4 +1,5 @@
-import { Center, Icon, Text } from 'native-base';
+import { Center, Icon } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
@@ -39,15 +40,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const OneLineText = props => (
-  <Text
-    numberOfLines={props.numberOfLines || 1}
-    ellipsizeMode="tail"
-    {...props}>
-    {props.children}
-  </Text>
-);
-
 class RestaurantList extends Component {
   constructor(props) {
     super(props);
@@ -86,7 +78,7 @@ class RestaurantList extends Component {
             source={require('../assets/images/no_addresses.png')}
             resizeMode={'contain'}
           />
-          <Text note style={{ textAlign: 'center' }}>
+          <Text style={{ textAlign: 'center' }}>
             {this.props.t('NO_RESTAURANTS')}
           </Text>
         </Center>
@@ -101,7 +93,7 @@ class RestaurantList extends Component {
         alignItems="center"
         testID="checkoutSearchContent">
         <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
-        <Text note>{this.props.t('ENTER_ADDRESS')}</Text>
+        <Text>{this.props.t('ENTER_ADDRESS')}</Text>
       </Center>
     );
   }

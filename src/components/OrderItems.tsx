@@ -1,5 +1,7 @@
 import _ from 'lodash';
-import { Box, HStack, Text } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -77,11 +79,11 @@ class OrderItems extends Component {
     }
 
     return (
-      <HStack p="2" justifyContent="space-between">
-        <Box w="15%">
+      <HStack className="p-2 justify-between">
+        <Box style={{ width: "15%"}}>
           <Text style={itemQuantityStyle}>{`${item.quantity} ×`}</Text>
         </Box>
-        <Box w="70%">
+        <Box style={{ width: "70%"}}>
           <Text>{item.name}</Text>
           {item.adjustments &&
             item.adjustments.hasOwnProperty('menu_item_modifier') &&
@@ -93,7 +95,7 @@ class OrderItems extends Component {
               true,
             )}
         </Box>
-        <Box w="15%" alignItems="flex-end">
+        <Box style={{ width: "15%" }} className="items-end">
           <Text>{`${formatPrice(item.total)}`}</Text>
         </Box>
       </HStack>
