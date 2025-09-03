@@ -89,8 +89,3 @@ export const useBackgroundContainerColor = () => {
 export const useBackgroundHighlightColor = () => {
   return useColorModeToken('#f2f2f2', '#353030');
 };
-
-export const useSolidButtonTextColor = () => {
-  // default style: https://github.com/GeekyAnts/NativeBase/blob/master/src/theme/components/button.ts#L131
-  return useColorModeToken('text.50', 'text.50');
-};

@@ -1,7 +1,8 @@
-import { Heading, Text, View } from 'native-base';
+import { Heading } from '@/components/ui/heading';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useBackgroundContainerColor } from '../../../styles/theme';
 import {
   isMandatoryOption,

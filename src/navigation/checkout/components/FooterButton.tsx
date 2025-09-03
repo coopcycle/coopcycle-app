@@ -1,4 +1,5 @@
-import { Button, HStack } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
@@ -7,9 +8,9 @@ class FooterButton extends Component {
     const { text, ...otherProps } = this.props;
 
     return (
-      <HStack p="3">
-        <Button w="100%" {...otherProps}>
-          {text}
+      <HStack className="p-3">
+        <Button className="w-full" {...otherProps}>
+          <ButtonText>{text}</ButtonText>
         </Button>
       </HStack>
     );

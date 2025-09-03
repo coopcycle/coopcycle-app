@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { groupBy, map, reduce } from 'lodash';
 import moment from 'moment/moment';
-import { HStack, Skeleton, View } from 'native-base';
-import { Platform } from 'react-native';
+import { Skeleton } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Platform, View } from 'react-native';
 import { Picker } from '../../../components/Picker';
 import { useGetOrderTimingQuery } from '../../../redux/api/slice';
 
@@ -86,9 +87,10 @@ export default function TimingCartSelect({ orderNodeId, onValueChange }) {
 
   return (
     <HStack
+      className="justify-around items-center"
       justifyContent={'space-around'}
       alignItems={'center'}
-      space={isSuccess ? 0 : 4}>
+      space={isSuccess ? "xs" : "sm"}>
       {isSuccess ? (
         <>
           <View flex={1}>

@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import {
-  ChevronRightIcon,
-  Icon,
   Skeleton,
 } from 'native-base';
+import { Icon, ChevronRightIcon, TrashIcon } from '@/components/ui/icon';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
@@ -44,9 +43,8 @@ class Carts extends Component {
           style={styles.deleteButton}
           onPress={() => this.props.deleteCart(restaurantID)}>
           <Icon
-            as={Ionicons}
-            name="trash"
-            size={5}
+            as={TrashIcon}
+            size="sm"
             style={{ color: '#ff0000' }}
           />
         </RectButton>
@@ -133,7 +131,7 @@ class Carts extends Component {
                 justifyContent: 'center',
                 alignItems: 'flex-end',
               }}>
-              <ChevronRightIcon />
+              <Icon as={ChevronRightIcon} />
             </View>
           </HStack>
         </TouchableOpacity>

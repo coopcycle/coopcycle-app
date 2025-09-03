@@ -1,4 +1,8 @@
-import { ChevronRightIcon, HStack, Image, Text, VStack } from 'native-base';
+import { Icon, ChevronRightIcon } from '@/components/ui/icon';
+import { HStack } from '@/components/ui/hstack';
+import { Image } from '@/components/ui/image';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
@@ -10,18 +14,18 @@ const SearchItemSmallCard = ({ item, onPress }) => {
   return (
     <>
       <TouchableOpacity onPress={() => onPress(item)}>
-        <HStack space={4} padding={2} ml={2}>
+        <HStack space="sm" className="p-2 ml-2">
           {item.image_url ? (
             <Image
-              size={'xs'}
+              size="xs"
               source={{ uri: item.image_url }}
               alt={item.name}
             />
           ) : null}
-          <VStack justifyContent="center">
+          <VStack className="justify-center">
             <Text>{item.name}</Text>
             {item.result_type === 'product' ? (
-              <Text fontSize="12" color="muted.500">
+              <Text>
                 {t('SEARCH_PRODUCT_ITEM_SUBTITLE', { shop: item.shop_name })}
               </Text>
             ) : null}
@@ -32,7 +36,7 @@ const SearchItemSmallCard = ({ item, onPress }) => {
               justifyContent: 'center',
               alignItems: 'flex-end',
             }}>
-            <ChevronRightIcon />
+            <Icon as={ChevronRightIcon} size="lg" />
           </View>
         </HStack>
       </TouchableOpacity>
