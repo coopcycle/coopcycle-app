@@ -95,7 +95,7 @@ LogBox.ignoreLogs([
 const routeNameRef = createRef();
 
 function getCurrentRoute() {
-  return navigationRef.current.getCurrentRoute();
+  return navigationRef.current?.getCurrentRoute();
 }
 
 function onReady() {
