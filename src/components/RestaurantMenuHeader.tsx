@@ -1,7 +1,5 @@
-import {
-  Skeleton,
-  useColorModeValue,
-} from 'native-base';
+import { useColorModeValue } from 'native-base';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
@@ -31,9 +29,6 @@ const ItemSkeleton = () => {
     <HStack
       style={[
         {
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'left',
           marginVertical: 8,
           marginHorizontal: 16,
           borderRadius: 16,
@@ -43,14 +38,12 @@ const ItemSkeleton = () => {
       ]}
       space="lg"
       className="p-4">
-      <Skeleton flex="1" h="100%" w="100" rounded="md" />
+      <Skeleton flex={1} variant="sharp" className="h-[100px]" />
       <VStack flex={3} space="md">
-        <Skeleton.Text flex={1} lines={1} />
-        <Skeleton.Text flex={1} lines={3} />
-        <HStack flex={1} space="md" className="items-center">
-          <Skeleton h="3" flex="2" rounded="full" />
-          <View style={{ flex: 1.8 }} />
-          <Skeleton h="3" flex="1" rounded="full" />
+        <SkeletonText className="h-2" _lines={3} />
+        <HStack space="md" className="justify-between">
+          <SkeletonText className="h-3 w-1/5" />
+          <SkeletonText className="h-3 w-1/5" />
         </HStack>
       </VStack>
     </HStack>
@@ -132,14 +125,14 @@ const RestaurantMenuHeader = ({
     <>
       {isLoading && (
         <>
-          <HStack className="w-full p-4 mb-4" space="lg" style={{ backgroundColor }}>
-            <Skeleton.Text flex={1} lines={1} />
-            <Skeleton.Text flex={1} lines={1} />
-            <Skeleton.Text flex={1} lines={1} />
-            <Skeleton.Text flex={1} lines={1} />
+          <HStack className="w-full p-4 mb-4 justify-between" space="lg" style={{ backgroundColor }}>
+            <SkeletonText className="h-3 w-1/4" />
+            <SkeletonText className="h-3 w-1/4" />
+            <SkeletonText className="h-3 w-1/4" />
+            <SkeletonText className="h-3 w-1/4" />
           </HStack>
           <HStack className="w-1/2 p-4">
-            <Skeleton.Text flex={1} lines={1} />
+            <SkeletonText className="h-3" />
           </HStack>
           <ItemSkeleton />
           <ItemSkeleton />
