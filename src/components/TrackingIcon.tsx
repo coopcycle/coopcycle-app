@@ -1,6 +1,6 @@
-import { Icon } from 'native-base';
+import { Icon } from '@/components/ui/icon';
 import React from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Navigation } from 'lucide-react-native';
 import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
@@ -11,8 +11,7 @@ function mapStateToProps(state) {
 
 const TrackingIcon = ({ enabled }) => (
   <Icon
-    as={Ionicons}
-    name="navigate"
+    as={Navigation}
     style={{ color: enabled ? 'green' : 'lightgrey' }}
   />
 );

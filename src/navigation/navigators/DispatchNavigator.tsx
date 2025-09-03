@@ -1,4 +1,7 @@
-import { Circle, Icon } from 'native-base';
+import { Badge, BadgeText, BadgeIcon } from '@/components/ui/badge';
+import { VStack } from '@/components/ui/vstack';
+import { Icon } from '@/components/ui/icon';
+import { Map, List, ListFilter } from 'lucide-react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
@@ -64,8 +67,8 @@ function CustomTabBar({ navigation }) {
         onPress={showMapButton ? goToTasksMap : goToTasksList}
         testID="toggleTasksMapListButton">
         <Icon
-          as={FontAwesome}
-          name={showMapButton ? 'map' : 'list'}
+          as={showMapButton ? Map : List}
+          size="xl"
           style={{ color }}
         />
       </TouchableOpacity>
@@ -80,10 +83,15 @@ function CustomTabBar({ navigation }) {
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
         testID="showTasksFiltersButton">
-        <Icon as={FontAwesome} name="filter" style={{ color }} />
-        {keywordFilters.length > 0 && (
-          <Circle size={3} style={customTabBarStyles.filtersEnabled} />
-        )}
+        <VStack>
+          {keywordFilters.length > 0 && (
+            <Badge
+              className="z-10 self-end h-[12px] w-[12px] bg-red-600 rounded-full -mb-3 -mr-2"
+              variant="solid">
+            </Badge>
+          )}
+          <Icon as={ListFilter} size="xl" style={{ color }} />
+        </VStack>
       </TouchableOpacity>
     </View>
   );
@@ -104,12 +112,6 @@ const customTabBarStyles = StyleSheet.create({
   searchInput: {
     flex: 1,
     marginHorizontal: 10,
-  },
-  filtersEnabled: {
-    backgroundColor: '#D80000',
-    position: 'absolute',
-    right: 10,
-    top: 10,
   },
 });
 

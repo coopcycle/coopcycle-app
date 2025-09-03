@@ -2,7 +2,8 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import _ from 'lodash';
-import { Icon } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { User, Phone, Mail } from 'lucide-react-native'
 import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
@@ -159,7 +160,7 @@ class DrawerContent extends Component {
           style={styles.header}
           onPress={navigateToAccount}
           testID="drawerAccountBtn">
-          <Icon as={Ionicons} name="person" />
+          <Icon as={User} size="xl" />
           {isAuthenticated && <Text>{this.props.user.username}</Text>}
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
@@ -221,7 +222,7 @@ class DrawerContent extends Component {
                   className="justify-between flex-row">
                   {this.props.email && (
                     <Mailto email={this.props.email}>
-                      <Icon as={AntDesign} name="mail" size="sm" />
+                      <Icon as={Mail} size="sm" />
                     </Mailto>
                   )}
                   {this.props.phoneNumber && (
@@ -229,7 +230,7 @@ class DrawerContent extends Component {
                       ml="10"
                       mr="10"
                       onPress={() => phonecall(this.props.phoneNumber, true)}>
-                      <Icon as={AntDesign} name="phone" size="sm" />
+                      <Icon as={Phone} size="sm" />
                     </TouchableOpacity>
                   )}
                 </Box>

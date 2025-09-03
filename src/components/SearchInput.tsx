@@ -1,6 +1,5 @@
-import { Box, Icon } from 'native-base';
-import { StyleSheet, TextInput } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Icon, SearchIcon } from '@/components/ui/icon';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { blackColor, darkGreyColor } from '../styles/common';
 
 export default function SearchInput({
@@ -12,13 +11,12 @@ export default function SearchInput({
   ...props
 }) {
   return (
-    <Box style={[styles.searchContainer, style]} {...props}>
+    <View style={[styles.searchContainer, style]} {...props}>
       <Icon
-        as={FontAwesome}
+        as={SearchIcon}
         name="search"
-        size={6}
-        color={blackColor}
-        style={styles.searchIcon}
+        size="xl"
+        style={[styles.searchIcon, {color: blackColor}]}
       />
       <TextInput
         style={styles.searchInput}
@@ -30,7 +28,7 @@ export default function SearchInput({
         returnKeyType="search"
         testID="searchTextInput"
       />
-    </Box>
+    </View>
   );
 }
 

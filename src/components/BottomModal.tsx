@@ -1,4 +1,4 @@
-import { VStack } from 'native-base';
+import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { Dimensions, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 import Modal from 'react-native-modal';
@@ -33,8 +33,8 @@ export default ({ children, ...otherProps }) => {
         <ScrollView>
           <VStack
             style={styles.content}
-            backgroundColor={colorScheme === 'dark' ? 'dark.100' : 'white'}
-            space={3}>
+            className={colorScheme === 'dark' ? 'bg-background-dark' : 'bg-background-light'}
+            space="sm">
             {children}
           </VStack>
         </ScrollView>
