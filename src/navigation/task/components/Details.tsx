@@ -1,6 +1,6 @@
 import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
-import { Icon, ArrowRightIcon } from '@/components/ui/button';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import React from 'react';
