@@ -588,11 +588,14 @@
     "TASK_CANCELLED": "Cancelled",
     "ASK_TO_START_PICKUP_TITLE": "Pickup task",
     "ASK_TO_START_PICKUP_MESSAGE": "The pickup task is not yet started.",
-    "PAYGREEN_RETURN_TEXT": "Please wait while we process your payment…"
-  },
-  "ORDER_SCHEDULE": "Schedule",
-  "ORDER_LOCATION": "Location",
-  "ORDER_CLIENT": "Client",
-  "ORDER_COMMENTS": "Comments",
-  "ORDER_PACKAGES": "Packages"
+    "PAYGREEN_RETURN_TEXT": "Please wait while we process your payment…",
+    "ORDER_SCHEDULE": "Schedule",
+    "ORDER_LOCATION": "Location",
+    "ORDER_CLIENT": "Client",
+    "ORDER_COMMENTS": "Comments",
+    "ORDER_PACKAGES": "Packages",
+    "ORDER_PRICE": "Price",
+    "ORDER_VALUE": "Value",
+    "ORDER_DISTANCE": "Distance"
+  }
 }

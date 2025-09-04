@@ -460,11 +460,14 @@
     "TASK_DONE": "Hecho",
     "TASK_CANCELLED": "Cancelado",
     "ASK_TO_START_PICKUP_TITLE": "Tarea de recogida",
-    "ASK_TO_START_PICKUP_MESSAGE": "La tarea de recogida aún no ha comenzado."
-  },
-  "ORDER_SCHEDULE": "Horario",
-  "ORDER_LOCATION": "Ubicación",
-  "ORDER_CLIENT": "Cliente",
-  "ORDER_COMMENTS": "Comentarios",
-  "ORDER_PACKAGES": "Paquetes"
+    "ASK_TO_START_PICKUP_MESSAGE": "La tarea de recogida aún no ha comenzado.",
+    "ORDER_SCHEDULE": "Horario",
+    "ORDER_LOCATION": "Ubicación",
+    "ORDER_CLIENT": "Cliente",
+    "ORDER_COMMENTS": "Comentarios",
+    "ORDER_PACKAGES": "Paquetes",
+    "ORDER_PRICE": "Precio",
+    "ORDER_VALUE": "Valor",
+    "ORDER_DISTANCE": "Distancia"
+  }
 }

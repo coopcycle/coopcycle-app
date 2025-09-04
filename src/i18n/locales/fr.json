@@ -556,9 +556,14 @@
     "TASK_CANCELLED": "Annulée",
     "ASK_TO_START_PICKUP_TITLE": "Tâche de ramassage",
     "ASK_TO_START_PICKUP_MESSAGE": "La tâche de ramassage n'est pas encore commencée.",
-    "PAYGREEN_RETURN_TEXT": "Veuillez patienter pendant que nous traitons votre paiement…"
-  },
-  "ORDER_SCHEDULE": "Calendrier",
-  "ORDER_LOCATION": "Emplacement",
-  "ORDER_CLIENT": "Client"
+    "PAYGREEN_RETURN_TEXT": "Veuillez patienter pendant que nous traitons votre paiement…",
+    "ORDER_SCHEDULE": "Calendrier",
+    "ORDER_LOCATION": "Emplacement",
+    "ORDER_CLIENT": "Client",
+    "ORDER_COMMENTS": "Commentaires",
+    "ORDER_PACKAGES": "Colis",
+    "ORDER_PRICE": "Prix",
+    "ORDER_VALUE": "Valeur",
+    "ORDER_DISTANCE": "Distance"
+  }
 }
