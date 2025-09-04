@@ -1,3 +1,7 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { phonecall } from 'react-native-communications';
+import { showLocation } from 'react-native-map-link';
 import {
   Accordion,
   AccordionContent,
@@ -13,10 +17,6 @@ import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { ChevronDownIcon, ChevronUpIcon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { phonecall } from 'react-native-communications';
-import { showLocation } from 'react-native-map-link';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
 import TaskTypeIcon from '../../../components/TaskTypeIcon';
@@ -94,14 +94,17 @@ const ContentText = ({
     </Box>
   );
 };
+interface OrderAccordeonProps {
+  task: Task;
+}
 
-function OrderAccordeon(task: Task) {
+function OrderAccordeon({ task }: OrderAccordeonProps) {
   const { t } = useTranslation();
   const taskTitle = getTaskTitleForOrder(task);
   const timeframe = getTimeFrame(task);
-  const address: string = task.address.streetAddress;
+  const address = task.address.streetAddress;
   const packageType = getPackagesSummary(task);
-  const comments: string = task.comments;
+  const comments = task.comments;
   const headerText = useBlackAndWhiteTextColor();
 
   // Function to handle location press
@@ -181,7 +184,7 @@ function OrderAccordeon(task: Task) {
             timeframe={timeframe}
             packageType={packageType.text}
             tags={task.tags}
-            streetAddress={task.address.streetAddress}
+            streetAddress={address}
             onLocationPress={handleLocationPress}
             telephone={task.address.telephone}
             firstName={task.address.firstName}
