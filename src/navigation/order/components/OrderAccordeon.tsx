@@ -1,7 +1,3 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { phonecall } from 'react-native-communications';
-import { showLocation } from 'react-native-map-link';
 import {
   Accordion,
   AccordionContent,
@@ -17,13 +13,17 @@ import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { ChevronDownIcon, ChevronUpIcon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { phonecall } from 'react-native-communications';
+import { showLocation } from 'react-native-map-link';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
 import TaskTypeIcon from '../../../components/TaskTypeIcon';
 import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
 import { Task, TaskTag } from '../../../types/task';
 import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
-import { getTaskTitle } from '../../../shared/src/utils';
+import { getTaskTitleForOrder } from '../utils';
 
 interface ContentProps {
   comments: string;
@@ -49,6 +49,7 @@ const ContentText = ({
   onPhonePress,
 }: ContentProps) => {
   const { t } = useTranslation();
+
   return (
     <Box style={{ gap: 12, width: '100%' }}>
       {tags && tags.length ? (
@@ -93,19 +94,10 @@ const ContentText = ({
     </Box>
   );
 };
-interface OrderAccordeonProps {
-  task: Task;
-  allTasks?: Task[];
-  index?: number;
-}
 
-function OrderAccordeon({
-  task,
-  allTasks = [],
-  index = 0,
-}: OrderAccordeonProps) {
+function OrderAccordeon(task: Task) {
   const { t } = useTranslation();
-  const taskTitle = getTaskTitle(task);
+  const taskTitle = getTaskTitleForOrder(task);
   const timeframe = getTimeFrame(task);
   const address: string = task.address.streetAddress;
   const packageType = getPackagesSummary(task);

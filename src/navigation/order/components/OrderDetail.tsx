@@ -28,6 +28,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const orderValue = orderInfoInMetadata(tasks, 'order_total');
   const comments = commentsInOrder(tasks);
   const titleColor = useBlackAndWhiteTextColor();
+
   return (
     <Box style={{ gap: 12, padding: 24 }}>
       <Text
@@ -50,16 +51,20 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
         text={orderTimeframe}
         iconName="clock"
       />
-      {orderValue && (
-        <>
-          <Divider />
-          <IconText
-            label={t('ORDER_PRICE')}
-            text={`$ ${orderValue}${orderPaymentMethod ? ` - ${orderPaymentMethod}` : ''}`}
-            iconName="money-check-alt"
-          />
-        </>
-      )}
+      {
+        // TODO check currency / payment method
+        orderValue && (
+          <>
+            <Divider />
+            <IconText
+              label={t('ORDER_PRICE')}
+              text={`${orderValue}`}
+              iconName="money-check-alt"
+            />
+          </>
+        )
+      }
+
       {orderDistance && (
         <>
           <Divider />
@@ -73,7 +78,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
       <Divider />
       <IconText
         label={t('ORDER_PACKAGES')}
-        text={`Total amout: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
+        text={`Total amount: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
         iconName="boxes"
       />
       {comments.length > 0 && (

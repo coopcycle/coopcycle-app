@@ -1,4 +1,4 @@
-import { TaskMetadata } from '../../types/task';
+import Task, { TaskMetadata } from '../../types/task';
 import { Tasks } from '../../types/tasks';
 
 /**
@@ -98,3 +98,10 @@ export const getUniqueTagsFromTasks = (tasks: Tasks) => {
 
   return uniqueTags;
 };
+
+export function getTaskTitleForOrder(task: Task): string {
+  if (task.address?.contactName) {
+    return task.address.contactName;
+  }
+  return task.type === 'PICKUP' ? 'Pickup' : 'Dropoff';
+}
