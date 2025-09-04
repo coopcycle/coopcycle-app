@@ -53,7 +53,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
       />
       {
         // TODO check currency / payment method
-        orderValue && (
+        !!orderValue && (
           <>
             <Divider />
             <IconText
@@ -65,7 +65,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
         )
       }
 
-      {orderDistance && (
+      {!!orderDistance && (
         <>
           <Divider />
           <IconText
@@ -75,12 +75,17 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
           />
         </>
       )}
-      <Divider />
-      <IconText
-        label={t('ORDER_PACKAGES')}
-        text={`Total amount: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
-        iconName="boxes"
-      />
+      {!!packagesInOrder.totalQuantity && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_PACKAGES')}
+            // TODO translate!
+            text={`Total amount: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
+            iconName="boxes"
+          />
+        </>
+      )}
       {comments.length > 0 && (
         <>
           <Divider />
