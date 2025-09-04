@@ -4,7 +4,8 @@ import {
   IconRecycle,
 } from '@tabler/icons-react-native';
 import i18next from 'i18next';
-import { Text, useColorModeValue } from 'native-base';
+import { useColorModeValue } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 

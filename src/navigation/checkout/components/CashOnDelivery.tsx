@@ -1,4 +1,7 @@
-import { Center, Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { BanknoteArrowUp } from 'lucide-react-native';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -23,10 +26,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 20,
     marginHorizontal: 10,
-  },
-  icon: {
-    fontSize: 36,
-    textAlign: 'center',
   },
   errorsContainer: {
     alignItems: 'center',
@@ -63,7 +62,9 @@ const CashOnDelivery = () => {
   return (
     <Center flex={1}>
       <View style={styles.alert}>
-        <Icon as={Foundation} name="dollar-bill" style={styles.icon} />
+        <Center className="mb-3">
+          <Icon as={BanknoteArrowUp} size="xl" />
+        </Center>
         <Text>{t('CASH_ON_DELIVERY_DISCLAIMER')}</Text>
       </View>
       {errors.length > 0 ? (

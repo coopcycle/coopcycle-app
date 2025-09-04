@@ -1,9 +1,9 @@
-import { Center, Icon } from 'native-base';
+import { Icon, SearchIcon } from '@/components/ui/icon';
+import { Center } from '@/components/ui/center';
 import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { shouldShowPreOrder } from '../utils/checkout';
 import { RestaurantCard } from './RestaurantCard';
@@ -67,7 +67,7 @@ class RestaurantList extends Component {
 
     if (addressAsText) {
       return (
-        <Center flex={1} justifyContent="center" alignItems="center" px="2">
+        <Center flex={1} className="justify-center items-center px-2">
           <Image
             style={{
               maxWidth: '40%',
@@ -89,10 +89,9 @@ class RestaurantList extends Component {
     return (
       <Center
         flex={1}
-        justifyContent="center"
-        alignItems="center"
+        className="justify-center items-center"
         testID="checkoutSearchContent">
-        <Icon as={Ionicons} name="search" style={{ color: '#cccccc' }} />
+        <Icon as={SearchIcon} style={{ color: '#cccccc' }} />
         <Text>{this.props.t('ENTER_ADDRESS')}</Text>
       </Center>
     );

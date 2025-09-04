@@ -1,4 +1,5 @@
-import { Flex, Radio, Text } from 'native-base';
+import { Flex, Radio } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { PaymentIcon } from 'react-native-payment-icons';
