@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
 import { createAccordion } from '@gluestack-ui/core/accordion/creator';
-import { View, Pressable, Text, Platform, TextProps } from 'react-native';
+import { Platform, Pressable, Text, TextProps, View } from 'react-native';
 import { tva } from '@gluestack-ui/utils/nativewind-utils';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import {
-  withStyleContext,
   useStyleContext,
+  withStyleContext,
 } from '@gluestack-ui/utils/nativewind-utils';
 import { H3 } from '@expo/html-elements';
 import { cssInterop } from 'nativewind';
@@ -54,11 +54,11 @@ const accordionIconStyle = tva({
   parentVariants: {
     size: {
       '2xs': 'h-3 w-3',
-      'xs': 'h-3.5 w-3.5',
-      'sm': 'h-4 w-4',
-      'md': 'h-[18px] w-[18px]',
-      'lg': 'h-5 w-5',
-      'xl': 'h-6 w-6',
+      xs: 'h-3.5 w-3.5',
+      sm: 'h-4 w-4',
+      md: 'h-[18px] w-[18px]',
+      lg: 'h-5 w-5',
+      xl: 'h-6 w-6',
     },
   },
 });

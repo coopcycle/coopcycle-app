@@ -50,12 +50,16 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
         text={orderTimeframe}
         iconName="clock"
       />
-      <Divider />
-      <IconText
-        label={t('ORDER_PRICE')}
-        text={`$ ${orderValue}${orderPaymentMethod ? ` - ${orderPaymentMethod}` : ''}`}
-        iconName="money-check-alt"
-      />
+      {orderValue && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_PRICE')}
+            text={`$ ${orderValue}${orderPaymentMethod ? ` - ${orderPaymentMethod}` : ''}`}
+            iconName="money-check-alt"
+          />
+        </>
+      )}
       {orderDistance && (
         <>
           <Divider />

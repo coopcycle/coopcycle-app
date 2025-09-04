@@ -1,15 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import IconText from '../../../components/IconText';
-import TaskTagsList from '../../../components/TaskTagsList';
-import TaskTypeIcon from '../../../components/TaskTypeIcon';
-import { getTaskTitle } from '../../../shared/src/utils';
-import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
-import { Task } from '../../../types/task';
-import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
-// TODO CHANGE
-import { ChevronDownIcon, ChevronUpIcon } from 'native-base/src/index';
-import { Box } from '../../../../components/ui/box';
+import { phonecall } from 'react-native-communications';
+import { showLocation } from 'react-native-map-link';
 import {
   Accordion,
   AccordionContent,
@@ -20,9 +12,91 @@ import {
   AccordionTitleText,
   AccordionTrigger,
 } from '../../../../components/ui/accordion';
-import { Text } from '../../../../components/ui/text';
+import { Box } from '../../../../components/ui/box';
 import { Divider } from '../../../../components/ui/divider';
+import { HStack } from '../../../../components/ui/hstack';
+import { ChevronDownIcon, ChevronUpIcon } from '../../../../components/ui/icon';
+import { Text } from '../../../../components/ui/text';
+import IconText from '../../../components/IconText';
+import TaskTagsList from '../../../components/TaskTagsList';
+import TaskTypeIcon from '../../../components/TaskTypeIcon';
+import { getTaskTitle } from '../../../shared/src/utils';
+import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
+import { Task } from '../../../types/task';
+import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
 
+interface ContentProps {
+  comments: string;
+  timeframe: string;
+  packageType: any;
+  tags: string;
+  streetAddress: string;
+  showLocation: () => void;
+  telephone: string;
+  firstName: string;
+  onPhonePress?: () => void;
+}
+
+const ContentText = ({
+  comments,
+  timeframe,
+  packageType,
+  tags,
+  streetAddress,
+  showLocation,
+  telephone,
+  firstName,
+  onPhonePress,
+}: ContentProps) => {
+  const { t } = useTranslation();
+  return (
+    <Box style={{ gap: 12, width: '100%' }}>
+      {tags && tags.length ? (
+        <>
+          <Divider />
+          <TaskTagsList taskTags={tags} />
+        </>
+      ) : null}
+      <Divider />
+      <IconText
+        label={t('ORDER_LOCATION')}
+        iconName="map-marker-alt"
+        text={streetAddress}
+        onPress={showLocation}
+      />
+      <Divider />
+      <IconText label={t('ORDER_SCHEDULE')} text={timeframe} iconName="clock" />
+      <Divider />
+      <IconText
+        label={t('ORDER_PACKAGES')}
+        text={packageType.text}
+        iconName="box"
+      />
+
+      {telephone && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_CLIENT')}
+            text={`${firstName} - ${telephone}`}
+            iconName="phone"
+            onPress={onPhonePress}
+          />
+        </>
+      )}
+      {comments && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_COMMENTS')}
+            text={comments}
+            iconName="comments"
+          />
+        </>
+      )}
+    </Box>
+  );
+};
 interface OrderAccordeonProps {
   task: Task;
 }
@@ -35,156 +109,94 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
   const packageType = getPackagesSummary(task);
   const comments: string = task.comments;
   const headerText = useBlackAndWhiteTextColor();
-  return (
-    <Box
-      style={{
-        marginBottom: 16,
-      }}>
-      <Accordion
-        size="md"
-        variant="unfilled"
-        type="single"
-        isCollapsible={true}
-        isDisabled={false}
-        style={{
-          borderRadius: 12,
-          overflow: 'hidden',
-          shadowColor: '$shadowColor',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
-          elevation: 4, // for Android
-        }}>
-        <AccordionItem value="a">
-          <AccordionHeader
-            style={{
-              borderTopLeftRadius: 12,
-              borderTopRightRadius: 12,
-            }}>
-            <AccordionTrigger
-              style={{
-                paddingHorizontal: 16,
-                paddingVertical: 12,
-              }}>
-              {({ isExpanded }) => {
-                return (
-                  <>
-                    <AccordionTitleText
-                      style={{
-                        marginEnd: 4,
-                      }}>
-                      <Box
-                        style={{
-                          gap: 10,
-                          flexDirection: 'row',
-                          flexWrap: 'wrap',
-                        }}>
-                        <TaskTypeIcon colored task={task} />
-                        <Text
-                          size="lg"
-                          style={{
-                            lineHeight: 22,
-                            textTransform: 'uppercase',
-                            color: headerText,
-                          }}
-                          bold>
-                          {taskTitle}
-                        </Text>
-                      </Box>
-                      <Box
-                        style={{
-                          flexDirection: 'row',
-                          gap: 8,
-                          alignItems: 'center',
-                        }}>
-                        <Box>
-                          <Text bold style={{ color: headerText }}>
-                            {timeframe}
-                          </Text>
-                        </Box>
-                        <Box
-                          style={{
-                            borderStartWidth: 1,
-                            borderStartColor: headerText,
-                            paddingStart: 8,
-                            flex: 1,
-                          }}>
-                          <Text bold style={{ color: headerText }}>
-                            {address}
-                          </Text>
-                        </Box>
-                      </Box>
-                    </AccordionTitleText>
-                    {isExpanded ? (
-                      <AccordionIcon as={ChevronUpIcon} />
-                    ) : (
-                      <AccordionIcon as={ChevronDownIcon} />
-                    )}
-                  </>
-                );
-              }}
-            </AccordionTrigger>
-          </AccordionHeader>
-          <AccordionContent
-            style={{
-              paddingHorizontal: 16,
-            }}>
-            <AccordionContentText>
-              <Box style={{ gap: 12, width: '100%' }}>
-                {task.tags && task.tags.length ? (
-                  <>
-                    <Divider />
-                    <TaskTagsList taskTags={task.tags} />
-                  </>
-                ) : null}
-                <Divider />
-                <IconText
-                  label={t('ORDER_LOCATION')}
-                  iconName="map-marker-alt"
-                  text={task.address.streetAddress}
-                />
-                <Divider />
-                <IconText
-                  label={t('ORDER_SCHEDULE')}
-                  text={timeframe}
-                  iconName="clock"
-                />
-                <Divider />
-                <IconText
-                  label={t('ORDER_PACKAGES')}
-                  text={packageType.text}
-                  iconName="box"
-                />
 
-                {task.address.telephone && (
-                  <>
-                    <Divider />
-                    <IconText
-                      label={t('ORDER_CLIENT')}
-                      text={`${task.address.firstName} - ${task.address.telephone}`}
-                      iconName="phone"
-                    />
-                  </>
-                )}
-                {comments && (
-                  <>
-                    <Divider />
-                    <IconText
-                      label={t('ORDER_COMMENTS')}
-                      text={comments}
-                      iconName="comments"
-                    />
-                  </>
-                )}
-              </Box>
-            </AccordionContentText>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </Box>
+  // Function to handle location press
+  const handleLocationPress = () => {
+    showLocation({
+      latitude: task.address.geo.latitude,
+      longitude: task.address.geo.longitude,
+      dialogTitle: t('OPEN_IN_MAPS_TITLE'),
+      dialogMessage: t('OPEN_IN_MAPS_MESSAGE'),
+      cancelText: t('CANCEL'),
+    });
+  };
+
+  // Function to handle phone press
+  const handlePhonePress = () => {
+    if (task.address.telephone) {
+      phonecall(task.address.telephone, true);
+    }
+  };
+
+  return (
+    <Accordion
+      size="md"
+      variant="filled"
+      type="single"
+      isCollapsible={true}
+      isDisabled={false}
+      className="border-outline-200 mb-2"
+      style={{
+        borderRadius: 24,
+      }}>
+      <AccordionItem value="a">
+        <AccordionHeader>
+          <AccordionTrigger>
+            {({ isExpanded }) => {
+              return (
+                <>
+                  <Box className="flex-1 flex-col">
+                    <HStack space="xs" className="mb-2">
+                      <TaskTypeIcon colored task={task} />
+                      <AccordionTitleText
+                        style={{
+                          lineHeight: 22,
+                          textTransform: 'uppercase',
+                          color: headerText,
+                          marginLeft: 12,
+                        }}>
+                        {taskTitle}
+                      </AccordionTitleText>
+                    </HStack>
+                    <HStack space="md" style={{ alignItems: 'center' }}>
+                      <Text bold style={{ color: headerText }}>
+                        {timeframe}
+                      </Text>
+                      <Divider orientation="vertical" className="h-8" />
+                      <Text bold style={{ color: headerText, flexShrink: 1 }}>
+                        {address}
+                      </Text>
+                    </HStack>
+                  </Box>
+                  {isExpanded ? (
+                    <AccordionIcon as={ChevronUpIcon} className="ml-3" />
+                  ) : (
+                    <AccordionIcon as={ChevronDownIcon} className="ml-3" />
+                  )}
+                </>
+              );
+            }}
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <Box className="w-full">
+            <AccordionContentText />
+          </Box>
+
+          <ContentText
+            timeframe={timeframe}
+            packageType={packageType}
+            tags={task.tags}
+            streetAddress={task.address.streetAddress}
+            showLocation={handleLocationPress}
+            telephone={task.address.telephone}
+            firstName={task.address.firstName}
+            comments={comments}
+            onPhonePress={handlePhonePress}
+          />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 
