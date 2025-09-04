@@ -2,7 +2,7 @@ import React from 'react';
 import { useColorScheme } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
 import { nativeBaseTheme } from '../styles/theme';
-import { GluestackUIProvider } from '../../components/ui/gluestack-ui-provider';
+import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 
 interface UIProviderProps {
   children: React.ReactNode;

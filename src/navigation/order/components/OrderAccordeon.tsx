@@ -11,29 +11,29 @@ import {
   AccordionItem,
   AccordionTitleText,
   AccordionTrigger,
-} from '../../../../components/ui/accordion';
-import { Box } from '../../../../components/ui/box';
-import { Divider } from '../../../../components/ui/divider';
-import { HStack } from '../../../../components/ui/hstack';
-import { ChevronDownIcon, ChevronUpIcon } from '../../../../components/ui/icon';
-import { Text } from '../../../../components/ui/text';
+} from '@/components/ui/accordion';
+import { Box } from '@/components/ui/box';
+import { Divider } from '@/components/ui/divider';
+import { HStack } from '@/components/ui/hstack';
+import { ChevronDownIcon, ChevronUpIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
 import TaskTypeIcon from '../../../components/TaskTypeIcon';
-import { getTaskTitle } from '../../../shared/src/utils';
 import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
-import { Task } from '../../../types/task';
+import { Task, TaskTag } from '../../../types/task';
 import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
+import { getTaskTitle } from '../../../shared/src/utils';
 
 interface ContentProps {
   comments: string;
   timeframe: string;
-  packageType: any;
-  tags: string;
+  packageType: string;
+  tags: TaskTag[];
   streetAddress: string;
-  showLocation: () => void;
+  onLocationPress: () => void;
   telephone: string;
-  firstName: string;
+  firstName: string | null;
   onPhonePress?: () => void;
 }
 
@@ -43,7 +43,7 @@ const ContentText = ({
   packageType,
   tags,
   streetAddress,
-  showLocation,
+  onLocationPress,
   telephone,
   firstName,
   onPhonePress,
@@ -62,16 +62,12 @@ const ContentText = ({
         label={t('ORDER_LOCATION')}
         iconName="map-marker-alt"
         text={streetAddress}
-        onPress={showLocation}
+        onPress={onLocationPress}
       />
       <Divider />
       <IconText label={t('ORDER_SCHEDULE')} text={timeframe} iconName="clock" />
       <Divider />
-      <IconText
-        label={t('ORDER_PACKAGES')}
-        text={packageType.text}
-        iconName="box"
-      />
+      <IconText label={t('ORDER_PACKAGES')} text={packageType} iconName="box" />
 
       {telephone && (
         <>
@@ -99,9 +95,15 @@ const ContentText = ({
 };
 interface OrderAccordeonProps {
   task: Task;
+  allTasks?: Task[];
+  index?: number;
 }
 
-function OrderAccordeon({ task }: OrderAccordeonProps) {
+function OrderAccordeon({
+  task,
+  allTasks = [],
+  index = 0,
+}: OrderAccordeonProps) {
   const { t } = useTranslation();
   const taskTitle = getTaskTitle(task);
   const timeframe = getTimeFrame(task);
@@ -185,10 +187,10 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
 
           <ContentText
             timeframe={timeframe}
-            packageType={packageType}
+            packageType={packageType.text}
             tags={task.tags}
             streetAddress={task.address.streetAddress}
-            showLocation={handleLocationPress}
+            onLocationPress={handleLocationPress}
             telephone={task.address.telephone}
             firstName={task.address.firstName}
             comments={comments}

@@ -2,13 +2,9 @@
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
     "paths": {
-      // A workaround to prevent native-base source code from being type-checked
-      // Why?
-      // Even with the correct extends configuration, TypeScript is still checking native-base source files because:
-      // * exclude doesn't prevent import resolution: When your code imports from native-base, TypeScript must resolve those imports and type-check the source files
-      // * Native-base ships TypeScript source: Unlike most packages that ship compiled JS + .d.ts files, native-base includes full TypeScript source code
-      // * Import chain following: TypeScript follows the import chain from your code → native-base → ...
-      "native-base/src/*": ["./node_modules/native-base/lib/typescript/*"]
-    },
-  }
+      "@/*": ["./*"],
+      "tailwind.config": ["./tailwind.config.js"]
+    }
+  },
+  "exclude": ["node_modules"]
 }

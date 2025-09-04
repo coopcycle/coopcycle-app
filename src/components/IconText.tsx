@@ -5,9 +5,9 @@ import {
   useBlackAndWhiteTextColor,
   useIconColor,
 } from '../styles/gluestack-theme';
-import { Box } from '../../components/ui/box';
-import { HStack } from '../../components/ui/hstack';
-import { Text } from '../../components/ui/text';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import Icon from './Icon';
 
 export interface IconTextProps {

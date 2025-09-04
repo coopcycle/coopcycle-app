@@ -13,7 +13,7 @@ import TaskMiniMap from '../task/components/MiniMap';
 import OrderAccordeon from './components/OrderAccordeon';
 import OrderDetail from './components/OrderDetail';
 import { RouteType } from './types';
-import { Box } from '../../../components/ui/box';
+import { Box } from '@/components/ui/box';
 
 const Order = ({ route }: { route: RouteType }) => {
   const [mapDimensions, setMapDimensions] = useState({ height: 0, width: 0 });

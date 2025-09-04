@@ -13,9 +13,9 @@ import {
   orderInfoInMetadata,
   packagesInOrderSummery,
 } from './../utils';
-import { Box } from '../../../../components/ui/box';
-import { Text } from '../../../../components/ui/text';
-import { Divider } from '../../../../components/ui/divider';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { Divider } from '@/components/ui/divider';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();

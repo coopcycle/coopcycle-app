@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { whiteColor } from '../styles/common';
 import { TaskTag } from '../types/task';
-import { Text } from '../../components/ui/text';
-import { HStack } from '../../components/ui/hstack';
-import { Box } from '../../components/ui/box';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
+import { Box } from '@/components/ui/box';
 
 function TaskTagsList({ taskTags }: { taskTags: TaskTag[] }) {
   return (
