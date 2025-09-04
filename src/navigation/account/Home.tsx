@@ -1,10 +1,17 @@
-import { Box, Button, FlatList, HStack, Icon, Text } from 'native-base';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
+import { User } from 'lucide-react-native'
+import { HStack } from '@/components/ui/hstack';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
 import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
-import { TouchableOpacity, View } from 'react-native';
+import { withTranslation, useTranslation } from 'react-i18next';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
+
+import { useBackgroundContainerColor } from '../../styles/theme';
 
 import ItemSeparator from '../../components/ItemSeparator';
 import { deleteUser } from '../../redux/Account/actions';
@@ -17,6 +24,25 @@ import {
 import LoginRegister from './AccountLoginRegister';
 import Server from './components/Server';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+const DeleteAccountModal = ({ onConfirm }) => {
+
+  const { t } = useTranslation();
+  const backgroundColor = useBackgroundContainerColor();
+
+  return (
+    <View style={{ backgroundColor }}>
+      <Box className="p-5">
+        <Text className="mb-4">{t('DELETE_ACCOUNT_DISCLAIMER')}</Text>
+        <Button
+          action="negative"
+          onPress={onConfirm}>
+          <ButtonText>{t('DELETE_ACCOUNT')}</ButtonText>
+        </Button>
+      </Box>
+    </View>
+  )
+}
 
 class AccountHome extends Component {
   constructor(props) {
@@ -69,7 +95,7 @@ class AccountHome extends Component {
             justifyContent: 'center',
             marginBottom: 15,
           }}>
-          <Icon as={Ionicons} name="person" />
+          <Icon as={User} size={32} className="mb-2" />
           <Text
             style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
             {`${this.props.t('HELLO')} ${this.props.user.username}`}
@@ -81,21 +107,21 @@ class AccountHome extends Component {
           ItemSeparatorComponent={ItemSeparator}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={item.onPress}>
-              <Box px="3" py="3">
-                <HStack space={3} justifyContent="space-between">
+              <Box className="px-3 py-3">
+                <HStack className="justify-between">
                   <Text {...item.textProps}>{item.label}</Text>
-                  <Icon as={Ionicons} name="arrow-forward" />
+                  <Icon as={ArrowRightIcon} />
                 </HStack>
               </Box>
             </TouchableOpacity>
           )}
         />
-        <Box p="2">
+        <Box className="p-2">
           <Button
-            colorScheme="secondary"
+            action="negative"
             onPress={() => this.props.logout()}
             testID="logout">
-            {this.props.t('SIGN_OUT')}
+            <ButtonText>{this.props.t('SIGN_OUT')}</ButtonText>
           </Button>
         </Box>
         <Modal
@@ -103,19 +129,10 @@ class AccountHome extends Component {
           onSwipeComplete={() => this.closeModal()}
           swipeDirection={['down', 'up', 'left', 'right']}
           onBackdropPress={() => this.closeModal()}>
-          <View style={{ backgroundColor: 'white' }}>
-            <Box p="4">
-              <Text mb="3">{this.props.t('DELETE_ACCOUNT_DISCLAIMER')}</Text>
-              <Button
-                colorScheme="secondary"
-                onPress={() => {
-                  this.props.deleteUser();
-                  this.closeModal();
-                }}>
-                {this.props.t('DELETE_ACCOUNT')}
-              </Button>
-            </Box>
-          </View>
+          <DeleteAccountModal onConfirm={() => {
+            this.props.deleteUser();
+            this.closeModal();
+          }} />
         </Modal>
       </SafeAreaView>
     );

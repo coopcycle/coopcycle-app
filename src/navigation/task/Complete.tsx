@@ -2,7 +2,6 @@ import { Formik } from 'formik';
 import _ from 'lodash';
 import {
   Divider,
-  Icon,
   Skeleton,
 } from 'native-base';
 import {
@@ -13,7 +12,8 @@ import {
   FormControlErrorIcon,
   FormControlLabelText,
 } from '@/components/ui/form-control';
-import { CheckIcon } from '@/components/ui/icon';
+import { Icon, CheckIcon } from '@/components/ui/icon';
+import { CircleX, User, Signature, Camera } from 'lucide-react-native';
 import { Input, InputField } from '@/components/ui/input';
 import { Textarea, TextareaInput } from '@/components/ui/textarea';
 import { Box } from '@/components/ui/box';
@@ -93,7 +93,7 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
         style={{ width: imageSize - 2, height: imageSize - 2 }}
       />
       <TouchableOpacity style={styles.imageDelBtn} onPress={onPressDelete}>
-        <Icon as={FontAwesome5} name="times-circle" />
+        <Icon as={CircleX} size={ 40 } style={{color: "black"}} />
       </TouchableOpacity>
     </View>
   );
@@ -337,8 +337,7 @@ const SubmitButton = ({
       testID="task:finishButton">
       <HStack className="py-3 items-center">
         <Icon
-          as={FontAwesome}
-          name={buttonIconName}
+          as={CheckIcon}
           style={{ color: '#fff', marginRight: 10 }}
         />
         <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
@@ -493,21 +492,15 @@ const CompleteTask = ({
                   {isDropoff(task, tasks) && (
                     <React.Fragment>
                       <HStack className="justify-between items-center p-3">
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}>
+                        <HStack className="justify-between items-center">
                           <Icon
-                            as={FontAwesome}
-                            name="user"
+                            as={User}
                             style={{ marginRight: 10 }}
                           />
                           <Text numberOfLines={1}>
                             {resolveContactName(contactName, task, tasks)}
                           </Text>
-                        </View>
+                        </HStack>
                         <TouchableOpacity
                           onPress={() => setIsContactNameModalVisible(true)}>
                           <Text>{t('EDIT')}</Text>
@@ -611,9 +604,9 @@ const CompleteTask = ({
                   })
                 }>
                 <HStack className="items-center justify-between p-3">
-                  <Icon as={FontAwesome5} name="signature" />
+                  <Icon as={Signature} />
                   <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
-                  <Icon as={FontAwesome5} name="camera" />
+                  <Icon as={Camera} />
                 </HStack>
               </TouchableOpacity>
               <SubmitButton
@@ -671,6 +664,8 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff',
     top: -16,
     right: -16,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   screenContainer: {
     alignItems: 'center',
