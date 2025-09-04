@@ -1,10 +1,14 @@
-import { Button, HStack, Icon, Pressable, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
+import { Check } from 'lucide-react-native'
 import React, { Component } from 'react';
 import { FlatList, InteractionManager, StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { withTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import { activateMenu, loadMenus } from '../../redux/Restaurant/actions';
@@ -28,9 +32,9 @@ class Menus extends Component {
         onPress={() =>
           this.setState({ isModalVisible: true, currentItem: item })
         }>
-        <HStack justifyContent="space-between" p="3">
+        <HStack className="justify-between p-3">
           <Text>{item.name}</Text>
-          {item.active && <Icon as={FontAwesome} name="check-square" />}
+          {item.active && <Icon as={Check} />}
         </HStack>
       </Pressable>
     );
@@ -69,26 +73,24 @@ class Menus extends Component {
         <Modal isVisible={this.state.isModalVisible}>
           <View style={styles.modalContent}>
             <Button
-              block
-              warning
+              action="positive"
               onPress={() => this._onConfirm()}
               style={{ marginBottom: 15 }}>
-              <Text>
+              <ButtonText>
                 {this.props.t('RESTAURANT_SETTINGS_MENU_ACTIVATE', {
                   name: this.state.currentItem
                     ? this.state.currentItem.name
                     : '',
                 })}
-              </Text>
+              </ButtonText>
             </Button>
             <Button
-              block
-              bordered
-              info
+              variant="outline"
+              size="sm"
               onPress={() =>
                 this.setState({ isModalVisible: false, currentItem: null })
               }>
-              <Text>{this.props.t('CANCEL')}</Text>
+              <ButtonText>{this.props.t('CANCEL')}</ButtonText>
             </Button>
           </View>
         </Modal>

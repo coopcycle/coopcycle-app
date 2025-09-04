@@ -1,4 +1,7 @@
-import { HStack, Icon, Text, useTheme } from 'native-base';
+import { Icon } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -24,7 +27,6 @@ const RightButton = ({ width }) => (
 
 const CompleteButton = React.forwardRef((props, ref) => {
   const { task, onPressSuccess, onPressFailure, t } = props;
-  const { colors } = useTheme();
 
   const { width } = Dimensions.get('window');
 
@@ -62,7 +64,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
 
   return (
     <View>
-      <HStack px="3" py="2">
+      <HStack className="px-3 py-2">
         <Text fontSize="xs" color="muted.500">
           {t('SWIPE_TO_END')}
         </Text>
@@ -99,13 +101,14 @@ const CompleteButton = React.forwardRef((props, ref) => {
             <RightButton width={buttonWidth} />
           </TouchableOpacity>
         </View>
-        <View
-          style={{ padding: 28, width, backgroundColor: colors.muted['400'] }}
+        <Box
+          className="bg-secondary-600"
+          style={{ padding: 28, width }}
           testID="task:completeButton">
           <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff' }}>
             {t('COMPLETE_TASK')}
           </Text>
-        </View>
+        </Box>
       </SwipeRow>
     </View>
   );

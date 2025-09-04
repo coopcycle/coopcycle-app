@@ -1,8 +1,12 @@
-import { Avatar, Button, HStack, Heading, View } from 'native-base';
+import { Avatar } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Heading } from '@/components/ui/heading';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { formatPrice } from '../../../utils/formatting';
 
 const tipColor = 'blueGray.200';
@@ -33,9 +37,9 @@ function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
   };
 
   return (
-    <View padding={2}>
-      <Heading size={'xs'}>{t('TIP')}</Heading>
-      <HStack justifyContent="center" paddingBottom={5}>
+    <Box className="p-2">
+      <Heading size="sm" className="mb-2 text-center">{t('TIP')}</Heading>
+      <HStack className="justify-center pb-5">
         {!advancedView && defaultView()}
 
         {advancedView && (
@@ -66,8 +70,10 @@ function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
           bg={tipColor}
         />
       </HStack>
-      <Button onPress={() => onTip(tip)}>{t('VALIDATE')}</Button>
-    </View>
+      <Button onPress={() => onTip(tip)}>
+        <ButtonText>{t('VALIDATE')}</ButtonText>
+      </Button>
+    </Box>
   );
 }
 

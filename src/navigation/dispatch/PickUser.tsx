@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Icon, Text } from 'native-base';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import { withTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { Component } from 'react';
 
 import { greenColor, redColor, whiteColor } from '../../styles/common';
@@ -20,7 +20,7 @@ class PickUser extends Component {
         style={styles.item}>
         <Avatar baseURL={this.props.baseURL} username={user.username} />
         <Text style={styles.itemText}>{user.username}</Text>
-        <Icon as={FontAwesome} name="arrow-right" size="sm" />
+        <Icon as={ArrowRightIcon} size="sm" />
       </TouchableOpacity>
     );
   }

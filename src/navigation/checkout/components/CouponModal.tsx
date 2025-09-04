@@ -1,5 +1,9 @@
 import { Formik } from 'formik';
-import { Box, Button, FormControl, Input, Text, VStack } from 'native-base';
+import { Input, InputField } from '@/components/ui/input';
+import { Box } from '@/components/ui/box';
+import { FormControl, FormControlLabel, FormControlLabelText } from '@/components/ui/form-control';
+import { VStack } from '@/components/ui/vstack';
+import { Button, ButtonText } from '@/components/ui/button';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -28,7 +32,7 @@ class CouponModal extends Component {
         onSwipeComplete={this.props.onSwipeComplete}
         swipeDirection={['up', 'down']}>
         <ModalContent>
-          <Box p="4" borderWidth="1" borderColor="gray.700">
+          <Box className="p-4">
             <Formik
               initialValues={initialValues}
               validate={this._validate.bind(this)}
@@ -47,21 +51,22 @@ class CouponModal extends Component {
                   <FormControl
                     error={touched.code && errors.code}
                     style={{ marginBottom: 15 }}>
-                    <FormControl.Label>
-                      {this.props.t('VOUCHER_CODE')}
-                    </FormControl.Label>
-                    <Input
-                      _stack={{ style: {} }}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      style={{ height: 40 }}
-                      returnKeyType="done"
-                      onChangeText={handleChange('code')}
-                      onBlur={handleBlur('code')}
-                    />
+                    <FormControlLabel>
+                      <FormControlLabelText>{this.props.t('VOUCHER_CODE')}</FormControlLabelText>
+                    </FormControlLabel>
+                    <Input>
+                      <InputField
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        style={{ height: 40 }}
+                        returnKeyType="done"
+                        onChangeText={handleChange('code')}
+                        onBlur={handleBlur('code')}
+                      />
+                    </Input>
                   </FormControl>
                   <Button block onPress={handleSubmit}>
-                    <Text>{this.props.t('SUBMIT')}</Text>
+                    <ButtonText>{this.props.t('SUBMIT')}</ButtonText>
                   </Button>
                 </VStack>
               )}

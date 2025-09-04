@@ -1,5 +1,13 @@
-import { Button, Center, Row, ScrollView, Spinner } from 'native-base';
+import {
+  Button,
+  ButtonText,
+  ButtonGroup,
+} from '@/components/ui/button';
+import { Box } from '@/components/ui/box';
+import { Center } from '@/components/ui/center';
+import { Spinner } from '@/components/ui/spinner';
 import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -28,7 +36,7 @@ class LegalText extends Component {
     if (this.props.loading) {
       return (
         <Center flex={1}>
-          <Spinner size="lg" />
+          <Spinner size="large" />
         </Center>
       );
     }
@@ -40,21 +48,25 @@ class LegalText extends Component {
           contentInsetAdjustmentBehavior="automatic"
           style={{ height: '100%' }}
           px="4">
-          <Markdown>{this.props.text}</Markdown>
-          {this.props.showConfirmationButtons && (
-            <Row justifyContent="space-between" space={10} my={4}>
-              <Button
-                onPress={() => this._handleNav({ legalTextAccepted: false })}>
-                {this.props.t('CANCEL')}
-              </Button>
-              <Button
-                flex={1}
-                colorScheme="success"
-                onPress={() => this._handleNav({ legalTextAccepted: true })}>
-                {this.props.t('AGREE')}
-              </Button>
-            </Row>
-          )}
+          <Box className="p-4">
+            <Markdown>{this.props.text}</Markdown>
+            {this.props.showConfirmationButtons && (
+              <ButtonGroup flexDirection="row" className="py-4">
+                <Button
+                  variant="outline"
+                  className="w-1/2"
+                  onPress={() => this._handleNav({ legalTextAccepted: false })}>
+                  <ButtonText>{this.props.t('CANCEL')}</ButtonText>
+                </Button>
+                <Button
+                  action="positive"
+                  className="w-1/2"
+                  onPress={() => this._handleNav({ legalTextAccepted: true })}>
+                  <ButtonText>{this.props.t('AGREE')}</ButtonText>
+                </Button>
+              </ButtonGroup>
+            )}
+          </Box>
         </ScrollView>
       </SafeAreaView>
     );

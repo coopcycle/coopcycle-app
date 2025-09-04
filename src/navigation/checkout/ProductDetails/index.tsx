@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { SectionList, View } from 'native-base';
 import React, { useMemo, useRef, useState } from 'react';
+import { SectionList, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import ItemSeparator from '../../../components/ItemSeparator';

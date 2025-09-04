@@ -1,4 +1,7 @@
-import { Box, Button, Text } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -8,7 +11,7 @@ import { resetServer } from '../../../redux/App/actions';
 class Server extends Component {
   render() {
     return (
-      <Box p="2">
+      <Box className="p-2">
         <Text style={{ textAlign: 'center' }}>
           {[
             this.props.t('CONNECTED_TO'),
@@ -22,7 +25,7 @@ class Server extends Component {
           size="sm"
           variant="link"
           onPress={() => this.props.resetServer()}>
-          {this.props.t('CHANGE_SERVER')}
+          <ButtonText>{this.props.t('CHANGE_SERVER')}</ButtonText>
         </Button>
       </Box>
     );

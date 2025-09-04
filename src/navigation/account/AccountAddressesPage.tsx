@@ -1,4 +1,7 @@
-import { Divider, HStack, Heading, Text } from 'native-base';
+import { Divider } from '@/components/ui/divider';
+import { HStack } from '@/components/ui/hstack';
+import { Heading } from '@/components/ui/heading';
+import { Text } from '@/components/ui/text';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -41,11 +44,8 @@ class AccountAddressesPage extends Component {
           this.props.navigation.goBack();
         }}>
         <HStack
-          px="2"
-          py="3"
-          space={2}
           style={{ backgroundColor: color }}
-          justifyContent="space-between">
+          className="px-2 py-3 justify-between">
           <Text>{item.streetAddress}</Text>
           <Text>{item.name}</Text>
         </HStack>
@@ -80,7 +80,7 @@ class AccountAddressesPage extends Component {
         {!this.state.focused && (
           <View style={{ flex: 4 }}>
             <Divider />
-            <Heading margin={3}>{i18n.t('MY_ADDRESSES')}</Heading>
+            <Heading className="my-3 px-2">{i18n.t('MY_ADDRESSES')}</Heading>
             <FlatList
               keyExtractor={(item, index) => `address-${index}`}
               data={addresses}

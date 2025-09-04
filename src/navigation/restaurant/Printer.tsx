@@ -1,5 +1,7 @@
 import _ from 'lodash';
-import { Center, Icon, Text, View } from 'native-base';
+import { Icon } from 'native-base';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation, withTranslation } from 'react-i18next';
@@ -12,6 +14,7 @@ import {
   Platform,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';

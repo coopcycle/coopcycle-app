@@ -2,7 +2,7 @@ import { IconCircleArrowDownFilled } from '@tabler/icons-react-native';
 import { Formik } from 'formik';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';

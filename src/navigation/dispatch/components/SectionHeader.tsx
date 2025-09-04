@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { Icon, Text, View } from 'native-base';
-import { TouchableOpacity } from "react-native";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import { Icon, ChevronUpIcon, ChevronDownIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { TouchableOpacity, View } from "react-native";
 
 import { useBackgroundHighlightColor } from "../../../styles/theme";
 import { darkGreyColor, whiteColor } from "../../../styles/common";
@@ -34,6 +33,7 @@ export function SectionHeader({ section, collapsedSections, setCollapsedSections
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
+          alignItems: 'center',
           paddingHorizontal: 8,
           paddingVertical: 4,
           backgroundColor: whiteColor,
@@ -65,11 +65,8 @@ export function SectionHeader({ section, collapsedSections, setCollapsedSections
         </View>
         {section.tasksCount === 0 ? null : (
           <Icon
-            as={FontAwesome}
+            as={collapsedSections.has(section.title) ? ChevronDownIcon : ChevronUpIcon}
             testID={`${section.id}:toggler`}
-            name={
-              collapsedSections.has(section.title) ? 'angle-down' : 'angle-up'
-            }
           />
         )}
       </TouchableOpacity>

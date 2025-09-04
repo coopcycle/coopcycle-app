@@ -1,6 +1,6 @@
-import { Text, View } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 

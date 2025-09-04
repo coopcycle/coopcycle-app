@@ -1,5 +1,9 @@
 import { Camera, CameraView } from 'expo-camera';
-import { Button, Icon, IconButton, Text, VStack } from 'native-base';
+import { Button, ButtonText, ButtonIcon} from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { Icon } from '@/components/ui/icon';
+import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon } from 'lucide-react-native';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
@@ -82,7 +86,7 @@ class Photo extends Component {
 
     return (
       <VStack flex={1}>
-        <VStack flex={1} p="2">
+        <VStack flex={1} className="p-2">
           <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
             {this.props.t('PHOTO_DISCLAIMER')}
           </Text>
@@ -96,31 +100,27 @@ class Photo extends Component {
                 ref={this.camera}
                 style={styles.camera}
                 flashMode={this.state.flash ? 'on' : 'off'}>
-                <IconButton
+                <Button
                   onPress={this.toggleFlash.bind(this)}
-                  variant="ghost"
+                  variant="solid"
                   colorScheme="yellow"
-                  _icon={{
-                    as: Ionicons,
-                    name: this.state.flash ? 'flash' : 'flash-off',
-                  }}
                   style={styles.flash}
-                />
-                <IconButton
+                >
+                  <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
+                </Button>
+                <Button
                   onPress={this._takePicture.bind(this)}
                   size="lg"
                   variant="solid"
-                  _icon={{
-                    as: Ionicons,
-                    name: 'camera',
-                  }}
-                />
+                >
+                  <ButtonIcon as={CameraIcon} />
+                </Button>
                 <View
                   style={[
                     styles.preview,
                     { width: previewSize, height: previewSize },
                   ]}>
-                  {!image && <Icon as={AntDesign} name="picture" size="lg" />}
+                  {!image && <Icon as={ImageIcon} size="xl" className="text-color-light" />}
                   {image && (
                     <Image
                       style={{ width: previewSize, height: previewSize }}
@@ -132,9 +132,9 @@ class Photo extends Component {
             ) : null}
           </View>
         </VStack>
-        <VStack p="2">
+        <VStack className="p-2">
           <Button size="lg" onPress={this._saveImage.bind(this)}>
-            {this.props.t('PHOTO_ADD')}
+            <ButtonText>{this.props.t('PHOTO_ADD')}</ButtonText>
           </Button>
         </VStack>
       </VStack>

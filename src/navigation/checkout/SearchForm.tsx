@@ -1,6 +1,9 @@
 import { t } from 'i18next';
 import _ from 'lodash';
-import { FormControl, IconButton, Input, Text } from 'native-base';
+import { FormControl } from '@/components/ui/form-control';
+import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
+import { CloseIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { SectionList } from 'react-native';
@@ -73,30 +76,24 @@ class SearchForm extends Component {
     return (
       <>
         <FormControl>
-          <Input
-            _stack={{ style: {} }}
-            size="md"
-            m={4}
-            p={2}
-            ref={input => {
-              this.textInput = input;
-            }}
-            keyboardType="web-search"
-            blurOnSubmit={true}
-            autoCorrect={false}
-            InputRightElement={
-              <IconButton
-                _icon={{ as: FontAwesome5, name: 'times' }}
-                onPress={() => {
-                  this._clearList();
-                  this.textInput.clear();
-                  this.textInput.blur();
-                }}
-              />
-            }
-            onChangeText={_.debounce(this._onChange, 350)}
-            placeholder={i18n.t('SEARCH_INPUT_PLACEHOLDER')}
-          />
+          <Input size="lg" className="m-4 p-2">
+            <InputField
+              blurOnSubmit={true}
+              autoCorrect={false}
+              ref={input => {
+                this.textInput = input;
+              }}
+              type="web-search"
+              onChangeText={_.debounce(this._onChange, 350)}
+              placeholder={i18n.t('SEARCH_INPUT_PLACEHOLDER')} />
+            <InputSlot className="pr-3" onPress={() => {
+                this._clearList();
+                this.textInput.clear();
+                this.textInput.blur();
+              }}>
+              <InputIcon as={ CloseIcon } />
+            </InputSlot>
+          </Input>
         </FormControl>
         {!isLoading && searchResultsLoaded && searchResults ? (
           <SectionList

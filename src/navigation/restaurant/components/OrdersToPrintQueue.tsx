@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {

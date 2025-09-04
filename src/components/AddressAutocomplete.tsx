@@ -7,16 +7,15 @@ import _ from 'lodash';
 import {
   Icon,
   Input,
-  Pressable,
-  Text,
-  View,
   useColorModeValue,
 } from 'native-base';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';

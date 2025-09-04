@@ -1,9 +1,8 @@
-import { ActivityIndicator, InteractionManager } from 'react-native';
+import { ActivityIndicator, InteractionManager, View } from 'react-native';
 import { Center, Heading, Text } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'native-base';
 
 import { initialize } from '../../redux/Dispatch/actions';
 import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';

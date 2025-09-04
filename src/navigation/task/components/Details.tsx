@@ -1,5 +1,8 @@
-import { Button, FlatList, HStack, Icon } from 'native-base';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
@@ -110,11 +113,12 @@ const Details = ({ task, onTaskTitleClick, t }) => {
         <View style={{ flex: 1, flexDirection: 'row' }}>
           {task.tags.map(tag => (
             <Button
-              style={{ backgroundColor: tag.color, marginRight: 5 }}
+              className="mr-1"
+              style={{ backgroundColor: tag.color }}
               key={tag.slug}
-              small
+              size="xs"
               disabled>
-              <Text style={{ fontSize: 10 }}>{tag.slug}</Text>
+              <ButtonText>{tag.slug}</ButtonText>
             </Button>
           ))}
         </View>
@@ -159,13 +163,9 @@ const Details = ({ task, onTaskTitleClick, t }) => {
             onTaskTitleClick(task);
           }}
           style={{ flex: 1 }}>
-          <HStack alignItems="center" justifyContent="space-between" p="2">
+          <HStack className="items-center justify-between p-2">
             {renderTaskTitle()}
-            <Icon
-              as={Ionicons}
-              name="arrow-forward"
-              style={{ color: '#ccc' }}
-            />
+            <Icon as={ArrowRightIcon} />
           </HStack>
         </TouchableOpacity>
       )}

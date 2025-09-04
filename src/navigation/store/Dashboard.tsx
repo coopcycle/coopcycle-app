@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import DeliveryList from '../../components/DeliveryList';
-
-import variables from '../../../native-base-theme/variables/platform';
 
 import {
   init,
@@ -26,12 +25,12 @@ class StoreDashboard extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
           flexDirection: 'column',
-          marginBottom: variables.isIphoneX ? 88 : 0,
-        }}>
+        }}
+        edges={['bottom']}>
         <DeliveryList
           data={this.props.deliveries}
           loading={this.props.loadingMore}
@@ -56,7 +55,7 @@ class StoreDashboard extends Component {
             return lines;
           }}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

@@ -1,5 +1,7 @@
 import { IconClock, IconPlugX } from '@tabler/icons-react-native';
-import { Badge, HStack, Text } from 'native-base';
+import { Badge } from '@/components/ui/badge';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
@@ -11,9 +13,6 @@ import {
 } from '../../../utils/checkout';
 
 const styles = StyleSheet.create({
-  badge: {
-    alignItems: 'center',
-  },
   badgeText: {
     fontSize: 14,
     fontWeight: 600,
@@ -40,7 +39,7 @@ const IconBike = ({ color }) => (
 export const CategoryBadge = ({ label }) => {
   // styled via theme
   return (
-    <Badge variant="subtle" mr="1">
+    <Badge action="muted" className="mr-1">
       {label}
     </Badge>
   );
@@ -54,7 +53,7 @@ export const TimingBadge = ({ restaurant }) => {
   const shippingTime = getNextShippingTimeAsText(restaurant);
 
   return (
-    <HStack style={[styles.badge]}>
+    <HStack className="items-center">
       {!isAvailable ? (
         <IconPlugX size={22} color={color} strokeWidth={1.5} />
       ) : showPreOrder ? (

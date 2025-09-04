@@ -1,6 +1,10 @@
-import { Button, Divider, Heading, Text, View } from 'native-base';
+import { Heading } from '@/components/ui/heading';
+import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Divider } from '@/components/ui/divider';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import BottomModal from '../../../components/BottomModal';
@@ -42,13 +46,8 @@ class TimingModal extends Component {
             </Heading>
             <Divider />
             {this.props.fulfillmentMethods.length > 1 && (
-              <Button.Group
-                isAttached
-                mx={{
-                  base: 'auto',
-                  md: 0,
-                }}
-                size="sm">
+              <ButtonGroup
+                flexDirection="row">
                 <Button
                   flex={1}
                   onPress={() =>
@@ -59,7 +58,7 @@ class TimingModal extends Component {
                       ? 'solid'
                       : 'outline'
                   }>
-                  {this.props.t('FULFILLMENT_METHOD.delivery')}
+                  <ButtonText>{this.props.t('FULFILLMENT_METHOD.delivery')}</ButtonText>
                 </Button>
                 <Button
                   flex={1}
@@ -71,12 +70,12 @@ class TimingModal extends Component {
                       ? 'solid'
                       : 'outline'
                   }>
-                  {this.props.t('FULFILLMENT_METHOD.collection')}
+                  <ButtonText>{this.props.t('FULFILLMENT_METHOD.collection')}</ButtonText>
                 </Button>
-              </Button.Group>
+              </ButtonGroup>
             )}
             {this.props.message && (
-              <Text marginBottom={50}>{this.props.message}</Text>
+              <Text className="mb-5">{this.props.message}</Text>
             )}
             {!this.props.message && <View marginBottom={30} />}
             <TimingCartSelect
@@ -85,22 +84,21 @@ class TimingModal extends Component {
             />
             <Button
               testID="setShippingTimeRange"
-              flex={4}
               onPress={() =>
                 this.props.onSchedule({
                   value: this.state.value,
                   showModal: this.showModal,
                 })
               }>
-              {this.props.t('SCHEDULE')}
+              <ButtonText>{this.props.t('SCHEDULE')}</ButtonText>
             </Button>
             <Button
-              variant={'subtle'}
+              variant="outline"
               onPress={() => {
                 this.showModal(false);
                 this.props.onSkip();
               }}>
-              {this.props.t('IGNORE')}
+              <ButtonText>{this.props.t('IGNORE')}</ButtonText>
             </Button>
           </BottomModal>
         )}

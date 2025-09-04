@@ -2,7 +2,17 @@ import React, { createRef, forwardRef, Component } from 'react';
 import { CardField, StripeProvider } from '@stripe/stripe-react-native';
 import { Formik } from 'formik';
 import _ from 'lodash';
-import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
+import { Input, Radio } from 'native-base';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from '@/components/ui/checkbox';
+import { CheckIcon } from '@/components/ui/icon';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Center } from '@/components/ui/center';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View, useColorScheme } from 'react-native';
 import { connect, useSelector } from 'react-redux';
@@ -195,13 +205,13 @@ class CreditCardClassComponent extends Component {
                     })}
                   </Radio.Group>
                   <Button
-                    mt={4}
+                    className="mt-4"
                     onPress={() => {
                       this.setState({ addNewCard: true }, () => {
                         setFieldValue('savedCardSelected', null);
                       });
                     }}>
-                    {this.props.t('ADD_NEW_CREDIT_CARD')}
+                    <ButtonText>{this.props.t('ADD_NEW_CREDIT_CARD')}</ButtonText>
                   </Button>
                   {errors.selectCard && (
                     <Text m={4} textAlign="center" color="#ed2f2f">
@@ -261,20 +271,23 @@ class CreditCardClassComponent extends Component {
                   {!user.isGuest() ? (
                     <Checkbox
                       name="saveCard"
-                      mb={4}
+                      className="mb-4"
                       accessibilityLabel="save credit card"
-                      defaultValue={initialValues.saveCard}
+                      defaultIsChecked={initialValues.saveCard}
                       onChange={checked => setFieldValue('saveCard', checked)}>
-                      {this.props.t('SAVE_CARD')}
+                      <CheckboxIndicator>
+                        <CheckboxIcon as={CheckIcon} />
+                      </CheckboxIndicator>
+                      <CheckboxLabel>{this.props.t('SAVE_CARD')}</CheckboxLabel>
                     </Checkbox>
                   ) : null}
                   {this.shouldRenderStripePaymentMethods() ? (
                     <Button
-                      mt={2}
+                      className="mt-2"
                       onPress={() => {
                         this.setState({ addNewCard: false });
                       }}>
-                      {this.props.t('SELECT_SAVED_CARD')}
+                      <ButtonText>{this.props.t('SELECT_SAVED_CARD')}</ButtonText>
                     </Button>
                   ) : null}
                   {this.props.errors.length > 0 && (

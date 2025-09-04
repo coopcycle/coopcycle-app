@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, View } from 'native-base';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from '@/components/ui/text';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

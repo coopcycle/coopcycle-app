@@ -1,8 +1,10 @@
-import { Box, HStack, Icon, Text } from 'native-base';
+import { Icon, CheckIcon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import ItemSeparator from '../../components/ItemSeparator';
@@ -29,10 +31,10 @@ class ListScreen extends Component {
         data={restaurants}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => this._onRestaurantClick(item)}>
-            <HStack justifyContent="space-between" p="3">
+            <HStack className="justify-between p-3">
               <Text>{item.name}</Text>
               {item['@id'] === currentRestaurant['@id'] && (
-                <Icon as={FontAwesome} name="check-square" />
+                <Icon as={CheckIcon} />
               )}
             </HStack>
           </TouchableOpacity>

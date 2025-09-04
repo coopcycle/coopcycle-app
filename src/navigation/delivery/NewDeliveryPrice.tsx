@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/text';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

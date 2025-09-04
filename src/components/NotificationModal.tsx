@@ -1,7 +1,8 @@
 import Modal from 'react-native-modal';
 import ModalContent from './ModalContent';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Icon, Text } from 'native-base';
+import { Icon, BellIcon, ChevronRightIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -101,7 +102,7 @@ export default function NotificationModal({ notifications, onDismiss }) {
         style={styles.item}
         onPress={() => _navigateToOrder(order)}>
         <Text>{t('NOTIFICATION_ORDER_CREATED_TITLE')}</Text>
-        <Icon as={FontAwesome} name="chevron-right" />
+        <Icon as={ChevronRightIcon} />
       </TouchableOpacity>
     );
   };
@@ -130,7 +131,7 @@ export default function NotificationModal({ notifications, onDismiss }) {
             </Text>
           )}
         </View>
-        <Icon as={FontAwesome} name="chevron-right" />
+        <Icon as={ChevronRightIcon} />
       </TouchableOpacity>
     );
   };
@@ -154,8 +155,8 @@ export default function NotificationModal({ notifications, onDismiss }) {
         <View>
           <View style={styles.heading}>
             <Icon
-              as={Ionicons}
-              name="notifications"
+              as={BellIcon}
+              size="lg"
               style={{ color: 'white', marginRight: 10 }}
             />
             <Text style={{ color: 'white' }}>{t('NEW_NOTIFICATION')}</Text>

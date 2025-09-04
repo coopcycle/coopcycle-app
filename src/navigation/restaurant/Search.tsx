@@ -1,6 +1,8 @@
 import React, { useMemo, useRef, useState } from 'react';
 import _ from 'lodash';
-import { FormControl, IconButton, Input } from 'native-base';
+import { FormControl } from '@/components/ui/form-control';
+import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
+import { Icon, CloseIcon } from '@/components/ui/icon';
 import { FlatList } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from 'react-redux';
@@ -33,28 +35,24 @@ export default function Search() {
   return (
     <BasicSafeAreaView>
       <FormControl>
-        <Input
-          _stack={{ style: {} }}
-          size="md"
-          m={4}
-          p={2}
-          ref={textInput}
-          keyboardType="web-search"
-          blurOnSubmit={true}
-          autoCorrect={false}
-          InputRightElement={
-            <IconButton
-              _icon={{ as: FontAwesome5, name: 'times' }}
-              onPress={() => {
-                setQuery(null);
-                textInput.current.clear();
-                textInput.current.blur();
-              }}
-            />
-          }
-          onChangeText={_.debounce(setQuery, 350)}
-          placeholder={t('RESTAURANT_SEARCH_ORDERS_INPUT_PLACEHOLDER')}
-        />
+        <Input className="m-4 p-2">
+          <InputField
+            size="md"
+            ref={textInput}
+            keyboardType="web-search"
+            blurOnSubmit={true}
+            autoCorrect={false}
+            onChangeText={_.debounce(setQuery, 350)}
+            placeholder={t('RESTAURANT_SEARCH_ORDERS_INPUT_PLACEHOLDER')}
+          />
+          <InputSlot className="pr-3" onPress={() => {
+            setQuery(null);
+            textInput.current.clear();
+            textInput.current.blur();
+          }}>
+            <InputIcon as={CloseIcon} />
+          </InputSlot>
+        </Input>
       </FormControl>
       <FlatList
         data={filteredOrders}

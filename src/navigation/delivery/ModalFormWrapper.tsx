@@ -1,5 +1,6 @@
-import { Box, Button, ScrollView, VStack } from 'native-base';
-import { SafeAreaView } from 'react-native';
+import { Box, VStack } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { SafeAreaView, ScrollView } from 'react-native';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import { useBackgroundContainerColor } from '../../styles/theme';
 
@@ -45,7 +46,7 @@ export default function ModalFormWrapper({
               disabled={disabled}
               style={disabled ? { opacity: 0.5 } : {}}
               testID="delivery__next_button">
-              {buttonLabel}
+              <ButtonText>{buttonLabel}</ButtonText>
             </Button>
           </Box>
         </KeyboardAdjustView>

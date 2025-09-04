@@ -1,4 +1,7 @@
-import { Box, HStack, Icon, Text } from 'native-base';
+import { Icon } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -11,7 +14,7 @@ const Detail = ({ item }) => {
   }
 
   const body = (
-    <Box flex={1} p="2">
+    <Box flex={1} className="p-2">
       {text ? <Text fontSize="xs">{text}</Text> : null}
       {component && component}
     </Box>
@@ -19,7 +22,7 @@ const Detail = ({ item }) => {
 
   return (
     <TouchableOpacity style={{ flex: 1 }} {...touchableOpacityProps}>
-      <HStack alignItems="center" justifyContent="center" p="2">
+      <HStack className="items-center justify-center p-2">
         <Icon
           as={iconType ? iconType : Ionicons}
           name={iconName}
