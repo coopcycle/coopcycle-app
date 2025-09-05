@@ -25,10 +25,14 @@ import { Task, TaskTag } from '../../../types/task';
 import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
 import { getTaskTitleForOrder } from '../utils';
 
+interface PackageSummary {
+  text: string;
+  totalQuantity: number;
+}
 interface ContentProps {
   comments: string;
   timeframe: string;
-  packageType: string;
+  packageType: PackageSummary;
   tags: TaskTag[];
   streetAddress: string;
   onLocationPress: () => void;
@@ -67,9 +71,16 @@ const ContentText = ({
       />
       <Divider />
       <IconText label={t('ORDER_SCHEDULE')} text={timeframe} iconName="clock" />
-      <Divider />
-      <IconText label={t('ORDER_PACKAGES')} text={packageType} iconName="box" />
-
+      {!!packageType.totalQuantity && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_PACKAGES')}
+            text={`${t('TOTAL_AMOUNT')}: ${packageType.totalQuantity}\n${packageType.text}`}
+            iconName="boxes"
+          />
+        </>
+      )}
       {telephone && (
         <>
           <Divider />
@@ -182,7 +193,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
 
           <ContentText
             timeframe={timeframe}
-            packageType={packageType.text}
+            packageType={packageType}
             tags={task.tags}
             streetAddress={address}
             onLocationPress={handleLocationPress}

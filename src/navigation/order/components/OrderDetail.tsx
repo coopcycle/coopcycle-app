@@ -80,8 +80,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
           <Divider />
           <IconText
             label={t('ORDER_PACKAGES')}
-            // TODO translate!
-            text={`Total amount: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
+            text={`${t('TOTAL_AMOUNT')}: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
             iconName="boxes"
           />
         </>

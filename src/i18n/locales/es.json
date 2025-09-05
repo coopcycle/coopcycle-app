@@ -468,6 +468,7 @@
     "ORDER_PACKAGES": "Paquetes",
     "ORDER_PRICE": "Precio",
     "ORDER_VALUE": "Valor",
-    "ORDER_DISTANCE": "Distancia"
+    "ORDER_DISTANCE": "Distancia",
+    "TOTAL_AMOUNT": "Cantidad total"
   }
 }
