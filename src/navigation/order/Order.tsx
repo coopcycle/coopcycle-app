@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
@@ -37,8 +37,8 @@ const Order = ({ route }: { route: RouteType }) => {
     return orderTasks;
   }, [orderTasks, isFromCourier]);
   
-  const firstTaskId = tasks?.[0]?.id;
-  const {data, isLoading, isFetching, isError} = useGetTaskContextQuery(firstTaskId, {skip: !firstTaskId});
+  const firstTaskId = tasks[0].id;
+  const {data, isLoading, isFetching} = useGetTaskContextQuery(firstTaskId, {skip: !firstTaskId});
   
   const tasksWithContext = useMemo(() => {
     if(!data?.delivery) return tasks;
@@ -60,6 +60,14 @@ const Order = ({ route }: { route: RouteType }) => {
     const { width, height } = e.nativeEvent.layout;
     setMapDimensions({ height, width });
   };
+
+  if (isLoading || isFetching) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator animating={true} size="large" />
+      </View>
+    );
+  }
 
   return (
     <View>
