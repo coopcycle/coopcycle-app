@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 import React from 'react';
+import { Dimensions } from 'react-native';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
@@ -16,6 +17,8 @@ const MainStack = createStackNavigator();
 
 function MainNavigator() {
   const screenOptions = useStackNavigatorScreenOptions();
+
+  const width = Dimensions.get('window').width;
 
   return (
     <MainStack.Navigator screenOptions={screenOptions}>
@@ -33,6 +36,9 @@ function MainNavigator() {
 
           return {
             title,
+            headerTitleStyle: {
+              width: width - 160,
+            },
             headerLeft: headerLeft(navigation),
             headerRight: () => (
               <HeaderButton
