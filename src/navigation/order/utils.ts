@@ -100,6 +100,9 @@ export const getUniqueTagsFromTasks = (tasks: Tasks) => {
 };
 
 export function getTaskTitleForOrder(task: Task): string {
+  if (task.address?.name && task.address?.contactName) {
+    return `${task.address.name} - ${task.address.contactName}`;
+  }
   if (task.address?.contactName) {
     return task.address.contactName;
   }
