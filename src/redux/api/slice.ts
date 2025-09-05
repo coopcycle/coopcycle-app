@@ -160,6 +160,9 @@ export const apiSlice = createApi({
     getMyTasks: builder.query({
       query: (date: DateOnlyString) => `api/me/tasks/${date}`,
     }),
+    getTaskContext: builder.query({
+      query: id => `api/tasks/${id}/context`,
+    }),
     getOrderTiming: builder.query({
       query: nodeId => `${nodeId}/timing`,
     }),
@@ -188,6 +191,7 @@ export const apiSlice = createApi({
 export const {
   useGetCourierUsersQuery,
   useGetMyTasksQuery,
+  useGetTaskContextQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,
   useGetTaskListsQuery,
