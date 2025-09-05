@@ -1,21 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { HeaderButton, HeaderButtons } from '../../components/HeaderButton';
 
-import HeaderButton from '../../components/HeaderButton';
-import { selectSelectedDate } from '../../coopcycle-frontend-js/logistics/redux';
-
-class HeaderRightButton extends Component {
-  render() {
-    return (
-      <HeaderButton iconName="calendar" onPress={() => this.props.onPress()} />
-    );
-  }
+const HeaderRightButton = ({ onPress }) => {
+  return (
+    <HeaderButtons>
+      <HeaderButton
+        iconName="calendar-number-outline"
+        onPress={onPress}
+      />
+    </HeaderButtons>
+  );
 }
 
-function mapStateToProps(state) {
-  return {
-    date: selectSelectedDate(state),
-  };
-}
-
-export default connect(mapStateToProps)(HeaderRightButton);
+export default HeaderRightButton;
