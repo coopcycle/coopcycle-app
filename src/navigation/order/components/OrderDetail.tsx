@@ -1,10 +1,14 @@
 import React from 'react';
 
+import { Box } from '@/components/ui/box';
+import { Divider } from '@/components/ui/divider';
+import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
 import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
 import { Tasks } from '../../../types/tasks';
+import { formatPrice } from '../../../utils/formatting';
 import { getOrderTimeFrame } from '../../task/components/utils';
 import {
   commentsInOrder,
@@ -13,9 +17,6 @@ import {
   orderInfoInMetadata,
   packagesInOrderSummery,
 } from './../utils';
-import { Box } from '@/components/ui/box';
-import { Text } from '@/components/ui/text';
-import { Divider } from '@/components/ui/divider';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();
@@ -51,21 +52,22 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
         text={orderTimeframe}
         iconName="clock"
       />
-      {
-        // TODO check currency / payment method
-        orderValue && (
-          <>
-            <Divider />
-            <IconText
-              label={t('ORDER_PRICE')}
-              text={`${orderValue}`}
-              iconName="money-check-alt"
-            />
-          </>
-        )
-      }
+      {!!orderValue && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_PRICE')}
+            text={
+              orderPaymentMethod
+                ? `${formatPrice(orderValue)} ${orderPaymentMethod}`
+                : formatPrice(orderValue)
+            }
+            iconName="money-check-alt"
+          />
+        </>
+      )}
 
-      {orderDistance && (
+      {!!orderDistance && (
         <>
           <Divider />
           <IconText
@@ -75,12 +77,16 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
           />
         </>
       )}
-      <Divider />
-      <IconText
-        label={t('ORDER_PACKAGES')}
-        text={`Total amount: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
-        iconName="boxes"
-      />
+      {!!packagesInOrder.totalQuantity && (
+        <>
+          <Divider />
+          <IconText
+            label={t('ORDER_PACKAGES')}
+            text={`${t('TOTAL_AMOUNT')}: ${packagesInOrder.totalQuantity}\n${packagesInOrder.text}`}
+            iconName="boxes"
+          />
+        </>
+      )}
       {comments.length > 0 && (
         <>
           <Divider />

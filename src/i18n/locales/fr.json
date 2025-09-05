@@ -564,6 +564,7 @@
     "ORDER_PACKAGES": "Colis",
     "ORDER_PRICE": "Prix",
     "ORDER_VALUE": "Valeur",
-    "ORDER_DISTANCE": "Distance"
+    "ORDER_DISTANCE": "Distance",
+    "TOTAL_AMOUNT": "Montant total"
   }
 }
