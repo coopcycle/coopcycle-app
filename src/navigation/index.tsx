@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native';
 import React from 'react';
-import HeaderButton from '../components/HeaderButton';
+import { HeaderButtons, HeaderButton } from '../components/HeaderButton';
 
 import DispatchAllTasks from './dispatch/AllTasks';
 import DispatchDate from './dispatch/Date';
@@ -159,10 +159,13 @@ export default {
 
 export const headerLeft = (navigation, testID = 'menuBtn') => {
   return () => (
-    <HeaderButton
-      iconName="menu"
-      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-      testID={testID}
-    />
+    <HeaderButtons>
+      <HeaderButton
+        iconName="menu"
+        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+        testID={testID}
+        style={{ marginLeft: 16 }}
+      />
+    </HeaderButtons>
   );
 };

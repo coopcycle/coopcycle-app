@@ -8,7 +8,7 @@ import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackC
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderBackButton from '../store/components/HeaderBackButton';
-import HeaderButton from '../../components/HeaderButton';
+import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
 import screens, { headerLeft } from '..';
@@ -41,12 +41,12 @@ function MainNavigator() {
             },
             headerLeft: headerLeft(navigation),
             headerRight: () => (
-              <HeaderButton
-                iconType="FontAwesome"
-                iconName="plus"
-                onPress={navigateToDelivery}
-                testID="navigate_to_delivery"
-              />
+              <HeaderButtons>
+                <HeaderButton
+                  iconName="add"
+                  onPress={navigateToDelivery}
+                  testID="navigate_to_delivery" />
+              </HeaderButtons>
             ),
           };
         }}

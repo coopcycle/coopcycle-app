@@ -78,7 +78,7 @@ function HeaderButtons({ nav }) {
     <View style={styles.buttonBar}>
       {isBarcodeEnabled && (
         <ButtonWithIcon
-          name={ScanBarcode}
+          as={ScanBarcode}
           onPress={() => nav.navigate('CourierBarcode')}
         />
       )}
