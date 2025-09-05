@@ -1,26 +1,18 @@
 import { Icon, Text } from 'native-base';
+import React from 'react';
 import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {
-  darkGreyColor,
-  lightGreyColor,
-  redColor,
-  whiteColor,
-} from '../styles/common';
 import {
   doneIconName,
   failedIconName,
   taskTypeIconName,
 } from '../navigation/task/styles/common';
+import { darkGreyColor, lightGreyColor, redColor } from '../styles/common';
+import { useBackgroundContainerColor } from '../styles/gluestack-theme';
+import { Task } from '../types/task';
 
-const container = {
-  margin: 10,
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-const markerColor = task => {
+const markerColor = (task: Task) => {
   let color = darkGreyColor;
 
   if (task.tags.length > 0) {
@@ -39,7 +31,7 @@ const markerColor = task => {
   }
 };
 
-const markerOpacity = task => {
+const markerOpacity = (task: Task) => {
   switch (task.status) {
     case 'DONE':
       return 0.4;
@@ -51,13 +43,18 @@ const markerOpacity = task => {
 };
 
 const containerSize = 32;
-const background = whiteColor;
 
-const backgroundStyle = task => {
+const backgroundStyle = ({
+  task,
+  backgroundColor,
+}: {
+  task: Task;
+  backgroundColor: string;
+}) => {
   return {
     width: containerSize,
     height: containerSize,
-    backgroundColor: background,
+    backgroundColor: backgroundColor,
     borderColor: markerColor(task),
     opacity: markerOpacity(task),
     borderWidth: 2,
@@ -70,7 +67,7 @@ const backgroundStyle = task => {
   };
 };
 
-const iconStyle = task => {
+const iconStyle = (task: Task) => {
   return {
     position: 'absolute',
     color: markerColor(task),
@@ -78,7 +75,7 @@ const iconStyle = task => {
   };
 };
 
-const taskStatusIconName = task => {
+const taskStatusIconName = (task: Task) => {
   switch (task.status) {
     case 'DONE':
       return doneIconName;
@@ -89,7 +86,7 @@ const taskStatusIconName = task => {
   }
 };
 
-const iconName = (task, type = 'type') => {
+const iconName = ({ task, type }: { task: Task; type: string }) => {
   if (type === 'status') {
     return taskStatusIconName(task);
   } else {
@@ -107,13 +104,22 @@ const warnIconStyle = () => {
   };
 };
 
-export default ({ task, type, hasWarnings, testID }) => {
-  const _iconName = iconName(task, type);
+interface IProps {
+  task: Task;
+  type?: string;
+  hasWarnings?: boolean;
+  testID?: string;
+}
+export default ({ task, type, hasWarnings, testID }: IProps) => {
+  //TODO check default type value
+  const _iconName = iconName({ task, type: type || 'status' });
+  const backgroundColor = useBackgroundContainerColor();
 
   return (
-    <View style={container}>
+    <View
+      style={{ margin: 10, alignItems: 'center', justifyContent: 'center' }}>
       <View
-        style={backgroundStyle(task)}
+        style={backgroundStyle({ task, backgroundColor })}
         testID={testID || `taskmarker-${task.id}`}
       />
       {hasWarnings ? (

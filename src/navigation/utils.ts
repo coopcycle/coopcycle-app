@@ -5,7 +5,7 @@ export const navigateToOrder = (navigation, orderId, isFromCourier = false) => {
     orderId,
     isFromCourier,
   };
-  navigation.navigate('Order', { screen: 'OrderInfo', params });
+  navigation.navigate('Order', { screen: 'Order', params });
 };
 
 export const navigateToTask = (navigation, route, task, tasks = []) => {
