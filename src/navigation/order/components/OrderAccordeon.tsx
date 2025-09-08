@@ -86,7 +86,7 @@ const ContentText = ({
           <Divider />
           <IconText
             label={t('ORDER_CLIENT')}
-            text={`${firstName} - ${telephone}`}
+            text={firstName ? `${firstName} - ${telephone}` : `${telephone}`}
             iconName="phone"
             onPress={onPhonePress}
           />
@@ -111,7 +111,7 @@ interface OrderAccordeonProps {
 
 function OrderAccordeon({ task }: OrderAccordeonProps) {
   const { t } = useTranslation();
-  const taskTitle = getTaskTitleForOrder(task);
+  const taskTitle = getTaskTitleForOrder(task, t);
   const timeframe = getTimeFrame(task);
   const address = task.address.streetAddress;
   const packageType = getPackagesSummary(task);
