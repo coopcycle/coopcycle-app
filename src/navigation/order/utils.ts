@@ -108,3 +108,52 @@ export function getTaskTitleForOrder(task: Task): string {
   }
   return task.type === 'PICKUP' ? 'Pickup' : 'Dropoff';
 }
+
+export function formatDistance(
+  meters: string | null | undefined,
+  options?: {
+    decimals?: number;
+    locale?: string;
+    unitSuffix?: string;
+    trimTrailingZeros?: boolean;
+  }
+): string {
+  const { decimals = 2, locale = 'en-US', unitSuffix = ' km', trimTrailingZeros = true } = options ?? {};
+
+  if (!meters) {
+    return `0${unitSuffix}`;
+  }
+
+  const value = parseFloat(meters);
+
+  if (Number.isNaN(value)) {
+    return `0${unitSuffix}`;
+  }
+
+  const km = value / 1000;
+
+  const safeDecimals = Math.max(0, Math.floor(Number(decimals) || 0));
+
+  const formatter = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: trimTrailingZeros ? 0 : safeDecimals,
+    maximumFractionDigits: safeDecimals,
+  });
+
+  return `${formatter.format(km)}${unitSuffix}`;
+}
+
+export function formatDuration(duration: string | null | undefined) {
+  const suffix = '(Estimated time)'
+  if(!duration) {return duration}
+  const totalSeconds = parseInt(duration, 10);
+
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+
+  if (hours === 0) {
+    return `${minutes}m ${suffix}`;
+  } 
+
+  return `${hours}h ${minutes}m ${suffix}`;
+}
