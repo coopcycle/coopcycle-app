@@ -565,6 +565,8 @@
     "ORDER_PRICE": "Prix",
     "ORDER_VALUE": "Valeur",
     "ORDER_DISTANCE": "Distance",
-    "TOTAL_AMOUNT": "Montant total"
+    "TOTAL_AMOUNT": "Montant total",
+    "PICKUP": "Ramasser",
+    "DROPOFF": "Dépôt"
   }
 }

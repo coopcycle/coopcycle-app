@@ -597,6 +597,8 @@
     "ORDER_PRICE": "Price",
     "ORDER_VALUE": "Value",
     "ORDER_DISTANCE": "Distance",
-    "TOTAL_AMOUNT": "Total amount"
+    "TOTAL_AMOUNT": "Total amount",
+    "PICKUP": "Pickup",
+    "DROPOFF": "Dropoff"
   }
 }

@@ -52,17 +52,10 @@ export interface TaskBarcode {
 }
 
 /**
- * Package label interface
- */
-export interface PackageLabel {
-  [key: string]: any;
-}
-
-/**
  * Package interface
  */
 export interface TaskPackage {
-  labels: PackageLabel[];
+  labels: string[];
   name: string;
   quantity: number;
   short_code: string;

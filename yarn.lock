@@ -13874,10 +13874,10 @@ react-native-blob-util@^0.19.8:
     base-64 "0.1.0"
     glob "^10.3.10"
 
-react-native-calendars@^1.1307.0:
-  version "1.1311.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1311.0.tgz#dc44dfc3f8f06b98bef3b9342ecc5e5905271643"
-  integrity sha512-UQ7DHzSSsyJjnSniQ8zSohphg6rQzsImoLQLXmJtH+rCYYwwPbtiWlrwcf34/AawcWT5hxzYMlc7fzC4+FrUvw==
+react-native-calendars@^1.1313.0:
+  version "1.1313.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1313.0.tgz#c2e9ac84e0043daeace899d1dc5030afaf354683"
+  integrity sha512-YQ7Vg57rBRVymolamYDTxZ0lPOELTDHQbTukTWdxR47aRBYJwKI6ocRbwcY5gYgyDwNgJS4uLGu5AvmYS74LYQ==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     lodash "^4.17.15"
