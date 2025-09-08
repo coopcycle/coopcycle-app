@@ -2,6 +2,7 @@
 
 jest.mock('react-native/Libraries/AppState/AppState', () => ({
   currentState: 'active',
+  addEventListener: jest.fn(),
 }));
 
 jest.mock('react-native-localize', () => ({
