@@ -15,13 +15,13 @@ import {
   getOrderTitle,
   getUniqueTagsFromTasks,
   orderInfoInMetadata,
-  packagesInOrderSummery,
+  packagesInOrderSummary,
 } from './../utils';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();
   const orderTitle = getOrderTitle(tasks);
-  const packagesInOrder = packagesInOrderSummery(tasks);
+  const packagesInOrder = packagesInOrderSummary(tasks);
   const orderTimeframe = getOrderTimeFrame(tasks);
   const orderPaymentMethod = orderInfoInMetadata(tasks, 'payment_method');
   const orderDistance = orderInfoInMetadata(tasks, 'order_distance');

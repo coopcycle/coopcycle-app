@@ -1,3 +1,4 @@
+import { TFunction } from 'i18next';
 import Task, { TaskMetadata } from '../../types/task';
 import { Tasks } from '../../types/tasks';
 
@@ -22,7 +23,8 @@ export function getOrderTitle(tasks: Tasks): string | null {
  * @param tasks Array of Task objects
  * @returns Object containing formatted text and total quantity of all packages from pickup tasks only
  */
-export const packagesInOrderSummery = (tasks: Tasks) => {
+// TODO TYPO
+export const packagesInOrderSummary = (tasks: Tasks) => {
   if (!tasks || !tasks.length) {
     return { text: '', totalQuantity: 0 };
   }
@@ -99,12 +101,16 @@ export const getUniqueTagsFromTasks = (tasks: Tasks) => {
   return uniqueTags;
 };
 
-export function getTaskTitleForOrder(task: Task): string {
-  if (task.address?.name && task.address?.contactName) {
-    return `${task.address.name} - ${task.address.contactName}`;
+export function getTaskTitleForOrder(task: Task, t: TFunction): string {
+  const getFallbackTitle = () =>
+    task.type === 'PICKUP' ? t('PICKUP') : t('DROPOFF');
+
+  const addressData = [];
+  if (task.address.name) {
+    addressData.push(task.address.name);
   }
-  if (task.address?.contactName) {
-    return task.address.contactName;
+  if (task.address.contactName) {
+    addressData.push(task.address.contactName);
   }
-  return task.type === 'PICKUP' ? 'Pickup' : 'Dropoff';
+  return addressData.length > 0 ? addressData.join(' - ') : getFallbackTitle();
 }
