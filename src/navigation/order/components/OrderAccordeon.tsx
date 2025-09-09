@@ -81,7 +81,7 @@ const ContentText = ({
           />
         </>
       )}
-      {telephone && (
+      {!!telephone && (
         <>
           <Divider />
           <IconText
@@ -92,7 +92,7 @@ const ContentText = ({
           />
         </>
       )}
-      {comments && (
+      {!!comments && (
         <>
           <Divider />
           <IconText

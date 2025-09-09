@@ -31,8 +31,8 @@ const MiniMap: React.FC<MiniMapProps> = ({
   const renderPolyline = () => {
     const firstTask = tasks[0];
     const key = `polyline-${firstTask.id}`;
-    
-    const coords = firstTask.metadata.polyline ? getCoordinates(tasks) : tasks.map(t => t.address.geo);
+    const coords = getCoordinates(tasks);
+
     return (
       <Polyline
         key={key}
@@ -40,7 +40,7 @@ const MiniMap: React.FC<MiniMapProps> = ({
         coordinates={coords}
         strokeWidth={3}
         strokeColor={firstTask.color}
-        lineDashPattern={!firstTask.isAssigned ? [20, 10] : null}
+        lineDashPattern={!firstTask.isAssigned ? [20, 10] : undefined}
       />
     );
   };

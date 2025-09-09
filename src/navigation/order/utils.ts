@@ -124,22 +124,14 @@ export function formatDistance(
     trimTrailingZeros?: boolean;
   }
 ): string {
-  const { decimals = 2, locale = 'en-US', unitSuffix = ' km', trimTrailingZeros = true } = options ?? {};
-
-  if (!meters) {
-    return `0${unitSuffix}`;
-  }
-
-  const value = parseFloat(meters);
-
-  if (Number.isNaN(value)) {
-    return `0${unitSuffix}`;
+  const { decimals = 2, locale = 'en-US', unitSuffix = 'km', trimTrailingZeros = true } = options ?? {};
+  const value = meters ? parseFloat(meters) : NaN;
+  if (Number.isNaN(value) || value <= 0) {
+    return '';
   }
 
   const km = value / 1000;
-
   const safeDecimals = Math.max(0, Math.floor(Number(decimals) || 0));
-
   const formatter = new Intl.NumberFormat(locale, {
     minimumFractionDigits: trimTrailingZeros ? 0 : safeDecimals,
     maximumFractionDigits: safeDecimals,
@@ -148,18 +140,18 @@ export function formatDistance(
   return `${formatter.format(km)}${unitSuffix}`;
 }
 
-export function formatDuration(duration: string | null | undefined, t: TFunction) {
-  const suffix = `(${t('ESTIMATED_DURATION')})`;
-  if(!duration) {return duration}
-  const totalSeconds = parseInt(duration, 10);
-
+export function formatDuration(duration: string | null | undefined): string {
+  const totalSeconds = duration ? parseInt(duration, 10) : NaN;
+  if (Number.isNaN(totalSeconds) || totalSeconds <= 0) {
+    return '';
+  }
 
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
 
   if (hours === 0) {
-    return `${minutes}m ${suffix}`;
-  } 
+    return `${minutes}m`;
+  }
 
-  return `${hours}h ${minutes}m ${suffix}`;
+  return `${hours}h ${minutes}m`;
 }
