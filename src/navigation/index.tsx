@@ -10,7 +10,7 @@ import DispatchTasksFilters from './dispatch/TasksFilters';
 import DispatchTasksMap from './dispatch/TasksMap';
 import DispatchTasksSearchResults from './dispatch/TasksSearchResults';
 
-import OrderInfo from './order/OrderInfo';
+import Order from './order/Order';
 
 import TaskComplete from './task/Complete';
 import TaskPhoto from './task/Photo';
@@ -138,7 +138,7 @@ export default {
   DispatchTasksFilters,
   DispatchTasksMap,
   DispatchTasksSearchResults,
-  OrderInfo,
+  Order,
   NewDeliveryStore,
   NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,

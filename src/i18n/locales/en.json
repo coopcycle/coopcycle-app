@@ -554,8 +554,8 @@
     "RESTAURANT_MORE_INFOS": "More information",
     "PRICE_EXCLUDING_TAX": "Price excluding tax",
     "PRICE_TOTAL": "Total price",
-		"PRICE_CALCULATION_FAILED": "Price calculation failed",
-		"PRICE_CALCULATION_FAILED_DISCLAIMER": "The price could not be calculated; please contact us to resolve the issue.",
+    "PRICE_CALCULATION_FAILED": "Price calculation failed",
+    "PRICE_CALCULATION_FAILED_DISCLAIMER": "The price could not be calculated; please contact us to resolve the issue.",
     "HIDE_INCIDENTS_TASKS": "Hide incidents",
     "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Selected time range is no longer available for today anymore",
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "The opening hours do not allow the order to be placed today",
@@ -588,6 +588,17 @@
     "TASK_CANCELLED": "Cancelled",
     "ASK_TO_START_PICKUP_TITLE": "Pickup task",
     "ASK_TO_START_PICKUP_MESSAGE": "The pickup task is not yet started.",
-    "PAYGREEN_RETURN_TEXT": "Please wait while we process your payment…"
+    "PAYGREEN_RETURN_TEXT": "Please wait while we process your payment…",
+    "ORDER_SCHEDULE": "Schedule",
+    "ORDER_LOCATION": "Location",
+    "ORDER_CLIENT": "Client",
+    "ORDER_COMMENTS": "Comments",
+    "ORDER_PACKAGES": "Packages",
+    "ORDER_PRICE": "Price",
+    "ORDER_VALUE": "Value",
+    "ORDER_DISTANCE": "Distance",
+    "TOTAL_AMOUNT": "Total amount",
+    "PICKUP": "Pickup",
+    "DROPOFF": "Dropoff"
   }
 }
