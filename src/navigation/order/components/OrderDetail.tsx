@@ -6,7 +6,7 @@ import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
-import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
+import { useBaseTextColor } from '../../../styles/theme';
 import { Tasks } from '../../../types/tasks';
 import { formatPrice } from '../../../utils/formatting';
 import { getOrderTimeFrame } from '../../task/components/utils';
@@ -28,7 +28,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const orderTags = getUniqueTagsFromTasks(tasks);
   const orderValue = orderInfoInMetadata(tasks, 'order_total');
   const comments = commentsInOrder(tasks);
-  const titleColor = useBlackAndWhiteTextColor();
+  const titleColor = useBaseTextColor();
 
   return (
     <Box style={{ gap: 12, padding: 24 }}>

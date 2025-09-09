@@ -1,8 +1,8 @@
+import { useColorScheme } from 'nativewind';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import Color from 'colorjs.io';
 import {
   extendTheme,
-  useColorModeValue,
   useToken,
   v33xTheme,
 } from 'native-base';
@@ -28,6 +28,11 @@ export const nativeBaseTheme = extendTheme(v33xTheme, {
     },
   },
 });
+
+export const useColorModeValue = <T>(lightValue: T, darkValue: T): T => {
+  const { colorScheme } = useColorScheme();
+  return colorScheme === 'dark' ? darkValue : lightValue;
+};
 
 // resolve native-base token to a color value
 // to be able to use it in non native-base components
@@ -88,4 +93,13 @@ export const useBackgroundContainerColor = () => {
 
 export const useBackgroundHighlightColor = () => {
   return useColorModeToken('#f2f2f2', '#353030');
+};
+
+// IconText component
+export const useIconColor = () => {
+  return useColorModeValue('#424242', '#B0BEC5');
+};
+
+export const useBlackAndWhiteTextColor = () => {
+  return useColorModeValue('#000000', '#FFFFFF');
 };

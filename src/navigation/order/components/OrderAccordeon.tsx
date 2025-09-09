@@ -20,7 +20,7 @@ import { Text } from '@/components/ui/text';
 import IconText from '../../../components/IconText';
 import TaskTagsList from '../../../components/TaskTagsList';
 import TaskTypeIcon from '../../../components/TaskTypeIcon';
-import { useBlackAndWhiteTextColor } from '../../../styles/gluestack-theme';
+import { useBaseTextColor } from '../../../styles/theme';
 import { Task, TaskTag } from '../../../types/task';
 import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
 import { getTaskTitleForOrder } from '../utils';
@@ -116,7 +116,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
   const address = task.address.streetAddress;
   const packageType = getPackagesSummary(task);
   const comments = task.comments;
-  const headerText = useBlackAndWhiteTextColor();
+  const headerText = useBaseTextColor();
 
   // Function to handle location press
   const handleLocationPress = () => {
