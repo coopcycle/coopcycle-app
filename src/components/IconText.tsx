@@ -4,7 +4,7 @@ import {
   useBaseTextColor,
   useBlackAndWhiteTextColor,
   useIconColor,
-} from '../styles/gluestack-theme';
+} from '../styles/theme';
 import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';

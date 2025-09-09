@@ -1,4 +1,4 @@
-import { useColorModeValue } from 'native-base';
+import { useColorModeValue } from '../styles/theme';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';

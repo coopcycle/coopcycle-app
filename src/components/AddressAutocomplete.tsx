@@ -4,7 +4,7 @@ import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import { useColorModeValue } from 'native-base';
+import { useColorModeValue } from '../styles/theme';
 import { HStack } from '@/components/ui/hstack';
 import { Icon, StarIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';

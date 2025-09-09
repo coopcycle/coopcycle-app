@@ -10,7 +10,7 @@ import {
   FailedIcon,
 } from '../navigation/task/styles/common';
 import { darkGreyColor, lightGreyColor, redColor } from '../styles/common';
-import { useBackgroundContainerColor } from '../styles/gluestack-theme';
+import { useBackgroundContainerColor } from '../styles/theme';
 import { Task } from '../types/task';
 
 const markerColor = (task: Task) => {
