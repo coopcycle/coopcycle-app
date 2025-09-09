@@ -148,8 +148,8 @@ export function formatDistance(
   return `${formatter.format(km)}${unitSuffix}`;
 }
 
-export function formatDuration(duration: string | null | undefined) {
-  const suffix = '(Estimated time)'
+export function formatDuration(duration: string | null | undefined, t: TFunction) {
+  const suffix = `(${t('ESTIMATED_DURATION')})`;
   if(!duration) {return duration}
   const totalSeconds = parseInt(duration, 10);
 

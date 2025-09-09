@@ -598,6 +598,7 @@
     "ORDER_VALUE": "Value",
     "ORDER_DISTANCE": "Distance",
     "TOTAL_AMOUNT": "Total amount",
+    "ESTIMATED_DURATION": "Estimated time",
     "PICKUP": "Pickup",
     "DROPOFF": "Dropoff"
   }

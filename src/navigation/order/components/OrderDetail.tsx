@@ -75,7 +75,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
           <Divider />
           <IconText
             label={t('ORDER_DISTANCE')}
-            text={`${formatDistance(orderDistance)} - ${formatDuration(orderDuration)}`} 
+            text={`${formatDistance(orderDistance)} - ${formatDuration(orderDuration, t)}`} 
             iconName="route"
           />
         </>
