@@ -1,11 +1,12 @@
-import { Icon, View } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
-  doingIconName,
-  doneIconName,
-  failedIconName,
-  taskTypeIconName,
+  DoingIcon,
+  DoneIcon,
+  FailedIcon,
+  taskTypeIcon,
 } from '../navigation/task/styles/common';
 import { Task } from '../types/Task';
 import { styles } from './TaskListItem';
@@ -20,9 +21,8 @@ const iconStyle = (task: Task) => {
 
 export const TaskTypeIcon = ({ task }) => (
   <Icon
-    as={FontAwesome}
+    as={taskTypeIcon(task)}
     style={iconStyle(task)}
-    name={taskTypeIconName(task)}
   />
 );
 
@@ -33,8 +33,7 @@ export const TaskStatusIcon = ({ task }) => {
     case 'DOING':
       return (
         <Icon
-          as={FontAwesome}
-          name={doingIconName}
+          as={DoingIcon}
           style={iconStyle(task)}
           testID={testID}
         />
@@ -42,8 +41,7 @@ export const TaskStatusIcon = ({ task }) => {
     case 'DONE':
       return (
         <Icon
-          as={FontAwesome}
-          name={doneIconName}
+          as={DoneIcon}
           style={iconStyle(task)}
           testID={testID}
         />
@@ -51,8 +49,7 @@ export const TaskStatusIcon = ({ task }) => {
     case 'FAILED':
       return (
         <Icon
-          as={FontAwesome}
-          name={failedIconName}
+          as={FailedIcon}
           style={iconStyle(task)}
           testID={testID}
         />

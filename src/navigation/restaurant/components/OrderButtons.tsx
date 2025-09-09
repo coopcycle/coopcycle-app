@@ -1,5 +1,6 @@
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
-import { Button, Icon } from 'native-base';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
+import { Printer, PrinterCheck, PhoneOutgoing } from 'lucide-react-native'
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -30,27 +31,27 @@ const Comp = ({
       <View style={{ width: '50%', paddingRight: 5 }}>
         {isPrinterConnected && (
           <Button
-            endIcon={<Icon as={FontAwesome} name="print" size="sm" />}
             onPress={printOrder}
             isDisabled={disablePrintButton}>
-            {t('RESTAURANT_ORDER_PRINT')}
+            <ButtonText>{t('RESTAURANT_ORDER_PRINT')}</ButtonText>
+            <ButtonIcon as={PrinterCheck} />
           </Button>
         )}
         {!isPrinterConnected && (
           <Button
-            endIcon={<Icon as={FontAwesome} name="print" size="sm" />}
             onPress={onPrinterClick}>
-            {t('RESTAURANT_ORDER_PRINT')}
+            <ButtonText>{t('RESTAURANT_ORDER_PRINT')}</ButtonText>
+            <ButtonIcon as={Printer} />
           </Button>
         )}
       </View>
       <View style={{ width: '50%', paddingLeft: 5 }}>
         {isPhoneValid && (
           <Button
-            startIcon={<Icon as={FontAwesome} name="phone" size="sm" />}
             success
             onPress={() => phonecall(order.customer.telephone, true)}>
-            {phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL)}
+            <ButtonIcon as={PhoneOutgoing} />
+            <ButtonText>{phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL)}</ButtonText>
           </Button>
         )}
       </View>

@@ -1,13 +1,17 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { Box, HStack, Heading, Icon, Pressable, Text } from 'native-base';
+import { Icon, CloseIcon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { Pressable } from '@/components/ui/pressable';
+import { Heading } from '@/components/ui/heading';
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ItemSeparator from '../../components/ItemSeparator';
 import { deleteOpeningHoursSpecification } from '../../redux/Restaurant/actions';
 import { selectSpecialOpeningHoursSpecification } from '../../redux/Restaurant/selectors';
@@ -51,7 +55,7 @@ class OpeningHoursScreen extends Component {
 
     return (
       <Box>
-        <Heading size="md" p="3">
+        <Heading size="md" className="p-3">
           {this.props.t('RESTAURANT_OPENING_HOURS')}
         </Heading>
         <FlatList
@@ -59,7 +63,7 @@ class OpeningHoursScreen extends Component {
           ItemSeparatorComponent={ItemSeparator}
           keyExtractor={(item, index) => `ohs-${index}`}
           renderItem={({ item, index }) => (
-            <Box p="3">
+            <Box className="p-3">
               <Text>{item.text}</Text>
             </Box>
           )}
@@ -73,7 +77,7 @@ class OpeningHoursScreen extends Component {
 
     return (
       <Box>
-        <Heading size="md" p="3">
+        <Heading size="md" className="p-3">
           {this.props.t('RESTAURANT_SPECIAL_OPENING_HOURS')}
         </Heading>
         <FlatList
@@ -83,7 +87,7 @@ class OpeningHoursScreen extends Component {
           renderItem={({ item, index }) => (
             <Pressable
               onPress={() => this.props.deleteOpeningHoursSpecification(item)}>
-              <HStack p="3" justifyContent="space-between" alignItems="center">
+              <HStack className="p-3 justify-between items-center">
                 <Text>
                   {this.props.t('RESTAURANT_OPENING_HOURS_VALID_FROM_THROUGH', {
                     validFrom: moment(item.validFrom, 'YYYY-MM-DD').format(
@@ -95,7 +99,7 @@ class OpeningHoursScreen extends Component {
                     ).format('ll'),
                   })}
                 </Text>
-                <Icon as={FontAwesome} name="close" />
+                <Icon as={CloseIcon} size="xl" />
               </HStack>
             </Pressable>
           )}

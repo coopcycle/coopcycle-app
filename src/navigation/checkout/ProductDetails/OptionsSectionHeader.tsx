@@ -1,5 +1,7 @@
-import { Heading, Text, View } from 'native-base';
+import { Heading } from '@/components/ui/heading';
+import { Text } from '@/components/ui/text';
 import React from 'react';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { isMandatoryOption } from '../../../utils/product';
 

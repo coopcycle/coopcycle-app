@@ -3,12 +3,18 @@ import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
 import {
   FormControl,
-  HStack,
-  Input,
-  Text,
-  TextArea,
-  VStack,
-} from 'native-base';
+  FormControlLabel,
+  FormControlError,
+  FormControlErrorText,
+  FormControlHelper,
+  FormControlHelperText,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
+import { VStack } from '@/components/ui/vstack';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { InteractionManager, ScrollView, StyleSheet } from 'react-native';
@@ -195,102 +201,116 @@ class MoreInfos extends Component {
             setFieldTouched,
           }) => (
             <KeyboardAdjustView style={{ flex: 1 }}>
-              <HStack bgColor="info.200" justifyContent="center" p="4">
+              <HStack className="p-4 justify-center bg-info-200">
                 <Text>{this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER')}</Text>
               </HStack>
 
-              <VStack p="2" style={{ flex: 1 }}>
+              <VStack className="p-2" style={{ flex: 1 }}>
                 <ScrollView>
                   {!this.props.isAuthenticated && this._userIsGuest() && (
-                    <FormControl mb="2">
-                      <FormControl.Label>Email</FormControl.Label>
-                      <Input
-                        _stack={{ style: {} }}
-                        testID="guestCheckoutEmail"
-                        autoCorrect={false}
-                        keyboardType="email-address"
-                        returnKeyType="done"
-                        onChangeText={handleChange('email')}
-                        onBlur={handleBlur('email')}
-                        value={values.email}
-                        autoCapitalize="none"
-                      />
+                    <FormControl className="mb-2" isInvalid={hasErrors(errors, touched, 'email')}>
+                      <FormControlLabel>
+                        <FormControlLabelText>Email</FormControlLabelText>
+                      </FormControlLabel>
+                      <Input>
+                        <InputField
+                          testID="guestCheckoutEmail"
+                          autoCorrect={false}
+                          keyboardType="email-address"
+                          returnKeyType="done"
+                          onChangeText={handleChange('email')}
+                          onBlur={handleBlur('email')}
+                          value={values.email}
+                          autoCapitalize="none"
+                        />
+                      </Input>
                       {hasErrors(errors, touched, 'email') && (
-                        <Text note style={styles.errorText}>
-                          {errors.email}
-                        </Text>
+                        <FormControlError>
+                          <FormControlErrorText className="text-red-500">{errors.email}</FormControlErrorText>
+                        </FormControlError>
                       )}
                       {!hasErrors(errors, touched, 'email') && (
-                        <FormControl.HelperText>
+                      <FormControlHelper>
+                        <FormControlHelperText>
                           {this.props.t('GUEST_CHECKOUT_ORDER_EMAIL_HELP')}
-                        </FormControl.HelperText>
+                        </FormControlHelperText>
+                      </FormControlHelper>
                       )}
                     </FormControl>
                   )}
-                  <FormControl mb="2">
-                    <FormControl.Label>
-                      {this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
-                    </FormControl.Label>
-                    <Input
-                      _stack={{ style: {} }}
-                      testID="checkoutTelephone"
-                      autoCorrect={false}
-                      keyboardType="phone-pad"
-                      returnKeyType="done"
-                      onChangeText={value =>
-                        this._handleChangeTelephone(
-                          value,
-                          setFieldValue,
-                          setFieldTouched,
-                        )
-                      }
-                      onBlur={handleBlur('telephone')}
-                      value={values.telephone}
-                    />
+                  <FormControl className="mb-2" isInvalid={hasErrors(errors, touched, 'telephone')}>
+                    <FormControlLabel>
+                      <FormControlLabelText>{this.props.t('STORE_NEW_DELIVERY_PHONE_NUMBER')}</FormControlLabelText>
+                    </FormControlLabel>
+                    <Input>
+                      <InputField
+                        testID="checkoutTelephone"
+                        autoCorrect={false}
+                        keyboardType="phone-pad"
+                        returnKeyType="done"
+                        onChangeText={value =>
+                          this._handleChangeTelephone(
+                            value,
+                            setFieldValue,
+                            setFieldTouched,
+                          )
+                        }
+                        onBlur={handleBlur('telephone')}
+                        value={values.telephone}
+                      />
+                    </Input>
                     {hasErrors(errors, touched, 'telephone') && (
-                      <Text note style={styles.errorText}>
-                        {errors.telephone}
-                      </Text>
+                      <FormControlError>
+                        <FormControlErrorText>{errors.telephone}</FormControlErrorText>
+                      </FormControlError>
                     )}
                     {!hasErrors(errors, touched, 'telephone') && (
-                      <FormControl.HelperText>
-                        {this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP')}
-                      </FormControl.HelperText>
+                      <FormControlHelper>
+                        <FormControlHelperText>
+                          {this.props.t('CHECKOUT_ORDER_PHONE_NUMBER_HELP')}
+                        </FormControlHelperText>
+                      </FormControlHelper>
                     )}
                   </FormControl>
                   {Object.prototype.hasOwnProperty.call(values, 'address') && (
-                    <FormControl mb="2">
-                      <FormControl.Label>
-                        {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}
-                      </FormControl.Label>
-                      <TextArea
-                        _stack={{ style: {} }}
-                        autoCorrect={false}
-                        totalLines={3}
-                        onChangeText={handleChange('address.description')}
-                        onBlur={handleBlur('address.description')}
-                      />
-                      <FormControl.HelperText>
-                        {this.props.t(
-                          'CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP',
-                        )}
-                      </FormControl.HelperText>
+                    <FormControl className="mb-2">
+                      <FormControlLabel>
+                        <FormControlLabelText>{this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}</FormControlLabelText>
+                      </FormControlLabel>
+                      <Textarea>
+                        <TextareaInput
+                          autoCorrect={false}
+                          totalLines={3}
+                          onChangeText={handleChange('address.description')}
+                          onBlur={handleBlur('address.description')}
+                        />
+                      </Textarea>
+                      <FormControlHelper>
+                        <FormControlHelperText>
+                          {this.props.t(
+                            'CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP',
+                          )}
+                        </FormControlHelperText>
+                      </FormControlHelper>
                     </FormControl>
                   )}
-                  <FormControl mb="2">
-                    <FormControl.Label>
-                      {this.props.t('CHECKOUT_ORDER_NOTES')}
-                    </FormControl.Label>
-                    <TextArea
-                      _stack={{ style: {} }}
-                      autoCorrect={false}
-                      totalLines={3}
-                      onChangeText={handleChange('notes')}
-                      onBlur={handleBlur('notes')}
-                    />
-                    <FormControl.HelperText>
-                      {this.props.t('CHECKOUT_ORDER_NOTES_HELP')}
-                    </FormControl.HelperText>
+                  <FormControl className="mb-2">
+                    <FormControlLabel>
+                      <FormControlLabelText>{this.props.t('CHECKOUT_ORDER_NOTES')}</FormControlLabelText>
+                    </FormControlLabel>
+                    <Textarea>
+                      <TextareaInput
+                        autoCorrect={false}
+                        totalLines={3}
+                        onChangeText={handleChange('notes')}
+                        onBlur={handleBlur('notes')}
+                      />
+                    </Textarea>
+                    <FormControlHelper>
+                      <FormControlHelperText>
+                        {this.props.t('CHECKOUT_ORDER_NOTES_HELP')}
+                      </FormControlHelperText>
+                    </FormControlHelper>
                   </FormControl>
                 </ScrollView>
               </VStack>

@@ -1,8 +1,10 @@
-import { Button, Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { TriangleAlert } from 'lucide-react-native'
+import { Button, ButtonText } from '@/components/ui/button';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { InteractionManager, StyleSheet, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 
 import AppUser from '../AppUser';
@@ -86,10 +88,10 @@ class Loading extends Component {
   renderError() {
     return (
       <View style={styles.error}>
-        <Icon as={Ionicons} name="warning" />
+        <Icon as={TriangleAlert} />
         <Text style={styles.errorText}>{this.props.t('NET_FAILED')}</Text>
-        <Button block onPress={() => this.load()}>
-          <Text>{this.props.t('RETRY')}</Text>
+        <Button onPress={() => this.load()}>
+          <ButtonText>{this.props.t('RETRY')}</ButtonText>
         </Button>
         <View style={{ marginVertical: 20 }}>
           {this.props.customBuild ? null : <Server />}

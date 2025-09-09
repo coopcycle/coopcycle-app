@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import { Image, StyleSheet, TextProps, View } from 'react-native';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
 import { useBackgroundContainerColor } from '../styles/theme';

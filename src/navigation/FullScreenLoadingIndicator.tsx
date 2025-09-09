@@ -1,6 +1,6 @@
-import { Text, View } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 export default function FullScreenLoadingIndicator(props) {
   return (

@@ -1,17 +1,30 @@
 import { Formik } from 'formik';
 import _ from 'lodash';
 import {
-  Button,
-  Checkbox,
-  Column,
   FormControl,
-  Input,
-  ScrollView,
-  Text,
-} from 'native-base';
+  FormControlLabel,
+  FormControlError,
+  FormControlErrorText,
+  FormControlErrorIcon,
+  FormControlHelper,
+  FormControlHelperText,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from '@/components/ui/checkbox';
+import { CheckIcon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Input, InputField } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import validate from 'validate.js';
 
@@ -145,7 +158,7 @@ class RegisterForm extends React.Component {
   }
 
   renderError(message) {
-    return <FormControl.ErrorMessage>{message}</FormControl.ErrorMessage>;
+    return <FormControlError><FormControlErrorText>{message}</FormControlErrorText></FormControlError>;
   }
 
   _validate(values) {
@@ -308,10 +321,8 @@ class RegisterForm extends React.Component {
     };
 
     return (
-      <FormControl my="2" isInvalid={hasError}>
+      <FormControl className="my-2" isInvalid={hasError}>
         <Checkbox
-          size="sm"
-          mr="4"
           name={fieldName}
           isChecked={_isChecked()}
           onChange={checked => _handleChange(checked)}
@@ -319,38 +330,37 @@ class RegisterForm extends React.Component {
           testID={`registerForm.${fieldName}`}
           ref={component => this._inputComponents.set(fieldName, component)}
           defaultValue={values[fieldName]}>
-          <Text px={2} fontSize="sm">
-            {label}
-          </Text>
+          <CheckboxIndicator>
+            <CheckboxIcon as={CheckIcon} />
+          </CheckboxIndicator>
+          <CheckboxLabel>{label}</CheckboxLabel>
         </Checkbox>
         {hasError && this.renderError(errorMessage)}
         {this.props.splitTermsAndConditionsAndPrivacyPolicy ? (
-          <FormControl.HelperText>
-            <Button
-              size="sm"
-              variant="link"
-              testID={`${fieldName}Link`}
-              onPress={() => _handleChange(true)}>
-              {buttonLabel}
-            </Button>
-          </FormControl.HelperText>
+          <Button
+            size="sm"
+            variant="link"
+            testID={`${fieldName}Link`}
+            onPress={() => _handleChange(true)}>
+            <ButtonText>{buttonLabel}</ButtonText>
+          </Button>
         ) : (
-          <FormControl.HelperText>
+          <VStack>
             <Button
               size="sm"
               variant="link"
               testID="termsAndConditionsLink"
               onPress={() => _handleNavPress('Terms')}>
-              {this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL')}
+              <ButtonText>{this.props.t('TERMS_AND_CONDITIONS_BUTTON_LABEL')}</ButtonText>
             </Button>
             <Button
               size="sm"
               variant="link"
               testID="privacyPolicyLink"
               onPress={() => _handleNavPress('Privacy')}>
-              {this.props.t('PRIVACY_POLICY_BUTTON_LABEL')}
+              <ButtonText>{this.props.t('PRIVACY_POLICY_BUTTON_LABEL')}</ButtonText>
             </Button>
-          </FormControl.HelperText>
+          </VStack>
         )}
       </FormControl>
     );
@@ -390,7 +400,7 @@ class RegisterForm extends React.Component {
           };
 
           return (
-            <Column flex={1}>
+            <Box flex={1}>
               <ScrollView
                 showsVerticalScrollIndicator={true}
                 persistentScrollbar={true}>
@@ -436,20 +446,24 @@ class RegisterForm extends React.Component {
                     <FormControl
                       {...itemProps}
                       key={input.name}
-                      isInvalid={hasError}>
-                      <FormControl.Label>{input.label}</FormControl.Label>
-                      <Input
-                        _stack={{ style: {} }}
-                        testID={`registerForm.${input.name}`}
-                        ref={component =>
-                          this._inputComponents.set(input.name, component)
-                        }
-                        defaultValue={values[input.name]}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        style={{ height: 40 }}
-                        {...inputProps}
-                      />
+                      isInvalid={hasError}
+                      className="mb-2">
+                      <FormControlLabel>
+                        <FormControlLabelText>{input.label}</FormControlLabelText>
+                      </FormControlLabel>
+                      <Input>
+                        <InputField
+                          testID={`registerForm.${input.name}`}
+                          ref={component =>
+                            this._inputComponents.set(input.name, component)
+                          }
+                          defaultValue={values[input.name]}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          style={{ height: 40 }}
+                          {...inputProps}
+                        />
+                      </Input>
                       {hasError && this.renderError(allErrors[input.name])}
                     </FormControl>
                   );
@@ -463,11 +477,11 @@ class RegisterForm extends React.Component {
                 )}
               </ScrollView>
               <View style={{ marginTop: 20 }}>
-                <Button block onPress={handleSubmit} testID="submitRegister">
-                  {this.props.t('SUBMIT')}
+                <Button onPress={handleSubmit} testID="submitRegister">
+                  <ButtonText>{this.props.t('SUBMIT')}</ButtonText>
                 </Button>
               </View>
-            </Column>
+            </Box>
           );
         }}
       </Formik>

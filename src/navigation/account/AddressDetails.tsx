@@ -1,4 +1,14 @@
-import { Button, Divider, FormControl, Heading, Input } from 'native-base';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlHelper,
+  FormControlHelperText,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Input, InputField } from '@/components/ui/input';
+import { Heading } from '@/components/ui/heading';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Divider } from '@/components/ui/divider';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, ScrollView, View } from 'react-native';
@@ -42,40 +52,46 @@ class AddressDetails extends Component {
         </MapView>
         <ScrollView style={{ padding: 15 }}>
           <Heading>{this.props.address.streetAddress}</Heading>
-          <Divider style={{ margin: 10 }} />
-          <FormControl mb="5">
-            <FormControl.Label>{this.props.t('NAME')}</FormControl.Label>
-            <Input
-              _stack={{ style: {} }}
-              onChange={({ nativeEvent: { text } }) =>
-                this.setState({ name: text })
-              }
-            />
+          <Divider className="my-3" />
+          <FormControl className="mb-5">
+            <FormControlLabel>
+              <FormControlLabelText>{this.props.t('NAME')}</FormControlLabelText>
+            </FormControlLabel>
+            <Input>
+              <InputField
+                onChange={({ nativeEvent: { text } }) =>
+                  this.setState({ name: text })
+                }
+              />
+            </Input>
           </FormControl>
 
-          <FormControl mb="5">
-            <FormControl.Label>
-              {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}
-            </FormControl.Label>
-            <Input
-              _stack={{ style: {} }}
-              multiline
-              numberOfLines={3}
-              onChange={({ nativeEvent: { text } }) =>
-                this.setState({ description: text })
-              }
-            />
-            <FormControl.HelperText>
-              {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP')}
-            </FormControl.HelperText>
+          <FormControl className="mb-5">
+            <FormControlLabel>
+              <FormControlLabelText>{this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION')}</FormControlLabelText>
+            </FormControlLabel>
+            <Input>
+              <InputField
+                multiline
+                numberOfLines={3}
+                onChange={({ nativeEvent: { text } }) =>
+                  this.setState({ description: text })
+                }
+              />
+            </Input>
+            <FormControlHelper>
+              <FormControlHelperText>
+                {this.props.t('CHECKOUT_ORDER_ADDRESS_DESCRIPTION_HELP')}
+              </FormControlHelperText>
+            </FormControlHelper>
           </FormControl>
         </ScrollView>
         <View
           style={{
             padding: 20,
           }}>
-          <Button mt="2" onPress={_save}>
-            {this.props.t('SAVE_AND_CONTINUE')}
+          <Button className="mt-2" onPress={_save}>
+            <ButtonText>{this.props.t('SAVE_AND_CONTINUE')}</ButtonText>
           </Button>
         </View>
       </KeyboardAdjustView>

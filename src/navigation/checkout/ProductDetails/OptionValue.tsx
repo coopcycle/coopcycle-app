@@ -1,6 +1,6 @@
-import { Text, View } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   useBackgroundContainerColor,
   useBaseTextColor,

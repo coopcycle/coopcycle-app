@@ -1,12 +1,10 @@
-import {
-  FlatList,
-  HStack,
-  Skeleton,
-  VStack,
-  useColorModeValue,
-} from 'native-base';
+import { useColorModeValue } from 'native-base';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useBackgroundContainerColor, usePrimaryColor } from '../styles/theme';
 
 const styles = StyleSheet.create({
@@ -22,6 +20,35 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
 });
+
+const ItemSkeleton = () => {
+
+  const backgroundColor = useBackgroundContainerColor();
+
+  return (
+    <HStack
+      style={[
+        {
+          marginVertical: 8,
+          marginHorizontal: 16,
+          borderRadius: 16,
+          overflow: 'hidden',
+        },
+        { backgroundColor: backgroundColor },
+      ]}
+      space="lg"
+      className="p-4">
+      <Skeleton flex={1} variant="sharp" className="h-[100px]" />
+      <VStack flex={3} space="md">
+        <SkeletonText className="h-2" _lines={3} />
+        <HStack space="md" className="justify-between">
+          <SkeletonText className="h-3 w-1/5" />
+          <SkeletonText className="h-3 w-1/5" />
+        </HStack>
+      </VStack>
+    </HStack>
+  )
+}
 
 const RestaurantMenuHeader = ({
   sections, // menuSections
@@ -94,52 +121,22 @@ const RestaurantMenuHeader = ({
     </View>
   );
 
-  const loadingSkeleton = (
-    <HStack
-      style={[
-        {
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'left',
-          marginVertical: 8,
-          marginHorizontal: 16,
-          borderRadius: 16,
-          overflow: 'hidden',
-          backgroundColor: '#ffffff',
-        },
-        { backgroundColor: backgroundColor },
-      ]}
-      space={6}
-      p="4">
-      <Skeleton flex="1" h="100%" w="100" rounded="md" />
-      <VStack flex="3" space="3">
-        <Skeleton.Text flex={1} lines={1} />
-        <Skeleton.Text flex={1} lines={3} />
-        <HStack flex={1} space="2" alignItems="center">
-          <Skeleton h="3" flex="2" rounded="full" />
-          <View style={{ flex: 1.8 }} />
-          <Skeleton h="3" flex="1" rounded="full" />
-        </HStack>
-      </VStack>
-    </HStack>
-  );
-
   return (
     <>
       {isLoading && (
         <>
-          <HStack w="100%" space={6} p="4" style={{ backgroundColor }}>
-            <Skeleton.Text flex={1} lines={1} />
-            <Skeleton.Text flex={1} lines={1} />
-            <Skeleton.Text flex={1} lines={1} />
-            <Skeleton.Text flex={1} lines={1} />
+          <HStack className="w-full p-4 mb-4 justify-between" space="lg" style={{ backgroundColor }}>
+            <SkeletonText className="h-3 w-1/4" />
+            <SkeletonText className="h-3 w-1/4" />
+            <SkeletonText className="h-3 w-1/4" />
+            <SkeletonText className="h-3 w-1/4" />
           </HStack>
-          <HStack p="4" width="50%" style={{ marginTop: 32 }}>
-            <Skeleton.Text flex={1} lines={1} />
+          <HStack className="w-1/2 p-4">
+            <SkeletonText className="h-3" />
           </HStack>
-          {loadingSkeleton}
-          {loadingSkeleton}
-          {loadingSkeleton}
+          <ItemSkeleton />
+          <ItemSkeleton />
+          <ItemSkeleton />
         </>
       )}
       <FlatList

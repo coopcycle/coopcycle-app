@@ -1,13 +1,13 @@
 import _ from 'lodash';
-import { Fab, Icon } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { User } from 'lucide-react-native'
+import { Fab, FabIcon } from '@/components/ui/fab';
+import { Check } from 'lucide-react-native'
 
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectSelectedTasks } from '../../../redux/Dispatch/selectors';
-import { darkRedColor, whiteColor } from '../../../styles/common';
 
-function BulkEditTasksFloatingButton({ onPress, iconName }) {
+function BulkEditTasksFloatingButton({ onPress }) {
   const selectedTasks = useSelector(selectSelectedTasks);
 
   const allSelectedTasks = useMemo(() => {
@@ -28,29 +28,12 @@ function BulkEditTasksFloatingButton({ onPress, iconName }) {
     <>
       {allSelectedTasks.length < 2 ? null : (
         <Fab
-          renderInPortal={false}
-          shadow={2}
-          placement="bottom-right"
+          size="xl"
+          placement="bottom right"
           onPress={handleOnPress}
-          bg={whiteColor}
-          style={{
-            marginBottom: 12,
-            marginRight: 8,
-            padding: 0,
-            height: 94,
-            width: 94,
-          }}
-          icon={
-            <Icon
-              as={FontAwesome}
-              name={iconName}
-              size="4xl"
-              color={darkRedColor}
-              style={{ padding: 0 }}
-              testID="bulkAssignButton"
-            />
-          }
-        />
+        >
+          <FabIcon as={User} />
+        </Fab>
       )}
     </>
   );

@@ -2,7 +2,24 @@ import React, { createRef, forwardRef, Component } from 'react';
 import { CardField, StripeProvider } from '@stripe/stripe-react-native';
 import { Formik } from 'formik';
 import _ from 'lodash';
-import { Button, Center, Checkbox, Input, Radio, Text } from 'native-base';
+import { RadioGroup } from '@/components/ui/radio';
+import { CircleIcon } from '@/components/ui/icon';
+import {
+  FormControl,
+  FormControlError,
+  FormControlErrorText,
+} from '@/components/ui/form-control';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from '@/components/ui/checkbox';
+import { CheckIcon } from '@/components/ui/icon';
+import { Input, InputField } from '@/components/ui/input';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Center } from '@/components/ui/center';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View, useColorScheme } from 'react-native';
 import { connect, useSelector } from 'react-redux';
@@ -80,7 +97,7 @@ class CreditCardClassComponent extends Component {
     // This avoids the app crashing under iOS after payment
     // https://github.com/stripe/stripe-react-native/issues/1732
     // This may be removed when upgrading to React Native 0.79 + Stripe 0.45 + Expo 53
-    this.inputRef.current.focus();
+    this.inputRef.current?.focus();
 
     this.setState({ isLoading: true });
 
@@ -185,23 +202,23 @@ class CreditCardClassComponent extends Component {
                   <Text mb={2} bold>
                     {this.props.t('PAY_WITH_SAVED_CREDIT_CARD')}
                   </Text>
-                  <Radio.Group
+                  <RadioGroup
                     name="savedCardSelected"
                     accessibilityLabel="saved credit cards"
-                    defaultValue={initialValues.savedCardSelected}
+                    value={values.savedCardSelected}
                     onChange={handleChange('savedCardSelected')}>
                     {stripePaymentMethods.map(card => {
                       return <SavedCreditCard card={card} key={card.id} />;
                     })}
-                  </Radio.Group>
+                  </RadioGroup>
                   <Button
-                    mt={4}
+                    className="mt-4"
                     onPress={() => {
                       this.setState({ addNewCard: true }, () => {
                         setFieldValue('savedCardSelected', null);
                       });
                     }}>
-                    {this.props.t('ADD_NEW_CREDIT_CARD')}
+                    <ButtonText>{this.props.t('ADD_NEW_CREDIT_CARD')}</ButtonText>
                   </Button>
                   {errors.selectCard && (
                     <Text m={4} textAlign="center" color="#ed2f2f">
@@ -217,28 +234,32 @@ class CreditCardClassComponent extends Component {
                     {this.props.t('ENTER_PAY_DETAILS')}
                   </Text>
                   <View style={styles.creditCardInputContainer}>
-                    <View
+                    <FormControl
                       style={[
                         styles.formInputContainer,
                         { paddingHorizontal: 20, marginBottom: 15 },
-                      ]}>
-                      <Input
-                        _stack={{ style: {} }}
-                        ref={this.inputRef}
-                        testID="cardholderName"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        style={{ height: 40 }}
-                        placeholder={this.props.t('CARDHOLDER_NAME')}
-                        onChangeText={handleChange('cardholderName')}
-                        onBlur={handleBlur('cardholderName')}
-                      />
+                      ]}
+                      isInvalid={errors.cardholderName}>
+                      <Input>
+                        <InputField
+                          ref={this.inputRef}
+                          testID="cardholderName"
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          style={{ height: 40 }}
+                          placeholder={this.props.t('CARDHOLDER_NAME')}
+                          onChangeText={handleChange('cardholderName')}
+                          onBlur={handleBlur('cardholderName')}
+                        />
+                      </Input>
                       {errors.cardholderName && (
-                        <Text mt={2} color="#ed2f2f">
-                          {errors.cardholderName}
-                        </Text>
+                        <FormControlError>
+                          <FormControlErrorText mt={2} color="#ed2f2f">
+                            {errors.cardholderName}
+                          </FormControlErrorText>
+                        </FormControlError>
                       )}
-                    </View>
+                    </FormControl>
                     <View
                       style={[
                         styles.formInputContainer,
@@ -261,20 +282,23 @@ class CreditCardClassComponent extends Component {
                   {!user.isGuest() ? (
                     <Checkbox
                       name="saveCard"
-                      mb={4}
+                      className="mb-4"
                       accessibilityLabel="save credit card"
-                      defaultValue={initialValues.saveCard}
+                      defaultIsChecked={initialValues.saveCard}
                       onChange={checked => setFieldValue('saveCard', checked)}>
-                      {this.props.t('SAVE_CARD')}
+                      <CheckboxIndicator>
+                        <CheckboxIcon as={CheckIcon} />
+                      </CheckboxIndicator>
+                      <CheckboxLabel>{this.props.t('SAVE_CARD')}</CheckboxLabel>
                     </Checkbox>
                   ) : null}
                   {this.shouldRenderStripePaymentMethods() ? (
                     <Button
-                      mt={2}
+                      className="mt-2"
                       onPress={() => {
                         this.setState({ addNewCard: false });
                       }}>
-                      {this.props.t('SELECT_SAVED_CARD')}
+                      <ButtonText>{this.props.t('SELECT_SAVED_CARD')}</ButtonText>
                     </Button>
                   ) : null}
                   {this.props.errors.length > 0 && (

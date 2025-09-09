@@ -1,9 +1,10 @@
-import { ActivityIndicator, InteractionManager } from 'react-native';
-import { Center, Heading, Text } from 'native-base';
+import { ActivityIndicator, InteractionManager, View } from 'react-native';
+import { Center } from '@/components/ui/center';
+import { Heading } from '@/components/ui/heading';
+import { Text } from '@/components/ui/text';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'native-base';
 
 import { initialize } from '../../redux/Dispatch/actions';
 import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
@@ -49,7 +50,7 @@ export default function AllTasks({ navigation, route }) {
 
   if (isError) {
     return (
-      <Center w="95%" h="80%">
+      <Center flex={1}>
         <Heading>{t('AN_ERROR_OCCURRED')} </Heading>
         <Text>{t('TRY_LATER')}</Text>
       </Center>
@@ -58,7 +59,7 @@ export default function AllTasks({ navigation, route }) {
 
   if (isFetching) {
     return (
-      <Center w="95%" h="80%">
+      <Center flex={1}>
         <ActivityIndicator animating={true} size="large" />
       </Center>
     );

@@ -1,19 +1,24 @@
 import { Formik } from 'formik';
 import _ from 'lodash';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
-  Box,
-  Button,
-  Divider,
   FormControl,
-  HStack,
-  Icon,
-  Input,
-  ScrollView,
-  Skeleton,
-  Text,
-  TextArea,
-  VStack,
-} from 'native-base';
+  FormControlLabel,
+  FormControlError,
+  FormControlErrorText,
+  FormControlErrorIcon,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Divider } from '@/components/ui/divider';
+import { Icon, CheckIcon } from '@/components/ui/icon';
+import { CircleX, User, Signature, Camera } from 'lucide-react-native';
+import { Input, InputField } from '@/components/ui/input';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,6 +26,7 @@ import {
   FlatList,
   Image,
   Keyboard,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -85,7 +91,7 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
         style={{ width: imageSize - 2, height: imageSize - 2 }}
       />
       <TouchableOpacity style={styles.imageDelBtn} onPress={onPressDelete}>
-        <Icon as={FontAwesome5} name="times-circle" />
+        <Icon as={CircleX} size={ 40 } style={{color: "black"}} />
       </TouchableOpacity>
     </View>
   );
@@ -127,7 +133,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   }
 
   return (
-    <Skeleton isLoaded={isSuccess} rounded={2}>
+    <Skeleton isLoaded={isSuccess} className="h-10 rounded">
       <Picker
         selectedValue={selectedFailureReason}
         onValueChange={v => onChange(v)}>
@@ -183,7 +189,7 @@ const ContactNameModal = ({
       onSwipeComplete={onSwipeComplete}
       swipeDirection={['up', 'down']}>
       <ModalContent>
-        <Box p="3">
+        <Box className="p-3">
           <Formik
             initialValues={initialValues}
             validate={values => {
@@ -210,23 +216,24 @@ const ContactNameModal = ({
                 <FormControl
                   error={touched.contactName && errors.contactName}
                   style={{ marginBottom: 15 }}>
-                  <FormControl.Label>
-                    {t('DELIVERY_DETAILS_RECIPIENT')}
-                  </FormControl.Label>
-                  <Input
-                    _stack={{ style: {} }}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    autoCompleteType="off"
-                    style={{ height: 40 }}
-                    returnKeyType="done"
-                    onChangeText={handleChange('contactName')}
-                    onBlur={handleBlur('contactName')}
-                    defaultValue={values.contactName}
-                  />
+                  <FormControlLabel>
+                    <FormControlLabelText>{t('DELIVERY_DETAILS_RECIPIENT')}</FormControlLabelText>
+                  </FormControlLabel>
+                  <Input>
+                    <InputField
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      autoCompleteType="off"
+                      style={{ height: 40 }}
+                      returnKeyType="done"
+                      onChangeText={handleChange('contactName')}
+                      onBlur={handleBlur('contactName')}
+                      defaultValue={values.contactName}
+                    />
+                  </Input>
                 </FormControl>
                 <Button block onPress={handleSubmit}>
-                  {t('SUBMIT')}
+                  <ButtonText>{t('SUBMIT')}</ButtonText>
                 </Button>
               </View>
             )}
@@ -326,10 +333,9 @@ const SubmitButton = ({
       disabled={isDisabled}
       style={{ alignItems: 'center', backgroundColor: footerBgColor }}
       testID="task:finishButton">
-      <HStack py="3" alignItems="center">
+      <HStack className="py-3 items-center">
         <Icon
-          as={FontAwesome}
-          name={buttonIconName}
+          as={CheckIcon}
           style={{ color: '#fff', marginRight: 10 }}
         />
         <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
@@ -361,16 +367,19 @@ const FailureReasonForm = ({ data, onChange }) => {
           renderItem={({ item }) => {
             return (
               <FormControl mb="2" key={item.name}>
-                <FormControl.Label>{item.label}</FormControl.Label>
-                <Input
-                  _stack={{ style: {} }}
-                  defaultValue={item.value.toString()}
-                  keyboardType={
-                    item.type === 'number' ? 'number-pad' : 'default'
-                  }
-                  onChangeText={handleChange(item.name)}
-                  onBlur={handleBlur(item.name)}
-                />
+                <FormControlLabel>
+                  <FormControlLabelText>{item.label}</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
+                  <InputField
+                    defaultValue={item.value.toString()}
+                    keyboardType={
+                      item.type === 'number' ? 'number-pad' : 'default'
+                    }
+                    onChangeText={handleChange(item.name)}
+                    onBlur={handleBlur(item.name)}
+                  />
+                </Input>
               </FormControl>
             );
           }}
@@ -469,7 +478,7 @@ const CompleteTask = ({
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
             contentInsetAdjustmentBehavior="always">
-            <VStack flex={1} w="100%">
+            <VStack flex={1} className="w-full">
               <MultipleTasksLabel tasks={tasks} />
               <TouchableWithoutFeedback
                 // We need to disable TouchableWithoutFeedback when keyboard is not visible,
@@ -480,25 +489,16 @@ const CompleteTask = ({
                 <VStack>
                   {isDropoff(task, tasks) && (
                     <React.Fragment>
-                      <HStack
-                        justifyContent="space-between"
-                        alignItems="center"
-                        p="3">
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}>
+                      <HStack className="justify-between items-center p-3">
+                        <HStack className="justify-between items-center">
                           <Icon
-                            as={FontAwesome}
-                            name="user"
+                            as={User}
                             style={{ marginRight: 10 }}
                           />
                           <Text numberOfLines={1}>
                             {resolveContactName(contactName, task, tasks)}
                           </Text>
-                        </View>
+                        </HStack>
                         <TouchableOpacity
                           onPress={() => setIsContactNameModalVisible(true)}>
                           <Text>{t('EDIT')}</Text>
@@ -508,10 +508,10 @@ const CompleteTask = ({
                     </React.Fragment>
                   )}
                   {!success && (
-                    <FormControl p="3">
-                      <FormControl.Label>
-                        {t('FAILURE_REASON')}
-                      </FormControl.Label>
+                    <FormControl className="p-3">
+                      <FormControlLabel>
+                        <FormControlLabelText>{t('FAILURE_REASON')}</FormControlLabelText>
+                      </FormControlLabel>
                       <FailureReasonPicker
                         task={task}
                         httpClient={httpClient}
@@ -539,32 +539,28 @@ const CompleteTask = ({
                       ) : null}
                     </FormControl>
                   )}
-                  <FormControl p="3">
-                    <FormControl.Label>{t('NOTES')}</FormControl.Label>
-                    <TextArea
-                      _stack={{ style: {} }}
-                      autoCorrect={false}
-                      totalLines={2}
-                      onChangeText={text => setNotes(text)}
-                    />
+                  <FormControl className="p-3">
+                    <FormControlLabel>
+                      <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
+                    </FormControlLabel>
+                    <Textarea className="mb-3">
+                      <TextareaInput
+                        autoCorrect={false}
+                        totalLines={2}
+                        onChangeText={text => setNotes(text)}
+                      />
+                    </Textarea>
                     {!success && (
-                      <FormControl p="3">
-                        <Button
-                          bg={validateTaskAfterReport ? greenColor : undefined}
-                          onPress={() =>
-                            setValidateTaskAfterReport(!validateTaskAfterReport)
-                          }
-                          variant={
-                            validateTaskAfterReport ? 'solid' : 'outline'
-                          }
-                          endIcon={
-                            validateTaskAfterReport ? (
-                              <Icon as={FontAwesome} name="check" size="sm" />
-                            ) : undefined
-                          }>
-                          Validate the task after reporting
-                        </Button>
-                      </FormControl>
+                      <Button
+                        onPress={() =>
+                          setValidateTaskAfterReport(!validateTaskAfterReport)
+                        }
+                        variant={
+                          validateTaskAfterReport ? 'solid' : 'outline'
+                        }>
+                        <ButtonText>Validate the task after reporting</ButtonText>
+                        { validateTaskAfterReport && <ButtonIcon as={CheckIcon} /> }
+                      </Button>
                     )}
                   </FormControl>
                   <View>
@@ -597,7 +593,7 @@ const CompleteTask = ({
         <Animated.View
           style={[buttonContainerAnimatedStyle, styles.ctaButtonWrapper]}>
           <View style={styles.ctaButtonContainer}>
-            <VStack w="100%">
+            <VStack className="w-full">
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('TaskCompleteProofOfDelivery', {
@@ -605,13 +601,10 @@ const CompleteTask = ({
                     tasks,
                   })
                 }>
-                <HStack
-                  alignItems="center"
-                  justifyContent="space-between"
-                  p="3">
-                  <Icon as={FontAwesome5} name="signature" />
+                <HStack className="items-center justify-between p-3">
+                  <Icon as={Signature} />
                   <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
-                  <Icon as={FontAwesome5} name="camera" />
+                  <Icon as={Camera} />
                 </HStack>
               </TouchableOpacity>
               <SubmitButton
@@ -669,6 +662,8 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff',
     top: -16,
     right: -16,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   screenContainer: {
     alignItems: 'center',

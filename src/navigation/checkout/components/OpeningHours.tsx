@@ -1,14 +1,17 @@
 import React from 'react';
 
-import { HStack, Text, View } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+
+import classNames from 'classnames';
 import { withTranslation } from 'react-i18next';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, View } from 'react-native';
 
 const OpeningHours = props => {
   const colorScheme = useColorScheme();
 
-  const background = colorScheme === 'dark' ? 'dark.300' : 'white';
-  const highlight = colorScheme === 'dark' ? 'dark.50' : 'blueGray.300';
+  const background = colorScheme === 'dark' ? 'dark.300' : 'typography-white';
+  const highlight = colorScheme === 'dark' ? 'typography-50' : 'typography-300';
 
   const weekdays = props.openingHoursSpecification.state.reduce(
     (acc, day, index) => {
@@ -22,9 +25,13 @@ const OpeningHours = props => {
       }, []);
       acc.push(
         <HStack
-          paddingY={1}
           key={`h${index}`}
-          backgroundColor={day.today ? highlight : background}>
+          className={classNames(
+            'py-1',
+            {[`bg-${highlight}`]: day.today},
+            {[`bg-${background}`]: !day.today}
+          )}
+        >
           <Text textAlign={'center'} minW={'3em'} key={index} bold={day.today}>
             {day.label}
           </Text>

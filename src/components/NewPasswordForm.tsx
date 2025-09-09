@@ -1,10 +1,19 @@
 import _ from 'lodash';
-import { Button, FormControl, Input, Text, VStack } from 'native-base';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlError,
+  FormControlErrorText,
+  FormControlErrorIcon,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Input, InputField } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import validate from 'validate.js';
-import material from '../../native-base-theme/variables/material';
 
 import { connect } from 'react-redux';
 import i18n from '../i18n';
@@ -85,16 +94,14 @@ class NewPasswordForm extends React.Component {
 
   renderErrors(errors) {
     return (
-      <View>
+      <FormControlError>
         {errors.map((message, key) => (
-          <Text
-            key={key}
-            note
-            style={{ marginLeft: 15, color: material.inputErrorBorderColor }}>
+          <FormControlErrorText
+            key={key}>
             {message}
-          </Text>
+          </FormControlErrorText>
         ))}
-      </View>
+      </FormControlError>
     );
   }
 
@@ -103,55 +110,58 @@ class NewPasswordForm extends React.Component {
 
     return (
       <View>
-        <VStack>
+        <>
           {inputs.map(input => {
             const hasErrors = errors.hasOwnProperty(input.name);
             const itemProps = hasErrors ? { error: true } : {};
 
             return (
               <View key={input.name}>
-                <FormControl stackedLabel {...itemProps}>
-                  <FormControl.Label>{input.label}</FormControl.Label>
-                  <Input
-                    _stack={{ style: {} }}
-                    ref={component =>
-                      this._inputComponents.set(input.name, component)
-                    }
-                    defaultValue={this.state[input.name]}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    style={{ height: 40 }}
-                    onChangeText={value =>
-                      this.setState({ [input.name]: value })
-                    }
-                    {...input.props}
-                    returnKeyType="next"
-                    onSubmitEditing={event => {
-                      let index = inputs.findIndex(
-                        el => el.name === input.name,
-                      );
-                      if (inputs.length >= index + 2) {
-                        let nextInputName = inputs[index + 1].name;
-                        this._inputComponents.get(nextInputName).focus();
-                      } else {
-                        this._onSubmit();
+                <FormControl {...itemProps} className="mb-3">
+                  <FormControlLabel>
+                    <FormControlLabelText>{input.label}</FormControlLabelText>
+                  </FormControlLabel>
+                  <Input>
+                    <InputField
+                      ref={component =>
+                        this._inputComponents.set(input.name, component)
                       }
-                    }}
-                  />
+                      defaultValue={this.state[input.name]}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      style={{ height: 40 }}
+                      onChangeText={value =>
+                        this.setState({ [input.name]: value })
+                      }
+                      {...input.props}
+                      returnKeyType="next"
+                      onSubmitEditing={event => {
+                        let index = inputs.findIndex(
+                          el => el.name === input.name,
+                        );
+                        if (inputs.length >= index + 2) {
+                          let nextInputName = inputs[index + 1].name;
+                          this._inputComponents.get(nextInputName).focus();
+                        } else {
+                          this._onSubmit();
+                        }
+                      }}
+                    />
+                  </Input>
+                  {hasErrors && this.renderErrors(errors[input.name])}
                 </FormControl>
-                {hasErrors && this.renderErrors(errors[input.name])}
               </View>
             );
           })}
-        </VStack>
+        </>
         <View style={{ marginTop: 20 }}>
           <Button block onPress={() => this._onSubmit()}>
-            {this.props.t('SUBMIT')}
+            <ButtonText>{this.props.t('SUBMIT')}</ButtonText>
           </Button>
           <Text
+            className="text-error-300"
             style={{
               marginTop: 15,
-              color: material.inputErrorBorderColor,
             }}>
             {this.props.nonInputError}
           </Text>

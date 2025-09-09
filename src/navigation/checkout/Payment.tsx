@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Center } from 'native-base';
+import { Center } from '@/components/ui/center';
 import { Linking, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';

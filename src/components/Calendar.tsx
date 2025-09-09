@@ -1,8 +1,7 @@
 import moment from 'moment/moment';
-import { View } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Calendar as RNCalendar } from 'react-native-calendars';
 import { primaryColor, whiteColor } from '../styles/common';
 import { CalendarProps } from 'react-native-calendars/src/calendar';

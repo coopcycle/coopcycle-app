@@ -4,19 +4,17 @@ import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import {
-  Icon,
-  Input,
-  Pressable,
-  Text,
-  View,
-  useColorModeValue,
-} from 'native-base';
+import { useColorModeValue } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Icon, StarIcon } from '@/components/ui/icon';
+import { Input, InputField } from '@/components/ui/input';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
@@ -324,6 +322,7 @@ function AddressAutocomplete({
         onPress={() => onItemPress(item)}
         style={itemStyle}
         {...itemProps}>
+        <HStack>
         <Text
           style={{ fontSize: 14, flex: 1, color: props.itemTextColor }}
           numberOfLines={1}
@@ -332,16 +331,14 @@ function AddressAutocomplete({
         </Text>
         {item.type === 'fuse' && (
           <Icon
-            as={FontAwesome5}
-            name="star"
-            regular
+            as={StarIcon}
+            className="pl-2"
             style={{
-              fontSize: 16,
               color: props.itemTextColor,
-              paddingLeft: 5,
             }}
           />
         )}
+      </HStack>
       </TouchableOpacity>
     );
   }
@@ -370,20 +367,21 @@ function AddressAutocomplete({
   const renderTextInput = inputProps => (
     <View style={styles.textInput}>
       <View style={styles.textInput}>
-        <Input
-          _stack={{ style: {} }}
-          {...inputProps}
-          style={[
-            inputProps.style,
-            {
-              backgroundColor: props.backgroundColor,
-            },
-          ]}
-          placeholderTextColor={props.placeholderTextColor}
-          variant="outline"
-          onFocus={onTextInputFocus}
-          onBlur={onTextInputBlur}
-        />
+        <Input className="w-full">
+          <InputField
+            {...inputProps}
+            style={[
+              inputProps.style,
+              {
+                backgroundColor: props.backgroundColor,
+              },
+            ]}
+            placeholderTextColor={props.placeholderTextColor}
+            variant="outline"
+            onFocus={onTextInputFocus}
+            onBlur={onTextInputBlur}
+          />
+        </Input>
         {props.country === 'gb' && postcode && (
           <PostCodeButton
             postcode={postcode.postcode}

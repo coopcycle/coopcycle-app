@@ -1,4 +1,5 @@
-import { HStack, Skeleton } from 'native-base';
+import { Skeleton } from '@/components/ui/skeleton';
+import { HStack } from '@/components/ui/hstack';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';

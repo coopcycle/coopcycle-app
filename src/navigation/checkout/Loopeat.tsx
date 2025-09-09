@@ -1,14 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
-import {
-  Box,
-  Button,
-  HStack,
-  Heading,
-  Switch,
-  Text,
-  VStack,
-} from 'native-base';
+import { Switch } from '@/components/ui/switch';
+import { Heading } from '@/components/ui/heading';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Linking } from 'react-native';
@@ -63,10 +61,10 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 
   return (
     <SafeAreaView flex={1} edges={['bottom']}>
-      <VStack flex={1} justifyContent="space-between">
+      <VStack flex={1} className="justify-between">
         {containersCount > 0 && (
-          <Box p="3" mb="3">
-            <Heading size="sm" mb="4">
+          <Box className="p-3 mb-3">
+            <Heading size="sm" className="mb-4">
               {t('CHECKOUT_LOOPEAT_RETURN_CONTAINERS')}
             </Heading>
             <FlatList
@@ -86,13 +84,11 @@ function Loopeat({ cart, updateLoopeatReturns }) {
 
                 return (
                   <HStack
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mb="2">
-                    <HStack alignItems="center">
+                    className="justify-space-between items-center mb-2">
+                    <HStack className="items-center">
                       <Switch
                         size="sm"
-                        isChecked={isSelected}
+                        value={isSelected}
                         onToggle={checked => {
                           const newReturns = checked
                             ? [...returns, item]
@@ -103,7 +99,7 @@ function Loopeat({ cart, updateLoopeatReturns }) {
                           setReturns(newReturns);
                         }}
                       />
-                      <Text ml="2">{`${getNameFromId(
+                      <Text className="ml-2">{`${getNameFromId(
                         item.format_id,
                         formats,
                       )} (${formatPrice(
@@ -145,8 +141,8 @@ function Loopeat({ cart, updateLoopeatReturns }) {
             />
           </Box>
         )}
-        <Box p="3">
-          <Heading size="sm" mb="4">
+        <Box className="p-3">
+          <Heading size="sm" className="mb-4">
             {t('CHECKOUT_LOOPEAT_WALLET_AMOUNT', {
               amount: formatPrice(creditsCountCents),
             })}
@@ -161,26 +157,26 @@ function Loopeat({ cart, updateLoopeatReturns }) {
                   '&show_deposit=true',
               )
             }>
-            {t('CHECKOUT_LOOPEAT_ADD_CREDITS')}
+            <ButtonText>{t('CHECKOUT_LOOPEAT_ADD_CREDITS')}</ButtonText>
           </Button>
         </Box>
-        <Box p="3">
-          <VStack mb="3">
-            <HStack justifyContent="space-between">
+        <Box className="p-3">
+          <VStack className="mb-3">
+            <HStack className="justify-between">
               <Text>{t('TOTAL')}</Text>
               <Text>{formatPrice(requiredAmount)}</Text>
             </HStack>
-            <HStack justifyContent="space-between">
+            <HStack className="justify-between">
               <Text>{t('CHECKOUT_LOOPEAT_WALLET')}</Text>
               <Text>{formatPrice(creditsCountCents)}</Text>
             </HStack>
-            <HStack justifyContent="space-between">
+            <HStack className="justify-between">
               <Text>{t('CHECKOUT_LOOPEAT_TOTAL_RETURNS')}</Text>
               <Text>{formatPrice(returnsTotalAmount)}</Text>
             </HStack>
           </VStack>
           {missingAmount > 0 && (
-            <Text textAlign="center" mb="2" color="red.500">
+            <Text className="mb-2 text-error-300">
               {t('CHECKOUT_LOOPEAT_MISSING_AMOUNT', {
                 amount: formatPrice(missingAmount),
               })}
@@ -191,7 +187,7 @@ function Loopeat({ cart, updateLoopeatReturns }) {
               updateLoopeatReturns(returns);
               navigation.navigate('CheckoutSummary');
             }}>
-            {t('CHECKOUT_LOOPEAT_VALIDATE')}
+            <ButtonText>{t('CHECKOUT_LOOPEAT_VALIDATE')}</ButtonText>
           </Button>
         </Box>
       </VStack>

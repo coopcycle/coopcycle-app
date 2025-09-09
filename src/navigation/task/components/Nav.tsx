@@ -1,10 +1,10 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import _ from 'lodash';
-import { Icon, Text } from 'native-base';
+import { Icon, ArrowLeftIcon, ArrowRightIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { navigateToTask } from '../../../navigation/utils';
 import TaskTitle from '../../../components/TaskTitle';
@@ -36,12 +36,12 @@ const NavButton = ({ disabled, left, right, onPress, t, task }) => {
         </Text>
       )}
       <Icon
-        as={FontAwesome}
-        name={right ? 'arrow-right' : 'arrow-left'}
+        as={right ? ArrowRightIcon : ArrowLeftIcon}
+        size="xl"
         style={iconStyle}
       />
       {!disabled && task && left && (
-        <Text style={{ marginLeft: 10, fontSize: 14 }}>
+        <Text className="ml-2">
           <TaskTitle task={task} />
         </Text>
       )}

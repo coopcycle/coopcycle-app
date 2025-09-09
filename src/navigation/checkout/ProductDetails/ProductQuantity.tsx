@@ -1,7 +1,7 @@
-import { Text, View } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Range from './Range';
 
 const styles = StyleSheet.create({

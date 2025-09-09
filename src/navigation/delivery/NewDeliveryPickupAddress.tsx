@@ -2,7 +2,14 @@ import { IconCircleArrowUpFilled } from '@tabler/icons-react-native';
 import { Formik } from 'formik';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { Checkbox, Text } from 'native-base';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from '@/components/ui/checkbox';
+import { CheckIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -201,7 +208,10 @@ function NewDeliveryPickupAddress({ navigation }) {
             <Checkbox
               value={customAddress}
               onChange={() => setCustomAddress(!customAddress)}>
-              <Text>{t('STORE_NEW_DELIVERY_PICKUP_USE_CUSTOM_ADDRESS')}</Text>
+              <CheckboxIndicator>
+                <CheckboxIcon as={CheckIcon} />
+              </CheckboxIndicator>
+              <CheckboxLabel>{t('STORE_NEW_DELIVERY_PICKUP_USE_CUSTOM_ADDRESS')}</CheckboxLabel>
             </Checkbox>
           </View>
           <View style={customAddress ? {} : styles.disabled}>

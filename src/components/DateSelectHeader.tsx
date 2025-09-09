@@ -1,8 +1,8 @@
 import moment from 'moment';
-import { Icon } from 'native-base';
+import { Icon, ArrowLeftIcon, ArrowRightIcon } from '@/components/ui/icon';
+import { Pressable } from '@/components/ui/pressable';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -56,10 +56,10 @@ let styles = StyleSheet.create({
   },
 });
 
-function Button({ iconName, onPress }) {
+function Button({ as, onPress }) {
   return (
     <TouchableOpacity block transparent onPress={onPress}>
-      <Icon as={Ionicons} name={iconName} style={styles.icon} />
+      <Icon as={as} style={styles.icon} />
     </TouchableOpacity>
   );
 }
@@ -94,7 +94,7 @@ export default function DateSelectHeader({ navigate }) {
     <View style={styles.container}>
       <View style={styles.dateHeader}>
         <View style={[styles.button, { width: '25%' }]}>
-          <Button iconName="arrow-back" onPress={onPastPress} />
+          <Button as={ArrowLeftIcon} onPress={onPastPress} />
         </View>
         <TouchableOpacity
           style={[styles.body, { width: '50%' }]}
@@ -104,19 +104,18 @@ export default function DateSelectHeader({ navigate }) {
           </Text>
         </TouchableOpacity>
         <View style={[styles.button, { width: '25%' }]}>
-          <Button iconName="arrow-forward" onPress={onFuturePress} />
+          <Button as={ArrowRightIcon} onPress={onFuturePress} />
         </View>
       </View>
       {isTodaySelected ? null : (
-        <View style={styles.todayContainer}>
+        <Pressable style={styles.todayContainer} onPress={() => {
+          onChangeDate(moment());
+        }}>
           <Text
-            style={styles.todayButton}
-            onPress={() => {
-              onChangeDate(moment());
-            }}>
+            style={styles.todayButton}>
             {t('GO_TO_TODAY')}
           </Text>
-        </View>
+        </Pressable>
       )}
     </View>
   );

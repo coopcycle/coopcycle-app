@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { IconMapPin } from '@tabler/icons-react-native';
 import i18next from 'i18next';
-import { Button, Image, Text } from 'native-base';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
+import { ScrollView, StyleSheet, View, Image } from 'react-native';
 import { RestaurantBadge } from '../../../components/RestaurantBadge';
 import { RestaurantTag } from '../../../components/RestaurantTag';
 import {
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     aspectRatio: '1',
     width: '100%',
+    resizeMode: "cover"
   },
   badgesScroll: {
     width: '100%',
@@ -186,7 +188,6 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
           <View style={styles.logoWrapperShadow}>
             <Image
               style={styles.logo}
-              resizeMode="cover"
               source={{ uri: restaurant.image }}
               alt="logo"
             />
@@ -215,7 +216,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
         <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
           <TimingBadge restaurant={restaurant} />
           <Button size="sm" variant="link" onPress={onInfo}>
-            {i18next.t('RESTAURANT_MORE_INFOS')}
+            <ButtonText>{i18next.t('RESTAURANT_MORE_INFOS')}</ButtonText>
           </Button>
         </View>
         <View style={styles.address}>

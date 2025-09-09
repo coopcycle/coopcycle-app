@@ -1,22 +1,23 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Image, ScrollView, View, TouchableOpacity } from 'react-native';
 import { withTranslation } from 'react-i18next';
 import {
-  Button,
-  VStack,
-  Text,
-  Skeleton,
-  ScrollView,
-  HStack,
-  IconButton,
-  Icon,
-  TextArea,
-  View,
-  Image,
   FormControl,
-  Stack,
-  Flex,
-} from 'native-base';
+  FormControlLabel,
+  FormControlError,
+  FormControlErrorText,
+  FormControlErrorIcon,
+  FormControlHelper,
+  FormControlHelperText,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { SkeletonText } from '@/components/ui/skeleton';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Icon } from '@/components/ui/icon';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
+import { VStack } from '@/components/ui/vstack';
+import { Camera as CameraIcon, CircleX } from 'lucide-react-native';
 import { connect } from 'react-redux';
 import { useQuery } from 'react-query';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -60,17 +61,17 @@ function BarcodeIncident({
     return data['hydra:member'].map((value, index) => (
       <Button
         key={index}
-        colorScheme="dark"
         size="lg"
+        className="mb-2"
         onPress={() => setFailureReason(value.code)}>
-        {value.description}
+        <ButtonText>{value.description}</ButtonText>
       </Button>
     ));
   }, [data, isSuccess]);
 
   if (isError) {
     return (
-      <Text p="4" color="red.500">
+      <Text className="p-4 text-error-500">
         Failure reasons are not available
       </Text>
     );
@@ -87,19 +88,11 @@ function BarcodeIncident({
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <CameraView ref={camera} style={{ flex: 1 }}>
-          <IconButton
-            my="2"
-            style={{ position: 'absolute', bottom: 0, width }}
-            icon={
-              <Icon
-                as={Ionicons}
-                color={'red.500'}
-                size="16"
-                name="disc-sharp"
-              />
-            }
-            onPress={_takePicture}
-          />
+          <View style={{ position: 'absolute', bottom: 0, width, alignItems: 'center' }}>
+            <Button size="lg" className="rounded-full p-3.5 w-1/4" onPress={_takePicture}>
+              <ButtonIcon as={CameraIcon} />
+            </Button>
+          </View>
         </CameraView>
       </View>
     );
@@ -111,9 +104,11 @@ function BarcodeIncident({
     return (
       <>
         <ScrollView>
-          <Stack p="4" space={2}>
+          <VStack className="p-4" space="md">
             <FormControl>
-              <FormControl.Label>{t('FAILURE_REASON')}</FormControl.Label>
+              <FormControlLabel>
+                <FormControlLabelText>{t('FAILURE_REASON')}</FormControlLabelText>
+              </FormControlLabel>
               <Button
                 variant="outline"
                 colorScheme="dark"
@@ -121,31 +116,37 @@ function BarcodeIncident({
                   setFailureReason(null);
                   setNotes(null);
                 }}>
-                {
-                  data['hydra:member'].find(
-                    r => r.code === selectedFailureReason,
-                  ).description
-                }
+                <ButtonText>
+                  {
+                    data['hydra:member'].find(
+                      r => r.code === selectedFailureReason,
+                    ).description
+                  }
+                </ButtonText>
               </Button>
             </FormControl>
             <FormControl>
-              <FormControl.Label>{t('NOTES')}</FormControl.Label>
-              <TextArea
-                _stack={{ style: {} }}
-                value={notes}
-                onChangeText={setNotes}
-              />
+              <FormControlLabel>
+                <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
+              </FormControlLabel>
+              <Textarea>
+                <TextareaInput
+                  value={notes}
+                  onChangeText={setNotes}
+                />
+              </Textarea>
             </FormControl>
             <FormControl>
-              <FormControl.Label>{t('PICTURES')}</FormControl.Label>
+              <FormControlLabel>
+                <FormControlLabelText>{t('PICTURES')}</FormControlLabelText>
+              </FormControlLabel>
               <Button
-                onPress={() => setEnableCamera(true)}
-                colorScheme="dark"
-                leftIcon={<Icon as={Ionicons} name="camera" />}>
-                {t('PHOTO_DISCLAIMER')}
+                onPress={() => setEnableCamera(true)}>
+                <ButtonIcon as={CameraIcon} />
+                <ButtonText>{t('PHOTO_DISCLAIMER')}</ButtonText>
               </Button>
             </FormControl>
-            <Flex direction="row" flexWrap="wrap" justifyContent="space-around">
+            <View style={{ flexDirection:"row", flexWrap: "wrap", justifyContent: "space-around" }}>
               {pictures.map((picture, index) => (
                 <View
                   key={index}
@@ -156,17 +157,15 @@ function BarcodeIncident({
                     source={{ uri: picture }}
                     alt="picture"
                   />
-                  <IconButton
-                    style={{ position: 'absolute', top: 5, right: 5 }}
-                    icon={<Icon as={Ionicons} name="close" />}
-                    onPress={() =>
+                  <TouchableOpacity style={{ position: 'absolute', top: 5, right: 5 }} onPress={() =>
                       setPictures(pictures.filter((_p, i) => i !== index))
-                    }
-                  />
+                    }>
+                    <Icon as={CircleX} size={ 40 } />
+                  </TouchableOpacity>
                 </View>
               ))}
-            </Flex>
-          </Stack>
+            </View>
+          </VStack>
         </ScrollView>
         <View p="4">
           <Button
@@ -176,7 +175,7 @@ function BarcodeIncident({
                 navigation.popToTop(),
               );
             }}>
-            {t('SUBMIT')}
+            <ButtonText>{t('SUBMIT')}</ButtonText>
           </Button>
         </View>
       </>
@@ -187,11 +186,11 @@ function BarcodeIncident({
   // PICKER MODE
   return (
     <ScrollView>
-      <Skeleton p="4" isLoaded={isSuccess}>
-        <VStack p="4" space={2}>
+      <SkeletonText className="h-3" _lines={8} isLoaded={isSuccess}>
+        <VStack className="p-4">
           {values}
         </VStack>
-      </Skeleton>
+      </SkeletonText>
     </ScrollView>
   );
   // END

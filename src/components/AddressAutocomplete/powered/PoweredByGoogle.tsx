@@ -1,17 +1,16 @@
-import { useColorMode } from 'native-base';
-import { Image, View } from 'react-native';
+import { Image, View, useColorScheme } from 'react-native';
 
 export default function PoweredByGoogle({ style }) {
-  const { colorMode } = useColorMode();
+  const colorScheme = useColorScheme();
   return (
     <View style={style}>
-      {colorMode !== 'dark' && (
+      {colorScheme !== 'dark' && (
         <Image
           resizeMode="contain"
           source={require('../../../../assets/images/powered_by_google_on_white.png')}
         />
       )}
-      {colorMode === 'dark' && (
+      {colorScheme === 'dark' && (
         <Image
           resizeMode="contain"
           source={require('../../../../assets/images/powered_by_google_on_non_white.png')}

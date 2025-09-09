@@ -1,8 +1,8 @@
-import { Icon, Text } from 'native-base';
+import { Icon, CloseIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { blueColor } from '../styles/common';
 
 const DangerAlert = props => {
@@ -23,7 +23,7 @@ const DangerAlert = props => {
         </Text>
         {props.onClose && (
           <TouchableOpacity onPress={() => props.onClose()}>
-            <Icon as={Ionicons} name="close" style={{ color: blueColor }} />
+            <Icon as={CloseIcon} style={{ color: blueColor }} />
           </TouchableOpacity>
         )}
       </View>

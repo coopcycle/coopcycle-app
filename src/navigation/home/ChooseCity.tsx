@@ -1,4 +1,8 @@
-import { Box, Button, Icon, Text } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
@@ -87,9 +91,9 @@ class ChooseCity extends Component {
               paddingVertical: 15,
             }}
             onPress={() => this.setState({ isModalVisible: true })}>
-            <Icon
-              as={FontAwesome5}
+            <FontAwesome5
               name="question-circle"
+              size={22}
               style={{ marginRight: 10, fontSize: 22, color: '#0074D9' }}
             />
             <Text note style={{ textAlign: 'center', color: '#0074D9' }}>
@@ -109,7 +113,7 @@ class ChooseCity extends Component {
               padding: 20,
             }}>
             <ModalContent>
-              <Box p="4">
+              <Box className="p-4">
                 <Text style={{ marginBottom: 20, fontSize: 14 }}>
                   {this.props.t('ABOUT_COOPCYCLE')}
                 </Text>
@@ -118,7 +122,7 @@ class ChooseCity extends Component {
                     <Icon as={FontAwesome5} name="envelope" size="sm" />
                   }
                   onPress={() => this.openEmail()}>
-                  {this.props.t('CONTACT_US')}
+                  <ButtonText>{this.props.t('CONTACT_US')}</ButtonText>
                 </Button>
               </Box>
             </ModalContent>

@@ -1,4 +1,5 @@
-import { Fab, Icon } from 'native-base';
+import { Check } from 'lucide-react-native'
+import { Fab, FabIcon } from '@/components/ui/fab';
 import React, { Component } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -35,32 +36,18 @@ class ItemsBulkFabButton extends Component {
     });
   }
 
-  renderIcon() {
-    const { iconName, onPressed } = this.props;
-
-    return (
-      <Icon
-        color={whiteColor}
-        as={FontAwesome}
-        name={iconName}
-        size="sm"
-        onPress={() => onPressed(this.state.items)}
-        testID="bulkAssignButton"
-      />
-    );
-  }
-
   render() {
     return (
       <>
         {this.state.items.length <= 1 ? null : (
           <Fab
-            renderInPortal={false}
-            shadow={2}
-            size="sm"
-            backgroundColor={greenColor}
-            icon={this.renderIcon()}
-          />
+            size="xl"
+            placement="bottom right"
+            className="bg-success-300"
+            onPress={() => this.props.onPressed(this.state.items)}
+            testID="bulkAssignButton">
+            <FabIcon as={Check} />
+          </Fab>
         )}
       </>
     );

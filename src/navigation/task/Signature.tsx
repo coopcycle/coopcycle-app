@@ -1,5 +1,7 @@
 import * as FileSystem from 'expo-file-system';
-import { Button, Text, VStack } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -62,8 +64,8 @@ class Signature extends Component {
   render() {
     return (
       <VStack flex={1}>
-        <VStack flex={1} p="2">
-          <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
+        <VStack flex={1} className="p-2">
+          <Text className="text-center mb-4">
             {this.props.t('SIGNATURE_DISCLAIMER')}
           </Text>
           <View style={styles.canvasContainer}>
@@ -79,12 +81,12 @@ class Signature extends Component {
             variant="outline"
             size="sm"
             onPress={this._clearCanvas.bind(this)}>
-            {this.props.t('SIGNATURE_CLEAR')}
+            <ButtonText>{this.props.t('SIGNATURE_CLEAR')}</ButtonText>
           </Button>
         </VStack>
-        <VStack p="2">
+        <VStack className="p-2">
           <Button size="lg" onPress={this._saveImage.bind(this)}>
-            {this.props.t('SIGNATURE_ADD')}
+            <ButtonText>{this.props.t('SIGNATURE_ADD')}</ButtonText>
           </Button>
         </VStack>
       </VStack>

@@ -1,4 +1,13 @@
-import { Button, Checkbox, Text, VStack } from 'native-base';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from '@/components/ui/checkbox';
+import { CheckIcon } from '@/components/ui/icon';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import Modal from 'react-native-modal';
@@ -38,16 +47,19 @@ class MultipleServersInSameCityModal extends Component {
           this.props.showMultipleServersInSameCityModal
         }>
         <ModalContent>
-          <VStack alignItems="center" justifyContent="center" space={4} p={2}>
-            <Text textAlign="center" fontSize="md">
+          <VStack className="items-center justify-center p-4" space="md">
+            <Text>
               {this.props.t('MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT')}
             </Text>
             <Checkbox onChange={this._onChange}>
-              <Text px={2} fontSize="sm">
-                {this.props.t('DO_NOT_SHOW_IT_AGAIN')}
-              </Text>
+              <CheckboxIndicator>
+                <CheckboxIcon as={CheckIcon} />
+              </CheckboxIndicator>
+              <CheckboxLabel>{this.props.t('DO_NOT_SHOW_IT_AGAIN')}</CheckboxLabel>
             </Checkbox>
-            <Button onPress={this._onClose}>{this.props.t('CLOSE')}</Button>
+            <Button onPress={this._onClose}>
+              <ButtonText>{this.props.t('CLOSE')}</ButtonText>
+            </Button>
           </VStack>
         </ModalContent>
       </Modal>

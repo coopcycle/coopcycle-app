@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Text, VStack, HStack, Box, Skeleton } from 'native-base';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
@@ -40,23 +43,23 @@ const Edenred = ({
 
     return (
       <HeaderHeightAwareKeyboardAvoidingView>
-        <VStack p="2" flex={1} justifyContent="space-between">
+        <VStack className="p-2 justify-between"flex={1} >
           <VStack>
-            <HStack justifyContent="space-between">
-              <Text fontSize="md">{t('TOTAL')}</Text>
-              <Text fontSize="md">{formatPrice(cart.total)}</Text>
+            <HStack className="justify-between">
+              <Text size="md">{t('TOTAL')}</Text>
+              <Text size="md">{formatPrice(cart.total)}</Text>
             </HStack>
-            <HStack justifyContent="space-between">
-              <Text fontSize="md" fontWeight="bold">
+            <HStack className="justify-between">
+              <Text size="md" fontWeight="bold">
                 {t('EDENRED_ELIGIBLE_AMOUNT')}
               </Text>
-              <Text fontSize="md" fontWeight="bold">
+              <Text size="md" fontWeight="bold">
                 {formatPrice(edenredPayment.amount)}
               </Text>
             </HStack>
-            <HStack justifyContent="space-between">
-              <Text fontSize="md">{t('EDENRED_COMPLEMENT')}</Text>
-              <Text fontSize="md">{formatPrice(cardPayment.amount)}</Text>
+            <HStack className="justify-between">
+              <Text size="md">{t('EDENRED_COMPLEMENT')}</Text>
+              <Text size="md">{formatPrice(cardPayment.amount)}</Text>
             </HStack>
           </VStack>
           <CreditCard
@@ -75,12 +78,12 @@ const Edenred = ({
   }
 
   return (
-    <VStack flex={1} p="2" justifyContent="space-between">
-      <Skeleton.Text />
-      <HStack p="3">
-        <Skeleton startColor="primary.300" />
-      </HStack>
-    </VStack>
+    <HeaderHeightAwareKeyboardAvoidingView>
+      <VStack flex={1} className="p-2 justify-between">
+        <SkeletonText className="h-2" _lines={3} />
+        <Skeleton className="h-10" />
+      </VStack>
+    </HeaderHeightAwareKeyboardAvoidingView>
   );
 };
 

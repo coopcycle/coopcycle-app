@@ -4,7 +4,9 @@ import {
   TransitionPresets,
   createStackNavigator,
 } from '@react-navigation/stack';
-import { Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { User, House, Search, ShoppingCart } from 'lucide-react-native';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -86,9 +88,11 @@ function Tabs({ rootNavigation: navigation }) {
       <Tab.Screen
         name="Home"
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon as={FontAwesome5} name="home" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) =>
+          {
+            return <Icon as={House} style={{ color }} />
+          }
+          ,
         }}
         component={screens.RestaurantsPage}
       />
@@ -96,7 +100,7 @@ function Tabs({ rootNavigation: navigation }) {
         name="Search"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon as={FontAwesome5} name="search" size={size} color={color} />
+            <Icon as={Search} style={{ color }} />
           ),
           title: i18n.t('SEARCH_TAB'),
         }}
@@ -107,12 +111,7 @@ function Tabs({ rootNavigation: navigation }) {
         options={{
           tabBarBadge: <CartsBadge />,
           tabBarIcon: ({ color, size }) => (
-            <Icon
-              as={FontAwesome5}
-              name="shopping-cart"
-              size={size}
-              color={color}
-            />
+            <Icon as={ShoppingCart} style={{ color }} />
           ),
           title: i18n.t('CART'),
         }}
@@ -122,7 +121,7 @@ function Tabs({ rootNavigation: navigation }) {
         name="Account"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon as={FontAwesome5} name="user-alt" size={size} color={color} />
+            <Icon as={User} style={{ color }} />
           ),
           title: i18n.t('MY_ACCOUNT'),
         }}

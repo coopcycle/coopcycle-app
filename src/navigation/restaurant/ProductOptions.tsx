@@ -1,5 +1,8 @@
 import _ from 'lodash';
-import { HStack, Heading, Switch, Text } from 'native-base';
+import { Switch } from '@/components/ui/switch';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { Heading } from '@/components/ui/heading';
 import React, { Component } from 'react';
 import { SectionList, View } from 'react-native';
 
@@ -12,7 +15,7 @@ import {
   loadProductOptions,
 } from '../../redux/Restaurant/actions';
 
-const SectionHeader = ({ section }) => <Heading p="3">{section.title}</Heading>;
+const SectionHeader = ({ section }) => <Heading className="p-3">{section.title}</Heading>;
 
 class ProductOptions extends Component {
   componentDidMount() {
@@ -25,10 +28,10 @@ class ProductOptions extends Component {
 
   _renderItem(productOptionValue) {
     return (
-      <HStack p="3" justifyContent="space-between">
+      <HStack className="p-3 justify-between">
         <Text>{productOptionValue.value}</Text>
         <Switch
-          isChecked={productOptionValue.enabled}
+          value={productOptionValue.enabled}
           onToggle={value =>
             this._toggleProductEnabled(productOptionValue, value)
           }

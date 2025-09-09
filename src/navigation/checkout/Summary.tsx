@@ -1,5 +1,11 @@
 import _ from 'lodash';
-import { Button, Center, HStack, Icon, Pressable, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Clock, MapPin, Heart, Tag, CirclePlus, CircleMinus, Trash, Info, SquareArrowOutUpRight } from 'lucide-react-native';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Center } from '@/components/ui/center';
+import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import {
@@ -14,13 +20,18 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect, useDispatch } from 'react-redux';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from '@/components/ui/checkbox';
+import { CheckIcon } from '@/components/ui/icon';
 
 import DropdownHolder from '../../DropdownHolder';
 import BottomModal from '../../components/BottomModal';
 import DangerAlert from '../../components/DangerAlert';
-import { default as SimpleCheckbox } from '../../components/Checkbox';
 import {
   checkTimeRange,
   decrementItem,
@@ -133,7 +144,7 @@ function Item({ item, index, translateXValue }) {
               alignItems: 'center',
             }}
             onPress={() => dispatch(incrementItem(item))}>
-            <Icon as={FontAwesome} name="plus-circle" size="sm" />
+            <Icon as={CirclePlus} size="md" />
           </Pressable>
           <Pressable
             disabled={item.quantity <= 1}
@@ -144,9 +155,8 @@ function Item({ item, index, translateXValue }) {
             }}
             onPress={() => dispatch(decrementItem(item))}>
             <Icon
-              as={FontAwesome}
-              name="minus-circle"
-              size="sm"
+              as={CircleMinus}
+              size="md"
               style={{ opacity: item.quantity <= 1 ? 0.5 : 1 }}
             />
           </Pressable>
@@ -158,7 +168,7 @@ function Item({ item, index, translateXValue }) {
             alignItems: 'center',
           }}
           onPress={() => dispatch(removeItem(item))}>
-          <Icon as={FontAwesome} name="trash-o" size="sm" />
+          <Icon as={Trash} size="md" />
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -169,7 +179,7 @@ function ActionButton({
   testID,
   isLoading,
   onPress,
-  iconName,
+  icon,
   iconColor,
   children,
 }) {
@@ -181,16 +191,14 @@ function ActionButton({
       style={styles.btnGrey}
       // Disable interaction while loading
       onPress={() => !isLoading && onPress()}>
-      <HStack p="3" justifyContent="space-between" alignItems="center">
+      <HStack className="p-3 justify-between items-center">
         <Icon
-          as={FontAwesome}
-          name={iconName}
-          mr="2"
-          size="sm"
-          flexGrow={1}
+          as={icon}
+          size="xl"
+          className="mr-2"
           {...iconProps}
         />
-        <HStack flex={10}>{children}</HStack>
+        <HStack flex={10}  className="ml-2 justify-between items-center">{children}</HStack>
       </HStack>
     </Pressable>
   );
@@ -262,8 +270,8 @@ function CollectionDisclaimerModal({ isVisible, onSwipeComplete, restaurant }) {
               telephone: restaurant.telephone,
             })}
           </Text>
-          <Button style={{ marginTop: 20 }} onPress={onSwipeComplete}>
-            {t('CLOSE')}
+          <Button className="mt-4" onPress={onSwipeComplete}>
+            <ButtonText>{t('CLOSE')}</ButtonText>
           </Button>
         </View>
       </View>
@@ -442,7 +450,7 @@ class Summary extends Component {
               onPress={() =>
                 this.setState({ isCollectionDisclaimerModalVisible: true })
               }
-              iconName="info-circle"
+              icon={Info}
               iconColor="primary.500">
               <Text style={{ flex: 2 }} color="primary.500" fontSize="sm">
                 {this.props.t('FULFILLMENT_METHOD.collection')}
@@ -455,7 +463,7 @@ class Summary extends Component {
           <ActionButton
             testID="shippingTimeRangeButton"
             onPress={() => this.props.showTimingModal(true)}
-            iconName="clock-o">
+            icon={Clock}>
             <Text style={{ flex: 2 }} fontSize="sm">
               {this.props.timeAsText}
             </Text>
@@ -472,7 +480,7 @@ class Summary extends Component {
                     cart,
                   })
                 }
-                iconName="map-marker">
+                icon={MapPin}>
                 <Text
                   numberOfLines={2}
                   ellipsizeMode="tail"
@@ -489,7 +497,7 @@ class Summary extends Component {
             <View flex={1} style={styles.rightBorder}>
               <ActionButton
                 onPress={() => this.setState({ showTipModal: true })}
-                iconName="heart">
+                icon={Heart}>
                 <Text style={{ flex: 2 }} fontSize="sm">
                   {this.props.t('TIP')}:{' '}
                   {formatPrice(tipAmount, { mantissa: 0 })}
@@ -499,7 +507,7 @@ class Summary extends Component {
             <View flex={1}>
               <ActionButton
                 onPress={() => this.setState({ isCouponModalVisible: true })}
-                iconName="tag">
+                icon={Tag}>
                 <Text style={{ flex: 1, textAlign: 'right' }}>
                   {this.props.t('ADD_COUPON')}
                 </Text>
@@ -508,16 +516,19 @@ class Summary extends Component {
           </HStack>
           {reusablePackagingAction && (
             <HStack
-              p="3"
+              className="p-3"
               justifyContent="space-between"
               alignItems="center"
               style={styles.btnGrey}>
-              <SimpleCheckbox
+              <Checkbox
                 testID="reusablePackagingCheckbox"
                 isChecked={cart.reusablePackagingEnabled}
-                onPress={() => this.toggleReusablePackaging()}
-                accessibilityLabel={reusablePackagingAction.description}
-              />
+                onChange={() => this.toggleReusablePackaging()}
+                accessibilityLabel={reusablePackagingAction.description}>
+                <CheckboxIndicator>
+                  <CheckboxIcon as={CheckIcon} />
+                </CheckboxIndicator>
+              </Checkbox>
               <Text>{reusablePackagingAction.description}</Text>
             </HStack>
           )}
@@ -528,7 +539,7 @@ class Summary extends Component {
                 onPress={() =>
                   Linking.openURL(reusablePackagingAction.loopeatOAuthUrl)
                 }
-                iconName="external-link">
+                icon={SquareArrowOutUpRight}>
                 <Text style={{ flex: 1, textAlign: 'right' }}>
                   {this.props.t('CHECKOUT_LOOPEAT_CONNECT_ACCOUNT', {
                     name: cart.loopeatContext?.name,
