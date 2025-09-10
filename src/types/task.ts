@@ -73,6 +73,8 @@ export interface TaskMetadata {
   zero_waste?: boolean;
   payment_method?: string;
   order_distance?: string;
+  order_duration?: string;
+  polyline?: string; 
 }
 
 /**

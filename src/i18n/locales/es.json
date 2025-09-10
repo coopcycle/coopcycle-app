@@ -470,6 +470,7 @@
     "ORDER_VALUE": "Valor",
     "ORDER_DISTANCE": "Distancia",
     "TOTAL_AMOUNT": "Cantidad total",
+    "ESTIMATED_DURATION": "Tiempo estimado",
     "PICKUP": "Recogida",
     "DROPOFF": "Entrega"
   }

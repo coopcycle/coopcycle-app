@@ -2,7 +2,7 @@ import React from 'react';
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import TaskMarker from '../../../components/TaskMarker';
-import { getRegionForTasks } from './mapUtils';
+import { getCoordinates, getRegionForTasks } from './mapUtils';
 import Task from '../../../types/task';
 import Tasks from '../../../types/tasks';
 
@@ -31,7 +31,8 @@ const MiniMap: React.FC<MiniMapProps> = ({
   const renderPolyline = () => {
     const firstTask = tasks[0];
     const key = `polyline-${firstTask.id}`;
-    const coords = tasks.map(t => t.address.geo);
+    const coords = getCoordinates(tasks);
+
     return (
       <Polyline
         key={key}
@@ -39,7 +40,7 @@ const MiniMap: React.FC<MiniMapProps> = ({
         coordinates={coords}
         strokeWidth={3}
         strokeColor={firstTask.color}
-        lineDashPattern={!firstTask.isAssigned ? [20, 10] : null}
+        lineDashPattern={!firstTask.isAssigned ? [20, 10] : undefined}
       />
     );
   };

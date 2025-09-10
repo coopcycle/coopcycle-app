@@ -114,3 +114,44 @@ export function getTaskTitleForOrder(task: Task, t: TFunction): string {
   }
   return addressData.length > 0 ? addressData.join(' - ') : getFallbackTitle();
 }
+
+export function formatDistance(
+  meters: string | null | undefined,
+  options?: {
+    decimals?: number;
+    locale?: string;
+    unitSuffix?: string;
+    trimTrailingZeros?: boolean;
+  }
+): string {
+  const { decimals = 2, locale = 'en-US', unitSuffix = 'km', trimTrailingZeros = true } = options ?? {};
+  const value = meters ? parseFloat(meters) : NaN;
+  if (Number.isNaN(value) || value <= 0) {
+    return '';
+  }
+
+  const km = value / 1000;
+  const safeDecimals = Math.max(0, Math.floor(Number(decimals) || 0));
+  const formatter = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: trimTrailingZeros ? 0 : safeDecimals,
+    maximumFractionDigits: safeDecimals,
+  });
+
+  return `${formatter.format(km)}${unitSuffix}`;
+}
+
+export function formatDuration(duration: string | null | undefined): string {
+  const totalSeconds = duration ? parseInt(duration, 10) : NaN;
+  if (Number.isNaN(totalSeconds) || totalSeconds <= 0) {
+    return '';
+  }
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+
+  if (hours === 0) {
+    return `${minutes}m`;
+  }
+
+  return `${hours}h ${minutes}m`;
+}

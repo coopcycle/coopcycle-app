@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
@@ -14,6 +14,7 @@ import OrderAccordeon from './components/OrderAccordeon';
 import OrderDetail from './components/OrderDetail';
 import { RouteType } from './types';
 import { Box } from '@/components/ui/box';
+import { useGetTaskContextQuery } from '@/src/redux/api/slice';
 
 const Order = ({ route }: { route: RouteType }) => {
   const [mapDimensions, setMapDimensions] = useState({ height: 0, width: 0 });
@@ -35,31 +36,58 @@ const Order = ({ route }: { route: RouteType }) => {
     }
     return orderTasks;
   }, [orderTasks, isFromCourier]);
+  
+  const firstTaskId = tasks[0].id;
+  const {data, isLoading, isFetching} = useGetTaskContextQuery(firstTaskId, {skip: !firstTaskId});
+  
+  const tasksWithContext = useMemo(() => {
+    if(!data?.delivery) return tasks;
+    
+    const { distance, duration, polyline } = data.delivery;
 
+    return tasks.map(task => ({
+      ...task,
+      metadata: {
+        ...task.metadata,
+        order_distance: distance, 
+        order_duration: duration,
+        polyline
+      }
+    }))
+  }, [tasks, data]);
+  
   const handleLayout = e => {
     const { width, height } = e.nativeEvent.layout;
     setMapDimensions({ height, width });
   };
 
+  if (isLoading || isFetching) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator animating={true} size="large" />
+      </View>
+    );
+  }
+
   return (
     <View>
       <View style={{ height: '35%' }} onLayout={handleLayout}>
         <TaskMiniMap
-          tasks={tasks}
+          tasks={tasksWithContext}
           aspectRatio={aspectRatio}
           onLayout={handleLayout}
         />
       </View>
       <FlatList
         style={{ height: '65%' }}
-        data={tasks}
+        data={tasksWithContext}
         keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({ item }) => (
           <Box style={{ paddingHorizontal: 12 }}>
             <OrderAccordeon task={item as Task} />
           </Box>
         )}
-        ListHeaderComponent={<OrderDetail tasks={tasks} />}
+        ListHeaderComponent={<OrderDetail tasks={tasksWithContext} />}
       />
     </View>
   );
