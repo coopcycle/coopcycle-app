@@ -1,6 +1,7 @@
 import { Badge, BadgeText, BadgeIcon } from '@/components/ui/badge';
 import { VStack } from '@/components/ui/vstack';
 import { Icon } from '@/components/ui/icon';
+import { HStack } from '@/components/ui/hstack';
 import { Map, List, ListFilter } from 'lucide-react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,10 +16,6 @@ import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { selectKeywordFilters } from '../../redux/Dispatch/selectors';
-import {
-  useBackgroundContainerColor,
-  useBaseTextColor,
-} from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
 import i18n from '../../i18n';
@@ -32,8 +29,6 @@ import TaskNavigator from './TaskNavigator';
 const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
-  const color = useBaseTextColor();
-  const bgColor = useBackgroundContainerColor();
   const keywordFilters = useSelector(selectKeywordFilters);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -57,11 +52,8 @@ function CustomTabBar({ navigation }) {
   };
 
   return (
-    <View
-      style={[
-        customTabBarStyles.tabBarContainer,
-        { backgroundColor: bgColor },
-      ]}>
+    <HStack
+      className="items-center justify-between p-4 bg-background-50">
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={showMapButton ? goToTasksMap : goToTasksList}
@@ -69,7 +61,6 @@ function CustomTabBar({ navigation }) {
         <Icon
           as={showMapButton ? Map : List}
           size="xl"
-          style={{ color }}
         />
       </TouchableOpacity>
       <SearchInput
@@ -90,22 +81,14 @@ function CustomTabBar({ navigation }) {
               variant="solid">
             </Badge>
           )}
-          <Icon as={ListFilter} size="xl" style={{ color }} />
+          <Icon as={ListFilter} size="xl" />
         </VStack>
       </TouchableOpacity>
-    </View>
+    </HStack>
   );
 }
 
 const customTabBarStyles = StyleSheet.create({
-  tabBarContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
   tabButton: {
     padding: 10,
   },
