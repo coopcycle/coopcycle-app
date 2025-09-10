@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import { IconMapPin } from '@tabler/icons-react-native';
 import i18next from 'i18next';
+import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
 import { ScrollView, StyleSheet, View, Image } from 'react-native';
 import { RestaurantBadge } from '../../../components/RestaurantBadge';
 import { RestaurantTag } from '../../../components/RestaurantTag';
 import {
-  useBackgroundContainerColor,
   useBaseTextColor,
   useSecondaryTextColor,
 } from '../../../styles/theme';
@@ -159,7 +159,6 @@ function BannerOverlay({ isOrderingAvailable, showPreOrder }) {
 }
 
 function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
-  const backgroundColor = useBackgroundContainerColor();
   const stroke = useBaseTextColor();
   const textSecondary = useSecondaryTextColor();
 
@@ -177,14 +176,14 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
   );
 
   return (
-    <View style={([styles.profile], { backgroundColor })}>
+    <Box className="bg-background-50" style={ styles.profile }>
       <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
       <BannerOverlay
         isOrderingAvailable={isOrderingAvailable}
         showPreOrder={showPreOrder}
       />
       <View style={styles.detailsWrapper}>
-        <View style={[styles.logoWrapper, { backgroundColor }]}>
+        <Box className="bg-background-50" style={ styles.logoWrapper }>
           <View style={styles.logoWrapperShadow}>
             <Image
               style={styles.logo}
@@ -192,7 +191,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
               alt="logo"
             />
           </View>
-        </View>
+        </Box>
         {restaurant?.badges?.length >= 1 ? (
           <ScrollView
             style={styles.badgesScroll}
@@ -238,7 +237,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
           </View>
         ) : null}
       </View>
-    </View>
+    </Box>
   );
 }
 

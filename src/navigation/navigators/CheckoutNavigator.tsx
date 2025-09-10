@@ -19,7 +19,6 @@ import {
 } from '../../redux/App/selectors';
 import store from '../../redux/store';
 import {
-  useBackgroundContainerColor,
   useBaseTextColor,
   usePrimaryColor,
 } from '../../styles/theme';
@@ -293,7 +292,6 @@ const SubmitOrderNavigator = () => {
 const RootStack = createStackNavigator();
 
 const DefaultNav = () => {
-  const backgroundColor = useBackgroundContainerColor();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
   });
@@ -314,9 +312,6 @@ const DefaultNav = () => {
           const productName = route.params?.product.name || '';
           return {
             title: productName,
-            headerStyle: {
-              backgroundColor,
-            },
           };
         }}
       />
