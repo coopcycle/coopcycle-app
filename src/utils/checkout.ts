@@ -111,3 +111,55 @@ export function shouldShowPreOrder(restaurant) {
 
   return duration.asHours() > 0.75;
 }
+
+export function orderToStep(order) {
+  const eventType = [
+    'order:created',
+    'order:accepted',
+    'order:picked',
+    'order:refused',
+    'order:cancelled',
+    'order:fulfilled',
+  ];
+
+  let index = 0;
+  let error = 0;
+  let legacy = false;
+  let events = [];
+
+  // TODO: Remove legacy if all servers are >= coopcycle/coopcycle-web#f4031d3
+  if (Object.prototype.hasOwnProperty.call(order, 'events')) {
+    events = order.events
+      .filter(event => eventType.includes(event.type))
+      .sort((a, b) => {
+        return eventType.indexOf(a.type) - eventType.indexOf(b.type);
+      });
+  } else {
+    events = [{ type: 'order:' + order.state }];
+    legacy = true;
+  }
+
+  events.forEach(event => {
+    switch (event.type) {
+      case 'order:accepted':
+        index = 1;
+        break;
+      case 'order:picked':
+        index = 2;
+        break;
+      case 'order:fulfilled':
+        index = 3;
+        break;
+      case 'order:refused':
+        index = 1;
+        error = 1;
+        break;
+      case 'order:cancelled':
+        index = 2;
+        error = 2;
+        break;
+    }
+  });
+
+  return { index, error, legacy };
+}
