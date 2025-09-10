@@ -26,7 +26,6 @@ import { localeDetector } from '../i18n';
 import {
   useBackgroundContainerColor,
   useBaseTextColor,
-  useColorModeToken,
   usePrimaryColor,
 } from '../styles/theme';
 import AddressUtils from '../utils/Address';
@@ -376,7 +375,6 @@ function AddressAutocomplete({
                 backgroundColor: props.backgroundColor,
               },
             ]}
-            placeholderTextColor={props.placeholderTextColor}
             variant="outline"
             onFocus={onTextInputFocus}
             onBlur={onTextInputBlur}
@@ -514,7 +512,6 @@ function mapStateToProps(state) {
 function withHooks(ClassComponent) {
   return function CompWithHook(props) {
     const baseTextColor = useBaseTextColor();
-    const placeholderTextColor = useColorModeToken('text.400', 'text.400');
 
     const itemTextColor = useColorModeValue('#856404', baseTextColor);
 
@@ -525,7 +522,6 @@ function withHooks(ClassComponent) {
       <ClassComponent
         {...props}
         baseTextColor={baseTextColor}
-        placeholderTextColor={placeholderTextColor}
         backgroundColor={backgroundColor}
         itemTextColor={itemTextColor}
         primaryColor={primaryColor}
