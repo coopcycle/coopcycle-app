@@ -2,10 +2,11 @@ import { useColorModeValue } from '../styles/theme';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
+import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useBackgroundContainerColor, usePrimaryColor } from '../styles/theme';
+import { usePrimaryColor } from '../styles/theme';
 
 const styles = StyleSheet.create({
   sectionMenu: {
@@ -23,8 +24,6 @@ const styles = StyleSheet.create({
 
 const ItemSkeleton = () => {
 
-  const backgroundColor = useBackgroundContainerColor();
-
   return (
     <HStack
       style={[
@@ -33,11 +32,10 @@ const ItemSkeleton = () => {
           marginHorizontal: 16,
           borderRadius: 16,
           overflow: 'hidden',
-        },
-        { backgroundColor: backgroundColor },
+        }
       ]}
       space="lg"
-      className="p-4">
+      className="p-4 bg-background-50">
       <Skeleton flex={1} variant="sharp" className="h-[100px]" />
       <VStack flex={3} space="md">
         <SkeletonText className="h-2" _lines={3} />
@@ -59,7 +57,6 @@ const RestaurantMenuHeader = ({
 }) => {
   const [active, setActive] = useState(0);
   const ref = useRef(null);
-  const backgroundColor = useBackgroundContainerColor();
   const inactiveText = useColorModeValue('gray', 'rgba(255,255,255,.5)');
   const inactiveBorderBottomColor = useColorModeValue(
     'lightgray',
@@ -125,7 +122,7 @@ const RestaurantMenuHeader = ({
     <>
       {isLoading && (
         <>
-          <HStack className="w-full p-4 mb-4 justify-between" space="lg" style={{ backgroundColor }}>
+          <HStack className="w-full p-4 mb-4 justify-between bg-background-50" space="lg">
             <SkeletonText className="h-3 w-1/4" />
             <SkeletonText className="h-3 w-1/4" />
             <SkeletonText className="h-3 w-1/4" />
@@ -139,15 +136,17 @@ const RestaurantMenuHeader = ({
           <ItemSkeleton />
         </>
       )}
-      <FlatList
-        ref={ref}
-        horizontal
-        style={([styles.sectionMenu], { backgroundColor })}
-        data={sections}
-        keyExtractor={(item, index) => index.toString()}
-        showsHorizontalScrollIndicator={false}
-        renderItem={Item}
-      />
+      <Box className="bg-background-50">
+        <FlatList
+          ref={ref}
+          horizontal
+          style={ styles.sectionMenu }
+          data={sections}
+          keyExtractor={(item, index) => index.toString()}
+          showsHorizontalScrollIndicator={false}
+          renderItem={Item}
+        />
+      </Box>
     </>
   );
 };

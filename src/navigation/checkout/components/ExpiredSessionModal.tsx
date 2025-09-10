@@ -8,7 +8,6 @@ import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 
-import { useBackgroundContainerColor } from '../styles/theme';
 import { hideExpiredSessionModal } from '../../../redux/Checkout/actions';
 
 const ExpiredSessionModal = ({ isVisible, onModalHide, hideExpiredSessionModal }) => {
@@ -19,9 +18,9 @@ const ExpiredSessionModal = ({ isVisible, onModalHide, hideExpiredSessionModal }
     <Modal
       isVisible={isVisible}
       onModalHide={onModalHide}>
-      <Box style={styles.modalContent}>
-        <Box className="p-4 bg-error-100 mb-3">
-          <Text className="text-error-700" style={{ textAlign: 'center' }}>
+      <Box className="bg-background-50 p-4">
+        <Box className="p-4 bg-error-800 mb-4">
+          <Text className="text-error-100 text-center">
             {t('SESSION_EXPIRED')}
           </Text>
         </Box>
@@ -44,10 +43,6 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#a94442',
     marginBottom: 10,
-  },
-  modalContent: {
-    backgroundColor: '#ffffff',
-    padding: 15,
   },
 });
 

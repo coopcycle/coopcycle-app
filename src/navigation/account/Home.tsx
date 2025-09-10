@@ -11,8 +11,6 @@ import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 
-import { useBackgroundContainerColor } from '../../styles/theme';
-
 import ItemSeparator from '../../components/ItemSeparator';
 import { deleteUser } from '../../redux/Account/actions';
 import { logout } from '../../redux/App/actions';
@@ -28,19 +26,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const DeleteAccountModal = ({ onConfirm }) => {
 
   const { t } = useTranslation();
-  const backgroundColor = useBackgroundContainerColor();
 
   return (
-    <View style={{ backgroundColor }}>
-      <Box className="p-5">
-        <Text className="mb-4">{t('DELETE_ACCOUNT_DISCLAIMER')}</Text>
-        <Button
-          action="negative"
-          onPress={onConfirm}>
-          <ButtonText>{t('DELETE_ACCOUNT')}</ButtonText>
-        </Button>
-      </Box>
-    </View>
+    <Box className="p-5 bg-background-50">
+      <Text className="mb-4">{t('DELETE_ACCOUNT_DISCLAIMER')}</Text>
+      <Button
+        action="negative"
+        onPress={onConfirm}>
+        <ButtonText>{t('DELETE_ACCOUNT')}</ButtonText>
+      </Button>
+    </Box>
   )
 }
 
