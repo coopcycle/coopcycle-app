@@ -12,8 +12,6 @@ import {
 import { SwipeRow } from 'react-native-swipe-list-view';
 import { Recycle } from 'lucide-react-native';
 import { useSelector } from 'react-redux';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { forwardRef, useEffect, useRef } from 'react';
