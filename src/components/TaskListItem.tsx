@@ -21,7 +21,7 @@ import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
-import { getTaskTitle } from '../shared/src/utils';
+import { getDropoffPosition, getTaskTitle } from '../shared/src/utils';
 import { blackColor, greyColor, redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
@@ -31,6 +31,8 @@ import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { useTranslation } from 'react-i18next';
+import { selectTasksByOrder } from '../redux/logistics/selectors';
+import { getOrderId } from '../utils/tasks';
 
 const cardBorderRadius = 2.5;
 
@@ -194,6 +196,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     const prevShouldSwipeLeftRef = useRef<boolean>();
     const prevShouldSwipeRightRef = useRef<boolean>();
 
+    const orderTasks = useSelector(selectTasksByOrder(getOrderId(task)));
+
     useEffect(() => {
       if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
         swipeRow.current?.manuallySwipeRow?.(buttonWidth);
@@ -313,9 +317,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
                 </Text>
 
                 {isPickup ? (
-                  <Text>Calcultate arrows</Text>
+                  <Text>Calculate arrows</Text>
                 ) : (
-                  <Text>{taskDropoffTitle}</Text>
+                  <Text>{`${getDropoffPosition(task, orderTasks)} ${taskDropoffTitle}`}</Text>
                 )}
 
                 {address && (
