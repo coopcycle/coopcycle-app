@@ -4,15 +4,20 @@ import { ItemTouchable } from './ItemTouchable';
 import { getOrderIdWithPosition } from '../utils/tasks';
 import { formatPrice } from '../utils/formatting';
 import CoopcycleLogo from '../../assets/images/logo.svg';
-import {
-  blackColor,
-  lightGreyColor,
-  whiteColor
-} from '../styles/common';
+import { blackColor, lightGreyColor, whiteColor } from '../styles/common';
 import { Task } from '../types/Task';
 import { useCourier } from '../navigation/courier/contexts/CourierContext';
+import TaskTypeIcon from './TaskTypeIcon';
+import { VStack } from '@/components/ui/vstack';
 
-export const OrderInfo = ({ task, color, width, onPress }) => {
+interface IOrderInfoProps {
+  task: Task;
+  color: string;
+  width: number;
+  onPress: () => void;
+}
+
+export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
   const cardBorderRadius = 2.5;
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
@@ -21,9 +26,11 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
   const context = useCourier();
   const isFromCourier = context && context.isFromCourier;
 
-  const shouldDisplayPrice = (task: Task) : boolean => {
-    return isFromCourier ? task.metadata?.order_total && task.metadata.payment_method === 'CASH' : task.metadata?.order_total;
-  }
+  const shouldDisplayPrice = (task: Task): boolean => {
+    return isFromCourier
+      ? task.metadata?.order_total && task.metadata.payment_method === 'CASH'
+      : task.metadata?.order_total;
+  };
 
   return (
     <ItemTouchable
@@ -33,33 +40,37 @@ export const OrderInfo = ({ task, color, width, onPress }) => {
         backgroundColor,
         borderBottomLeftRadius: cardBorderRadius,
         borderTopLeftRadius: cardBorderRadius,
-        gap: 12,
         height: '100%',
         justifyContent: 'center',
         width,
+        gap: 4,
       }}>
       {!_.isEmpty(orderId) ? (
         <>
-          <Text
-            style={{
-              color: textColor,
-              fontSize: 24,
-              fontWeight: 700,
-              lineHeight: 24,
-            }}>
-            {orderId}
-          </Text>
-          {shouldDisplayPrice(task) ? (
+          <TaskTypeIcon task={task} size="lg" color="light" />
+          <VStack>
             <Text
               style={{
                 color: textColor,
-                fontSize: 15,
+                fontSize: 16,
                 fontWeight: 700,
-                lineHeight: 15,
+                textAlign: 'center',
               }}>
-              {formatPrice(task.metadata.order_total)}
+              {orderId}
             </Text>
-          ) : null}
+            {shouldDisplayPrice(task) ? (
+              <Text
+                style={{
+                  color: textColor,
+                  fontSize: 12,
+                  lineHeight: 12,
+                  fontWeight: 700,
+                  textAlign: 'center',
+                }}>
+                {formatPrice(task.metadata.order_total)}
+              </Text>
+            ) : null}
+          </VStack>
         </>
       ) : (
         <CoopcycleLogo width={width * 0.5} height={width * 0.5} />
