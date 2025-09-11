@@ -1,4 +1,4 @@
-import { Icon } from '@/components/ui/icon';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
 import { Box } from '@/components/ui/box';
 import { Heading } from '@/components/ui/heading';
 import { HStack } from '@/components/ui/hstack';
@@ -7,7 +7,6 @@ import { Switch } from '@/components/ui/switch';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { SectionList, TouchableOpacity } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
 import { Tag, Volume, Route, Signature, Power } from 'lucide-react-native'
@@ -44,7 +43,7 @@ const SettingsItemInner = ({ item }) => (
     {!item.onPress && (
       <Switch onToggle={item.onToggle} value={item.isChecked} />
     )}
-    {item.onPress && <Icon size="sm" as={FontAwesome} name="arrow-right" />}
+    {item.onPress && <Icon as={ArrowRightIcon} />}
   </HStack>
 );
 
