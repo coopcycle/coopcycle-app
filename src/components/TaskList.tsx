@@ -129,10 +129,8 @@ TaskList.propTypes = {
   onOrderClick: PropTypes.func.isRequired,
   swipeOutLeftBackgroundColor: PropTypes.string,
   swipeOutLeftEnabled: PropTypes.func,
-  swipeOutLeftIcon: PropTypes.string,
   swipeOutRightBackgroundColor: PropTypes.string,
   swipeOutRightEnabled: PropTypes.func,
-  swipeOutRightIcon: PropTypes.string,
   tasks: PropTypes.array.isRequired,
 };
 
