@@ -31,6 +31,7 @@ function BulkEditTasksFloatingButton({ onPress }) {
           size="xl"
           placement="bottom right"
           onPress={handleOnPress}
+          testID="bulkAssignButton"
         >
           <FabIcon as={User} />
         </Fab>
