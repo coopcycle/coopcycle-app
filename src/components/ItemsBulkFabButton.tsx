@@ -1,6 +1,7 @@
 import { Check } from 'lucide-react-native'
 import { Fab, FabIcon } from '@/components/ui/fab';
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { greenColor, whiteColor } from '../styles/common';
@@ -40,14 +41,16 @@ class ItemsBulkFabButton extends Component {
     return (
       <>
         {this.state.items.length <= 1 ? null : (
-          <Fab
-            size="xl"
-            placement="bottom right"
-            className="bg-success-300"
-            onPress={() => this.props.onPressed(this.state.items)}
-            testID="bulkAssignButton">
-            <FabIcon as={Check} />
-          </Fab>
+          <View testID="bulkAssignButton">
+            <Fab
+              size="xl"
+              placement="bottom right"
+              className="bg-success-300"
+              onPress={() => this.props.onPressed(this.state.items)}
+              >
+              <FabIcon as={Check} />
+            </Fab>
+          </View>
         )}
       </>
     );
