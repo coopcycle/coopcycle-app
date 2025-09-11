@@ -1,40 +1,36 @@
 import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
-import { VStack } from '@/components/ui/vstack';
-import { Badge, BadgeText } from '@/components/ui/badge';
 import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { Recycle } from 'lucide-react-native';
+import moment from 'moment';
+import React, { forwardRef, useEffect, useRef } from 'react';
 import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  TouchableOpacityProps,
   View,
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
-import { Recycle } from 'lucide-react-native';
 import { useSelector } from 'react-redux';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import React, { forwardRef, useEffect, useRef } from 'react';
+import { Task, TaskListItemProps } from '../types/task';
 
-import {
-  redColor,
-  whiteColor,
-  yellowColor,
-} from '../styles/common';
-import {
-  CommentsIcon,
-  IncidentIcon,
-} from '../navigation/task/styles/common';
-import { minutes } from '../utils/dates';
-import { PaymentMethodInList } from './PaymentMethodInfo';
+import { CommentsIcon, IncidentIcon } from '../navigation/task/styles/common';
 import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
 import { getTaskTitle } from '../shared/src/utils';
+import { blackColor, greyColor, redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
-import { TaskStatusIcon, TaskTypeIcon } from './TaskStatusIcon';
+import { PaymentMethodInList } from './PaymentMethodInfo';
+import { TaskPriorityStatus } from './TaskPriorityStatus';
+import { TaskStatusIcon } from './TaskStatusIcon';
+import TaskTagsList from './TaskTagsList';
+import { getTaskTitleForOrder } from '../navigation/order/utils';
+import { useTranslation } from 'react-i18next';
 
 const cardBorderRadius = 2.5;
 
@@ -45,8 +41,12 @@ export const styles = StyleSheet.create({
   textBold: {
     fontSize: 14,
     fontWeight: 700,
-    marginLeft: -8,
     overflow: 'hidden',
+  },
+  titleText: {
+    fontSize: 16,
+    fontWeight: 700,
+    textTransform: 'uppercase',
   },
   textDanger: {
     color: redColor,
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     borderColor: yellowColor,
   },
   icon: {
-    marginRight: 12
+    marginRight: 12,
   },
   iconDanger: {
     color: redColor,
@@ -67,31 +67,14 @@ export const styles = StyleSheet.create({
   },
 });
 
-const TaskPriorityStatus = ({ task }) => {
-  const timeDifference = moment().diff(task.doneBefore);
-  let backgroundColor = whiteColor;
-
-  if (timeDifference < minutes(10)) {
-    backgroundColor = '#FFC300';
-  } else if (timeDifference < minutes(0)) {
-    backgroundColor = '#B42205';
-  } else {
-    return null;
-  }
-
-  return (
-    <View
-      style={{
-        width: 6,
-        height: '100%',
-        backgroundColor: backgroundColor,
-        borderTopRightRadius: cardBorderRadius,
-        borderBottomRightRadius: cardBorderRadius,
-      }}
-    />
-  );
-};
-
+interface ISwipeButtonContainerProps
+  extends Omit<TouchableOpacityProps, 'style'> {
+  backgroundColor?: string;
+  children: React.ReactNode;
+  left?: boolean;
+  right?: boolean;
+  width: number;
+}
 const SwipeButtonContainer = ({
   backgroundColor,
   children,
@@ -99,7 +82,7 @@ const SwipeButtonContainer = ({
   right,
   width,
   ...otherProps
-}) => {
+}: ISwipeButtonContainerProps) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
   const borderRadiusLeft = left ? cardBorderRadius : 0;
   const borderRadiusRight = right ? cardBorderRadius : 0;
@@ -122,17 +105,20 @@ const SwipeButtonContainer = ({
   );
 };
 
-const SwipeButton = ({ icon, width }) => (
+interface ISwipeButtonProps {
+  icon: React.ElementType;
+  width: number;
+  size?: number;
+}
+
+const SwipeButton = ({ icon, width, size }: ISwipeButtonProps) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon
-      as={icon}
-      style={{ color: '#ffffff', width: 40 }}
-    />
+    <Icon as={icon} size={size} style={{ color: '#ffffff', width: 40 }} />
   </View>
 );
 
-const TaskListItem = forwardRef(
+const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
   (
     {
       task,
@@ -154,7 +140,11 @@ const TaskListItem = forwardRef(
     },
     _ref,
   ) => {
+    const { t } = useTranslation();
+    const taskDropoffTitle = getTaskTitleForOrder(task, t);
     const taskTitle = getTaskTitle(task);
+
+    const isPickup = task.type === 'PICKUP';
 
     const address = task.address?.contactName
       ? task.address?.name
@@ -166,8 +156,11 @@ const TaskListItem = forwardRef(
 
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
-    const itemProps = {};
-    const swipeButtonsProps = {};
+    const alignedTextStyle = isPickup
+      ? [styles.text, { textAlign: 'right' as const }]
+      : [styles.text];
+    const itemProps: { opacity?: number } = {};
+    const swipeButtonsProps: { display?: string } = {};
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
       itemProps.opacity = 0.4;
@@ -184,7 +177,7 @@ const TaskListItem = forwardRef(
     const buttonWidth = cardWidth / 4;
     const visibleButtonWidth = buttonWidth + 25;
 
-    const swipeRow = useRef(null);
+    const swipeRow = useRef<SwipeRow<Task>>(null);
 
     useEffect(() => {
       if (task.status === 'DONE') {
@@ -198,8 +191,8 @@ const TaskListItem = forwardRef(
     const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
     const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
 
-    const prevShouldSwipeLeftRef = useRef();
-    const prevShouldSwipeRightRef = useRef();
+    const prevShouldSwipeLeftRef = useRef<boolean>();
+    const prevShouldSwipeRightRef = useRef<boolean>();
 
     useEffect(() => {
       if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
@@ -219,7 +212,7 @@ const TaskListItem = forwardRef(
       prevShouldSwipeRightRef.current = shouldSwipeRight;
     }, [shouldSwipeRight, buttonWidth]);
 
-    function _onRowOpen(toValue) {
+    function _onRowOpen(toValue: number) {
       if (toValue > 0 && onSwipedToLeft) {
         onSwipedToLeft();
       } else if (toValue < 0 && onSwipedToRight) {
@@ -238,6 +231,7 @@ const TaskListItem = forwardRef(
       task.status !== 'DONE' && !allTasksIdsFromTasks.includes(task['@id']);
 
     return (
+      // @ts-expect-error library's types don't include a children prop
       <SwipeRow
         disableLeftSwipe={!allowSwipeLeft}
         disableRightSwipe={!allowSwipeRight}
@@ -259,7 +253,7 @@ const TaskListItem = forwardRef(
             backgroundColor={swipeOutLeftBackgroundColor}
             left
             onPress={() => {
-              swipeRow.current.closeRow();
+              swipeRow.current?.closeRow();
               onPressLeft();
             }}
             testID={`${taskTestId}:left`}
@@ -270,7 +264,7 @@ const TaskListItem = forwardRef(
             backgroundColor={swipeOutRightBackgroundColor}
             right
             onPress={() => {
-              swipeRow.current.closeRow();
+              swipeRow.current?.closeRow();
               onPressRight();
             }}
             testID={`${taskTestId}:right`}
@@ -285,6 +279,8 @@ const TaskListItem = forwardRef(
         <HStack
           style={{
             flex: 1,
+            backgroundColor: 'green',
+            minWidth: '100%',
             minHeight: buttonWidth,
             borderTopRightRadius: cardBorderRadius,
             borderBottomRightRadius: cardBorderRadius,
@@ -306,27 +302,35 @@ const TaskListItem = forwardRef(
               width: cardWidth - buttonWidth,
             }}>
             <HStack>
-              <VStack flex={1} className="py-3 px-1">
-                <HStack className="items-center">
-                  <TaskTypeIcon task={task} />
-                  <Text
-                    testID={`${taskTestId}:title`}
-                    style={styles.textBold}
-                    numberOfLines={1}>
-                    {taskTitle}
-                  </Text>
-                </HStack>
+              <VStack
+                className="py-3 px-1"
+                style={isPickup ? { alignItems: 'flex-end' } : undefined}>
+                <Text
+                  testID={`${taskTestId}:title`}
+                  style={[styles.titleText, !isPickup && { color: greyColor }]}
+                  numberOfLines={1}>
+                  {taskTitle}
+                </Text>
+
+                {isPickup ? (
+                  <Text>Calcultate arrows</Text>
+                ) : (
+                  <Text>{taskDropoffTitle}</Text>
+                )}
+
                 {address && (
-                  <Text style={textStyle} numberOfLines={1}>
+                  <Text style={alignedTextStyle} numberOfLines={1}>
                     {address}
                   </Text>
                 )}
-                <Text numberOfLines={1} style={textStyle}>
+                <Text numberOfLines={1} style={alignedTextStyle}>
                   {task.address?.streetAddress}
                 </Text>
-                <HStack className="items-center">
-                  <Text className="pr-2" style={textStyle}>
-                    { `${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}` }
+                <HStack
+                  className="items-center"
+                  style={isPickup ? { justifyContent: 'flex-end' } : undefined}>
+                  <Text className="pr-2" style={alignedTextStyle}>
+                    {`${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}`}
                   </Text>
                   <TaskStatusIcon task={task} />
                   {task.address?.description &&
@@ -343,18 +347,13 @@ const TaskListItem = forwardRef(
                   )}
                 </HStack>
                 {task.tags && task.tags.length ? (
-                  <HStack space="xs">
-                    {task.tags.map(tag => (
-                      <Badge
-                        size="sm"
-                        key={tag.slug}
-                        style={{
-                          backgroundColor: tag.color,
-                        }}>
-                        <BadgeText>{tag.name}</BadgeText>
-                      </Badge>
-                    ))}
-                  </HStack>
+                  isPickup ? (
+                    <View style={{ alignSelf: 'flex-end', width: '100%' }}>
+                      <TaskTagsList taskTags={task.tags} />
+                    </View>
+                  ) : (
+                    <TaskTagsList taskTags={task.tags} />
+                  )
                 ) : null}
               </VStack>
               {task.hasIncidents && (
@@ -369,7 +368,10 @@ const TaskListItem = forwardRef(
                   }}
                 />
               )}
-              <TaskPriorityStatus task={task} />
+              <TaskPriorityStatus
+                task={task}
+                cardBorderRadius={cardBorderRadius}
+              />
             </HStack>
           </ItemTouchable>
         </HStack>
@@ -378,6 +380,7 @@ const TaskListItem = forwardRef(
   },
 );
 
+/* // PropTypes kept for backward compatibility with non-TypeScript code
 TaskListItem.propTypes = {
   task: PropTypes.object.isRequired,
   color: PropTypes.string.isRequired,
@@ -386,6 +389,6 @@ TaskListItem.propTypes = {
   onPressLeft: PropTypes.func,
   onPressRight: PropTypes.func,
   taskListId: PropTypes.string.isRequired,
-};
+}; */
 
 export default TaskListItem;
