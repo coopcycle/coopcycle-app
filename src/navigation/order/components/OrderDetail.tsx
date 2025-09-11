@@ -11,6 +11,8 @@ import { formatPrice } from '../../../utils/formatting';
 import { getOrderTimeFrame } from '../../task/components/utils';
 import {
   commentsInOrder,
+  formatDistance,
+  formatDuration,
   getOrderTitle,
   getUniqueTagsFromTasks,
   orderInfoInMetadata,
@@ -23,7 +25,8 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const packagesInOrder = packagesInOrderSummary(tasks);
   const orderTimeframe = getOrderTimeFrame(tasks);
   const orderPaymentMethod = orderInfoInMetadata(tasks, 'payment_method');
-  const orderDistance = orderInfoInMetadata(tasks, 'order_distance');
+  const orderDistance = formatDistance(orderInfoInMetadata(tasks, 'order_distance'));
+  const orderDuration = formatDuration(orderInfoInMetadata(tasks, 'order_duration'));
   const orderTags = getUniqueTagsFromTasks(tasks);
   const orderValue = orderInfoInMetadata(tasks, 'order_total');
   const comments = commentsInOrder(tasks);
@@ -69,12 +72,12 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
           <Divider />
           <IconText
             label={t('ORDER_DISTANCE')}
-            text={`${orderDistance}`}
+            text={`${orderDistance} ${orderDuration ? ` - ${orderDuration} (${t('ESTIMATED_DURATION')})` : ''}`}
             iconName="route"
           />
         </>
       )}
-      {!!packagesInOrder.totalQuantity && (
+      {packagesInOrder.totalQuantity > 0 && (
         <>
           <Divider />
           <IconText

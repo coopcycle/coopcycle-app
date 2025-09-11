@@ -286,7 +286,7 @@ class TasksMapView extends Component {
           coordinates={this.getCoordinates(taskList)}
           strokeWidth={3}
           strokeColor={taskList.color}
-          lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : null}
+          lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : undefined}
         />
       );
     });

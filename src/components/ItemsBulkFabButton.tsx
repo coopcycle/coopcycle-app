@@ -1,9 +1,6 @@
 import { Check } from 'lucide-react-native'
 import { Fab, FabIcon } from '@/components/ui/fab';
 import React, { Component } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import { greenColor, whiteColor } from '../styles/common';
 
 class ItemsBulkFabButton extends Component {
   constructor(props) {
