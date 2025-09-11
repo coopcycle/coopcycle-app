@@ -3,8 +3,8 @@ import { Dimensions, Text } from 'react-native';
 import { View, Vibration } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import _ from 'lodash';
-import { Icon } from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Icon } from '@/components/ui/icon';
+import { Zap, ZapOff } from 'lucide-react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FocusHandler from './FocusHandler';
 
@@ -121,8 +121,7 @@ function BarcodeCameraView({ disabled, ...props }, ref) {
             }}>
             <TouchableOpacity onPress={() => setFlash(!flash)}>
               <Icon
-                as={Ionicons}
-                name={flash ? 'flash-sharp' : 'flash-off-sharp'}
+                as={flash ? Zap : ZapOff}
                 style={{ color: 'rgba(255, 255, 255, 0.6)' }}
               />
             </TouchableOpacity>

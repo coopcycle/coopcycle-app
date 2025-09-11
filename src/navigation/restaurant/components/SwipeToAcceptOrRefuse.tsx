@@ -1,9 +1,10 @@
-import { Icon, Text, useColorMode } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { ChevronsLeft, ChevronsRight } from 'lucide-react-native';
 
 const styles = StyleSheet.create({
   swipeBg: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
 const swipeRow = React.createRef();
 
 const Comp = ({ onAccept, onRefuse }) => {
-  const { colorMode } = useColorMode();
+  const colorScheme = useColorScheme();
   const { t } = useTranslation();
 
   const onSwipeValueChange = ({ key, value }) => {
@@ -62,10 +63,10 @@ const Comp = ({ onAccept, onRefuse }) => {
           <View
             style={[
               styles.swipeFg,
-              { backgroundColor: colorMode === 'dark' ? 'black' : 'white' },
+              { backgroundColor: colorScheme === 'dark' ? 'black' : 'white' },
             ]}>
-            <Icon as={FontAwesome} name="angle-double-left" />
-            <Icon as={FontAwesome} name="angle-double-right" />
+            <Icon as={ChevronsLeft} />
+            <Icon as={ChevronsRight} />
           </View>
         </SwipeRow>
       </View>

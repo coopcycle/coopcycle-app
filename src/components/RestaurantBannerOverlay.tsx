@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, useColorModeValue } from 'native-base';
+import { useColorModeValue } from '../styles/theme';
+import { Text } from '@/components/ui/text';
 import { IconClock, IconPlugX } from '@tabler/icons-react-native';
 import i18n from '../i18n';
 

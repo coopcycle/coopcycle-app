@@ -1,32 +1,35 @@
-import { Button, Text } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Box } from '@/components/ui/box';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { withTranslation, useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 
 import { hideExpiredSessionModal } from '../../../redux/Checkout/actions';
 
-class ExpiredSessionModal extends Component {
-  render() {
-    return (
-      <Modal
-        isVisible={this.props.isVisible}
-        onModalHide={this.props.onModalHide}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalText}>
-            <Text style={{ color: '#a94442', textAlign: 'center' }}>
-              {this.props.t('SESSION_EXPIRED')}
-            </Text>
-          </View>
-          <Button block onPress={this.props.hideExpiredSessionModal}>
-            <Text>{this.props.t('GO_BACK_TO_RESTAURANTS')}</Text>
-          </Button>
-        </View>
-      </Modal>
-    );
-  }
+const ExpiredSessionModal = ({ isVisible, onModalHide, hideExpiredSessionModal }) => {
+
+  const { t } = useTranslation()
+
+  return (
+    <Modal
+      isVisible={isVisible}
+      onModalHide={onModalHide}>
+      <Box className="bg-background-50 p-4">
+        <Box className="p-4 bg-error-800 mb-4">
+          <Text className="text-error-100 text-center">
+            {t('SESSION_EXPIRED')}
+          </Text>
+        </Box>
+        <Button block onPress={hideExpiredSessionModal}>
+          <ButtonText>{t('GO_BACK_TO_RESTAURANTS')}</ButtonText>
+        </Button>
+      </Box>
+    </Modal>
+  );
 }
 
 ExpiredSessionModal.propTypes = {
@@ -40,10 +43,6 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#a94442',
     marginBottom: 10,
-  },
-  modalContent: {
-    backgroundColor: '#ffffff',
-    padding: 15,
   },
 });
 
@@ -67,4 +66,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(ExpiredSessionModal));
+)(ExpiredSessionModal);

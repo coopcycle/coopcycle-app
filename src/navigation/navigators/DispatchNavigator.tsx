@@ -1,4 +1,8 @@
-import { Circle, Icon } from 'native-base';
+import { Badge, BadgeText, BadgeIcon } from '@/components/ui/badge';
+import { VStack } from '@/components/ui/vstack';
+import { Icon } from '@/components/ui/icon';
+import { HStack } from '@/components/ui/hstack';
+import { Map, List, ListFilter } from 'lucide-react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
@@ -12,10 +16,6 @@ import { createDeliverySuccess } from '../../redux/Store/actions';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { selectKeywordFilters } from '../../redux/Dispatch/selectors';
-import {
-  useBackgroundContainerColor,
-  useBaseTextColor,
-} from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
 import HeaderRightButton from '../dispatch/HeaderRightButton';
 import i18n from '../../i18n';
@@ -29,8 +29,6 @@ import TaskNavigator from './TaskNavigator';
 const Tab = createBottomTabNavigator();
 
 function CustomTabBar({ navigation }) {
-  const color = useBaseTextColor();
-  const bgColor = useBackgroundContainerColor();
   const keywordFilters = useSelector(selectKeywordFilters);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,19 +52,15 @@ function CustomTabBar({ navigation }) {
   };
 
   return (
-    <View
-      style={[
-        customTabBarStyles.tabBarContainer,
-        { backgroundColor: bgColor },
-      ]}>
+    <HStack
+      className="items-center justify-between p-4 bg-background-50">
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={showMapButton ? goToTasksMap : goToTasksList}
         testID="toggleTasksMapListButton">
         <Icon
-          as={FontAwesome}
-          name={showMapButton ? 'map' : 'list'}
-          style={{ color }}
+          as={showMapButton ? Map : List}
+          size="xl"
         />
       </TouchableOpacity>
       <SearchInput
@@ -80,36 +74,27 @@ function CustomTabBar({ navigation }) {
         style={customTabBarStyles.tabButton}
         onPress={() => navigation.navigate('DispatchTasksFilters')}
         testID="showTasksFiltersButton">
-        <Icon as={FontAwesome} name="filter" style={{ color }} />
-        {keywordFilters.length > 0 && (
-          <Circle size={3} style={customTabBarStyles.filtersEnabled} />
-        )}
+        <VStack>
+          {keywordFilters.length > 0 && (
+            <Badge
+              className="z-10 self-end h-[12px] w-[12px] bg-red-600 rounded-full -mb-3 -mr-2"
+              variant="solid">
+            </Badge>
+          )}
+          <Icon as={ListFilter} size="xl" />
+        </VStack>
       </TouchableOpacity>
-    </View>
+    </HStack>
   );
 }
 
 const customTabBarStyles = StyleSheet.create({
-  tabBarContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
   tabButton: {
     padding: 10,
   },
   searchInput: {
     flex: 1,
     marginHorizontal: 10,
-  },
-  filtersEnabled: {
-    backgroundColor: '#D80000',
-    position: 'absolute',
-    right: 10,
-    top: 10,
   },
 });
 

@@ -1,5 +1,4 @@
-import { Text } from 'native-base';
-import {  } from 'react-native';
+import { Text } from '@/components/ui/text';
 import _ from 'lodash';
 import { ItemTouchable } from './ItemTouchable';
 import { getOrderIdWithPosition } from '../utils/tasks';

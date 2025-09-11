@@ -1,9 +1,11 @@
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { HStack, Icon, Switch, Text, View } from 'native-base';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { Switch } from '@/components/ui/switch';
+import { Icon, AddIcon } from '@/components/ui/icon';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
   clearTasksFilter,
@@ -24,7 +26,6 @@ import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 import ActiveKeywordFilters from './components/ActiveKeywordFilters';
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import ItemSeparatorComponent from '../../components/ItemSeparator';
-import { blackColor } from '../../styles/common';
 
 export default function TasksFilters() {
   const { t } = useTranslation();
@@ -127,11 +128,11 @@ function SettingsItemInner({ item }) {
 
 function SettingsItemSwitch({ item }) {
   return (
-    <HStack alignItems="center" justifyContent="space-between" py="3">
+    <HStack className="items-center justify-between py-3">
       <Text>{item.label}</Text>
       <Switch
         onToggle={item.onToggle}
-        isChecked={item.isChecked}
+        value={item.isChecked}
         testID={item.testID || ''}
       />
     </HStack>
@@ -150,15 +151,12 @@ function FilterByKeywords({ item }) {
     <TouchableOpacity
       onPress={navigateToKeywordsFilters}
       testID={item.testID || ''}>
-      <HStack alignItems="center" justifyContent="space-between" py="3">
+      <HStack className="items-center justify-between py-3">
         <Text>{t('FILTER_BY_KEYWORDS')}</Text>
         <Icon
-          as={FontAwesome}
+          as={AddIcon}
           name="plus"
-          size={6}
-          color={blackColor}
-          style={styles.activeFilterClose}
-        />
+          size="xl" />
       </HStack>
       <ActiveKeywordFilters />
     </TouchableOpacity>

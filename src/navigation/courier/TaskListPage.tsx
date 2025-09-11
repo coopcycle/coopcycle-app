@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { doneIconName, incidentIconName } from '../task/styles/common';
+import { IncidentIcon, DoneIcon } from '../task/styles/common';
 import { blueColor, greenColor, yellowColor } from '../../styles/common';
 import {
   navigateToCompleteTask,
@@ -67,7 +67,7 @@ export default function TaskListPage({ navigation, route }) {
       navigateToCompleteTask(navigation, route, task, [], true),
     swipeOutLeftBackgroundColor: greenColor,
     swipeOutLeftEnabled: allowToSelect,
-    swipeOutLeftIconName: doneIconName,
+    swipeOutLeftIcon: DoneIcon,
   };
 
   const swipeRightConfiguration = {
@@ -75,7 +75,7 @@ export default function TaskListPage({ navigation, route }) {
       navigateToCompleteTask(navigation, route, task, [], false),
     swipeOutRightBackgroundColor: yellowColor,
     swipeOutRightEnabled: allowToSelect,
-    swipeOutRightIconName: incidentIconName,
+    swipeOutRightIcon: IncidentIcon,
   };
 
   const completeSelectedTasks = selectedTasks => {
@@ -105,7 +105,6 @@ export default function TaskListPage({ navigation, route }) {
           }
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
-          multipleSelectionIcon={doneIconName}
           onMultipleSelectionAction={completeSelectedTasks}
         />
       )}

@@ -1,4 +1,4 @@
-import { Center } from 'native-base';
+import { Center } from '@/components/ui/center';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';

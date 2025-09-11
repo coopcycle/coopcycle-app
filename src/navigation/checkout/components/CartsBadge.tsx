@@ -1,4 +1,4 @@
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';

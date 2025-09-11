@@ -1,5 +1,8 @@
 import { CommonActions } from '@react-navigation/native';
-import { Button, Center, Icon, Text } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Icon, MailIcon } from '@/components/ui/icon';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -22,8 +25,8 @@ class RegisterCheckEmail extends Component {
     const email = this.props.route.params?.email || '';
 
     return (
-      <Center flex={1} testID="registerCheckEmail">
-        <Icon as={FontAwesome} name="envelope-o" mb="3" />
+      <Center flex={1} testID="registerCheckEmail" className="px-4">
+        <Icon as={MailIcon} className="mb-3" />
         <Text style={{ textAlign: 'center' }}>
           {this.props.t('REGISTER_CHECK_EMAIL_DISCLAIMER', { email })}
         </Text>
@@ -31,8 +34,8 @@ class RegisterCheckEmail extends Component {
           <Text style={{ textAlign: 'center' }} note>
             {this.props.t('REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED')}
           </Text>
-          <Button block transparent onPress={() => this._onPressLogin()}>
-            <Text>{this.props.t('REGISTER_CHECK_EMAIL_LOGIN')}</Text>
+          <Button onPress={() => this._onPressLogin()}>
+            <ButtonText>{this.props.t('REGISTER_CHECK_EMAIL_LOGIN')}</ButtonText>
           </Button>
         </View>
       </Center>

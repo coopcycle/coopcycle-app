@@ -1,5 +1,7 @@
 import { ActivityIndicator, SafeAreaView } from 'react-native';
-import { Box, Text } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -84,16 +86,16 @@ const NewDeliveryStore = props => {
           flex: 1,
         }}>
         {isLoading && (
-          <Box flex={1} justifyContent="center" alignItems="center">
+          <Center flex={1}>
             <ActivityIndicator animating={true} size="large" />
-          </Box>
+          </Center>
         )}
         {isError && (
           <Text style={{ textAlign: 'center' }}>{t('AN_ERROR_OCCURRED')}</Text>
         )}
         {!isLoading && !isError && (
           <>
-            <Box p="5">
+            <Box className="px-4 my-4">
               <FormInput
                 value={searchQuery}
                 autoCorrect={false}

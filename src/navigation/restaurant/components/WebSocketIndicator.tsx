@@ -1,4 +1,5 @@
-import { Button, Text } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
@@ -39,7 +40,7 @@ const WebSocketIndicator = () => {
           onPress={() => {
             dispatch(connectCentrifugo());
           }}>
-          <Text style={styles.text}>{t('RETRY')}</Text>
+          <ButtonText style={styles.text}>{t('RETRY')}</ButtonText>
         </Button>
       ) : null}
     </View>

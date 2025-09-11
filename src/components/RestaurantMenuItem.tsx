@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { Image, Text, View } from 'native-base';
+import { Text } from '@/components/ui/text';
+import { Pressable } from '@/components/ui/pressable';
 import React from 'react';
-import { ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
-import { useBackgroundContainerColor } from '../styles/theme';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { formatPrice } from '../utils/formatting';
 import { DietBadge, ZeroWasteBadge } from './RestaurantProductBadge';
 
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
 
 const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
-  const backgroundColor = useBackgroundContainerColor();
 
   const diets = item.suitableForDiet
     ? item.suitableForDiet.map(element =>
@@ -95,10 +94,10 @@ const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
     _.find(item.images, image => image.ratio === '1:1');
 
   return (
-    <TouchableOpacity
+    <Pressable
+      className="bg-background-50"
       style={[
         styles.menuItem,
-        { backgroundColor },
         item.enabled ? null : styles.disabled,
       ]}
       onPress={enabled ? () => onPress(item) : null}
@@ -162,7 +161,7 @@ const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
         </View>
       </View>
       {isLoading && <ActivityIndicator color="#c7c7c7" size="small" />}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

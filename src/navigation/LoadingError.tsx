@@ -1,7 +1,10 @@
-import { Button, Icon, Text, View } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { TriangleAlert } from 'lucide-react-native'
+import { Button, ButtonText } from '@/components/ui/button';
 import React from 'react';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import { selectCustomBuild } from '../redux/App/selectors';
 import Server from './account/components/Server';
@@ -18,7 +21,7 @@ export default function LoadingError() {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <Icon as={Ionicons} name="warning" />
+      <Icon as={TriangleAlert} />
       <Text
         style={{
           marginBottom: 10,
@@ -26,7 +29,7 @@ export default function LoadingError() {
         {t('NET_FAILED')}
       </Text>
       <Button block onPress={() => this.load()}>
-        <Text>{t('RETRY')}</Text>
+        <ButtonText>{t('RETRY')}</ButtonText>
       </Button>
       <View style={{ marginVertical: 20 }}>
         {customBuild ? null : <Server />}

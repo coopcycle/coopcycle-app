@@ -1,4 +1,4 @@
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import React from 'react';
 import { useBackgroundColor } from '../../../styles/theme';

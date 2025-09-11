@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
+import { Box } from '@/components/ui/box';
 import { Image, StyleSheet, TextProps, View } from 'react-native';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
-import { useBackgroundContainerColor } from '../styles/theme';
 import { isRestaurantOrderingAvailable } from '../utils/checkout';
 import { RestaurantBadge } from './RestaurantBadge';
 import { RestaurantTag } from './RestaurantTag';
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     marginBottom: 0,
-    // backgroundColor: backgroundColor,
   },
   images: {
     width: '100%',
@@ -107,11 +106,10 @@ type Props = {
 };
 
 export const RestaurantCard = ({ restaurant }: Props) => {
-  const backgroundColor = useBackgroundContainerColor();
   const isAvailable = isRestaurantOrderingAvailable(restaurant);
 
   return (
-    <View style={[styles.item, { backgroundColor }]}>
+    <Box className="bg-background-50" style={ styles.item }>
       <View style={styles.images}>
         <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
         {restaurant.badges && (
@@ -122,13 +120,13 @@ export const RestaurantCard = ({ restaurant }: Props) => {
           </View>
         )}
         {!isAvailable ? <RestaurantNotAvailableBannerOverlay /> : null}
-        <View style={[styles.logoWrapper, { backgroundColor }]}>
+        <Box className="bg-background-50" style={ styles.logoWrapper }>
           <Image
             style={styles.logo}
             resizeMode="cover"
             source={{ uri: restaurant.image }}
           />
-        </View>
+        </Box>
       </View>
       <View style={styles.content}>
         <View>
@@ -155,6 +153,6 @@ export const RestaurantCard = ({ restaurant }: Props) => {
           )}
         </View>
       </View>
-    </View>
+    </Box>
   );
 };

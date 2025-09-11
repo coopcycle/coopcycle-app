@@ -1,31 +1,31 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { Button, VStack, Text } from 'native-base';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
 import { Alert } from 'react-native';
 
 function BarcodeReport({ route, t, navigation }) {
   const { entity } = route.params;
   return (
-    <VStack space={4} p="4">
-      <Text fontSize="lg" pb="2">
+    <VStack space="md" className="p-4">
+      <Text fontSize="lg" className="pb-2">
         {t('TASK')} #{entity?.id}
       </Text>
       <Button
-        colorScheme="dark"
         size="lg"
         onPress={
           // () => navigation.navigate('CourierUpdateParcel', { entity })
           () => Alert.alert(null, 'Not yet supported, coming soon!')
         }>
-        {t('UPDATE_PARCEL_DETAILS')}
+        <ButtonText>{t('UPDATE_PARCEL_DETAILS')}</ButtonText>
       </Button>
       <Button
-        colorScheme="yellow"
         size="lg"
         onPress={() =>
           navigation.navigate('CourierReportIncident', { entity })
         }>
-        {t('REPORT_AN_INCIDENT')}
+        <ButtonText>{t('REPORT_AN_INCIDENT')}</ButtonText>
       </Button>
     </VStack>
   );

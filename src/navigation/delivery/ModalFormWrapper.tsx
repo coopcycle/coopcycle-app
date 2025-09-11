@@ -1,5 +1,7 @@
-import { Box, Button, ScrollView, VStack } from 'native-base';
-import { SafeAreaView } from 'react-native';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { VStack } from '@/components/ui/vstack';
+import { SafeAreaView, ScrollView } from 'react-native';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import { useBackgroundContainerColor } from '../../styles/theme';
 
@@ -27,7 +29,7 @@ export default function ModalFormWrapper({
       }}>
       <VStack
         flex={1}
-        justifyContent="space-between"
+        className="justify-between"
         style={{
           backgroundColor,
         }}>
@@ -35,17 +37,17 @@ export default function ModalFormWrapper({
           <ScrollView
             keyboardShouldPersistTaps="handled" // tap is handled by the children in the forms
           >
-            <Box p="5" gap="3">
+            <Box className="p-5 gap-3">
               {children}
             </Box>
           </ScrollView>
-          <Box p="5">
+          <Box className="p-5">
             <Button
               onPress={handleSubmit}
               disabled={disabled}
               style={disabled ? { opacity: 0.5 } : {}}
               testID="delivery__next_button">
-              {buttonLabel}
+              <ButtonText>{buttonLabel}</ButtonText>
             </Button>
           </Box>
         </KeyboardAdjustView>

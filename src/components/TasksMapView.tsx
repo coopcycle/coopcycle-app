@@ -14,13 +14,13 @@ import {
 import { withTranslation } from 'react-i18next';
 // import ClusteredMapView from 'react-native-maps-super-cluster';
 import MapView from 'react-native-maps';
-import Foundation from 'react-native-vector-icons/Foundation';
 import Modal from 'react-native-modal';
+import { MessageCircle } from 'lucide-react-native';
 
 import { filterTasks } from '../redux/logistics/utils';
 import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
-import { isDisplayPaymentMethodInList, loadIconKey } from './PaymentMethodInfo';
+import { isDisplayPaymentMethodInList, getIcon } from './PaymentMethodInfo';
 import {
   selectIsHideUnassignedFromMap,
   selectIsPolylineOn,
@@ -195,10 +195,7 @@ class TasksMapView extends Component {
 
     if (task.address && task.address.description) {
       warnings.push({
-        icon: {
-          name: 'comments',
-          size: 'xs',
-        },
+        icon: MessageCircle,
       });
     }
 
@@ -208,10 +205,7 @@ class TasksMapView extends Component {
       isDisplayPaymentMethodInList(task.metadata?.payment_method)
     ) {
       warnings.push({
-        icon: {
-          name: loadIconKey(task.metadata.payment_method),
-          type: Foundation,
-        },
+        icon: getIcon(task.metadata.payment_method),
       });
     }
 

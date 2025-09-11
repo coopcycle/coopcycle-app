@@ -1,15 +1,16 @@
-import { Icon, Text } from 'native-base';
 import React from 'react';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
-  doneIconName,
-  failedIconName,
-  taskTypeIconName,
+  taskTypeIcon,
+  DoneIcon,
+  FailedIcon,
 } from '../navigation/task/styles/common';
 import { darkGreyColor, lightGreyColor, redColor } from '../styles/common';
-import { useBackgroundContainerColor } from '../styles/gluestack-theme';
+import { useBackgroundContainerColor } from '../styles/theme';
 import { Task } from '../types/task';
 
 const markerColor = (task: Task) => {
@@ -75,22 +76,22 @@ const iconStyle = (task: Task) => {
   };
 };
 
-const taskStatusIconName = (task: Task) => {
+const taskStatusIcon = (task: Task) => {
   switch (task.status) {
     case 'DONE':
-      return doneIconName;
+      return DoneIcon;
     case 'FAILED':
-      return failedIconName;
+      return FailedIcon;
     default:
-      return taskTypeIconName(task);
+      return taskTypeIcon(task);
   }
 };
 
-const iconName = ({ task, type }: { task: Task; type: string }) => {
+const icon = (task: Task, type: string) => {
   if (type === 'status') {
-    return taskStatusIconName(task);
+    return taskStatusIcon(task);
   } else {
-    return taskTypeIconName(task);
+    return taskTypeIcon(task);
   }
 };
 
@@ -111,8 +112,7 @@ interface IProps {
   testID?: string;
 }
 export default ({ task, type, hasWarnings, testID }: IProps) => {
-  //TODO check default type value
-  const _iconName = iconName({ task, type: type || 'status' });
+  const _icon = icon(task, type);
   const backgroundColor = useBackgroundContainerColor();
 
   return (
@@ -128,10 +128,9 @@ export default ({ task, type, hasWarnings, testID }: IProps) => {
         </Text>
       ) : null}
       <Icon
-        as={FontAwesome}
-        name={_iconName}
+        as={_icon}
         style={iconStyle(task)}
-        size="xs"
+        size="md"
       />
     </View>
   );

@@ -1,74 +1,36 @@
-import { Icon, Text, useColorModeValue } from 'native-base';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useColorScheme } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  HeaderButton,
+  HeaderButtons,
+  Item,
+} from 'react-navigation-header-buttons';
 
-const asProp = name => {
-  switch (name) {
-    case 'FontAwesome':
-      return FontAwesome;
-    case 'FontAwesome5':
-      return FontAwesome5;
-  }
+const HeaderButtonComponent = props => {
 
-  return Ionicons;
-};
-
-const HeaderButton = props => {
-  const color = useColorModeValue('#000', '#fff');
-  const containerStyles = [styles.base];
-  if (props.textLeft) {
-    containerStyles.push(styles.withText);
-  }
-
-  let iconStyle = [{ color: color }];
-
-  if (props.iconStyle) {
-    iconStyle.push(props.iconStyle);
-  }
-
-  let otherProps = {};
-  if (props.testID) {
-    otherProps = {
-      ...otherProps,
-      testID: props.testID,
-    };
-  }
+  const colorScheme = useColorScheme();
 
   return (
-    <TouchableOpacity
-      onPress={props.onPress}
-      style={containerStyles}
-      {...otherProps}>
-      {props.textLeft && (
-        <Text style={[styles.textLeft, { color: color }]}>
-          {props.textLeft}
-        </Text>
-      )}
-      <Icon
-        as={asProp(props.iconType)}
-        name={props.iconName}
-        style={iconStyle}
-      />
-    </TouchableOpacity>
+    <HeaderButton {...props} IconComponent={Ionicons} iconSize={24} color={ colorScheme === 'dark' ? '#fff' : '#000' } />
   );
-};
+}
 
-const styles = StyleSheet.create({
-  base: {
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-  },
-  withText: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  textLeft: {
-    paddingRight: 15,
-  },
-});
+const HeaderButtonsWrapper = ({ children }) => {
+  return (
+    <HeaderButtons HeaderButtonComponent={HeaderButtonComponent}>
+      {children}
+    </HeaderButtons>
+  );
+}
 
-export default HeaderButton;
+const ItemWrapper = (props) => {
+  return (
+    <Item {...props} />
+  );
+}
+
+export {
+  HeaderButtonsWrapper as HeaderButtons,
+  ItemWrapper as HeaderButton,
+}

@@ -1,7 +1,5 @@
 import React from 'react';
 import { useColorScheme } from 'react-native';
-import { NativeBaseProvider } from 'native-base';
-import { nativeBaseTheme } from '../styles/theme';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 
 interface UIProviderProps {
@@ -16,9 +14,7 @@ export const UIProvider: React.FC<UIProviderProps> = ({ children }) => {
 
   return (
     <GluestackUIProvider mode={colorScheme || 'light'}>
-      <NativeBaseProvider theme={nativeBaseTheme}>
         {children}
-      </NativeBaseProvider>
     </GluestackUIProvider>
   );
 };

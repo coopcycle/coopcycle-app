@@ -1,6 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
-import { Box, Button, HStack, Heading, Input, Text, VStack } from 'native-base';
+import { Input, InputField } from '@/components/ui/input';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList } from 'react-native';
@@ -39,7 +45,7 @@ function LoopeatFormats({
   return (
     <SafeAreaView flex={1} edges={['bottom']}>
       <Box flex={1}>
-        <Text p="3">{t('RESTAURANT_LOOPEAT_DISCLAIMER')}</Text>
+        <Text className="p-3">{t('RESTAURANT_LOOPEAT_DISCLAIMER')}</Text>
         <Formik
           initialValues={initialValues}
           onSubmit={values => {
@@ -53,33 +59,34 @@ function LoopeatFormats({
                 data={values.loopeatFormats}
                 keyExtractor={(item, index) => `loopeat_format_item_#${index}`}
                 renderItem={({ item, index }) => (
-                  <VStack mb="3" px="3">
+                  <VStack className="mb-3 px-3">
                     <Heading size="sm">{item.orderItem.name}</Heading>
                     {item.formats.map((format, formatIndex) => (
                       <HStack
-                        mb="2"
+                        className="mb-2 items-center justify-between"
                         key={`loopeat_format_#${formatIndex}`}
-                        alignItems="center"
-                        justifyContent="space-between">
+                        >
                         <Text>{format.format_name}</Text>
-                        <Input
-                          _stack={{ style: {} }}
-                          w="25%"
-                          keyboardType="number-pad"
-                          returnKeyType="done"
-                          maxLength={2}
-                          value={`${values.loopeatFormats[index]?.formats[formatIndex]?.quantity}`}
-                          onChangeText={handleChange(
-                            `loopeatFormats.${index}.formats.${formatIndex}.quantity`,
-                          )}
-                        />
+                        <Input className="w-1/4">
+                          <InputField
+                            keyboardType="number-pad"
+                            returnKeyType="done"
+                            maxLength={2}
+                            value={`${values.loopeatFormats[index]?.formats[formatIndex]?.quantity}`}
+                            onChangeText={handleChange(
+                              `loopeatFormats.${index}.formats.${formatIndex}.quantity`,
+                            )}
+                          />
+                        </Input>
                       </HStack>
                     ))}
                   </VStack>
                 )}
               />
-              <Box px="3">
-                <Button onPress={handleSubmit}>{t('VALIDATE')}</Button>
+              <Box className="px-3">
+                <Button onPress={handleSubmit}>
+                  <ButtonText>{t('VALIDATE')}</ButtonText>
+                </Button>
               </Box>
             </>
           )}

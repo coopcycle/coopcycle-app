@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';

@@ -1,8 +1,9 @@
 import { IconChevronDown } from '@tabler/icons-react-native';
-import { Button, Text, View } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import {
   useBackgroundColor,
@@ -96,14 +97,14 @@ export default function TimeSlotSelector({
                 },
               ]}
               key={index}>
-              <Text
+              <ButtonText
                 numberOfLines={1}
                 style={{
                   color:
                     selectedTimeSlot === timeSlot['@id'] ? 'white' : '#878787',
                 }}>
                 {timeSlot.name}
-              </Text>
+              </ButtonText>
             </Button>
           );
         })}

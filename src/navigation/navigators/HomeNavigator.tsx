@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import HeaderButton from '../../components/HeaderButton';
+import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
 
@@ -32,13 +32,12 @@ const MainNavigator = () => {
           title: i18n.t('CHOOSE_CITY'),
           headerBackTitle: null,
           headerRight: () => (
-            <HeaderButton
-              testID="moreServerOptions"
-              iconType="FontAwesome5"
-              iconName="ellipsis-h"
-              iconStyle={{ fontSize: 18 }}
-              onPress={() => navigation.navigate('HomeCustomServer')}
-            />
+            <HeaderButtons>
+              <HeaderButton
+                testID="moreServerOptions"
+                iconName="ellipsis-horizontal-sharp"
+                onPress={() => navigation.navigate('HomeCustomServer')} />
+            </HeaderButtons>
           ),
         })}
       />

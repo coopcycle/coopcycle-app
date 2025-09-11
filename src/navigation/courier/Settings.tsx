@@ -1,10 +1,15 @@
-import { Box, HStack, Heading, Icon, Switch, Text } from 'native-base';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { Switch } from '@/components/ui/switch';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { SectionList, TouchableOpacity } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
+import { Tag, Volume, Route, Signature, Power } from 'lucide-react-native'
 
 import {
   clearTasksFilter,
@@ -21,7 +26,7 @@ import {
   setSignatureScreenFirst,
   setTasksChangedAlertSound,
 } from '../../redux/Courier';
-import { doneIconName, incidentIconName } from '../task/styles/common';
+import { DoneIcon, IncidentIcon } from '../task/styles/common';
 import {
   filterHasIncidents,
   filterStatusDone,
@@ -30,15 +35,15 @@ import {
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 
 const SettingsItemInner = ({ item }) => (
-  <HStack alignItems="center" justifyContent="space-between" py="3">
-    <HStack alignItems="center">
-      <Icon size="sm" mr="1" as={FontAwesome} name={item.icon} />
+  <HStack className="items-center justify-between py-3">
+    <HStack className="items-center">
+      <Icon size={16} className="mr-2" as={item.icon} />
       <Text>{item.label}</Text>
     </HStack>
     {!item.onPress && (
-      <Switch onToggle={item.onToggle} isChecked={item.isChecked} />
+      <Switch onToggle={item.onToggle} value={item.isChecked} />
     )}
-    {item.onPress && <Icon size="sm" as={FontAwesome} name="arrow-right" />}
+    {item.onPress && <Icon as={ArrowRightIcon} />}
   </HStack>
 );
 
@@ -78,30 +83,30 @@ const Settings = ({
       title: t('TASKS_FILTER'),
       data: [
         {
-          icon: doneIconName,
+          icon: DoneIcon,
           label: t('HIDE_DONE_TASKS'),
           onToggle: () => toggleDisplayDone(areDoneTasksHidden),
           isChecked: areDoneTasksHidden,
         },
         {
-          icon: incidentIconName,
+          icon: IncidentIcon,
           label: t('HIDE_INCIDENTS_TASKS'),
           onToggle: () => toggleDisplayIncidens(areIncidentsHidden),
           isChecked: areIncidentsHidden,
         },
         {
-          icon: 'tag',
+          icon: Tag,
           label: t('HIDE_TASKS_TAGGED_WITH'),
           onPress: () => navigation.navigate('CourierSettingsTags'),
         },
         {
-          icon: 'volume-up',
+          icon: Volume,
           label: t('TASKS_CHANGED_ALERT_SOUND'),
           onToggle: toggleTasksChangedAlertSound,
           isChecked: tasksChangedAlertSound,
         },
         {
-          icon: 'map-signs',
+          icon: Route,
           label: t('TASKS_SHOW_POLYLINE'),
           onToggle: togglePolylineOn,
           isChecked: isPolylineOn,
@@ -112,13 +117,13 @@ const Settings = ({
       title: t('SETTINGS'),
       data: [
         {
-          icon: 'hand-pointer-o',
+          icon: Signature,
           label: t('SIGNATURE_SCREEN_FIRST'),
           onToggle: setSignatureScreenFirst,
           isChecked: signatureScreenFirst,
         },
         {
-          icon: 'power-off',
+          icon: Power,
           label: t('SETTING_KEEP_AWAKE'),
           onToggle: setKeepAwakeDisabled,
           isChecked: isKeepAwakeDisabled,
@@ -128,7 +133,7 @@ const Settings = ({
   ];
 
   return (
-    <Box p="2">
+    <Box className="p-2">
       <SectionList
         sections={sections}
         keyExtractor={(item, index) => `setting-${index}`}

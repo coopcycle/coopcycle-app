@@ -1,28 +1,20 @@
-import { Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
+import { Frown } from 'lucide-react-native'
 import React from 'react';
-import { withTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useTranslation } from 'react-i18next';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    color: '#cdcdcd',
-    marginBottom: 15,
-  },
-});
+const Offline = () => {
 
-const Offline = ({ t }) => {
+  const { t } = useTranslation();
+
   return (
-    <View style={styles.container}>
-      <Icon as={FontAwesome5} name="frown" size={10} style={styles.icon} />
+    <Center flex={1}>
+      <Icon as={Frown} size={32} className="mb-2" />
       <Text>{t('OFFLINE')}</Text>
-    </View>
+    </Center>
   );
 };
 
-export default withTranslation()(Offline);
+export default Offline;

@@ -1,30 +1,31 @@
-import { HStack, Icon, Text, useTheme } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { greenColor, redColor, yellowColor } from '../../../styles/common';
-import { doneIconName, failedIconName } from '../styles/common';
+import { DoneIcon, FailedIcon } from '../styles/common';
 
 const LeftButton = ({ width }) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={FontAwesome} name={doneIconName} style={{ color: '#fff' }} />
+    <Icon as={DoneIcon} size={24} style={{ color: '#fff' }} />
   </View>
 );
 
 const RightButton = ({ width }) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={FontAwesome} name={failedIconName} style={{ color: '#fff' }} />
+    <Icon as={FailedIcon} size={24} style={{ color: '#fff' }} />
   </View>
 );
 
 const CompleteButton = React.forwardRef((props, ref) => {
   const { task, onPressSuccess, onPressFailure, t } = props;
-  const { colors } = useTheme();
 
   const { width } = Dimensions.get('window');
 
@@ -33,8 +34,8 @@ const CompleteButton = React.forwardRef((props, ref) => {
       <View style={[styles.buttonContainer, { backgroundColor: greenColor }]}>
         <View style={styles.buttonTextContainer}>
           <Icon
-            as={FontAwesome}
-            name={doneIconName}
+            as={DoneIcon}
+            size="xl"
             style={{ color: '#fff', marginRight: 10 }}
           />
           <Text style={{ color: '#fff' }}>{t('COMPLETED')}</Text>
@@ -48,8 +49,8 @@ const CompleteButton = React.forwardRef((props, ref) => {
       <View style={[styles.buttonContainer, { backgroundColor: redColor }]}>
         <View style={styles.buttonTextContainer}>
           <Icon
-            as={FontAwesome}
-            name={failedIconName}
+            as={FailedIcon}
+            size="xl"
             style={{ color: '#fff', marginRight: 10 }}
           />
           <Text style={{ color: '#fff' }}>{t('FAILED')}</Text>
@@ -62,7 +63,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
 
   return (
     <View>
-      <HStack px="3" py="2">
+      <HStack className="px-3 py-2">
         <Text fontSize="xs" color="muted.500">
           {t('SWIPE_TO_END')}
         </Text>
@@ -99,13 +100,14 @@ const CompleteButton = React.forwardRef((props, ref) => {
             <RightButton width={buttonWidth} />
           </TouchableOpacity>
         </View>
-        <View
-          style={{ padding: 28, width, backgroundColor: colors.muted['400'] }}
+        <Box
+          className="bg-secondary-600"
+          style={{ padding: 28, width }}
           testID="task:completeButton">
           <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff' }}>
             {t('COMPLETE_TASK')}
           </Text>
-        </View>
+        </Box>
       </SwipeRow>
     </View>
   );

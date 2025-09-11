@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { IconMapPin } from '@tabler/icons-react-native';
 import i18next from 'i18next';
-import { Button, Image, Text } from 'native-base';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
+import { ScrollView, StyleSheet, View, Image } from 'react-native';
 import { RestaurantBadge } from '../../../components/RestaurantBadge';
 import { RestaurantTag } from '../../../components/RestaurantTag';
 import {
-  useBackgroundContainerColor,
   useBaseTextColor,
   useSecondaryTextColor,
 } from '../../../styles/theme';
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     aspectRatio: '1',
     width: '100%',
+    resizeMode: "cover"
   },
   badgesScroll: {
     width: '100%',
@@ -157,7 +159,6 @@ function BannerOverlay({ isOrderingAvailable, showPreOrder }) {
 }
 
 function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
-  const backgroundColor = useBackgroundContainerColor();
   const stroke = useBaseTextColor();
   const textSecondary = useSecondaryTextColor();
 
@@ -175,23 +176,22 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
   );
 
   return (
-    <View style={([styles.profile], { backgroundColor })}>
+    <Box className="bg-background-50" style={ styles.profile }>
       <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
       <BannerOverlay
         isOrderingAvailable={isOrderingAvailable}
         showPreOrder={showPreOrder}
       />
       <View style={styles.detailsWrapper}>
-        <View style={[styles.logoWrapper, { backgroundColor }]}>
+        <Box className="bg-background-50" style={ styles.logoWrapper }>
           <View style={styles.logoWrapperShadow}>
             <Image
               style={styles.logo}
-              resizeMode="cover"
               source={{ uri: restaurant.image }}
               alt="logo"
             />
           </View>
-        </View>
+        </Box>
         {restaurant?.badges?.length >= 1 ? (
           <ScrollView
             style={styles.badgesScroll}
@@ -215,7 +215,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
         <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
           <TimingBadge restaurant={restaurant} />
           <Button size="sm" variant="link" onPress={onInfo}>
-            {i18next.t('RESTAURANT_MORE_INFOS')}
+            <ButtonText>{i18next.t('RESTAURANT_MORE_INFOS')}</ButtonText>
           </Button>
         </View>
         <View style={styles.address}>
@@ -237,7 +237,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
           </View>
         ) : null}
       </View>
-    </View>
+    </Box>
   );
 }
 

@@ -1,8 +1,7 @@
-import { Icon, Text } from 'native-base';
+import { Icon, CloseIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import 'react-native-get-random-values';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default function PostCodeButton({ postcode, onPress }) {
   return (
@@ -33,9 +32,8 @@ export default function PostCodeButton({ postcode, onPress }) {
         {postcode}
       </Text>
       <Icon
-        as={FontAwesome5}
-        name="times"
-        style={{ fontSize: 18, color: 'white' }}
+        as={CloseIcon}
+        style={{ color: 'white' }}
       />
     </TouchableOpacity>
   );

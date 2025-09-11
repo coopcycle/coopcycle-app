@@ -1,31 +1,20 @@
 import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {
-  HeaderButton,
-  HeaderButtons,
-  Item,
-} from 'react-navigation-header-buttons';
-import { connect } from 'react-redux';
-
-const FontAwesomeHeaderButton = props => (
-  <HeaderButton {...props} IconComponent={FontAwesome} iconSize={23} />
-);
+import { HeaderButtons, HeaderButton } from '../../../components/HeaderButton';
 
 class HeaderRight extends Component {
   render() {
     const { navigate } = this.props.navigation;
 
     return (
-      <HeaderButtons HeaderButtonComponent={FontAwesomeHeaderButton}>
-        <Item
+      <HeaderButtons>
+        <HeaderButton
           title="search"
           iconName="search"
           onPress={() => navigate('RestaurantSearch')}
         />
-        <Item
+        <HeaderButton
           title="openSettings"
-          iconName="cog"
+          iconName="settings-outline"
           onPress={() => navigate('RestaurantSettings')}
         />
       </HeaderButtons>
@@ -33,17 +22,4 @@ class HeaderRight extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    restaurant: state.restaurant.restaurant,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(HeaderRight));
+export default HeaderRight;

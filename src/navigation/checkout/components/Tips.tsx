@@ -1,19 +1,19 @@
-import { Avatar, Button, HStack, Heading, View } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable } from 'react-native';
+import { View } from 'react-native';
 import { formatPrice } from '../../../utils/formatting';
 
 const tipColor = 'blueGray.200';
 const pressedTipColor = 'blueGray.600';
 
 const TipCart = props => (
-  <Pressable disabled={props.disabled} onPress={props.onPress}>
-    <Avatar bg={props.bg} size={'md'} mr="1">
-      {props.text}
-    </Avatar>
-  </Pressable>
+  <Button bg={props.bg} size={'md'} mr="1" onPress={props.onPress}  disabled={props.disabled}>
+    <ButtonText>{props.text}</ButtonText>
+  </Button>
 );
 
 function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
@@ -33,9 +33,9 @@ function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
   };
 
   return (
-    <View padding={2}>
-      <Heading size={'xs'}>{t('TIP')}</Heading>
-      <HStack justifyContent="center" paddingBottom={5}>
+    <Box className="p-2">
+      <Heading size="sm" className="mb-2 text-center">{t('TIP')}</Heading>
+      <ButtonGroup flexDirection="row" className="justify-between pb-5">
         {!advancedView && defaultView()}
 
         {advancedView && (
@@ -65,9 +65,11 @@ function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
           }}
           bg={tipColor}
         />
-      </HStack>
-      <Button onPress={() => onTip(tip)}>{t('VALIDATE')}</Button>
-    </View>
+      </ButtonGroup>
+      <Button onPress={() => onTip(tip)}>
+        <ButtonText>{t('VALIDATE')}</ButtonText>
+      </Button>
+    </Box>
   );
 }
 

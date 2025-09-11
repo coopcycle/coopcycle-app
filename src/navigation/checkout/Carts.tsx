@@ -1,21 +1,15 @@
 import _ from 'lodash';
-import {
-  Avatar,
-  Box,
-  Button,
-  ChevronRightIcon,
-  HStack,
-  Heading,
-  Icon,
-  Skeleton,
-  Text,
-  VStack,
-  View,
-} from 'native-base';
-import { Spacer } from 'native-base/src/components/primitives/Flex';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
+import { Icon, ChevronRightIcon, TrashIcon } from '@/components/ui/icon';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Animated, Dimensions, FlatList, Image } from 'react-native';
+import { Animated, Dimensions, FlatList, Image, View } from 'react-native';
 import {
   RectButton,
   Swipeable,
@@ -47,9 +41,8 @@ class Carts extends Component {
           style={styles.deleteButton}
           onPress={() => this.props.deleteCart(restaurantID)}>
           <Icon
-            as={Ionicons}
-            name="trash"
-            size={5}
+            as={TrashIcon}
+            size="sm"
             style={{ color: '#ff0000' }}
           />
         </RectButton>
@@ -75,16 +68,12 @@ class Carts extends Component {
       />
       <Heading>{this.props.t('EMPTY_CARTS_TITLE')}</Heading>
       <Text
-        style={{ textAlign: 'center' }}
         color={this.props.secondaryTextColor}>
         {this.props.t('EMPTY_CARTS_SUBTITLE')}
       </Text>
       <Button
-        borderRadius={100}
-        onPress={() => this.props.navigation.navigate('Home')}
-        backgroundColor={primaryColor}
-        margin={8}>
-        {this.props.t('GO_TO_SHOPPING')}
+        onPress={() => this.props.navigation.navigate('Home')}>
+        <ButtonText>{this.props.t('GO_TO_SHOPPING')}</ButtonText>
       </Button>
     </View>
   );
@@ -105,55 +94,45 @@ class Carts extends Component {
               restaurant: item.restaurant,
             });
           }}>
-          <HStack space={4} padding={2}>
+          <HStack space="md" className="p-2 items-center">
             <Skeleton
-              width="64px"
-              borderRadius="full"
+              className="w-1/5"
               isLoaded={!item?.softDelete}>
-              <Avatar
-                size="lg"
-                resizeMode="contain"
-                borderRadius="full"
-                source={{ uri: item.restaurant.image }}
-                alt={item.restaurant.name}
-              />
+              <Avatar size="lg">
+                <AvatarImage
+                  source={{ uri: item.restaurant.image }}
+                />
+              </Avatar>
             </Skeleton>
-            <VStack>
-              <Skeleton.Text
-                noOfLines={3}
-                lineHeight={4}
+            <SkeletonText
+                _lines={4}
+                className="h-2"
                 isLoaded={!item?.softDelete}>
+              <VStack>
                 <Text bold>{item.restaurant.name}</Text>
                 <Text color={this.props.secondaryTextColor}>
                   {i18n.t('ITEM', { count: item.cart.items.length })} •{' '}
                   {formatPrice(item.cart.total)}
                 </Text>
                 <Text
-                  noOfLines={1}
+                  numberOfLines={1}
                   maxWidth={width - 170}
                   color={this.props.secondaryTextColor}>
                   {item.cart.shippingAddress?.streetAddress}
                 </Text>
-              </Skeleton.Text>
-            </VStack>
-            <Spacer />
+              </VStack>
+            </SkeletonText>
             <View
               style={{
                 flexGrow: 1,
                 justifyContent: 'center',
                 alignItems: 'flex-end',
               }}>
-              <ChevronRightIcon />
+              <Icon as={ChevronRightIcon} />
             </View>
           </HStack>
         </TouchableOpacity>
       </Swipeable>
-      <Box
-        marginLeft={20}
-        marginRight={5}
-        borderBottomWidth={1}
-        borderColor={greyColor}
-      />
     </>
   );
 

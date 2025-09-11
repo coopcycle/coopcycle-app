@@ -1,4 +1,11 @@
-import { Checkbox, Column } from 'native-base';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from '@/components/ui/checkbox';
+import { CheckIcon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,21 +27,25 @@ export default function FeatureFlags() {
   const dispatch = useDispatch();
 
   return (
-    <Column m={4}>
+    <Box className="p-2">
       <Checkbox
-        accessibilityLabel="configure spinner delay"
         value="spinner delay"
         onChange={checked => dispatch(setSpinnerDelayEnabled(checked))}
         defaultIsChecked={isSpinnerDelayEnabled}>
-        {t('FEATURE_FLAG_SPINNER_DELAY')}
+        <CheckboxIndicator>
+          <CheckboxIcon as={CheckIcon} />
+        </CheckboxIndicator>
+        <CheckboxLabel>{t('FEATURE_FLAG_SPINNER_DELAY')}</CheckboxLabel>
       </Checkbox>
       <Checkbox
-        accessibilityLabel="configure barcode"
         value="barcode"
         onChange={checked => dispatch(setBarcodeEnabled(checked))}
         defaultIsChecked={isBarcodeEnabled}>
-        {t('FEATURE_FLAG_BARCODE')}
+        <CheckboxIndicator>
+          <CheckboxIcon as={CheckIcon} />
+        </CheckboxIndicator>
+        <CheckboxLabel>{t('FEATURE_FLAG_BARCODE')}</CheckboxLabel>
       </Checkbox>
-    </Column>
+    </Box>
   );
 }

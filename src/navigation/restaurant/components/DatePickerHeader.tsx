@@ -1,8 +1,11 @@
-import { HStack, Icon, Pressable, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
+import { Calendar, RefreshCw, ChevronRight } from 'lucide-react-native';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 class DatePickerHeader extends Component {
   render() {
@@ -15,29 +18,22 @@ class DatePickerHeader extends Component {
     }
 
     return (
-      <HStack w="100%">
-        <Pressable w="50%" onPress={() => this.props.onCalendarClick()}>
+      <HStack className="w-full">
+        <Pressable className="w-1/2" onPress={() => this.props.onCalendarClick()}>
           <HStack
-            flex={1}
-            alignItems="center"
-            justifyContent="space-between"
-            p="2">
-            <Icon as={FontAwesome} name="calendar" />
+            className="items-center justify-between p-2">
+            <Icon as={Calendar} />
             <Text>{date.format(dateFormat)}</Text>
             <Icon
-              as={FontAwesome}
-              name="chevron-right"
+              as={ChevronRight}
               style={{ color: '#ddd' }}
             />
           </HStack>
         </Pressable>
-        <Pressable w="50%" onPress={() => this.props.onTodayClick()}>
+        <Pressable className="w-1/2" onPress={() => this.props.onTodayClick()}>
           <HStack
-            alignItems="center"
-            justifyContent="space-between"
-            p="2"
-            bgColor="#2ECC71">
-            <Icon as={FontAwesome} name="refresh" />
+            className="items-center justify-between p-2 bg-success-200">
+            <Icon as={RefreshCw} />
             <Text>{this.props.t('TODAY')}</Text>
           </HStack>
         </Pressable>

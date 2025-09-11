@@ -1,6 +1,10 @@
 import { Formik } from 'formik';
 import moment from 'moment';
-import { Box, Button, HStack, Text, VStack } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -194,15 +198,17 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
     setFieldTouched,
   ) {
     return (
-      <Box py="4">
-        <HStack justifyContent="space-between">
+      <Box className="py-4">
+        <HStack className="justify-between">
           <VStack>
             <Text style={styles.label}>
               {t('STORE_NEW_DELIVERY_DROPOFF_BEFORE')}
             </Text>
             <Text>{moment(values.before).format('LLL')}</Text>
           </VStack>
-          <Button onPress={showDateTimePicker}>{t('EDIT')}</Button>
+          <Button onPress={showDateTimePicker}>
+            <ButtonText>{t('EDIT')}</ButtonText>
+          </Button>
         </HStack>
         <DateTimePickerModal
           isVisible={isDateTimePickerVisible}

@@ -1,19 +1,19 @@
-import { Button, FlatList, HStack, Icon } from 'native-base';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
-import Foundation from 'react-native-vector-icons/Foundation';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MapPin, Clock, Phone, Recycle, Info, MessageCircle, Tag, Box, Weight } from 'lucide-react-native';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
   isDisplayPaymentMethodInList,
   loadDescriptionTranslationKey,
-  loadIconKey,
+  getIcon,
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
 import { getAddress, getName, getPackagesSummary, getTimeFrame } from './utils';
@@ -40,7 +40,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
 
   const items = [
     {
-      iconName: 'navigate',
+      icon: MapPin,
       text: address,
       onPress: () =>
         showLocation({
@@ -52,14 +52,14 @@ const Details = ({ task, onTaskTitleClick, t }) => {
         }),
     },
     {
-      iconName: 'time',
+      icon: Clock,
       text: timeframe,
     },
   ];
 
   if (task.address.telephone) {
     items.push({
-      iconName: 'call',
+      icon: Phone,
       text: task.address.telephone,
       onPress: () => phonecall(task.address.telephone, true),
     });
@@ -67,15 +67,14 @@ const Details = ({ task, onTaskTitleClick, t }) => {
 
   if (task.metadata && task.metadata.has_loopeat_returns) {
     items.push({
-      iconName: 'recycle',
-      iconType: FontAwesome5,
+      icon: Recycle,
       text: t('LOOPEAT_HAS_RETURNS'),
     });
   }
 
   if (task.address.description) {
     items.push({
-      iconName: 'information-circle',
+      icon: Info,
       text: task.address.description,
     });
   }
@@ -86,8 +85,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
     isDisplayPaymentMethodInList(task.metadata.payment_method)
   ) {
     items.push({
-      iconName: loadIconKey(task.metadata.payment_method),
-      iconType: Foundation,
+      icon: getIcon(task.metadata.payment_method),
       text:
         t(loadDescriptionTranslationKey(task.metadata.payment_method)) +
         (task.metadata.order_total
@@ -98,23 +96,24 @@ const Details = ({ task, onTaskTitleClick, t }) => {
 
   if (task.comments) {
     items.push({
-      iconName: 'chatbubbles',
+      icon: MessageCircle,
       text: task.comments,
     });
   }
 
   if (task.tags.length > 0) {
     items.push({
-      iconName: 'star',
+      icon: Tag,
       component: (
         <View style={{ flex: 1, flexDirection: 'row' }}>
           {task.tags.map(tag => (
             <Button
-              style={{ backgroundColor: tag.color, marginRight: 5 }}
+              className="mr-1"
+              style={{ backgroundColor: tag.color }}
               key={tag.slug}
-              small
+              size="xs"
               disabled>
-              <Text style={{ fontSize: 10 }}>{tag.slug}</Text>
+              <ButtonText>{tag.slug}</ButtonText>
             </Button>
           ))}
         </View>
@@ -125,7 +124,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
   if (task.packages && task.packages.length) {
     const packagesSummary = getPackagesSummary(task);
     items.push({
-      iconName: 'cube',
+      icon: Box,
       text: `${packagesSummary.text}`,
       component: (
         <Text fontWeight="bold">
@@ -137,8 +136,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
 
   if (task.weight) {
     items.push({
-      iconName: 'scale',
-      iconType: MaterialCommunityIcons,
+      icon: Weight,
       text: `${(Number(task.weight) / 1000).toFixed(2)} kg`,
     });
   }
@@ -151,20 +149,16 @@ const Details = ({ task, onTaskTitleClick, t }) => {
             onTaskTitleClick(task);
           }}
           style={{ flex: 1 }}>
-          <HStack alignItems="center" justifyContent="space-between" p="2">
+          <HStack className="items-center justify-between p-2">
             {renderTaskTitle()}
-            <Icon
-              as={Ionicons}
-              name="arrow-forward"
-              style={{ color: '#ccc' }}
-            />
+            <Icon as={ArrowRightIcon} />
           </HStack>
         </TouchableOpacity>
       )}
       {!onTaskTitleClick && renderTaskTitle()}
       <FlatList
         data={items}
-        keyExtractor={(item, index) => `task-detail-${item.iconName}-${index}`}
+        keyExtractor={(item, index) => `task-detail-${index}`}
         renderItem={({ item }) => <Detail item={item} />}
         ItemSeparatorComponent={ItemSeparator}
       />

@@ -1,4 +1,4 @@
-import { Icon, Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -25,12 +25,11 @@ export default ({ onPress }) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Icon
-        as={FontAwesome5}
+      <FontAwesome5
         name="check-circle"
         solid
         style={styles.icon}
-        size="lg"
+        size={32}
       />
       <Text style={styles.text}>{t('NO_TASKS')}</Text>
       <Text note>{t('TOUCH_TO_RELOAD')}</Text>

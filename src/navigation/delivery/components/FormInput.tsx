@@ -1,40 +1,13 @@
-import { Input } from 'native-base';
-import {
-  useBackgroundContainerColor,
-  useBackgroundHighlightColor,
-  usePrimaryColor,
-} from '../../../styles/theme';
-import { StyleSheet } from 'react-native';
+import { Input, InputField } from '@/components/ui/input';
 
-export default function FormInput(props) {
-  const backgroundColor = useBackgroundContainerColor();
-  const primaryColor = usePrimaryColor();
-  const borderColor = useBackgroundHighlightColor();
+export default function FormInput({ style, ...props }) {
 
   return (
-    <Input
-      _stack={{ style: {} }}
-      {...props}
-      style={[
-        styles.input,
-        props.style,
-        {
-          borderColor,
-          backgroundColor,
-        },
-      ]}
-      _focus={{
-        backgroundColor,
-        borderColor: primaryColor,
-      }}
-    />
+    <Input>
+      <InputField
+        {...props}
+        style={ style }
+      />
+    </Input>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    paddingHorizontal: 10,
-    borderWidth: 0,
-  },
-});

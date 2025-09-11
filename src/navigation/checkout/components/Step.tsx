@@ -1,7 +1,10 @@
-import { Box, HStack, Text, VStack, View } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { greenColor, greyColor, redColor } from '../../../styles/common';
 
 class Step extends Component {

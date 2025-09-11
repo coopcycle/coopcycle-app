@@ -1,43 +1,11 @@
+import { useColorScheme } from 'nativewind';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import Color from 'colorjs.io';
-import {
-  extendTheme,
-  useColorModeValue,
-  useToken,
-  v33xTheme,
-} from 'native-base';
 import { primaryColor } from './common';
 
-// ideally we should get rid of the v33xTheme theme
-// as it's not always correctly overrides the default theme
-// making it harder to figure out where a certain style is coming from
-export const nativeBaseTheme = extendTheme(v33xTheme, {
-  config: {
-    useSystemColorMode: true,
-  },
-  components: {
-    Badge: {
-      variants: {
-        subtle: {
-          bg: 'gray.200',
-          _dark: {
-            bg: 'gray.800',
-          },
-        },
-      },
-    },
-  },
-});
-
-// resolve native-base token to a color value
-// to be able to use it in non native-base components
-export const useColorModeToken = (lightModeToken, darkModeToken) => {
-  const [lightModeColor, darkModeColor] = useToken('colors', [
-    lightModeToken,
-    darkModeToken,
-  ]);
-
-  return useColorModeValue(lightModeColor, darkModeColor);
+export const useColorModeValue = <T>(lightValue: T, darkValue: T): T => {
+  const { colorScheme } = useColorScheme();
+  return colorScheme === 'dark' ? darkValue : lightValue;
 };
 
 export const useBackgroundColor = () => {
@@ -70,27 +38,33 @@ const primaryLight = checkContrast(primaryColor, '#FFFFFF', 'light');
 const primaryDark = checkContrast(primaryColor, '#201E1E', 'dark');
 
 export const usePrimaryColor = () => {
-  return useColorModeToken(primaryLight, primaryDark);
+  return useColorModeValue(primaryLight, primaryDark);
 };
 
 export const useBaseTextColor = () => {
-  // default style: https://github.com/GeekyAnts/NativeBase/blob/master/src/theme/components/text.ts
-  return useColorModeToken('text.900', 'text.50');
+  // text-typography-950
+  return useColorModeValue('rgb(23 23 23)', 'rgb(254 254 255)');
 };
 
 export const useSecondaryTextColor = () => {
-  return useColorModeToken('text.600', 'text.400');
+  // text-typography-500
+  return useColorModeValue('rgb(140 140 140)', 'rgb(163 163 163)');
 };
 
 export const useBackgroundContainerColor = () => {
-  return useColorModeToken('#FFFFFF', '#201E1E');
+  // bg-background-50
+  return useColorModeValue('rgb(246 246 246)', 'rgb(39 38 37)');
 };
 
 export const useBackgroundHighlightColor = () => {
-  return useColorModeToken('#f2f2f2', '#353030');
+  return useColorModeValue('#f2f2f2', '#353030');
 };
 
-export const useSolidButtonTextColor = () => {
-  // default style: https://github.com/GeekyAnts/NativeBase/blob/master/src/theme/components/button.ts#L131
-  return useColorModeToken('text.50', 'text.50');
+// IconText component
+export const useIconColor = () => {
+  return useColorModeValue('#424242', '#B0BEC5');
+};
+
+export const useBlackAndWhiteTextColor = () => {
+  return useColorModeValue('#000000', '#FFFFFF');
 };

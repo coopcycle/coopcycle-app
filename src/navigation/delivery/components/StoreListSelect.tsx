@@ -1,5 +1,8 @@
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { Icon, Text } from 'native-base';
+import { FlatList, RefreshControl } from 'react-native';
+import { Icon, ArrowRightIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { Pressable } from '@/components/ui/pressable';
+import { HStack } from '@/components/ui/hstack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
@@ -12,30 +15,17 @@ export default function StoreListSelect({
   isRefreshing,
   onRefreshStores,
 }) {
-  const styles = StyleSheet.create({
-    item: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingVertical: 15,
-      paddingHorizontal: 15,
-    },
-    itemLabel: {
-      flex: 1,
-      paddingHorizontal: 10,
-    },
-  });
 
   const renderItem = ({ item, index }) => {
     return (
-      <TouchableOpacity
+      <Pressable
         onPress={() => onSelectStore(item)}
-        style={styles.item}
         testID={`dispatch:storeList:${index}`}>
-        <Text style={styles.itemLabel}>{item.name}</Text>
-        <Icon as={FontAwesome} name="arrow-right" />
-      </TouchableOpacity>
+        <HStack className="items-center justify-between p-4">
+          <Text>{item.name}</Text>
+          <Icon as={ArrowRightIcon} />
+        </HStack>
+      </Pressable>
     );
   };
 

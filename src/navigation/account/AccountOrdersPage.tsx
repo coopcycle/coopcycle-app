@@ -1,13 +1,16 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { Box, HStack, Heading, Text, VStack } from 'native-base';
+import { Badge, BadgeText } from '@/components/ui/badge';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
   InteractionManager,
   RefreshControl,
   SectionList,
-  StyleSheet,
   View,
 } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
@@ -15,7 +18,6 @@ import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
 import i18n from '../../i18n';
 import { loadOrders } from '../../redux/Account/actions';
-import { blueColor, greenColor, redColor } from '../../styles/common';
 import { formatPrice } from '../../utils/formatting';
 
 class AccountOrdersPage extends Component {
@@ -42,44 +44,41 @@ class AccountOrdersPage extends Component {
         case 'fulfilled':
           return {
             text: i18n.t('ORDER_FULFILLED'),
-            style: styles.fulfilled,
+            style: "success",
             route: 'AccountOrder',
           };
         case 'cancelled':
         case 'refused':
           return {
             text: i18n.t('ORDER_CANCELLED'),
-            style: styles.cancelled,
             route: 'AccountOrder',
+            style: "error",
           };
         default:
           return {
             text: i18n.t('ORDER_NEW'),
-            style: styles.new,
-            route: 'OrderTracking',
+            route: 'AccountOrderTracking',
+            style: "info",
           };
       }
     };
+
     const state = stateToRender(order.state);
     return (
       <TouchableNativeFeedback
         onPress={() => navigate(state.route, { order: order.number })}>
-        <HStack justifyContent="space-between" p="2">
+        <HStack className="justify-between p-2">
           <VStack>
-            <Text fontSize={16} paddingBottom={1}>
+            <Text className="mb-2">
               {order.restaurant.name}
             </Text>
-            <HStack space={2}>
-              <Text fontFamily={'RobotoMono-Regular'} style={styles.badge}>
+            <HStack space="md">
+              <Text  style={{fontFamily: 'RobotoMono-Regular'}}>
                 {order.number}
               </Text>
-              <Box
-                style={{
-                  ...styles.badge,
-                  ...state.style,
-                }}>
-                <Text>{state.text}</Text>
-              </Box>
+              <Badge action={state.style}>
+                <BadgeText>{state.text}</BadgeText>
+              </Badge>
             </HStack>
           </VStack>
           <Text>{formatPrice(order.total)}</Text>
@@ -90,7 +89,7 @@ class AccountOrdersPage extends Component {
 
   _renderSectionHeader(section) {
     return (
-      <Heading size="sm" p="2">
+      <Heading size="sm" className="p-2">
         {moment(section.day).format('LL')}
       </Heading>
     );
@@ -136,23 +135,6 @@ class AccountOrdersPage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  badge: {
-    backgroundColor: '#00000011',
-    borderRadius: 3,
-    paddingHorizontal: 3,
-  },
-  new: {
-    backgroundColor: blueColor + '44',
-  },
-  cancelled: {
-    backgroundColor: redColor + '44',
-  },
-  fulfilled: {
-    backgroundColor: greenColor + '44',
-  },
-});
 
 function mapStateToProps(state) {
   // At the moment, we only show foodtech orders

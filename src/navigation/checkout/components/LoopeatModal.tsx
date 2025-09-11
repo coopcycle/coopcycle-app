@@ -1,4 +1,7 @@
-import { Box, Button, Text } from 'native-base';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import classNames from 'classnames';
+import { Button, ButtonText } from '@/components/ui/button';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useColorScheme } from 'react-native';
@@ -25,12 +28,15 @@ const LoopeatModal = ({ name, isVisible, onPress }) => {
       swipeDirection={['down', 'up', 'left', 'right']}
       onSwipeComplete={() => setHidden(true)}
       onBackdropPress={() => setHidden(true)}>
-      <Box p="4" bg={colorScheme === 'dark' ? 'dark.100' : 'white'}>
-        <Text mb="3">
+      <Box className={classNames('p-4', {
+        'bg-background-light': colorScheme !== 'dark',
+        'bg-background-dark': colorScheme === 'dark',
+      })}>
+        <Text className="mb-3">
           {t('CART_ZERO_WASTE_POPUP_TEXT', { name: name || '' })}
         </Text>
         <Button testID="reusablePackagingOk" onPress={onPress}>
-          {t('CART_ZERO_WASTE_POPUP_BUTTON_TEXT')}
+          <ButtonText>{t('CART_ZERO_WASTE_POPUP_BUTTON_TEXT')}</ButtonText>
         </Button>
       </Box>
     </Modal>

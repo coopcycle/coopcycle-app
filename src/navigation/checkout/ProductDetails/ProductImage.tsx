@@ -1,6 +1,5 @@
-import { Image, View } from 'native-base';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   imageWrapper: {
@@ -10,6 +9,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: '100%',
+    resizeMode: "cover"
   },
 });
 
@@ -27,7 +27,6 @@ export const ProductImage = ({ product }) => {
     <View style={styles.imageWrapper}>
       <Image
         style={[styles.image, aspectRatio && { aspectRatio }]}
-        resizeMode="cover"
         source={{ uri: productImage.url }}
         alt="Product image"
       />
