@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { User } from 'lucide-react-native'
 import { Fab, FabIcon } from '@/components/ui/fab';
-import { Check } from 'lucide-react-native'
+import { Check, User } from 'lucide-react-native'
+import { View } from 'react-native';
 
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -24,17 +24,22 @@ function BulkEditTasksFloatingButton({ onPress }) {
     onPress(selectedTasks);
   };
 
+  // We wrap the element in a <View>,
+  // to avoid Detox sayins "matches 2 views in the hierarchy"
+  // because the "testID" prop is propagated to the child elements
+
   return (
     <>
       {allSelectedTasks.length < 2 ? null : (
-        <Fab
-          size="xl"
-          placement="bottom right"
-          onPress={handleOnPress}
-          testID="bulkAssignButton"
-        >
-          <FabIcon as={User} />
-        </Fab>
+        <View testID="bulkAssignButton">
+          <Fab
+            size="xl"
+            placement="bottom right"
+            onPress={handleOnPress}
+          >
+            <FabIcon as={User} />
+          </Fab>
+        </View>
       )}
     </>
   );

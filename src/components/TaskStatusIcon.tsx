@@ -29,30 +29,37 @@ export const TaskTypeIcon = ({ task }) => (
 export const TaskStatusIcon = ({ task }) => {
   const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
+  // We wrap the element in a <View>,
+  // to avoid Detox sayins "matches 2 views in the hierarchy"
+  // because the "testID" prop is propagated to the child elements
+
   switch (task.status) {
     case 'DOING':
       return (
-        <Icon
-          as={DoingIcon}
-          style={iconStyle(task)}
-          testID={testID}
-        />
+        <View testID={testID}>
+          <Icon
+            as={DoingIcon}
+            style={iconStyle(task)}
+          />
+        </View>
       );
     case 'DONE':
       return (
-        <Icon
-          as={DoneIcon}
-          style={iconStyle(task)}
-          testID={testID}
-        />
+        <View testID={testID}>
+          <Icon
+            as={DoneIcon}
+            style={iconStyle(task)}
+          />
+        </View>
       );
     case 'FAILED':
       return (
-        <Icon
-          as={FailedIcon}
-          style={iconStyle(task)}
-          testID={testID}
-        />
+        <View testID={testID}>
+          <Icon
+            as={FailedIcon}
+            style={iconStyle(task)}
+          />
+        </View>
       );
     default:
       return <View />;
