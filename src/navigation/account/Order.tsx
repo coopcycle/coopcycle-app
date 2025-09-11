@@ -1,9 +1,15 @@
-import { Button, Center, Icon, Text, VStack } from 'native-base';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
+import { Utensils, Share, Receipt } from 'lucide-react-native';
+import { Center } from '@/components/ui/center';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { find } from 'lodash';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,10 +27,10 @@ import { selectHttpClient } from '../../redux/App/selectors';
 class OrderPage extends Component {
   renderDetail(order) {
     return (
-      <VStack flex={1} testID="accountOrder">
-        <Center mb="3" py="2">
-          <Icon style={styles.restaurantText} as={FontAwesome} name="cutlery" />
-          <Text style={styles.restaurantText}>{order.restaurant.name}</Text>
+      <VStack flex={1} testID="accountOrder" className="mb-3">
+        <Center className="mb-3 py-2">
+          <Icon as={Utensils} size={24} />
+          <Text >{order.restaurant.name}</Text>
         </Center>
         <OrderItems order={order} withDeliveryTotal={true} />
       </VStack>
@@ -36,17 +42,14 @@ class OrderPage extends Component {
 
     if (order) {
       return (
-        <>
-          <VStack flex={1}>
+        <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+          <VStack flex={1} className="px-2">
             {this.renderDetail(order)}
             {order.state === 'fulfilled' && order.hasReceipt && (
               <Button
-                onPress={() => this.props.shareInvoice(order)}
-                leftIcon={<Icon as={Ionicons} name="share-outline" size="sm" />}
-                margin={5}
-                variant="subtle"
-                colorScheme="secondary">
-                {i18n.t('SHARE_INVOICE')}
+                onPress={() => this.props.shareInvoice(order)}>
+                <ButtonIcon as={Share} />
+                <ButtonText>{i18n.t('SHARE_INVOICE')}</ButtonText>
               </Button>
             )}
             {order.state === 'fulfilled' && !order.hasReceipt && (
@@ -54,14 +57,9 @@ class OrderPage extends Component {
                 onPress={() => {
                   this.props.showAddressModal(i18n.t('BILLING_ADDRESS'));
                 }}
-                leftIcon={
-                  <Icon as={Ionicons} name="receipt-outline" size="sm" />
-                }
-                margin={5}
-                variant="subtle"
-                colorScheme="secondary"
                 isLoading={this.props.loading}>
-                {i18n.t('GENERATE_INVOICE')}
+                <ButtonIcon as={Receipt} />
+                <ButtonText>{i18n.t('GENERATE_INVOICE')}</ButtonText>
               </Button>
             )}
           </VStack>
@@ -74,7 +72,7 @@ class OrderPage extends Component {
               }}
             />
           )}
-        </>
+        </SafeAreaView>
       );
     }
 
@@ -83,9 +81,6 @@ class OrderPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  restaurantText: {
-    color: '#cccccc',
-  },
   content: {
     backgroundColor: 'white',
     padding: 22,

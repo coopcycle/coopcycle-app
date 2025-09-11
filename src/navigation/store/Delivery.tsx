@@ -1,11 +1,15 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import _ from 'lodash';
-import { HStack, Heading, Icon, Text, VStack } from 'native-base';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
+import { Icon } from '@/components/ui/icon';
+import { User, Phone, MapPin, MessageCircle, Clock } from 'lucide-react-native'
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
 
 import NavigationAwareMap from '../../components/NavigationAwareMap';
@@ -35,24 +39,24 @@ class DeliveryDetail extends Component {
 
     const recipientItems = [];
     recipientItems.push({
-      icon: 'map-marker-alt',
+      icon: MapPin,
       text: delivery.dropoff.address.streetAddress,
     });
     recipientItems.push({
-      icon: 'user',
+      icon: User,
       text: delivery.dropoff.address.contactName,
     });
 
     if (!_.isEmpty(delivery.dropoff.address.description)) {
       recipientItems.push({
-        icon: 'comment',
+        icon: MessageCircle,
         text: delivery.dropoff.address.description,
       });
     }
 
     if (delivery.dropoff.address.telephone) {
       recipientItems.push({
-        icon: 'phone',
+        icon: Phone,
         text: parsePhoneNumberFromString(
           delivery.dropoff.address.telephone,
         ).formatNational(),
@@ -79,18 +83,18 @@ class DeliveryDetail extends Component {
           </NavigationAwareMap>
         </View>
         <View style={{ flex: 2 }}>
-          <VStack p="3">
+          <VStack className="p-3 justity-center">
             <Heading>{this.props.t('DELIVERY_DETAILS_TIME_SLOT')}</Heading>
-            <HStack py="2">
-              <Icon as={FontAwesome5} name="clock" size="sm" mr="2" />
+            <HStack className="py-2 items-center">
+              <Icon as={Clock} size="sm" className="mr-2" />
               <Text style={styles.itemText}>
                 {humanizeTaskTime(delivery.dropoff)}
               </Text>
             </HStack>
             <Heading>{this.props.t('DELIVERY_DETAILS_RECIPIENT')}</Heading>
             {recipientItems.map((item, i) => (
-              <HStack py="2" key={`recipient-${i}`}>
-                <Icon as={FontAwesome5} name={item.icon} size="sm" mr="2" />
+              <HStack className="py-2 items-center" key={`recipient-${i}`}>
+                <Icon as={item.icon} size="sm" className="mr-2" />
                 <Text style={styles.itemText}>{item.text}</Text>
               </HStack>
             ))}

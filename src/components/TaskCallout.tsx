@@ -1,14 +1,15 @@
-import { Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import TaskTitle from './TaskTitle';
 
 const Recipient = ({ task }) => {
   if (task.address.contactName) {
     return (
-      <Text color="black" style={styles.text}>
+      <Text style={[ styles.text, { color: 'black' } ]}>
         {task.address.contactName}
       </Text>
     );
@@ -25,7 +26,7 @@ const Address = ({ task }) => {
   }
 
   return (
-    <Text color="black" style={styles.text} numberOfLines={3}>
+    <Text style={[ styles.text, { color: 'black' } ]} numberOfLines={3}>
       {parts.join(' - ')}
     </Text>
   );
@@ -36,10 +37,11 @@ const Tag = ({ tag }) => (
 );
 
 export default ({ task, warnings }) => {
+  // TODO Handle dark mode
   return (
     <View>
       <View style={styles.container}>
-        <Text color="black">
+        <Text style={{ color: 'black' }}>
           <TaskTitle task={task} />
         </Text>
         <Recipient task={task} />
@@ -54,9 +56,8 @@ export default ({ task, warnings }) => {
         {warnings.map((warning, index) => (
           <Icon
             key={index}
-            as={warning.icon.type ?? FontAwesome}
-            name={warning.icon.name}
-            size={warning.icon.size ?? undefined}
+            as={warning.icon}
+            style={{ color: 'black' }}
           />
         ))}
       </View>

@@ -1,12 +1,20 @@
 import { Formik } from 'formik';
 import _ from 'lodash';
-import { Button, FormControl, Input, Text } from 'native-base';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlError,
+  FormControlErrorText,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Input, InputField } from '@/components/ui/input';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 
-import material from '../../native-base-theme/variables/material';
 import i18n from '../i18n';
 
 class ForgotPasswordForm extends Component {
@@ -59,34 +67,38 @@ class ForgotPasswordForm extends Component {
           return (
             <View>
               <FormControl isInvalid={hasError('username')}>
-                <FormControl.Label>
-                  {this.props.t('USERNAME_OR_EMAIL')}
-                </FormControl.Label>
-                <Input
-                  _stack={{ style: {} }}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  returnKeyType="done"
-                  onChangeText={handleChange('username')}
-                  onBlur={handleBlur('username')}
-                  onSubmitEditing={handleSubmit}
-                />
+                <FormControlLabel>
+                  <FormControlLabelText>{this.props.t('USERNAME_OR_EMAIL')}</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
+                  <InputField
+                    _stack={{ style: {} }}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    returnKeyType="done"
+                    onChangeText={handleChange('username')}
+                    onBlur={handleBlur('username')}
+                    onSubmitEditing={handleSubmit}
+                  />
+                </Input>
                 {hasError('username') ? (
-                  <FormControl.ErrorMessage>
-                    {getError('username')}
-                  </FormControl.ErrorMessage>
+                  <FormControlError>
+                    <FormControlErrorText>
+                      {getError('username')}
+                    </FormControlErrorText>
+                  </FormControlError>
                 ) : null}
               </FormControl>
               <View style={{ marginTop: 20 }}>
                 <Button block onPress={handleSubmit}>
-                  <Text>{this.props.t('SUBMIT')}</Text>
+                  <ButtonText>{this.props.t('SUBMIT')}</ButtonText>
                 </Button>
                 <Text
                   style={{
                     marginTop: 15,
-                    color: material.inputErrorBorderColor,
-                  }}>
+                  }}
+                  className="text-error-400">
                   {this.props.nonInputError}
                 </Text>
               </View>

@@ -1,9 +1,11 @@
-import { Box, HStack, Icon, Text } from 'native-base';
+import { Icon, CloseIcon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import ColorHash from 'color-hash';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { isKeywordFilterNegative } from '../../../redux/logistics/utils';
 import { removeKeywordFilter } from '../../../redux/Dispatch/keywordFiltersSlice';
@@ -53,21 +55,22 @@ function ActiveFilter({ filter, ...props }) {
   return (
     <TouchableOpacity onPress={removeFilter} {...props}>
       <HStack
-        style={styles.activeFilter}
-        backgroundColor={secondaryColor}
-        borderColor={color}>
+        style={[styles.activeFilter, {
+          backgroundColor: secondaryColor,
+          borderColor: color,
+        }]}>
         <Text
-          style={styles.activeFilterLabel}
-          color={mainColor}
-          borderRightColor={mainColor}>
+          style={[styles.activeFilterLabel, {
+            color: mainColor,
+            borderRightColor: mainColor,
+          }]}
+          >
           {filter.keyword}
         </Text>
         <Icon
-          as={FontAwesome}
-          name="times"
-          size={4}
-          color={mainColor}
-          style={styles.activeFilterClose}
+          as={CloseIcon}
+          size="xs"
+          style={[styles.activeFilterClose, { color: mainColor }]}
         />
       </HStack>
     </TouchableOpacity>
@@ -105,6 +108,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   activeFilterClose: {
-    marginLeft: 6,
+    marginHorizontal: 6,
   },
 });

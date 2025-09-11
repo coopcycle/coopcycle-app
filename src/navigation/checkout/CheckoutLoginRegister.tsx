@@ -1,4 +1,5 @@
-import { Button, Text } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
@@ -57,9 +58,9 @@ class LoginRegister extends Component {
               }}>
               <Button
                 testID="guestCheckoutButton"
-                colorScheme="success"
+                action="success"
                 onPress={() => this.props.guestModeOn()}>
-                {this.props.t('CHECKOUT_AS_GUEST')}
+                <ButtonText>{this.props.t('CHECKOUT_AS_GUEST')}</ButtonText>
               </Button>
             </View>
 

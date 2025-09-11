@@ -1,4 +1,6 @@
-import { Button, Center, Text } from 'native-base';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
 import React, { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,9 +44,9 @@ const RegisterConfirm = ({ route }) => {
         <View />
       ) : (
         <View>
-          <Text note>{t('REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED')}</Text>
-          <Button block transparent onPress={_onPressLogin}>
-            <Text>{t('REGISTER_CHECK_EMAIL_LOGIN')}</Text>
+          <Text>{t('REGISTER_CHECK_EMAIL_ALREADY_ACTIVATED')}</Text>
+          <Button onPress={_onPressLogin}>
+            <ButtonText>{t('REGISTER_CHECK_EMAIL_LOGIN')}</ButtonText>
           </Button>
         </View>
       )}

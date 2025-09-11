@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/text';
 import { useSelector } from 'react-redux';
 
 import { filterTasksByKeyword } from '../../shared/src/logistics/redux/taskUtils';

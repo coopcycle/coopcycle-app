@@ -1,4 +1,8 @@
-import { Box, HStack, Icon, Text, VStack } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Icon } from '@/components/ui/icon';
+import { VStack } from '@/components/ui/vstack';
+import { Badge, BadgeText } from '@/components/ui/badge';
+import { Text } from '@/components/ui/text';
 import {
   Dimensions,
   StyleSheet,
@@ -6,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
+import { Recycle } from 'lucide-react-native';
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -19,8 +24,8 @@ import {
   yellowColor,
 } from '../styles/common';
 import {
-  commentsIconName,
-  incidentIconName,
+  CommentsIcon,
+  IncidentIcon,
 } from '../navigation/task/styles/common';
 import { minutes } from '../utils/dates';
 import { PaymentMethodInList } from './PaymentMethodInfo';
@@ -52,7 +57,7 @@ export const styles = StyleSheet.create({
     borderColor: yellowColor,
   },
   icon: {
-    fontSize: 18,
+    marginRight: 12
   },
   iconDanger: {
     color: redColor,
@@ -61,19 +66,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  tagsWrapper: {
-    flexWrap: 'wrap',
-    gap: 2,
-  },
-  tag: {
-    paddingVertical: 0,
-    paddingHorizontal: 4,
-    color: '#ffffff',
-    borderRadius: 4,
-    overflow: 'hidden',
-    textTransform: 'capitalize',
-    marginTop: 4,
   },
 });
 
@@ -90,7 +82,7 @@ const TaskPriorityStatus = ({ task }) => {
   }
 
   return (
-    <Box
+    <View
       style={{
         width: 6,
         height: '100%',
@@ -132,12 +124,11 @@ const SwipeButtonContainer = ({
   );
 };
 
-const SwipeButton = ({ iconName, width }) => (
+const SwipeButton = ({ icon, width }) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
     <Icon
-      as={FontAwesome}
-      name={iconName}
+      as={icon}
       style={{ color: '#ffffff', width: 40 }}
     />
   </View>
@@ -156,9 +147,9 @@ const TaskListItem = forwardRef(
       onPressLeft = () => {},
       onPressRight = () => {},
       swipeOutLeftBackgroundColor,
-      swipeOutLeftIconName,
+      swipeOutLeftIcon,
       swipeOutRightBackgroundColor,
-      swipeOutRightIconName,
+      swipeOutRightIcon,
       onSwipedToLeft,
       onSwipedToRight,
       onSwipeClosed,
@@ -275,7 +266,7 @@ const TaskListItem = forwardRef(
             }}
             testID={`${taskTestId}:left`}
             width={visibleButtonWidth}>
-            <SwipeButton iconName={swipeOutLeftIconName} width={buttonWidth} />
+            <SwipeButton icon={swipeOutLeftIcon} width={buttonWidth} />
           </SwipeButtonContainer>
           <SwipeButtonContainer
             backgroundColor={swipeOutRightBackgroundColor}
@@ -287,7 +278,7 @@ const TaskListItem = forwardRef(
             testID={`${taskTestId}:right`}
             width={visibleButtonWidth}>
             <SwipeButton
-              iconName={swipeOutRightIconName}
+              icon={swipeOutRightIcon}
               size={8}
               width={buttonWidth}
             />
@@ -296,7 +287,6 @@ const TaskListItem = forwardRef(
         <HStack
           style={{
             flex: 1,
-            alignItems: 'stretch',
             minHeight: buttonWidth,
             borderTopRightRadius: cardBorderRadius,
             borderBottomRightRadius: cardBorderRadius,
@@ -317,12 +307,9 @@ const TaskListItem = forwardRef(
               paddingLeft: 12,
               width: cardWidth - buttonWidth,
             }}>
-            <HStack
-              style={{
-                height: '100%',
-              }}>
-              <VStack flex={1} py="3" px="1">
-                <HStack alignItems="center">
+            <HStack>
+              <VStack flex={1} className="py-3 px-1">
+                <HStack className="items-center">
                   <TaskTypeIcon task={task} />
                   <Text
                     testID={`${taskTestId}:title`}
@@ -339,15 +326,14 @@ const TaskListItem = forwardRef(
                 <Text numberOfLines={1} style={textStyle}>
                   {task.address?.streetAddress}
                 </Text>
-                <HStack alignItems="center" justifyContent="space-between">
-                  <Text pr="2" style={textStyle}>
-                    {moment(task.doneAfter).format('LT')} -{' '}
-                    {moment(task.doneBefore).format('LT')}
+                <HStack className="items-center">
+                  <Text className="pr-2" style={textStyle}>
+                    { `${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}` }
                   </Text>
                   <TaskStatusIcon task={task} />
                   {task.address?.description &&
                   task.address?.description.length ? (
-                    <Icon mr="2" as={FontAwesome} name="comments" size="xs" />
+                    <Icon className="mr-2" as={CommentsIcon} size="xs" />
                   ) : null}
                   {task.metadata && task.metadata?.payment_method && (
                     <PaymentMethodInList
@@ -355,39 +341,28 @@ const TaskListItem = forwardRef(
                     />
                   )}
                   {task.metadata && task.metadata.zero_waste && (
-                    <Icon as={FontAwesome5} name="recycle" size="sm" />
+                    <Icon as={Recycle} size="sm" />
                   )}
                 </HStack>
                 {task.tags && task.tags.length ? (
-                  <HStack style={styles.tagsWrapper}>
+                  <HStack space="xs">
                     {task.tags.map(tag => (
-                      <Text
+                      <Badge
+                        size="sm"
                         key={tag.slug}
-                        style={[
-                          styles.textStyle,
-                          styles.tag,
-                          {
-                            backgroundColor: tag.color,
-                          },
-                        ]}>
-                        {tag.name}
-                      </Text>
+                        style={{
+                          backgroundColor: tag.color,
+                        }}>
+                        <BadgeText>{tag.name}</BadgeText>
+                      </Badge>
                     ))}
-                    <Icon
-                      as={FontAwesome}
-                      name={commentsIconName}
-                      style={{
-                        paddingHorizontal: 4,
-                        fontSize: 14,
-                      }}
-                    />
                   </HStack>
                 ) : null}
               </VStack>
               {task.hasIncidents && (
                 <Icon
-                  as={FontAwesome}
-                  name={incidentIconName}
+                  as={IncidentIcon}
+                  size={24}
                   style={{
                     alignSelf: 'center',
                     borderRadius: 5,

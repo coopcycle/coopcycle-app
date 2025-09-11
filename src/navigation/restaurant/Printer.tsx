@@ -1,5 +1,8 @@
 import _ from 'lodash';
-import { Center, Icon, Text, View } from 'native-base';
+import { Icon, ChevronRightIcon, CloseIcon } from '@/components/ui/center';
+import { Printer as PrinterIcon } from 'lucide-react-native';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation, withTranslation } from 'react-i18next';
@@ -12,6 +15,7 @@ import {
   Platform,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -65,8 +69,7 @@ function Item({ item }) {
           item.id}
       </Text>
       <Icon
-        as={FontAwesome}
-        name={item.isConnected ? 'close' : 'chevron-right'}
+        as={item.isConnected ? CloseIcon : ChevronRightIcon}
       />
     </TouchableOpacity>
   );
@@ -112,7 +115,7 @@ function PrinterComponent({ devices, isScanning, _onPressScan }) {
         <TouchableOpacity
           onPress={_onPressScan}
           style={{ padding: 15, alignItems: 'center' }}>
-          <Icon as={FontAwesome} name="print" size="lg" />
+          <Icon as={PrinterIcon} size="lg" />
           <Text>{t('SCAN_FOR_PRINTERS')}</Text>
           {isScanning && (
             <ActivityIndicator

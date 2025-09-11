@@ -1,4 +1,4 @@
-import { Input } from 'native-base';
+import { Input, InputField } from '@/components/ui/input';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
@@ -12,22 +12,23 @@ export default function FormInput(props) {
   const borderColor = useBackgroundHighlightColor();
 
   return (
-    <Input
-      _stack={{ style: {} }}
-      {...props}
-      style={[
-        styles.input,
-        props.style,
-        {
-          borderColor,
+    <Input>
+      <InputField
+        {...props}
+        style={[
+          styles.input,
+          props.style,
+          {
+            borderColor,
+            backgroundColor,
+          },
+        ]}
+        _focus={{
           backgroundColor,
-        },
-      ]}
-      _focus={{
-        backgroundColor,
-        borderColor: primaryColor,
-      }}
-    />
+          borderColor: primaryColor,
+        }}
+      />
+    </Input>
   );
 }
 

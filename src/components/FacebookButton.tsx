@@ -1,4 +1,4 @@
-import { Button, Icon } from 'native-base';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,11 +8,11 @@ export default ({ onPress }) => {
 
   return (
     <Button
-      bgColor="#4267B2"
-      startIcon={<Icon as={FontAwesome} name="facebook-official" size="sm" />}
+      style={{ backgroundColor: "#4267B2" }}
       size="sm"
       onPress={onPress}>
-      {t('CONNECT_WITH_FACEBOOK')}
+      <ButtonIcon as={ () => <FontAwesome name="facebook-official" size={16} /> } />
+      <ButtonText>{t('CONNECT_WITH_FACEBOOK')}</ButtonText>
     </Button>
   );
 };

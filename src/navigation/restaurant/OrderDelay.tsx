@@ -1,4 +1,5 @@
-import { Center, Text } from 'native-base';
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';

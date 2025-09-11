@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 
 import screens, { headerLeft } from '..';
@@ -82,6 +82,32 @@ export default () => {
         options={{
           title: i18n.t('RESET_PASSWORD_NEW_PASSWORD'),
         }}
+      />
+      <Stack.Screen
+        name="AccountOrdersList"
+        component={screens.AccountOrdersPage}
+        options={{
+          title: i18n.t('MY_ORDERS'),
+        }}
+      />
+      <Stack.Screen
+        name="AccountOrderTracking"
+        component={screens.OrderTrackingPage}
+        options={({ route }) => ({
+          title: route.params.order
+            ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
+            : i18n.t('MY_ORDER'),
+        })}
+      />
+      <Stack.Screen
+        name="AccountOrder"
+        component={screens.AccountOrderPage}
+        options={({ route }) => ({
+          title: route.params.order
+            ? i18n.t('ORDER_NUMBER', { number: route.params.order.number })
+            : i18n.t('MY_ORDER'),
+          ...TransitionPresets.ModalTransition,
+        })}
       />
     </Stack.Navigator>
   );

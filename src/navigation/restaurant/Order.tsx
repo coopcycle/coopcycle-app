@@ -1,8 +1,12 @@
-import { Box, Button, HStack, Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { TriangleAlert } from 'lucide-react-native'
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import OrderItems from '../../components/OrderItems';
@@ -27,8 +31,8 @@ import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 const OrderNotes = ({ order }) => {
   if (order.notes) {
     return (
-      <HStack p="2" alignItems="center">
-        <Icon as={FontAwesome} size="sm" name="exclamation-triangle" mr="2" />
+      <HStack className="p-2 items-center">
+        <Icon as={TriangleAlert} size="xl" className="mr-2" />
         <Text>{order.notes}</Text>
       </HStack>
     );
@@ -74,15 +78,15 @@ class OrderScreen extends Component {
           <OrderItems order={order} />
         </View>
         {order.reusablePackagingEnabled && order.restaurant.loopeatEnabled && (
-          <Box p="3">
+          <Box className="p-3">
             <Button
-              variant="subtle"
+              variant="outline"
               onPress={() =>
                 this.props.navigation.navigate('RestaurantLoopeatFormats', {
                   order,
                 })
               }>
-              {this.props.t('RESTAURANT_LOOPEAT_UPDATE_FORMATS')}
+              <ButtonText>{this.props.t('RESTAURANT_LOOPEAT_UPDATE_FORMATS')}</ButtonText>
             </Button>
           </Box>
         )}

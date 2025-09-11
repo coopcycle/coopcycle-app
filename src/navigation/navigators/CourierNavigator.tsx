@@ -1,10 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Icon } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Map, List, ScanBarcode, Settings } from 'lucide-react-native'
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import screens, { headerLeft } from '..';
 import TrackingIcon from '../../components/TrackingIcon';
@@ -31,7 +30,7 @@ const Tabs = () => (
         title: i18n.t('TASKS'),
         tabBarTestID: 'messengerTabMap',
         tabBarIcon: ({ color }) => {
-          return <Icon as={FontAwesome} name="map" style={{ color }} />;
+          return <Icon as={Map} size="xl" style={{ color }} />;
         },
       })}
     />
@@ -42,7 +41,7 @@ const Tabs = () => (
         title: i18n.t('TASK_LIST'),
         tabBarTestID: 'messengerTabList',
         tabBarIcon: ({ color }) => {
-          return <Icon as={FontAwesome} name="list" style={{ color }} />;
+          return <Icon as={List} size="xl" style={{ color }} />;
         },
       })}
     />
@@ -61,12 +60,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const ButtonWithIcon = ({ name, onPress }) => {
+const ButtonWithIcon = ({ as, onPress }) => {
   const color = useBaseTextColor();
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
-      <Icon as={Ionicons} name={name} style={{ color }} />
+      <Icon size="xl" as={as} style={{ color }} />
     </TouchableOpacity>
   );
 };
@@ -79,12 +78,12 @@ function HeaderButtons({ nav }) {
     <View style={styles.buttonBar}>
       {isBarcodeEnabled && (
         <ButtonWithIcon
-          name="barcode-sharp"
+          name={ScanBarcode}
           onPress={() => nav.navigate('CourierBarcode')}
         />
       )}
       <ButtonWithIcon
-        name="settings-sharp"
+        as={Settings}
         onPress={() => nav.navigate('CourierSettings')}
       />
       <TouchableOpacity style={styles.button}>

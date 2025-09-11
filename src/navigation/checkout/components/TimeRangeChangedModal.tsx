@@ -1,5 +1,7 @@
 import { StyleSheet, View } from 'react-native';
-import { Button, Heading, Text } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Text } from '@/components/ui/text';
 import Modal from 'react-native-modal';
 import React, { useState } from 'react';
 import {
@@ -60,19 +62,19 @@ function ChooseTimeRangeContent({ orderNodeId, restaurantNodeId }) {
 
   return (
     <>
-      <Text mt="8">
+      <Text className="mt-8">
         {t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_TIME_RANGE_TEXT')}
       </Text>
       <TimingCartSelect orderNodeId={orderNodeId} onValueChange={setValue} />
-      <Button testID="setShippingTimeRange" mt="8" onPress={onSchedule}>
-        <Text>
+      <Button testID="setShippingTimeRange" className="mt-8" onPress={onSchedule}>
+        <ButtonText>
           {t('CART_TIME_RANGE_CHANGED_MODAL_SELECT_TIME_RANGE_ACTION')}
-        </Text>
+        </ButtonText>
       </Button>
-      <Button mt="2" variant="link" onPress={chooseRestaurant}>
-        <Text>
+      <Button className="mt-2" variant="link" onPress={chooseRestaurant}>
+        <ButtonText>
           {t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION')}
-        </Text>
+        </ButtonText>
       </Button>
     </>
   );
@@ -84,7 +86,7 @@ function ChooseRestaurantContent() {
 
   return (
     <Button onPress={chooseRestaurant}>
-      <Text>{t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION')}</Text>
+      <ButtonText>{t('CART_TIME_RANGE_CHANGED_MODAL_CHOOSE_RESTAURANT_ACTION')}</ButtonText>
     </Button>
   );
 }
@@ -147,7 +149,7 @@ export default function TimeRangeChangedModal() {
       <View
         testID="timeRangeChangedModal"
         style={[styles.modalContent, { backgroundColor }]}>
-        <Heading size="sm" mb="4">
+        <Heading size="sm" className="mb-4">
           {t('CART_TIME_RANGE_CHANGED_MODAL_TITLE')}
         </Heading>
         <DangerAlert text={t('CART_TIME_RANGE_CHANGED_MODAL_MESSAGE')} />

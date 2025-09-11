@@ -11,8 +11,8 @@ import {
   removeTasksAndOrders,
 } from '../../../redux/Dispatch/updateSelectedTasksSlice';
 import {
-  assignOrderIconName,
-  assignTaskIconName,
+  AssignOrderIcon,
+  AssignTaskIcon,
 } from '../../task/styles/common';
 import {
   createTempTaskList,
@@ -274,7 +274,7 @@ export default function GroupedTasks({
       onSwipeToLeft: handleOnSwipeToLeft(section.taskListId),
       swipeOutLeftEnabled: allowToSelect,
       swipeOutLeftBackgroundColor: darkRedColor,
-      swipeOutLeftIconName: assignOrderIconName,
+      swipeOutLeftIcon: AssignOrderIcon,
     }),
     [assignTaskWithRelatedTasksHandler, handleOnSwipeToLeft],
   );
@@ -285,7 +285,7 @@ export default function GroupedTasks({
       onSwipeToRight: handleOnSwipeToRight(section.taskListId),
       swipeOutRightEnabled: allowToSelect,
       swipeOutRightBackgroundColor: darkRedColor,
-      swipeOutRightIconName: assignTaskIconName,
+      swipeOutRightIcon: AssignTaskIcon,
     }),
     [assignTaskHandler, handleOnSwipeToRight],
   );
@@ -354,7 +354,6 @@ export default function GroupedTasks({
       />
       <BulkEditTasksFloatingButton
         onPress={handleBulkAssignButtonPress}
-        iconName="user-circle"
       />
     </>
   );

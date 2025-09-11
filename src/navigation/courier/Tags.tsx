@@ -1,4 +1,5 @@
-import { HStack, Icon, Text } from 'native-base';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { FlatList, TouchableOpacity } from 'react-native';
@@ -23,14 +24,12 @@ const Tags = ({ toggleDisplayTag, isTagHidden, tags, t }) => (
       <TouchableOpacity
         onPress={() => toggleDisplayTag(item, isTagHidden(item))}>
         <HStack
-          justifyContent="space-between"
-          onPress={() => toggleDisplayTag(item, isTagHidden(item))}
-          p="3">
+          className="justify-between p-3"
+          onPress={() => toggleDisplayTag(item, isTagHidden(item))}>
           <Text>{item}</Text>
-          <Icon
-            as={FontAwesome}
+          <FontAwesome
             name={isTagHidden(item) ? 'eye-slash' : 'eye'}
-            size="sm"
+            size={24}
           />
         </HStack>
       </TouchableOpacity>

@@ -8,7 +8,6 @@ import TaskListItem from './TaskListItem';
 
 const TaskList = ({
   id,
-  multipleSelectionIcon,
   onMultipleSelectionAction,
   onRefresh = () => {},
   onPressLeft = () => {},
@@ -20,9 +19,9 @@ const TaskList = ({
   onOrderClick = () => {},
   refreshing = false,
   swipeOutLeftBackgroundColor,
-  swipeOutLeftIconName,
+  swipeOutLeftIcon,
   swipeOutRightBackgroundColor,
-  swipeOutRightIconName,
+  swipeOutRightIcon,
   tasks,
   appendTaskListTestID = '',
 }) => {
@@ -32,7 +31,7 @@ const TaskList = ({
     onPressLeft: () => onPressLeft(task),
     onSwipedToLeft: () => _handleSwipeToLeft(task),
     swipeOutLeftBackgroundColor,
-    swipeOutLeftIconName,
+    swipeOutLeftIcon,
   });
 
   const swipeRightConfiguration = task => ({
@@ -40,7 +39,7 @@ const TaskList = ({
     onSwipeClosed: () => _handleSwipeClosed(task),
     onSwipedToRight: () => _handleSwipeToRight(task),
     swipeOutRightBackgroundColor,
-    swipeOutRightIconName,
+    swipeOutRightIcon,
   });
 
   const _handleSwipeToLeft = useCallback(
@@ -108,9 +107,8 @@ const TaskList = ({
         maxToRenderPerBatch={6}
         windowSize={3}
       />
-      {multipleSelectionIcon && onFabButtonPressed && (
+      {onFabButtonPressed && (
         <ItemsBulkFabButton
-          iconName={multipleSelectionIcon}
           onPressed={onFabButtonPressed}
           ref={bulkFabButton}
         />
@@ -121,7 +119,6 @@ const TaskList = ({
 
 TaskList.propTypes = {
   id: PropTypes.string.isRequired,
-  multipleSelectionIcon: PropTypes.string,
   onMultipleSelectionAction: PropTypes.func,
   onPressLeft: PropTypes.func,
   onPressRight: PropTypes.func,
@@ -132,10 +129,10 @@ TaskList.propTypes = {
   onOrderClick: PropTypes.func.isRequired,
   swipeOutLeftBackgroundColor: PropTypes.string,
   swipeOutLeftEnabled: PropTypes.func,
-  swipeOutLeftIconName: PropTypes.string,
+  swipeOutLeftIcon: PropTypes.string,
   swipeOutRightBackgroundColor: PropTypes.string,
   swipeOutRightEnabled: PropTypes.func,
-  swipeOutRightIconName: PropTypes.string,
+  swipeOutRightIcon: PropTypes.string,
   tasks: PropTypes.array.isRequired,
 };
 

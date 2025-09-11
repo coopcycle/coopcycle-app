@@ -1,9 +1,13 @@
 import { find } from 'lodash';
 import moment from 'moment';
-import { Button, HStack, Icon, ScrollView, Text, View } from 'native-base';
+import { Icon, HelpCircleIcon } from '@/components/ui/icon';
+import { Clock, MapPin, Tag } from 'lucide-react-native'
+import { Text } from '@/components/ui/text';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { RefreshControl, StyleSheet } from 'react-native';
+import { RefreshControl, StyleSheet, View, ScrollView } from 'react-native';
 import { phonecall } from 'react-native-communications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -184,12 +188,9 @@ class OrderTrackingPage extends Component {
 
         <View style={styles.tracker}>
           <Text style={styles.trackerLabel}>{i18n.t('ORDER_ABOUT')}</Text>
-          <HStack padding={2} space={3}>
+          <HStack className="p-2" space="md">
             <Icon
-              as={Ionicons}
-              name="pricetag-outline"
-              size={5}
-              color={'blueGray.600'}
+              as={Tag}
             />
             <Text
               style={{
@@ -200,11 +201,9 @@ class OrderTrackingPage extends Component {
               {order.number}
             </Text>
           </HStack>
-          <HStack padding={2} space={3}>
+          <HStack className="p-2" space="md">
             <Icon
-              as={Ionicons}
-              name="location-outline"
-              size={5}
+              as={MapPin}
               color={'blueGray.600'}
             />
             <Text style={{ textAlign: 'center', lineHeight: 18 }}>
@@ -212,12 +211,9 @@ class OrderTrackingPage extends Component {
                 i18n.t('FULFILLMENT_METHOD.collection')}
             </Text>
           </HStack>
-          <HStack padding={2} space={3}>
+          <HStack className="p-2" space="md">
             <Icon
-              as={Ionicons}
-              name="time-outline"
-              size={5}
-              color={'blueGray.600'}
+              as={Clock}
             />
             <Text style={{ textAlign: 'center', lineHeight: 18 }}>
               {moment(order.shippedAt).format('ll')} {timeRange[0]} -{' '}
@@ -239,21 +235,19 @@ class OrderTrackingPage extends Component {
             marginBottom: 20,
           }}>
           <Button
+            className="mb-4"
             onPress={() =>
               this.props.navigation.navigate('AccountOrder', {
                 order: order.number,
               })
             }>
-            {i18n.t('SHOW_ORDER_DETAILS')}
+            <ButtonText>{i18n.t('SHOW_ORDER_DETAILS')}</ButtonText>
           </Button>
           <Button
             onPress={() => phonecall(this.props.phoneNumber, true)}
-            size={'sm'}
-            variant="link"
-            leftIcon={
-              <Icon as={Ionicons} name="help-buoy-outline" size="xs" />
-            }>
-            {i18n.t('HELP')}
+            variant="link">
+            <ButtonIcon as={HelpCircleIcon} />
+            <ButtonText>{i18n.t('HELP')}</ButtonText>
           </Button>
         </View>
       </ScrollView>

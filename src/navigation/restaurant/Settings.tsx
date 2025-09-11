@@ -1,15 +1,13 @@
-import {
-  Box,
-  FlatList,
-  HStack,
-  Icon,
-  Pressable,
-  Switch,
-  Text,
-} from 'native-base';
+import { Flame, Tag, SlidersVertical, PowerOff, Calendar, List, Printer, RefreshCw } from 'lucide-react-native'
+import { Icon } from '@/components/ui/icon';
+import { Box } from '@/components/ui/box';
+import { Pressable } from '@/components/ui/pressable';
+import { HStack } from '@/components/ui/hstack';
+import { Switch } from '@/components/ui/switch';
+import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Alert, View } from 'react-native';
+import { Alert, FlatList, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
@@ -45,29 +43,29 @@ class SettingsScreen extends Component {
 
     const items = [
       {
-        icon: 'fire',
+        icon: Flame,
         label: this.props.t('RESTAURANT_SETTINGS_RUSH'),
         switch: (
           <Switch
-            isChecked={this.state.restaurantState === 'rush'}
+            value={this.state.restaurantState === 'rush'}
             onToggle={this._onRushValueChange.bind(this)}
           />
         ),
       },
       {
-        icon: 'tag',
+        icon: Tag,
         label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCTS'),
         onPress: () => navigate('RestaurantProducts'),
       },
       {
-        icon: 'sliders',
+        icon: SlidersVertical,
         label: this.props.t('RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS'),
         onPress: () => navigate('RestaurantProductOptions'),
       },
       ...(!this.props.specialOpeningHoursSpecificationForToday
         ? [
             {
-              icon: 'power-off',
+              icon: PowerOff,
               label: this.props.t('RESTAURANT_CLOSE_ALERT_TITLE'),
               onPress: () => {
                 Alert.alert(
@@ -90,17 +88,17 @@ class SettingsScreen extends Component {
           ]
         : []),
       {
-        icon: 'calendar',
+        icon: Calendar,
         label: this.props.t('RESTAURANT_SETTINGS_OPENING_HOURS'),
         onPress: () => navigate('RestaurantOpeningHours'),
       },
       {
-        icon: 'list',
+        icon: List,
         label: this.props.t('RESTAURANT_SETTINGS_MENUS'),
         onPress: () => navigate('RestaurantMenus'),
       },
       {
-        icon: 'print',
+        icon: Printer,
         label: this.props.t('RESTAURANT_SETTINGS_PRINTER'),
         onPress: () => navigate('RestaurantPrinter'),
       },
@@ -108,7 +106,7 @@ class SettingsScreen extends Component {
 
     if (restaurants.length > 1) {
       items.push({
-        icon: 'refresh',
+        icon: RefreshCw,
         label: this.props.t('RESTAURANT_SETTINGS_CHANGE_RESTAURANT'),
         onPress: () => navigate('RestaurantList'),
       });
@@ -137,10 +135,10 @@ class SettingsScreen extends Component {
             }
 
             return (
-              <Pressable {...itemProps} py="3" px="2">
-                <HStack justifyContent="space-between">
-                  <HStack>
-                    <Icon name={item.icon} as={FontAwesome} size="sm" mr="2" />
+              <Pressable {...itemProps} className="py-3 px-2">
+                <HStack className="justify-between">
+                  <HStack  className="items-center">
+                    <Icon as={item.icon} size="xl" className="mr-3" />
                     <Text>{item.label}</Text>
                   </HStack>
                   {item.switch && item.switch}

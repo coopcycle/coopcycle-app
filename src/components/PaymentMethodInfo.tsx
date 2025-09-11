@@ -1,32 +1,23 @@
-import { Icon, Text } from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
+import { Banknote, CreditCard } from 'lucide-react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
-import material from '../../native-base-theme/variables/material';
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: material.contentPadding,
-    marginBottom: 10,
-  },
-});
 
 const paymentMethods = {
   CARD: {
-    icon: 'credit-card',
+    icon: CreditCard,
     description: 'card',
   },
   CASH_ON_DELIVERY: {
-    icon: 'dollar-bill',
+    icon: Banknote,
     description: 'cash_on_delivery',
   },
 };
 
-export const loadIconKey = paymentMethod => paymentMethods[paymentMethod]?.icon;
+export const getIcon = paymentMethod => paymentMethods[paymentMethod]?.icon;
 
 export const loadDescriptionTranslationKey = paymentMethod =>
   `PAYMENT_METHOD.${paymentMethods[paymentMethod]?.description}`;
@@ -47,7 +38,7 @@ export const PaymentMethodInList = ({ paymentMethod }) => {
     return null;
   }
 
-  return <Icon as={Foundation} name={loadIconKey(paymentMethod)} />;
+  return <Icon as={getIcon(paymentMethod)} />;
 };
 
 export const PaymentMethodInOrderDetails = ({ paymentMethod }) => {
@@ -58,9 +49,10 @@ export const PaymentMethodInOrderDetails = ({ paymentMethod }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Icon as={Foundation} name={loadIconKey(paymentMethod)} />
+    <HStack className="justify-between items-center p-2">
+      <Icon size="xl" as={getIcon(paymentMethod)} />
       <Text>{t(loadDescriptionTranslationKey(paymentMethod))}</Text>
-    </View>
+    </HStack>
   );
 };
+

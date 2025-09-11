@@ -1,19 +1,16 @@
 import React, { useRef, useState } from 'react';
 import _ from 'lodash';
-import {
-  Box,
-  Center,
-  FlatList,
-  HStack,
-  Heading,
-  Icon,
-  Skeleton,
-  Text,
-  VStack,
-} from 'native-base';
+import { Icon } from '@/components/ui/icon';
+import { Map, Phone } from 'lucide-react-native'
+import { Center } from '@/components/ui/center';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
 import { withTranslation } from 'react-i18next';
 import {
   Dimensions,
+  FlatList,
   Pressable,
   StyleSheet,
   View,
@@ -46,21 +43,6 @@ import OpeningHours from './components/OpeningHours';
 import RestaurantProfile from './components/RestaurantProfile';
 import { selectHttpClient } from '../../redux/App/selectors';
 
-const LoadingPhantom = props => (
-  <HStack w="95%" space={6} p="4">
-    <VStack flex="3" space="3">
-      <Skeleton flex={1} />
-      <Skeleton.Text flex={1} lines={2} />
-      <HStack flex={1} space="2" alignItems="center">
-        <Skeleton size="4" rounded="full" />
-        <Skeleton h="3" flex="2" rounded="full" />
-        <Skeleton h="3" flex="1" rounded="full" startColor={props.color} />
-      </HStack>
-    </VStack>
-    <Skeleton flex="1" h="100" w="100" rounded="md" />
-  </HStack>
-);
-
 function Restaurant(props) {
   const { navigate } = props.navigation;
   const colorScheme = useColorScheme();
@@ -88,7 +70,7 @@ function Restaurant(props) {
   //TODO: improve failed view
   if (isError) {
     return (
-      <Center w="95%">
+      <Center flex={1}>
         <Heading>{i18n.t('AN_ERROR_OCCURRED')} </Heading>
         <Text>{i18n.t('TRY_LATER')}</Text>
       </Center>
@@ -216,7 +198,7 @@ function Restaurant(props) {
         isVisible={infoModal}
         onBackdropPress={() => setInfoModal(false)}
         onBackButtonPress={() => setInfoModal(false)}>
-        <Box style={styles.center}>
+        <Box className="justify-center items-center">
           <Heading>{restaurant.name}</Heading>
           <Markdown>{restaurant.description}</Markdown>
           <Text bold padding={3}>
@@ -228,8 +210,8 @@ function Restaurant(props) {
           onPress={() => {
             AddressUtils.openMap(restaurant.address, restaurant.name);
           }}>
-          <HStack space={3} style={cardStyle}>
-            <Icon as={Ionicons} name="map" size={5} color={'blueGray.600'} />
+          <HStack space="md" className="items-center" style={cardStyle}>
+            <Icon as={Map} size="sm" />
             <Text>{restaurant.address.streetAddress}</Text>
           </HStack>
         </Pressable>
@@ -237,8 +219,8 @@ function Restaurant(props) {
           onPress={() => {
             phonecall(restaurant.telephone, true);
           }}>
-          <HStack space={3} style={cardStyle}>
-            <Icon as={Ionicons} name="call" size={5} color={'blueGray.600'} />
+          <HStack space="md"  className="items-center" style={cardStyle}>
+            <Icon as={Phone} size="sm" />
             <Text>
               {i18n.t('CALL')} {restaurant.name}
             </Text>
@@ -253,10 +235,6 @@ function Restaurant(props) {
 }
 
 const styles = StyleSheet.create({
-  center: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   card: {
     borderTopWidth: 1,
     borderBottomWidth: 1,

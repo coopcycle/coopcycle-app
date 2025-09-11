@@ -1,4 +1,5 @@
-import { Text, useColorModeValue } from 'native-base';
+import { useColorModeValue } from 'native-base';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -81,7 +82,7 @@ function RestaurantSearch(props) {
           <IconPin color={fill} />
           <Text
             style={styles.text}
-            fontSize={'md'}
+            size="lg"
             numberOfLines={1}
             ellipsizeMode="tail">
             {props.defaultValue?.streetAddress}

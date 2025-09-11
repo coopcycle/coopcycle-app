@@ -1,4 +1,4 @@
-import { Text } from 'native-base';
+import { Text } from '@/components/ui/text';
 import { StyleSheet, View } from 'react-native';
 import { useBackgroundHighlightColor } from '../styles/theme';
 

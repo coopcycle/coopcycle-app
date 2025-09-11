@@ -9,7 +9,15 @@ import {
   Alert,
   useColorScheme,
 } from 'react-native';
-import { Button, IconButton, TextArea, FormControl, Icon } from 'native-base';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
+import { Badge, BadgeText } from '@/components/ui/badge';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
+import { Phone, TriangleAlert, File } from 'lucide-react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BarcodeCameraView from '../../../components/BarcodeCameraView';
 
@@ -20,7 +28,6 @@ import BottomModal from '../../../components/BottomModal';
 import { navigateToTask } from '../../utils';
 import { selectTasks } from '../../../redux/Courier';
 import { shouldNotificationBeDisplayed } from '../../../redux/App/actions';
-import { Badge } from 'native-base';
 import { selectHttpClient, selectUser } from '../../../redux/App/selectors';
 
 async function _fetchBarcode(httpClient, barcode) {
@@ -286,12 +293,15 @@ function BarcodePage({
         onDismiss={() => setShowNoteModal(false)}
         onBackdropPress={() => setShowNoteModal(false)}>
         <FormControl>
-          <FormControl.Label>{t('NOTES')}</FormControl.Label>
-          <TextArea
-            _stack={{ style: {} }}
-            autoFocus
-            onChange={e => (note.current = e.nativeEvent.text)}
-          />
+          <FormControlLabel>
+            <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
+          </FormControlLabel>
+          <Textarea>
+            <TextareaInput
+              autoFocus
+              onChange={e => (note.current = e.nativeEvent.text)}
+            />
+          </Textarea>
         </FormControl>
         <Button
           isLoading={noteLoading}
@@ -302,7 +312,7 @@ function BarcodePage({
             note.current = null;
             setNoteLoading(false);
           }}>
-          {t('OK')}
+          <ButtonText>{t('OK')}</ButtonText>
         </Button>
       </BottomModal>
       <View style={{ flex: 1 }}>
@@ -338,7 +348,9 @@ function BarcodePage({
           // onTouchEnd={() => console.log(">>>>>>>>>> leave")}
         >
           <View style={styles.section}>
-            <Badge>{entity?.status ? t(`TASK_${entity.status}`) : '-'}</Badge>
+            <Badge>
+              <BadgeText>{entity?.status ? t(`TASK_${entity.status}`) : '-'}</BadgeText>
+            </Badge>
           </View>
           <TextSection
             title={t('ADDRESS')}
@@ -366,31 +378,31 @@ function BarcodePage({
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <IconButton
-            _icon={{ as: Ionicons, name: 'call', color: 'green.500' }}
-            disabled={entity?.address?.telephone == null}
-            onPress={() => phonecall(entity?.address?.telephone, true)}
-          />
+          <Button className="rounded-full p-3 bg-success-300">
+            <ButtonIcon
+              as={Phone}
+              disabled={entity?.address?.telephone == null}
+              onPress={() => phonecall(entity?.address?.telephone, true)}
+            />
+          </Button>
           <Button
             width="70%"
             disabled={entity == null}
-            leftIcon={<Icon as={Ionicons} name="document" color="white" />}
             onPress={() => setShowNoteModal(true)}>
-            {t('ADD_NOTE')}
+            <ButtonIcon as={File} />
+            <ButtonText>{t('ADD_NOTE')}</ButtonText>
           </Button>
-          <IconButton
-            onPress={() =>
-              NavigationHolder.dispatch(
-                CommonActions.navigate('CourierBarcodeReport', { entity }),
-              )
-            }
-            disabled={entity == null}
-            _icon={{
-              as: Ionicons,
-              name: 'warning',
-              color: 'red.500',
-            }}
-          />
+          <Button className="rounded-full p-3 bg-error-300">
+            <ButtonIcon
+              as={TriangleAlert}
+              onPress={() =>
+                NavigationHolder.dispatch(
+                  CommonActions.navigate('CourierBarcodeReport', { entity }),
+                )
+              }
+              disabled={entity == null}
+            />
+          </Button>
         </View>
       </View>
     </>
