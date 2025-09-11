@@ -117,6 +117,16 @@ platform :android do
       appicon_path: 'app/src/main/res/mipmap',
       generate_rounded: true
     )
+    # TODO Create the base image..!
+    # android_appicon(
+    #   appicon_image_file: 'app/src/main/res/drawable/ic_default_notification.png',
+    #   appicon_image_file: 'app/src/main/res/drawable-xxxhdpi/ic_default_notification.png',
+    #   appicon_icon_types: [:notification],
+    #   appicon_path: 'app/src/main/res/drawable',
+    #   appicon_filename: 'ic_default_notification'
+    #   appicon_filename: 'ic_notification'
+    #   generate_rounded: true
+    # )
   end
 
   desc "Rename app"
