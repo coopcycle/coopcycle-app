@@ -16,7 +16,7 @@ import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlic
 import { buildSelectedTasks } from '../../shared/src/logistics/redux/taskListUtils';
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/logistics/selectors';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
-import Icon from '../../components/Icon';
+import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 
 const RootStack = createStackNavigator();
 
@@ -84,14 +84,9 @@ const Header: React.FC<HeaderProps> = ({ route }) => {
   ]);
 
   return (
-    <TouchableOpacity
-      onPress={handleBulkEditPress}
-      style={{
-        marginRight: 16,
-        padding: 8,
-      }}>
-      <Icon name="user-circle" useFontAwesome={true} size={26} />
-    </TouchableOpacity>
+    <HeaderButtons>
+      <HeaderButton onPress={handleBulkEditPress} iconName="person" />
+    </HeaderButtons>
   );
 };
 
