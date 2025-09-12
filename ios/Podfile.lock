@@ -54,7 +54,7 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXConstants (17.0.8):
     - ExpoModulesCore
-  - Expo (52.0.46):
+  - Expo (52.0.47):
     - ExpoModulesCore
   - ExpoAdapterFBSDKNext (13.4.1):
     - ExpoModulesCore
@@ -2806,7 +2806,7 @@ SPEC CHECKSUMS:
   DatadogWebViewTracking: 3b2465b5a5bf10f187807e490678a2e0a3c2daae
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   EXConstants: fcfc75800824ac2d5c592b5bc74130bad17b146b
-  Expo: a6ff273c618506b12129a0d06f2a08201bfbcf43
+  Expo: 1687edb10c76b0c0f135306d6ae245379f50ed54
   ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
   ExpoAsset: 48386d40d53a8c1738929b3ed509bcad595b5516
   ExpoCamera: 0a3e78de7b1ca8c438ee6784fa6f22c5b1b36966
