@@ -22,7 +22,9 @@ export const parseNotification = (remoteMessage, isForeground) => {
   let data = remoteMessage.data;
 
   if (data.event && _.isString(data.event)) {
-    data.event = JSON.parse(data.event);
+    try {
+      data.event = JSON.parse(data.event);
+    } catch (e) {}
   }
 
   return {
@@ -83,17 +85,11 @@ class PushNotification {
   }
 
   static getInitialNotification() {
-    return new Promise((resolve, reject) => {
-      messaging()
-        .getInitialNotification()
-        .then(remoteMessage => {
-          if (remoteMessage) {
-            resolve(parseNotification(remoteMessage, false));
-          } else {
-            resolve(null);
-          }
-        });
-    });
+    return messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        return remoteMessage ? parseNotification(remoteMessage, false) : null;
+      });
   }
 
   static removeListeners() {
