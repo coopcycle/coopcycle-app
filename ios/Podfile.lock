@@ -1523,7 +1523,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-app-auth (8.0.2):
+  - react-native-app-auth (8.0.3):
     - AppAuth (>= 1.7.6)
     - React-Core
   - react-native-ble-manager (8.8.0):
@@ -1549,9 +1549,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-config (1.5.5):
-    - react-native-config/App (= 1.5.5)
-  - react-native-config/App (1.5.5):
+  - react-native-config (1.5.9):
+    - react-native-config/App (= 1.5.9)
+  - react-native-config/App (1.5.9):
     - React-Core
   - react-native-fbsdk-next (13.4.1):
     - React-Core
@@ -1617,7 +1617,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context (5.4.0):
+  - react-native-safe-area-context (5.6.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1630,8 +1630,8 @@ PODS:
     - React-featureflags
     - React-graphics
     - React-ImageManager
-    - react-native-safe-area-context/common (= 5.4.0)
-    - react-native-safe-area-context/fabric (= 5.4.0)
+    - react-native-safe-area-context/common (= 5.6.1)
+    - react-native-safe-area-context/fabric (= 5.6.1)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -1640,7 +1640,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/common (5.4.0):
+  - react-native-safe-area-context/common (5.6.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1661,7 +1661,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/fabric (5.4.0):
+  - react-native-safe-area-context/fabric (5.6.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2026,7 +2026,7 @@ PODS:
     - React-RCTText
   - RNAppleAuthentication (2.4.1):
     - React-Core
-  - RNBackgroundFetch (4.2.7):
+  - RNBackgroundFetch (4.2.8):
     - React-Core
   - RNBackgroundGeolocation (4.18.6):
     - CocoaLumberjack (~> 3.8.5)
@@ -2073,7 +2073,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNCPicker (2.11.0):
+  - RNCPicker (2.11.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2338,7 +2338,7 @@ PODS:
     - RNSound/Core (= 0.11.2)
   - RNSound/Core (0.11.2):
     - React-Core
-  - RNSVG (15.8.0):
+  - RNSVG (15.12.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2358,9 +2358,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.8.0)
+    - RNSVG/common (= 15.12.1)
     - Yoga
-  - RNSVG/common (15.8.0):
+  - RNSVG/common (15.12.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2932,16 +2932,16 @@ SPEC CHECKSUMS:
   React-logger: c4052eb941cca9a097ef01b59543a656dc088559
   React-Mapbuffer: 9343a5c14536d4463c80f09a960653d754daae21
   React-microtasksnativemodule: c7cafd8f4470cf8a4578ee605daa4c74d3278bf8
-  react-native-app-auth: 2c55acac76891da0ebc4a2a20d75851912e3d5f0
+  react-native-app-auth: eb42594042a25455119a8c57194b4fd25b9352f4
   react-native-ble-manager: 9b2df5891d2ad0bb6e3e684096f32dda3c89f504
   react-native-blob-util: fcba876f9489cc37b6bb7642538a4b28ec542b66
-  react-native-config: 644074ab88db883fcfaa584f03520ec29589d7df
+  react-native-config: d08b60865268872495a43e211059b4606131fe01
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-maps: 9febd31278b35cd21e4fad2cf6fa708993be5dab
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-pager-view: 260a0ae983681a4a1fbf6a8d59e0759fcc66d931
-  react-native-safe-area-context: 06aa29654a39a8e76eeb49b2cbe65e7583a6ecde
+  react-native-safe-area-context: 90a89cb349c7f8168a707e6452288c2f665b9fd1
   react-native-sunmi-printer-library: 32441c9d44627b02c18774157f1025516cc0a604
   react-native-version-number: 3d74b5224ca4e1032b1593937d86d3f3c94bf95c
   react-native-webview: e20ba089a590ed5a914f4c1ec9d0afdd8b3f4987
@@ -2975,11 +2975,11 @@ SPEC CHECKSUMS:
   ReactNativeAvoidSoftinput: 5d22e0afb403e76d5a813c6ccfa3f0d0ec13069c
   ReactNativeKeyboardManager: 5abe57da962b386508945888c75abee4b93f382d
   RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
-  RNBackgroundFetch: 005d4742a64a511ea54cf2929ace9f0804a7c511
+  RNBackgroundFetch: e44c9e85d7fb3122c37d8a806278f62c7682d7ea
   RNBackgroundGeolocation: 487a18057a109cb72e9bf83c469db57ba82b5b23
   RNCAsyncStorage: b3520cd01fc00fd0e7c633812c23708c95ef1b2b
   RNCMaskedView: a718ad5339985073c3419c6b2406182d674e4a77
-  RNCPicker: 69d754b30ed729b3e0168c3d7545be95496c5b86
+  RNCPicker: 474d7305d1f1fc3c9e521fd5e8b7d5045aa6df07
   RNCPushNotificationIOS: 6c4ca3388c7434e4a662b92e4dfeeee858e6f440
   RNDateTimePicker: 021d913f4212fb1716c2e92a75167ed15ac0c4dc
   RNFBAnalytics: 03c83ba4617a3754c99e66267983efcc908932a9
@@ -2994,7 +2994,7 @@ SPEC CHECKSUMS:
   RNSentry: eac9ef466318980d92954711f4507ce3be03d12d
   RNShare: 06d69a0de7cc111302172cd8bd6d228462a6bbc1
   RNSound: 314cc5226453ef4a3314a196c65e8a65e5106a7b
-  RNSVG: d332ea2a8540218eadc5c8f31c2b58dfba6b14b5
+  RNSVG: 0c1fc3e7b147949dc15644845e9124947ac8c9bb
   RNVectorIcons: 7075443f1ecfe4012b7a2f65f684baf3faa9d8c1
   Sentry: 47021097466aa130802420d485a34da445963d99
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
