@@ -105,7 +105,7 @@
     "react-native-maps-super-cluster": "^1.6.0",
     "react-native-markdown-display": "^7.0.2",
     "react-native-modal": "^13.0.1",
-    "react-native-modal-datetime-picker": "^17.1.0",
+    "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-modal-selector": "^2.1.2",
     "react-native-pager-view": "^6.9.1",
     "react-native-payment-icons": "^1.0.11",
