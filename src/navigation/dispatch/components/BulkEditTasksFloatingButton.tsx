@@ -1,7 +1,6 @@
 import _ from 'lodash';
+import { User } from 'lucide-react-native'
 import { Fab, FabIcon } from '@/components/ui/fab';
-import { Check, User } from 'lucide-react-native'
-import { View } from 'react-native';
 
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -31,15 +30,13 @@ function BulkEditTasksFloatingButton({ onPress }) {
   return (
     <>
       {allSelectedTasks.length < 2 ? null : (
-        <View testID="bulkAssignButton">
-          <Fab
-            size="xl"
-            placement="bottom right"
-            onPress={handleOnPress}
-          >
-            <FabIcon as={User} />
-          </Fab>
-        </View>
+        <Fab
+          size="xl"
+          placement="bottom right"
+          onPress={handleOnPress}
+        >
+          <FabIcon as={User} />
+        </Fab>
       )}
     </>
   );
