@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { selectCustomBuild } from '../redux/App/selectors';
 import Server from './account/components/Server';
 
-export default function LoadingError() {
+export default function LoadingError({ onPress }) {
   const customBuild = useSelector(selectCustomBuild);
 
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ export default function LoadingError() {
         }}>
         {t('NET_FAILED')}
       </Text>
-      <Button block onPress={() => this.load()}>
+      <Button block onPress={onPress}>
         <ButtonText>{t('RETRY')}</ButtonText>
       </Button>
       <View style={{ marginVertical: 20 }}>
