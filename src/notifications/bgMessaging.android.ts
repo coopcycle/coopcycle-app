@@ -1,4 +1,4 @@
-import messaging from '@react-native-firebase/messaging';
+import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 import analyticsEvent from '../analytics/Event';
 import tracker from '../analytics/Tracker';
 import { loadOrder } from '../redux/Restaurant/actions';
@@ -41,5 +41,5 @@ export default () => {
   // The background message handler below is *ALWAYS* called
   // when the app is in background or quit state
   // @see https://rnfirebase.io/messaging/usage#background-application-state
-  messaging().setBackgroundMessageHandler(handler);
+  setBackgroundMessageHandler(getMessaging(), handler);
 };
