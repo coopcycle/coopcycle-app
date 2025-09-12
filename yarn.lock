@@ -5802,10 +5802,10 @@
     "@react-types/overlays" "^3.9.1"
     "@react-types/shared" "^3.32.0"
 
-"@reduxjs/toolkit@^2.6.0":
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-2.8.2.tgz#f4e9f973c6fc930c1e0f3bf462cc95210c28f5f9"
-  integrity sha512-MYlOhQ0sLdw4ud48FoC5w0dH9VfWQjtCjreKwYTT3l+r427qYC5Y8PihNutepr8XrNaBUDQo9khWUwQxZaqt5A==
+"@reduxjs/toolkit@^2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-2.9.0.tgz#d4b12b90c27716a6a507193f8c3b2880729b97d5"
+  integrity sha512-fSfQlSRu9Z5yBkvsNhYF2rPS8cGXn/TZVrlwN1948QyZ8xMZ0JvP50S2acZNaf+o63u6aEeMjipFyksjIcWrog==
   dependencies:
     "@standard-schema/spec" "^1.0.0"
     "@standard-schema/utils" "^0.3.0"
@@ -6209,17 +6209,17 @@
   dependencies:
     tslib "^2.8.0"
 
-"@tabler/icons-react-native@^3.19.0":
-  version "3.31.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons-react-native/-/icons-react-native-3.31.0.tgz#39332991fa3b8ae3ee0854fc5a5520572a38c1ce"
-  integrity sha512-Q8UY132CmxmqwpyTNHaIqavmCwj8fIC+gqZw6cHyLH8aak7U1q0zG3zEwPkmOk4gH5OqnD5U0tr+Y2jj4p4vLw==
+"@tabler/icons-react-native@^3.34.1":
+  version "3.34.1"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react-native/-/icons-react-native-3.34.1.tgz#b550e079e5369435b305ed21009ae3a1359857ce"
+  integrity sha512-XCMmdQi1XHXkRlG491sqgTOUkxR1sTaOjdSaIzvnjspKKStzmoE5blwrit+YMW2kriTCneX3tDLiRcAsfWS3ig==
   dependencies:
-    "@tabler/icons" "3.31.0"
+    "@tabler/icons" "3.34.1"
 
-"@tabler/icons@3.31.0":
-  version "3.31.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.31.0.tgz#92d39dc336f2e3e312170420b00ffe9ca474925e"
-  integrity sha512-dblAdeKY3+GA1U+Q9eziZ0ooVlZMHsE8dqP0RkwvRtEsAULoKOYaCUOcJ4oW1DjWegdxk++UAt2SlQVnmeHv+g==
+"@tabler/icons@3.34.1":
+  version "3.34.1"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.34.1.tgz#a04a8cf79a5ebdcc44796dfa3de51d04811d2f9f"
+  integrity sha512-9gTnUvd7Fd/DmQgr3MKY+oJLa1RfNsQo8c/ir3TJAWghOuZXodbtbVp0QBY2DxWuuvrSZFys0HEbv1CoiI5y6A==
 
 "@testing-library/react-native@^12.5.1":
   version "12.9.0"
@@ -7840,19 +7840,19 @@
     "@urql/core" "^5.1.1"
     wonka "^6.3.2"
 
-"@wix-pilot/core@^3.2.2":
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.2.6.tgz#9d566c90b121d7e8ab78436a8496f3a2121f3b2e"
-  integrity sha512-iGjHOOpO13ZNfP3CZDlYhBZ7R6ZqO+1R38nDv5BCIOecD4A4z5/WpEyapvw+ZFsECjFZLWhuKNV0KTJoQAvxYw==
+"@wix-pilot/core@^3.4.1":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.4.2.tgz#a421404893b90913145df399136d3e0dd4d57895"
+  integrity sha512-O8V2NLfPEKI2IviJXG4g/vNbMfsBZNBhzAKFUOOaOR9TTDUJYlZUttqjhjP/fPnaDky0/hrfGES15sO0N7zEkw==
   dependencies:
     chalk "^4.1.0"
     pngjs "^7.0.0"
     winston "^3.17.0"
 
-"@wix-pilot/detox@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@wix-pilot/detox/-/detox-1.0.11.tgz#d21fc93f46980d36643413a58675cc77a276513f"
-  integrity sha512-oCeYz7EhcWOyp0KbaJ3hipMbZ+nWuZ7Pvjno3sUzP1EebrZBZoRoDp16JZMR6H+i+h8OdqkrviI0mR2mYFZzMg==
+"@wix-pilot/detox@^1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@wix-pilot/detox/-/detox-1.0.13.tgz#f7f6e27394ab04d5a9e91b35cdcb087be3682db0"
+  integrity sha512-/34lM25AfmHNMLOeEIhfKVnx2YZyn5VHC/R4Bs1uXQ2B+Yg0JbxAfvfXA3xqxBsdYqrYImILPO3Ih0c5UzoNxw==
 
 "@xmldom/xmldom@^0.8.8":
   version "0.8.10"
@@ -9620,13 +9620,13 @@ detect-node@^2.0.4, detect-node@^2.1.0:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.1.0.tgz#c9c70775a49c3d03bc2c06d9a73be550f978f8b1"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
 
-detox@^20.27.6:
-  version "20.37.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-20.37.0.tgz#34fb32782caf1db5147c833ccb4c168e31820c45"
-  integrity sha512-OUI2p3z31Yku1USBia0jrlwoQoa6rANvVWuUSJyjBlRRKDSeOf/DG/ivk+R5FO+lYZZtA3pIbl6LSql/Bf6DpQ==
+detox@^20.41.1:
+  version "20.41.1"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-20.41.1.tgz#05c459e621359fa3bba812b31b5d90db7bdb277a"
+  integrity sha512-Hp0UyZF7M88LfzAibwxSw/sJaXlz7Smvp1c0CVhUHlT4fZG4Qdr2PulZT+MCVFu6U1Q9jhlRATbDLeNc5q28aQ==
   dependencies:
-    "@wix-pilot/core" "^3.2.2"
-    "@wix-pilot/detox" "^1.0.11"
+    "@wix-pilot/core" "^3.4.1"
+    "@wix-pilot/detox" "^1.0.13"
     ajv "^8.6.3"
     bunyan "^1.8.12"
     bunyan-debug-stream "^3.1.0"
@@ -9638,7 +9638,7 @@ detox@^20.27.6:
     funpermaproxy "^1.1.0"
     glob "^8.0.3"
     ini "^1.3.4"
-    jest-environment-emit "^1.0.8"
+    jest-environment-emit "^1.2.0"
     json-cycle "^1.3.0"
     lodash "^4.17.11"
     multi-sort-stream "^1.0.3"
@@ -9655,7 +9655,7 @@ detox@^20.27.6:
     stream-json "^1.7.4"
     strip-ansi "^6.0.1"
     telnet-client "1.2.8"
-    tempfile "^2.0.0"
+    tmp "^0.2.1"
     trace-event-lib "^1.3.1"
     which "^1.3.1"
     ws "^7.0.0"
@@ -12028,10 +12028,10 @@ jest-each@^29.3.1, jest-each@^29.7.0:
     jest-util "^29.7.0"
     pretty-format "^29.7.0"
 
-jest-environment-emit@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/jest-environment-emit/-/jest-environment-emit-1.0.8.tgz#ab0dad2c1dd04d3ca092762a99080607b0eef10b"
-  integrity sha512-WNqvxBLH0yNojHJQ99Y21963aT7UTavxV3PgiBQFi8zwrlnKU6HvkB6LOvQrbk5I8mI8JEKvcoOrQOvBVMLIXQ==
+jest-environment-emit@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/jest-environment-emit/-/jest-environment-emit-1.2.0.tgz#c7334b0d16ec28439cd4a0a641a68e7ae918bb15"
+  integrity sha512-dSFBrRuIiWbHK2LSUA6CutXpMcNGjjuhvxFLF+TVz5tYFAAH0eesrZgrQ3UtOptajDYNt/fIGRqtlHqGq/bLbA==
   dependencies:
     bunyamin "^1.5.2"
     bunyan "^2.0.5"
@@ -14650,10 +14650,10 @@ react-native-calendars@^1.1313.0:
   optionalDependencies:
     moment "^2.29.4"
 
-react-native-clean-project@^3.6.7:
-  version "3.6.7"
-  resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-3.6.7.tgz#6d22ad22fe3a1e6efdb040eb66f9bdfb2273ac2e"
-  integrity sha512-GSJG1oNRJKtINPMzfHgRmu7HJs7phwgtwQ6GvyGARiySqQlU/bAc5zsI9rOeNPGlpgYongQtjOGdmqSpsWMJTw==
+react-native-clean-project@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-4.0.3.tgz#7ea174d2cb789e0c1d24defbeba561fcbf1beb9e"
+  integrity sha512-tWNhac5R4BetY7sZSRgaWUDSMpT207nJRuUwMZInmYJR3HucMZGIIUaiDH/pbFxXSDq4GMj4P7FnHxGLDobJ8w==
 
 react-native-communications@^2.2.1:
   version "2.2.1"
@@ -14752,10 +14752,10 @@ react-native-loading-spinner-overlay@^3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.1.tgz#092481b8cce157d3af5ef942f845ad981f96bd36"
   integrity sha512-4GdR54HQnKg2HPSSisVizfTLuyhSh4splY9eb8mKiYF1Ihjn/5EmdNo5bN3S7uKPFRC3WLzIZIouX6G6fXfnjw==
 
-react-native-localize@^3.0.6:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-3.4.1.tgz#df07c13231b4e8cc949e68513b124105f861229c"
-  integrity sha512-NJqJGBUpHtD/MpLCCkrNiqNZ+xFwbHCivxaoN1Oeb8tBAiZr/IqgP3E+MgnqmmdTMOJ33llUfiW3EM6pEIb33w==
+react-native-localize@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-3.5.2.tgz#7fcf3e1086ff3c6389359ffed28f6d0947d076f4"
+  integrity sha512-HfQdwv5sRjh4AQ8a97OTjXYcxPNRlBxiQb861c7Ob6mRuNYCPtaJ45QTcZxZr31vAM3THvtOBp1soqWlQFxjnA==
 
 react-native-map-link@^2.11.4:
   version "2.11.4"
@@ -14879,10 +14879,10 @@ react-native-signature-canvas@^4.7.2:
   resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-4.7.2.tgz#04e7143e6274533b24b5a59e9b000b01bfaa5592"
   integrity sha512-n4TUmYEFTHIbosLSa7ovMhirA+9EWw6pYbUIk2uUuiCfYqyF5TESb9EzjRU7VllDESWce9Djwy20VmwPKvEJWA==
 
-react-native-sound@^0.11.2:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.2.tgz#e542dc5b9e16ab4b3ac7e6eaddb1fc8d98da9038"
-  integrity sha512-LmGc8lgOK3qecYMVQpyHvww/C+wgT6sWeMpVbOe4NCRGC2yKd4fo4U0KBUo9PO7AqKESO3I/2GZg1/C0+bwiiA==
+react-native-sound@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.12.0.tgz#c1502e7760efa7ca06c38b8ae0435518eae33ef8"
+  integrity sha512-uOtM/PJ8+xmuXwgS2WMYEcokE/oFE8MV6glZHmB5RYHZ+yzD/0Z7cDL+QJpetTYBbEFOirfcE42o6YfPMJfJfg==
 
 react-native-svg-transformer@^1.5.1:
   version "1.5.1"
@@ -16419,11 +16419,6 @@ telnet-client@1.2.8:
   dependencies:
     bluebird "^3.5.4"
 
-temp-dir@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-1.0.0.tgz#0a7c0ea26d3a39afa7e0ebea9c1fc0bc4daa011d"
-  integrity sha512-xZFXEGbG7SNC3itwBzI3RYjq/cEhBkx2hJuKGIUOcEULmkQExXiHat2z/qkISYsuR+IKumhEfKKbV5qXmhICFQ==
-
 temp-dir@^2.0.0, temp-dir@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-2.0.0.tgz#bde92b05bdfeb1516e804c9c00ad45177f31321e"
@@ -16435,14 +16430,6 @@ temp@^0.8.4:
   integrity sha512-s0ZZzd0BzYv5tLSptZooSjK8oj6C+c19p7Vqta9+6NPOf7r+fxq0cJe6/oN4LTC79sy5NY8ucOJNgwsKCSbfqg==
   dependencies:
     rimraf "~2.6.2"
-
-tempfile@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/tempfile/-/tempfile-2.0.0.tgz#6b0446856a9b1114d1856ffcbe509cccb0977265"
-  integrity sha512-ZOn6nJUgvgC09+doCEF3oB+r3ag7kUvlsXEGX069QRD60p+P3uP7XG9N2/at+EyIRGSN//ZY3LyEotA1YpmjuA==
-  dependencies:
-    temp-dir "^1.0.0"
-    uuid "^3.0.1"
 
 tempy@^0.7.1:
   version "0.7.1"
@@ -16530,6 +16517,11 @@ tinyqueue@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/tinyqueue/-/tinyqueue-2.0.3.tgz#64d8492ebf39e7801d7bd34062e29b45b2035f08"
   integrity sha512-ppJZNDuKGgxzkHihX8v9v9G5f+18gzaTfrukGrq6ueg0lmH4nqVnA2IPG0AEH3jKEk2GRJCUhDoqpoiw3PHLBA==
+
+tmp@^0.2.1:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.2.5.tgz#b06bcd23f0f3c8357b426891726d16015abfd8f8"
+  integrity sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==
 
 tmpl@1.0.5:
   version "1.0.5"
@@ -16913,11 +16905,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
-
-uuid@^3.0.1:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
-  integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
 uuid@^7.0.3:
   version "7.0.3"

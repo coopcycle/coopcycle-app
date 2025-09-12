@@ -2134,7 +2134,7 @@ PODS:
     - React-Core
   - RNInAppBrowser (3.7.0):
     - React-Core
-  - RNLocalize (3.4.1):
+  - RNLocalize (3.5.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2312,11 +2312,27 @@ PODS:
     - Yoga
   - RNShare (7.9.1):
     - React-Core
-  - RNSound (0.11.2):
+  - RNSound (0.12.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.10.14.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
-    - RNSound/Core (= 0.11.2)
-  - RNSound/Core (0.11.2):
-    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNSVG (15.13.0):
     - DoubleConversion
     - glog
@@ -2967,12 +2983,12 @@ SPEC CHECKSUMS:
   RNGestureHandler: 64b47e4ff6ba37739d565866dcc3886d0ae60830
   RNGoogleSignin: 7eecf032e0512f9488bb2d76ec2e313b9a4422de
   RNInAppBrowser: 6d3eb68d471b9834335c664704719b8be1bfdb20
-  RNLocalize: 50e9c58a3bb02038fa648560fef9c4abd394864d
+  RNLocalize: a2c93da4b4afae4630d4b3be79320c11c4342d1f
   RNReanimated: 758e433dea58eb219208bd209ef91a6f8ee096fb
   RNScreens: 73d722c0734bdd3d8e62337065cac2a4438502bf
   RNSentry: eac9ef466318980d92954711f4507ce3be03d12d
   RNShare: 06d69a0de7cc111302172cd8bd6d228462a6bbc1
-  RNSound: 314cc5226453ef4a3314a196c65e8a65e5106a7b
+  RNSound: 98fed7aec8d4ab19c33daf00593f6ef8872173c6
   RNSVG: 836ba92eb666c7c321509d53bc3053c6dd2ec897
   RNVectorIcons: 7075443f1ecfe4012b7a2f65f684baf3faa9d8c1
   Sentry: 47021097466aa130802420d485a34da445963d99
