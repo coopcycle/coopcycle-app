@@ -3111,10 +3111,10 @@
   resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
   integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
-"@mitsuharu/react-native-sunmi-printer-library@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-2.2.0.tgz#4f020f13c31f2ebc5f67fdaf3fffabdb34fc9931"
-  integrity sha512-0mBWPLp/+mMBxe6Z7V19RVTXE0Eqnli5tS5Pujc8/414EaLDazmy3xDZJdzENtbnD70zA/9ZJmw2PF4Zjqst4g==
+"@mitsuharu/react-native-sunmi-printer-library@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@mitsuharu/react-native-sunmi-printer-library/-/react-native-sunmi-printer-library-2.3.0.tgz#3800d16fe02dc476b7040d90454686e6860f4269"
+  integrity sha512-cuET3zosJd94yc6fkf8PvVFIYxH6nH+ielLLybv0D/uIN2ta/P1mTL2BmkI8cM+sOfxr6MX5AncOV2DNqdmUmg==
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
