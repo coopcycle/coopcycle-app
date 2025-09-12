@@ -9,7 +9,7 @@ jobs:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
     name: Build App bundle
-    runs-on: macOS-14
+    runs-on: macOS-15
     steps:
       - uses: actions/checkout@v3
 
