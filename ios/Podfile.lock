@@ -1574,7 +1574,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-sunmi-printer-library (2.2.0):
+  - react-native-sunmi-printer-library (2.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2038,7 +2038,7 @@ PODS:
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.28.0):
+  - RNGestureHandler (2.25.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2874,7 +2874,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-pager-view: 9f70b7e25421b00907ae50a82906d9201d8c3bba
   react-native-safe-area-context: afc464441362333ffe4cd96f3e623e374362a2f6
-  react-native-sunmi-printer-library: 00e36ec17f511f5d08e501defca7598b19e8436a
+  react-native-sunmi-printer-library: 8a400f87f677137029ab08672f56583171f0ae43
   react-native-version-number: 3d74b5224ca4e1032b1593937d86d3f3c94bf95c
   react-native-webview: 05734d99f1e422c5ddfeefbd083d53abd78fccb1
   React-nativeconfig: 29f53f7caa03e1d3f49396320f4f055ae42ab8db
@@ -2919,7 +2919,7 @@ SPEC CHECKSUMS:
   RNFBAnalytics: c8310fe67b6750e0b6362d4049773db272475ab2
   RNFBApp: 90cf0209fb8f0460ab069a7de857d7ec851c8476
   RNFBCrashlytics: f9c67f58b800bbb713a14286243cd8fa3a3c43f8
-  RNGestureHandler: e986a1c140d854f5365945aec56dc95e282ce58b
+  RNGestureHandler: 96fc2de36a25cf6bece93e030c2ed9a5e95d33dd
   RNGoogleSignin: 7eecf032e0512f9488bb2d76ec2e313b9a4422de
   RNInAppBrowser: 6d3eb68d471b9834335c664704719b8be1bfdb20
   RNLocalize: 71bb066d9ed35bf828ac5ac7cf749ae544fdfeed
