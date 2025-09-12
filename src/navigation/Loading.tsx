@@ -85,21 +85,6 @@ class Loading extends Component {
     }
   }
 
-  renderError() {
-    return (
-      <View style={styles.error}>
-        <Icon as={TriangleAlert} />
-        <Text style={styles.errorText}>{this.props.t('NET_FAILED')}</Text>
-        <Button onPress={() => this.load()}>
-          <ButtonText>{this.props.t('RETRY')}</ButtonText>
-        </Button>
-        <View style={{ marginVertical: 20 }}>
-          {this.props.customBuild ? null : <Server />}
-        </View>
-      </View>
-    );
-  }
-
   render() {
     const close = () => this.state.modal.skippable && this.props.closeModal();
     const swipeDirection = this.state.modal.skippable
@@ -131,7 +116,7 @@ class Loading extends Component {
 
   bodyRender() {
     if (this.state.error) {
-      return <LoadingError />;
+      return <LoadingError onPress={ () => this.load() } />;
     }
 
     if (this.state.ready) {
