@@ -117,7 +117,7 @@ type IFabProps = Omit<React.ComponentPropsWithoutRef<typeof UIFab>, 'context'> &
 
 const Fab = React.forwardRef<React.ComponentRef<typeof UIFab>, IFabProps>(
   function Fab(
-    { size = 'md', placement = 'bottom right', className, ...props },
+    { size = 'md', placement = 'bottom right', className, testID,...props },
     ref
   ) {
     return (
@@ -126,6 +126,7 @@ const Fab = React.forwardRef<React.ComponentRef<typeof UIFab>, IFabProps>(
         {...props}
         className={fabStyle({ size, placement, class: className })}
         context={{ size }}
+        testID={testID}
       />
     );
   }
@@ -178,7 +179,7 @@ type IFabIconProps = React.ComponentPropsWithoutRef<typeof UIFab.Icon> &
 const FabIcon = React.forwardRef<
   React.ComponentRef<typeof UIFab.Icon>,
   IFabIconProps
->(function FabIcon({ size, className, ...props }, ref) {
+>(function FabIcon({ size, className, testID, ...props }, ref) {
   const { size: parentSize } = useStyleContext(SCOPE);
 
   if (typeof size === 'number') {
@@ -188,6 +189,7 @@ const FabIcon = React.forwardRef<
         {...props}
         className={fabIconStyle({ class: className })}
         size={size}
+        testID={testID}
       />
     );
   } else if (

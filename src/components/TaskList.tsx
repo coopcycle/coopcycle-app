@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import ItemsBulkFabButton from './ItemsBulkFabButton';
 import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
+import { useCourier } from '../navigation/courier/contexts/CourierContext';
 
 const TaskList = ({
   id,
@@ -65,9 +66,13 @@ const TaskList = ({
     [onSwipeClosed],
   );
 
-  const onFabButtonPressed = items => {
+  // TODO Review this button with the incoming new design/layout..!
+  // The use of context here is to avoid incorrectly being parsed in dispatch screen
+  const context = useCourier();
+  const isFromCourier = context && context.isFromCourier;
+  const onFabButtonPressed = isFromCourier ? (items => {
     onMultipleSelectionAction(items);
-  };
+  }) : null;
 
   // check this filter
   useEffect(() => {
