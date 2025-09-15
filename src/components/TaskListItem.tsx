@@ -22,7 +22,7 @@ import {
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
 import { getDropoffPosition, getTaskTitle } from '../shared/src/utils';
-import { blackColor, greyColor, redColor, yellowColor } from '../styles/common';
+import { greyColor, redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import { PaymentMethodInList } from './PaymentMethodInfo';
@@ -129,6 +129,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       taskListId,
       appendTaskListTestID = '',
       onPress = () => {},
+      onLongPress = () => {},
       onOrderPress = () => {},
       onPressLeft = () => {},
       onPressRight = () => {},
@@ -298,6 +299,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           />
           <ItemTouchable
             onPress={onPress}
+            onLongPress={onLongPress}
             testID={taskTestId}
             style={{
               borderBottomRightRadius: cardBorderRadius,

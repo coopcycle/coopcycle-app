@@ -15,6 +15,7 @@ const TaskList = ({
   onSwipeClosed = () => {},
   onSwipeToLeft = () => {},
   onSwipeToRight = () => {},
+  onLongPress = () => {},
   onTaskClick = () => {},
   onOrderClick = () => {},
   refreshing = false,
@@ -84,6 +85,7 @@ const TaskList = ({
         index={index}
         color={task.color}
         onPress={() => onTaskClick(task)}
+        onLongPress={() => onLongPress()}
         onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}
         {...swipeRightConfiguration(task)}

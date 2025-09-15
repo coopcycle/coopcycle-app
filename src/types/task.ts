@@ -261,6 +261,7 @@ export interface TaskListItemProps {
   taskListId: string;
   appendTaskListTestID?: string;
   onPress?: () => void;
+  onLongPress?: () => void;
   onOrderPress?: () => void;
   onPressLeft?: () => void;
   onPressRight?: () => void;

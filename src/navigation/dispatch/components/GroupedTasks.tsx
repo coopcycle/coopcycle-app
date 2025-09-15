@@ -311,6 +311,7 @@ export default function GroupedTasks({
             id={section.id}
             tasks={tasks}
             appendTaskListTestID={section.appendTaskListTestID}
+            onLongPress={() => {console.log("LONG PRESS ACTION")}}
             onTaskClick={onTaskClick(section.isUnassignedTaskList)}
             onOrderClick={onOrderClick}
             onSwipeClosed={task => {
