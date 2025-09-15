@@ -42,7 +42,9 @@ class ItemsBulkFabButton extends Component {
             placement="bottom right"
             className="bg-success-300"
             onPress={() => this.props.onPressed(this.state.items)}
-            testID="bulkAssignButton">
+            // This testID should be something like "bulkFabButton"
+            testID="bulkAssignButton"
+            >
             <FabIcon as={Check} />
           </Fab>
         )}

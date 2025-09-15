@@ -139,6 +139,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       taskListId,
       appendTaskListTestID = '',
       onPress = () => {},
+      onLongPress = () => {},
       onOrderPress = () => {},
       onPressLeft = () => {},
       onPressRight = () => {},
@@ -300,6 +301,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           />
           <ItemTouchable
             onPress={onPress}
+            onLongPress={onLongPress}
             testID={taskTestId}
             style={{
               borderBottomRightRadius: cardBorderRadius,

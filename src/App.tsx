@@ -90,6 +90,7 @@ LogBox.ignoreLogs([
   'React Native Firebase namespaced API',
   'global process.env.EXPO_OS is not defined',
   'Support for defaultProps will be removed',
+  'A non-serializable value was detected in an action',
 ]);
 
 const routeNameRef = createRef();

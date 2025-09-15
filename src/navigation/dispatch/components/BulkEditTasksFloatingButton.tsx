@@ -23,19 +23,16 @@ function BulkEditTasksFloatingButton({ onPress }) {
     onPress(selectedTasks);
   };
 
-  // We wrap the element in a <View>,
-  // to avoid Detox sayins "matches 2 views in the hierarchy"
-  // because the "testID" prop is propagated to the child elements
-
   return (
     <>
       {allSelectedTasks.length < 2 ? null : (
         <Fab
-          size="xl"
+          size="xxl"
           placement="bottom right"
           onPress={handleOnPress}
+          testID="bulkAssignButton"
         >
-          <FabIcon as={User} />
+          <FabIcon as={User}/>
         </Fab>
       )}
     </>
