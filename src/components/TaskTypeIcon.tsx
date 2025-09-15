@@ -1,7 +1,7 @@
 import { taskTypeIconName } from '../navigation/task/styles/common';
 import { blackColor, whiteColor } from '../styles/common';
 import type { Task } from '../types/task';
-import Icon from './Icon';
+import FAIcon from './Icon';
 
 interface TaskTypeIconProps {
   task: Pick<Task, 'status' | 'type'>;
@@ -30,7 +30,7 @@ const TaskTypeIcon = ({
   const iconColor = COLOR_MAP[color];
 
   return (
-    <Icon name={taskTypeIconName(task)} size={iconSize} color={iconColor} />
+    <FAIcon name={taskTypeIconName(task)} size={iconSize} color={iconColor} />
   );
 };
 

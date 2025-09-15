@@ -11,7 +11,7 @@ export interface IconProps {
   useFontAwesome?: boolean; // If true, uses FontAwesome, otherwise FontAwesome5 (default)
 }
 
-const Icon: React.FC<IconProps> = ({
+const FAIcon: React.FC<IconProps> = ({
   name,
   color,
   size,
@@ -32,4 +32,4 @@ const Icon: React.FC<IconProps> = ({
   );
 };
 
-export default Icon;
+export default FAIcon;

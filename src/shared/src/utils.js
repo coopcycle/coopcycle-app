@@ -22,11 +22,17 @@ export function getTaskTitle(task) {
 }
 
 export function getDropoffPosition(task, tasks) {
-  const pickupOrderTasks = tasks.filter(t => t.type === "PICKUP");
-  const dropoffOrderTasks = tasks.filter(t => t.type === "DROPOFF");
+  const pickupOrderTasks = tasks.filter(t => t.type === 'PICKUP');
+  const dropoffOrderTasks = tasks.filter(t => t.type === 'DROPOFF');
   // Delivery position is updated, but, tasks it is updated?
   // Edge cases: - when task assigned to another courier, unassigned
   //      task completed or deleted that updates tasks
-  const taskCurrentPosition = task.metadata.delivery_position - pickupOrderTasks.length; 
+  const taskCurrentPosition =
+    task.metadata.delivery_position - pickupOrderTasks.length;
   return `(${taskCurrentPosition}/${dropoffOrderTasks.length})`;
+}
+
+export function getDropoffCount(tasks) {
+  const dropoffOrderTasks = tasks.filter(t => t.type === 'DROPOFF');
+  return dropoffOrderTasks.length;
 }

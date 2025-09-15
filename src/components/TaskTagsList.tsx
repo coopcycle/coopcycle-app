@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   tag: {
-    paddingVertical: 4,
+    paddingVertical: 0,
     paddingHorizontal: 4,
     color: whiteColor,
     borderRadius: 4,

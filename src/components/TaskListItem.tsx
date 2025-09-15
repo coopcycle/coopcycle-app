@@ -1,5 +1,6 @@
 import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
+import FAIcon from './Icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { Recycle } from 'lucide-react-native';
@@ -16,12 +17,20 @@ import { SwipeRow } from 'react-native-swipe-list-view';
 import { useSelector } from 'react-redux';
 import { Task, TaskListItemProps } from '../types/task';
 
-import { CommentsIcon, IncidentIcon } from '../navigation/task/styles/common';
+import {
+  CommentsIcon,
+  DropoffIcon,
+  IncidentIcon,
+} from '../navigation/task/styles/common';
 import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
-import { getDropoffPosition, getTaskTitle } from '../shared/src/utils';
+import {
+  getDropoffCount,
+  getDropoffPosition,
+  getTaskTitle,
+} from '../shared/src/utils';
 import { blackColor, greyColor, redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
@@ -33,6 +42,7 @@ import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { useTranslation } from 'react-i18next';
 import { selectTasksByOrder } from '../redux/logistics/selectors';
 import { getOrderId } from '../utils/tasks';
+import TaskInfo from './TaskInfo';
 
 const cardBorderRadius = 2.5;
 
@@ -142,12 +152,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     },
     _ref,
   ) => {
-    const { t } = useTranslation();
-    const taskDropoffTitle = getTaskTitleForOrder(task, t);
-    const taskTitle = getTaskTitle(task);
-
     const isPickup = task.type === 'PICKUP';
 
+    // TODO check - are we using this?
     const address = task.address?.contactName
       ? task.address?.name
         ? `${task.address.contactName} - ${task.address.name}`
@@ -158,9 +165,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
-    const alignedTextStyle = isPickup
-      ? [styles.text, { textAlign: 'right' as const }]
-      : [styles.text];
+
     const itemProps: { opacity?: number } = {};
     const swipeButtonsProps: { display?: string } = {};
 
@@ -195,8 +200,6 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     const prevShouldSwipeLeftRef = useRef<boolean>();
     const prevShouldSwipeRightRef = useRef<boolean>();
-
-    const orderTasks = useSelector(selectTasksByOrder(getOrderId(task)));
 
     useEffect(() => {
       if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
@@ -283,7 +286,6 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
         <HStack
           style={{
             flex: 1,
-            backgroundColor: 'green',
             minWidth: '100%',
             minHeight: buttonWidth,
             borderTopRightRadius: cardBorderRadius,
@@ -304,95 +306,14 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
               borderTopRightRadius: cardBorderRadius,
               paddingLeft: 12,
               width: cardWidth - buttonWidth,
+              flex: 1,
             }}>
-            <HStack>
-              <VStack
-                className="py-3 px-1"
-                style={isPickup ? { alignItems: 'flex-end' } : undefined}>
-                <Text
-                  testID={`${taskTestId}:title`}
-                  style={[styles.titleText, !isPickup && { color: greyColor }]}
-                  numberOfLines={1}>
-                  {taskTitle}
-                </Text>
-
-                {isPickup ? (
-                  <Text>Calculate arrows</Text>
-                ) : (
-                  <Text>{`${getDropoffPosition(task, orderTasks)} ${taskDropoffTitle}`}</Text>
-                )}
-
-                {address && (
-                  <Text style={alignedTextStyle} numberOfLines={1}>
-                    {address}
-                  </Text>
-                )}
-                <Text numberOfLines={1} style={alignedTextStyle}>
-                  {task.address?.streetAddress}
-                </Text>
-                <HStack
-                  className="items-center"
-                  style={isPickup ? { justifyContent: 'flex-end' } : undefined}>
-                  <Text className="pr-2" style={alignedTextStyle}>
-                    {`${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}`}
-                  </Text>
-                  <TaskStatusIcon task={task} />
-                  {task.address?.description &&
-                  task.address?.description.length ? (
-                    <Icon className="mr-2" as={CommentsIcon} size="xs" />
-                  ) : null}
-                  {task.metadata && task.metadata?.payment_method && (
-                    <PaymentMethodInList
-                      paymentMethod={task.metadata.payment_method}
-                    />
-                  )}
-                  {task.metadata && task.metadata.zero_waste && (
-                    <Icon as={Recycle} size="sm" />
-                  )}
-                </HStack>
-                {task.tags && task.tags.length ? (
-                  isPickup ? (
-                    <View style={{ alignSelf: 'flex-end', width: '100%' }}>
-                      <TaskTagsList taskTags={task.tags} />
-                    </View>
-                  ) : (
-                    <TaskTagsList taskTags={task.tags} />
-                  )
-                ) : null}
-              </VStack>
-              {task.hasIncidents && (
-                <Icon
-                  as={IncidentIcon}
-                  size={24}
-                  style={{
-                    alignSelf: 'center',
-                    borderRadius: 5,
-                    color: redColor,
-                    marginRight: 12,
-                  }}
-                />
-              )}
-              <TaskPriorityStatus
-                task={task}
-                cardBorderRadius={cardBorderRadius}
-              />
-            </HStack>
+            <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
           </ItemTouchable>
         </HStack>
       </SwipeRow>
     );
   },
 );
-
-/* // PropTypes kept for backward compatibility with non-TypeScript code
-TaskListItem.propTypes = {
-  task: PropTypes.object.isRequired,
-  color: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  onPress: PropTypes.func,
-  onPressLeft: PropTypes.func,
-  onPressRight: PropTypes.func,
-  taskListId: PropTypes.string.isRequired,
-}; */
 
 export default TaskListItem;
