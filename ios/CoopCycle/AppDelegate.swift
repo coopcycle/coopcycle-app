@@ -2,6 +2,8 @@ import React
 import Expo
 import Firebase
 
+// https://github.com/expo/expo/blob/sdk-52-router-patches/templates/expo-template-bare-minimum/ios/HelloWorld/AppDelegate.swift
+
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
   public override func application(
