@@ -2,7 +2,6 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as FileSystem from 'expo-file-system';
 import allSettled from 'promise.allsettled';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import { createClient } from '../API';
 
@@ -111,37 +110,6 @@ describe('HTTP client', () => {
         expect(results[0].reason.response.status).toEqual(401);
         expect(results[1].status).toEqual('rejected');
         expect(results[1].reason.response.status).toEqual(401);
-
-        resolve();
-      });
-    });
-  });
-
-  it.skip('retries file upload', () => {
-    mock.onPost('http://demo.coopcycle.org/api/token/refresh').reply(200, {
-      token: validToken,
-      refresh_token: '123456',
-    });
-
-    ReactNativeBlobUtil.fetch = jest.fn();
-    ReactNativeBlobUtil.fetch.mockResolvedValueOnce({
-      info: () => ({ status: 401 }),
-      json: () => ({}),
-    });
-    ReactNativeBlobUtil.fetch.mockResolvedValueOnce({
-      info: () => ({ status: 201 }),
-      json: () => ({ '@id': '/api/task_images/1' }),
-    });
-
-    const client = createClient('http://demo.coopcycle.org', {
-      token: expiredToken,
-      refreshToken: '123456',
-    });
-
-    return new Promise((resolve, reject) => {
-      client.uploadFile('/api/images', '12345678').then(response => {
-        expect(response).toEqual({ '@id': '/api/task_images/1' });
-        expect(ReactNativeBlobUtil.fetch).toHaveBeenCalledTimes(2);
 
         resolve();
       });

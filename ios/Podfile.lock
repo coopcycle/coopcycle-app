@@ -1445,27 +1445,6 @@ PODS:
     - React-Core
   - react-native-ble-manager (8.8.0):
     - React-Core
-  - react-native-blob-util (0.19.11):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - react-native-config (1.5.9):
     - react-native-config/App (= 1.5.9)
   - react-native-config/App (1.5.9):
@@ -2430,7 +2409,6 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-app-auth (from `../node_modules/react-native-app-auth`)
   - react-native-ble-manager (from `../node_modules/react-native-ble-manager`)
-  - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
@@ -2650,8 +2628,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-app-auth"
   react-native-ble-manager:
     :path: "../node_modules/react-native-ble-manager"
-  react-native-blob-util:
-    :path: "../node_modules/react-native-blob-util"
   react-native-config:
     :path: "../node_modules/react-native-config"
   react-native-fbsdk-next:
@@ -2873,7 +2849,6 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 5a6ce850fb68e542a7b312f396d88aff0d978f67
   react-native-app-auth: eb42594042a25455119a8c57194b4fd25b9352f4
   react-native-ble-manager: 9b2df5891d2ad0bb6e3e684096f32dda3c89f504
-  react-native-blob-util: d3612e2ef8c85301f910bd225b813ff3b6f1a11d
   react-native-config: d08b60865268872495a43e211059b4606131fe01
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
