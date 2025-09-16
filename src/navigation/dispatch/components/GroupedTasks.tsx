@@ -41,6 +41,7 @@ import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSe
 import { getOrderId } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
+import { useTaskLongPress } from '../hooks/useTaskLongPress';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -301,6 +302,8 @@ export default function GroupedTasks({
     [collapsedSections],
   );
 
+  const useLongPressHandler = useTaskLongPress();
+
   const renderItem = useCallback(
     ({ section, item, index }) => {
       if (!isFetching && !collapsedSections.has(section.title)) {
@@ -311,7 +314,7 @@ export default function GroupedTasks({
             id={section.id}
             tasks={tasks}
             appendTaskListTestID={section.appendTaskListTestID}
-            onLongPress={() => {console.log("LONG PRESS ACTION")}}
+            onLongPress={useLongPressHandler}
             onTaskClick={onTaskClick(section.isUnassignedTaskList)}
             onOrderClick={onOrderClick}
             onSwipeClosed={task => {
