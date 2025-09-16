@@ -2107,7 +2107,7 @@ PODS:
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.28.0):
+  - RNGestureHandler (2.20.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2117,7 +2117,6 @@ PODS:
     - React-Core
     - React-debug
     - React-Fabric
-    - React-FabricComponents
     - React-featureflags
     - React-graphics
     - React-ImageManager
@@ -2980,7 +2979,7 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 03c83ba4617a3754c99e66267983efcc908932a9
   RNFBApp: a448037d2df74af9d374a0b765be12ff1e844dc0
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
-  RNGestureHandler: 64b47e4ff6ba37739d565866dcc3886d0ae60830
+  RNGestureHandler: de2b7ccdbf18766609fb9490c7f11c18805705a3
   RNGoogleSignin: 7eecf032e0512f9488bb2d76ec2e313b9a4422de
   RNInAppBrowser: 6d3eb68d471b9834335c664704719b8be1bfdb20
   RNLocalize: a2c93da4b4afae4630d4b3be79320c11c4342d1f
