@@ -1,10 +1,5 @@
 import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
-import FAIcon from './Icon';
-import { Text } from '@/components/ui/text';
-import { VStack } from '@/components/ui/vstack';
-import { Recycle } from 'lucide-react-native';
-import moment from 'moment';
 import React, { forwardRef, useEffect, useRef } from 'react';
 import {
   Dimensions,
@@ -18,31 +13,14 @@ import { useSelector } from 'react-redux';
 import { Task, TaskListItemProps } from '../types/task';
 
 import {
-  CommentsIcon,
-  DropoffIcon,
-  IncidentIcon,
-} from '../navigation/task/styles/common';
-import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
-import {
-  getDropoffCount,
-  getDropoffPosition,
-  getTaskTitle,
-} from '../shared/src/utils';
-import { blackColor, greyColor, redColor, yellowColor } from '../styles/common';
+import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
-import { PaymentMethodInList } from './PaymentMethodInfo';
-import { TaskPriorityStatus } from './TaskPriorityStatus';
-import { TaskStatusIcon } from './TaskStatusIcon';
-import TaskTagsList from './TaskTagsList';
-import { getTaskTitleForOrder } from '../navigation/order/utils';
-import { useTranslation } from 'react-i18next';
-import { selectTasksByOrder } from '../redux/logistics/selectors';
-import { getOrderId } from '../utils/tasks';
 import TaskInfo from './TaskInfo';
+import { LucideIcon } from 'lucide-react-native';
 
 const cardBorderRadius = 2.5;
 
@@ -61,6 +39,7 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   textDanger: {
+    fontSize: 14,
     color: redColor,
   },
   hasIncident: {
@@ -118,15 +97,15 @@ const SwipeButtonContainer = ({
 };
 
 interface ISwipeButtonProps {
-  icon: React.ElementType;
+  icon: LucideIcon | undefined;
   width: number;
   size?: number;
 }
 
-const SwipeButton = ({ icon, width, size }: ISwipeButtonProps) => (
+const SwipeButton = ({ icon, width, size = 42 }: ISwipeButtonProps) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={icon} size={size} style={{ color: '#ffffff', width: 40 }} />
+    <Icon as={icon} size={size} style={{ color: '#ffffff' }} />
   </View>
 );
 
@@ -175,6 +154,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       swipeButtonsProps.display = 'none';
     }
 
+    // TODO check - are we using this?
     if (task.status === 'FAILED') {
       textStyle.push(styles.textDanger);
     }
@@ -277,11 +257,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             }}
             testID={`${taskTestId}:right`}
             width={visibleButtonWidth}>
-            <SwipeButton
-              icon={swipeOutRightIcon}
-              size={8}
-              width={buttonWidth}
-            />
+            <SwipeButton icon={swipeOutRightIcon} width={buttonWidth} />
           </SwipeButtonContainer>
         </View>
         <HStack
