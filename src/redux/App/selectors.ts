@@ -220,13 +220,15 @@ export const selectNotifications = state => state.app.notifications;
 export const selectNotificationsWithSound = createSelector(
   selectNotifications,
   selectTasksChangedAlertSound,
-  (notifications, tasksChangedAlertSound) =>
+  selectLoggedInUser,
+  (notifications, tasksChangedAlertSound, loggedInUser) =>
     notifications.filter(notification => {
       switch (notification.event) {
         case EVENT_ORDER.CREATED:
           return true;
         case EVENT_TASK_COLLECTION.CHANGED:
-          return tasksChangedAlertSound;
+          // Skip users with dispatcher/admin roles
+          return tasksChangedAlertSound && loggedInUser && !(loggedInUser.hasRole('ROLE_DISPATCHER') || loggedInUser.hasRole('ROLE_ADMIN'));
         default:
           return false;
       }
@@ -236,13 +238,15 @@ export const selectNotificationsWithSound = createSelector(
 export const selectNotificationsToDisplay = createSelector(
   selectNotifications,
   selectAutoAcceptOrdersEnabled,
-  (notifications, autoAcceptOrdersEnabled) =>
+  selectLoggedInUser,
+  (notifications, autoAcceptOrdersEnabled, loggedInUser) =>
     notifications.filter(notification => {
       switch (notification.event) {
         case EVENT_ORDER.CREATED:
           return !autoAcceptOrdersEnabled;
         case EVENT_TASK_COLLECTION.CHANGED:
-          return true;
+          // Skip users with dispatcher/admin roles
+          return loggedInUser && !(loggedInUser.hasRole('ROLE_DISPATCHER') || loggedInUser.hasRole('ROLE_ADMIN'));
         default:
           return true;
       }
