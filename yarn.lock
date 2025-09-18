@@ -2577,14 +2577,10 @@
   dependencies:
     tslib "^2.8.0"
 
-"@gluestack-ui/core@^3.0.6":
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/@gluestack-ui/core/-/core-3.0.6.tgz#60a28288b99f323e394d5f2c8582147319fbd24e"
-  integrity sha512-vg7+/DqLEgQ9anCCOoCqu9fPdhOpVXuW1Nv8A7xvQrtfaOEbLqwVS0GL+bfTJZW+okPrDGKVYjtXD5EDxCSxIg==
-  dependencies:
-    "@gluestack-ui/utils" "^3.0.7"
-    react-native-safe-area-context "^5.6.1"
-    react-native-svg "^15.12.0"
+"@gluestack-ui/core@^3.0.10":
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/@gluestack-ui/core/-/core-3.0.10.tgz#96ba8e5a80a27a921123b25baeb7063a8bc4d665"
+  integrity sha512-Ctw4CYCsfT2YUNz0n5hDoTfv7G72SRxirqwFv+VmhCwDrtVab/fV7qbqLMnBEEr19o1iP1bE0ztJ3IQHEqXw4g==
 
 "@gluestack-ui/utils@^3.0.7":
   version "3.0.7"
@@ -7193,10 +7189,10 @@ axios-mock-adapter@^1.21.4:
     fast-deep-equal "^3.1.3"
     is-buffer "^2.0.5"
 
-axios@^1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.12.0.tgz#11248459be05a5ee493485628fa0e4323d0abfc3"
-  integrity sha512-oXTDccv8PcfjZmPGlWsPSwtOJCZ/b6W5jAMCNcfwJbCzDckwG0jrYJFaWH1yvivfCXjVzV/SPDEhMB3Q+DSurg==
+axios@^1.12.2:
+  version "1.12.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.12.2.tgz#6c307390136cf7a2278d09cec63b136dfc6e6da7"
+  integrity sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.4"
@@ -8527,10 +8523,10 @@ detect-node@^2.0.4, detect-node@^2.1.0:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.1.0.tgz#c9c70775a49c3d03bc2c06d9a73be550f978f8b1"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
 
-detox@^20.41.1:
-  version "20.41.1"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-20.41.1.tgz#05c459e621359fa3bba812b31b5d90db7bdb277a"
-  integrity sha512-Hp0UyZF7M88LfzAibwxSw/sJaXlz7Smvp1c0CVhUHlT4fZG4Qdr2PulZT+MCVFu6U1Q9jhlRATbDLeNc5q28aQ==
+detox@^20.41.2:
+  version "20.41.2"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-20.41.2.tgz#89739f96b6abd41df188e3cdaf9d6164e843c32d"
+  integrity sha512-3sXHGCeKP4LUrHsuHD/dJqP0JfLLIam5MbSAVlFm2oKSa1NZsGKs/VjDMJ1+N6YEPJGNOdCrtkh/SIfke6TgGg==
   dependencies:
     "@wix-pilot/core" "^3.4.1"
     "@wix-pilot/detox" "^1.0.13"
@@ -10062,10 +10058,10 @@ globby@^11.0.1, globby@^11.1.0:
     merge2 "^1.4.1"
     slash "^3.0.0"
 
-google-libphonenumber@^3.2.42:
-  version "3.2.42"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.42.tgz#deac6d626bb57540449a844154d84e91d8da7df1"
-  integrity sha512-60jm6Lu72WmlUJXUBJmmuZlHG2vDJ2gQ9pL5gcFsSe1Q4eigsm0Z1ayNHjMgqGUl0zey8JqKtO4QCHPV+5LCNQ==
+google-libphonenumber@^3.2.43:
+  version "3.2.43"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.43.tgz#c1e5107ab9c6e3848dc2108e380bde08da80931c"
+  integrity sha512-TbIX/UC3BFRJwCxbBeCPwuRC4Qws9Jz/CECmfTM1t9RFoI3X6eRThurv6AYr9wSrt640IA9KFIHuAD/vlyjqRw==
 
 gopd@^1.0.1, gopd@^1.2.0:
   version "1.2.0"
@@ -11449,10 +11445,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libphonenumber-js@^1.12.16:
-  version "1.12.16"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.12.16.tgz#6e59b68943ceff5cfe20f151ad7eaa4cda876d7d"
-  integrity sha512-Ut/2lKjVnoVayb0dVUxWzGO5UB57bTcuJr41W6MQ2V8YolOsHWEah6I0bO5LQ71SY6WYZd3e4A4Z9r4B6zQC2g==
+libphonenumber-js@^1.12.17:
+  version "1.12.17"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.12.17.tgz#ec01c8f1cf123748923746925bdb6f379b0d3f35"
+  integrity sha512-bsxi8FoceAYR/bjHcLYc2ShJ/aVAzo5jaxAYiMHF0BD+NTp47405CGuPNKYpw+lHadN9k/ClFGc9X5vaZswIrA==
 
 lighthouse-logger@^1.0.0:
   version "1.4.2"
@@ -13312,10 +13308,58 @@ rc@~1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-aria@^3.33.0, react-aria@^3.41.1:
+react-aria@^3.41.1:
   version "3.43.1"
   resolved "https://registry.yarnpkg.com/react-aria/-/react-aria-3.43.1.tgz#dbd7f9ab9e642b1c485e07520e0745a4a0d5a046"
   integrity sha512-/PmZGiw+Ya/YtzXmiLW4ALD4SMuDnbwhMaVh33VCduTl8vVujIUzUTIi5g4C+YHLDs/Z4edsN3aQsPMqFfg1xA==
+  dependencies:
+    "@internationalized/string" "^3.2.7"
+    "@react-aria/breadcrumbs" "^3.5.28"
+    "@react-aria/button" "^3.14.1"
+    "@react-aria/calendar" "^3.9.1"
+    "@react-aria/checkbox" "^3.16.1"
+    "@react-aria/color" "^3.1.1"
+    "@react-aria/combobox" "^3.13.2"
+    "@react-aria/datepicker" "^3.15.1"
+    "@react-aria/dialog" "^3.5.30"
+    "@react-aria/disclosure" "^3.0.8"
+    "@react-aria/dnd" "^3.11.2"
+    "@react-aria/focus" "^3.21.1"
+    "@react-aria/gridlist" "^3.14.0"
+    "@react-aria/i18n" "^3.12.12"
+    "@react-aria/interactions" "^3.25.5"
+    "@react-aria/label" "^3.7.21"
+    "@react-aria/landmark" "^3.0.6"
+    "@react-aria/link" "^3.8.5"
+    "@react-aria/listbox" "^3.14.8"
+    "@react-aria/menu" "^3.19.2"
+    "@react-aria/meter" "^3.4.26"
+    "@react-aria/numberfield" "^3.12.1"
+    "@react-aria/overlays" "^3.29.1"
+    "@react-aria/progress" "^3.4.26"
+    "@react-aria/radio" "^3.12.1"
+    "@react-aria/searchfield" "^3.8.8"
+    "@react-aria/select" "^3.16.2"
+    "@react-aria/selection" "^3.25.1"
+    "@react-aria/separator" "^3.4.12"
+    "@react-aria/slider" "^3.8.1"
+    "@react-aria/ssr" "^3.9.10"
+    "@react-aria/switch" "^3.7.7"
+    "@react-aria/table" "^3.17.7"
+    "@react-aria/tabs" "^3.10.7"
+    "@react-aria/tag" "^3.7.1"
+    "@react-aria/textfield" "^3.18.1"
+    "@react-aria/toast" "^3.0.7"
+    "@react-aria/tooltip" "^3.8.7"
+    "@react-aria/tree" "^3.1.3"
+    "@react-aria/utils" "^3.30.1"
+    "@react-aria/visually-hidden" "^3.8.27"
+    "@react-types/shared" "^3.32.0"
+
+react-aria@^3.43.2:
+  version "3.43.2"
+  resolved "https://registry.yarnpkg.com/react-aria/-/react-aria-3.43.2.tgz#cbe883341378e37cfbb34a070e032e048d3ed7e2"
+  integrity sha512-CfaXi3S69SeOkpp6pGc1w5FH8OvGPFphiMrO2tNSlqpYIecgk3gKoXjkqaAr6N+O1gasLMfAAF9sxtvS141qWg==
   dependencies:
     "@internationalized/string" "^3.2.7"
     "@react-aria/breadcrumbs" "^3.5.28"
@@ -13541,7 +13585,6 @@ react-native-gesture-handler@~2.25.0:
     "@egjs/hammerjs" "^2.0.17"
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
-    prop-types "^15.7.2"
 
 react-native-get-random-values@^1.11.0:
   version "1.11.0"
@@ -13722,7 +13765,7 @@ react-native-svg-transformer@^1.5.1:
     "@svgr/plugin-svgo" "^8.1.0"
     path-dirname "^1.0.2"
 
-react-native-svg@15.12.1, react-native-svg@^15.12.0:
+react-native-svg@15.12.1:
   version "15.12.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-15.12.1.tgz#7ba756dd6a235f86a2c312a1e7911f9b0d18ad3a"
   integrity sha512-vCuZJDf8a5aNC2dlMovEv4Z0jjEUET53lm/iILFnFewa15b4atjVxU6Wirm6O9y6dEsdjDZVD7Q3QM4T1wlI8g==
@@ -13906,30 +13949,30 @@ react@18.3.1:
   dependencies:
     loose-envify "^1.1.0"
 
-reactotron-core-client@2.9.7:
-  version "2.9.7"
-  resolved "https://registry.yarnpkg.com/reactotron-core-client/-/reactotron-core-client-2.9.7.tgz#c1fd2842b095dbd2c7522cfc6bd59e34768038eb"
-  integrity sha512-QWd0ekjU71CQL70J87NT5f7cmIJAMVZND+YgOaaUgmgFjhiXzHrpeIWs19+IFQPVLsJr97gdi58X8Y62Hchs9w==
+reactotron-core-client@2.9.8:
+  version "2.9.8"
+  resolved "https://registry.yarnpkg.com/reactotron-core-client/-/reactotron-core-client-2.9.8.tgz#763436e8465da3a631044276609c5ead68959174"
+  integrity sha512-WsE+DmJhFGfBaafUHpkhWuJITNGfSDVofjK32rN3RGUBcaEXoYDFiiO/z/0vnOdGpZqZ+OH95Pa9x6LVywOMcA==
   dependencies:
-    reactotron-core-contract "0.2.5"
+    reactotron-core-contract "0.3.1"
 
-reactotron-core-contract@0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/reactotron-core-contract/-/reactotron-core-contract-0.2.5.tgz#927160c026895798bfe931bd2462fdd5d4e435f9"
-  integrity sha512-pxuXFG1jffAWQSdT0FBws+/Xvl8++6T6WrAi4g7AxIZU5FPeut2wq//0yDhDWx6lF82eAo5JTZK7zECQy45QxA==
+reactotron-core-contract@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/reactotron-core-contract/-/reactotron-core-contract-0.3.1.tgz#2aaa17b963624e011c267311ea7f62999b6d9f92"
+  integrity sha512-/grw56j/VRXsm+cL2IWNWGhg5x70UZwgFzUvo0vZ+8gE1eqaeXGKMz7pfmfva56E7lk7CCxDtCi2s4CPrfgxqw==
 
-reactotron-react-native@^5.1.16:
-  version "5.1.16"
-  resolved "https://registry.yarnpkg.com/reactotron-react-native/-/reactotron-react-native-5.1.16.tgz#3369264b6d8841866695019611dc9caebf0114b8"
-  integrity sha512-RIBJkzrHXL2RzEMgjn3Pl5cIvq51ntfSB45lit3nq6YOE+VnMJOv9310YrXf9GUWlW7NbwTdziwmR+EbUlBIFg==
+reactotron-react-native@^5.1.17:
+  version "5.1.17"
+  resolved "https://registry.yarnpkg.com/reactotron-react-native/-/reactotron-react-native-5.1.17.tgz#c8ed5d088bd71c5c94a921346108354e5125c2c6"
+  integrity sha512-aPAfDa17b9JMkBOv+nw7NwduEn6ZFkrRBRYl6Kyg3J+y71/+c33A9AfSOYNI+Z2s8sn8phRtdzUSdHIEzy1Hhw==
   dependencies:
     mitt "^3.0.1"
-    reactotron-core-client "2.9.7"
+    reactotron-core-client "2.9.8"
 
-reactotron-redux@^3.1.9:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/reactotron-redux/-/reactotron-redux-3.2.0.tgz#b649e5f6e2c3802cf966d9ef5243d80902b0eb6c"
-  integrity sha512-rmD1x2xY7AV3NcfMqosUhNxeXwZ+BWi7zEKIh1o8qjLtEpU6hoe/3yx37ZBRyfKAdHmhHs25sT8yrZthoKleIg==
+reactotron-redux@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/reactotron-redux/-/reactotron-redux-3.2.1.tgz#3512f3d44d458e25ca65176c3d93243415bc8aa0"
+  integrity sha512-WxMVz1zBlzWplS3HJU1kDH1LBaTE71i/mMdyRTZZrAQq33+SKd7hva03pMbd6UJFaQeSCvey26a2SSWp5CLsWg==
   dependencies:
     microdiff "^1.5.0"
 
