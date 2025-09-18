@@ -102,13 +102,14 @@ platform :ios do
 
     sch.save!
 
-    # TODO
-    # Modify UIBackgroundModes
-    # Remove fetch & location
-
     update_info_plist(
       plist_path: "CoopCycle/Info.plist",
-      display_name: app_name
+      display_name: app_name,
+      block: proc do |plist|
+        # Remove fetch & location from UIBackgroundModes
+        # so that Apple doesn't ask why we need them
+        plist["UIBackgroundModes"] = ["remote-notification"]
+      end
     )
 
   end
