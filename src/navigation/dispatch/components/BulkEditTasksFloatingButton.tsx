@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Fab, FabIcon } from '@/components/ui/fab';
 import { User } from 'lucide-react-native'
+import { Fab, FabIcon } from '@/components/ui/fab';
 
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';

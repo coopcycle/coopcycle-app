@@ -1,15 +1,14 @@
-import { Badge, BadgeText, BadgeIcon } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { VStack } from '@/components/ui/vstack';
 import { Icon } from '@/components/ui/icon';
 import { HStack } from '@/components/ui/hstack';
-import { Map, List, ListFilter } from 'lucide-react-native';
+import { EllipsisVertical, List, ListFilter, Map } from 'lucide-react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
 import { createDeliverySuccess } from '../../redux/Store/actions';
@@ -25,6 +24,7 @@ import OrderNavigator from './OrderNavigator';
 import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
+import { HeaderRightEditBody } from '../dispatch/HeaderRightEditBody';
 
 const Tab = createBottomTabNavigator();
 
@@ -78,8 +78,7 @@ function CustomTabBar({ navigation }) {
           {keywordFilters.length > 0 && (
             <Badge
               className="z-10 self-end h-[12px] w-[12px] bg-red-600 rounded-full -mb-3 -mr-2"
-              variant="solid">
-            </Badge>
+              variant="solid" />
           )}
           <Icon as={ListFilter} size="xl" />
         </VStack>
@@ -131,6 +130,8 @@ function Tabs() {
 const RootStack = createStackNavigator();
 
 export default function DispatchNavigator({ navigation }) {
+  const isEditMode = true
+  const selectedTasks = 10;
   const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
@@ -158,9 +159,16 @@ export default function DispatchNavigator({ navigation }) {
             title: i18n.t('DISPATCH'),
             headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
             headerRight: () => (
-              <HeaderRightButton
-                onPress={() => navigation.navigate('DispatchDate')}
-              />
+              <>
+              {isEditMode ?
+                <HeaderRightEditBody selectedTasks={selectedTasks} />
+                :
+                <HeaderRightButton
+                  onPress={() => navigation.navigate('DispatchDate')}
+                />
+              }
+              </>
+              
             ),
           })}
         />

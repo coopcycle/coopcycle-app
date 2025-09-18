@@ -8,7 +8,7 @@ import {
 import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
-import Icon from './Icon';
+import FAIcon from './Icon';
 
 export interface IconTextProps {
   iconName: string;
@@ -40,7 +40,7 @@ const IconText: React.FC<IconTextProps> = ({
   const defaultIconColor = useIconColor();
   const content = (
     <HStack style={[styles.container, { opacity: disabled ? 0.5 : 1 }]}>
-      <Icon
+      <FAIcon
         name={iconName}
         color={iconColor || defaultIconColor}
         size={iconSize}
