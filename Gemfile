@@ -16,3 +16,7 @@ gem "fastlane-plugin-android_change_string_app_name"
 gem "fastlane-plugin-appicon"
 gem "fastlane-plugin-bundletool"
 gem "fastlane-plugin-increment_version_code"
+
+# Make Fastlane work on Ruby 3.4
+# https://github.com/fastlane/fastlane/issues/29183
+gem "abbrev"
