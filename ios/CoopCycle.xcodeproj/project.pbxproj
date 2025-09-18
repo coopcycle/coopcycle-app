@@ -7,14 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* CoopCycleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CoopCycleTests.m */; };
 		0FFE751F8FDF4AFD96542CB7 /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5654BC430BE34AEAAF13CA9E /* RobotoMono-Bold.ttf */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		25B0AB52ADD1C290342059FE /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5FF39510B6D19918E79B91 /* ExpoModulesProvider.swift */; };
 		346F3EAE31674113876BFD7C /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FBFC77D749D4E7DB675EAD8 /* OpenSans-Regular.ttf */; };
-		4EFD5626022946107800EECD /* Pods_CoopCycle_CoopCycleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5763258E52216DBA45B1C3D /* Pods_CoopCycle_CoopCycleTests.framework */; };
 		4F8A1031E05E0F08CE6BA568 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		78954DC5C52A12B3837DB2F1 /* Pods_CoopCycle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8A8B7590270EE06D2D26777 /* Pods_CoopCycle.framework */; };
 		8435002E2BB3E1AF0013D5F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8435002D2BB3E1AF0013D5F8 /* LaunchScreen.storyboard */; };
@@ -22,11 +18,11 @@
 		84A98B1223D8DA2000EFF666 /* CoopCycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1123D8DA2000EFF666 /* CoopCycleUITests.swift */; };
 		84A98B1A23D8DB6500EFF666 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */; };
 		84E9E2D424E3EA5B00740A6D /* Infoplist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84E9E2D624E3EA5B00740A6D /* Infoplist.strings */; };
+		84F96C5C2E7415BE00F599E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F96C5B2E7415BE00F599E5 /* AppDelegate.swift */; };
 		96AE515DDEA1498E89D89F8F /* RobotoMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 767153BC6E2E4B5A88732015 /* RobotoMono-Regular.ttf */; };
 		A9C30BD9D63F45FEB1FD9DEC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */; };
 		E4A95D69133B4C1B8FD304BA /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
-		F00823091B283689C9EE734D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9640CEED00E0A3C1C89F8F5 /* ExpoModulesProvider.swift */; };
 		FA2E390C2225DD32002BBCB4 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2E390B2225DD32002BBCB4 /* Empty.swift */; };
 		FAC644362166467C00D1DA52 /* misstickle__indian_bell_chime.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */; };
 /* End PBXBuildFile section */
@@ -51,14 +47,9 @@
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* CoopCycleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoopCycleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* CoopCycleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoopCycleTests.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* CoopCycle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoopCycle.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = CoopCycle/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = CoopCycle/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CoopCycle/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CoopCycle/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CoopCycle/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = CoopCycle/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FBFC77D749D4E7DB675EAD8 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -74,11 +65,8 @@
 		84A98B1923D8DB6500EFF666 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		84E9E2D524E3EA5B00740A6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Infoplist.strings; sourceTree = "<group>"; };
 		84E9E2D724E3EA7100740A6D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Infoplist.strings; sourceTree = "<group>"; };
-		87F2E4E6C4448C00269C858D /* Pods-CoopCycle-CoopCycleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle-CoopCycleTests.debug.xcconfig"; path = "Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		84F96C5B2E7415BE00F599E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = CoopCycle/AppDelegate.swift; sourceTree = "<group>"; };
 		961D84324BE84213A85D9C7D /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		A5763258E52216DBA45B1C3D /* Pods_CoopCycle_CoopCycleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoopCycle_CoopCycleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A9640CEED00E0A3C1C89F8F5 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CoopCycle-CoopCycleTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		AAEBEBD0F5CFBCC5A75A55AF /* Pods-CoopCycle-CoopCycleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoopCycle-CoopCycleTests.release.xcconfig"; path = "Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests.release.xcconfig"; sourceTree = "<group>"; };
 		BE5FF39510B6D19918E79B91 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CoopCycle/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		CA8DA506BADD462E8A4B68B4 /* Raleway-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Regular.ttf"; path = "../assets/fonts/Raleway-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -94,7 +82,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EFD5626022946107800EECD /* Pods_CoopCycle_CoopCycleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,33 +104,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* CoopCycleTests */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F21AD99517003FC87E /* CoopCycleTests.m */,
-				00E356F01AD99517003FC87E /* Supporting Files */,
-			);
-			path = CoopCycleTests;
-			sourceTree = "<group>";
-		};
-		00E356F01AD99517003FC87E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F11AD99517003FC87E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* CoopCycle */ = {
 			isa = PBXGroup;
 			children = (
+				84F96C5B2E7415BE00F599E5 /* AppDelegate.swift */,
 				FA53F9442047D093004395DF /* CoopCycle.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				84E9E2D624E3EA5B00740A6D /* Infoplist.strings */,
 				8435002D2BB3E1AF0013D5F8 /* LaunchScreen.storyboard */,
@@ -155,7 +123,6 @@
 			isa = PBXGroup;
 			children = (
 				9A033E64AFF479081FA0F18E /* CoopCycle */,
-				92279F0093D1CBA15C7AF5C2 /* CoopCycleTests */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
@@ -166,7 +133,6 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				F8A8B7590270EE06D2D26777 /* Pods_CoopCycle.framework */,
-				A5763258E52216DBA45B1C3D /* Pods_CoopCycle_CoopCycleTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -178,7 +144,6 @@
 				FA2E390B2225DD32002BBCB4 /* Empty.swift */,
 				FAC644352166467B00D1DA52 /* misstickle__indian_bell_chime.wav */,
 				13B07FAE1A68108700A75B9A /* CoopCycle */,
-				00E356EF1AD99517003FC87E /* CoopCycleTests */,
 				84A98B1023D8DA2000EFF666 /* CoopCycleUITests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -213,14 +178,6 @@
 			path = CoopCycleUITests;
 			sourceTree = "<group>";
 		};
-		92279F0093D1CBA15C7AF5C2 /* CoopCycleTests */ = {
-			isa = PBXGroup;
-			children = (
-				A9640CEED00E0A3C1C89F8F5 /* ExpoModulesProvider.swift */,
-			);
-			name = CoopCycleTests;
-			sourceTree = "<group>";
-		};
 		9A033E64AFF479081FA0F18E /* CoopCycle */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,8 +191,6 @@
 			children = (
 				4950D879877C4AFABC75A2ED /* Pods-CoopCycle.debug.xcconfig */,
 				774F2E083718E7A94D1D3D83 /* Pods-CoopCycle.release.xcconfig */,
-				87F2E4E6C4448C00269C858D /* Pods-CoopCycle-CoopCycleTests.debug.xcconfig */,
-				AAEBEBD0F5CFBCC5A75A55AF /* Pods-CoopCycle-CoopCycleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -266,13 +221,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CoopCycleTests" */;
 			buildPhases = (
-				27E5D4BF0030C7840B1DA4A1 /* [CP] Check Pods Manifest.lock */,
 				A587141B1B972DA5387B6E1E /* [Expo] Configure project */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				979DE33A1787135DCF65EF38 /* [CP] Embed Pods Frameworks */,
-				070D3DEA391BB68FC3DEEBA4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -455,23 +407,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode \n\nset -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		070D3DEA391BB68FC3DEEBA4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		0BC4F3756B0CAE18E63671C2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -519,28 +454,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle/Pods-CoopCycle-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		27E5D4BF0030C7840B1DA4A1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CoopCycle-CoopCycleTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5A382C359BA76A2EB098861D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -576,23 +489,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\nif [[ ${PODS_ROOT} ]]; then\n  echo \"info: Exec FirebaseCrashlytics Run from Pods\"\n  \"${PODS_ROOT}/FirebaseCrashlytics/run\"\nelse\n  echo \"info: Exec FirebaseCrashlytics Run from framework\"\n  \"${PROJECT_DIR}/FirebaseCrashlytics.framework/run\"\nfi\n";
-		};
-		979DE33A1787135DCF65EF38 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoopCycle-CoopCycleTests/Pods-CoopCycle-CoopCycleTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		9C6F293E02D3400EAE345918 /* Upload Debug Symbols to Sentry */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -634,8 +530,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* CoopCycleTests.m in Sources */,
-				F00823091B283689C9EE734D /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,9 +537,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F96C5C2E7415BE00F599E5 /* AppDelegate.swift in Sources */,
 				FA2E390C2225DD32002BBCB4 /* Empty.swift in Sources */,
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				25B0AB52ADD1C290342059FE /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -689,7 +582,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 87F2E4E6C4448C00269C858D /* Pods-CoopCycle-CoopCycleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -728,7 +620,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AAEBEBD0F5CFBCC5A75A55AF /* Pods-CoopCycle-CoopCycleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
