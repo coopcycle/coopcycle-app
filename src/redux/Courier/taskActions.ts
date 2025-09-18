@@ -161,13 +161,13 @@ function showAlertAfterBulk(messages) {
 export function navigateAndLoadTasks(selectedDate) {
   return function (dispatch, getState) {
     const currentRoute = selectCurrentRoute(getState());
+
+    dispatch(changeDate(selectedDate));
+    dispatch(loadTasks(selectedDate));
+
     if (currentRoute !== 'CourierTaskList') {
       NavigationHolder.navigate('CourierTaskList', {});
     }
-
-    NavigationHolder.navigate('Tasks', { selectedDate });
-
-    return dispatch(loadTasks(selectedDate));
   };
 }
 
