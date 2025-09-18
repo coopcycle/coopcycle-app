@@ -74,26 +74,31 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
     ? [styles.text, { textAlign: 'right' as const }]
     : [styles.text];
 
-  // Animated rotation values
+  const alignedTitleStyle = [
+    styles.titleText,
+    !isPickup && { color: greyColor },
+    { flex: 1, marginRight: 8 },
+    ...(isPickup ? [{ textAlign: 'right' as const }] : []),
+  ];
+
+  // TODO check if we should replace by SVG icons (css rotation not working on load)
   const pickupRotation = useRef(new Animated.Value(0)).current;
   const dropoffRotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Animate to 90 degrees
     Animated.timing(pickupRotation, {
       toValue: 90,
-      duration: 0, // Immediate
+      duration: 0,
       useNativeDriver: true,
     }).start();
 
     Animated.timing(dropoffRotation, {
       toValue: 90,
-      duration: 0, // Immediate
+      duration: 0,
       useNativeDriver: true,
     }).start();
   }, [dropoffRotation, pickupRotation]);
 
-  // Interpolate animated values to string format
   const pickupRotationInterpolated = pickupRotation.interpolate({
     inputRange: [0, 360],
     outputRange: ['0deg', '360deg'],
@@ -106,7 +111,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
   return (
     <HStack>
       <VStack
-        className="py-3 px-1"
+        className="py-3 px-2"
         style={{
           flex: 1,
           ...(isPickup ? { alignItems: 'flex-end', marginEnd: 8 } : {}),
@@ -114,16 +119,12 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
         <HStack className="justify-between items-center">
           <Text
             testID={`${taskTestId}:title`}
-            style={[
-              styles.titleText,
-              !isPickup && { color: greyColor },
-              { flex: 1, marginRight: 8 },
-            ]}
+            style={alignedTitleStyle}
             numberOfLines={1}>
             {task.orgName}
           </Text>
           {/* status and incidents icons */}
-          <HStack space="md" className="items-center">
+          <HStack space="xs" className="items-center">
             {task.hasIncidents && (
               <Icon
                 as={IncidentIcon}
@@ -174,15 +175,8 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
           <Text className="pr-2" style={alignedTextStyle}>
             {`${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}`}
           </Text>
-          {task.address?.description && task.address?.description.length ? (
-            <Icon className="mr-2" as={CommentsIcon} size="xs" />
-          ) : null}
-          {task.metadata && task.metadata?.payment_method && (
-            <PaymentMethodInList paymentMethod={task.metadata.payment_method} />
-          )}
-          {task.metadata && task.metadata.zero_waste && (
-            <Icon as={Recycle} size="sm" />
-          )}
+          {/* TODO confirm -- why this? shouldn't this be comments? */}
+          {task.comments ? <FAIcon name="comments" /> : null}
         </HStack>
         {task.tags && task.tags.length ? (
           <View style={isPickup ? { alignSelf: 'flex-end' } : undefined}>

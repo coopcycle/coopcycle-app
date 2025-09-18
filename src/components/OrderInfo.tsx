@@ -47,7 +47,11 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
       }}>
       {!_.isEmpty(orderId) ? (
         <>
-          <TaskTypeIcon task={task} size="lg" color="light" />
+          <TaskTypeIcon
+            task={task}
+            size="lg"
+            color={isDefaultColor ? 'dark' : 'light'}
+          />
           <VStack>
             <Text
               style={{

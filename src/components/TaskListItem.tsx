@@ -282,7 +282,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             style={{
               borderBottomRightRadius: cardBorderRadius,
               borderTopRightRadius: cardBorderRadius,
-              paddingLeft: 12,
+              paddingLeft: 6,
               width: cardWidth - buttonWidth,
               flex: 1,
             }}>
