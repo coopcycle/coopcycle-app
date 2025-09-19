@@ -1,9 +1,9 @@
+import Task from "@/src/types/task";
 import { useCallback } from "react";
 
 export const useTaskLongPress = () => {
     return useCallback(
-        () => {
-            console.log("LONG TAP ACTION");
-        }
-    ,[]);
+        (task: Task) => {
+            console.log("DISPATCHING TASK AS LONG PRESS ACTION PAYLOAD:", task)
+        },[]);
 }

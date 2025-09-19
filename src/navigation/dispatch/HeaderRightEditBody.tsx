@@ -1,20 +1,17 @@
 import { EllipsisVertical } from "lucide-react-native";
 import { StyleSheet, Text, View } from "react-native";
 
-interface HeaderRightEditBodyProps {
-    selectedTasks: string;
-}
-
-export const HeaderRightEditBody = ({ selectedTasks }: HeaderRightEditBodyProps) => {
+export const HeaderRightEditBody = (() => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.counter}>{selectedTasks}</Text>
+            <Text style={styles.counter}>{}</Text>
             <EllipsisVertical />
         </View>
     );
-}
+});
 
+// TODO: Modify
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',

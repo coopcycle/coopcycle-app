@@ -1,10 +1,5 @@
 import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
-import FAIcon from './Icon';
-import { Text } from '@/components/ui/text';
-import { VStack } from '@/components/ui/vstack';
-import { Recycle } from 'lucide-react-native';
-import moment from 'moment';
 import React, { forwardRef, useEffect, useRef } from 'react';
 import {
   Dimensions,
@@ -16,32 +11,13 @@ import {
 import { SwipeRow } from 'react-native-swipe-list-view';
 import { useSelector } from 'react-redux';
 import { Task, TaskListItemProps } from '../types/task';
-
-import {
-  CommentsIcon,
-  DropoffIcon,
-  IncidentIcon,
-} from '../navigation/task/styles/common';
 import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
 } from '../redux/Dispatch/selectors';
-import {
-  getDropoffCount,
-  getDropoffPosition,
-  getTaskTitle,
-} from '../shared/src/utils';
-import { blackColor, greyColor, redColor, yellowColor } from '../styles/common';
+import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
-import { PaymentMethodInList } from './PaymentMethodInfo';
-import { TaskPriorityStatus } from './TaskPriorityStatus';
-import { TaskStatusIcon } from './TaskStatusIcon';
-import TaskTagsList from './TaskTagsList';
-import { getTaskTitleForOrder } from '../navigation/order/utils';
-import { useTranslation } from 'react-i18next';
-import { selectTasksByOrder } from '../redux/logistics/selectors';
-import { getOrderId } from '../utils/tasks';
 import TaskInfo from './TaskInfo';
 
 const cardBorderRadius = 2.5;
@@ -136,6 +112,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       task,
       color,
       index,
+      isSelectedTask,
       taskListId,
       appendTaskListTestID = '',
       onPress = () => {},
@@ -289,6 +266,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             flex: 1,
             minWidth: '100%',
             minHeight: buttonWidth,
+            ...(isSelectedTask && {
+              borderWidth: 2,
+              borderColor: task.color,
+              borderRadius: 2.5,
+            }),
             borderTopRightRadius: cardBorderRadius,
             borderBottomRightRadius: cardBorderRadius,
           }}
@@ -301,11 +283,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           />
           <ItemTouchable
             onPress={onPress}
-            onLongPress={onLongPress}
+            onLongPress={onLongPress(task)}
             testID={taskTestId}
             style={{
               borderBottomRightRadius: cardBorderRadius,
-              borderTopRightRadius: cardBorderRadius,
+              borderTopRightRadius: cardBorderRadius,onLongPr
               paddingLeft: 12,
               width: cardWidth - buttonWidth,
               flex: 1,
