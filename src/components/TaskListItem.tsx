@@ -19,6 +19,7 @@ import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import TaskInfo from './TaskInfo';
+import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const cardBorderRadius = 2.5;
 
@@ -112,7 +113,6 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       task,
       color,
       index,
-      isSelectedTask,
       taskListId,
       appendTaskListTestID = '',
       onPress = () => {},
@@ -141,6 +141,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
         ? task.address.name
         : null;
 
+    const context = useTaskListsContext();
+    const isSelectedTask = (task: Task) => {return context?.selectedTasksToEdit.includes(task)}
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
 
@@ -266,7 +268,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             flex: 1,
             minWidth: '100%',
             minHeight: buttonWidth,
-            ...(isSelectedTask && {
+            ...(isSelectedTask(task) && {
               borderWidth: 2,
               borderColor: task.color,
               borderRadius: 2.5,
@@ -283,11 +285,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           />
           <ItemTouchable
             onPress={onPress}
-            onLongPress={onLongPress(task)}
+            onLongPress={() => onLongPress(task)}
             testID={taskTestId}
             style={{
               borderBottomRightRadius: cardBorderRadius,
-              borderTopRightRadius: cardBorderRadius,onLongPr
+              borderTopRightRadius: cardBorderRadius,
               paddingLeft: 12,
               width: cardWidth - buttonWidth,
               flex: 1,

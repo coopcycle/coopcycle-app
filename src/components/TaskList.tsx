@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import ItemsBulkFabButton from './ItemsBulkFabButton';
 import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
-import { useCourier } from '../navigation/courier/contexts/CourierContext';
 import Task, { TaskListProps } from '../types/task';
+import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const TaskList: React.FC<TaskListProps> = ({
   id,
@@ -69,7 +69,7 @@ const TaskList: React.FC<TaskListProps> = ({
 
   // TODO Review this button with the incoming new design/layout..!
   // The use of context here is to avoid incorrectly being parsed in dispatch screen
-  const context = useCourier();
+  const context = useTaskListsContext();
   const isFromCourier = context && context.isFromCourier;
   const onFabButtonPressed = isFromCourier ? (items => {
     onMultipleSelectionAction(items);

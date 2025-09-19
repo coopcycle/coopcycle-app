@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { IncidentIcon, DoneIcon } from '../task/styles/common';
+import { DoneIcon, IncidentIcon } from '../task/styles/common';
 import { blueColor, greenColor, yellowColor } from '../../styles/common';
 import {
   navigateToCompleteTask,
@@ -20,7 +20,7 @@ import TaskList from '../../components/TaskList';
 import { getOrderId } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { DateOnlyString } from '../../utils/date-types';
-import { CourierProvider } from './contexts/CourierContext';
+import { TaskListsProvider } from './contexts/TaskListsContext';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -87,7 +87,7 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   return (
-    <CourierProvider>
+    <TaskListsProvider>
     <View style={containerStyle}>
       <DateSelectHeader navigate={navigation.navigate} />
       {tasks.length > 0 && (
@@ -119,6 +119,6 @@ export default function TaskListPage({ navigation, route }) {
         </>
       )}
     </View>
-    </CourierProvider>
+    </TaskListsProvider>
   );
 }

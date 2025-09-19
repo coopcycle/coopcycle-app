@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { VStack } from '@/components/ui/vstack';
 import { Icon } from '@/components/ui/icon';
 import { HStack } from '@/components/ui/hstack';
-import { EllipsisVertical, List, ListFilter, Map } from 'lucide-react-native';
+import { List, ListFilter, Map } from 'lucide-react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
@@ -25,6 +25,7 @@ import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 import { HeaderRightEditBody } from '../dispatch/HeaderRightEditBody';
+import { TaskListsProvider } from '../courier/contexts/TaskListsContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -131,7 +132,6 @@ const RootStack = createStackNavigator();
 
 export default function DispatchNavigator({ navigation }) {
   const isEditMode = true
-  const selectedTasks = 10;
   const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
@@ -151,94 +151,96 @@ export default function DispatchNavigator({ navigation }) {
 
   return (
     <DeliveryCallbackProvider callback={deliveryCallback}>
-      <RootStack.Navigator screenOptions={screenOptions}>
-        <RootStack.Screen
-          name="DispatchHome"
-          component={Tabs}
-          options={({ navigation }) => ({
-            title: i18n.t('DISPATCH'),
-            headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
-            headerRight: () => (
-              <>
-              {isEditMode ?
-                <HeaderRightEditBody selectedTasks={selectedTasks} />
-                :
-                <HeaderRightButton
-                  onPress={() => navigation.navigate('DispatchDate')}
+      <TaskListsProvider>
+        <RootStack.Navigator screenOptions={screenOptions}>
+          <RootStack.Screen
+            name="DispatchHome"
+            component={Tabs}
+            options={({ navigation }) => ({
+              title: i18n.t('DISPATCH'),
+              headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
+              headerRight: () => (
+                <>
+                {isEditMode ?
+                  <HeaderRightEditBody />
+                  :
+                  <HeaderRightButton
+                    onPress={() => navigation.navigate('DispatchDate')}
+                  />
+                }
+                </>
+                
+              ),
+            })}
+          />
+          <RootStack.Screen
+            name="DispatchTasksSearchResults"
+            component={screens.DispatchTasksSearchResults}
+            options={() => ({
+              tabBarTestID: 'dispatchTasksSearchResults',
+              title: i18n.t('DISPATCH_SEARCH_RESULTS'),
+            })}
+          />
+          <RootStack.Screen
+            name="DispatchTasksFilters"
+            component={screens.DispatchTasksFilters}
+            options={() => ({
+              tabBarTestID: 'dispatchTasksFilters',
+              title: i18n.t('DISPATCH_TASKS_FILTERS'),
+            })}
+          />
+          <RootStack.Screen
+            name="DispatchKeywordsFilters"
+            component={screens.DispatchKeywordsFilters}
+            options={() => ({
+              tabBarTestID: 'dispatchKeywordsFilters',
+              title: i18n.t('DISPATCH_KEYWORDS_FILTERS'),
+            })}
+          />
+          <RootStack.Screen
+            name="Task"
+            component={TaskNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <RootStack.Screen
+            name="DispatchPickUser"
+            component={screens.DispatchPickUser}
+            options={{
+              title: i18n.t('DISPATCH_PICK_USER'),
+            }}
+          />
+          <RootStack.Screen
+            name="DispatchNewDelivery"
+            component={NewDeliveryNavigator}
+            options={{
+              title: i18n.t('DISPATCH_NEW_DELIVERY'),
+              headerBackTitleVisible: false,
+              headerLeft: props => (
+                <HeaderBackButton
+                  {...props}
+                  onPress={() => NavigationHolder.goBack()}
                 />
-              }
-              </>
-              
-            ),
-          })}
-        />
-        <RootStack.Screen
-          name="DispatchTasksSearchResults"
-          component={screens.DispatchTasksSearchResults}
-          options={() => ({
-            tabBarTestID: 'dispatchTasksSearchResults',
-            title: i18n.t('DISPATCH_SEARCH_RESULTS'),
-          })}
-        />
-        <RootStack.Screen
-          name="DispatchTasksFilters"
-          component={screens.DispatchTasksFilters}
-          options={() => ({
-            tabBarTestID: 'dispatchTasksFilters',
-            title: i18n.t('DISPATCH_TASKS_FILTERS'),
-          })}
-        />
-        <RootStack.Screen
-          name="DispatchKeywordsFilters"
-          component={screens.DispatchKeywordsFilters}
-          options={() => ({
-            tabBarTestID: 'dispatchKeywordsFilters',
-            title: i18n.t('DISPATCH_KEYWORDS_FILTERS'),
-          })}
-        />
-        <RootStack.Screen
-          name="Task"
-          component={TaskNavigator}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <RootStack.Screen
-          name="DispatchPickUser"
-          component={screens.DispatchPickUser}
-          options={{
-            title: i18n.t('DISPATCH_PICK_USER'),
-          }}
-        />
-        <RootStack.Screen
-          name="DispatchNewDelivery"
-          component={NewDeliveryNavigator}
-          options={{
-            title: i18n.t('DISPATCH_NEW_DELIVERY'),
-            headerBackTitleVisible: false,
-            headerLeft: props => (
-              <HeaderBackButton
-                {...props}
-                onPress={() => NavigationHolder.goBack()}
-              />
-            ),
-          }}
-        />
-        <RootStack.Screen
-          name="DispatchDate"
-          component={screens.DispatchDate}
-          options={{
-            title: i18n.t('DISPATCH_DATE'),
-          }}
-        />
-        <RootStack.Screen
-          name="Order"
-          component={OrderNavigator}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </RootStack.Navigator>
+              ),
+            }}
+          />
+          <RootStack.Screen
+            name="DispatchDate"
+            component={screens.DispatchDate}
+            options={{
+              title: i18n.t('DISPATCH_DATE'),
+            }}
+          />
+          <RootStack.Screen
+            name="Order"
+            component={OrderNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </RootStack.Navigator>
+      </TaskListsProvider>
     </DeliveryCallbackProvider>
   );
 }

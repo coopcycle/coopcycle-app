@@ -1,11 +1,12 @@
 import { EllipsisVertical } from "lucide-react-native";
 import { StyleSheet, Text, View } from "react-native";
+import { useTaskListsContext } from "../courier/contexts/TaskListsContext";
 
 export const HeaderRightEditBody = (() => {
-
+    const context = useTaskListsContext();
     return (
         <View style={styles.container}>
-            <Text style={styles.counter}>{}</Text>
+            <Text style={styles.counter}>{context?.selectedTasksToEdit.length}</Text>
             <EllipsisVertical />
         </View>
     );
