@@ -1,5 +1,7 @@
 // ====== TASK TYPES ======
 
+import { LucideIcon } from 'lucide-react-native';
+
 /**
  * Task status enumeration
  */
@@ -249,6 +251,27 @@ export interface TaskFilterOptions {
   after?: string;
   before?: string;
   organization?: string;
+}
+
+// Updated TypeScript interface
+export interface TaskListItemProps {
+  task: Task;
+  color: string;
+  index: number;
+  taskListId: string;
+  appendTaskListTestID?: string;
+  onPress?: () => void;
+  onLongPress?: () => void;
+  onOrderPress?: () => void;
+  onPressLeft?: () => void;
+  onPressRight?: () => void;
+  swipeOutLeftBackgroundColor?: string;
+  swipeOutLeftIcon?: LucideIcon;
+  swipeOutRightBackgroundColor?: string;
+  swipeOutRightIcon?: LucideIcon;
+  onSwipedToLeft?: () => void;
+  onSwipedToRight?: () => void;
+  onSwipeClosed?: () => void;
 }
 
 export default Task;

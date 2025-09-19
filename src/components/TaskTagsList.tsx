@@ -30,10 +30,10 @@ function TaskTagsList({ taskTags }: { taskTags: TaskTag[] }) {
 const styles = StyleSheet.create({
   tagsWrapper: {
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 4,
   },
   tag: {
-    paddingVertical: 4,
+    paddingVertical: 0,
     paddingHorizontal: 4,
     color: whiteColor,
     borderRadius: 4,

@@ -23,12 +23,10 @@ export function getOrderTitle(tasks: Tasks): string | null {
  * @param tasks Array of Task objects
  * @returns Object containing formatted text and total quantity of all packages from pickup tasks only
  */
-// TODO TYPO
 export const packagesInOrderSummary = (tasks: Tasks) => {
   if (!tasks || !tasks.length) {
     return { text: '', totalQuantity: 0 };
   }
-
   const pickupTasks = tasks.filter(task => task.type === 'PICKUP');
   const allPackages = pickupTasks.flatMap(task => task.packages || []);
 
@@ -122,9 +120,14 @@ export function formatDistance(
     locale?: string;
     unitSuffix?: string;
     trimTrailingZeros?: boolean;
-  }
+  },
 ): string {
-  const { decimals = 2, locale = 'en-US', unitSuffix = 'km', trimTrailingZeros = true } = options ?? {};
+  const {
+    decimals = 2,
+    locale = 'en-US',
+    unitSuffix = 'km',
+    trimTrailingZeros = true,
+  } = options ?? {};
   const value = meters ? parseFloat(meters) : NaN;
   if (Number.isNaN(value) || value <= 0) {
     return '';

@@ -1,32 +1,15 @@
-import { Icon } from '@/components/ui/icon';
 import { View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {
-  DoingIcon,
-  DoneIcon,
-  FailedIcon,
-  taskTypeIcon,
+  doingIconName,
+  doneIconName,
+  failedIconName,
 } from '../navigation/task/styles/common';
+import { greenColor, redColor } from '../styles/common';
 import { Task } from '../types/Task';
-import { styles } from './TaskListItem';
+import FAIcon from './Icon';
 
-const iconStyle = (task: Task) => {
-  const style = [styles.icon];
-  if (task.status === 'FAILED') {
-    style.push(styles.iconDanger);
-  }
-  return style;
-};
-
-export const TaskTypeIcon = ({ task }) => (
-  <Icon
-    as={taskTypeIcon(task)}
-    style={iconStyle(task)}
-  />
-);
-
-export const TaskStatusIcon = ({ task }) => {
+export const TaskStatusIcon = ({ task }: { task: Task }) => {
   const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
   // We wrap the element in a <View>,
@@ -36,31 +19,17 @@ export const TaskStatusIcon = ({ task }) => {
   switch (task.status) {
     case 'DOING':
       return (
-        <View testID={testID}>
-          <Icon
-            as={DoingIcon}
-            style={iconStyle(task)}
-          />
-        </View>
+        <FAIcon
+          name={doingIconName}
+          color="#2C81CC"
+          size={20}
+          testID={testID}
+        />
       );
     case 'DONE':
-      return (
-        <View testID={testID}>
-          <Icon
-            as={DoneIcon}
-            style={iconStyle(task)}
-          />
-        </View>
-      );
+      return <FAIcon name={doneIconName} color={greenColor} testID={testID} />;
     case 'FAILED':
-      return (
-        <View testID={testID}>
-          <Icon
-            as={FailedIcon}
-            style={iconStyle(task)}
-          />
-        </View>
-      );
+      return <FAIcon name={failedIconName} color={redColor} testID={testID} />;
     default:
       return <View />;
   }
