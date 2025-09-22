@@ -7,8 +7,7 @@ export const useTaskLongPress = () => {
 
   return useCallback(
     (task: Task) => {
-        console.log(task)
-        context?.setSelectedTasksToEdit(prevTasks => [...prevTasks, task]);
+        context?.toggleTaskSelection(task);
     },
     [context]
   );
