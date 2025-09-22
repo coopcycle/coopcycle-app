@@ -25,7 +25,7 @@ import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 import { HeaderRightEditBody } from '../dispatch/HeaderRightEditBody';
-import { TaskListsProvider } from '../courier/contexts/TaskListsContext';
+import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -130,8 +130,22 @@ function Tabs() {
 
 const RootStack = createStackNavigator();
 
+const HeaderRightBody = ({navigation}) => {
+  const context = useTaskListsContext();
+  return (
+    <>
+      {context?.isEditMode ?
+      <HeaderRightEditBody />
+      :
+      <HeaderRightButton
+        onPress={() => navigation.navigate('DispatchDate')}
+      />}
+    </>
+  );
+};
+
 export default function DispatchNavigator({ navigation }) {
-  const isEditMode = true
+  const taskListsContext = useTaskListsContext();
   const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
@@ -160,16 +174,9 @@ export default function DispatchNavigator({ navigation }) {
               title: i18n.t('DISPATCH'),
               headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
               headerRight: () => (
-                <>
-                {isEditMode ?
-                  <HeaderRightEditBody />
-                  :
-                  <HeaderRightButton
-                    onPress={() => navigation.navigate('DispatchDate')}
-                  />
-                }
-                </>
-                
+                <HeaderRightBody 
+                  isEditMode={taskListsContext?.isEditMode} 
+                  navigation={navigation}/>
               ),
             })}
           />
