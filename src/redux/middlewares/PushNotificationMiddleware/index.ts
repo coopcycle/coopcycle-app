@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-//import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import {
   LOGOUT_REQUEST,
@@ -14,7 +13,8 @@ import {
   selectIsAuthenticated,
 } from '../../App/selectors';
 import PushNotification from '../../../notifications';
-//import { navigateToOrder } from '../../../navigation/utils';
+import { navigateToOrder } from '../../../navigation/utils';
+import { navigationRef } from '../../../NavigationHolder';
 import { EVENT as EVENT_DELIVERY } from '../../../domain/Delivery';
 import { EVENT as EVENT_ORDER } from '../../../domain/Order';
 import tracker from '../../../analytics/Tracker';
@@ -56,15 +56,12 @@ export default ({ getState, dispatch }) => {
       dispatch(loadOrderAndNavigate(order));
     }
 
-    // TODO at https://github.com/coopcycle/coopcycle/issues/200
     if (event && event.name === EVENT_DELIVERY.CREATED) {
-      //const navigation = useNavigation();
-      const { order_id } = event.data;
-
+      const orderNumber = message.data.order_number;
       // Here in any case, we navigate to the delivery/order that was tapped,
       // it should have been loaded via WebSocket already.
-      // NOTE: We assume to always set `isFromCourier` to `true` here
-      //navigateToOrder(navigation, order_id, true)
+      // (and we always assume to be admin/dispatcher, so isFromCourier = false)
+      navigateToOrder(navigationRef.current, orderNumber, false);
     }
 
     if (event && event.name === EVENT_TASK_COLLECTION.CHANGED) {

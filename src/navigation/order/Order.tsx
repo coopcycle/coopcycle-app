@@ -22,11 +22,12 @@ const Order = ({ route }: { route: RouteType }) => {
     () => getAspectRatio(mapDimensions),
     [mapDimensions],
   );
-  const { orderId, isFromCourier } = route.params;
+  const { orderNumber, isFromCourier } = route.params;
   const selectSelector = isFromCourier
     ? selectTasksByOrderCourier
     : selectTasksByOrderLogistics;
-  const orderTasks = useSelector(selectSelector(orderId));
+  const orderTasks = useSelector(selectSelector(orderNumber));
+
   // Ugly workaround for colors for courier
   const tasks = useMemo(() => {
     if (isFromCourier) {
@@ -36,26 +37,26 @@ const Order = ({ route }: { route: RouteType }) => {
     }
     return orderTasks;
   }, [orderTasks, isFromCourier]);
-  
-  const firstTaskId = tasks[0].id;
+
+  const firstTaskId = tasks.length ? tasks[0].id : null;
   const {data, isLoading, isFetching} = useGetTaskContextQuery(firstTaskId, {skip: !firstTaskId});
-  
+
   const tasksWithContext = useMemo(() => {
     if(!data?.delivery) return tasks;
-    
+
     const { distance, duration, polyline } = data.delivery;
 
     return tasks.map(task => ({
       ...task,
       metadata: {
         ...task.metadata,
-        order_distance: distance, 
+        order_distance: distance,
         order_duration: duration,
         polyline
       }
     }))
   }, [tasks, data]);
-  
+
   const handleLayout = e => {
     const { width, height } = e.nativeEvent.layout;
     setMapDimensions({ height, width });

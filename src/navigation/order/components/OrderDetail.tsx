@@ -20,6 +20,10 @@ import {
 } from './../utils';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
+  if (tasks.length === 0) {
+    return null;
+  }
+
   const { t } = useTranslation();
   const orderTitle = getOrderTitle(tasks);
   const packagesInOrder = packagesInOrderSummary(tasks);

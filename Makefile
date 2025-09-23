@@ -12,7 +12,7 @@ setup:
 	@clear && yarn install
 
 start:
-	@clear && yarn start --reset-cache
+	@clear && yarn start --reset-cache --client-logs
 
 start-fresh:
 	@rm -rf node_modules/
