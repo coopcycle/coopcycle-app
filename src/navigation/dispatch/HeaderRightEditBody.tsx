@@ -1,16 +1,21 @@
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { EllipsisVertical } from "lucide-react-native";
-import { StyleSheet, Text, View } from "react-native";
-import { useTaskListsContext } from "../courier/contexts/TaskListsContext";
 
-export const HeaderRightEditBody = (() => {
+import { useTaskListsContext } from "../courier/contexts/TaskListsContext";
+import TasksMenu from "../components/TasksMenu";
+
+export const HeaderRightEditBody = () => {
     const context = useTaskListsContext();
     return (
-        <View style={styles.container}>
-            <Text style={styles.counter}>{context?.selectedTasksToEdit.length}</Text>
-            <EllipsisVertical />
-        </View>
+        <TouchableOpacity>
+            <View style={styles.container} >
+                <Text style={styles.counter}>{context?.selectedTasksToEdit.length}</Text>
+                <EllipsisVertical />
+            </View>
+            <TasksMenu />
+        </TouchableOpacity>
     );
-});
+};
 
 // TODO: Modify
 const styles = StyleSheet.create({
