@@ -165,7 +165,7 @@ export default function DispatchNavigator({ navigation }) {
 
   return (
     <DeliveryCallbackProvider callback={deliveryCallback}>
-      <TaskListsProvider>
+      <TaskListsProvider defaultIsFromCourier={false}>
         <RootStack.Navigator screenOptions={screenOptions}>
           <RootStack.Screen
             name="DispatchHome"

@@ -21,10 +21,12 @@ import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
-import { selectTasksByOrder } from '../redux/logistics/selectors';
+import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redux/Courier/taskSelectors';
+import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
 import { getOrderId } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { useTranslation } from 'react-i18next';
+import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const cardBorderRadius = 2.5;
 
@@ -67,8 +69,12 @@ interface ITaskInfoProps {
 }
 
 function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
+  const context = useTaskListsContext();
+  const selectSelector = context?.isFromCourier
+  ? selectTasksByOrderCourier
+  : selectTasksByOrderLogistics;
   const { t } = useTranslation();
-  const orderTasks = useSelector(selectTasksByOrder(getOrderId(task)));
+  const orderTasks = useSelector(selectSelector(getOrderId(task)));
   // TODO check if we use this
   const taskDropoffTitle = getTaskTitleForOrder(task, t);
   const alignedTextStyle = isPickup
