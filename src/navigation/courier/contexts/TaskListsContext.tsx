@@ -10,11 +10,12 @@ interface TaskListsContextType {
   setIsEditMode: (isEditMode: boolean) => void;
   setIsFromCourier: (isFromCourier: boolean) => void;
   toggleTaskSelection: (task: Task) => void;
-  clearSelectedTasks: (task: Task) => void;
+  clearSelectedTasks: () => void;
 }
 
 interface TaskListsProviderProps {
   children: ReactNode;
+  defaultIsFromCourier?: boolean;
 }
 
 const TaskListsContext = createContext<TaskListsContextType | undefined>(undefined);
@@ -23,10 +24,10 @@ export const useTaskListsContext = (): TaskListsContextType | undefined => {
     return useContext(TaskListsContext);
 };
 
-export const TaskListsProvider: FC<TaskListsProviderProps> = ({ children }) => {
+export const TaskListsProvider: FC<TaskListsProviderProps> = ({ children, defaultIsFromCourier = true }) => {
   const [selectedTasksToEdit, setSelectedTasksToEdit] = useState<Task[]>([]);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [isFromCourier, setIsFromCourier] = useState<boolean>(true);
+  const [isFromCourier, setIsFromCourier] = useState<boolean>(defaultIsFromCourier);
   const isFocused = useIsFocused();
 
   useEffect(() => {
