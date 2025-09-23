@@ -302,7 +302,7 @@ export default function GroupedTasks({
     [collapsedSections],
   );
 
-  const useLongPressHandler = useTaskLongPress();
+  const longPressHandler = useTaskLongPress();
 
   const renderItem = useCallback(
     ({ section, item, index }) => {
@@ -314,7 +314,7 @@ export default function GroupedTasks({
             id={section.id}
             tasks={tasks}
             appendTaskListTestID={section.appendTaskListTestID}
-            onLongPress={(task) => useLongPressHandler(task)}
+            onLongPress={(task) => longPressHandler(task)}
             onTaskClick={onTaskClick(section.isUnassignedTaskList)}
             onOrderClick={onOrderClick}
             onSwipeClosed={task => {
@@ -330,6 +330,7 @@ export default function GroupedTasks({
     },
     [
       collapsedSections,
+      longPressHandler,
       handleOnSwipeClose,
       isFetching,
       onTaskClick,

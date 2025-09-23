@@ -21,6 +21,7 @@ import { getOrderId } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { DateOnlyString } from '../../utils/date-types';
 import { TaskListsProvider } from './contexts/TaskListsContext';
+import { useTaskLongPress } from '../dispatch/hooks/useTaskLongPress';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -62,6 +63,8 @@ export default function TaskListPage({ navigation, route }) {
     return task.status !== 'DONE';
   };
 
+  const longPressHandler = useTaskLongPress();
+
   const swipeLeftConfiguration = {
     onPressLeft: task =>
       navigateToCompleteTask(navigation, route, task, [], true),
@@ -87,7 +90,6 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   return (
-    <TaskListsProvider>
     <View style={containerStyle}>
       <DateSelectHeader navigate={navigation.navigate} />
       {tasks.length > 0 && (
@@ -103,6 +105,7 @@ export default function TaskListPage({ navigation, route }) {
           onOrderClick={task =>
             navigateToOrder(navigation, getOrderId(task), true)
           }
+          onLongPress={(task) => longPressHandler(task)}
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
           onMultipleSelectionAction={completeSelectedTasks}
@@ -119,6 +122,5 @@ export default function TaskListPage({ navigation, route }) {
         </>
       )}
     </View>
-    </TaskListsProvider>
   );
 }
