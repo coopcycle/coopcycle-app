@@ -1,9 +1,23 @@
 import { useNavigation } from '@react-navigation/native';
-import { SectionList } from 'react-native';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SectionList, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionIcon,
+  AccordionItem,
+  AccordionTitleText,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { ChevronDownIcon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import TaskList from '../../../components/TaskList';
+import { navigateToOrder, navigateToTask } from '../../../navigation/utils';
+import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
 import {
   addOrder,
   addTask,
@@ -11,9 +25,12 @@ import {
   removeTasksAndOrders,
 } from '../../../redux/Dispatch/updateSelectedTasksSlice';
 import {
-  AssignOrderIcon,
-  AssignTaskIcon,
-} from '../../task/styles/common';
+  selectSelectedDate,
+  selectTaskLists,
+  selectTasksEntities,
+} from '../../../shared/logistics/redux';
+import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
+import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import {
   createTempTaskList,
   createUnassignedTaskLists,
@@ -22,25 +39,15 @@ import {
   getTasksListIdsToEdit,
   getUserTaskList,
 } from '../../../shared/src/logistics/redux/taskListUtils';
+import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import {
   darkGreyColor,
   darkRedColor,
   whiteColor,
 } from '../../../styles/common';
-import { navigateToOrder, navigateToTask } from '../../../navigation/utils';
-import { UNASSIGNED_TASKS_LIST_ID } from '../../../shared/src/constants';
-import {
-  selectSelectedDate,
-  selectTaskLists,
-  selectTasksEntities,
-} from '../../../shared/logistics/redux';
-import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
-import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
-import TaskList from '../../../components/TaskList';
-import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderId } from '../../../utils/tasks';
-import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
-import { SectionHeader } from './SectionHeader';
+import { AssignOrderIcon, AssignTaskIcon } from '../../task/styles/common';
+import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -55,10 +62,12 @@ export default function GroupedTasks({
   const navigation = useNavigation();
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
-  const date = useSelector(selectSelectedDate)
-  const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation()
+  const date = useSelector(selectSelectedDate);
+  const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation();
 
-  useEffect(() => {generateOrders(date.format('YYYY-MM-DD'))}, [generateOrders, date]);
+  useEffect(() => {
+    generateOrders(date.format('YYYY-MM-DD'));
+  }, [generateOrders, date]);
 
   const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
   // Combine unassigned tasks and task lists to use in SectionList
@@ -95,8 +104,7 @@ export default function GroupedTasks({
     ? sections.filter(section => section.tasksCount > 0)
     : sections;
 
-  // collapsable
-  const [collapsedSections, setCollapsedSections] = useState(new Set());
+  // Let Gluestack handle accordion state internally for animations
 
   // Update tasks functions
   const {
@@ -290,7 +298,8 @@ export default function GroupedTasks({
     [assignTaskHandler, handleOnSwipeToRight],
   );
 
-  const renderSectionHeader = useCallback(
+  // old custom accordion
+  /* const renderSectionHeader = useCallback(
     ({ section }) => (
       <SectionHeader
         section={section}
@@ -299,41 +308,106 @@ export default function GroupedTasks({
       />
     ),
     [collapsedSections],
-  );
+  ); */
+
+  /* comment for the moment
+  /* const renderSectionHeader = ({ section }: { section: AccordionSection }) => (
+    <View style={{ backgroundColor: '#f5f5f5', padding: 16 }}>
+      <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#333' }}>
+        {section.title}
+      </Text>
+    </View>
+  ); */
 
   const renderItem = useCallback(
     ({ section, item, index }) => {
-      if (!isFetching && !collapsedSections.has(section.title)) {
-        const tasks = getTaskListTasks(item, tasksEntities);
+      //if (!isFetching && !collapsedSections.has(section.title)) {
+      const tasks = getTaskListTasks(item, tasksEntities);
 
-        return (
-          <TaskList
-            id={section.id}
-            tasks={tasks}
-            appendTaskListTestID={section.appendTaskListTestID}
-            onLongPress={() => {console.log("LONG PRESS ACTION")}}
-            onTaskClick={onTaskClick(section.isUnassignedTaskList)}
-            onOrderClick={onOrderClick}
-            onSwipeClosed={task => {
-              handleOnSwipeClose(section, task);
-            }}
-            {...swipeLeftConfiguration(section)}
-            {...swipeRightConfiguration(section)}
-          />
-        );
-      }
+      return (
+        <>
+          <Accordion type="single" isCollapsible={true} isDisabled={false}>
+            <AccordionItem value={item['@id'] || item.id}>
+              <AccordionHeader>
+                <AccordionTrigger
+                  style={{
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    backgroundColor: 'white',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#e0e0e0',
+                  }}>
+                  <AccordionTitleText
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '500',
+                      flex: 1,
+                    }}>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <View
+                        style={{
+                          backgroundColor: section.backgroundColor,
+                          borderRadius: 4,
+                          marginEnd: 8,
+                          padding: 4,
+                        }}>
+                        <Text
+                          style={{
+                            color: section.textColor,
+                          }}>
+                          {section.title}
+                        </Text>
+                      </View>
+                      <Text style={{ color: darkGreyColor }}>
+                        {section.isUnassignedTaskList
+                          ? `${section.ordersCount}   (${section.tasksCount} ${t(
+                              'TASKS',
+                            ).toLowerCase()})`
+                          : section.tasksCount}
+                      </Text>
+                    </View>
+                  </AccordionTitleText>
+                  <AccordionIcon
+                    as={ChevronDownIcon}
+                    className="data-[state=open]:rotate-180"
+                  />
+                </AccordionTrigger>
+              </AccordionHeader>
 
-      return null;
+              <AccordionContent>
+                <TaskList
+                  id={section.id}
+                  tasks={tasks}
+                  appendTaskListTestID={section.appendTaskListTestID}
+                  onLongPress={() => {
+                    console.log('LONG PRESS ACTION');
+                  }}
+                  onTaskClick={onTaskClick(section.isUnassignedTaskList)}
+                  onOrderClick={onOrderClick}
+                  onSwipeClosed={task => {
+                    handleOnSwipeClose(section, task);
+                  }}
+                  {...swipeLeftConfiguration(section)}
+                  {...swipeRightConfiguration(section)}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </>
+      );
     },
     [
-      collapsedSections,
       handleOnSwipeClose,
-      isFetching,
       onTaskClick,
       onOrderClick,
       swipeLeftConfiguration,
       swipeRightConfiguration,
       tasksEntities,
+      t,
     ],
   );
 
@@ -343,19 +417,18 @@ export default function GroupedTasks({
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
         keyboardShouldPersistTaps="handled"
+        /* comment for the moment, as it breaks the Gluestack accordion     
         initialNumToRender={1}
         maxToRenderPerBatch={1}
-        windowSize={3}
-        renderSectionHeader={renderSectionHeader}
+        windowSize={3} */
+        // renderSectionHeader={renderSectionHeader}
         keyExtractor={(item, index) => item['@id']}
         renderItem={renderItem}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
         testID="dispatchTasksSectionList"
       />
-      <BulkEditTasksFloatingButton
-        onPress={handleBulkAssignButtonPress}
-      />
+      <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );
 }
