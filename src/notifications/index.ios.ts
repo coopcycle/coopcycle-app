@@ -1,74 +1,70 @@
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-
-let registerListener = deviceToken => {};
-let notificationListener = notification => {};
+import * as Notifications from 'expo-notifications';
 
 const parseNotification = (notification, isForeground = null) => {
   return {
     foreground: isForeground,
-    data: notification.getData(),
+    data: notification.request.trigger.payload,
   };
 };
 
 let isConfigured = false;
 
+let notificationResponseReceivedListener = notification => {};
+
+// https://docs.expo.dev/versions/v52.0.0/sdk/notifications/
+
 class PushNotification {
-  static configure(options) {
-    if (!isConfigured) {
-      // WARNING
-      // We need to call addEventListener BEFORE calling requestPermissions, or the whole thing does not work
-      // @see https://github.com/facebook/react-native/issues/9105#issuecomment-246180895
-      registerListener = deviceToken => options.onRegister(deviceToken);
-      PushNotificationIOS.addEventListener('register', registerListener);
+  static async configure(options) {
 
-      // @see https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/pushing_background_updates_to_your_app
-      //
-      // The system treats background notifications as low priority:
-      // you can use them to refresh your app’s content, but the system doesn’t guarantee their delivery.
-      // In addition, the system may throttle the delivery of background notifications if the total number becomes excessive.
-      // The number of background notifications allowed by the system depends on current conditions,
-      // but don’t try to send more than two or three per hour.
-      //
-      // The server does *NOT* include a content-available key in the payload.
-      // Thus, this listener is never called
-      //
-      // PushNotificationIOS.addEventListener('notification', () => {})
+    // https://docs.expo.dev/versions/latest/sdk/notifications/#present-incoming-notifications-when-the-app-is
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    });
 
-      // This listener is called when a notification is *TAPPED*,
-      // wether the app is in the foreground or the background
-      PushNotificationIOS.addEventListener(
-        'localNotification',
-        notification => {
-          // We *MUST* call this or the rest doesn't work
-          notification.finish(PushNotificationIOS.FetchResult.NoData);
-          options.onNotification(parseNotification(notification, false));
-        },
-      );
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
 
-      PushNotificationIOS.requestPermissions().catch(e => console.log(e));
+    // Listeners registered by this method will be called whenever a user interacts with a notification (for example, taps on it).
+    notificationResponseReceivedListener = Notifications.addNotificationResponseReceivedListener(response => {
+      options.onNotification(parseNotification(response.notification, false))
+    });
 
-      isConfigured = true;
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      // Failed to get push token for push notification
+      return;
+    }
+
+    try {
+      const devicePushToken = await Notifications.getDevicePushTokenAsync();
+      options.onRegister(devicePushToken.data);
+    } catch (e) {
+      return
     }
   }
 
   static getInitialNotification() {
     return new Promise((resolve, reject) => {
-      PushNotificationIOS.getInitialNotification().then(notification => {
-        if (notification) {
-          resolve(parseNotification(notification, false));
-        } else {
-          resolve(null);
-        }
-      });
+       Notifications.getLastNotificationResponseAsync()
+        .then(response => {
+          if (response?.notification) {
+            resolve(parseNotification(response.notification, false));
+          } else {
+            resolve(null);
+          }
+        });
     });
   }
 
   static removeListeners() {
-    PushNotificationIOS.removeEventListener('register', registerListener);
-    PushNotificationIOS.removeEventListener(
-      'notification',
-      notificationListener,
-    );
+    notificationResponseReceivedListener.remove();
   }
 }
 

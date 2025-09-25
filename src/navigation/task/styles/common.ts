@@ -1,11 +1,20 @@
 // Source file for common logic related to how task is presented to a user (UI)
 
-import { Check, TriangleAlert, X, ArrowDown, Box, Play, MessageCircle, Boxes } from 'lucide-react-native'
+import {
+  Check,
+  TriangleAlert,
+  X,
+  ArrowDown,
+  Box,
+  Play,
+  MessageCircle,
+  Boxes,
+} from 'lucide-react-native';
 
 const assignOrderIconName = 'cubes';
 const assignTaskIconName = 'cube';
 const commentsIconName = 'comments';
-const doingIconName = 'play';
+const doingIconName = 'play-circle';
 const doneIconName = 'check';
 const failedIconName = 'remove';
 const incidentIconName = 'exclamation-triangle';

@@ -4,8 +4,8 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { Recycle } from 'lucide-react-native';
 import moment from 'moment';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
 import { Task } from '../types/task';
 import FAIcon from './Icon';
 
@@ -69,65 +69,107 @@ interface ITaskInfoProps {
 }
 
 function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
+  const { t } = useTranslation();
   const context = useTaskListsContext();
   const selectSelector = context?.isFromCourier
   ? selectTasksByOrderCourier
   : selectTasksByOrderLogistics;
-  const { t } = useTranslation();
   const orderTasks = useSelector(selectSelector(getOrderId(task)));
   // TODO check if we use this
   const taskDropoffTitle = getTaskTitleForOrder(task, t);
   const alignedTextStyle = isPickup
     ? [styles.text, { textAlign: 'right' as const }]
     : [styles.text];
+
+  const alignedTitleStyle = [
+    styles.titleText,
+    !isPickup && { color: greyColor },
+    { flex: 1, marginRight: 8 },
+    ...(isPickup ? [{ textAlign: 'right' as const }] : []),
+  ];
+
+  // TODO check if we should replace by SVG icons (css rotation not working on load)
+  const pickupRotation = useRef(new Animated.Value(0)).current;
+  const dropoffRotation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(pickupRotation, {
+      toValue: 90,
+      duration: 0,
+      useNativeDriver: true,
+    }).start();
+
+    Animated.timing(dropoffRotation, {
+      toValue: 90,
+      duration: 0,
+      useNativeDriver: true,
+    }).start();
+  }, [dropoffRotation, pickupRotation]);
+
+  const pickupRotationInterpolated = pickupRotation.interpolate({
+    inputRange: [0, 360],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  const dropoffRotationInterpolated = dropoffRotation.interpolate({
+    inputRange: [0, 360],
+    outputRange: ['0deg', '360deg'],
+  });
   return (
     <HStack>
       <VStack
-        className="py-3 px-1"
+        className="py-3 px-2"
         style={{
           flex: 1,
           ...(isPickup ? { alignItems: 'flex-end', marginEnd: 8 } : {}),
         }}>
-        <HStack className="justify-between">
+        <HStack className="justify-between items-center">
           <Text
             testID={`${taskTestId}:title`}
-            style={[styles.titleText, !isPickup && { color: greyColor }]}
+            style={alignedTitleStyle}
             numberOfLines={1}>
-            {/* {!isPickup && (
-            <Text style={[styles.titleText, { color: greyColor }]}>IMB / </Text>
-          )} */}
             {task.orgName}
           </Text>
-          {task.hasIncidents && (
-            <Icon
-              as={IncidentIcon}
-              size={24}
-              style={{
-                borderRadius: 5,
-                color: redColor,
-                marginRight: 12,
-              }}
-            />
-          )}
+          {/* status and incidents icons */}
+          <HStack space="xs" className="items-center">
+            {task.hasIncidents && (
+              <Icon
+                as={IncidentIcon}
+                size={24}
+                style={{
+                  borderRadius: 5,
+                  color: redColor,
+                }}
+              />
+            )}
+            <TaskStatusIcon task={task} />
+          </HStack>
         </HStack>
 
         {isPickup ? (
           <HStack space="md">
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
-            <FAIcon
-              name="level-down-alt"
-              size={18}
-              style={{ transform: [{ rotate: '90deg' }] }}
-            />
+            <Animated.View
+              style={{
+                transform: [{ rotate: pickupRotationInterpolated }],
+              }}>
+              <FAIcon name="level-down-alt" size={18} />
+            </Animated.View>
           </HStack>
         ) : (
           <HStack space="md">
-            <FAIcon
-              name="level-down-alt"
-              size={18}
-              style={{ transform: [{ rotate: '90deg' }, { scaleY: -1 }] }}
-            />
-            <Text>{`${getDropoffPosition(task, orderTasks)} ${taskDropoffTitle}`}</Text>
+            <Animated.View
+              style={{
+                transform: [
+                  { rotate: dropoffRotationInterpolated },
+                  { scaleY: -1 },
+                ],
+              }}>
+              <FAIcon name="level-down-alt" size={18} />
+            </Animated.View>
+            <Text numberOfLines={1} style={{ flex: 1 }}>
+              {`${getDropoffPosition(task, orderTasks)} ${taskDropoffTitle}`}
+            </Text>
           </HStack>
         )}
 
@@ -141,15 +183,8 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
             {`${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}`}
           </Text>
           <TaskStatusIcon task={task} />
-          {task.address?.description && task.address?.description.length ? (
-            <Icon className="mr-2" as={CommentsIcon} size="xs" />
-          ) : null}
-          {task.metadata && task.metadata?.payment_method && (
-            <PaymentMethodInList paymentMethod={task.metadata.payment_method} />
-          )}
-          {task.metadata && task.metadata.zero_waste && (
-            <Icon as={Recycle} size="sm" />
-          )}
+          {/* TODO confirm -- why this? shouldn't this be comments? */}
+          {task.comments ? <FAIcon name="comments" /> : null}
         </HStack>
         {task.tags && task.tags.length ? (
           <View style={isPickup ? { alignSelf: 'flex-end' } : undefined}>

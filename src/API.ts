@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import _ from 'lodash';
 import qs from 'qs';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 import VersionNumber from 'react-native-version-number';
 import i18n from './i18n';
 
@@ -402,73 +401,6 @@ Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
     parameters: options.parameters,
     uploadType: FileSystem.FileSystemUploadType.MULTIPART,
     sessionType: FileSystem.FileSystemSessionType.BACKGROUND,
-  });
-};
-
-Client.prototype.uploadFile = function (uri, base64) {
-  const headers = {
-    Authorization: `Bearer ${this.getToken()}`,
-    'Content-Type': 'multipart/form-data',
-  };
-
-  const body = [
-    {
-      name: 'file',
-      filename: 'filename.jpg', // This is needed to work
-      data: base64.startsWith('file://')
-        ? ReactNativeBlobUtil.wrap(base64.replace('file://', ''))
-        : // Remove line breaks from Base64 string
-          base64.replace(/(\r\n|\n|\r)/gm, ''),
-    },
-  ];
-
-  return new Promise((resolve, reject) => {
-    ReactNativeBlobUtil.fetch(
-      'POST',
-      `${this.getBaseURL()}${uri}`,
-      headers,
-      body,
-    )
-      // Warning: this is not a standard fetch respone
-      // @see https://github.com/RonRadtke/react-native-blob-util/wiki/Classes#rnfetchblobresponse
-      .then(fetchBlobResponse => {
-        const fetchBlobResponseInfo = fetchBlobResponse.info();
-
-        switch (fetchBlobResponseInfo.status) {
-          case 401:
-            addSubscriber(token => {
-              console.log('Retrying request…');
-              this.uploadFile(uri, base64).then(response => resolve(response));
-            });
-
-            addErrorSubscriber(e => {
-              reject(e);
-            });
-
-            if (!isRefreshingToken) {
-              isRefreshingToken = true;
-
-              console.log('Refreshing token for file upload…');
-
-              this.refreshToken()
-                // Make sure to resolve/reject the Promise that was returned
-                .then(token => onTokenFetched(token))
-                .catch(e => onTokenRefreshError(e))
-                .finally(() => {
-                  isRefreshingToken = false;
-                });
-            }
-
-            break;
-          case 400:
-            return reject(fetchBlobResponse.json());
-          case 201:
-            return resolve(fetchBlobResponse.json());
-          default:
-            reject();
-        }
-      })
-      .catch(e => reject(e));
   });
 };
 

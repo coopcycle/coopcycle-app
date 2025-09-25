@@ -1,4 +1,4 @@
-import messaging from '@react-native-firebase/messaging';
+import { getMessaging, onNotificationOpenedApp, onMessage, getToken, getInitialNotification, onTokenRefresh } from '@react-native-firebase/messaging';
 import _ from 'lodash';
 import { PermissionsAndroid, Platform } from 'react-native';
 
@@ -41,7 +41,8 @@ let tokenRefreshListener = () => {};
 class PushNotification {
   static configure(options) {
     // Notification was received in the background (and opened by a user)
-    notificationOpenedAppListener = messaging().onNotificationOpenedApp(
+    notificationOpenedAppListener = onNotificationOpenedApp(
+      getMessaging(),
       remoteMessage => {
         options.onNotification(parseNotification(remoteMessage, false));
       },
@@ -51,7 +52,7 @@ class PushNotification {
     // in the current implementation, server sends both
     // "notification + data" and "data-only" messages (with the same data),
     // handle only "notification + data" messages when the app is in the foreground
-    notificationListener = messaging().onMessage(remoteMessage => {
+    notificationListener = onMessage(getMessaging(),remoteMessage => {
       // @see https://rnfirebase.io/messaging/usage#foreground-state-messages
       if (remoteMessage.data) {
         options.onBackgroundMessage(parseNotification(remoteMessage, true));
@@ -66,27 +67,24 @@ class PushNotification {
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
       ).then(results => {
         if (PermissionsAndroid.RESULTS.GRANTED === results) {
-          messaging()
-            .getToken()
+          getToken(getMessaging())
             .then(fcmToken => {
               options.onRegister(fcmToken);
             });
         }
       });
     } else {
-      messaging()
-        .getToken()
+      getToken(getMessaging())
         .then(fcmToken => options.onRegister(fcmToken));
     }
 
-    tokenRefreshListener = messaging().onTokenRefresh(fcmToken =>
+    tokenRefreshListener = onTokenRefresh(getMessaging(), fcmToken =>
       options.onRegister(fcmToken),
     );
   }
 
   static getInitialNotification() {
-    return messaging()
-      .getInitialNotification()
+    return getInitialNotification(getMessaging())
       .then(remoteMessage => {
         return remoteMessage ? parseNotification(remoteMessage, false) : null;
       });

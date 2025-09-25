@@ -1,6 +1,5 @@
-import { HStack } from '@/components/ui/hstack';
-import { Icon } from '@/components/ui/icon';
 import React, { forwardRef, useEffect, useRef } from 'react';
+import { LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
   StyleSheet,
@@ -10,6 +9,9 @@ import {
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import { useSelector } from 'react-redux';
+
+import { HStack } from '@/components/ui/hstack';
+import { Icon } from '@/components/ui/icon';
 import { Task, TaskListItemProps } from '../types/task';
 import {
   selectAllTasksIdsFromOrders,
@@ -38,6 +40,7 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   textDanger: {
+    fontSize: 14,
     color: redColor,
   },
   hasIncident: {
@@ -95,15 +98,15 @@ const SwipeButtonContainer = ({
 };
 
 interface ISwipeButtonProps {
-  icon: React.ElementType;
+  icon: LucideIcon | undefined;
   width: number;
   size?: number;
 }
 
-const SwipeButton = ({ icon, width, size }: ISwipeButtonProps) => (
+const SwipeButton = ({ icon, width, size = 42 }: ISwipeButtonProps) => (
   <View
     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={icon} size={size} style={{ color: '#ffffff', width: 40 }} />
+    <Icon as={icon} size={size} style={{ color: '#ffffff' }} />
   </View>
 );
 
@@ -154,6 +157,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       swipeButtonsProps.display = 'none';
     }
 
+    // TODO check - are we using this?
     if (task.status === 'FAILED') {
       textStyle.push(styles.textDanger);
     }
@@ -256,11 +260,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             }}
             testID={`${taskTestId}:right`}
             width={visibleButtonWidth}>
-            <SwipeButton
-              icon={swipeOutRightIcon}
-              size={8}
-              width={buttonWidth}
-            />
+            <SwipeButton icon={swipeOutRightIcon} width={buttonWidth} />
           </SwipeButtonContainer>
         </View>
         <HStack
@@ -285,12 +285,12 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           />
           <ItemTouchable
             onPress={onPress}
-            onLongPress={() => onLongPress(task)}
+            onLongPress={(task) => onLongPress(task)}
             testID={taskTestId}
             style={{
               borderBottomRightRadius: cardBorderRadius,
               borderTopRightRadius: cardBorderRadius,
-              paddingLeft: 12,
+              paddingLeft: 6,
               width: cardWidth - buttonWidth,
               flex: 1,
             }}>

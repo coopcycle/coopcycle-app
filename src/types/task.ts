@@ -258,11 +258,10 @@ export interface TaskListItemProps {
   task: Task;
   color: string;
   index: number;
-  isSelectedTask: boolean;
   taskListId: string;
   appendTaskListTestID?: string;
   onPress?: () => void;
-  onLongPress?: (task: Task) => void;
+  onLongPress?: () => void;
   onOrderPress?: () => void;
   onPressLeft?: () => void;
   onPressRight?: () => void;

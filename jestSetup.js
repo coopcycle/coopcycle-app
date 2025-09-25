@@ -9,11 +9,6 @@ jest.mock('react-native-localize', () => ({
   findBestLanguageTag: () => ({ languageTag: 'en' }),
 }));
 
-jest.mock('react-native-blob-util', () => ({
-  fetch: () => {},
-  wrap: () => {},
-}));
-
 jest.mock('expo-file-system', () => ({
   createUploadTask: jest.fn(),
   FileSystemUploadType: {
