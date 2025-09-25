@@ -1,34 +1,49 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { EllipsisVertical } from "lucide-react-native";
-import { useState } from "react";
 
 import { useTaskListsContext } from "../courier/contexts/TaskListsContext";
 import TasksMenu from "../components/TasksMenu";
 
 export const HeaderRightEditBody = () => {
+  const options = [
+    {
+      key: "Complete Task",
+      text: "Completar",
+      action: () => {console.log("COMPLETE TASK")},
+    },
+    {
+      key: "Cancel Task",
+      text: "Cancelar",
+      action: () => {console.log("CANCEL TASK")},
+    },
+    {
+      key: "Report incidence",
+      text: "Reportar Incidencia",
+      action: () => {console.log("REPORT INCIDENCE")},
+
+    },
+    {
+      key: "Edit",
+      text: "Editar",
+      action: () => {console.log("EDIT TASK")},
+    },
+  ] 
   const context = useTaskListsContext();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handlePress = () => {
-    setIsMenuOpen(true);
-  };
-
-  const handleCloseMenu = () => {
-    setIsMenuOpen(false);
-  };
 
   return (
     <View>
-      <TouchableOpacity onPress={handlePress}>
-        <View style={styles.container}>
-          <Text style={styles.counter}>
-            {context?.selectedTasksToEdit.length}
-          </Text>
-          <EllipsisVertical color="white" size={20} />
-        </View>
-      </TouchableOpacity>
-
-      <TasksMenu isOpen={isMenuOpen} onClose={handleCloseMenu} />
+      <TasksMenu 
+      options={options}
+      renderTrigger={(triggerProps) => (
+        <TouchableOpacity  {...triggerProps}>
+          <View style={styles.container}>
+            <Text style={styles.counter}>
+              {context?.selectedTasksToEdit.length}
+            </Text>
+            <EllipsisVertical size={20} />
+          </View>
+        </TouchableOpacity>
+      )}/>
     </View>
   );
 };

@@ -1,60 +1,39 @@
 // TasksMenu.tsx
-import { useEffect, useState } from 'react';
-import {
-  Menu,
-  MenuItem,
-  MenuItemLabel,
-} from '@/components/ui/menu';
+import { ReactElement } from 'react';
+import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
+
+interface SelectedTasksMenu {
+  key: string;
+  text: string;
+  action: () => void;
+}
 
 type TasksMenuProps = {
-  isOpen: boolean;
-  onClose: () => void;
+  options: SelectedTasksMenu[];
+  renderTrigger: (props: Record<string, unknown>) => ReactElement;
 };
 
-export default function TasksMenu({ isOpen, onClose }: TasksMenuProps) {
-  const [selected, setSelected] = useState(new Set<string>());
-
-  useEffect(() => {
-    if (!isOpen) {
-      setSelected(new Set());
-    }
-  }, [isOpen]);
-
+export default function TasksMenu({
+  renderTrigger,
+  options
+}: TasksMenuProps) {
   return (
     <Menu
-      isOpen={isOpen}
-      onOpenChange={onClose}
+      trigger={(triggerProps) => (
+        renderTrigger(triggerProps)
+      )}
       placement="bottom left"
       selectionMode="single"
-      selectedKeys={selected}
       offset={0}
       className="p-1.5"
-      onSelectionChange={(keys) => {
-        setSelected(keys as Set<string>);
-      }}
-      closeOnSelect={true}
     >
-      <MenuItem
-        key="Complete Task"
-        textValue="Complete Task"
-        className="p-2 web:min-w-[294px] min-w-[225px]">
-        <MenuItemLabel size="sm">Completar</MenuItemLabel>
-      </MenuItem>
-      <MenuItem
-        key="Cancel Task"
-        textValue="Cancel Task"
-        className="p-2 web:min-w-[294px] min-w-[225px]">
-        <MenuItemLabel size="sm">Cancelar</MenuItemLabel>
-      </MenuItem>
-      <MenuItem
-        key="Report incidence"
-        textValue="Report incidence"
-        className="p-2">
-        <MenuItemLabel size="sm">Reportar Incidencia</MenuItemLabel>
-      </MenuItem>
-      <MenuItem key="Edit" textValue="Edit" className="p-2">
-        <MenuItemLabel size="sm">Editar</MenuItemLabel>
-      </MenuItem>
+      {options.map((opt) => {
+        return(
+          <MenuItem key={opt.key} textValue={opt.text} className="p-2 web:min-w-[294px] min-w-[225px]" onPress={opt.action}>
+            <MenuItemLabel size="sm">{opt.text}</MenuItemLabel>
+          </MenuItem>
+        )
+      })}
     </Menu>
   );
 }
