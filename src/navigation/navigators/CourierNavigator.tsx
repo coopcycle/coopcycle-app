@@ -188,7 +188,7 @@ const HeaderRightBody = ({navigation}) => {
   return (
     <>
       {context?.isEditMode ?
-      <HeaderRightEditBody />
+      <HeaderRightEditBody navigation={navigation}/>
       :
       <HeaderButtons nav={navigation} />}
     </>

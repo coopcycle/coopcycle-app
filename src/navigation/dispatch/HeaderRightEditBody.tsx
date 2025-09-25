@@ -3,32 +3,48 @@ import { EllipsisVertical } from "lucide-react-native";
 
 import { useTaskListsContext } from "../courier/contexts/TaskListsContext";
 import TasksMenu from "../components/TasksMenu";
+import { navigateToCompleteTask } from "../utils";
+import { useRoute } from "@react-navigation/native";
 
-export const HeaderRightEditBody = () => {
+export const HeaderRightEditBody = ({navigation}) => {
+  const context = useTaskListsContext();
+  const selectedTasks = context?.selectedTasksToEdit;
+  const route = useRoute();
   const options = [
     {
       key: "Complete Task",
       text: "Completar",
-      action: () => {console.log("COMPLETE TASK")},
+      action: () => {
+        navigateToCompleteTask(navigation, route, null, selectedTasks, true);
+      },
     },
     {
       key: "Cancel Task",
       text: "Cancelar",
-      action: () => {console.log("CANCEL TASK")},
+      action: () => {
+        console.log("CANCEL TASK")
+      },
     },
     {
       key: "Report incidence",
       text: "Reportar Incidencia",
-      action: () => {console.log("REPORT INCIDENCE")},
+      action: () => { 
+        return selectedTasks?.length > 1 ?
+          console.log("REPORT INCIDENTS")
+          : 
+          navigateToCompleteTask(navigation, route, selectedTasks[0], [], false)
+      },
 
     },
     {
       key: "Edit",
       text: "Editar",
-      action: () => {console.log("EDIT TASK")},
+      action: () => {
+        //TODO: Implement edit feature as described at https://github.com/coopcycle/coopcycle/issues/498
+        console.log("EDIT TASK")
+      },
     },
   ] 
-  const context = useTaskListsContext();
 
   return (
     <View>

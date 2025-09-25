@@ -17,13 +17,14 @@ export default function TasksMenu({
   renderTrigger,
   options
 }: TasksMenuProps) {
+  
   return (
     <Menu
       trigger={(triggerProps) => (
         renderTrigger(triggerProps)
       )}
       placement="bottom left"
-      selectionMode="single"
+      selectionMode="none"
       offset={0}
       className="p-1.5"
     >

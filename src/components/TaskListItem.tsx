@@ -269,9 +269,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             minWidth: '100%',
             minHeight: buttonWidth,
             ...(isSelectedTask(task) && {
-              borderWidth: 2,
+              borderWidth: 3,
               borderColor: task.color,
-              borderRadius: 2.5,
+              borderRadius: 4,
             }),
             borderTopRightRadius: cardBorderRadius,
             borderBottomRightRadius: cardBorderRadius,
@@ -285,7 +285,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           />
           <ItemTouchable
             onPress={onPress}
-            onLongPress={(task) => onLongPress(task)}
+            onLongPress={() => onLongPress(task)}
             testID={taskTestId}
             style={{
               borderBottomRightRadius: cardBorderRadius,
