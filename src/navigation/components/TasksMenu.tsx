@@ -1,31 +1,39 @@
-import { useState } from 'react';
+// TasksMenu.tsx
+import { useEffect, useState } from 'react';
 import {
   Menu,
   MenuItem,
   MenuItemLabel,
 } from '@/components/ui/menu';
-import { Button, ButtonText } from '@/components/ui/button';
 
-export default function TasksMenu() {
-  const [selected, setSelected] = useState(new Set([]));
+type TasksMenuProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function TasksMenu({ isOpen, onClose }: TasksMenuProps) {
+  const [selected, setSelected] = useState(new Set<string>());
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSelected(new Set());
+    }
+  }, [isOpen]);
+
   return (
     <Menu
+      isOpen={isOpen}
+      onOpenChange={onClose}
       placement="bottom left"
       selectionMode="single"
       selectedKeys={selected}
       offset={0}
       className="p-1.5"
-      onSelectionChange={keys => {
-        setSelected(keys);
+      onSelectionChange={(keys) => {
+        setSelected(keys as Set<string>);
       }}
       closeOnSelect={true}
-      trigger={({ ...triggerProps }) => {
-        return (
-          <Button {...triggerProps}>
-            <ButtonText>Menu</ButtonText>
-          </Button>
-        );
-      }}>
+    >
       <MenuItem
         key="Complete Task"
         textValue="Complete Task"
