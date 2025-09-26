@@ -14,7 +14,7 @@ import React, { Component } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { phonecall } from 'react-native-communications';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import VersionNumber from 'react-native-version-number';
@@ -95,14 +95,9 @@ const TAPS_TO_SHOW_FEATURE_FLAGS = 3;
 
 const SafeAreaViewWrapper = ({ children }) => {
 
-  const insets = useSafeAreaInsets();
-
   return (
     <SafeAreaView
-      style={[ styles.container, {
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom
-      }]}>
+      style={[ styles.container ]}>
       { children }
     </SafeAreaView>
   )
