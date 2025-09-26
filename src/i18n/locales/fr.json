@@ -568,6 +568,7 @@
     "ESTIMATED_DURATION": "Durée estimée",
     "TOTAL_AMOUNT": "Montant total",
     "PICKUP": "Ramasser",
-    "DROPOFF": "Dépôt"
+    "DROPOFF": "Dépôt",
+    "START": "Commencer"
   }
 }
