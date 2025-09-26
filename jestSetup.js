@@ -49,6 +49,7 @@ jest.mock('uuid', () => ({
 jest.mock('react-native/Libraries/AppState/AppState', () => ({
   __esModule: true,
   default: {
+    currentState: 'active',
     addEventListener: jest.fn(),
   },
 }))
