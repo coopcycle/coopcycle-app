@@ -5,6 +5,7 @@ import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 interface SelectedTasksMenu {
   key: string;
   text: string;
+  isDisabled?: boolean;
   action: () => void;
 }
 
@@ -20,19 +21,22 @@ export default function TasksMenu({
   
   return (
     <Menu
-      trigger={(triggerProps) => (
-        renderTrigger(triggerProps)
-      )}
+      trigger={renderTrigger}
       placement="bottom left"
       selectionMode="none"
       offset={0}
       className="p-1.5"
     >
       {options.map((opt) => {
-        return(
-          <MenuItem key={opt.key} textValue={opt.text} className="p-2 web:min-w-[294px] min-w-[225px]" onPress={opt.action}>
+        return( !opt.isDisabled &&
+          <MenuItem 
+            key={opt.key} 
+            textValue={opt.text} 
+            onPress={opt.action}
+            className="p-2 web:min-w-[294px] min-w-[225px]" 
+          >
             <MenuItemLabel size="sm">{opt.text}</MenuItemLabel>
-          </MenuItem>
+          </MenuItem> 
         )
       })}
     </Menu>
