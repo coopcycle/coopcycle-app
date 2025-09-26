@@ -1627,17 +1627,17 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@datadog/mobile-react-native@^2.4.3":
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-native/-/mobile-react-native-2.6.6.tgz#659727ec8165d885766b33afec0da8ef74c56883"
-  integrity sha512-dvsfhGdFHXV+J/I+n8X/d4Y6ECqHlRhD6s67zp95kfmeM1xXpFqrxdHWa1klSsETze6ouXdFg/ZQHa/Aw35itg==
+"@datadog/mobile-react-native@^2.8.1":
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-native/-/mobile-react-native-2.12.1.tgz#c0ed93aa4a834ae8e447bfbfe48144a041805b83"
+  integrity sha512-9tRf/9HowINcvZc59vs0YctsDG7yKunWAtAdH6Z9+BTafND1W8lAIL4tIM8e611VC94MguAD1llkOBChGVYo+w==
   dependencies:
     big-integer "^1.6.52"
 
-"@datadog/mobile-react-navigation@^2.4.3":
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-navigation/-/mobile-react-navigation-2.6.6.tgz#d986e449dc6392f932c127ebe8752f9371d74ecc"
-  integrity sha512-j6J5P2Q+8sqkb3mxSyucAa+HD90+obqO3qaOgeQC3rMx6aUubxWCgMT6hIsZaAn9vMqGVw8lSBof5MNHbizFJA==
+"@datadog/mobile-react-navigation@^2.8.1":
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/@datadog/mobile-react-navigation/-/mobile-react-navigation-2.12.1.tgz#7cb9f111d1c58eab8f8efd0c35fa380a577ede17"
+  integrity sha512-z0tdKCblt6cfNe53jgOzIJpuiHx+nGIzNo7HIcpkdk1tUHM6QV8fIJmwWaJ9eDoR3xajTXrw/v7oXXjSIQxHQA==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"

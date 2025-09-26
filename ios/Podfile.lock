@@ -9,23 +9,23 @@ PODS:
   - CocoaLumberjack (3.8.5):
     - CocoaLumberjack/Core (= 3.8.5)
   - CocoaLumberjack/Core (3.8.5)
-  - DatadogCore (2.25.0):
-    - DatadogInternal (= 2.25.0)
-  - DatadogCrashReporting (2.25.0):
-    - DatadogInternal (= 2.25.0)
+  - DatadogCore (2.30.0):
+    - DatadogInternal (= 2.30.0)
+  - DatadogCrashReporting (2.30.0):
+    - DatadogInternal (= 2.30.0)
     - PLCrashReporter (~> 1.12.0)
-  - DatadogInternal (2.25.0)
-  - DatadogLogs (2.25.0):
-    - DatadogInternal (= 2.25.0)
-  - DatadogRUM (2.25.0):
-    - DatadogInternal (= 2.25.0)
-  - DatadogSDKReactNative (2.6.6):
-    - DatadogCore (~> 2.25.0)
-    - DatadogCrashReporting (~> 2.25.0)
-    - DatadogLogs (~> 2.25.0)
-    - DatadogRUM (~> 2.25.0)
-    - DatadogTrace (~> 2.25.0)
-    - DatadogWebViewTracking (~> 2.25.0)
+  - DatadogInternal (2.30.0)
+  - DatadogLogs (2.30.0):
+    - DatadogInternal (= 2.30.0)
+  - DatadogRUM (2.30.0):
+    - DatadogInternal (= 2.30.0)
+  - DatadogSDKReactNative (2.12.1):
+    - DatadogCore (= 2.30.0)
+    - DatadogCrashReporting (= 2.30.0)
+    - DatadogLogs (= 2.30.0)
+    - DatadogRUM (= 2.30.0)
+    - DatadogTrace (= 2.30.0)
+    - DatadogWebViewTracking (= 2.30.0)
     - DoubleConversion
     - glog
     - hermes-engine
@@ -49,11 +49,11 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - DatadogTrace (2.25.0):
-    - DatadogInternal (= 2.25.0)
+  - DatadogTrace (2.30.0):
+    - DatadogInternal (= 2.30.0)
     - OpenTelemetrySwiftApi (= 1.13.1)
-  - DatadogWebViewTracking (2.25.0):
-    - DatadogInternal (= 2.25.0)
+  - DatadogWebViewTracking (2.30.0):
+    - DatadogInternal (= 2.30.0)
   - DoubleConversion (1.1.6)
   - EXApplication (6.1.5):
     - ExpoModulesCore
@@ -3058,14 +3058,14 @@ SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
-  DatadogCore: a068d264191f687d00125aafa8042110cf886cd7
-  DatadogCrashReporting: b19d80a98b1eb51bdb3ec5b1a7f339769fb70b95
-  DatadogInternal: e9b6cef84448ee32f73bc9b37646708a65c1b8ae
-  DatadogLogs: 623d89158ef3a4a7545a8fbce9afa4cedc576324
-  DatadogRUM: ff0661b42124d90c9ff2538c3cc1b806ddf7620c
-  DatadogSDKReactNative: 420d9a503e2e9d01b85ef0007e4ccfd724066c50
-  DatadogTrace: 4e1aac322eafd8568fd4a966b02e58fbb5af0612
-  DatadogWebViewTracking: 3b2465b5a5bf10f187807e490678a2e0a3c2daae
+  DatadogCore: 5c01290a3b60b27bf49aa958f2e339c738364d9e
+  DatadogCrashReporting: 11286d48ab61baeb2b41b945c7c0d4ef23db317d
+  DatadogInternal: 7aeb48e254178a0c462c3953dc0a8a8d64499a93
+  DatadogLogs: 4324739de62a6059e07d70bf6ceceed78764edeb
+  DatadogRUM: f36949a38285f3b240a7be577d425f8518e087d4
+  DatadogSDKReactNative: 599c0db8e8a2faabc1beac8f4d8acf4917d9d567
+  DatadogTrace: bfea32b6ed2870829629a9296cf526221493cc3e
+  DatadogWebViewTracking: 78c20d8e5f1ade506f4aadaec5690c1a63283fe2
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   EXApplication: 1e06972201838375ca1ec1ba34d586a98a5dc718
   EXConstants: 98bcf0f22b820f9b28f9fee55ff2daededadd2f8
@@ -3096,7 +3096,7 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: 1c6135e8a094cc6368949f5faeeca7ee8948b8aa
   FirebaseSessions: b9a92c1c51bbb81e78fc3142cda6d925d700f8e7
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
-  glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
+  glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   GoogleAppMeasurement: 700dce7541804bec33db590a5c496b663fbe2539
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
