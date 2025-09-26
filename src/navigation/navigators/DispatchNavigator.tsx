@@ -10,6 +10,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlice';
 import { createDeliverySuccess } from '../../redux/Store/actions';
@@ -33,6 +34,7 @@ function CustomTabBar({ navigation }) {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showMapButton, setShowMapButton] = useState(true);
+  const insets = useSafeAreaInsets();
 
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
@@ -53,7 +55,8 @@ function CustomTabBar({ navigation }) {
 
   return (
     <HStack
-      className="items-center justify-between p-4 bg-background-50">
+      className="items-center justify-between p-4 bg-background-50"
+      style={{ paddingBottom: insets.bottom }}>
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={showMapButton ? goToTasksMap : goToTasksList}
