@@ -70,6 +70,7 @@ export async function swipeRightTask(sectionId, index = 0) {
   await swipeRight(`${sectionId}:task:${index}`);
 }
 
-export function getTaskTitleElement(sectionId, index = 0) {
-  return element(by.id(`${sectionId}:task:${index}:title`))
+export function expectTaskTitleToHaveText(sectionId, index, text) {
+  const elemId = `${sectionId}:task:${index}:title`;
+  return expect(element(by.id(elemId))).toHaveText(text.toUpperCase());
 }

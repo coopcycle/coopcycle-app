@@ -118,7 +118,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
             testID={`${taskTestId}:title`}
             style={alignedTitleStyle}
             numberOfLines={1}>
-            {task.orgName}
+            {task.orgName}{__DEV__ ? ` (task #${task.id})` : null}
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">

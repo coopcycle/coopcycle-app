@@ -134,15 +134,6 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
   ) => {
     const isPickup = task.type === 'PICKUP';
 
-    // TODO check - are we using this?
-    const address = task.address?.contactName
-      ? task.address?.name
-        ? `${task.address.contactName} - ${task.address.name}`
-        : task.address.contactName
-      : task.address?.name
-        ? task.address.name
-        : null;
-
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
 
