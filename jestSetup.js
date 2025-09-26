@@ -45,3 +45,10 @@ jest.mock('react-native-share', () => ({}));
 jest.mock('uuid', () => ({
   v4: jest.fn(),
 }));
+
+jest.mock('react-native/Libraries/AppState/AppState', () => ({
+  __esModule: true,
+  default: {
+    addEventListener: jest.fn(),
+  },
+}))
