@@ -27,7 +27,7 @@ public class AppDelegate: ExpoAppDelegate {
 #if os(iOS) || os(tvOS)
     window = UIWindow(frame: UIScreen.main.bounds)
     factory.startReactNative(
-      withModuleName: "main",
+      withModuleName: "CoopCycle",
       in: window,
       launchOptions: launchOptions)
 #endif
