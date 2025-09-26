@@ -182,7 +182,6 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
           <Text className="pr-2" style={alignedTextStyle}>
             {`${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}`}
           </Text>
-          <TaskStatusIcon task={task} />
           {/* TODO confirm -- why this? shouldn't this be comments? */}
           {task.comments ? <FAIcon name="comments" /> : null}
         </HStack>
