@@ -20,8 +20,8 @@ import TaskList from '../../components/TaskList';
 import { getOrderId } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { DateOnlyString } from '../../utils/date-types';
-import { TaskListsProvider } from './contexts/TaskListsContext';
 import { useTaskLongPress } from '../dispatch/hooks/useTaskLongPress';
+import { useTaskListsContext } from './contexts/TaskListsContext';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
 });
 
 export default function TaskListPage({ navigation, route }) {
+  const context = useTaskListsContext();
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const courierTaskList = useMemo(() => {
@@ -98,7 +99,10 @@ export default function TaskListPage({ navigation, route }) {
           // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
           tasks={courierTaskList.items}
           refreshing={isFetching}
-          onRefresh={() => refetch()}
+          onRefresh={() => {
+            context?.clearSelectedTasks()
+            refetch()
+          }}
           onTaskClick={task =>
             navigateToTask(navigation, route, task, courierTaskList.items)
           }

@@ -53,6 +53,7 @@ export const TaskListsProvider: FC<TaskListsProviderProps> = ({ children, defaul
 
   const clearSelectedTasks = () => {
     setSelectedTasksToEdit([]);
+    setIsEditMode(false);
   };
 
   const value: TaskListsContextType = {

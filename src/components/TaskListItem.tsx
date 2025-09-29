@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
 import { LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
@@ -145,7 +145,14 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
         : null;
 
     const context = useTaskListsContext();
-    const isSelectedTask = (task: Task) => {return context?.selectedTasksToEdit.includes(task)}
+    const isSelectedTask = useMemo(() => {
+      if (!context?.selectedTasksToEdit?.length || !task['@id']) {
+        return false;
+      }
+      return context?.selectedTasksToEdit.some(
+        selectedTask => selectedTask['@id'] === task['@id']
+      );
+    }, [context?.selectedTasksToEdit, task]);
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
 
@@ -268,10 +275,10 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             flex: 1,
             minWidth: '100%',
             minHeight: buttonWidth,
-            ...(isSelectedTask(task) && {
+            ...(isSelectedTask && {
               borderWidth: 3,
               borderColor: task.color,
-              borderRadius: 4,
+              borderRadius: cardBorderRadius,
             }),
             borderTopRightRadius: cardBorderRadius,
             borderBottomRightRadius: cardBorderRadius,
