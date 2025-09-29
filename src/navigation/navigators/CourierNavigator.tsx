@@ -15,7 +15,7 @@ import TaskNavigator from './TaskNavigator';
 import { useSelector } from 'react-redux';
 import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
-import { HeaderRightEditBody } from '../dispatch/HeaderRightEditBody';
+import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
 
 const Tab = createBottomTabNavigator();
 
@@ -188,7 +188,7 @@ const HeaderRightBody = ({navigation}) => {
   return (
     <>
       {context?.isEditMode ?
-      <HeaderRightEditBody navigation={navigation}/>
+      <SelectedTasksMenu navigation={navigation}/>
       :
       <HeaderButtons nav={navigation} />}
     </>

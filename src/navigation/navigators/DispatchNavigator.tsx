@@ -24,7 +24,7 @@ import OrderNavigator from './OrderNavigator';
 import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
-import { HeaderRightEditBody } from '../dispatch/HeaderRightEditBody';
+import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 
 const Tab = createBottomTabNavigator();
@@ -135,7 +135,7 @@ const HeaderRightBody = ({navigation}) => {
   return (
     <>
       {context?.isEditMode ?
-      <HeaderRightEditBody />
+      <SelectedTasksMenu navigation={navigation}/>
       :
       <HeaderRightButton
         onPress={() => navigation.navigate('DispatchDate')}
