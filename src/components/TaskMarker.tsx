@@ -54,6 +54,7 @@ const getTaskIcon = (task: Task, type?: string) => {
   return taskTypeIcon(task);
 };
 
+// TODO check this use case
 const WARNING_ICON_STYLE: TextStyle = {
   position: 'absolute',
   right: 0,
