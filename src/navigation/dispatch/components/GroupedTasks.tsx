@@ -94,8 +94,24 @@ export default function GroupedTasks({
     ? sections.filter(section => section.tasksCount > 0)
     : sections;
 
-  // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize all sections as collapsed only on first load
+  useEffect(() => {
+    if (
+      !isInitialized &&
+      !isFetching &&
+      filteredSections.length > 0 &&
+      taskLists.length > 0
+    ) {
+      const allSectionTitles = new Set(
+        filteredSections.map(section => section.title),
+      );
+      setCollapsedSections(allSectionTitles);
+      setIsInitialized(true);
+    }
+  }, [filteredSections, isInitialized, isFetching, taskLists.length]);
 
   // Update tasks functions
   const {
@@ -302,6 +318,9 @@ export default function GroupedTasks({
 
   const renderItem = useCallback(
     ({ section, item, index }) => {
+      console.log(
+        `Rendering section: ${section.title}, collapsed: ${collapsedSections.has(section.title)}, isFetching: ${isFetching}`,
+      );
       if (!isFetching && !collapsedSections.has(section.title)) {
         const tasks = getTaskListTasks(item, tasksEntities);
 
