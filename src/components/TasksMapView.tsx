@@ -20,7 +20,7 @@ import { MessageCircle } from 'lucide-react-native';
 import { filterTasks } from '../redux/logistics/utils';
 import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import { greyColor, whiteColor } from '../styles/common';
-import { isDisplayPaymentMethodInList, getIcon } from './PaymentMethodInfo';
+import { getIcon, isDisplayPaymentMethodInList } from './PaymentMethodInfo';
 import {
   selectIsHideUnassignedFromMap,
   selectIsPolylineOn,
@@ -239,7 +239,7 @@ class TasksMapView extends Component {
         <TaskMarker
           task={task}
           type="status"
-          hasWarnings={warnings.length}
+          hasWarnings={warnings.length > 0}
           testID={key}
         />
         <Callout
