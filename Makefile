@@ -65,6 +65,11 @@ lint:
 adb:
 	@adb reverse tcp:9090 tcp:9090
 
+android-dark-mode:
+	@adb shell "cmd uimode night yes"
+android-light-mode:
+	@adb shell "cmd uimode night no"
+
 emulator: ANDROID_SDK_ROOT?=~/Android/Sdk
 emulator:
 	@clear && ${ANDROID_SDK_ROOT}/emulator/emulator -avd Pixel_6_API_28

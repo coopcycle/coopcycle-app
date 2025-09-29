@@ -34,6 +34,8 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
+  // This one is used just for e2e tests purposes
+  invisibleText: __DEV__ ? { fontSize: 10 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
   },
@@ -118,7 +120,8 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
             testID={`${taskTestId}:title`}
             style={alignedTitleStyle}
             numberOfLines={1}>
-            {task.orgName}{__DEV__ ? ` (task #${task.id})` : null}
+            {task.orgName}
+            <Text style={styles.invisibleText}>{` (task #${task.id})`}</Text>
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">
