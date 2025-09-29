@@ -12,10 +12,11 @@ setup:
 	@clear && yarn install
 
 start:
-	@clear && yarn start --reset-cache
+	@clear && yarn start --reset-cache --client-logs
 
 start-fresh:
-	@rm -rf node_modules/
+	@cd android && ./gradlew clean && ./gradlew --stop
+	@rm -rf node_modules/ ~/.gradle/caches/
 	@yarn cache clean
 	@$(MAKE) setup start
 
@@ -63,6 +64,11 @@ lint:
 
 adb:
 	@adb reverse tcp:9090 tcp:9090
+
+android-dark-mode:
+	@adb shell "cmd uimode night yes"
+android-light-mode:
+	@adb shell "cmd uimode night no"
 
 emulator: ANDROID_SDK_ROOT?=~/Android/Sdk
 emulator:

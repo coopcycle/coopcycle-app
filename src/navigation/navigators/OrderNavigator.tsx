@@ -1,6 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useCallback } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -16,16 +15,14 @@ import { clearSelectedTasks } from '../../redux/Dispatch/updateSelectedTasksSlic
 import { buildSelectedTasks } from '../../shared/src/logistics/redux/taskListUtils';
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/logistics/selectors';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
-import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
+import { HeaderButton, HeaderButtons } from '../../components/HeaderButton';
+import { RouteType } from '../order/types';
 
 const RootStack = createStackNavigator();
 
 interface HeaderProps {
   route: {
-    params?: {
-      orderId?: string | number;
-      isFromCourier?: boolean;
-    };
+    params?: RouteType['route']['params'];
   };
 }
 
@@ -35,12 +32,12 @@ const Header: React.FC<HeaderProps> = ({ route }) => {
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
 
-  const { orderId, isFromCourier } = route.params || {};
+  const { orderNumber, isFromCourier } = route.params || {};
 
   const selectSelector = isFromCourier
     ? selectTasksByOrderCourier
     : selectTasksByOrderLogistics;
-  const orderTasks = useSelector(selectSelector(orderId));
+  const orderTasks = useSelector(selectSelector(orderNumber));
 
   const { bulkEditTasks } = useSetTaskListItems({
     allTaskLists,
@@ -101,7 +98,7 @@ export default () => {
         name="Order"
         component={screens.Order}
         options={({ route, navigation }) => ({
-          title: <OrderTitle order={route.params?.orderId} />,
+          title: <OrderTitle order={route.params?.orderNumber} />,
           headerShown: true,
           headerRight: () => <Header route={route} />,
         })}
