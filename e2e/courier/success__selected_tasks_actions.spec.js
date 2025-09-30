@@ -1,30 +1,32 @@
 import {
+  authenticateWithCredentials,
   describeif,
   expectToNotExist,
+  loadFixturesAndConnect,
   longPressById,
   tapById,
   tapByText,
   waitToBeVisible
-} from '@/e2e/support/commands';
+} from "../support/commands";
 import {
   assignOrderToUser,
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
-} from '@/e2e/dispatch/utils';
+} from '../dispatch/utils';
 
 const USER_JANE = 'jane';
 
-//FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')
-  ('Dispatch - Select and tap an action for selected tasks', () => {
+  ('Courier - Select and tap an action for selected tasks', () => {
 
   beforeEach(async () => {
-    await loadDispatchFixture();
-    await loginDispatcherUser();
+
+    
+    await loadFixturesAndConnect('courier.yml');
+    await authenticateWithCredentials('jane', '12345678');
 
     // Assign task #1
-    //await assignTaskToUser(USER_JANE);
     await assignOrderToUser(USER_JANE);
 
     // Hide unassigned tasks section

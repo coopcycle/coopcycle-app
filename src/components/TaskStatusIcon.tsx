@@ -34,4 +34,3 @@ export const TaskStatusIcon = ({ task }: { task: Task }) => {
       return <View />;
   }
 };
-
