@@ -20,3 +20,9 @@ gem "fastlane-plugin-increment_version_code"
 # Make Fastlane work on Ruby 3.4
 # https://github.com/fastlane/fastlane/issues/29183
 gem "abbrev"
+
+# Ruby 3.4.0 has removed some libraries from the standard library.
+gem 'bigdecimal'
+gem 'logger'
+gem 'benchmark'
+gem 'mutex_m'
