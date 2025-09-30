@@ -9,11 +9,13 @@ import { navigateToCompleteTask } from '../utils';
 import { startTask } from '@/src/redux/Courier';
 import { useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import TasksMenu from '../components/TasksMenu';
+import { useIconColor } from '@/src/styles/theme';
 
 export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
+  const iconColor = useIconColor();
   const dispatch = useDispatch();
   const context = useTaskListsContext();
   const selectedTasks = context?.selectedTasksToEdit;
@@ -79,7 +81,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
               <Text style={styles.counter}>
                 {context?.selectedTasksToEdit.length}
               </Text>
-              <EllipsisVertical size={20} />
+              <EllipsisVertical color={iconColor} size={20} />
             </View>
           </TouchableOpacity>
         )}
