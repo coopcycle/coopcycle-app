@@ -33,7 +33,8 @@ export default function TasksMenu({
             key={opt.key} 
             textValue={opt.text} 
             onPress={opt.action}
-            className="p-2 web:min-w-[294px] min-w-[225px]" 
+            className="p-2 web:min-w-[294px] min-w-[225px]"
+            testID={`${opt.key}Button`}
           >
             <MenuItemLabel size="sm">{opt.text}</MenuItemLabel>
           </MenuItem> 

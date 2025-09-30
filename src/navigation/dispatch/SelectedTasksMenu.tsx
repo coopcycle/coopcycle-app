@@ -22,7 +22,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
   const route = useRoute();
   const options = [
     {
-      key: 'Start Task',
+      key: 'StartTask',
       text: t('START'),
       action: () => {
         selectedTasks?.forEach(t => {
@@ -32,7 +32,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       },
     },
     {
-      key: 'Complete Task',
+      key: 'CompleteTask',
       text: t('COMPLETE_TASK'),
       action: () => {
         navigateToCompleteTask(navigation, route, null, selectedTasks, true);
@@ -41,7 +41,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       },
     },
     {
-      key: 'Cancel Task',
+      key: 'CancelTask',
       text: t('CANCEL'),
       action: () => {
         selectedTasks?.forEach(t => {
@@ -51,7 +51,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       },
     },
     {
-      key: 'Report incidence',
+      key: 'ReportIncidence',
       text: t('REPORT_INCIDENT'),
       isDisabled: selectedTasks?.length > 1,
       action: () => {
@@ -61,7 +61,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       },
     },
     {
-      key: 'Edit',
+      key: 'EditTask',
       text: t('EDIT'),
       isDisabled: true,
       action: () => {
@@ -76,7 +76,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       <TasksMenu
         options={options}
         renderTrigger={triggerProps => (
-          <TouchableOpacity {...triggerProps}>
+          <TouchableOpacity {...triggerProps} testID='selectedTasksToEditMenuButton'>
             <View style={styles.container}>
               <Text style={styles.counter}>
                 {context?.selectedTasksToEdit.length}
