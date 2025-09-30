@@ -2,7 +2,6 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { Recycle } from 'lucide-react-native';
 import moment from 'moment';
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
@@ -10,20 +9,18 @@ import { Task } from '../types/task';
 import FAIcon from './Icon';
 
 import {
-  CommentsIcon,
   DropoffIcon,
   IncidentIcon,
 } from '../navigation/task/styles/common';
 import { getDropoffCount, getDropoffPosition } from '../shared/src/utils';
 import { greyColor, redColor, yellowColor } from '../styles/common';
-import { PaymentMethodInList } from './PaymentMethodInfo';
 import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redux/Courier/taskSelectors';
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
-import { getOrderId } from '../utils/tasks';
+import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { useTranslation } from 'react-i18next';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
@@ -39,6 +36,8 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
+  // This one is used just for e2e tests purposes
+  invisibleText: __DEV__ ? { fontSize: 10 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
   },
@@ -74,7 +73,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
   const selectSelector = context?.isFromCourier
   ? selectTasksByOrderCourier
   : selectTasksByOrderLogistics;
-  const orderTasks = useSelector(selectSelector(getOrderId(task)));
+  const orderTasks = useSelector(selectSelector(getOrderNumber(task)));
   // TODO check if we use this
   const taskDropoffTitle = getTaskTitleForOrder(task, t);
   const alignedTextStyle = isPickup
@@ -129,6 +128,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
             style={alignedTitleStyle}
             numberOfLines={1}>
             {task.orgName}
+            <Text style={styles.invisibleText}>{` (task #${task.id})`}</Text>
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">

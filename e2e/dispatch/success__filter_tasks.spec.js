@@ -12,7 +12,7 @@ import {
 } from "../support/commands";
 import {
   assignOrderToUser,
-  getTaskTitleElement,
+  expectTaskTitleToHaveText,
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
@@ -40,12 +40,12 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUnassigned();
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
-    await expect(getTaskTitleElement(`${USER_JANE}TasksList`, 0)).toHaveText("Acme - Task #1");
-    await expect(getTaskTitleElement(`${USER_JANE}TasksList`, 1)).toHaveText("Acme - Task #2");
-    await expect(getTaskTitleElement(`${USER_JANE}TasksList`, 2)).toHaveText("Acme - Task #3");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #3)");
     // Verify tasks #5+#4 are on USER_ZAK's task list
-    await expect(getTaskTitleElement(`${USER_ZAK}TasksList`, 0)).toHaveText("Acme - Task #5");
-    await expect(getTaskTitleElement(`${USER_ZAK}TasksList`, 1)).toHaveText("Acme - Task #4");
+    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (task #5)");
+    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 1, "Acme (task #4)");
 
     //////////////
     // Hide done tasks
@@ -78,10 +78,10 @@ describeif(device.getPlatform() === 'android')
     await device.pressBack();
 
     // Verify task #1 is not on USER_JANE's task list
-    await expect(getTaskTitleElement(`${USER_JANE}TasksList`, 0)).toHaveText("Acme - Task #2");
-    await expect(getTaskTitleElement(`${USER_JANE}TasksList`, 1)).toHaveText("Acme - Task #3");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #3)");
     // Verify task #5 is not on USER_ZAK's task list
-    await expect(getTaskTitleElement(`${USER_ZAK}TasksList`, 0)).toHaveText("Acme - Task #4");
+    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (task #4)");
 
     //////////////
     // Hide incidents
@@ -106,7 +106,7 @@ describeif(device.getPlatform() === 'android')
     await device.pressBack();
 
     // // Verify task #2 is not on USER_JANE's task list
-    // await expect(getTaskTitleElement(`${USER_JANE}TasksList`, 0)).toHaveText("Acme - Task #3");
+    // await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #3)");
 
     //////////////
     // Hide unassigned tasks from map
@@ -176,8 +176,8 @@ describeif(device.getPlatform() === 'android')
 
     // Verify tasks were found
     await toggleSectionUnassigned();
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #11");
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #10");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #10)");
 
     // Open the filters screen and enter another keyword
     await tapById('showTasksFiltersButton');
@@ -191,7 +191,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('keywordsFilterGoToAllTasksButton');
 
     // Verify only one task was found
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #10");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #10)");
 
     // Open the filters screen and remove all keywords
     await tapById('showTasksFiltersButton');
@@ -205,9 +205,9 @@ describeif(device.getPlatform() === 'android')
     await tapById('keywordsFilterGoToAllTasksButton');
 
     // Verify all previous tasks are back again..!
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 0)).toHaveText("Acme - Task #7");
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 1)).toHaveText("Acme - Task #9");
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 2)).toHaveText("Acme - Task #11");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #7)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #9)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 2, "Acme (task #11)");
   });
 
 });

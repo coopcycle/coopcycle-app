@@ -17,7 +17,7 @@ import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TapToRefresh from '../../components/TapToRefresh';
 import TaskList from '../../components/TaskList';
-import { getOrderId } from '../../utils/tasks';
+import { getOrderNumber } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { DateOnlyString } from '../../utils/date-types';
 import { useTaskLongPress } from '../dispatch/hooks/useTaskLongPress';
@@ -107,7 +107,7 @@ export default function TaskListPage({ navigation, route }) {
             navigateToTask(navigation, route, task, courierTaskList.items)
           }
           onOrderClick={task =>
-            navigateToOrder(navigation, getOrderId(task), true)
+            navigateToOrder(navigation, getOrderNumber(task), true)
           }
           onLongPress={(task) => longPressHandler(task)}
           {...swipeLeftConfiguration}

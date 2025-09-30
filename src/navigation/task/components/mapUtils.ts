@@ -41,7 +41,7 @@ export const getAspectRatio = mapDimensions => {
 };
 
 export const getCoordinates = (tasks: Task[]) => {
-  const polyline = tasks[0].metadata.polyline
+  const polyline = tasks.length && tasks[0].metadata ? tasks[0].metadata.polyline : null;
   if (polyline) {
       const decodedCoordinates = decode(polyline).map(coords => ({
         latitude: coords[0],

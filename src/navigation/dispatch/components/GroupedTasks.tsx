@@ -38,7 +38,7 @@ import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
-import { getOrderId } from '../../../utils/tasks';
+import { getOrderNumber } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
 import { useTaskLongPress } from '../hooks/useTaskLongPress';
@@ -115,8 +115,8 @@ export default function GroupedTasks({
 
   const onOrderClick = useCallback(
     task => {
-      const orderId = getOrderId(task);
-      navigateToOrder(navigation, orderId);
+      const orderNumber = getOrderNumber(task);
+      navigateToOrder(navigation, orderNumber);
     },
     [navigation],
   );
