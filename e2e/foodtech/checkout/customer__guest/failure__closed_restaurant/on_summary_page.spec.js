@@ -1,92 +1,46 @@
 import {
-  addProduct,
-  chooseRestaurant,
   closeRestaurantForToday,
-  connectToLocalInstance,
-  connectToSandbox,
-  launchApp,
-  selectAutocompleteAddress,
-  symfonyConsole,
+  describeif,
+  tapById,
+  waitToBeVisible,
 } from '../../../../support/commands';
-import { describeif } from '../../../../utils';
+import {
+  loadCheckoutFixturesAndConnect,
+  selectCartItemsFromRestaurant,
+} from '../../../utils';
 
 //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-describeif(device.getPlatform() === 'android')(
-  'checkout for customer guest user; Time range changed modal',
-  () => {
-    beforeEach(async () => {
-      await launchApp();
+describeif(device.getPlatform() === 'android')
+  ('checkout for customer guest user; Time range changed modal', () => {
 
-      if (device.getPlatform() === 'android') {
-        symfonyConsole(
-          'coopcycle:fixtures:load -f cypress/fixtures/checkout.yml',
-        );
-        symfonyConsole(
-          'craue:setting:create --section="general" --name="guest_checkout_enabled" --value="1" --force',
-        );
-        await connectToLocalInstance();
-      } else {
-        //FIXME: run against local instance on iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-        await connectToSandbox();
-      }
+  beforeEach(async () => {
+    await loadCheckoutFixturesAndConnect();
+    await selectCartItemsFromRestaurant('Restaurant with cash on delivery');
+  });
 
-      // Enter address
-      await selectAutocompleteAddress('askAddressAutocomplete');
+  describe('restaurant was closed while the customer had been on the Summary page', () => {
 
-      // List of restaurants
-      await expect(element(by.id('restaurantList'))).toBeVisible();
-      await chooseRestaurant('Restaurant with cash on delivery');
+    it(`should suggest to choose a new time range (Timing modal)`, async () => {
+      await closeRestaurantForToday(
+        'restaurant_with_cash_on_delivery_owner',
+        '12345678',
+      );
 
-      // Restaurant page
-      await waitFor(element(by.id('restaurantData')))
-        .toExist()
-        .withTimeout(5000);
-      await waitFor(element(by.id('menuItem:0:0')))
-        .toExist()
-        .withTimeout(5000);
+      // Cart summary page
+      await tapById('cartSummarySubmit');
 
-      // Add item
-      await addProduct('menuItem:0:0');
+      // Time range changed modal
+      await waitToBeVisible('timeRangeChangedModal');
 
-      // Check if footer is present
-      await waitFor(element(by.id('cartFooter')))
-        .toExist()
-        .withTimeout(5000);
-      await expect(element(by.id('cartFooter'))).toBeVisible();
+      // Select a shipping time range
+      await tapById('setShippingTimeRange');
 
-      // Add 2 more items
-      await addProduct('menuItem:0:1');
-      await addProduct('menuItem:1:0');
+      await tapById('cartSummarySubmit');
 
-      await waitFor(element(by.id('cartSubmit')))
-        .toBeVisible()
-        .withTimeout(5000);
-      await element(by.id('cartSubmit')).tap();
+      // Authentication page
+      await waitToBeVisible('loginUsername');
     });
 
-    describe('restaurant was closed while the customer had been on the Summary page', () => {
-      it(`should suggest to choose a new time range (Timing modal)`, async () => {
-        // Cart summary page
+  });
 
-        await closeRestaurantForToday(
-          'restaurant_with_cash_on_delivery_owner',
-          '12345678',
-        );
-
-        await element(by.id('cartSummarySubmit')).tap();
-
-        // Time range changed modal
-        await waitFor(element(by.id('timeRangeChangedModal')))
-          .toBeVisible()
-          .withTimeout(5000);
-        // Select a shipping time range
-        await element(by.id('setShippingTimeRange')).tap();
-
-        await element(by.id('cartSummarySubmit')).tap();
-
-        // Authentication page
-        await expect(element(by.id('loginUsername'))).toBeVisible();
-      });
-    });
-  },
-);
+});

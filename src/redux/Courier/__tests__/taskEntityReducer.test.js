@@ -101,8 +101,8 @@ describe('Redux | Tasks | Reducers', () => {
 
     test(`${loadTasksSuccess}`, () => {
       const tasks = [
-        { id: 1, assignedTo: 'bob' },
-        { id: 2, assignedTo: 'bob' },
+        { id: 1, assignedTo: 'bob', color: '#ffffff' },
+        { id: 2, assignedTo: 'bob', color: '#ffffff' },
       ];
       const prevState = {
         ...initialState,
@@ -113,7 +113,7 @@ describe('Redux | Tasks | Reducers', () => {
       const date = now.format('YYYY-MM-DD');
       const newState = tasksEntityReducer(
         prevState,
-        loadTasksSuccess(date, tasks, now),
+        loadTasksSuccess(date, tasks, now.toISOString()),
       );
       const fullState = { entities: { tasks: newState } };
 
@@ -121,11 +121,13 @@ describe('Redux | Tasks | Reducers', () => {
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
       const restNewState = omit(newState, [
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'updatedAt',
       ]);
 
       expect(selectIsTasksLoading(fullState)).toBe(false);
@@ -137,7 +139,7 @@ describe('Redux | Tasks | Reducers', () => {
 
     [markTaskDoneSuccess, markTaskFailedSuccess].forEach(actionCreator => {
       test(`${actionCreator}`, () => {
-        const task = { id: 1, foo: 'bar' };
+        const task = { id: 1, foo: 'bar', color: '#ffffff' };
         const date = moment().format('YYYY-MM-DD');
         const prevState = {
           ...initialState,
@@ -192,9 +194,9 @@ describe('Redux | Tasks | Reducers', () => {
 
       const oldTasks = [{ '@id': '/api/tasks/1' }, { '@id': '/api/tasks/2' }];
       const newTasks = [
-        { '@id': '/api/tasks/1' },
-        { '@id': '/api/tasks/2' },
-        { '@id': '/api/tasks/3' },
+        { '@id': '/api/tasks/1', color: '#ffffff' },
+        { '@id': '/api/tasks/2', color: '#ffffff' },
+        { '@id': '/api/tasks/3', color: '#ffffff' },
       ];
       const wsMsg = {
         name: 'task_list:updated',

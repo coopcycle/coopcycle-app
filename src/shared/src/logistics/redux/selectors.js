@@ -1,7 +1,10 @@
 import _ from 'lodash';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
+
 import { taskAdapter, taskListAdapter, tourAdapter } from './adapters';
-import { mapToColor } from './taskUtils';
+import moment from 'moment';
+
+// Selectors
 
 const taskSelectors = taskAdapter.getSelectors(
   state => state.logistics.entities.tasks,
@@ -13,62 +16,63 @@ const tourSelectors = tourAdapter.getSelectors(
   state => state.logistics.entities.tours,
 );
 
-export const selectSelectedDate = state => state.logistics.date;
+// Base selections
+
+const _selectSelectedDate = state => state.logistics.date;
+export const selectSelectedDate = createSelector(_selectSelectedDate, date =>
+  moment(date),
+);
 
 export const selectAllTasks = taskSelectors.selectAll;
+export const selectTasksEntities = taskSelectors.selectEntities;
 
 export const selectAllTours = tourSelectors.selectAll;
 
-export const selectAssignedTasks = createSelector(
-  selectAllTasks,
-  allTasks => allTasks.filter(task => task.isAssigned)
+// Selections for Tasks
+
+export const selectAssignedTasks = createSelector(selectAllTasks, allTasks =>
+  allTasks.filter(task => task.isAssigned),
 );
 
-export const selectUnassignedTasks = createSelector(
-  selectAllTasks,
-  allTasks => allTasks.filter(task => !task.isAssigned)
+export const selectUnassignedTasks = createSelector(selectAllTasks, allTasks =>
+  allTasks.filter(task => !task.isAssigned),
 );
 
-export const selectTasksWithColor = createSelector(
-  selectAllTasks,
-  allTasks => mapToColor(allTasks),
+export const selectUnassignedTasksNotCancelled = createSelector(
+  selectUnassignedTasks,
+  tasks =>
+    _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
 );
 
-// FIXME
-// This is not optimized
-// Each time any task is updated, the tasks lists are looped over
-// Also, it generates copies all the time
-// Replace this with a selectTaskListItemsByUsername selector, used by the <TaskList> component
-// https://redux.js.org/tutorials/essentials/part-6-performance-normalization#memoizing-selector-functions
+// Selections for TaskLists
+
 export const selectTaskLists = createSelector(
   taskListSelectors.selectAll,
-  taskSelectors.selectEntities,
   tourSelectors.selectEntities,
-  (taskLists, tasksById, toursById) =>
+  (taskLists, toursById) =>
     taskLists.map(taskList => {
       let newTaskList = { ...taskList };
 
       const orderedItems = taskList.itemIds.flatMap(itemId => {
-        const maybeTask = tasksById[itemId];
-
-        if (maybeTask) {
-          return [maybeTask];
-        }
-
         const maybeTour = toursById[itemId];
 
         if (maybeTour) {
-          return maybeTour.items.map(taskId => tasksById[taskId]);
+          return maybeTour.items;
+        }
+
+        if (itemId.includes('/api/tasks/')) {
+          return [itemId];
         }
 
         return [];
       });
-
-      newTaskList.items = _.uniqBy(orderedItems, '@id');
+      newTaskList.tasksIds = _.uniq(orderedItems);
 
       return newTaskList;
     }),
 );
+
+// Selections for Tours
 
 // Returns a tours/tasks index with the format:
 // {
@@ -77,19 +81,23 @@ export const selectTaskLists = createSelector(
 // }
 export const selectToursTasksIndex = createSelector(
   tourSelectors.selectEntities,
-  (tours) => {
-    return Object.values(tours).reduce((acc, tour) => {
-      const tourId = tour['@id'];
-      acc.tours[tourId] = (tour.items || []).map(taskId => {
-        acc.tasks[taskId] = tourId;
-        return taskId;
-      });
-      return acc;
-    }, { // Initial index values
-      tours: {},
-      tasks: {},
-    });
-  }
+  tours => {
+    return Object.values(tours).reduce(
+      (acc, tour) => {
+        const tourId = tour['@id'];
+        acc.tours[tourId] = (tour.items || []).map(taskId => {
+          acc.tasks[taskId] = tourId;
+          return taskId;
+        });
+        return acc;
+      },
+      {
+        // Initial index values
+        tours: {},
+        tasks: {},
+      },
+    );
+  },
 );
 
 const selectTaskListByUsername = (state, props) =>

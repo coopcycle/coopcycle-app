@@ -1,6 +1,4 @@
-import {
-  loadTaskListsSuccess,
-} from '../../Dispatch/actions';
+import { loadTaskListsSuccess } from '../../Dispatch/actions';
 import { default as taskListEntityReducers } from '../taskListEntityReducers';
 
 describe('taskListEntityReducers', () => {
@@ -43,7 +41,7 @@ describe('taskListEntityReducers', () => {
               {
                 '@id': '/api/task_lists/1',
                 '@type': 'TaskList',
-                items: ['/api/tasks/1', '/api/tasks/2',],
+                items: ['/api/tasks/1', '/api/tasks/2'],
                 username: 'bot_1',
               },
               {
@@ -53,23 +51,24 @@ describe('taskListEntityReducers', () => {
                 username: 'bot_12',
               },
             ]),
-          )).toEqual({
-            ids: ['bot_1', 'bot_12'],
-            entities: {
-              bot_1: {
-                '@id': '/api/task_lists/1',
-                '@type': 'TaskList',
-                itemIds: ['/api/tasks/1', '/api/tasks/2'],
-                username: 'bot_1',
-              },
-              bot_12: {
-                '@id': '/api/task_lists/31',
-                '@type': 'TaskList',
-                itemIds: [],
-                username: 'bot_12',
-              },
+          ),
+        ).toEqual({
+          ids: ['bot_1', 'bot_12'],
+          entities: {
+            bot_1: {
+              '@id': '/api/task_lists/1',
+              '@type': 'TaskList',
+              itemIds: ['/api/tasks/1', '/api/tasks/2'],
+              username: 'bot_1',
             },
-          });
+            bot_12: {
+              '@id': '/api/task_lists/31',
+              '@type': 'TaskList',
+              itemIds: [],
+              username: 'bot_12',
+            },
+          },
+        });
       });
     });
 
@@ -98,7 +97,7 @@ describe('taskListEntityReducers', () => {
               {
                 '@id': '/api/task_lists/1',
                 '@type': 'TaskList',
-                items: ['/api/tasks/1', '/api/tasks/2',],
+                items: ['/api/tasks/1', '/api/tasks/2'],
                 username: 'bot_1',
               },
               {
@@ -107,24 +106,25 @@ describe('taskListEntityReducers', () => {
                 items: [],
                 username: 'bot_12',
               },
-            ])
-          )).toEqual({
-            ids: ['bot_1', 'bot_12'],
-            entities: {
-              bot_1: {
-                '@id': '/api/task_lists/1',
-                '@type': 'TaskList',
-                itemIds: ['/api/tasks/1', '/api/tasks/2'],
-                username: 'bot_1',
-              },
-              bot_12: {
-                '@id': '/api/task_lists/31',
-                '@type': 'TaskList',
-                itemIds: [],
-                username: 'bot_12',
-              },
+            ]),
+          ),
+        ).toEqual({
+          ids: ['bot_1', 'bot_12'],
+          entities: {
+            bot_1: {
+              '@id': '/api/task_lists/1',
+              '@type': 'TaskList',
+              itemIds: ['/api/tasks/1', '/api/tasks/2'],
+              username: 'bot_1',
             },
-          });
+            bot_12: {
+              '@id': '/api/task_lists/31',
+              '@type': 'TaskList',
+              itemIds: [],
+              username: 'bot_12',
+            },
+          },
+        });
       });
     });
   });

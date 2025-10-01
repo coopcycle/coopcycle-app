@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getNextShippingTimeAsText } from '../checkout';
+import { getNextShippingTimeAsText, orderToStep } from '../checkout';
 
 const createTiming = (type, range, fast, diff) => ({
   [type]: { range, fast, diff },
@@ -53,5 +53,75 @@ describe('getNextShippingTimeAsText', () => {
         moment.parseZone('2020-02-12T17:00:00+01:00'),
       ),
     ).toEqual('Today at 6:55 PM');
+  });
+});
+
+describe('OrderTracking', () => {
+  it('should parse based on state', () => {
+    expect(orderToStep({ state: 'accepted' })).toEqual({
+      error: 0,
+      index: 1,
+      legacy: true,
+    });
+    expect(orderToStep({ state: 'refused' })).toEqual({
+      error: 1,
+      index: 1,
+      legacy: true,
+    });
+    expect(orderToStep({ state: 'cancelled' })).toEqual({
+      error: 2,
+      index: 2,
+      legacy: true,
+    });
+  });
+
+  it('should parse based on events', () => {
+    expect(orderToStep({ events: [{ type: 'order:accepted' }] })).toEqual({
+      error: 0,
+      index: 1,
+      legacy: false,
+    });
+
+    expect(
+      orderToStep({
+        events: [{ type: 'order:accepted' }, { type: 'order:picked' }],
+      }),
+    ).toEqual({ error: 0, index: 2, legacy: false });
+
+    expect(
+      orderToStep({
+        events: [
+          { type: 'order:accepted' },
+          { type: 'order:picked' },
+          { type: 'order:cancelled' },
+        ],
+      }),
+    ).toEqual({ error: 2, index: 2, legacy: false });
+
+    expect(
+      orderToStep({
+        events: [
+          { type: 'order:accepted' },
+          { type: 'order:picked' },
+          { type: 'order:refused' },
+        ],
+      }),
+    ).toEqual({ error: 1, index: 1, legacy: false });
+
+    expect(
+      orderToStep({
+        events: [
+          { type: 'order:accepted' },
+          { type: 'order:refused' },
+          { type: 'order:picked' },
+        ],
+      }),
+    ).toEqual({ error: 1, index: 1, legacy: false });
+
+    expect(
+      orderToStep({
+        events: [{ type: 'order:picked' }, { type: 'order:accepted' }],
+      }),
+    ).toEqual({ error: 0, index: 2, legacy: false });
   });
 });

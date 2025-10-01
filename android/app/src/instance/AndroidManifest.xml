@@ -13,5 +13,9 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="${transistorsoftLicenseKey}" tools:node="remove" />
+      <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/ic_default_notification"
+      />
     </application>
 </manifest>

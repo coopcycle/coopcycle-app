@@ -2,6 +2,8 @@
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
 # https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
 # https://github.com/wix/Detox/issues/2617
+# https://spin.atomicobject.com/detox-tests-github-actions-2/
+# https://remarkablemark.org/blog/2023/02/18/how-to-run-react-native-detox-tests-on-github-actions/#android
 name: E2E tests, Android
 on: [push]
 jobs:
@@ -13,22 +15,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'yarn'
-
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
           # all of these default to true, but feel free to set to
           # "false" if necessary for your workflow
           # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
+          tool-cache: true
           android: false
+          swap-storage: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
 
       - uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '17'
           cache: 'gradle'
 
