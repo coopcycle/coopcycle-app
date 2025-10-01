@@ -262,42 +262,52 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             <SwipeButton icon={swipeOutRightIcon} width={buttonWidth} />
           </SwipeButtonContainer>
         </View>
-        <HStack
-          style={{
-            flex: 1,
-            minWidth: '100%',
-            minHeight: buttonWidth,
-            ...(isSelectedTask && {
-              borderBottomWidth: cardBorderWidth,
-              borderTopWidth: cardBorderWidth,
-              borderEndWidth: cardBorderWidth,
-              borderColor: task.color,
-              borderRadius: cardBorderRadius,
-            }),
-            borderTopRightRadius: cardBorderRadius,
-            borderBottomRightRadius: cardBorderRadius,
-          }}
-          {...itemProps}>
-          <OrderInfo
-            color={color}
-            task={task}
-            width={buttonWidth}
-            onPress={onOrderPress}
-          />
-          <ItemTouchable
-            onPress={onPress}
-            onLongPress={() => onLongPress(task)}
-            testID={taskTestId}
+        <View style={{ position: 'relative', flex: 1}}>
+          <HStack
             style={{
-              borderBottomRightRadius: cardBorderRadius,
-              borderTopRightRadius: cardBorderRadius,
-              paddingLeft: 6,
-              width: cardWidth - buttonWidth,
               flex: 1,
-            }}>
-            <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
-          </ItemTouchable>
-        </HStack>
+              minWidth: '100%',
+              minHeight: buttonWidth,
+              borderTopRightRadius: cardBorderRadius,
+              borderBottomRightRadius: cardBorderRadius,
+            }}
+            {...itemProps}>
+            <OrderInfo
+              color={color}
+              task={task}
+              width={buttonWidth}
+              onPress={onOrderPress}
+            />
+            <ItemTouchable
+              onPress={onPress}
+              onLongPress={() => onLongPress(task)}
+              testID={taskTestId}
+              style={{
+                borderBottomRightRadius: cardBorderRadius,
+                borderTopRightRadius: cardBorderRadius,
+                paddingLeft: 6,
+                width: cardWidth - buttonWidth,
+                flex: 1,
+              }}>
+              <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
+            </ItemTouchable>
+          </HStack>
+          {isSelectedTask && (
+            <View 
+              pointerEvents='none'
+              style={{
+                position:'absolute',
+                top:0,
+                left:0,
+                bottom:0,
+                right:0,
+                borderColor:task.color,
+                borderWidth: cardBorderWidth,
+                borderRadius: cardBorderRadius,
+              }}
+            />
+          )}
+        </View>
       </SwipeRow>
     );
   },
