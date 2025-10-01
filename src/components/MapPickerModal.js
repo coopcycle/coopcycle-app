@@ -5,9 +5,13 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Button, Text, Box, HStack, Spinner } from 'native-base';
+import { Button, ButtonText } from '@/components/ui/button'
+import { Text } from '@/components/ui/text'
+import { Box } from '@/components/ui/box'
+import { HStack } from '@/components/ui/hstack'
+import { Spinner } from '@/components/ui/spinner'
 import axios from 'axios';
 import Config from 'react-native-config';
 import { useSelector } from 'react-redux';
@@ -25,6 +29,25 @@ const geocodingClient = axios.create({
   baseURL: 'https://maps.googleapis.com/maps/api',
   timeout: 5000,
 });
+
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Location Access Required',
+        message:
+          'We need your location to show you the map',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    return granted === PermissionsAndroid.RESULTS.GRANTED
+  } catch (err) {
+    return null
+  }
+};
 
 function MapPickerScreen({
   primaryColor,
@@ -90,6 +113,10 @@ function MapPickerScreen({
       }, 300),
     [setAddress, setIsLoading],
   );
+
+  useEffect(() => {
+    requestLocationPermission()
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -181,34 +208,30 @@ function MapPickerScreen({
             liteMode={false}
             showsCompass={false}
             rotateEnabled={false}
-            pitchEnabled={false}>
+            pitchEnabled={false}
+            showsUserLocation={true}
+          >
             {markerMemo}
           </MapView>
         )}
       </View>
 
-      <Box position="absolute" bottom={0} width="100%" bg="white" p={4}>
+      <Box className='absolute bg-white p-4 bottom-0 w-full'>
         <Box
-          borderWidth={1}
-          borderColor="gray.200"
-          borderRadius="md"
-          p={4}
-          mb={4}
-          height={20}
-          justifyContent="center">
+          className='p-4 mb-4 h-20 border-2 border-gray-200 rounded-md justify-center'>
           {renderAddressDisplay()}
         </Box>
 
         <Button
+          className='mb-2'
+          action='primary'
           isDisabled={!selectedLocation || !address}
           onPress={handleConfirm}
-          backgroundColor={primaryColor}
-          _text={{ color: 'white' }}
-          mb={2}>
-          {t('CONFIRM_LOCATION')}
+        >
+          <ButtonText>{t('CONFIRM_LOCATION')}</ButtonText>
         </Button>
-        <Button onPress={onCancel} variant="link" size="sm">
-          {t('CANCEL')}
+        <Button onPress={onCancel} variant="link" size="sm" action='secondary'>
+          <ButtonText>{t('CANCEL')}</ButtonText>
         </Button>
       </Box>
     </View>
