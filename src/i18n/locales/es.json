@@ -472,6 +472,10 @@
     "TOTAL_AMOUNT": "Cantidad total",
     "ESTIMATED_DURATION": "Tiempo estimado",
     "PICKUP": "Recogida",
-    "DROPOFF": "Entrega"
+    "DROPOFF": "Entrega",
+    "CONFIRM_LOCATION": "Confirmar ubicación",
+    "ADDRESS_NOT_FOUND": "Dirección no encontrada",
+    "LOADING_ADDRESS": "Cargando dirección",
+    "TAP_ON_MAP_TO_SELECT_LOCATION": "Toca el mapa para seleccionar la ubicación"
   }
 }

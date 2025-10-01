@@ -600,6 +600,10 @@
     "TOTAL_AMOUNT": "Total amount",
     "ESTIMATED_DURATION": "Estimated time",
     "PICKUP": "Pickup",
-    "DROPOFF": "Dropoff"
+    "DROPOFF": "Dropoff",
+    "CONFIRM_LOCATION": "Confirm location",
+    "ADDRESS_NOT_FOUND": "Address not found",
+    "LOADING_ADDRESS": "Loading address",
+    "TAP_ON_MAP_TO_SELECT_LOCATION": "Tap on the map to select location"
   }
 }
