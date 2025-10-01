@@ -21,6 +21,14 @@ import {
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();
+
+  // In some cases, there might be no tasks in the order yet..!
+  // (e.g., the user taps the new delivery push notification to navigate to the order details,
+  // but the tasks havent't been updated from websocket/centrifugo yet)
+  if (tasks.length === 0) {
+    return null;
+  }
+
   const orderTitle = getOrderTitle(tasks);
   const packagesInOrder = packagesInOrderSummary(tasks);
   const orderTimeframe = getOrderTimeFrame(tasks);

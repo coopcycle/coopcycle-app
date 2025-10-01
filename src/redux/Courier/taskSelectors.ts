@@ -60,10 +60,10 @@ export const selectFilteredTasks = createSelector(
   (filters, tasks) => filterTasks(tasks, filters),
 );
 
-export const selectFilteredTasksByOrder = orderId =>
+export const selectFilteredTasksByOrder = orderNumber =>
   createSelector(selectFilteredTasks, filteredTasks =>
     filteredTasks
-      .filter(task => task.metadata.order_number === orderId)
+      .filter(task => task.metadata.order_number === orderNumber)
       .sort(
         (a, b) => a.metadata.delivery_position - b.metadata.delivery_position,
       ),

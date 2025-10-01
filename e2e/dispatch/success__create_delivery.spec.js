@@ -6,7 +6,7 @@ import {
   waitToBeVisible,
 } from "../support/commands";
 import {
-  getTaskTitleElement,
+  expectTaskTitleToHaveText,
   loadDispatchFixture,
   loginDispatcherUser,
 } from './utils';
@@ -78,7 +78,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('delivery__next_button');
 
     // Check the new task was created
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 6)).toHaveText("Acme - Task #11");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 6, "Acme (task #11)");
   });
 
 });

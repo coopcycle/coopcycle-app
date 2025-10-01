@@ -29,9 +29,13 @@ const MiniMap: React.FC<MiniMapProps> = ({
   );
 
   const renderPolyline = () => {
+    const coords = getCoordinates(tasks);
+    if (coords.length === 0) {
+      return null;
+    }
+
     const firstTask = tasks[0];
     const key = `polyline-${firstTask.id}`;
-    const coords = getCoordinates(tasks);
 
     return (
       <Polyline

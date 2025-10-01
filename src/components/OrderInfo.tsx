@@ -1,7 +1,7 @@
 import { Text } from '@/components/ui/text';
 import _ from 'lodash';
 import { ItemTouchable } from './ItemTouchable';
-import { getOrderIdWithPosition } from '../utils/tasks';
+import { getOrderNumberWithPosition } from '../utils/tasks';
 import { formatPrice } from '../utils/formatting';
 import CoopcycleLogo from '../../assets/images/logo.svg';
 import { blackColor, lightGreyColor, whiteColor } from '../styles/common';
@@ -22,7 +22,7 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
   const isDefaultColor = color === '#ffffff';
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
-  const orderId = getOrderIdWithPosition(task);
+  const orderNumber = getOrderNumberWithPosition(task);
   const context = useCourier();
   const isFromCourier = context && context.isFromCourier;
 
@@ -45,7 +45,7 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
         width,
         gap: 4,
       }}>
-      {!_.isEmpty(orderId) ? (
+      {!_.isEmpty(orderNumber) ? (
         <>
           <TaskTypeIcon
             task={task}
@@ -60,7 +60,7 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
                 fontWeight: 700,
                 textAlign: 'center',
               }}>
-              {orderId}
+              {orderNumber}
             </Text>
             {shouldDisplayPrice(task) ? (
               <Text

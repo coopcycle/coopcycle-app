@@ -2,7 +2,6 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { Recycle } from 'lucide-react-native';
 import moment from 'moment';
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
@@ -10,19 +9,17 @@ import { Task } from '../types/task';
 import FAIcon from './Icon';
 
 import {
-  CommentsIcon,
   DropoffIcon,
   IncidentIcon,
 } from '../navigation/task/styles/common';
 import { getDropoffCount, getDropoffPosition } from '../shared/src/utils';
 import { greyColor, redColor, yellowColor } from '../styles/common';
-import { PaymentMethodInList } from './PaymentMethodInfo';
 import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
 import { selectTasksByOrder } from '../redux/logistics/selectors';
-import { getOrderId } from '../utils/tasks';
+import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { useTranslation } from 'react-i18next';
 
@@ -37,6 +34,8 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
+  // This one is used just for e2e tests purposes
+  invisibleText: __DEV__ ? { fontSize: 10 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
   },
@@ -68,7 +67,7 @@ interface ITaskInfoProps {
 
 function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
   const { t } = useTranslation();
-  const orderTasks = useSelector(selectTasksByOrder(getOrderId(task)));
+  const orderTasks = useSelector(selectTasksByOrder(getOrderNumber(task)));
   const taskDropoffTitle = getTaskTitleForOrder(task, t);
   const alignedTextStyle = isPickup
     ? [styles.text, { textAlign: 'right' as const }]
@@ -122,6 +121,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
             style={alignedTitleStyle}
             numberOfLines={1}>
             {task.orgName}
+            <Text style={styles.invisibleText}>{` (task #${task.id})`}</Text>
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">

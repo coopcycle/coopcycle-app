@@ -34,7 +34,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
         paddingLeft: 10,
         marginVertical: 10,
       }}>
-      {getTaskTitle(task)} (#{task.id})
+      {getTaskTitle(task)}
     </Text>
   );
 
