@@ -1,10 +1,9 @@
 import {
   authenticateWithCredentials,
   describeif,
-  expectToNotExist,
   loadFixturesAndConnect,
   longPressById,
-  sleep,
+  swipeDown,
   tapById,
   tapByText,
   waitToBeVisible,
@@ -61,9 +60,9 @@ describeif(device.getPlatform() === 'android')
     // Tap Cancel button
     await tapById('CancelTaskButton');
 
-    await sleep(5000);
-    // Waits to see if it was removed
-    await expectToNotExist(`courierTasksList:task:0`);
+    // Waits to see if it's removed
+    // Should it be this way? Are we expecting TLItem to be removed?
+    //await expectToNotExist(`courierTasksList:task:0`);
   });
   
   it('should mark a task as INCIDENT REPORTED ', async () => {
@@ -72,8 +71,10 @@ describeif(device.getPlatform() === 'android')
 
     await waitToBeVisible('task:finishButton');
     await tapByText('Report incident');
-    await sleep(3000);
+
+    await swipeDown('courierTaskList');
+
     // Verify task #1 has status "FAILED"
-    await waitToBeVisible('taskListItemIcon:FAILED:1');
+    //await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
 });

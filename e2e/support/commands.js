@@ -328,7 +328,7 @@ export const longPressById = async (testID, timeout = 0) => {
 }
 
 export const longPressByText = async (text) => {
-  console.log(`Tapping element containing the text "${text}"`);
+  console.log(`long tapping element containing the text "${text}"`);
   await waitFor(element(by.text(text))).toBeVisible();
   await element(by.text(text)).longPress();
   return element(by.text(text));
@@ -376,3 +376,7 @@ export const sleep = (timeout) => {
   console.log(`Sleeping for ${timeout} ms..`);
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
+
+export const getElementAttributes = (testID) => {
+  return element(by.id(testID))
+}

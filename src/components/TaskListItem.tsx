@@ -23,6 +23,7 @@ import { OrderInfo } from './OrderInfo';
 import TaskInfo from './TaskInfo';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
+const cardBorderWidth = 4;
 const cardBorderRadius = 2.5;
 
 export const styles = StyleSheet.create({
@@ -267,7 +268,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             minWidth: '100%',
             minHeight: buttonWidth,
             ...(isSelectedTask && {
-              borderWidth: 3,
+              borderBottomWidth: cardBorderWidth,
+              borderTopWidth: cardBorderWidth,
+              borderEndWidth: cardBorderWidth,
               borderColor: task.color,
               borderRadius: cardBorderRadius,
             }),
