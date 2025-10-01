@@ -32,7 +32,7 @@ import {
   usePrimaryColor,
 } from '../styles/theme';
 import AddressUtils from '../utils/Address';
-import AddressAutocomplete/components/PostCodeButton';
+import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
 import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
 import ItemSeparator from './ItemSeparator';
