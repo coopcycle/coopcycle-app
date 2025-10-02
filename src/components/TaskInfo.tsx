@@ -132,16 +132,6 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">
-            {task.hasIncidents && (
-              <Icon
-                as={IncidentIcon}
-                size={24}
-                style={{
-                  borderRadius: 5,
-                  color: redColor,
-                }}
-              />
-            )}
             <TaskStatusIcon task={task} />
           </HStack>
         </HStack>

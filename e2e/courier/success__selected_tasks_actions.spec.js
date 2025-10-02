@@ -75,6 +75,6 @@ describeif(device.getPlatform() === 'android')
     await swipeDown('courierTaskListSwipeListView');
 
     // Verify task #1 has status "FAILED"
-    //await waitToBeVisible('taskListItemIcon:INCIDENT:1');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
 });

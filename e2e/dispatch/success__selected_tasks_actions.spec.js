@@ -73,7 +73,6 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUnassigned();
     
     // Verify task #1 has status "INCIDENT"
-    // TODO: testID is broken / refactor IconIncident component
-    //await waitToBeVisible('taskListItemIcon:INCIDENT:1');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
 });
