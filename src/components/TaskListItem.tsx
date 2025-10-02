@@ -268,6 +268,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
               flex: 1,
               minWidth: '100%',
               minHeight: buttonWidth,
+              ...(isSelectedTask && {
+              paddingEnd: cardBorderWidth,
+            }),
               borderTopRightRadius: cardBorderRadius,
               borderBottomRightRadius: cardBorderRadius,
             }}
