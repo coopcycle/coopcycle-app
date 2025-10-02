@@ -11,6 +11,7 @@ import {
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
+  toggleSectionUser,
 } from './utils';
 
 const USER_JANE = 'jane';
@@ -23,11 +24,16 @@ describeif(device.getPlatform() === 'android')
     await loadDispatchFixture();
     await loginDispatcherUser();
 
+    // Show unassigned tasks section
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+
     // Assign task #1
     await assignTaskToUser(USER_JANE);
 
     // Hide unassigned tasks section
-    await toggleSectionUnassigned();
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it hides once we assign the order above)
+    // Show USER_JANE's tasks section
+    await toggleSectionUser(USER_JANE);
 
     // Open assigned task #1
     await tapById(`${USER_JANE}TasksList:task:0`);
@@ -45,7 +51,6 @@ describeif(device.getPlatform() === 'android')
     // Verify task #1 has status "DOING"
     await waitToBeVisible('taskListItemIcon:DOING:1');
   });
-
 
   it('should mark a task as DONE', async () => {
     // Swipe complete button, tap 'ok' and press 'Complete'

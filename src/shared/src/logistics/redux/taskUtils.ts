@@ -162,7 +162,7 @@ export function filterTasksByKeyword(tasks, keyword: string) {
 
 export function taskIncludesKeyword(task, keyword: string): boolean {
   return (
-    standardIncludes(task.id, keyword) ||
+    standardIncludes(`#${task.id}`, keyword) ||
     standardIncludes(task.assignedTo, keyword) ||
     standardIncludes(task.orgName, keyword) ||
     standardIncludes(task.metadata?.order_number, keyword) ||
