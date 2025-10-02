@@ -102,6 +102,7 @@ const TaskList: React.FC<TaskListProps> = ({
   return (
     <>
       <SwipeListView
+        testID={`${id}SwipeListView`}
         data={tasks}
         keyExtractor={(item, index) => {
           const tagNames = (item.tags || []).map(t => t.name);

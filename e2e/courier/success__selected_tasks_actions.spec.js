@@ -72,7 +72,7 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('task:finishButton');
     await tapByText('Report incident');
 
-    await swipeDown('courierTaskList');
+    await swipeDown('courierTaskListSwipeListView');
 
     // Verify task #1 has status "FAILED"
     //await waitToBeVisible('taskListItemIcon:INCIDENT:1');
