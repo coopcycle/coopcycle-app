@@ -274,4 +274,27 @@ export interface TaskListItemProps {
   onSwipeClosed?: () => void;
 }
 
+export interface TaskListProps {
+  id: string;
+  tasks: Task[];
+  appendTaskListTestID?: string;
+  onMultipleSelectionAction?: (items: Task[]) => void;
+  onRefresh?: () => void;
+  onPressLeft?: (task: Task) => void;
+  onPressRight?: (task: Task) => void;
+  onSwipeClosed?: (task: Task) => void;
+  onSwipeToLeft?: (task: Task) => void;
+  onSwipeToRight?: (task: Task) => void;
+  onLongPress?: (task: Task) => void;
+  onTaskClick: (task: Task) => void;
+  onOrderClick: (task: Task) => void;
+  refreshing?: boolean;
+  swipeOutLeftBackgroundColor?: string;
+  swipeOutLeftEnabled?: (task: Task) => boolean;
+  swipeOutLeftIcon?: LucideIcon;
+  swipeOutRightBackgroundColor?: string;
+  swipeOutRightEnabled?: (task: Task) => boolean;
+  swipeOutRightIcon?: LucideIcon;
+}
+
 export default Task;

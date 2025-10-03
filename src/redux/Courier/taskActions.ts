@@ -11,6 +11,9 @@ import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
 import { selectCurrentRoute, selectHttpClient } from '../App/selectors';
 import {
+  cancelTaskFailure,
+  cancelTaskSuccess,
+  createTaskRequest,
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
@@ -22,6 +25,7 @@ import {
   startTaskSuccess,
 } from '../../shared/logistics/redux';
 import { DateISOString } from '../../utils/date-types';
+import Task from '@/src/types/task';
 
 /*
  * Action Types
@@ -274,7 +278,7 @@ export function reportIncident(
     dispatch(reportIncidentRequest(task));
     const httpClient = selectHttpClient(getState());
 
-    let payload = {
+    const payload = {
       description,
       failureReasonCode,
       metadata: failureReasonMetadata,
@@ -446,6 +450,24 @@ export function startTask(task, cb) {
       })
       .catch(e => dispatch(startTaskFailure(e)));
   };
+}
+
+export function cancelTask(task: Task, cb) {
+  return function(dispatch, getState) {
+    dispatch(createTaskRequest())
+    
+    const httpClient = selectHttpClient(getState());
+
+    httpClient
+      .put(`${task['@id']}/cancel`, {})
+      .then(cancelledTask => {
+        dispatch(cancelTaskSuccess(cancelledTask))
+        if(typeof cb === 'function') {
+          setTimeout(() => cb(), 100);
+        }
+      })
+      .catch(e => dispatch(cancelTaskFailure(e)));
+  }
 }
 
 export function setTasksChangedAlertSound(enabled) {

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from '@/components/ui/icon';
-import { Map, List, ScanBarcode, Settings } from 'lucide-react-native'
+import { List, Map, ScanBarcode, Settings } from 'lucide-react-native'
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -14,6 +14,8 @@ import OrderNavigator from './OrderNavigator';
 import TaskNavigator from './TaskNavigator';
 import { useSelector } from 'react-redux';
 import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
+import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
+import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
 
 const Tab = createBottomTabNavigator();
 
@@ -104,7 +106,7 @@ const MainNavigator = () => {
         options={({ navigation }) => ({
           title: i18n.t('COURIER'),
           headerLeft: headerLeft(navigation, 'menuBtnCourier'),
-          headerRight: () => <HeaderButtons nav={navigation} />,
+          headerRight: () => <HeaderRightBody navigation={navigation}/>,
         })}
       />
       <MainStack.Screen
@@ -181,6 +183,18 @@ const SettingsNavigator = () => {
   );
 };
 
+const HeaderRightBody = ({navigation}) => {
+  const context = useTaskListsContext();
+  return (
+    <>
+      {context?.isEditMode ?
+      <SelectedTasksMenu navigation={navigation}/>
+      :
+      <HeaderButtons nav={navigation} />}
+    </>
+  );
+};
+
 const RootStack = createStackNavigator();
 
 export default () => {
@@ -189,35 +203,37 @@ export default () => {
   });
 
   return (
-    <RootStack.Navigator screenOptions={screenOptions}>
-      <RootStack.Screen
-        name="Main"
-        component={MainNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CourierSettings"
-        component={SettingsNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CourierBarcode"
-        component={BarcodeNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <RootStack.Screen
-        name="Order"
-        component={OrderNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-    </RootStack.Navigator>
+    <TaskListsProvider>  
+      <RootStack.Navigator screenOptions={screenOptions}>
+        <RootStack.Screen
+          name="Main"
+          component={MainNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <RootStack.Screen
+          name="CourierSettings"
+          component={SettingsNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <RootStack.Screen
+          name="CourierBarcode"
+          component={BarcodeNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <RootStack.Screen
+          name="Order"
+          component={OrderNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </RootStack.Navigator>
+    </TaskListsProvider>
   );
 };
