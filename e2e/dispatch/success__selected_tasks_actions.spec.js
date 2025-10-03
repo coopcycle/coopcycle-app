@@ -11,6 +11,7 @@ import {
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
+  toggleSectionUser,
 } from '@/e2e/dispatch/utils';
 
 const USER_JANE = 'jane';
@@ -23,16 +24,21 @@ describeif(device.getPlatform() === 'android')
     await loadDispatchFixture();
     await loginDispatcherUser();
 
-    // Assign task #1
-    //await assignTaskToUser(USER_JANE);
+    // Show unassigned tasks section
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+
+    // Assign order #1 (that has 3 tasks)
     await assignOrderToUser(USER_JANE);
 
     // Hide unassigned tasks section
-    await toggleSectionUnassigned();
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it hides once we assign the order above)
+    // Show USER_JANE's tasks section
+    await toggleSectionUser(USER_JANE);
 
-    // long press assigned task #1
+    // Long press assigned task #1
     await longPressById(`${USER_JANE}TasksList:task:0`);
 
+    // Press the 3-dot menu button
     await tapById('selectedTasksToEditMenuButton');
   });
 
@@ -61,7 +67,7 @@ describeif(device.getPlatform() === 'android')
     //TODO: EXPECTS TO HAVE A TASK STATUS ICON 'CANCELLED'
     //await expectToNotExist(`${USER_JANE}TasksList:task:0`);
   });
-  
+
   it('should mark a task as INCIDENT', async () => {
     // Tap Report incident button
     await tapById('ReportIncidenceButton');
@@ -71,7 +77,7 @@ describeif(device.getPlatform() === 'android')
 
     await swipeDown('dispatchTasksSectionList');
     await toggleSectionUnassigned();
-    
+
     // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
