@@ -3,7 +3,6 @@ import ColorHash from 'color-hash';
 import moment from 'moment';
 
 import { getUserTaskList } from './taskListUtils';
-import { getTaskTitle } from '../../utils';
 // WHEN TASK IS ADDED, uncomment the following line
 // import { Task } from '../../../../types/Task';
 
@@ -154,37 +153,28 @@ export function getToursToUpdate(itemIds, toursTasksIndex) {
 }
 
 export function filterTasksByKeyword(tasks, keyword: string) {
-  if (keyword === '') {
+  if (!(keyword && keyword.length > 0)) {
     return tasks;
   }
 
-  return tasks.filter(
-    task =>
-      taskIncludesKeyword(task, keyword) ||
-      taskIncludesKeywordInOrder(task, keyword),
-  );
+  return tasks.filter(task => taskIncludesKeyword(task, keyword));
 }
 
-export function taskIncludesKeyword(task, keyword: string) {
+export function taskIncludesKeyword(task, keyword: string): boolean {
   return (
+    standardIncludes(`#${task.id}`, keyword) ||
     standardIncludes(task.assignedTo, keyword) ||
     standardIncludes(task.orgName, keyword) ||
-    standardIncludes(getTaskTitle(task), keyword) ||
-    task.tags.reduce(
-      (acc, tag) => acc || standardIncludes(tag.name, keyword),
-      false,
-    )
-  );
-}
-
-export function taskIncludesKeywordInOrder(task, keyword: string) {
-  return (
     standardIncludes(task.metadata?.order_number, keyword) ||
+    standardIncludes(task.address?.name, keyword) ||
     standardIncludes(task.address?.contactName, keyword) ||
     standardIncludes(task.address?.firstName, keyword) ||
     standardIncludes(task.address?.lastName, keyword) ||
-    standardIncludes(task.address?.name, keyword) ||
-    standardIncludes(task.address?.streetAddress, keyword)
+    standardIncludes(task.address?.streetAddress, keyword) ||
+    task.tags.reduce(
+      (acc, tag) => acc || standardIncludes(tag.name, keyword),
+      false
+    )
   );
 }
 
@@ -193,10 +183,9 @@ function standardIncludes(originalString: string, keyword: string) {
     return false;
   }
 
-  const lowercaseKeyword = keyword.toLowerCase();
-
-  return originalString.toLowerCase().includes(lowercaseKeyword);
+  return originalString.toLowerCase().includes(keyword.toLowerCase());
 }
+
 export function taskExists(list, task) {
   return list.some(t => t['@id'] === task['@id']);
 }

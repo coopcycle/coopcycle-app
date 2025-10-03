@@ -2,6 +2,7 @@ import { UNASSIGNED_TASKS_LIST_ID } from "../../src/shared/src/constants";
 import {
   describeif,
   expectToNotExist,
+  sleep,
   swipeDown,
   swipeRight,
   tapById,
@@ -16,6 +17,7 @@ import {
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
+  toggleSectionUser,
 } from './utils';
 
 const USER_JANE = 'jane';
@@ -31,13 +33,21 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should correctly apply filters to tasks on different tasklists', async () => {
+    // Show unassigned tasks section
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+
     // Assign the 1st order in the list with tasks #1+#2+#3
     await assignOrderToUser(USER_JANE);
+    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
+    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Assign the 1st order in the list with tasks #5+#4
     await assignOrderToUser(USER_ZAK);
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
+    // Show USER_JANE's and USER_ZAK's tasks section
+    await toggleSectionUser(USER_JANE);
+    //await toggleSectionUser(USER_ZAK); (THIS IS A BUG: it should be hidden by default but it's visible)
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
@@ -118,6 +128,7 @@ describeif(device.getPlatform() === 'android')
 
     // Open the map screen
     await tapById('toggleTasksMapListButton');
+    await sleep(5000); // Wait for the map to be fully loaded
 
     // Verify tasks #6+#7 markers are on the map
     await waitToExist('taskmarker-6-0'); // If we don't force the task list update, this marker will be: 'taskmarker-6-5'
@@ -169,13 +180,13 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('dispatchTasksFiltersView');
     await tapById('showKeywordsFiltersButton');
     await waitToBeVisible('keywordsFilterView');
-    await typeTextQuick('searchTextInput', 'Task #1\n');
+    await typeTextQuick('searchTextInput', '#1\n');
 
     // Go back
     await tapById('keywordsFilterGoToAllTasksButton');
 
     // Verify tasks were found
-    await toggleSectionUnassigned();
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden but it's visible)
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #10)");
 
