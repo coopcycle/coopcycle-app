@@ -63,8 +63,8 @@ describeif(device.getPlatform() === 'android')
     // Tap Cancel button
     await tapById('CancelTaskButton');
 
-    // Waits to see if it was removed
-    //TODO: EXPECTS TO HAVE A TASK STATUS ICON 'CANCELLED'
+    // Waits to see if it's removed
+    //TODO FIX: The task doesn't dissapear if it's assigned..!
     //await expectToNotExist(`${USER_JANE}TasksList:task:0`);
   });
 
@@ -75,8 +75,13 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('task:finishButton');
     await tapByText('Report incident');
 
+    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
     await swipeDown('dispatchTasksSectionList');
-    await toggleSectionUnassigned();
+
+    // Hide unassigned tasks section
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be already expanded but it's collapsed)
+    // Show USER_JANE's tasks section (THIS IS A BUG: it hides once we refresh the list)
+    await toggleSectionUser(USER_JANE); // TODO: Remove this line once the bug is fixed
 
     // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');

@@ -109,7 +109,7 @@ export default function TaskListPage({ navigation, route }) {
           onOrderClick={task =>
             navigateToOrder(navigation, getOrderNumber(task), true)
           }
-          onLongPress={(task) => longPressHandler(task)}
+          onLongPress={longPressHandler}
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
           onMultipleSelectionAction={completeSelectedTasks}

@@ -33,9 +33,10 @@ describeif(device.getPlatform() === 'android')
 
     await tapById('messengerTabList');
 
-    // long press assigned task #1
+    // Long press assigned task #1
     await longPressById(`courierTaskList:task:0`);
 
+    // Press the 3-dot menu button
     await tapById('selectedTasksToEditMenuButton');
   });
 
@@ -61,20 +62,21 @@ describeif(device.getPlatform() === 'android')
     await tapById('CancelTaskButton');
 
     // Waits to see if it's removed
-    // Should it be this way? Are we expecting TLItem to be removed?
+    //TODO FIX: The task doesn't dissapear if it's assigned..!
     //await expectToNotExist(`courierTasksList:task:0`);
   });
-  
-  it('should mark a task as INCIDENT REPORTED ', async () => {
+
+  it('should mark a task as INCIDENT ', async () => {
     // Tap Report incident button
     await tapById('ReportIncidenceButton');
 
     await waitToBeVisible('task:finishButton');
     await tapByText('Report incident');
 
+    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
     await swipeDown('courierTaskListSwipeListView');
 
-    // Verify task #1 has status "FAILED"
+    // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
 });

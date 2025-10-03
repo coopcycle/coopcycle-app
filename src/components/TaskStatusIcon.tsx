@@ -4,7 +4,7 @@ import {
   IncidentIcon,
   doingIconName,
   doneIconName,
-  failedIconName ,
+  failedIconName,
 } from '../navigation/task/styles/common';
 import { greenColor, redColor } from '../styles/common';
 import { Task } from '../types/task.ts';
@@ -46,7 +46,7 @@ export const TaskStatusIcon = ({ task }: { task: Task }) => {
 
 const Incident = ({task}: {task: Task}) => {
   return (
-    <View 
+    <View
       testID={`taskListItemIcon:INCIDENT:${task.id}`}
       accessible={true}
       accessibilityLabel={`Incident icon for task ${task.id}`}

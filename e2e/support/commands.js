@@ -321,14 +321,14 @@ export const tapByText = async (text) => {
 };
 
 export const longPressById = async (testID, timeout = 0) => {
-  console.log(`long tapping element with testID "${testID}"`);
+  console.log(`Long tapping element with testID "${testID}"`);
   await waitToBeVisible(testID, timeout);
   await element(by.id(testID)).longPress();
   return element(by.id(testID));
 }
 
 export const longPressByText = async (text) => {
-  console.log(`long tapping element containing the text "${text}"`);
+  console.log(`Long tapping element containing the text "${text}"`);
   await waitFor(element(by.text(text))).toBeVisible();
   await element(by.text(text)).longPress();
   return element(by.text(text));
@@ -376,7 +376,3 @@ export const sleep = (timeout) => {
   console.log(`Sleeping for ${timeout} ms..`);
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
-
-export const getElementAttributes = (testID) => {
-  return element(by.id(testID))
-}
