@@ -10,10 +10,7 @@ import {
   clearSelectedTasks,
   removeTasksAndOrders,
 } from '../../../redux/Dispatch/updateSelectedTasksSlice';
-import {
-  AssignOrderIcon,
-  AssignTaskIcon,
-} from '../../task/styles/common';
+import { AssignOrderIcon, AssignTaskIcon } from '../../task/styles/common';
 import {
   createTempTaskList,
   createUnassignedTaskLists,
@@ -56,10 +53,12 @@ export default function GroupedTasks({
   const navigation = useNavigation();
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
-  const date = useSelector(selectSelectedDate)
-  const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation()
+  const date = useSelector(selectSelectedDate);
+  const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation();
 
-  useEffect(() => {generateOrders(date.format('YYYY-MM-DD'))}, [generateOrders, date]);
+  useEffect(() => {
+    generateOrders(date.format('YYYY-MM-DD'));
+  }, [generateOrders, date]);
 
   const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
   // Combine unassigned tasks and task lists to use in SectionList
@@ -96,8 +95,24 @@ export default function GroupedTasks({
     ? sections.filter(section => section.tasksCount > 0)
     : sections;
 
-  // collapsable
   const [collapsedSections, setCollapsedSections] = useState(new Set());
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize all sections as collapsed only on first load
+  useEffect(() => {
+    if (
+      !isInitialized &&
+      !isFetching &&
+      filteredSections.length > 0 &&
+      taskLists.length > 0
+    ) {
+      const allSectionTitles = new Set(
+        filteredSections.map(section => section.title),
+      );
+      setCollapsedSections(allSectionTitles);
+      setIsInitialized(true);
+    }
+  }, [filteredSections, isInitialized, isFetching, taskLists.length]);
 
   // Update tasks functions
   const {
@@ -306,6 +321,9 @@ export default function GroupedTasks({
 
   const renderItem = useCallback(
     ({ section, item, index }) => {
+      console.log(
+        `Rendering section: ${section.title}, collapsed: ${collapsedSections.has(section.title)}, isFetching: ${isFetching}`,
+      );
       if (!isFetching && !collapsedSections.has(section.title)) {
         const tasks = getTaskListTasks(item, tasksEntities);
 
@@ -314,7 +332,7 @@ export default function GroupedTasks({
             id={section.id}
             tasks={tasks}
             appendTaskListTestID={section.appendTaskListTestID}
-            onLongPress={(task) => longPressHandler(task)}
+            onLongPress={longPressHandler}
             onTaskClick={onTaskClick(section.isUnassignedTaskList)}
             onOrderClick={onOrderClick}
             onSwipeClosed={task => {
@@ -357,9 +375,7 @@ export default function GroupedTasks({
         onRefresh={() => refetch && refetch()}
         testID="dispatchTasksSectionList"
       />
-      <BulkEditTasksFloatingButton
-        onPress={handleBulkAssignButtonPress}
-      />
+      <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );
 }

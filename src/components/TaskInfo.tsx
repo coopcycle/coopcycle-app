@@ -10,10 +10,9 @@ import FAIcon from './Icon';
 
 import {
   DropoffIcon,
-  IncidentIcon,
 } from '../navigation/task/styles/common';
 import { getDropoffCount, getDropoffPosition } from '../shared/src/utils';
-import { greyColor, redColor, yellowColor } from '../styles/common';
+import { greyColor, yellowColor } from '../styles/common';
 import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
@@ -22,7 +21,6 @@ import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redu
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
-import { useTranslation } from 'react-i18next';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const cardBorderRadius = 2.5;
@@ -36,8 +34,8 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-  // This one is used just for e2e tests purposes
-  invisibleText: __DEV__ ? { fontSize: 10 } : { color: 'transparent', fontSize: 0 },
+  // This one is used just for dev and e2e tests purposes
+  invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
   },
@@ -68,14 +66,12 @@ interface ITaskInfoProps {
 }
 
 function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
-  const { t } = useTranslation();
   const context = useTaskListsContext();
   const selectSelector = context?.isFromCourier
   ? selectTasksByOrderCourier
   : selectTasksByOrderLogistics;
   const orderTasks = useSelector(selectSelector(getOrderNumber(task)));
-  // TODO check if we use this
-  const taskDropoffTitle = getTaskTitleForOrder(task, t);
+  const taskTitle = getTaskTitleForOrder(task);
   const alignedTextStyle = isPickup
     ? [styles.text, { textAlign: 'right' as const }]
     : [styles.text];
@@ -138,6 +134,9 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
 
         {isPickup ? (
           <HStack space="md">
+            {taskTitle && task.orgName !== taskTitle ? (
+              <Text numberOfLines={1}>{taskTitle}</Text>
+            ) : null}
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
             <Animated.View
               style={{
@@ -158,13 +157,14 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
               <FAIcon name="level-down-alt" size={18} />
             </Animated.View>
             <Text numberOfLines={1} style={{ flex: 1 }}>
-              {`${getDropoffPosition(task, orderTasks)} ${taskDropoffTitle}`}
+              {getDropoffPosition(task, orderTasks)}
+              {taskTitle && task.orgName !== taskTitle ? ` ${taskTitle}` : null}
             </Text>
           </HStack>
         )}
 
         <Text numberOfLines={1} style={alignedTextStyle}>
-          {task.address?.streetAddress}
+          {task.address.streetAddress}
         </Text>
         <HStack
           className="items-center"

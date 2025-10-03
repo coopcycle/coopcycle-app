@@ -1,12 +1,16 @@
-import { useTranslation } from "react-i18next";
-import { Icon, ChevronUpIcon, ChevronDownIcon } from '@/components/ui/icon';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/components/ui/text';
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from 'react-native';
 
-import { useBackgroundHighlightColor } from "../../../styles/theme";
-import { darkGreyColor, whiteColor } from "../../../styles/common";
+import { useBackgroundHighlightColor } from '../../../styles/theme';
+import { darkGreyColor, whiteColor } from '../../../styles/common';
+import FAIcon from '@/src/components/Icon';
 
-export function SectionHeader({ section, collapsedSections, setCollapsedSections }) {
+export function SectionHeader({
+  section,
+  collapsedSections,
+  setCollapsedSections,
+}) {
   const { t } = useTranslation();
 
   const bgHighlightColor = useBackgroundHighlightColor();
@@ -64,9 +68,14 @@ export function SectionHeader({ section, collapsedSections, setCollapsedSections
           </Text>
         </View>
         {section.tasksCount === 0 ? null : (
-          <Icon
-            as={collapsedSections.has(section.title) ? ChevronDownIcon : ChevronUpIcon}
+          <FAIcon
+            name={
+              collapsedSections.has(section.title)
+                ? 'chevron-down'
+                : 'chevron-up'
+            }
             testID={`${section.id}:toggler`}
+            color={darkGreyColor}
           />
         )}
       </TouchableOpacity>
