@@ -89,7 +89,6 @@ const TaskList: React.FC<TaskListProps> = ({
         task={task}
         index={index}
         color={task.color}
-        isSelectedTask={tasks.includes(task)}
         onPress={() => onTaskClick(task)}
         onLongPress={onLongPress}
         onOrderPress={() => onOrderClick(task)}
