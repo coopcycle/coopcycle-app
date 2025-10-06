@@ -453,6 +453,8 @@
     "ADD_NOTE": "Agregar nota",
     "REPORT_AN_INCIDENT": "Reportar un incidente",
     "UPDATE_PARCEL_DETAILS": "Actualizar detalles del paquete",
+    "FAILURE_REASON": "Incidencia",
+    "SELECT_FAILURE_REASON": "Seleccione la incidencia",
     "PICTURES": "Fotos",
     "TASK_TODO": "Por hacer",
     "TASK_DOING": "En progreso",
@@ -472,6 +474,7 @@
     "TOTAL_AMOUNT": "Cantidad total",
     "ESTIMATED_DURATION": "Tiempo estimado",
     "PICKUP": "Recogida",
-    "DROPOFF": "Entrega"
+    "DROPOFF": "Entrega",
+    "START": "Comenzar"
   }
 }

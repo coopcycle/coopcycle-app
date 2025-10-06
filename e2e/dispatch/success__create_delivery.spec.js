@@ -2,11 +2,11 @@ import {
   describeif,
   //selectAutocompleteAddress,
   tapById,
-  //typeTextQuick,
+  typeTextQuick,
   waitToBeVisible,
 } from "../support/commands";
 import {
-  getTaskTitleElement,
+  expectTaskTitleToHaveText,
   loadDispatchFixture,
   loginDispatcherUser,
 } from './utils';
@@ -34,6 +34,8 @@ const typeTextQuickJustForThisTest = async (elemId, text) => {
   return await element(by.id(elemId)).typeText(text);
 };
 
+const CONTACT_NAME = 'Alice';
+
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')
   ('Dispatch - Create delivery', () => {
@@ -44,6 +46,9 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should create a delivery for a store', async () => {
+    // Show unassigned tasks section
+    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+
     await tapById('dispatchNewDelivery');
 
     // Select store
@@ -60,7 +65,7 @@ describeif(device.getPlatform() === 'android')
     // Append "\n" to make sure virtual keyboard is hidden after entry
     // https://github.com/wix/detox/issues/209
     await waitToBeVisible('delivery__dropoff__contact_name');
-    await typeTextQuickJustForThisTest('delivery__dropoff__contact_name', 'Alice\n');
+    await typeTextQuickJustForThisTest('delivery__dropoff__contact_name', `${CONTACT_NAME}\n`);
 
     await waitToBeVisible('delivery__dropoff__phone');
     await typeTextQuickJustForThisTest('delivery__dropoff__phone', '0612345678\n');
@@ -77,8 +82,12 @@ describeif(device.getPlatform() === 'android')
     // Select default values and continue
     await tapById('delivery__next_button');
 
-    // Check the new task was created
-    await expect(getTaskTitleElement(UNASSIGNED_TASKS_LIST_ID, 6)).toHaveText("Acme - Task #11");
+    // Search by contact name
+    await typeTextQuick('searchTextInput', `${CONTACT_NAME}\n`);
+    await waitToBeVisible('dispatchTasksSearchResults');
+
+    // Check the new tasks were created
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #12)");
   });
 
 });

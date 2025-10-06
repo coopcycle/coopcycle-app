@@ -1,0 +1,32 @@
+name: Build CoopCycle APK on release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-coopcycle:
+    name: Build CoopCycle APK
+    uses: ./.github/workflows/fastlane_android.yml
+    with:
+      tag: ${{ github.event.release.tag_name }}
+    secrets: inherit
+
+  upload-apk:
+    name: Upload APK to Release
+    runs-on: ubuntu-latest
+    needs: build-coopcycle
+    steps:
+      - name: Download CoopCycle APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: CoopCycle-release.apk
+
+      - name: Upload APK to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          APK_PATH="CoopCycle-release.apk"
+          echo "📦 Uploading $APK_PATH to release"
+          gh release upload ${{ github.event.release.tag_name }} "$APK_PATH" --clobber
+

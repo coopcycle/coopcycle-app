@@ -612,12 +612,12 @@ describe('taskUtils', () => {
         { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
         { id: 2, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: 100 } },
         { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
-        
+
         // Order 2 - multiple DROPOFFs
         { id: 4, type: 'PICKUP', metadata: { order_number: 'ORD-002', order_total: 200 } },
         { id: 5, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: 200 } },
         { id: 6, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: 200 } },
-        
+
         // Order 3 - no multiple tasks
         { id: 7, type: 'PICKUP', metadata: { order_number: 'ORD-003', order_total: 300 } },
         { id: 8, type: 'DROPOFF', metadata: { order_number: 'ORD-003', order_total: 300 } },
@@ -630,12 +630,12 @@ describe('taskUtils', () => {
         { id: 1, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: null } },
         { id: 2, type: 'PICKUP', metadata: { order_number: 'ORD-001', order_total: null } },
         { id: 3, type: 'DROPOFF', metadata: { order_number: 'ORD-001', order_total: 100 } },
-        
+
         // Order 2 - first PICKUP keeps order_total
         { id: 4, type: 'PICKUP', metadata: { order_number: 'ORD-002', order_total: 200 } },
         { id: 5, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: null } },
         { id: 6, type: 'DROPOFF', metadata: { order_number: 'ORD-002', order_total: null } },
-        
+
         // Order 3 - unchanged
         { id: 7, type: 'PICKUP', metadata: { order_number: 'ORD-003', order_total: null } },
         { id: 8, type: 'DROPOFF', metadata: { order_number: 'ORD-003', order_total: 300 } },

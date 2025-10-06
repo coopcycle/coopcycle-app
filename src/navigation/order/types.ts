@@ -1,3 +1,3 @@
 export interface RouteType {
-  route: { params: { orderId: string | number; isFromCourier: boolean } };
+  route: { params: { orderNumber: string | number; isFromCourier: boolean } };
 }

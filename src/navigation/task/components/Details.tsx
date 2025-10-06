@@ -2,7 +2,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
 import { Icon, ArrowRightIcon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
@@ -17,8 +17,18 @@ import {
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
 import { getAddress, getName, getPackagesSummary, getTimeFrame } from './utils';
-import { getTaskTitle } from '../../../shared/src/utils';
 import Detail from '../../../components/Detail';
+
+export const styles = StyleSheet.create({
+  titleText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    paddingLeft: 10,
+    marginVertical: 10,
+  },
+  // This one is used just for dev and e2e tests purposes
+  invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
+});
 
 const Details = ({ task, onTaskTitleClick, t }) => {
   const timeframe = getTimeFrame(task);
@@ -27,14 +37,9 @@ const Details = ({ task, onTaskTitleClick, t }) => {
   address = name ? [name, address].join(' - ') : address;
 
   const renderTaskTitle = () => (
-    <Text
-      style={{
-        fontWeight: 'bold',
-        fontSize: 16,
-        paddingLeft: 10,
-        marginVertical: 10,
-      }}>
-      {getTaskTitle(task)} (#{task.id})
+    <Text style={styles.titleText}>
+      {task.orgName}
+      <Text style={styles.invisibleText}>{` (task #${task.id})`}</Text>
     </Text>
   );
 

@@ -101,7 +101,9 @@ export default function TimeSlotSelector({
                 numberOfLines={1}
                 style={{
                   color:
-                    selectedTimeSlot === timeSlot['@id'] ? 'white' : '#878787',
+                    selectedTimeSlot === timeSlot['@id']
+                      ? backgroundHighlightColor
+                      : '#878787',
                 }}>
                 {timeSlot.name}
               </ButtonText>

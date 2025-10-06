@@ -1,24 +1,27 @@
-import { Formik } from 'formik';
-import _ from 'lodash';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
+import { Divider } from '@/components/ui/divider';
 import {
   FormControl,
   FormControlLabel,
-  FormControlError,
-  FormControlErrorText,
-  FormControlErrorIcon,
   FormControlLabelText,
 } from '@/components/ui/form-control';
-import { Divider } from '@/components/ui/divider';
-import { Icon, CheckIcon } from '@/components/ui/icon';
-import { CircleX, User, Signature, Camera } from 'lucide-react-native';
-import { Input, InputField } from '@/components/ui/input';
-import { Textarea, TextareaInput } from '@/components/ui/textarea';
-import { Box } from '@/components/ui/box';
-import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
-import { VStack } from '@/components/ui/vstack';
+import { CheckIcon, ChevronDownIcon, Icon } from '@/components/ui/icon';
+import { Input, InputField } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from '@/components/ui/text';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
+import { VStack } from '@/components/ui/vstack';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import { Formik } from 'formik';
+import _ from 'lodash';
+import { Camera, CircleX, Signature, User } from 'lucide-react-native';
+import qs from 'qs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -32,30 +35,34 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Modal from 'react-native-modal';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { connect, useDispatch } from 'react-redux';
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   AvoidSoftInput,
   useSoftInputHeightChanged,
 } from 'react-native-avoid-softinput';
+import Modal from 'react-native-modal';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import qs from 'qs';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { connect, useDispatch } from 'react-redux';
 
+import {
+  Select,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectIcon,
+  SelectInput,
+  SelectItem,
+  SelectPortal,
+  SelectTrigger,
+} from '@/components/ui/select';
 import { useQuery } from 'react-query';
 import ModalContent from '../../components/ModalContent';
-import { Picker } from '../../components/Picker';
+import { selectHttpClient } from '../../redux/App/selectors';
 import {
   deletePictureAt,
   deleteSignatureAt,
@@ -64,15 +71,18 @@ import {
   selectPictures,
   selectSignatures,
 } from '../../redux/Courier';
+import { reportIncident } from '../../redux/Courier/taskActions';
 import { greenColor, yellowColor } from '../../styles/common';
 import { doneIconName, incidentIconName } from './styles/common';
-import { reportIncident } from '../../redux/Courier/taskActions';
-import { selectHttpClient } from '../../redux/App/selectors';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
 
-const AttachmentItem = ({ base64, onPressDelete }) => {
+interface IAttachmentItemProps {
+  base64: string;
+  onPressDelete: () => void;
+}
+const AttachmentItem = ({ base64, onPressDelete }: IAttachmentItemProps) => {
   const { width } = Dimensions.get('window');
 
   const imageSize = (width - 64) / 2;
@@ -91,7 +101,7 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
         style={{ width: imageSize - 2, height: imageSize - 2 }}
       />
       <TouchableOpacity style={styles.imageDelBtn} onPress={onPressDelete}>
-        <Icon as={CircleX} size={ 40 } style={{color: "black"}} />
+        <Icon as={CircleX} size={40} style={{ color: 'black' }} />
       </TouchableOpacity>
     </View>
   );
@@ -99,6 +109,7 @@ const AttachmentItem = ({ base64, onPressDelete }) => {
 
 const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   const [selectedFailureReason, setFailureReason] = useState(null);
+  const { t } = useTranslation();
 
   const { data, isSuccess, isError } = useQuery(
     ['task', 'failure_reasons', task['@id']],
@@ -112,7 +123,7 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
       return null;
     }
     return data['hydra:member'].map((value, index) => (
-      <Picker.Item key={index} value={value.code} label={value.description} />
+      <SelectItem key={index} value={value.code} label={value.description} />
     ));
   }, [data, isSuccess]);
 
@@ -134,12 +145,40 @@ const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
 
   return (
     <Skeleton isLoaded={isSuccess} className="h-10 rounded">
-      <Picker
+      <Select
         selectedValue={selectedFailureReason}
         onValueChange={v => onChange(v)}>
-        <Picker.Item value={null} label="" />
-        {values}
-      </Picker>
+        <SelectTrigger variant="outline" size="md" className="justify-between">
+          <SelectInput
+            placeholder={t('SELECT_FAILURE_REASON')}
+            value={
+              selectedFailureReason
+                ? data['hydra:member'].find(
+                    r => r.code === selectedFailureReason,
+                  )?.description || ''
+                : ''
+            }
+          />
+          <SelectIcon className="mr-3" as={ChevronDownIcon} />
+        </SelectTrigger>
+        <SelectPortal>
+          <SelectBackdrop style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
+          <SelectContent>
+            <SelectDragIndicatorWrapper>
+              <SelectDragIndicator />
+            </SelectDragIndicatorWrapper>
+            <ScrollView
+              style={{ maxHeight: 350 }}
+              showsVerticalScrollIndicator={true}>
+              <SelectItem
+                label={`-- ${t('SELECT_FAILURE_REASON')} --`}
+                value={null}
+              />
+              {values}
+            </ScrollView>
+          </SelectContent>
+        </SelectPortal>
+      </Select>
     </Skeleton>
   );
 };
@@ -217,7 +256,9 @@ const ContactNameModal = ({
                   error={touched.contactName && errors.contactName}
                   style={{ marginBottom: 15 }}>
                   <FormControlLabel>
-                    <FormControlLabelText>{t('DELIVERY_DETAILS_RECIPIENT')}</FormControlLabelText>
+                    <FormControlLabelText>
+                      {t('DELIVERY_DETAILS_RECIPIENT')}
+                    </FormControlLabelText>
                   </FormControlLabel>
                   <Input>
                     <InputField
@@ -334,10 +375,7 @@ const SubmitButton = ({
       style={{ alignItems: 'center', backgroundColor: footerBgColor }}
       testID="task:finishButton">
       <HStack className="py-3 items-center">
-        <Icon
-          as={CheckIcon}
-          style={{ color: '#fff', marginRight: 10 }}
-        />
+        <Icon as={CheckIcon} style={{ color: '#fff', marginRight: 10 }} />
         <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
       </HStack>
     </TouchableOpacity>
@@ -491,10 +529,7 @@ const CompleteTask = ({
                     <React.Fragment>
                       <HStack className="justify-between items-center p-3">
                         <HStack className="justify-between items-center">
-                          <Icon
-                            as={User}
-                            style={{ marginRight: 10 }}
-                          />
+                          <Icon as={User} style={{ marginRight: 10 }} />
                           <Text numberOfLines={1}>
                             {resolveContactName(contactName, task, tasks)}
                           </Text>
@@ -510,7 +545,9 @@ const CompleteTask = ({
                   {!success && (
                     <FormControl className="p-3">
                       <FormControlLabel>
-                        <FormControlLabelText>{t('FAILURE_REASON')}</FormControlLabelText>
+                        <FormControlLabelText>
+                          {t('FAILURE_REASON')}
+                        </FormControlLabelText>
                       </FormControlLabel>
                       <FailureReasonPicker
                         task={task}
@@ -555,11 +592,13 @@ const CompleteTask = ({
                         onPress={() =>
                           setValidateTaskAfterReport(!validateTaskAfterReport)
                         }
-                        variant={
-                          validateTaskAfterReport ? 'solid' : 'outline'
-                        }>
-                        <ButtonText>Validate the task after reporting</ButtonText>
-                        { validateTaskAfterReport && <ButtonIcon as={CheckIcon} /> }
+                        variant={validateTaskAfterReport ? 'solid' : 'outline'}>
+                        <ButtonText>
+                          Validate the task after reporting
+                        </ButtonText>
+                        {validateTaskAfterReport && (
+                          <ButtonIcon as={CheckIcon} />
+                        )}
                       </Button>
                     )}
                   </FormControl>
@@ -663,7 +702,7 @@ const styles = StyleSheet.create({
     top: -16,
     right: -16,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   screenContainer: {
     alignItems: 'center',

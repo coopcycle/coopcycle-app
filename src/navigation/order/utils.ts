@@ -99,18 +99,17 @@ export const getUniqueTagsFromTasks = (tasks: Tasks) => {
   return uniqueTags;
 };
 
-export function getTaskTitleForOrder(task: Task, t: TFunction): string {
-  const getFallbackTitle = () =>
-    task.type === 'PICKUP' ? t('PICKUP') : t('DROPOFF');
-
+export function getTaskTitleForOrder(task: Task): string {
   const addressData = [];
+
   if (task.address.name) {
     addressData.push(task.address.name);
   }
   if (task.address.contactName) {
     addressData.push(task.address.contactName);
   }
-  return addressData.length > 0 ? addressData.join(' - ') : getFallbackTitle();
+
+  return addressData.join(' - ');
 }
 
 export function formatDistance(

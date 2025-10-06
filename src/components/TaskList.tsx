@@ -1,13 +1,13 @@
 import { SwipeListView } from 'react-native-swipe-list-view';
-import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import ItemsBulkFabButton from './ItemsBulkFabButton';
 import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
-import { useCourier } from '../navigation/courier/contexts/CourierContext';
+import Task, { TaskListProps } from '../types/task';
+import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
-const TaskList = ({
+const TaskList: React.FC<TaskListProps> = ({
   id,
   onMultipleSelectionAction,
   onRefresh = () => {},
@@ -29,14 +29,14 @@ const TaskList = ({
 }) => {
   const bulkFabButton = useRef(null);
 
-  const swipeLeftConfiguration = task => ({
+  const swipeLeftConfiguration = (task: Task) => ({
     onPressLeft: () => onPressLeft(task),
     onSwipedToLeft: () => _handleSwipeToLeft(task),
     swipeOutLeftBackgroundColor,
     swipeOutLeftIcon,
   });
 
-  const swipeRightConfiguration = task => ({
+  const swipeRightConfiguration = (task: Task) => ({
     onPressRight: () => onPressRight(task),
     onSwipeClosed: () => _handleSwipeClosed(task),
     onSwipedToRight: () => _handleSwipeToRight(task),
@@ -45,7 +45,7 @@ const TaskList = ({
   });
 
   const _handleSwipeToLeft = useCallback(
-    task => {
+    (task: Task) => {
       bulkFabButton.current?.addItem(task);
       onSwipeToLeft(task);
     },
@@ -53,14 +53,14 @@ const TaskList = ({
   );
 
   const _handleSwipeToRight = useCallback(
-    task => {
+    (task: Task) => {
       onSwipeToRight(task);
     },
     [onSwipeToRight],
   );
 
   const _handleSwipeClosed = useCallback(
-    task => {
+    (task: Task) => {
       bulkFabButton.current?.removeItem(task);
       onSwipeClosed(task);
     },
@@ -69,7 +69,7 @@ const TaskList = ({
 
   // TODO Review this button with the incoming new design/layout..!
   // The use of context here is to avoid incorrectly being parsed in dispatch screen
-  const context = useCourier();
+  const context = useTaskListsContext();
   const isFromCourier = context && context.isFromCourier;
   const onFabButtonPressed = isFromCourier ? (items => {
     onMultipleSelectionAction(items);
@@ -89,8 +89,9 @@ const TaskList = ({
         task={task}
         index={index}
         color={task.color}
+        isSelectedTask={tasks.includes(task)}
         onPress={() => onTaskClick(task)}
-        onLongPress={() => onLongPress()}
+        onLongPress={onLongPress}
         onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}
         {...swipeRightConfiguration(task)}
@@ -101,6 +102,7 @@ const TaskList = ({
   return (
     <>
       <SwipeListView
+        testID={`${id}SwipeListView`}
         data={tasks}
         keyExtractor={(item, index) => {
           const tagNames = (item.tags || []).map(t => t.name);
@@ -122,25 +124,6 @@ const TaskList = ({
       )}
     </>
   );
-};
-
-TaskList.propTypes = {
-  id: PropTypes.string.isRequired,
-  onMultipleSelectionAction: PropTypes.func,
-  onPressLeft: PropTypes.func,
-  onPressRight: PropTypes.func,
-  onSwipeClosed: PropTypes.func,
-  onSwipeToLeft: PropTypes.func,
-  onSwipeToRight: PropTypes.func,
-  onTaskClick: PropTypes.func.isRequired,
-  onOrderClick: PropTypes.func.isRequired,
-  swipeOutLeftBackgroundColor: PropTypes.string,
-  swipeOutLeftEnabled: PropTypes.func,
-  swipeOutLeftIcon: PropTypes.object,
-  swipeOutRightBackgroundColor: PropTypes.string,
-  swipeOutRightEnabled: PropTypes.func,
-  swipeOutRightIcon: PropTypes.object,
-  tasks: PropTypes.array.isRequired,
 };
 
 export default TaskList;

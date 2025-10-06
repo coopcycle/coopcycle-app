@@ -1,6 +1,5 @@
-import { HStack } from '@/components/ui/hstack';
-import { Icon } from '@/components/ui/icon';
-import React, { forwardRef, useEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
+import { LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
   StyleSheet,
@@ -10,8 +9,10 @@ import {
 } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import { useSelector } from 'react-redux';
-import { Task, TaskListItemProps } from '../types/task';
 
+import { HStack } from '@/components/ui/hstack';
+import { Icon } from '@/components/ui/icon';
+import { Task, TaskListItemProps } from '../types/task';
 import {
   selectAllTasksIdsFromOrders,
   selectAllTasksIdsFromTasks,
@@ -20,8 +21,9 @@ import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import TaskInfo from './TaskInfo';
-import { LucideIcon } from 'lucide-react-native';
+import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
+const cardBorderWidth = 4;
 const cardBorderRadius = 2.5;
 
 export const styles = StyleSheet.create({
@@ -134,15 +136,15 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
   ) => {
     const isPickup = task.type === 'PICKUP';
 
-    // TODO check - are we using this?
-    const address = task.address?.contactName
-      ? task.address?.name
-        ? `${task.address.contactName} - ${task.address.name}`
-        : task.address.contactName
-      : task.address?.name
-        ? task.address.name
-        : null;
-
+    const context = useTaskListsContext();
+    const isSelectedTask = useMemo(() => {
+      if (!context?.selectedTasksToEdit?.length || !task['@id']) {
+        return false;
+      }
+      return context?.selectedTasksToEdit.some(
+        selectedTask => selectedTask['@id'] === task['@id']
+      );
+    }, [context?.selectedTasksToEdit, task]);
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
 
@@ -260,35 +262,55 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             <SwipeButton icon={swipeOutRightIcon} width={buttonWidth} />
           </SwipeButtonContainer>
         </View>
-        <HStack
-          style={{
-            flex: 1,
-            minWidth: '100%',
-            minHeight: buttonWidth,
-            borderTopRightRadius: cardBorderRadius,
-            borderBottomRightRadius: cardBorderRadius,
-          }}
-          {...itemProps}>
-          <OrderInfo
-            color={color}
-            task={task}
-            width={buttonWidth}
-            onPress={onOrderPress}
-          />
-          <ItemTouchable
-            onPress={onPress}
-            onLongPress={onLongPress}
-            testID={taskTestId}
+        <View style={{ position: 'relative', flex: 1}}>
+          <HStack
             style={{
-              borderBottomRightRadius: cardBorderRadius,
-              borderTopRightRadius: cardBorderRadius,
-              paddingLeft: 6,
-              width: cardWidth - buttonWidth,
               flex: 1,
-            }}>
-            <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
-          </ItemTouchable>
-        </HStack>
+              minWidth: '100%',
+              minHeight: buttonWidth,
+              ...(isSelectedTask && {
+              paddingEnd: cardBorderWidth,
+            }),
+              borderTopRightRadius: cardBorderRadius,
+              borderBottomRightRadius: cardBorderRadius,
+            }}
+            {...itemProps}>
+            <OrderInfo
+              color={color}
+              task={task}
+              width={buttonWidth}
+              onPress={onOrderPress}
+            />
+            <ItemTouchable
+              onPress={onPress}
+              onLongPress={() => onLongPress(task)}
+              testID={taskTestId}
+              style={{
+                borderBottomRightRadius: cardBorderRadius,
+                borderTopRightRadius: cardBorderRadius,
+                paddingLeft: 6,
+                width: cardWidth - buttonWidth,
+                flex: 1,
+              }}>
+              <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
+            </ItemTouchable>
+          </HStack>
+          {isSelectedTask && (
+            <View 
+              pointerEvents='none'
+              style={{
+                position:'absolute',
+                top:0,
+                left:0,
+                bottom:0,
+                right:0,
+                borderColor:task.color,
+                borderWidth: cardBorderWidth,
+                borderRadius: cardBorderRadius,
+              }}
+            />
+          )}
+        </View>
       </SwipeRow>
     );
   },

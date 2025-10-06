@@ -10,6 +10,8 @@ import {
   loginStoreUser,
 } from './utils';
 
+const CONTACT_NAME = 'Alice';
+
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
 describeif(device.getPlatform() === 'android')
   ('Store - Create delivery', () => {
@@ -33,7 +35,7 @@ describeif(device.getPlatform() === 'android')
     // Append "\n" to make sure virtual keyboard is hidden after entry
     // https://github.com/wix/detox/issues/209
     await waitToBeVisible('delivery__dropoff__contact_name');
-    await typeTextQuick('delivery__dropoff__contact_name', 'Alice\n');
+    await typeTextQuick('delivery__dropoff__contact_name', `${CONTACT_NAME}\n`);
 
     await waitToBeVisible('delivery__dropoff__phone');
     await typeTextQuick('delivery__dropoff__phone', '0612345678\n');
@@ -51,6 +53,6 @@ describeif(device.getPlatform() === 'android')
     await tapById('delivery__next_button');
 
     // Return to Store screen and validate new delivery is accessible
-    await expect(element(by.text('Alice'))).toBeVisible();
+    await expect(element(by.text(CONTACT_NAME))).toBeVisible();
   });
 });

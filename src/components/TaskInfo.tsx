@@ -2,7 +2,6 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { Recycle } from 'lucide-react-native';
 import moment from 'moment';
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
@@ -10,21 +9,19 @@ import { Task } from '../types/task';
 import FAIcon from './Icon';
 
 import {
-  CommentsIcon,
   DropoffIcon,
-  IncidentIcon,
 } from '../navigation/task/styles/common';
 import { getDropoffCount, getDropoffPosition } from '../shared/src/utils';
-import { greyColor, redColor, yellowColor } from '../styles/common';
-import { PaymentMethodInList } from './PaymentMethodInfo';
+import { greyColor, yellowColor } from '../styles/common';
 import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
-import { selectTasksByOrder } from '../redux/logistics/selectors';
-import { getOrderId } from '../utils/tasks';
+import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redux/Courier/taskSelectors';
+import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
+import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
-import { useTranslation } from 'react-i18next';
+import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const cardBorderRadius = 2.5;
 
@@ -37,6 +34,8 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
+  // This one is used just for dev and e2e tests purposes
+  invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
   },
@@ -67,9 +66,12 @@ interface ITaskInfoProps {
 }
 
 function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
-  const { t } = useTranslation();
-  const orderTasks = useSelector(selectTasksByOrder(getOrderId(task)));
-  const taskDropoffTitle = getTaskTitleForOrder(task, t);
+  const context = useTaskListsContext();
+  const selectSelector = context?.isFromCourier
+  ? selectTasksByOrderCourier
+  : selectTasksByOrderLogistics;
+  const orderTasks = useSelector(selectSelector(getOrderNumber(task)));
+  const taskTitle = getTaskTitleForOrder(task);
   const alignedTextStyle = isPickup
     ? [styles.text, { textAlign: 'right' as const }]
     : [styles.text];
@@ -122,25 +124,19 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
             style={alignedTitleStyle}
             numberOfLines={1}>
             {task.orgName}
+            <Text style={styles.invisibleText}>{` (task #${task.id})`}</Text>
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">
-            {task.hasIncidents && (
-              <Icon
-                as={IncidentIcon}
-                size={24}
-                style={{
-                  borderRadius: 5,
-                  color: redColor,
-                }}
-              />
-            )}
             <TaskStatusIcon task={task} />
           </HStack>
         </HStack>
 
         {isPickup ? (
           <HStack space="md">
+            {taskTitle && task.orgName !== taskTitle ? (
+              <Text numberOfLines={1}>{taskTitle}</Text>
+            ) : null}
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
             <Animated.View
               style={{
@@ -161,13 +157,14 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
               <FAIcon name="level-down-alt" size={18} />
             </Animated.View>
             <Text numberOfLines={1} style={{ flex: 1 }}>
-              {`${getDropoffPosition(task, orderTasks)} ${taskDropoffTitle}`}
+              {getDropoffPosition(task, orderTasks)}
+              {taskTitle && task.orgName !== taskTitle ? ` ${taskTitle}` : null}
             </Text>
           </HStack>
         )}
 
         <Text numberOfLines={1} style={alignedTextStyle}>
-          {task.address?.streetAddress}
+          {task.address.streetAddress}
         </Text>
         <HStack
           className="items-center"

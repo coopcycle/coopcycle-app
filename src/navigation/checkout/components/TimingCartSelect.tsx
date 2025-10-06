@@ -4,6 +4,7 @@ import moment from 'moment/moment';
 import { Skeleton } from '@/components/ui/skeleton';
 import { HStack } from '@/components/ui/hstack';
 import { Platform, View } from 'react-native';
+// Could be replaced by Gluestack select component
 import { Picker } from '../../../components/Picker';
 import { useGetOrderTimingQuery } from '../../../redux/api/slice';
 
@@ -88,7 +89,7 @@ export default function TimingCartSelect({ orderNodeId, onValueChange }) {
   return (
     <HStack
       className="justify-around items-center justify-around"
-      space={isSuccess ? "xs" : "sm"}>
+      space={isSuccess ? 'xs' : 'sm'}>
       {isSuccess ? (
         <>
           <View flex={1}>

@@ -111,7 +111,7 @@ interface OrderAccordeonProps {
 
 function OrderAccordeon({ task }: OrderAccordeonProps) {
   const { t } = useTranslation();
-  const taskTitle = getTaskTitleForOrder(task, t);
+  const taskTitle = getTaskTitleForOrder(task);
   const timeframe = getTimeFrame(task);
   const address = task.address.streetAddress;
   const packageType = getPackagesSummary(task);
@@ -163,7 +163,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                           color: headerText,
                           marginLeft: 12,
                         }}>
-                        {taskTitle}
+                        {taskTitle || (task.type === 'PICKUP' ? t('PICKUP') : t('DROPOFF'))}
                       </AccordionTitleText>
                     </HStack>
                     <HStack space="md" style={{ alignItems: 'center' }}>

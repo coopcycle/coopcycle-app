@@ -19,9 +19,11 @@ import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import GroupedTasks from './components/GroupedTasks';
+import { useTaskListsContext } from '../courier/contexts/TaskListsContext';
 
 export default function AllTasks({ navigation, route }) {
   const { t } = useTranslation();
+  const context = useTaskListsContext();
 
   const selectedDate = useSelector(selectSelectedDate);
   const uiFilters = useSelector(selectDispatchUiTaskFilters);
@@ -38,6 +40,7 @@ export default function AllTasks({ navigation, route }) {
   const bgHighlightColor = useBackgroundHighlightColor();
 
   const handleRefetch = () => {
+    context?.clearSelectedTasks();
     refetch();
     dispatch(clearSelectedTasks());
   };
