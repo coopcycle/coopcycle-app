@@ -250,8 +250,7 @@ function AddressAutocomplete({
       // Appel à l'API Google Place Details
       axios
         .get(
-          `https://places.googleapis.com/v1/places/${
-            item.place_id
+          `https://places.googleapis.com/v1/places/${item.place_id
           }?${qs.stringify(queryParams)}`,
         )
         .then(response => {
@@ -541,6 +540,7 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderRadius: 4,
     backgroundColor: 'white',
+    paddingHorizontal: 4,
     marginHorizontal: 0,
   },
   textInput: {
@@ -563,8 +563,8 @@ const styles = StyleSheet.create({
   mapPickerButton: {
     borderRadius: 4,
     padding: 8,
-    marginLeft: 8,
-    marginRight: 8,
+    marginLeft: 4,
+    marginRight: 6,
     justifyContent: 'center',
     alignItems: 'center',
     height: 36,
