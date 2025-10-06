@@ -18,7 +18,7 @@ import {
 } from '../../shared/logistics/redux';
 import { selectDispatchUiTaskFilters } from '../../redux/Dispatch/selectors';
 import { useAllTasks } from './useAllTasks';
-import { useBackgroundHighlightColor } from '../../styles/theme';
+import { useBackgroundHighlightColor, useSecondaryTextColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import TasksMapView from '../../components/TasksMapView';
 
@@ -53,6 +53,7 @@ export default function TasksMap({ navigation, route }) {
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
   const bgHighlightColor = useBackgroundHighlightColor();
+  const unassignedPolylineColor = useSecondaryTextColor();
 
   const { isFetching } = useAllTasks(selectedDate);
 
@@ -90,6 +91,7 @@ export default function TasksMap({ navigation, route }) {
         <TasksMapView
           mapCenter={mapCenter}
           taskLists={mergedTaskListsWithUnassigned}
+          unassignedPolylineColor={unassignedPolylineColor}
           onMarkerCalloutPress={navigateToSelectedTask}
           uiFilters={uiFilters}
         />

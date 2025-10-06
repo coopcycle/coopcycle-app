@@ -12,6 +12,7 @@ import { withTranslation } from 'react-i18next';
 import RNPinScreen from 'react-native-pin-screen';
 
 import { blueColor } from '../../styles/common';
+import { useSecondaryTextColor } from '../../styles/theme';
 import { connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../navigation/utils';
@@ -52,6 +53,7 @@ function TaskMapPage({ navigation, route }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const latlng = useSelector(selectSettingsLatLng);
+  const unassignedPolylineColor = useSecondaryTextColor();
 
   const courierTaskList = useMemo(() => {
     const taskList = createCurrentTaskList(tasks);
@@ -83,6 +85,7 @@ function TaskMapPage({ navigation, route }) {
         <TasksMapView
           mapCenter={mapCenter}
           taskLists={[courierTaskList]}
+          unassignedPolylineColor={unassignedPolylineColor}
           onMarkerCalloutPress={task =>
             // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
             navigateToTask(navigation, route, task, courierTaskList.items)

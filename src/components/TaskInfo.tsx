@@ -34,8 +34,8 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-  // This one is used just for e2e tests purposes
-  invisibleText: __DEV__ ? { fontSize: 10 } : { color: 'transparent', fontSize: 0 },
+  // This one is used just for dev and e2e tests purposes
+  invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
   },
@@ -68,7 +68,7 @@ interface ITaskInfoProps {
 function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
   const { t } = useTranslation();
   const orderTasks = useSelector(selectTasksByOrder(getOrderNumber(task)));
-  const taskDropoffTitle = getTaskTitleForOrder(task, t);
+  const taskTitle = getTaskTitleForOrder(task);
   const alignedTextStyle = isPickup
     ? [styles.text, { textAlign: 'right' as const }]
     : [styles.text];
@@ -141,6 +141,9 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
 
         {isPickup ? (
           <HStack space="md">
+            {taskTitle && task.orgName !== taskTitle ? (
+              <Text numberOfLines={1}>{taskTitle}</Text>
+            ) : null}
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
             <Animated.View
               style={{
@@ -161,13 +164,14 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
               <FAIcon name="level-down-alt" size={18} />
             </Animated.View>
             <Text numberOfLines={1} style={{ flex: 1 }}>
-              {`${getDropoffPosition(task, orderTasks)} ${taskDropoffTitle}`}
+              {getDropoffPosition(task, orderTasks)}
+              {taskTitle && task.orgName !== taskTitle ? ` ${taskTitle}` : null}
             </Text>
           </HStack>
         )}
 
         <Text numberOfLines={1} style={alignedTextStyle}>
-          {task.address?.streetAddress}
+          {task.address.streetAddress}
         </Text>
         <HStack
           className="items-center"

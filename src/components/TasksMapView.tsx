@@ -19,8 +19,13 @@ import { MessageCircle } from 'lucide-react-native';
 
 import { filterTasks } from '../redux/logistics/utils';
 import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
-import { greyColor, whiteColor } from '../styles/common';
-import { isDisplayPaymentMethodInList, getIcon } from './PaymentMethodInfo';
+import {
+  greyColor,
+  lightGreyColor,
+  redColor,
+  whiteColor,
+} from '../styles/common';
+import { getIcon, isDisplayPaymentMethodInList } from './PaymentMethodInfo';
 import {
   selectIsHideUnassignedFromMap,
   selectIsPolylineOn,
@@ -239,7 +244,7 @@ class TasksMapView extends Component {
         <TaskMarker
           task={task}
           type="status"
-          hasWarnings={warnings.length}
+          hasWarnings={warnings.length > 0}
           testID={key}
         />
         <Callout
@@ -272,11 +277,10 @@ class TasksMapView extends Component {
       return null;
     }
 
-    return taskLists.map((taskList, index) => {
+    return taskLists.map((taskList: TaskList, index: number) => {
       if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
         return null;
       }
-
       const key = `polyline-${taskList.id}-${index}`;
 
       return (
@@ -284,8 +288,12 @@ class TasksMapView extends Component {
           key={key}
           testID={key}
           coordinates={this.getCoordinates(taskList)}
-          strokeWidth={3}
-          strokeColor={taskList.color}
+          strokeWidth={2}
+          strokeColor={
+            taskList.isUnassignedTaskList
+              ? this.props.unassignedPolylineColor || lightGreyColor
+              : taskList.color
+          }
           lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : undefined}
         />
       );
