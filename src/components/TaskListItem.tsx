@@ -1,7 +1,8 @@
 import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
-import { LucideIcon } from 'lucide-react-native';
+import { ArrowRightCircle, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
+  Pressable,
   StyleSheet,
   TouchableOpacity,
   TouchableOpacityProps,
@@ -58,6 +59,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  sort_button: {
+    marginLeft: 12,
+  }
 });
 
 interface ISwipeButtonContainerProps
@@ -135,8 +139,13 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     _ref,
   ) => {
     const isPickup = task.type === 'PICKUP';
-
     const context = useTaskListsContext();
+    const isAssignedToSameCourier = useMemo(() => {
+      return task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
+    }, [context?.selectedTasksToEdit, task]);
+    const isSortable = useMemo(() => {
+      return context?.selectedTasksToEdit?.length === 1 && !context?.selectedTasksToEdit.includes(task); 
+    }, [context?.selectedTasksToEdit, task]);
     const isSelectedTask = useMemo(() => {
       if (!context?.selectedTasksToEdit?.length || !task['@id']) {
         return false;
@@ -222,6 +231,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     return (
       // @ts-expect-error library's types don't include a children prop
+    <View>  
       <SwipeRow
         disableLeftSwipe={!allowSwipeLeft}
         disableRightSwipe={!allowSwipeRight}
@@ -312,6 +322,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           )}
         </View>
       </SwipeRow>
+      {isAssignedToSameCourier && isSortable && 
+      <Pressable onPress={() => {console.log("Sorting button!!!")}} style={{...styles.sort_button}} >
+        <ArrowRightCircle />
+      </Pressable>}
+    </View>
     );
   },
 );
