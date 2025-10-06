@@ -22,6 +22,7 @@ import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logi
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
+import { Box } from '@/components/ui/box';
 
 const cardBorderRadius = 2.5;
 
@@ -111,7 +112,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
     outputRange: ['0deg', '360deg'],
   });
   return (
-    <HStack>
+    <Box>
       <VStack
         className="py-3 px-2"
         style={{
@@ -183,7 +184,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
       </VStack>
 
       <TaskPriorityStatus task={task} cardBorderRadius={cardBorderRadius} />
-    </HStack>
+    </Box>
   );
 }
 
