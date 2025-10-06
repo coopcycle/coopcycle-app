@@ -141,7 +141,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     const isPickup = task.type === 'PICKUP';
     const context = useTaskListsContext();
     const isAssignedToSameCourier = useMemo(() => {
-      return task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
+      return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
     }, [context?.selectedTasksToEdit, task]);
     const isSortable = useMemo(() => {
       return context?.selectedTasksToEdit?.length === 1 && !context?.selectedTasksToEdit.includes(task); 
