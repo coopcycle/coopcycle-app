@@ -372,7 +372,7 @@ function AddressAutocomplete({
   }
 
   const renderTextInput = inputProps => (
-    <View style={styles.textInputContainer}>
+    <View style={{ ...styles.textInputContainer, backgroundColor: props.backgroundColor }}>
       {mapPickerStyle === 'small' && (
         <TouchableOpacity
           style={{
@@ -537,9 +537,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E0E0E044',
     borderRadius: 4,
-    backgroundColor: 'white',
     paddingHorizontal: 4,
     marginHorizontal: 0,
   },

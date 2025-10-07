@@ -12,6 +12,8 @@ import { Text } from '@/components/ui/text'
 import { Box } from '@/components/ui/box'
 import { HStack } from '@/components/ui/hstack'
 import { Spinner } from '@/components/ui/spinner'
+import { Fab, FabIcon } from '@/components/ui/fab'
+import { EditIcon } from '@/components/ui/icon'
 import axios from 'axios';
 import Config from 'react-native-config';
 import { useSelector } from 'react-redux';
@@ -19,6 +21,9 @@ import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 import AddressUtils from '../utils/Address';
 import { localeDetector } from '../i18n';
+
+import { useBackgroundContainerColor } from '../styles/theme';
+import { LocateFixed } from 'lucide-react-native'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -62,9 +67,12 @@ function MapPickerScreen({
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [address, setAddress] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLocated, setIsLocated] = useState(false);
 
   const mapRef = useRef(null);
+  const locationRef = useRef(null);
 
+  const backgroundColor = useBackgroundContainerColor();
   const initialRegion = useMemo(() => {
     if (!location) return null;
 
@@ -192,6 +200,24 @@ function MapPickerScreen({
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
+        <Fab
+          disabled={!isLocated}
+          onPress={() => {
+            setSelectedLocation(locationRef.current);
+            handleReverseGeocode(locationRef.current);
+            mapRef.current.animateToRegion({
+              ...locationRef.current,
+              // Zoom closer
+              latitudeDelta: LATITUDE_DELTA / 36,
+              longitudeDelta: LONGITUDE_DELTA / 36,
+            });
+          }}
+          size="lg"
+          placement='top right'
+          className="bg-primary-600 hover:bg-primary-700 active:bg-primary-800"
+        >
+          <FabIcon as={LocateFixed} />
+        </Fab>
         {initialRegion && (
           <MapView
             ref={mapRef}
@@ -210,13 +236,18 @@ function MapPickerScreen({
             rotateEnabled={false}
             pitchEnabled={false}
             showsUserLocation={true}
+            showsMyLocationButton={true}
+            onUserLocationChange={({ nativeEvent: { coordinate } }) => {
+              locationRef.current = coordinate;
+              setIsLocated(true);
+            }}
           >
             {markerMemo}
           </MapView>
         )}
       </View>
 
-      <Box className='absolute bg-white p-4 bottom-0 w-full'>
+      <Box className='absolute p-4 bottom-0 w-full' style={{ backgroundColor }}>
         <Box
           className='p-4 mb-4 h-20 border-2 border-gray-200 rounded-md justify-center'>
           {renderAddressDisplay()}
