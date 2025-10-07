@@ -76,7 +76,7 @@ export interface TaskMetadata {
   payment_method?: string;
   order_distance?: string;
   order_duration?: string;
-  polyline?: string; 
+  polyline?: string;
 }
 
 /**
@@ -261,8 +261,9 @@ export interface TaskListItemProps {
   taskListId: string;
   appendTaskListTestID?: string;
   onPress?: () => void;
-  onLongPress?: () => void;
+  onLongPress?: (task: Task) => void;
   onOrderPress?: () => void;
+  onSort?: (task: Task) => void;
   onPressLeft?: () => void;
   onPressRight?: () => void;
   swipeOutLeftBackgroundColor?: string;
@@ -288,6 +289,7 @@ export interface TaskListProps {
   onLongPress?: (task: Task) => void;
   onTaskClick: (task: Task) => void;
   onOrderClick: (task: Task) => void;
+  onSort: (task: Task) => void;
   refreshing?: boolean;
   swipeOutLeftBackgroundColor?: string;
   swipeOutLeftEnabled?: (task: Task) => boolean;

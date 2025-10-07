@@ -380,6 +380,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
     isError,
     isLoading,
     isSuccess,
+    _updateAssignedItems,
     reassignTask,
     reassignTaskWithRelatedTasks,
     unassignTask,
