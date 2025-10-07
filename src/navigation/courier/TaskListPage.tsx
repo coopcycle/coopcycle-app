@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { IncidentIcon, DoneIcon } from '../task/styles/common';
+import { DoneIcon, IncidentIcon } from '../task/styles/common';
 import { blueColor, greenColor, yellowColor } from '../../styles/common';
 import {
   navigateToCompleteTask,
@@ -20,7 +20,8 @@ import TaskList from '../../components/TaskList';
 import { getOrderNumber } from '../../utils/tasks';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { DateOnlyString } from '../../utils/date-types';
-import { CourierProvider } from './contexts/CourierContext';
+import { useTaskLongPress } from '../dispatch/hooks/useTaskLongPress';
+import { useTaskListsContext } from './contexts/TaskListsContext';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
 });
 
 export default function TaskListPage({ navigation, route }) {
+  const context = useTaskListsContext();
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const courierTaskList = useMemo(() => {
@@ -62,6 +64,8 @@ export default function TaskListPage({ navigation, route }) {
     return task.status !== 'DONE';
   };
 
+  const longPressHandler = useTaskLongPress();
+
   const swipeLeftConfiguration = {
     onPressLeft: task =>
       navigateToCompleteTask(navigation, route, task, [], true),
@@ -87,7 +91,6 @@ export default function TaskListPage({ navigation, route }) {
   };
 
   return (
-    <CourierProvider>
     <View style={containerStyle}>
       <DateSelectHeader navigate={navigation.navigate} />
       {tasks.length > 0 && (
@@ -96,13 +99,17 @@ export default function TaskListPage({ navigation, route }) {
           // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
           tasks={courierTaskList.items}
           refreshing={isFetching}
-          onRefresh={() => refetch()}
+          onRefresh={() => {
+            context?.clearSelectedTasks()
+            refetch()
+          }}
           onTaskClick={task =>
             navigateToTask(navigation, route, task, courierTaskList.items)
           }
           onOrderClick={task =>
             navigateToOrder(navigation, getOrderNumber(task), true)
           }
+          onLongPress={longPressHandler}
           {...swipeLeftConfiguration}
           {...swipeRightConfiguration}
           onMultipleSelectionAction={completeSelectedTasks}
@@ -119,6 +126,5 @@ export default function TaskListPage({ navigation, route }) {
         </>
       )}
     </View>
-    </CourierProvider>
   );
 }

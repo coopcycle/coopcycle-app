@@ -605,6 +605,7 @@
     "CONFIRM_LOCATION": "Confirm location",
     "ADDRESS_NOT_FOUND": "Address not found",
     "LOADING_ADDRESS": "Loading address",
-    "TAP_ON_MAP_TO_SELECT_LOCATION": "Tap on the map to select location"
+    "TAP_ON_MAP_TO_SELECT_LOCATION": "Tap on the map to select location",
+    "START": "Start"
   }
 }

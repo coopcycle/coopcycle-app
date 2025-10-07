@@ -573,6 +573,7 @@
     "CONFIRM_LOCATION": "Confirmer l'emplacement",
     "ADDRESS_NOT_FOUND": "Adresse introuvable",
     "LOADING_ADDRESS": "Chargement de l'adresse",
-    "TAP_ON_MAP_TO_SELECT_LOCATION": "Appuyez sur la carte pour sélectionner l'emplacement"
+    "TAP_ON_MAP_TO_SELECT_LOCATION": "Appuyez sur la carte pour sélectionner l'emplacement",
+    "START": "Commencer"
   }
 }

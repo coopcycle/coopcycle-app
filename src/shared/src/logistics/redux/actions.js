@@ -20,6 +20,8 @@ export const createTaskSuccess = createAction('@logistics/CREATE_TASK_SUCCESS');
 export const createTaskFailure = createAction('@logistics/CREATE_TASK_FAILURE');
 
 export const cancelTaskSuccess = createAction('@logistics/CANCEL_TASK_SUCCESS');
+export const cancelTaskFailure = createAction('@logistics/CANCEL_TASK_FAILURE');
+
 export const assignTaskSuccess = createAction(DEP_ASSIGN_TASK_SUCCESS);
 export const updateTaskSuccess = createAction(DEP_UPDATE_TASK_SUCCESS);
 export const unassignTaskSuccess = createAction(DEP_UNASSIGN_TASK_SUCCESS);
@@ -99,7 +101,7 @@ export const updateTourSuccess = createAction('@logistics/UPDATE_TOUR_SUCCESS');
 export function updateTask(action, task) {
   return function (dispatch, getState) {
     const prevState = getState();
-    let date = selectSelectedDate(prevState);
+    const date = selectSelectedDate(prevState);
 
     if (
       prevState.logistics.ui.disabledCentrifugoUpdatesForTasksIds.length > 0 &&
@@ -144,7 +146,7 @@ export function updateTask(action, task) {
 export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
     const prevState = getState();
-    let date = selectSelectedDate(prevState);
+    const date = selectSelectedDate(prevState);
 
     if (
       prevState.logistics.ui.disabledCentrifugoUpdatesForUsers.length > 0 &&
@@ -167,7 +169,7 @@ export function updateTaskList(action, taskList) {
 
 export function updateTour(action, tour) {
   return function (dispatch, getState) {
-    let date = selectSelectedDate(getState());
+    const date = selectSelectedDate(getState());
 
     if (isSameDayTour(tour, date)) {
       switch (action) {
