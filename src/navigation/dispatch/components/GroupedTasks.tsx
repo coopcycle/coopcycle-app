@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { SectionList } from 'react-native';
+import { ActivityIndicator, SectionList, View } from 'react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +36,7 @@ import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderNumber } from '../../../utils/tasks';
-import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
+import { useRecurrenceRulesGenerateOrdersMutation, useSetTaskListItemsMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
 import { useTaskLongPress } from '../hooks/useTaskLongPress';
 import { useAllowTaskSelection } from '../hooks/useAllowTaskSelection';
@@ -128,7 +128,6 @@ export default function GroupedTasks({
     reassignTaskWithRelatedTasks,
     unassignTask,
     unassignTaskWithRelatedTasks,
-    _updateAssignedItems,
   } = useSetTaskListItems({
     allTaskLists,
     tasksEntities,
@@ -285,20 +284,21 @@ export default function GroupedTasks({
   );
 
   const allowToSelect = useAllowTaskSelection();
+  
+  const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
 
   const handleSort = useCallback((task: Task, tasklist) => {
     const itemsIDs = [...tasklist.map(t => t['@id'])];
     const selectedTaskID = context?.selectedTasksToEdit[0]['@id'];
     const currentIndex = itemsIDs.indexOf(task['@id']);
     const selectedTaskIndex = itemsIDs.indexOf(selectedTaskID);
-    const username = {username: task.assignedTo};
     
     itemsIDs.splice(selectedTaskIndex, 1); // Removes selectedTask from tasklist
     itemsIDs.splice(currentIndex, 0, selectedTaskID); // Inserts selectedTask into selected position in tasklist
 
-    _updateAssignedItems(itemsIDs, username);
+    setTaskListItems({items: itemsIDs, username: task.assignedTo, date: date.format('YYYY-MM-DD')});
     context?.clearSelectedTasks();
-  }, [context?.selectedTasksToEdit, _updateAssignedItems]);
+  }, [context, date, setTaskListItems]);
 
   const swipeLeftConfiguration = useCallback(
     section => ({
@@ -310,7 +310,7 @@ export default function GroupedTasks({
       swipeOutLeftBackgroundColor: darkRedColor,
       swipeOutLeftIcon: AssignOrderIcon,
     }),
-    [assignTaskWithRelatedTasksHandler, handleOnSwipeToLeft],
+    [assignTaskWithRelatedTasksHandler, handleOnSwipeToLeft, allowToSelect],
   );
 
   const swipeRightConfiguration = useCallback(
@@ -321,7 +321,7 @@ export default function GroupedTasks({
       swipeOutRightBackgroundColor: darkRedColor,
       swipeOutRightIcon: AssignTaskIcon,
     }),
-    [assignTaskHandler, handleOnSwipeToRight],
+    [assignTaskHandler, handleOnSwipeToRight, allowToSelect],
   );
 
   const renderSectionHeader = useCallback(
@@ -362,7 +362,6 @@ export default function GroupedTasks({
           />
         );
       }
-
       return null;
     },
     [
@@ -372,11 +371,20 @@ export default function GroupedTasks({
       isFetching,
       onTaskClick,
       onOrderClick,
+      handleSort,
       swipeLeftConfiguration,
       swipeRightConfiguration,
       tasksEntities,
     ],
   );
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator animating={true} size="large" />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -386,7 +394,7 @@ export default function GroupedTasks({
         keyboardShouldPersistTaps="handled"
         initialNumToRender={1}
         maxToRenderPerBatch={1}
-        windowSize={3}
+        windowSize={3}  
         renderSectionHeader={renderSectionHeader}
         keyExtractor={(item, index) => item['@id']}
         renderItem={renderItem}
