@@ -49,6 +49,7 @@
     "CONTINUE": "Seguir",
     "EDIT": "Editar",
     "NAME": "Nombre",
+    "UNNAMED": "sin nombre",
     "ADDRESS_DESCRIPTION": "Instrucciones para la entrega - Escribe aquí el número de portal y/u puerta",
     "ADDRESS_DESCRIPTION_PLACEHOLDER": "Piso 3 IZQ, 2ª puerta a la izquierda…",
     "TELEPHONE": "Teléfono",
