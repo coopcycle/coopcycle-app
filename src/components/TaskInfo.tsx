@@ -135,7 +135,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
         {isPickup ? (
           <HStack space="md">
             {taskTitle && task.orgName !== taskTitle ? (
-              <Text numberOfLines={1}>{taskTitle}</Text>
+              <Text numberOfLines={1} style={{ flex:1 }}>{taskTitle}</Text>
             ) : null}
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
             <Animated.View
@@ -156,7 +156,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
               }}>
               <FAIcon name="level-down-alt" size={18} />
             </Animated.View>
-            <Text numberOfLines={1} style={{ flex: 1 }}>
+            <Text numberOfLines={1}  style={{ flex: 1 }}>
               {getDropoffPosition(task, orderTasks)}
               {taskTitle && task.orgName !== taskTitle ? ` ${taskTitle}` : null}
             </Text>

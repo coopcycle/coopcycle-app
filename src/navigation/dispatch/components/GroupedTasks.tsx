@@ -39,6 +39,9 @@ import { getOrderNumber } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
 import { useTaskLongPress } from '../hooks/useTaskLongPress';
+import { useAllowTaskSelection } from '../hooks/useAllowTaskSelection';
+import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
+import Task from '@/src/types/task';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -91,6 +94,8 @@ export default function GroupedTasks({
     [t, taskLists, unassignedTaskLists.length, unassignedTasks],
   );
 
+  const context = useTaskListsContext();
+
   const filteredSections = hideEmptyTaskLists
     ? sections.filter(section => section.tasksCount > 0)
     : sections;
@@ -123,6 +128,7 @@ export default function GroupedTasks({
     reassignTaskWithRelatedTasks,
     unassignTask,
     unassignTaskWithRelatedTasks,
+    _updateAssignedItems,
   } = useSetTaskListItems({
     allTaskLists,
     tasksEntities,
@@ -278,9 +284,21 @@ export default function GroupedTasks({
     [onSelectNewAssignation, bulkEditTasks, dispatch, navigation],
   );
 
-  const allowToSelect = task => {
-    return task.status !== 'DONE';
-  };
+  const allowToSelect = useAllowTaskSelection();
+
+  const handleSort = useCallback((task: Task, tasklist) => {
+    const itemsIDs = [...tasklist.map(t => t['@id'])];
+    const selectedTaskID = context?.selectedTasksToEdit[0]['@id'];
+    const currentIndex = itemsIDs.indexOf(task['@id']);
+    const selectedTaskIndex = itemsIDs.indexOf(selectedTaskID);
+    const username = {username: task.assignedTo};
+    
+    itemsIDs.splice(selectedTaskIndex, 1); // Removes selectedTask from tasklist
+    itemsIDs.splice(currentIndex, 0, selectedTaskID); // Inserts selectedTask into selected position in tasklist
+
+    _updateAssignedItems(itemsIDs, username);
+    context?.clearSelectedTasks();
+  }, [context?.selectedTasksToEdit, _updateAssignedItems]);
 
   const swipeLeftConfiguration = useCallback(
     section => ({
@@ -335,6 +353,7 @@ export default function GroupedTasks({
             onLongPress={longPressHandler}
             onTaskClick={onTaskClick(section.isUnassignedTaskList)}
             onOrderClick={onOrderClick}
+            onSort={handleSort}
             onSwipeClosed={task => {
               handleOnSwipeClose(section, task);
             }}
