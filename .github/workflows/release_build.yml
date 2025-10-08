@@ -38,4 +38,6 @@ jobs:
           fi
 
           echo "📦 Uploading $APK_FILE to release"
-          gh release upload ${{ github.event.release.tag_name }} "$APK_FILE" --clobber
+          gh release upload ${{ github.event.release.tag_name }} "$APK_FILE" \
+            --repo ${{ github.repository }} \
+            --clobber
