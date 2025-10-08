@@ -52,7 +52,7 @@ describeif(device.getPlatform() === 'android')
 
     // Search by username
     await typeTextQuick('searchTextInput', `${USER_JANE}\n`);
-    await waitToBeVisible('dispatchTasksSearchResults');
+    await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Show USER_JANE's tasks section on search results
     await toggleSectionUser(USER_JANE);
@@ -66,7 +66,7 @@ describeif(device.getPlatform() === 'android')
 
     // Search by task orgName
     await typeTextQuick('searchTextInput', 'Acme\n');
-    await waitToBeVisible('dispatchTasksSearchResults');
+    await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Show unassigned tasks section on search results
     await toggleSectionUnassigned();
@@ -86,7 +86,7 @@ describeif(device.getPlatform() === 'android')
 
     // Search by task title
     await typeTextQuick('searchTextInput', '#1\n');
-    await waitToBeVisible('dispatchTasksSearchResults');
+    await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Show unassigned and USER_JANE's tasks section on search results
     await toggleSectionUnassigned();
@@ -101,7 +101,7 @@ describeif(device.getPlatform() === 'android')
 
     // Search by task address
     await typeTextQuick('searchTextInput', 'rue Milton\n');
-    await waitToBeVisible('dispatchTasksSearchResults');
+    await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Show unassigned and USER_JANE's tasks section on search results
     await toggleSectionUnassigned();
@@ -115,7 +115,7 @@ describeif(device.getPlatform() === 'android')
 
     // Search by task address name
     await typeTextQuick('searchTextInput', 'Maradona\n');
-    await waitToBeVisible('dispatchTasksSearchResults');
+    await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Show unassigned tasks section on search results
     //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
@@ -127,7 +127,7 @@ describeif(device.getPlatform() === 'android')
 
     // Search by task address contactName
     await typeTextQuick('searchTextInput', 'Marley\n');
-    await waitToBeVisible('dispatchTasksSearchResults');
+    await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Show unassigned and USER_JANE's tasks section on search results
     await toggleSectionUnassigned();

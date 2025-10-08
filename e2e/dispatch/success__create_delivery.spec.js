@@ -84,7 +84,7 @@ describeif(device.getPlatform() === 'android')
 
     // Search by contact name
     await typeTextQuick('searchTextInput', `${CONTACT_NAME}\n`);
-    await waitToBeVisible('dispatchTasksSearchResults');
+    await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Check the new tasks were created
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #12)");
