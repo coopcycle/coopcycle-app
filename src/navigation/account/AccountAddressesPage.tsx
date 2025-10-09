@@ -62,6 +62,7 @@ class AccountAddressesPage extends Component {
           <AddressAutocomplete
             containerStyle={{
               paddingHorizontal: 15,
+              paddingVertical: 10,
             }}
             inputContainerStyle={{
               height: textInputContainerHeight,
