@@ -1,5 +1,4 @@
 import moment from 'moment';
-import i18n from '../../i18n';
 
 export function isSameDayTask(task, date) {
   return moment(task.doneBefore).isSame(date, 'day');

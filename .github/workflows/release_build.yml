@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/fastlane_android.yml
     with:
       tag: ${{ github.event.release.tag_name }}
+      deploy_google_play: false
     secrets: inherit
 
   upload-apk:
@@ -22,11 +23,21 @@ jobs:
         with:
           name: CoopCycle-release.apk
 
+      - name: List downloaded files (debug)
+        run: ls -la
+
       - name: Upload APK to GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          APK_PATH="CoopCycle-release.apk"
-          echo "📦 Uploading $APK_PATH to release"
-          gh release upload ${{ github.event.release.tag_name }} "$APK_PATH" --clobber
+          APK_FILE=$(find . -name "*.apk" -type f | head -n 1)
 
+          if [ -z "$APK_FILE" ]; then
+            echo "❌ No APK file found!"
+            exit 1
+          fi
+
+          echo "📦 Uploading $APK_FILE to release"
+          gh release upload ${{ github.event.release.tag_name }} "$APK_FILE" \
+            --repo ${{ github.repository }} \
+            --clobber
