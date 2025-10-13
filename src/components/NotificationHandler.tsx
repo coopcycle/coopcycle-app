@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   clearNotifications,
-  shouldNotificationBeDisplayed,
   startSound,
   stopSound,
 } from '../redux/App/actions';
