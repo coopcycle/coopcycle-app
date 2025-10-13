@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Icon, ChevronRightIcon, CloseIcon } from '@/components/ui/center';
+import { Icon, ChevronRightIcon, CloseIcon } from '@/components/ui/icon';
 import { Printer as PrinterIcon } from 'lucide-react-native';
 import { Center } from '@/components/ui/center';
 import { Text } from '@/components/ui/text';
