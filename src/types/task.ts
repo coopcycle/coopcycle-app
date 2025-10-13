@@ -256,6 +256,7 @@ export interface TaskFilterOptions {
 // Updated TypeScript interface
 export interface TaskListItemProps {
   task: Task;
+  nextTask?: Task | null;
   color: string;
   index: number;
   taskListId: string;
@@ -263,7 +264,8 @@ export interface TaskListItemProps {
   onPress?: () => void;
   onLongPress?: (task: Task) => void;
   onOrderPress?: () => void;
-  onSort?: (task: Task) => void;
+  onSortBefore?: (task: Task, tasklist: Task[]) => void;
+  onSort?: (task: Task, taskList: Task[]) => void;
   onPressLeft?: () => void;
   onPressRight?: () => void;
   swipeOutLeftBackgroundColor?: string;
@@ -278,6 +280,7 @@ export interface TaskListItemProps {
 export interface TaskListProps {
   id: string;
   tasks: Task[];
+  nextTask?: Task | null;
   appendTaskListTestID?: string;
   onMultipleSelectionAction?: (items: Task[]) => void;
   onRefresh?: () => void;

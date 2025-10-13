@@ -19,7 +19,7 @@ const TaskList: React.FC<TaskListProps> = ({
   onLongPress = () => {},
   onTaskClick = () => {},
   onOrderClick = () => {},
-  onSort = (task: Task, tasklist) => {},
+  onSort = (task: Task, tasklist: Task[], index: number) => {},
   refreshing = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIcon,
@@ -85,16 +85,19 @@ const TaskList: React.FC<TaskListProps> = ({
   }, [tasks]);
 
   const renderItem = ({ item: task, index }) => {
+    const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
     return (
       <TaskListItem
         taskListId={id}
         appendTaskListTestID={appendTaskListTestID}
         task={task}
+        nextTask={nextTask}
         index={index}
         color={task.color}
         onPress={() => onTaskClick(task)}
         onLongPress={onLongPress}
-        onSort={() => onSort(task, tasks)}
+        onSortBefore = {() => onSort(task, tasks, index)}
+        onSort={() => onSort(task, tasks, index + 1)}
         onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}
         {...swipeRightConfiguration(task)}

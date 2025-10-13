@@ -287,16 +287,15 @@ export default function GroupedTasks({
   
   const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
 
-  const handleSort = useCallback((task: Task, tasklist) => {
+  const handleSort = useCallback((task: Task, tasklist: Task[], index: number) => {
     const itemsIDs = [...tasklist.map(t => t['@id'])];
     const selectedTaskID = context?.selectedTasksToEdit[0]['@id'];
-    const currentIndex = itemsIDs.indexOf(task['@id']);
-    const selectedTaskIndex = itemsIDs.indexOf(selectedTaskID);
+  
+    const filteredIDs = itemsIDs.filter(id => id !== selectedTaskID);
     
-    itemsIDs.splice(selectedTaskIndex, 1); // Removes selectedTask from tasklist
-    itemsIDs.splice(currentIndex, 0, selectedTaskID); // Inserts selectedTask into selected position in tasklist
-
-    setTaskListItems({items: itemsIDs, username: task.assignedTo, date: date.format('YYYY-MM-DD')});
+    filteredIDs.splice(index, 0, selectedTaskID);
+    
+    setTaskListItems({items: filteredIDs, username: task.assignedTo, date: date.format('YYYY-MM-DD')});
     context?.clearSelectedTasks();
   }, [context, date, setTaskListItems]);
 
