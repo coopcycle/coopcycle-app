@@ -1,18 +1,27 @@
 import moment from 'moment';
 
+export const addDayIfNotToday = (date, separator=' ') => {
+  return moment(date).format('YYYYMMDD') === moment().format('YYYYMMDD') ? '' : `(${moment(date).format('MMM Do')})${separator}`;
+}
+
+export const formatTime = (date) => {
+  return moment(date).format('HH:mm');
+}
+
 export const getOrderTimeFrame = tasks => {
   return (
-    moment(tasks[0].doneAfter).format('LT') +
+    addDayIfNotToday(tasks[0].doneAfter) +
+    formatTime(tasks[0].doneAfter) +
     ' - ' +
-    moment(tasks[tasks.length - 1].doneBefore).format('LT')
+    formatTime(tasks[tasks.length - 1].doneBefore)
   );
 };
 
 export const getTimeFrame = task => {
   return (
-    moment(task.doneAfter).format('LT') +
+    formatTime(task.doneAfter) +
     ' - ' +
-    moment(task.doneBefore).format('LT')
+    formatTime(task.doneBefore)
   );
 };
 
