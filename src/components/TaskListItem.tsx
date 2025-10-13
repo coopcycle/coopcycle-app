@@ -262,7 +262,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     const sortButton = (onSortCallback: () => void) => {
       if (!isAssignedToSameCourier || !isSortable) return null;
       return (
-        <Pressable onPress={onSortCallback} style={styles.sortButton}>
+        <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:sort:${index}`}>
           <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
         </Pressable>
       );

@@ -42,6 +42,7 @@ import { useTaskLongPress } from '../hooks/useTaskLongPress';
 import { useAllowTaskSelection } from '../hooks/useAllowTaskSelection';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import Task from '@/src/types/task';
+import Spinner from '@/src/components/Spinner';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -377,16 +378,20 @@ export default function GroupedTasks({
     ],
   );
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator animating={true} size="large" />
-      </View>
-    );
-  }
-
   return (
     <>
+      {isLoading && (
+        <View style={{
+          position: 'absolute',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(102, 102, 102, 0.2)',
+          zIndex: 999,
+         }}>
+          <ActivityIndicator animating={true} size="large" />
+        </View>
+      )}
       <SectionList
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
@@ -400,7 +405,7 @@ export default function GroupedTasks({
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
         testID="dispatchTasksSectionList"
-      />
+        />
       <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );
