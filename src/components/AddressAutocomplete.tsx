@@ -10,7 +10,7 @@ import { Icon, StarIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useMemo, useState } from 'react';
@@ -20,7 +20,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Locate } from 'lucide-react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
@@ -374,16 +374,12 @@ function AddressAutocomplete({
   const renderTextInput = inputProps => (
     <View style={styles.textInput}>
       {mapPickerStyle === 'small' && (
-        <TouchableOpacity
-          style={{
-            backgroundColor: props.primaryColor,
-            ...styles.mapPickerButton,
-          }}
+        <Button className="p-3 mr-2"
           onPress={() => setShowPickerModal(true)}
           testID="map-picker-button"
           accessibilityLabel={t('PICK_ON_MAP')}>
-          <Ionicons name="locate" color="white" size={20} />
-        </TouchableOpacity>
+          <ButtonIcon as={Locate} />
+        </Button>
       )}
       <View style={styles.textInput}>
         <Input className="flex-1">
@@ -541,16 +537,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     zIndex: 1,
-  },
-  mapPickerButton: {
-    borderRadius: 4,
-    padding: 8,
-    marginLeft: 4,
-    marginRight: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 36,
-    width: 36,
   },
   orText: {
     marginVertical: 16,
