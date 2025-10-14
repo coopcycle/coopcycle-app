@@ -22,7 +22,7 @@ import TaskTagsList from '../../../components/TaskTagsList';
 import TaskTypeIcon from '../../../components/TaskTypeIcon';
 import { useBaseTextColor } from '../../../styles/theme';
 import { Task, TaskTag } from '../../../types/task';
-import { getPackagesSummary, getTimeFrame } from '../../task/components/utils';
+import { addDayIfNotToday, getPackagesSummary, getTimeFrame } from '../../task/components/utils';
 import { getTaskTitleForOrder } from '../utils';
 
 interface PackageSummary {
@@ -105,6 +105,7 @@ const ContentText = ({
     </Box>
   );
 };
+
 interface OrderAccordeonProps {
   task: Task;
 }
@@ -112,7 +113,6 @@ interface OrderAccordeonProps {
 function OrderAccordeon({ task }: OrderAccordeonProps) {
   const { t } = useTranslation();
   const taskTitle = getTaskTitleForOrder(task);
-  const timeframe = getTimeFrame(task);
   const address = task.address.streetAddress;
   const packageType = getPackagesSummary(task);
   const comments = task.comments;
@@ -168,7 +168,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
                     </HStack>
                     <HStack space="md" style={{ alignItems: 'center' }}>
                       <Text bold style={{ color: headerText }}>
-                        {timeframe}
+                        {getTaskTimeFrame(task, "\n")}
                       </Text>
                       <Divider orientation="vertical" className="h-8" />
                       <Text bold style={{ color: headerText, flexShrink: 1 }}>
@@ -192,7 +192,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
           </Box>
 
           <ContentText
-            timeframe={timeframe}
+            timeframe={getTaskTimeFrame(task, " ")}
             packageType={packageType}
             tags={task.tags}
             streetAddress={address}
@@ -205,6 +205,13 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
+  );
+}
+
+function getTaskTimeFrame(task: Task, separator: string) {
+  return (
+    addDayIfNotToday(task.doneAfter, separator) +
+    getTimeFrame(task)
   );
 }
 

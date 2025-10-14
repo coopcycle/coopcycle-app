@@ -2,7 +2,6 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import moment from 'moment';
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +21,7 @@ import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redu
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
+import { getTimeFrame } from '../navigation/task/components/utils';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const cardBorderRadius = 2.5;
@@ -173,7 +173,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
           className="items-center"
           style={isPickup ? { justifyContent: 'flex-end' } : undefined}>
           <Text className="pr-2" style={alignedTextStyle}>
-            {`${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}`}
+            {getTimeFrame(task)}
           </Text>
           {/* TODO confirm -- why this? shouldn't this be comments? */}
           {task.comments ? <FAIcon name="comments" /> : null}

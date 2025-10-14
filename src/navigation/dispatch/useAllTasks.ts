@@ -33,7 +33,10 @@ export function useAllTasks(date: moment.Moment) {
     isError: isErrorCourierUsers,
     isLoading: isLoadingCourierUsers,
     isFetching: isFetchingCourierUsers,
-  } = useGetCourierUsersQuery();
+  } = useGetCourierUsersQuery(undefined, {
+      refetchOnFocus: true,
+      // @TODO SEE IF WE CAN GIVE A CACHE TTL...!
+    });
 
   const {
     data: taskLists,
@@ -41,7 +44,10 @@ export function useAllTasks(date: moment.Moment) {
     isFetching: isFetchingTaskLists,
     isLoading: isLoadingTaskLists,
     refetch: refetchTaskLists,
-  } = useGetTaskListsV2Query(dateOnlyString);
+  } = useGetTaskListsV2Query(dateOnlyString, {
+      refetchOnFocus: true,
+      // @TODO SEE IF WE CAN GIVE A CACHE TTL...!
+    });
 
   const {
     data: tasks,
@@ -49,7 +55,10 @@ export function useAllTasks(date: moment.Moment) {
     isFetching: isFetchingTasks,
     isLoading: isLoadingTasks,
     refetch: refetchTasks,
-  } = useGetTasksQuery(dateOnlyString);
+  } = useGetTasksQuery(dateOnlyString, {
+      refetchOnFocus: true,
+      // @TODO SEE IF WE CAN GIVE A CACHE TTL...!
+    });
 
   const {
     data: tours,
@@ -57,7 +66,10 @@ export function useAllTasks(date: moment.Moment) {
     isFetching: isFetchingTours,
     isLoading: isLoadingTours,
     refetch: refetchTours,
-  } = useGetToursQuery(dateOnlyString);
+  } = useGetToursQuery(dateOnlyString, {
+      refetchOnFocus: true,
+      // @TODO SEE IF WE CAN GIVE A CACHE TTL...!
+    });
 
   const isError = useMemo(() => {
     return (

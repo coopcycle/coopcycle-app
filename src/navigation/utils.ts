@@ -1,9 +1,10 @@
 let navigateAfter = null;
 
-export const navigateToOrder = (navigation, orderNumber, isFromCourier = false) => {
+export const navigateToOrder = (navigation, orderNumber: string, isFromCourier = false, extraData = {}) => {
   const params = {
     orderNumber,
     isFromCourier,
+    ...extraData
   };
   navigation.navigate('Order', { screen: 'Order', params });
 };
