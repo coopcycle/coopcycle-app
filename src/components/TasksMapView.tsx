@@ -34,6 +34,7 @@ import TasksBottomSheetContent from './TasksBottomSheetContent';
 import { lightMapStyle, darkMapStyle } from "../styles/mapStyles"
 const latitudeDelta = 0.0722;
 const longitudeDelta = 0.0221;
+import TaskListPolylines from './TaskListPolylines';
 
 function TasksMapView(props) {
   const {
@@ -153,29 +154,6 @@ function TasksMapView(props) {
     return tasks.map((t) => t.address.geo);
   };
 
-  const renderPolylines = useCallback(() => {
-    if (!isPolylineOn) return null;
-
-    return taskLists.map((taskList, i) => {
-      if (taskList.isUnassignedTaskList) return null;
-
-      const coords = getPolylineCoords(taskList);
-      if (!coords?.length) return null;
-
-      const strokeColor = taskList.color || '#ff00dd';
-
-      return (
-        <Polyline
-          key={`polyline-${taskList.id}-${i}`}
-          coordinates={coords}
-          strokeWidth={2}
-          strokeColor={strokeColor}
-        />
-      );
-    });
-  }, [taskLists, isPolylineOn]);
-
-
 
   // render bottomsheet
   const renderBottomSheet = useCallback(() => {
@@ -200,7 +178,7 @@ function TasksMapView(props) {
       >
         {mapHeight > 0 && (
           <MapView
-          customMapStyle={mapStyle}
+            customMapStyle={mapStyle}
             ref={mapRef}
             style={{ flex: 1, marginBottom }}
             initialRegion={{
@@ -214,7 +192,10 @@ function TasksMapView(props) {
               if (onMapReady) onMapReady();
             }}
           >
-            {renderPolylines()}
+            <TaskListPolylines
+              taskLists={taskLists}
+              unassignedPolylineColor="rgba(49, 49, 49, 0.8)" 
+            />
             {renderMarkers}
             {Object.values(groupedTasks).map((tasksAtLocation, i) => {
               const firstTask = tasksAtLocation[0];
