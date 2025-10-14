@@ -54,6 +54,7 @@
     "CONTINUE": "Continue",
     "EDIT": "Edit",
     "NAME": "Name",
+    "UNNAMED": "no name",
     "ADDRESS_DESCRIPTION": "Instructions",
     "ADDRESS_DESCRIPTION_PLACEHOLDER": "2nd door on the left…",
     "TELEPHONE": "Telephone",
@@ -602,6 +603,11 @@
     "ESTIMATED_DURATION": "Estimated time",
     "PICKUP": "Pickup",
     "DROPOFF": "Dropoff",
-    "START": "Start"
+    "CONFIRM_LOCATION": "Confirm location",
+    "ADDRESS_NOT_FOUND": "Address not found",
+    "LOADING_ADDRESS": "Loading address",
+    "MOVE_MAP_TO_SELECT_LOCATION": "Move the map to select location",
+    "START": "Start",
+    "FIND_ON_MAP": "Or find myself on the map"
   }
 }

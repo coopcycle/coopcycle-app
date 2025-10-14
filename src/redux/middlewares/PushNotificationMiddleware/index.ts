@@ -58,10 +58,14 @@ export default ({ getState, dispatch }) => {
 
     if (event && event.name === EVENT_DELIVERY.CREATED) {
       const orderNumber = message.data.order_number;
+      const extraData = {
+        orderDate: message.data.date,
+        taskIds: message.data.task_ids || []
+      };
       // Here in any case, we navigate to the delivery/order that was tapped,
       // it should have been loaded via WebSocket already.
       // (and we always assume to be admin/dispatcher, so isFromCourier = false)
-      navigateToOrder(navigationRef.current, orderNumber, false);
+      navigateToOrder(navigationRef.current, orderNumber, false, extraData);
     }
 
     if (event && event.name === EVENT_TASK_COLLECTION.CHANGED) {

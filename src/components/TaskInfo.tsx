@@ -2,9 +2,9 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import moment from 'moment';
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Task } from '../types/task';
 import FAIcon from './Icon';
 
@@ -21,9 +21,11 @@ import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redu
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
+import { getTimeFrame } from '../navigation/task/components/utils';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const cardBorderRadius = 2.5;
+const maxDropoffArrowsToShow = 3;
 
 export const styles = StyleSheet.create({
   text: {
@@ -46,9 +48,10 @@ interface DropoffArrowsProps {
   size: string;
 }
 
-const DropoffArrows = ({ count, size = 'xs' }: DropoffArrowsProps) => (
-  <HStack className="items-center" style={{ justifyContent: 'flex-end' }}>
-    {Array.from({ length: count }, (_, index) => (
+const DropoffArrows = ({ count, size = 'xs' }: DropoffArrowsProps) => {
+  const len = count > maxDropoffArrowsToShow ? 1 : count;
+  return (<HStack className="items-center" style={{ justifyContent: 'flex-end' }}>
+    {Array.from({ length: len }, (_, index) => (
       <Icon
         key={index}
         as={DropoffIcon}
@@ -56,8 +59,9 @@ const DropoffArrows = ({ count, size = 'xs' }: DropoffArrowsProps) => (
         style={{ marginLeft: index > 0 ? 2 : 0 }}
       />
     ))}
-  </HStack>
-);
+    {len !== count ? <Text numberOfLines={1}>x{count}</Text> : null}
+  </HStack>)
+};
 
 interface ITaskInfoProps {
   task: Task;
@@ -66,6 +70,7 @@ interface ITaskInfoProps {
 }
 
 function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
+  const { t } = useTranslation();
   const context = useTaskListsContext();
   const selectSelector = context?.isFromCourier
   ? selectTasksByOrderCourier
@@ -134,9 +139,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
 
         {isPickup ? (
           <HStack space="md">
-            {taskTitle && task.orgName !== taskTitle ? (
-              <Text numberOfLines={1} style={{ flex:1 }}>{taskTitle}</Text>
-            ) : null}
+            <Text numberOfLines={1} style={{ flex: 1, textAlign: 'right' }} italic={!taskTitle}>{taskTitle || `(${t('UNNAMED')})`}</Text>
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
             <Animated.View
               style={{
@@ -158,7 +161,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
             </Animated.View>
             <Text numberOfLines={1}  style={{ flex: 1 }}>
               {getDropoffPosition(task, orderTasks)}
-              {taskTitle && task.orgName !== taskTitle ? ` ${taskTitle}` : null}
+              <Text italic={!taskTitle}> {taskTitle || `(${t('UNNAMED')})`}</Text>
             </Text>
           </HStack>
         )}
@@ -170,7 +173,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
           className="items-center"
           style={isPickup ? { justifyContent: 'flex-end' } : undefined}>
           <Text className="pr-2" style={alignedTextStyle}>
-            {`${moment(task.doneAfter).format('LT')} - ${moment(task.doneBefore).format('LT')}`}
+            {getTimeFrame(task)}
           </Text>
           {/* TODO confirm -- why this? shouldn't this be comments? */}
           {task.comments ? <FAIcon name="comments" /> : null}

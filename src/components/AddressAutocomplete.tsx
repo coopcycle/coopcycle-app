@@ -10,6 +10,7 @@ import { Icon, StarIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useMemo, useState } from 'react';
@@ -19,6 +20,8 @@ import Autocomplete from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { Locate } from 'lucide-react-native';
+import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -33,6 +36,7 @@ import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
 import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
 import ItemSeparator from './ItemSeparator';
+import MapPickerScreen from './MapPickerModal';
 
 const fuseOptions = {
   shouldSort: true,
@@ -59,6 +63,9 @@ function AddressAutocomplete({
   flatListProps,
   onSelectAddress,
   placeholder,
+  onMapPickerPress,
+  location,
+  mapPickerStyle = 'small',
   ...otherProps
 }) {
   const props = arguments[0];
@@ -72,6 +79,8 @@ function AddressAutocomplete({
   );
   const [sessionToken, setSessionToken] = useState(null);
   const [controller, setController] = useState(null);
+
+  const [showPickerModal, setShowPickerModal] = useState(false);
 
   const fuse = useMemo(() => new Fuse(addresses, fuseOptions), [addresses]);
 
@@ -201,7 +210,7 @@ function AddressAutocomplete({
       props.onChangeText(text);
     }
 
-    if (text.length < props.minChars) {
+    if (text.length < minChars) {
       setResults([]);
       return;
     }
@@ -241,8 +250,7 @@ function AddressAutocomplete({
       // Appel à l'API Google Place Details
       axios
         .get(
-          `https://places.googleapis.com/v1/places/${
-            item.place_id
+          `https://places.googleapis.com/v1/places/${item.place_id
           }?${qs.stringify(queryParams)}`,
         )
         .then(response => {
@@ -322,22 +330,22 @@ function AddressAutocomplete({
         style={itemStyle}
         {...itemProps}>
         <HStack>
-        <Text
-          style={{ fontSize: 14, flex: 1, color: props.itemTextColor }}
-          numberOfLines={1}
-          ellipsizeMode="tail">
-          {text}
-        </Text>
-        {item.type === 'fuse' && (
-          <Icon
-            as={StarIcon}
-            className="pl-2"
-            style={{
-              color: props.itemTextColor,
-            }}
-          />
-        )}
-      </HStack>
+          <Text
+            style={{ fontSize: 14, flex: 1, color: props.itemTextColor }}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {text}
+          </Text>
+          {item.type === 'fuse' && (
+            <Icon
+              as={StarIcon}
+              className="pl-2"
+              style={{
+                color: props.itemTextColor,
+              }}
+            />
+          )}
+        </HStack>
       </TouchableOpacity>
     );
   }
@@ -365,17 +373,28 @@ function AddressAutocomplete({
 
   const renderTextInput = inputProps => (
     <View style={styles.textInput}>
+      {mapPickerStyle === 'small' && (
+        <Button className="p-3 mr-2"
+          onPress={() => setShowPickerModal(true)}
+          testID="map-picker-button"
+          accessibilityLabel={t('PICK_ON_MAP')}>
+          <ButtonIcon as={Locate} />
+        </Button>
+      )}
       <View style={styles.textInput}>
-        <Input className="w-full">
+        <Input className="flex-1">
           <InputField
             {...inputProps}
             style={[
               inputProps.style,
               {
                 backgroundColor: props.backgroundColor,
+                fontSize: 14,
+                height: 40,
+                paddingLeft: 8,
               },
             ]}
-            variant="outline"
+            placeholderTextColor={props.placeholderTextColor}
             onFocus={onTextInputFocus}
             onBlur={onTextInputBlur}
           />
@@ -391,7 +410,7 @@ function AddressAutocomplete({
           />
         )}
       </View>
-      {props.renderRight && props.renderRight()}
+      {renderRight && renderRight()}
     </View>
   );
 
@@ -401,60 +420,86 @@ function AddressAutocomplete({
   }
 
   return (
-    <View style={styles.autocompleteContainer}>
-      <Autocomplete
-        autoCompleteType="off"
-        autoCapitalize="none"
-        autoCorrect={false}
-        clearButtonMode="while-editing"
-        {...otherProps}
-        data={results}
-        value={query}
-        placeholder={finalPlaceholder}
-        onChangeText={onChangeText}
-        // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
-        renderResultList={({ data, listContainerStyle }) => (
-          <View style={listContainerStyle}>
-            <View
-              style={{
-                borderTopWidth: 0,
-                borderWidth: 1,
-                borderColor: props.primaryColor,
-              }}>
-              {data.map((item, index) => (
-                <View key={index}>
-                  <Pressable>{renderItem({ item })}</Pressable>
-                  <ItemSeparator />
-                </View>
-              ))}
-              {props.country === 'gb' ? (
-                <PoweredByIdealPostcodes style={styles.poweredContainer} />
-              ) : (
-                <PoweredByGoogle style={styles.poweredContainer} />
-              )}
+    <>
+      <Modal
+        isVisible={showPickerModal}
+        onBackdropPress={() => setShowPickerModal(false)}
+        onBackButtonPress={() => setShowPickerModal(false)}>
+        <View style={{ flex: 1 }}>
+          <MapPickerScreen
+            primaryColor={props.primaryColor}
+            onSelectLocation={({ address }) => {
+              setShowPickerModal(false);
+              props.onSelectAddress(address);
+            }}
+            onCancel={() => setShowPickerModal(false)}
+            initialRegion={location}
+          />
+        </View>
+      </Modal>
+      <View style={styles.autocompleteContainer}>
+        <Autocomplete
+          autoCompleteType="off"
+          autoCapitalize="none"
+          autoCorrect={false}
+          clearButtonMode="while-editing"
+          {...otherProps}
+          data={results}
+          value={query}
+          placeholder={finalPlaceholder}
+          onChangeText={onChangeText}
+          // do not use default FlatList - see https://github.com/byteburgers/react-native-autocomplete-input/pull/230
+          renderResultList={({ data, listContainerStyle }) => (
+            <View style={[listContainerStyle, { marginTop: 0 }]}>
+              <View
+                style={{
+                  borderTopWidth: 0,
+                  borderWidth: 1,
+                  borderColor: props.primaryColor,
+                }}>
+                {data.map((item, index) => (
+                  <View key={index}>
+                    <Pressable>{renderItem({ item })}</Pressable>
+                    <ItemSeparator />
+                  </View>
+                ))}
+                {props.country === 'gb' ? (
+                  <PoweredByIdealPostcodes style={styles.poweredContainer} />
+                ) : (
+                  <PoweredByGoogle style={styles.poweredContainer} />
+                )}
+              </View>
             </View>
-          </View>
+          )}
+          renderTextInput={inputProps => renderTextInput(inputProps)}
+          containerStyle={{
+            ...containerStyle,
+          }}
+          inputContainerStyle={{
+            borderWidth: 0,
+            ...inputContainerStyle,
+          }}
+          listContainerStyle={{
+            backgroundColor: props.backgroundColor,
+            ...listContainerStyle,
+          }}
+          style={{
+            ...style,
+          }}
+        />
+        {mapPickerStyle === 'large' && (
+          <>
+            <Text style={styles.orText}>{t('FIND_ON_MAP')}</Text>
+            <Button
+              onPress={() => setShowPickerModal(true)}
+              testID="map-picker-button-large"
+              accessibilityLabel={t('PICK_ON_MAP')}>
+              <ButtonText>Find me</ButtonText>
+            </Button>
+          </>
         )}
-        renderTextInput={inputProps => renderTextInput(inputProps)}
-        containerStyle={{
-          ...containerStyle,
-        }}
-        inputContainerStyle={{
-          borderWidth: 0,
-          // paddingVertical: 8,
-          ...inputContainerStyle,
-        }}
-        listContainerStyle={{
-          backgroundColor: props.backgroundColor,
-          ...listContainerStyle,
-        }}
-        //FIXME: avoid using generic `style` prop; use `containerStyle`/`inputContainerStyle`/`listContainerStyle/ etc.
-        // see all available props at https://github.com/byteburgers/react-native-autocomplete-input?tab=readme-ov-file#props
-        style={{
-          ...style,
-        }}
-      />
-    </View>
+      </View>
+    </>
   );
 }
 
@@ -462,6 +507,8 @@ AddressAutocomplete.propTypes = {
   minChars: PropTypes.number,
   addresses: PropTypes.array,
   renderRight: PropTypes.func,
+  onMapPickerPress: PropTypes.func,
+  mapPickerStyle: PropTypes.oneOf(['small', 'large']),
 };
 
 const styles = StyleSheet.create({
@@ -472,13 +519,16 @@ const styles = StyleSheet.create({
   },
   item: {
     paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
   },
   textInput: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  inputField: {
+    fontSize: 14,
   },
   autocompleteContainer: {
     flex: 1,
@@ -487,6 +537,10 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     zIndex: 1,
+  },
+  orText: {
+    marginVertical: 16,
+    textAlign: 'center',
   },
 });
 

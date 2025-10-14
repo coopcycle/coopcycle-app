@@ -49,6 +49,7 @@
     "CONTINUE": "Seguir",
     "EDIT": "Editar",
     "NAME": "Nombre",
+    "UNNAMED": "sin nombre",
     "ADDRESS_DESCRIPTION": "Instrucciones para la entrega - Escribe aquí el número de portal y/u puerta",
     "ADDRESS_DESCRIPTION_PLACEHOLDER": "Piso 3 IZQ, 2ª puerta a la izquierda…",
     "TELEPHONE": "Teléfono",
@@ -475,6 +476,11 @@
     "ESTIMATED_DURATION": "Tiempo estimado",
     "PICKUP": "Recogida",
     "DROPOFF": "Entrega",
-    "START": "Comenzar"
+    "CONFIRM_LOCATION": "Confirmar ubicación",
+    "ADDRESS_NOT_FOUND": "Dirección no encontrada",
+    "LOADING_ADDRESS": "Cargando dirección",
+    "MOVE_MAP_TO_SELECT_LOCATION": "Mueve el mapa para seleccionar tu ubicación",
+    "START": "Comenzar",
+    "FIND_ON_MAP": "Localizarme en el mapa"
   }
 }

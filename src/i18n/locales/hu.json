@@ -47,6 +47,7 @@
         "CONTINUE": "Tovább",
         "EDIT": "Szerkesztés",
         "NAME": "Név",
+        "UNNAMED": "név nélkül",
         "ADDRESS_DESCRIPTION": "Instrukciók",
         "ADDRESS_DESCRIPTION_PLACEHOLDER": "Második ajtó balra…",
         "TELEPHONE": "Telefon",
