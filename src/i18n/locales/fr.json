@@ -571,6 +571,11 @@
     "TOTAL_AMOUNT": "Montant total",
     "PICKUP": "Ramasser",
     "DROPOFF": "Dépôt",
-    "START": "Commencer"
+    "CONFIRM_LOCATION": "Confirmer l'emplacement",
+    "ADDRESS_NOT_FOUND": "Adresse introuvable",
+    "LOADING_ADDRESS": "Chargement de l'adresse",
+    "MOVE_MAP_TO_SELECT_LOCATION": "Déplacez la carte pour sélectionner votre emplacement",
+    "START": "Commencer",
+    "FIND_ON_MAP": "Me localiser sur la carte"
   }
 }

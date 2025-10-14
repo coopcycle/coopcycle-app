@@ -476,6 +476,11 @@
     "ESTIMATED_DURATION": "Tiempo estimado",
     "PICKUP": "Recogida",
     "DROPOFF": "Entrega",
-    "START": "Comenzar"
+    "CONFIRM_LOCATION": "Confirmar ubicación",
+    "ADDRESS_NOT_FOUND": "Dirección no encontrada",
+    "LOADING_ADDRESS": "Cargando dirección",
+    "MOVE_MAP_TO_SELECT_LOCATION": "Mueve el mapa para seleccionar tu ubicación",
+    "START": "Comenzar",
+    "FIND_ON_MAP": "Localizarme en el mapa"
   }
 }

@@ -47,6 +47,7 @@ const AskAddress = props => {
       </Box>
       <Box style={{ flex: 2 }} onLayout={onLayout}>
         <AddressAutocomplete
+          mapPickerStyle='large'
           testID="askAddressAutocomplete"
           inputContainerStyle={{
             height: textInputContainerHeight,
