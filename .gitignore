@@ -102,3 +102,7 @@ ios/*.mobileprovision
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Lock files
+package-lock.json
+yarn.lock

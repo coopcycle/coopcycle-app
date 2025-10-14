@@ -1,409 +1,257 @@
-import _ from 'lodash';
-import { Callout, Marker, Polyline } from 'react-native-maps';
-import { Component, createRef } from 'react';
-import { connect } from 'react-redux';
-import { decode } from '@mapbox/polyline';
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+  useContext,
+} from 'react';
 import {
   Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
+  Text,
+  StyleSheet,
+  useColorScheme,
 } from 'react-native';
+import MapView, { Marker, Polyline, } from 'react-native-maps';
+import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-// import ClusteredMapView from 'react-native-maps-super-cluster';
-import MapView from 'react-native-maps';
-import Modal from 'react-native-modal';
-import { MessageCircle } from 'lucide-react-native';
-
+import { decode } from '@mapbox/polyline';
+import _ from 'lodash';
+import TaskMarker from './TaskMarker';
 import { filterTasks } from '../redux/logistics/utils';
 import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
-import {
-  greyColor,
-  lightGreyColor,
-  redColor,
-  whiteColor,
-} from '../styles/common';
-import { getIcon, isDisplayPaymentMethodInList } from './PaymentMethodInfo';
 import {
   selectIsHideUnassignedFromMap,
   selectIsPolylineOn,
 } from '../redux/Courier';
 import { selectTasksEntities } from '../shared/logistics/redux';
 import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
-import TaskCallout from './TaskCallout';
-import TaskMarker from './TaskMarker';
 
-const clusterContainerSize = 40;
-
-const styles = StyleSheet.create({
-  map: {
-    // ...StyleSheet.absoluteFillObject,
-  },
-  clusterContainer: {
-    width: clusterContainerSize,
-    height: clusterContainerSize,
-    borderWidth: 1,
-    borderColor: whiteColor,
-    borderRadius: clusterContainerSize / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: greyColor,
-  },
-  clusterText: {
-    fontSize: 13,
-    color: whiteColor,
-    textAlign: 'center',
-  },
-  markerCallout: {
-    padding: 5,
-  },
-  modal: {
-    padding: 20,
-  },
-  modalFooter: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 25,
-  },
-  modalContentItem: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    borderBottomColor: '#f0f0f0',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-});
-
+import {
+  BottomSheetContext,
+} from '@/components/ui/bottomsheet';
+import TasksBottomSheetContent from './TasksBottomSheetContent';
+import { lightMapStyle, darkMapStyle } from "../styles/mapStyles"
 const latitudeDelta = 0.0722;
 const longitudeDelta = 0.0221;
 
-const edgePadding = {
-  top: 20,
-  left: 20,
-  bottom: 20,
-  right: 20,
-};
+function TasksMapView(props) {
+  const {
+    mapCenter,
+    onMapReady,
+    taskLists = [],
+    uiFilters,
+    tasksEntities,
+    isHideUnassignedFromMap,
+    isPolylineOn,
+    mode = 'system',
+  } = props;
 
-// const hasSameLocation = markers => {
-//   const coordsArray = markers.map(
-//     m => `${m.location.latitude};${m.location.longitude}`,
-//   );
-//   const coordsArrayUniq = _.uniq(coordsArray);
+  const [marginBottom, setMarginBottom] = useState(1);
+  const mapRef = useRef(null);
+  const [latitude, longitude] = mapCenter || [0, 0];
+  const initialRegion = { latitude, longitude, latitudeDelta, longitudeDelta };
+  const [mapHeight, setMapHeight] = useState(0);
 
-//   return coordsArrayUniq.length === 1;
-// };
+  //bottomsheet opening
+  const { handleOpen } = useContext(BottomSheetContext || {});
+  const [modalMarkers, setModalMarkers] = useState([]);
 
-const addressName = task => {
-  const customerName = task.address.firstName
-    ? [task.address.firstName, task.address.lastName].join(' ')
-    : null;
 
-  return task.address.name || customerName || task.address.streetAddress;
-};
+  const colorScheme = useColorScheme();
 
-class TasksMapView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // This is used to force a render, to fix "showsMyLocationButton"
-      // When the map is ready, marginBottom will be set to 0
-      // @see https://github.com/react-community/react-native-maps/issues/2010
-      // @see https://github.com/react-community/react-native-maps/issues/1033
-      // @see https://github.com/react-community/react-native-maps/search?q=showsMyLocationButton&type=Issues
-      marginBottom: 1,
-      isModalVisible: false,
-      modalMarkers: [],
-      mapHeight: 0,
-    };
+  const activeMode = mode === 'system' ? colorScheme : mode;
 
-    this.renderMarker = this.renderMarker.bind(this);
-    // this.renderCluster = this.renderCluster.bind(this);
-    // this.onClusterPress = this.onClusterPress.bind(this);
-    this.map = null;
+  const mapStyle = useMemo(() => {
+    return activeMode === 'dark' ? darkMapStyle : lightMapStyle;
+  }, [activeMode]);
 
-    const [latitude, longitude] = this.props.mapCenter;
+  const onMarkerPress = useCallback(
+    (tasksAtLocation) => {
+      setModalMarkers(tasksAtLocation || []);
+      if (handleOpen) handleOpen();
+    },
+    [handleOpen]
+  );
 
-    this.initialRegion = {
-      latitude,
-      longitude,
-      latitudeDelta,
-      longitudeDelta,
-    };
-
-    this.markers = new Map();
-  }
-
-  onMapReady(onMapReady) {
-    this.setState({ marginBottom: 0 });
-
-    if (onMapReady) {
-      onMapReady();
-    }
-  }
-
-  // @TODO Do NOT cluster if the address is NOT exactly the same..!
-  // renderCluster(cluster, onPress) {
-  //   const clusterId = cluster.clusterId;
-  //   const coordinate = cluster.coordinate;
-
-  //   // Let's correctly count the markers, removing unassigned ones if the filter is enabled
-  //   const clusteringEngine = this.map.getClusteringEngine();
-  //   const clusteredPoints = clusteringEngine.getLeaves(clusterId, 1000);
-  //   const count = clusteredPoints.reduce((acc, point) => {
-  //     return acc + (this.props.isHideUnassignedFromMap && point.properties && !point.properties.item.isAssigned ? 0 : 1);
-  //   }, 0);
-
-  //   return (count === 0 ? null :
-  //     <Marker
-  //       identifier={`cluster-${clusterId}`}
-  //       coordinate={coordinate}
-  //       onPress={onPress}
-  //       tracksViewChanges={false}>
-  //       <View style={styles.clusterContainer}>
-  //         <Text style={styles.clusterText}>{count}</Text>
-  //       </View>
-  //     </Marker>
-  //   );
-  // }
-
-  // onClusterPress(clusterId, markers) {
-  //   // Let's correctly set the clustered markers
-  //   const modalMarkers = this.props.isHideUnassignedFromMap ? markers.filter((task) => task.isAssigned) : markers;
-
-  //   if (modalMarkers.length > 1 && hasSameLocation(modalMarkers)) {
-  //     this.setState({ isModalVisible: true, modalMarkers });
-  //   }
-  // }
-
-  _onModalItemPress(item) {
-    this.setState(
-      {
-        isModalVisible: false,
-        modalMarkers: [],
-      },
-      () => this.props.onMarkerCalloutPress(item),
-    );
-  }
-
-  onCalloutPress(task) {
-    this.props.onMarkerCalloutPress(task);
-
-    const ref = this.markers.get(task['@id']);
-    if (ref && ref.current) {
-      ref.current.hideCallout();
-    }
-  }
-
-  _getWarnings(task) {
-    const warnings = [];
-
-    if (task.address && task.address.description) {
-      warnings.push({
-        icon: MessageCircle,
-      });
-    }
-
-    if (
-      task.metadata &&
-      task.metadata.payment_method &&
-      isDisplayPaymentMethodInList(task.metadata?.payment_method)
-    ) {
-      warnings.push({
-        icon: getIcon(task.metadata.payment_method),
-      });
-    }
-
-    return warnings;
-  }
-
-  renderMarker(task, index) {
-    // Get the corresponding task list and see if it is an unassigned one
-    const taskList = task.taskList;
-    if (this.props.isHideUnassignedFromMap && taskList.isUnassignedTaskList) {
-      return null;
-    }
-
-    const { width } = Dimensions.get('window');
-
-    if (!this.markers.has(task['@id'])) {
-      this.markers.set(task['@id'], createRef());
-    }
-
-    const key = `taskmarker-${task.id}-${index}`;
-    const warnings = this._getWarnings(task);
-
-    return (
-      <Marker
-        identifier={task['@id']}
-        key={key}
-        coordinate={task.address.geo}
-        flat={true}
-        ref={this.markers.get(task['@id'])}
-        tracksViewChanges={false}>
-        <TaskMarker
-          task={task}
-          type="status"
-          hasWarnings={warnings.length > 0}
-          testID={key}
-        />
-        <Callout
-          onPress={() => this.onCalloutPress(task)}
-          style={[styles.markerCallout, { width: Math.floor(width * 0.6666) }]}>
-          <TaskCallout task={task} warnings={warnings} />
-        </Callout>
-      </Marker>
-    );
-  }
-
-  getCoordinates(taskList) {
-    if (taskList.polyline) {
-      const decodedCoordinates = decode(taskList.polyline).map(coords => ({
-        latitude: coords[0],
-        longitude: coords[1],
-      }));
-
-      return decodedCoordinates;
-    }
-
-    const { tasksEntities } = this.props;
-    const taskListTasks = getTaskListTasks(taskList, tasksEntities);
-
-    return taskListTasks.map(task => task.address.geo);
-  }
-
-  renderPolylines(taskLists) {
-    if (!this.props.isPolylineOn) {
-      return null;
-    }
-
-    return taskLists.map((taskList: TaskList, index: number) => {
-      if (taskList.isUnassignedTaskList && this.props.isHideUnassignedFromMap) {
-        return null;
-      }
-      const key = `polyline-${taskList.id}-${index}`;
-
-      return (
-        <Polyline
-          key={key}
-          testID={key}
-          coordinates={this.getCoordinates(taskList)}
-          strokeWidth={2}
-          strokeColor={
-            taskList.isUnassignedTaskList
-              ? this.props.unassignedPolylineColor || lightGreyColor
-              : taskList.color
-          }
-          lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : undefined}
-        />
-      );
-    });
-  }
-
-  renderModal() {
-    return (
-      <Modal isVisible={this.state.isModalVisible} style={styles.modal}>
-        <View style={{ backgroundColor: 'white' }}>
-          <FlatList
-            data={this.state.modalMarkers}
-            keyExtractor={(item, index) => item['@id']}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.modalContentItem}
-                onPress={() => this._onModalItemPress(item)}>
-                <Text>{this.props.t('TASK_WITH_ID', { id: item.id })}</Text>
-                <Text>{addressName(item)}</Text>
-              </TouchableOpacity>
-            )}
-          />
-          <TouchableOpacity
-            style={styles.modalFooter}
-            onPress={() =>
-              this.setState({ isModalVisible: false, modalMarkers: [] })
-            }>
-            <Text style={{ color: '#FF4136' }}>{this.props.t('CLOSE')}</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-    );
-  }
-
-  render() {
-    const { onMapReady, taskLists, uiFilters, tasksEntities, ...otherProps } =
-      this.props;
-
-    // Tasks must have a "location" attribute representing a GeoPoint, i.e. { latitude: x, longitude: y }
-    // Also they must have a "taskList" attribute for markers
-    const data = _.flatMap(taskLists, taskList => {
-      // Do not parse unassigned tasks if the filter is enabled
-      if (
-        this.props.isHideUnassignedFromMap &&
-        taskList.id === UNASSIGNED_TASKS_LIST_ID
-      ) {
+  // filtered data
+  const data = useMemo(() => {
+    return _.flatMap(taskLists, (taskList) => {
+      if (isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID)
         return [];
-      }
       const tasks = getTaskListTasks(taskList, tasksEntities);
-      const filteredTasks = uiFilters ? filterTasks(tasks, uiFilters) : tasks;
-
-      return filteredTasks.map(task => ({
+      const filtered = uiFilters ? filterTasks(tasks, uiFilters) : tasks;
+      return filtered.map((task) => ({
         ...task,
         location: task.address.geo,
         taskList,
       }));
     });
+  }, [taskLists, tasksEntities, uiFilters, isHideUnassignedFromMap]);
 
-    // <ClusteredMapView> has required width/height props which default to Dimensions.get('window')
-    // We use onLayout() to get the actual dimensions to fill all remaining available space
+  const groupedByCoord = useMemo(() => {
+    return _.groupBy(data, (task) => {
+      const { latitude, longitude } = task.address.geo;
+      return `${latitude.toFixed(5)}_${longitude.toFixed(5)}`;
+    });
+  }, [data]);
 
-    const { width } = Dimensions.get('window');
 
-    return (
+  //markers render
+  const renderMarkers = useMemo(() => {
+    return Object.entries(groupedByCoord).map(([coordKey, tasks], i) => {
+      const { latitude, longitude } = tasks[0].address.geo;
+      const isCluster = tasks.length > 1;
+
+      return (
+        <Marker
+          key={`marker-${coordKey}-${i}`}
+          coordinate={{ latitude, longitude }}
+          onPress={() => onMarkerPress(tasks)}
+          tracksViewChanges={false}
+        >
+          <TaskMarker task={tasks[0]} count={isCluster ? tasks.length : undefined} />
+        </Marker>
+      );
+    });
+  }, [groupedByCoord, onMarkerPress]);
+
+  //grouped markers
+  const groupedTasks = useMemo(() => {
+    const groups = {};
+
+    taskLists.forEach(list => {
+      if (!list) return;
+
+      // get tasks from redux
+      const tasks = getTaskListTasks(list, tasksEntities) || [];
+
+      tasks.forEach(task => {
+        if (!task?.address?.lat || !task?.address?.lng) return;
+        const key = `${task.address.lat}-${task.address.lng}`;
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(task);
+      });
+    });
+
+    return groups;
+  }, [taskLists, tasksEntities]);
+
+  // render polylines
+  const getPolylineCoords = (taskList) => {
+    if (taskList.polyline) {
+      try {
+        return decode(taskList.polyline).map(([lat, lng]) => ({
+          latitude: lat,
+          longitude: lng,
+        }));
+      } catch {
+        return [];
+      }
+    }
+    const tasks = getTaskListTasks(taskList, tasksEntities);
+    return tasks.map((t) => t.address.geo);
+  };
+
+  const renderPolylines = useCallback(() => {
+    if (!isPolylineOn) return null;
+
+    return taskLists.map((taskList, i) => {
+      if (taskList.isUnassignedTaskList) return null;
+
+      const coords = getPolylineCoords(taskList);
+      if (!coords?.length) return null;
+
+      const strokeColor = taskList.color || '#ff00dd';
+
+      return (
+        <Polyline
+          key={`polyline-${taskList.id}-${i}`}
+          coordinates={coords}
+          strokeWidth={2}
+          strokeColor={strokeColor}
+        />
+      );
+    });
+  }, [taskLists, isPolylineOn]);
+
+
+
+  // render bottomsheet
+  const renderBottomSheet = useCallback(() => {
+    const mainTask = modalMarkers[0];
+    if (!modalMarkers || modalMarkers.length === 0) return null;
+
+    return <TasksBottomSheetContent modalMarkers={modalMarkers} />;
+
+  }, [modalMarkers]);
+
+  const { width } = Dimensions.get('window');
+
+
+  // map render
+  return (
+    <>
       <View
+        renderToHardwareTextureAndroid={true}
+        collapsable={false}
         style={{ flex: 1 }}
-        onLayout={event =>
-          this.setState({ mapHeight: event.nativeEvent.layout.height })
-        }>
-        {this.state.mapHeight && this.state.mapHeight > 0 ? (
+        onLayout={(e) => setMapHeight(e.nativeEvent.layout.height)}
+      >
+        {mapHeight > 0 && (
           <MapView
-            // data={data}
-            style={[
-              styles.map,
-              {
-                marginBottom: this.state.marginBottom,
-                flex: 1,
-                minHeight: '100%',
-                widht: '100%',
-              },
-            ]}
-            width={width}
-            height={this.state.mapHeight}
-            initialRegion={this.initialRegion}
-            clusteringEnabled={false}
-            zoomEnabled={true}
-            zoomControlEnabled={true}
-            showsUserLocation
-            showsMyLocationButton={true}
-            loadingEnabled
-            loadingIndicatorColor={'#666666'}
-            loadingBackgroundColor={'#eeeeee'}
-            onMapReady={() => this.onMapReady(onMapReady)}
-            edgePadding={edgePadding}
-            // renderMarker={this.renderMarker}
-            // renderCluster={this.renderCluster}
-            // onClusterPress={this.onClusterPress}
-            ref={r => {
-              this.map = r;
+          customMapStyle={mapStyle}
+            ref={mapRef}
+            style={{ flex: 1, marginBottom }}
+            initialRegion={{
+              latitude: mapCenter[0],
+              longitude: mapCenter[1],
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1,
             }}
-            {...otherProps}>
-            {data.map(this.renderMarker)}
-            {this.renderPolylines(taskLists)}
-            {this.props.children}
+            onMapReady={() => {
+              setMarginBottom(0);
+              if (onMapReady) onMapReady();
+            }}
+          >
+            {renderPolylines()}
+            {renderMarkers}
+            {Object.values(groupedTasks).map((tasksAtLocation, i) => {
+              const firstTask = tasksAtLocation[0];
+              const color = firstTask.tags?.[0]?.color || '#1c1c1e';
+              const coordinate = {
+                latitude: firstTask.address.lat,
+                longitude: firstTask.address.lng,
+              };
+              const label =
+                tasksAtLocation.length > 1 ? `${tasksAtLocation.length}` : '';
+
+              return (
+                <Marker
+                  key={i}
+                  coordinate={coordinate}
+                  onPress={() => onMarkerPress(tasksAtLocation)}
+                >
+                  <View
+                    style={{
+                      backgroundColor: color,
+                      borderRadius: 20,
+                      padding: 8,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Text style={{ color: '#fff', fontWeight: 'bold' }}>{label}</Text>
+                  </View>
+                </Marker>
+              );
+            })}
           </MapView>
-        ) : null}
-        {this.renderModal()}
+        )}
       </View>
-    );
-  }
+      {renderBottomSheet()}
+    </>
+  );
 }
 
 function mapStateToProps(state) {

@@ -21,6 +21,7 @@ import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor, useSecondaryTextColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import TasksMapView from '../../components/TasksMapView';
+import { BottomSheet } from '@/components/ui/bottomsheet';
 
 const styles = StyleSheet.create({
   newDeliveryBarDate: {
@@ -88,13 +89,15 @@ export default function TasksMap({ navigation, route }) {
         </AddButton>
       </View>
       <View style={styles.mapContainer}>
-        <TasksMapView
-          mapCenter={mapCenter}
-          taskLists={mergedTaskListsWithUnassigned}
-          unassignedPolylineColor={unassignedPolylineColor}
-          onMarkerCalloutPress={navigateToSelectedTask}
-          uiFilters={uiFilters}
-        />
+        <BottomSheet>
+          <TasksMapView
+            mapCenter={mapCenter}
+            taskLists={mergedTaskListsWithUnassigned}
+            unassignedPolylineColor={unassignedPolylineColor}
+            onMarkerCalloutPress={navigateToSelectedTask}
+            uiFilters={uiFilters}
+          />
+        </BottomSheet>
         {isFetching ? (
           <View style={styles.activityContainer}>
             <ActivityIndicator

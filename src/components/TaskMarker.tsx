@@ -1,117 +1,151 @@
 import React from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
-import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
-
-import {
-  DoneIcon,
-  FailedIcon,
-  taskTypeIcon,
-} from '../navigation/task/styles/common';
-import { redColor } from '../styles/common';
-import {
-  useBackgroundContainerColor,
-  useBlackAndWhiteTextColor,
-  useSecondaryTextColor,
-} from '../styles/theme';
+import { View, Text, StyleSheet, useColorScheme } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
+import FAIcon from './Icon';
 import { Task } from '../types/task';
 
-const CONTAINER_SIZE = 32;
-
-const getTaskColor = (
-  task: Task,
-  defaultColor: string,
-  unassignedColor: string,
-): string => {
-  if (task.status === 'FAILED') {
-    return redColor;
+// función para aclarar color
+const lightenColor = (hex: string, amount: number = 80) => {
+  try {
+    let c = hex.startsWith('#') ? hex.slice(1) : hex;
+    if (c.length === 3) c = c.split('').map(x => x + x).join('');
+    const num = parseInt(c, 16);
+    let r = (num >> 16) + amount;
+    let g = ((num >> 8) & 0x00ff) + amount;
+    let b = (num & 0x0000ff) + amount;
+    r = Math.min(255, r);
+    g = Math.min(255, g);
+    b = Math.min(255, b);
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  } catch {
+    return hex;
   }
-
-  // Use tag color if available (first tag if multiple)
-  if (task.tags.length > 0) {
-    return task.tags[0].color;
-  }
-
-  // Use unassigned color for unassigned tasks
-  return task.isAssigned ? defaultColor : unassignedColor;
-};
-
-const getTaskOpacity = (task: Task): number => {
-  return ['DONE', 'FAILED'].includes(task.status) ? 0.4 : 1;
-};
-
-const getTaskIcon = (task: Task, type?: string) => {
-  if (type === 'status') {
-    switch (task.status) {
-      case 'DONE':
-        return DoneIcon;
-      case 'FAILED':
-        return FailedIcon;
-      default:
-        return taskTypeIcon(task);
-    }
-  }
-  return taskTypeIcon(task);
-};
-
-// TODO check this use case
-const WARNING_ICON_STYLE: TextStyle = {
-  position: 'absolute',
-  right: 0,
-  top: -3,
-  color: 'red',
-  fontSize: 38,
 };
 
 interface TaskMarkerProps {
-  task: Task;
-  type?: string;
-  hasWarnings?: boolean;
-  testID?: string;
+  task?: Task;
+  count?: number;
+  size?: number;
 }
 
-const TaskMarker = ({ task, type, hasWarnings, testID }: TaskMarkerProps) => {
-  const backgroundColor = useBackgroundContainerColor();
-  const defaultColor = useBlackAndWhiteTextColor();
-  const unassignedColor = useSecondaryTextColor();
+const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
+  const colorScheme = useColorScheme();
 
-  const taskColor = getTaskColor(task, defaultColor, unassignedColor);
-  const taskOpacity = getTaskOpacity(task);
-  const taskIcon = getTaskIcon(task, type);
+  const isDarkMode = colorScheme === 'dark';
 
-  const markerStyle: ViewStyle = {
-    width: CONTAINER_SIZE,
-    height: CONTAINER_SIZE,
-    backgroundColor,
-    borderColor: taskColor,
-    opacity: taskOpacity,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderTopLeftRadius: CONTAINER_SIZE / 2,
-    borderTopRightRadius: CONTAINER_SIZE / 2,
-    borderBottomLeftRadius: CONTAINER_SIZE / 2,
-    borderBottomRightRadius: 0,
-    transform: [{ rotate: '45deg' }],
-  };
+  // 🔹 Cluster: número de tareas
+  if (count) {
+    const color = '#1E88E5'; // azul principal
+    const borderColor = lightenColor(color, 70);
 
-  const iconStyleObj: TextStyle = {
-    position: 'absolute',
-    color: taskColor,
-    opacity: taskOpacity,
-  };
+    return (
+      <View style={styles.container}>
+        <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
+          <Path
+            d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
+            fill={borderColor}
+          />
+          <Path
+            d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
+            fill={color}
+          />
+        </Svg>
+        <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
+          <Text style={[styles.count, { fontSize: size * 0.35 }]}>
+            {count}
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  // 🔸 Task individual
+  const isUnassigned = !task?.assignedTo;
+  const tagColor = task?.tags?.[0]?.color || '#ffffff';
+
+  // --- modo oscuro ---
+  if (isDarkMode) {
+    const iconColor = isUnassigned ? '#9c9c9c' : tagColor;
+    const baseColor = isUnassigned ? '#414141' : '#000000';
+    const borderColor = lightenColor(isUnassigned ? baseColor : iconColor, 80);
+
+    return (
+      <View style={styles.container}>
+        <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
+          {/* Borde */}
+          <Path
+            d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
+            fill={borderColor}
+          />
+          {/* Cuerpo */}
+          <Path
+            d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
+            fill={baseColor}
+          />
+        </Svg>
+
+        <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
+          <FAIcon name="arrow-down" color={iconColor} size={size * 0.3} />
+        </View>
+      </View>
+    );
+  }
+
+  // --- modo claro ---
+  let baseColor = '#FFFFFF';
+  let borderColor = '#a0a0a0';
+  let iconColor = '#a0a0a0';
+  
+  if (!isUnassigned) {
+    if (task?.tags?.[0]?.color) {
+      // Tiene tagColor
+      borderColor = tagColor;
+      iconColor = tagColor;
+    } else {
+      // Assigned pero sin tagColor
+      borderColor = '#000000';
+      iconColor = '#000000';
+    }
+  }
 
   return (
-    <View
-      style={{ margin: 10, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={markerStyle} testID={testID || `taskmarker-${task.id}`} />
-      {hasWarnings && (
-        <Text bold style={WARNING_ICON_STYLE}>
-          .
-        </Text>
-      )}
-      <Icon as={taskIcon} style={iconStyleObj} size="md" />
+    <View style={styles.container}>
+      <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
+        {/* Borde gris */}
+        <Path
+          d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
+          fill={borderColor}
+        />
+        {/* Fondo blanco */}
+        <Path
+          d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
+          fill={baseColor}
+        />
+      </Svg>
+
+      <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
+        <FAIcon name="arrow-down" color={iconColor} size={size * 0.3} />
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    transform: [{ translateY: 12 }],
+  },
+  centered: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  count: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+});
 
 export default TaskMarker;
