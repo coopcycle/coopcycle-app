@@ -5,10 +5,11 @@ import { getOrderNumberWithPosition } from '../utils/tasks';
 import { formatPrice } from '../utils/formatting';
 import CoopcycleLogo from '../../assets/images/logo.svg';
 import { blackColor, lightGreyColor, whiteColor } from '../styles/common';
-import { Task } from '../types/Task';
-import { useCourier } from '../navigation/courier/contexts/CourierContext';
+import { Task } from '../types/task';
 import TaskTypeIcon from './TaskTypeIcon';
 import { VStack } from '@/components/ui/vstack';
+import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
+import { Box } from '@/components/ui/box';
 
 interface IOrderInfoProps {
   task: Task;
@@ -23,7 +24,7 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
   const backgroundColor = isDefaultColor ? lightGreyColor : color;
   const textColor = isDefaultColor ? blackColor : whiteColor;
   const orderNumber = getOrderNumberWithPosition(task);
-  const context = useCourier();
+  const context = useTaskListsContext();
   const isFromCourier = context && context.isFromCourier;
 
   const shouldDisplayPrice = (task: Task): boolean => {
@@ -46,12 +47,8 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
         gap: 4,
       }}>
       {!_.isEmpty(orderNumber) ? (
-        <>
-          <TaskTypeIcon
-            task={task}
-            size="lg"
-            color={isDefaultColor ? 'dark' : 'light'}
-          />
+        <Box>
+          <TaskTypeIcon task={task} size="lg" color="light" />
           <VStack>
             <Text
               style={{
@@ -75,7 +72,7 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
               </Text>
             ) : null}
           </VStack>
-        </>
+        </Box>
       ) : (
         <CoopcycleLogo width={width * 0.5} height={width * 0.5} />
       )}

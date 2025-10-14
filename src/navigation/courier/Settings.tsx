@@ -9,7 +9,7 @@ import { withTranslation } from 'react-i18next';
 import { SectionList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
-import { Power, Route, Signature, Tag, Volume } from 'lucide-react-native'
+import { ArrowRightIcon, Power, Route, Signature, Tag, Volume } from 'lucide-react-native'
 
 import {
   clearTasksFilter,
@@ -43,7 +43,7 @@ const SettingsItemInner = ({ item }) => (
     {!item.onPress && (
       <Switch onToggle={item.onToggle} value={item.isChecked} />
     )}
-    {item.onPress && <Icon as={ArrowRightIcon} />}
+    {item.onPress && <ArrowRightIcon />}
   </HStack>
 );
 

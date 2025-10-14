@@ -320,6 +320,20 @@ export const tapByText = async (text) => {
   return element(by.text(text));
 };
 
+export const longPressById = async (testID, timeout = 0) => {
+  console.log(`Long tapping element with testID "${testID}"`);
+  await waitToBeVisible(testID, timeout);
+  await element(by.id(testID)).longPress();
+  return element(by.id(testID));
+}
+
+export const longPressByText = async (text) => {
+  console.log(`Long tapping element containing the text "${text}"`);
+  await waitFor(element(by.text(text))).toBeVisible();
+  await element(by.text(text)).longPress();
+  return element(by.text(text));
+}
+
 export const swipeRight = async (testID, timeout = 0) => {
   console.log(`Swiping right element with testID "${testID}"`);
   await waitToBeVisible(testID, timeout);

@@ -25,6 +25,7 @@ import {
   DEP_BULK_ASSIGNMENT_TASKS_SUCCESS,
   DEP_UNASSIGN_TASK_SUCCESS,
   DEP_UPDATE_TASK_SUCCESS,
+  cancelTaskSuccess,
   markTaskDoneFailure,
   markTaskDoneRequest,
   markTaskDoneSuccess,
@@ -138,6 +139,7 @@ export const tasksEntityReducer = (
   if (
     actionMatchCreator(action, [
       startTaskSuccess,
+      cancelTaskSuccess,
       markTaskDoneSuccess,
       markTaskFailedSuccess,
     ])

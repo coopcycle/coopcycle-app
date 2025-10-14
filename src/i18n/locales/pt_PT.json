@@ -51,6 +51,7 @@
     "CONTINUE": "Continuar",
     "EDIT": "Editar",
     "NAME": "Nome",
+    "UNNAMED": "sem nome",
     "ADDRESS_DESCRIPTION": "Instruções",
     "ADDRESS_DESCRIPTION_PLACEHOLDER": "segunda porta à esquerda…",
     "TELEPHONE": "Telefone",
