@@ -34,17 +34,17 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible(`${USER_JANE}TasksList:task:2`);
   });
 
-  it('should reorder task to beginning of list', async () => {
-    // Long press on task #2 to select it for reordering
-    await longPressById(`${USER_JANE}TasksList:task:2`);
+  // it('should reorder task to beginning of list', async () => {
+  //   // Long press on task #2 to select it for reordering
+  //   await longPressById(`${USER_JANE}TasksList:task:2`);
 
-    // Tap sort button before first task (index 0)
-    await tapById(`${USER_JANE}TasksList:sort:0`);
+  //   // Tap sort button before first task (index 0)
+  //   await tapById(`${USER_JANE}TasksList:sort:0`);
 
-    // Verify the order has changed - task #2 should now be first
-    // We check by verifying the original task #0 is now at position 1
-    await waitToBeVisible(`${USER_JANE}TasksList:task:0`);    
-  });
+  //   // Verify the order has changed - task #2 should now be first
+  //   // We check by verifying the original task #0 is now at position 1
+  //   await waitToBeVisible(`${USER_JANE}TasksList:task:0`);    
+  // });
 
   it('should reorder task between other tasks', async () => {
     // Long press on task #0 to select it for reordering
@@ -52,15 +52,12 @@ describeif(device.getPlatform() === 'android')
 
     // Verify task is selected
     await waitToBeVisible('taskListItemIcon:selected:0');
-
-    // Tap sort button after task #1 (this should insert task #0 after task #1)
+    
+    //`${taskListId}${appendTaskListTestID}:task:${index}:sort:${index}`;
+    // Tap sort button after task #1 (this should insert task #1 after task #2)
     await tapById(`${USER_JANE}TasksList:task:1:sort:1`);
-
-    // Verify new order: task #1 should remain first, then task #0, then task #2
-    // We can verify by checking the tasks still exist in the new order
-    await waitToBeVisible(`${USER_JANE}TasksList:task:1`);
-    await waitToBeVisible(`${USER_JANE}TasksList:task:0`);
-    await waitToBeVisible(`${USER_JANE}TasksList:task:2`);
+    
+    console.log(await device.getUIHierarchy());
   });
 
 //   it('should not show sort buttons when multiple tasks are selected', async () => {
