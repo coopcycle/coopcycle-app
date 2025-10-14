@@ -36,6 +36,11 @@ const Details = ({ task, onTaskTitleClick, t }) => {
   const name = getName(task);
   address = name ? [name, address].join(' - ') : address;
 
+  const iconInfo = task?.icon
+    ? { icon: task.icon, color: task.color || '#666' }
+    : { icon: 'question-circle', color: '#ccc' };
+
+
   const renderTaskTitle = () => (
     <Text style={styles.titleText}>
       {task.orgName}
