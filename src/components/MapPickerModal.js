@@ -5,8 +5,8 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { View, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { View, StyleSheet, Dimensions, PermissionsAndroid, Image } from 'react-native';
+import MapView from 'react-native-maps';
 import { Button, ButtonText } from '@/components/ui/button'
 import { Text } from '@/components/ui/text'
 import { Box } from '@/components/ui/box'
@@ -29,6 +29,8 @@ const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+import pinIcon from '../../assets/location-pin.png'
 
 const geocodingClient = axios.create({
   baseURL: 'https://maps.googleapis.com/maps/api',
@@ -147,14 +149,6 @@ function MapPickerScreen({
     [reverseGeocode],
   );
 
-  const handleMapPress = useCallback(
-    ({ nativeEvent: { coordinate } }) => {
-      setSelectedLocation(coordinate);
-      handleReverseGeocode(coordinate);
-    },
-    [handleReverseGeocode, setSelectedLocation],
-  );
-
   const handleConfirm = useCallback(() => {
     if (selectedLocation && address && onSelectLocation) {
       onSelectLocation({
@@ -163,18 +157,6 @@ function MapPickerScreen({
       });
     }
   }, [selectedLocation, address, onSelectLocation]);
-
-  const markerMemo = useMemo(() => {
-    if (!selectedLocation) return null;
-
-    return (
-      <Marker
-        coordinate={selectedLocation}
-        pinColor={primaryColor}
-        tracksViewChanges={false}
-      />
-    );
-  }, [selectedLocation, primaryColor]);
 
   const renderAddressDisplay = useCallback(() => {
     if (isLoading) {
@@ -194,8 +176,13 @@ function MapPickerScreen({
       );
     }
 
-    return <Text color="gray.400">{t('TAP_ON_MAP_TO_SELECT_LOCATION')}</Text>;
+    return <Text color="gray.400">{t('MOVE_MAP_TO_SELECT_LOCATION')}</Text>;
   }, [isLoading, selectedLocation, address, t]);
+
+  const handleRegionChange = useCallback((region) => {
+    setSelectedLocation(region);
+    handleReverseGeocode(region);
+  }, [setSelectedLocation, handleReverseGeocode]);
 
   return (
     <View style={styles.container}>
@@ -222,9 +209,8 @@ function MapPickerScreen({
           <MapView
             ref={mapRef}
             style={styles.map}
-            provider={PROVIDER_GOOGLE}
             initialRegion={initialRegion}
-            onPress={handleMapPress}
+            onRegionChangeComplete={handleRegionChange}
             moveOnMarkerPress={false}
             // Keep this disabled, somehow if the MapView must keep
             // a singleton instance in background.
@@ -242,12 +228,15 @@ function MapPickerScreen({
               setIsLocated(true);
             }}
           >
-            {markerMemo}
           </MapView>
+
         )}
+        <View style={styles.markerFixed}>
+          <Image style={styles.marker} source={pinIcon} />
+        </View>
       </View>
 
-      <Box className='absolute p-4 bottom-0 w-full' style={{ backgroundColor }}>
+      <Box className="p-4 bottom-0 w-full" style={{ backgroundColor }}>
         <Box
           className='p-4 mb-4 h-20 border-2 border-gray-200 rounded-md justify-center'>
           {renderAddressDisplay()}
@@ -272,14 +261,25 @@ function MapPickerScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+
   },
   mapContainer: {
     flex: 1,
-    overflow: 'hidden',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    flex: 1
+  },
+  markerFixed: {
+    left: '50%',
+    marginLeft: -24,
+    marginTop: -48,
+    position: 'absolute',
+    top: '50%'
+  },
+  marker: {
+    height: 48,
+    width: 48
   },
 });
 
