@@ -296,6 +296,9 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
   const elem = () => isElemId ? element(by.id(elemIdOrObj)) : elemIdOrObj;
   console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}..`);
 
+  // Let's tap the element first (prevents possible weird behaviors when entering the text)
+  await elem().tap();
+
   if (text.length > 1) {
     await elem().replaceText(text.slice(0, -1));
     text = text.slice(-1);
