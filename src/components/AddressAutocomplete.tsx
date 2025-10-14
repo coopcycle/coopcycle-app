@@ -499,9 +499,8 @@ function AddressAutocomplete({
         />
         {mapPickerStyle === 'large' && (
           <>
-            <Text style={styles.orText}>Or find myself on the map</Text>
+            <Text style={styles.orText}>{t('FIND_ON_MAP')}</Text>
             <Button
-              style={{ backgroundColor: props.primaryColor }}
               onPress={() => setShowPickerModal(true)}
               testID="map-picker-button-large"
               accessibilityLabel={t('PICK_ON_MAP')}>
