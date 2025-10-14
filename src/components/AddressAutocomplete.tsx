@@ -457,15 +457,9 @@ function AddressAutocomplete({
             <View style={[listContainerStyle, { marginTop: 0 }]}>
               <View
                 style={{
-                  borderWidth: 0,
-                  borderBottomWidth: 1,
-                  borderLeftWidth: 1,
-                  borderRightWidth: 1,
-                  borderColor: '#E0E0E0',
-                  overflow: 'hidden',
-                  backgroundColor: 'white',
-                  borderBottomLeftRadius: 4,
-                  borderBottomRightRadius: 4,
+                  borderTopWidth: 0,
+                  borderWidth: 1,
+                  borderColor: props.primaryColor,
                 }}>
                 {data.map((item, index) => (
                   <View key={index}>
@@ -490,7 +484,7 @@ function AddressAutocomplete({
             ...inputContainerStyle,
           }}
           listContainerStyle={{
-            backgroundColor: 'transparent',
+            backgroundColor: props.backgroundColor,
             ...listContainerStyle,
           }}
           style={{
