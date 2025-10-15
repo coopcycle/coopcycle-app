@@ -1,30 +1,33 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import screens from '..';
 import i18n from '../../i18n';
 import { selectSignatureScreenFirst } from '../../redux/Courier';
-import { useStackNavigatorScreenOptions } from '../styles';
+import { Icon } from '@/components/ui/icon';
+import { Camera, Signature } from 'lucide-react-native'
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const TabNavigator = ({ initialRouteName, initialParams }) => {
-  const screenOptions = useStackNavigatorScreenOptions({
-    // Disable swipe to avoid swiping when signing
-    swipeEnabled: false,
-  });
 
   return (
     <Tab.Navigator
-      screenOptions={screenOptions}
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+      }}
       backBehavior="history"
       initialRouteName={initialRouteName}>
       <Tab.Screen
         name="TaskPhoto"
         component={screens.TaskPhoto}
         options={{
-          title: i18n.t('PHOTO'),
+          tabBarLabel: i18n.t('PHOTO'),
+          tabBarIcon: ({ color }) => {
+            return <Icon as={Camera} size="xl" style={{ color }} />;
+          },
         }}
         initialParams={initialParams}
       />
@@ -32,7 +35,10 @@ const TabNavigator = ({ initialRouteName, initialParams }) => {
         name="TaskSignature"
         component={screens.TaskSignature}
         options={{
-          title: i18n.t('SIGNATURE'),
+          tabBarLabel: i18n.t('SIGNATURE'),
+          tabBarIcon: ({ color }) => {
+            return <Icon as={Signature} size="xl" style={{ color }} />;
+          },
         }}
         initialParams={initialParams}
       />
