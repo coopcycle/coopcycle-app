@@ -29,7 +29,7 @@ const Tabs = () => (
       name="CourierTasks"
       component={screens.CourierTasksPage}
       options={({ navigation }) => ({
-        title: i18n.t('TASKS'),
+        tabBarLabel: i18n.t('TASKS'),
         tabBarTestID: 'messengerTabMap',
         tabBarIcon: ({ color }) => {
           return <Icon as={Map} size="xl" style={{ color }} />;
@@ -40,7 +40,7 @@ const Tabs = () => (
       name="CourierTaskList"
       component={screens.CourierTaskListPage}
       options={({ navigation }) => ({
-        title: i18n.t('TASK_LIST'),
+        tabBarLabel: i18n.t('TASK_LIST'),
         tabBarTestID: 'messengerTabList',
         tabBarIcon: ({ color }) => {
           return <Icon as={List} size="xl" style={{ color }} />;
