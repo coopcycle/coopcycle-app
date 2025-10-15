@@ -293,6 +293,7 @@ export interface TaskListProps {
   onTaskClick: (task: Task) => void;
   onOrderClick: (task: Task) => void;
   onSort: (task: Task) => void;
+  onSortBefore?: (tasklist: Task[]) => void;
   refreshing?: boolean;
   swipeOutLeftBackgroundColor?: string;
   swipeOutLeftEnabled?: (task: Task) => boolean;

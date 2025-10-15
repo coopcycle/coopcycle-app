@@ -250,19 +250,20 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     const renderPrevSortButton = () => {
       if (index === 0) {
-        return (sortButton(() => onSortBefore(task, [])));
+        return (sortButton(onSortBefore, true));
       }
     };
 
     const renderSortButton = () => {
       if (isPreviousToSelectedTask) return null;
-      return (sortButton(() => onSort(task, [])));
+      return (sortButton(onSort));
     }
 
-    const sortButton = (onSortCallback: () => void) => {
+    const sortButton = (onSortCallback: () => void, isFirstPosition: boolean = false) => {
+      const appendSortID = isFirstPosition ? `sort:previous` : `sort`;
       if (!isAssignedToSameCourier || !isSortable) return null;
       return (
-        <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:sort:${index}`}>
+        <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:${appendSortID}`}>
           <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
         </Pressable>
       );

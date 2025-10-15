@@ -19,7 +19,8 @@ const TaskList: React.FC<TaskListProps> = ({
   onLongPress = () => {},
   onTaskClick = () => {},
   onOrderClick = () => {},
-  onSort = (task: Task, tasklist: Task[], index: number) => {},
+  onSort = (tasks: Task[], index: number) => {},
+  onSortBefore = (tasks: Task[]) => {},
   refreshing = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIcon,
@@ -96,8 +97,8 @@ const TaskList: React.FC<TaskListProps> = ({
         color={task.color}
         onPress={() => onTaskClick(task)}
         onLongPress={onLongPress}
-        onSortBefore = {() => onSort(task, tasks, index)}
-        onSort={() => onSort(task, tasks, index + 1)}
+        onSortBefore = {() => onSortBefore(tasks)}
+        onSort={() => onSort(tasks, index)}
         onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}
         {...swipeRightConfiguration(task)}

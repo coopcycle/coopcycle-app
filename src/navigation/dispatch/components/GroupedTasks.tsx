@@ -43,6 +43,7 @@ import { useAllowTaskSelection } from '../hooks/useAllowTaskSelection';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import Task from '@/src/types/task';
 import Spinner from '@/src/components/Spinner';
+import { moveAfter } from '../../task/components/utils';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -288,15 +289,29 @@ export default function GroupedTasks({
   
   const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
 
-  const handleSort = useCallback((task: Task, tasklist: Task[], index: number) => {
+  const handleSortBefore = useCallback((tasklist: Task[]) => {
     const itemsIDs = [...tasklist.map(t => t['@id'])];
-    const selectedTaskID = context?.selectedTasksToEdit[0]['@id'];
-  
+    const selectedTask = context?.selectedTasksToEdit[0];
+    const selectedTaskID = selectedTask['@id'];
+
     const filteredIDs = itemsIDs.filter(id => id !== selectedTaskID);
+
+    filteredIDs.unshift(selectedTaskID);
+
+    setTaskListItems({items: filteredIDs, username: selectedTask.assignedTo, date: date.format('YYYY-MM-DD')});
+    context?.clearSelectedTasks();
+  }, [context, date, setTaskListItems]);
+
+  const handleSort = useCallback((tasklist: Task[], index: number) => {
+    const itemsIDs = [...tasklist.map(t => t['@id'])];
+    const selectedTask = context?.selectedTasksToEdit[0];
     
-    filteredIDs.splice(index, 0, selectedTaskID);
-    
-    setTaskListItems({items: filteredIDs, username: task.assignedTo, date: date.format('YYYY-MM-DD')});
+    const fromIndex = itemsIDs.indexOf(selectedTask['@id']);
+    const toIndex = index;
+
+    const reordered = moveAfter(itemsIDs, fromIndex, toIndex);
+
+    setTaskListItems({items: reordered, username: selectedTask.assignedTo, date: date.format('YYYY-MM-DD')});
     context?.clearSelectedTasks();
   }, [context, date, setTaskListItems]);
 
@@ -354,6 +369,7 @@ export default function GroupedTasks({
             onTaskClick={onTaskClick(section.isUnassignedTaskList)}
             onOrderClick={onOrderClick}
             onSort={handleSort}
+            onSortBefore={handleSortBefore}
             onSwipeClosed={task => {
               handleOnSwipeClose(section, task);
             }}
