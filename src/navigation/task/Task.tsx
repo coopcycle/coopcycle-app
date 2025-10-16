@@ -106,9 +106,9 @@ class Task extends Component {
 
   normalizeTask(task) {
     if (!task || !task.address) return task;
-  
+
     if (task.address.geo) return task;
-  
+
     const { lat, lng } = task.address;
     if (lat && lng) {
       return {
@@ -122,7 +122,7 @@ class Task extends Component {
         },
       };
     }
-  
+
     return task;
   }
 
@@ -130,28 +130,16 @@ class Task extends Component {
     if (!this.state.canRenderMap) {
       return <View style={[styles.map, { backgroundColor: '#eeeeee' }]} />;
     }
-  
-    let task = this.props.route.params?.task;
-    const tasksParam = this.props.route.params?.tasks;
-    
-    let tasks = (tasksParam && tasksParam.length > 0)
-      ? tasksParam
-      : (task ? [task] : []);
-  
-    task = this.normalizeTask(task);
-    tasks = tasks.map(t => this.normalizeTask(t));
-  
-    console.log('TaskHome normalized task.address:', task?.address);
-  
+
+    const taskParam = this.props.route.params?.task;
+    const tasksParam = this.props.route.params?.tasks || [];
+
+    const task = this.normalizeTask(taskParam);
+    const tasks = (tasksParam.length > 0 ? tasksParam : (taskParam ? [taskParam] : []))
+      .map(t => this.normalizeTask(t));
+
     const aspectRatio = getAspectRatio(this.state.mapDimensions);
-  
-    console.log('🧭 renderMap - tasks to render in MiniMap:', tasks.map(t => ({
-      id: t['@id'],
-      geo: t?.address?.geo,
-      lat: t?.address?.lat,
-      lng: t?.address?.lng,
-    })));
-  
+
     return (
       <TaskMiniMap
         task={task}
@@ -161,7 +149,7 @@ class Task extends Component {
       />
     );
   }
-  
+
   render() {
     const task = this.props.route.params?.task;
     const tasks = this.props.route.params?.tasks || [];

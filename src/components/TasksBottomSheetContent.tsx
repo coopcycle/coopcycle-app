@@ -26,13 +26,13 @@ const styles = StyleSheet.create({
   colCode: { flex: 0.2, flexDirection: 'row', alignItems: 'center' },
   colTime: { flex: 0.4, alignItems: 'center', justifyContent: 'center' },
   colAssigned: {
-    flex: 1,          // permite que el texto use el espacio disponible
-    overflow: 'hidden', // asegura que se corte el texto
+    flex: 1,            // Allows the text to use the available space
+    overflow: 'hidden', // Cuts off the text if it's too long
   },
   taskCourier: {
     fontSize: 14,
     color: '#333',
-    flexShrink: 1,     // 🔑 evita que el texto empuje otros elementos
+    flexShrink: 1,     // 🔑 Avoid the text pushing other elements
   },
 
   taskCode: { fontWeight: '900', marginLeft: 4, color: 'black' },

@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet, Text, View, useColorScheme } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import FAIcon from './Icon';
 import { Task } from '../types/task';
 
-// función para aclarar color
+// @TODO Is this function really needed? If yes, move it to a more generic util file
 const lightenColor = (hex: string, amount: number = 80) => {
   try {
     let c = hex.startsWith('#') ? hex.slice(1) : hex;
@@ -33,9 +33,9 @@ const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
 
   const isDarkMode = colorScheme === 'dark';
 
-  // 🔹 Cluster: número de tareas
+  // 🔹 Cluster: Tasks number
   if (count) {
-    const color = '#1E88E5'; // azul principal
+    const color = '#1E88E5'; // Main blue
     const borderColor = lightenColor(color, 70);
 
     return (
@@ -59,11 +59,12 @@ const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
     );
   }
 
-  // 🔸 Task individual
+  // 🔸 Individual task
   const isUnassigned = !task?.assignedTo;
   const tagColor = task?.tags?.[0]?.color || '#ffffff';
 
-  // --- modo oscuro ---
+  // --- dark mode ---
+  // @TODO Is this really needed? Dark mode styles are handled diferently now (without requiring to manually define colors here)
   if (isDarkMode) {
     const iconColor = isUnassigned ? '#9c9c9c' : tagColor;
     const baseColor = isUnassigned ? '#414141' : '#000000';
@@ -72,12 +73,12 @@ const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
     return (
       <View style={styles.container}>
         <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
-          {/* Borde */}
+          {/* Border */}
           <Path
             d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
             fill={borderColor}
           />
-          {/* Cuerpo */}
+          {/* Body */}
           <Path
             d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
             fill={baseColor}
@@ -91,11 +92,11 @@ const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
     );
   }
 
-  // --- modo claro ---
-  let baseColor = '#FFFFFF';
+  // --- light mode ---
+  const baseColor = '#FFFFFF';
   let borderColor = '#a0a0a0';
   let iconColor = '#a0a0a0';
-  
+
   if (!isUnassigned) {
     if (task?.tags?.[0]?.color) {
       // Tiene tagColor
@@ -111,12 +112,12 @@ const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
   return (
     <View style={styles.container}>
       <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
-        {/* Borde gris */}
+        {/* Grey border */}
         <Path
           d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
           fill={borderColor}
         />
-        {/* Fondo blanco */}
+        {/* White background */}
         <Path
           d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
           fill={baseColor}
