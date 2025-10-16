@@ -13,7 +13,7 @@ import {
 import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
 
 type TaskListPolylinesProps = {
-    taskLists: any[];
+    taskLists: object[]; // @TODO We should define a TaskList type
     unassignedPolylineColor?: string;
 };
 
@@ -30,7 +30,7 @@ const TaskListPolylines: React.FC<TaskListPolylinesProps> = ({
      * Decode or compute the coordinates of a polyline for a task list.
      */
     const getCoordinates = useCallback(
-        (taskList: any) => {
+        (taskList: object) => {
             if (taskList.polyline) {
                 const decoded = decode(taskList.polyline).map(coords => ({
                     latitude: coords[0],
