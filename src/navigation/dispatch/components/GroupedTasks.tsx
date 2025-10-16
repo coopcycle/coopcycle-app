@@ -388,6 +388,7 @@ export default function GroupedTasks({
       onTaskClick,
       onOrderClick,
       handleSort,
+      handleSortBefore,
       swipeLeftConfiguration,
       swipeRightConfiguration,
       tasksEntities,
