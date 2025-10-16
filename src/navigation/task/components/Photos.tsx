@@ -15,11 +15,11 @@ export default ({ photos, onPressClose, onSelectPhoto }) => {
     const { t } = useTranslation();
 
     return (
-        <Box className="bg-background-50 p-4 ">
+        <Box className="bg-background-50 p-4">
             <HStack className="justify-between items-center mb-3">
                 <Text>{ t('SELECT_PHOTO') }</Text>
-                <Button  variant="link" onPress={onPressClose}>
-                    <ButtonIcon size="xl" as={CloseIcon} />
+                <Button size="xl" variant="link" onPress={onPressClose}>
+                    <ButtonIcon as={CloseIcon} />
                 </Button>
             </HStack>
             <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -41,7 +41,6 @@ export default ({ photos, onPressClose, onSelectPhoto }) => {
                     onSelectPhoto(base64)
                 }}>
                     <Image
-
                         style={{
                             width: 300,
                             height: 100,

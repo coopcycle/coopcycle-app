@@ -5,7 +5,7 @@ import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import { Icon } from '@/components/ui/icon';
-import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon, Folder } from 'lucide-react-native';
+import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon, FolderSearch } from 'lucide-react-native';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
@@ -111,16 +111,16 @@ class Photo extends Component {
     return (
       <VStack flex={1}>
         <VStack flex={1} className="p-3">
-          <HStack className="justify-between items-center mb-3">
-            <Text className="text-lg">
+          <HStack className="justify-between items-center mb-5 pt-3">
+            <Text className="text-md">
               {this.props.t('PHOTO_DISCLAIMER')}
             </Text>
             <Button
               onPress={this._loadPhotos.bind(this)}
-              size={32}
+              size={36}
               variant="link"
             >
-              <ButtonIcon as={Folder} />
+              <ButtonIcon as={FolderSearch} />
             </Button>
           </HStack>
           <Box className="border-2 border-outline-600 flex-1 items-center">
@@ -171,10 +171,7 @@ class Photo extends Component {
             <ButtonText>{this.props.t('PHOTO_ADD')}</ButtonText>
           </Button>
         </VStack>
-        <Modal
-          isVisible={this.state.isPhotosModalVisible}
-          onSwipeComplete={() => console.log('swipeComplete')}
-          onBackdropPress={() => console.log('onBackdropPress')}>
+        <Modal isVisible={this.state.isPhotosModalVisible}>
           <Photos photos={ this.state.photos }
             onPressClose={ () => {
               this.setState({
