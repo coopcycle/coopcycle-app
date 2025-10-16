@@ -3,6 +3,7 @@ import { Button, ButtonText, ButtonIcon} from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
+import { Box } from '@/components/ui/box';
 import { Icon } from '@/components/ui/icon';
 import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon, Folder } from 'lucide-react-native';
 import React, { Component } from 'react';
@@ -109,11 +110,20 @@ class Photo extends Component {
 
     return (
       <VStack flex={1}>
-        <VStack flex={1} className="p-2">
-          <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
-            {this.props.t('PHOTO_DISCLAIMER')}
-          </Text>
-          <View style={styles.canvasContainer}>
+        <VStack flex={1} className="p-3">
+          <HStack className="justify-between items-center mb-3">
+            <Text className="text-lg">
+              {this.props.t('PHOTO_DISCLAIMER')}
+            </Text>
+            <Button
+              onPress={this._loadPhotos.bind(this)}
+              size={32}
+              variant="link"
+            >
+              <ButtonIcon as={Folder} />
+            </Button>
+          </HStack>
+          <Box className="border-2 border-outline-600 flex-1 justify-end overflow-hidden items-center pb-4">
             {/*
             // Only one Camera preview can be active at any given time.
             // If you have multiple screens in your app, you should unmount Camera components whenever a screen is unfocused.
@@ -123,47 +133,40 @@ class Photo extends Component {
                 ref={this.camera}
                 style={styles.camera}
                 flashMode={this.state.flash ? 'on' : 'off'}>
-                <Button
-                  onPress={this.toggleFlash.bind(this)}
-                  variant="solid"
-                  colorScheme="yellow"
-                  style={styles.flash}
-                >
-                  <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
-                </Button>
-                <HStack>
-                  <Button
-                    onPress={this._takePicture.bind(this)}
-                    size="lg"
-                    variant="solid"
-                    className="mr-2"
-                  >
-                    <ButtonIcon as={CameraIcon} />
-                  </Button>
-                  <Button
-                    onPress={this._loadPhotos.bind(this)}
-                    size="lg"
-                    variant="solid"
-                  >
-                    <ButtonIcon as={Folder} />
-                  </Button>
-                </HStack>
-                <View
-                  style={[
-                    styles.preview,
-                    { width: previewSize, height: previewSize },
-                  ]}>
-                  {!image && <Icon as={ImageIcon} size="xl" className="text-color-light" />}
-                  {image && (
-                    <Image
-                      style={{ width: previewSize, height: previewSize }}
-                      source={{ uri: image.uri }}
-                    />
-                  )}
-                </View>
               </CameraView>
             ) : null}
-          </View>
+            <Button
+              onPress={this.toggleFlash.bind(this)}
+              variant="solid"
+              colorScheme="yellow"
+              style={styles.flash}
+            >
+              <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
+            </Button>
+            <HStack>
+              <Button
+                onPress={this._takePicture.bind(this)}
+                size="lg"
+                variant="solid"
+                className="mr-2 rounded-full p-4"
+              >
+                <ButtonIcon size={24} as={CameraIcon} />
+              </Button>
+            </HStack>
+            <View
+              style={[
+                styles.preview,
+                { width: previewSize, height: previewSize },
+              ]}>
+              {!image && <Icon as={ImageIcon} size="xl" className="text-color-light" />}
+              {image && (
+                <Image
+                  style={{ width: previewSize, height: previewSize }}
+                  source={{ uri: image.uri }}
+                />
+              )}
+            </View>
+          </Box>
         </VStack>
         <VStack className="p-2">
           <Button size="lg" onPress={this._saveImage.bind(this)}>
@@ -209,7 +212,6 @@ const styles = StyleSheet.create({
   canvasContainer: {
     flex: 1,
     flexDirection: 'row',
-    borderColor: '#000000',
     borderWidth: 1,
     overflow: 'hidden',
     marginBottom: 20,
