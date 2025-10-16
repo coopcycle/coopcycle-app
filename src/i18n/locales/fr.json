@@ -283,7 +283,7 @@
     "SIGNATURE_CLEAR": "Effacer",
     "SIGNATURE_ADD": "Ajouter la signature",
     "PHOTO": "Photo",
-    "PHOTO_DISCLAIMER": "Prenez une photo",
+    "PHOTO_DISCLAIMER": "Prenez une photo ou sélectionnez une photo",
     "LOAD_MORE": "Charger plus",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploadée !",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "L'image a été uploadée avec succès",
