@@ -2898,13 +2898,6 @@
   resolved "https://registry.yarnpkg.com/@legendapp/tools/-/tools-2.0.1.tgz#995fe6cb3e2398b939f645505aa8e1abc84bd07f"
   integrity sha512-Kxt0HWvWElRK6oybHRzcYxdgaKGwuaiRNreS7usW7QuHXRIHaH4yMcW2YNRG4DHE5fpefv+Bno/BohQcCE4FaA==
 
-"@mapbox/geo-viewport@^0.4.0":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@mapbox/geo-viewport/-/geo-viewport-0.4.1.tgz#a184c0b161975858a2e855a1e333e66af342964b"
-  integrity sha512-5g6eM3EOSl7+0p0VY+vHWEYjUlNzof936VKHTi/NuJVABjbYe8D2NAVJ0qt5C9Np4glUlhKFepgAgQ0OEybrjQ==
-  dependencies:
-    "@mapbox/sphericalmercator" "~1.1.0"
-
 "@mapbox/node-pre-gyp@^1.0.0":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@mapbox/node-pre-gyp/-/node-pre-gyp-1.0.11.tgz#417db42b7f5323d79e93b34a6d7a2a12c0df43fa"
@@ -2926,11 +2919,6 @@
   integrity sha512-sn0V18O3OzW4RCcPoUIVDWvEGQaBNH9a0y5lgqrf5hUycyw1CzrhEoxV5irzrMNXKCkw1xRsZXcaVbsVZggHXA==
   dependencies:
     meow "^9.0.0"
-
-"@mapbox/sphericalmercator@~1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
-  integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
 "@mitsuharu/react-native-sunmi-printer-library@^2.3.0":
   version "2.3.0"
@@ -10865,11 +10853,6 @@ jwt-decode@^3.1.2:
   resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
   integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
 
-kdbush@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-3.0.0.tgz#f8484794d47004cc2d85ed3a79353dbe0abc2bf0"
-  integrity sha512-hRkd6/XW4HTsA9vjVpY9tuXJYLSlelnkTmVFu4M9/7MIYQtFcHpbugAU7UbOfjOiVSVYl2fqgBuJ32JUmRo5Ew==
-
 keyv@^4.5.3:
   version "4.5.4"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-4.5.4.tgz#a879a99e29452f942439f2a405e3af8b31d4de93"
@@ -13048,14 +13031,6 @@ react-native-map-link@^2.11.4:
     prop-types "^15.8.1"
     react-native-modal "^13.0.1"
 
-react-native-maps-super-cluster@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-maps-super-cluster/-/react-native-maps-super-cluster-1.6.0.tgz#ccee4d8815fd90de6eeacbfc413dff4e04fe82ae"
-  integrity sha512-Ncu5hN8VBuXjMeStBK7WBDnb9fGCetx4WP0V69Tw4by4ByI2YZXyhvIqAFabK3ss6uR/hh++bCSuLIXOHRxdKw==
-  dependencies:
-    "@mapbox/geo-viewport" "^0.4.0"
-    supercluster "^6.0.2"
-
 react-native-maps@~1.20.0:
   version "1.20.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.20.1.tgz#f613364886b2f72db56cafcd2bd7d3a35f470dfb"
@@ -14441,13 +14416,6 @@ sucrase@3.35.0, sucrase@^3.35.0:
     mz "^2.7.0"
     pirates "^4.0.1"
     ts-interface-checker "^0.1.9"
-
-supercluster@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/supercluster/-/supercluster-6.0.2.tgz#aa2eaae185ef97872f388c683ec29f6991721ee3"
-  integrity sha512-aa0v2HURjBTOpbcknilcfxGDuArM8khklKSmZ/T8ZXL0BuRwb5aRw95lz+2bmWpFvCXDX/+FzqHxmg0TIaJErw==
-  dependencies:
-    kdbush "^3.0.0"
 
 superstruct@^2.0.2:
   version "2.0.2"
