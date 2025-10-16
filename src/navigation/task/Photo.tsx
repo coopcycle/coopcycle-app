@@ -123,7 +123,7 @@ class Photo extends Component {
               <ButtonIcon as={Folder} />
             </Button>
           </HStack>
-          <Box className="border-2 border-outline-600 flex-1 justify-end overflow-hidden items-center pb-4">
+          <Box className="border-2 border-outline-600 flex-1 items-center">
             {/*
             // Only one Camera preview can be active at any given time.
             // If you have multiple screens in your app, you should unmount Camera components whenever a screen is unfocused.
@@ -143,16 +143,14 @@ class Photo extends Component {
             >
               <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
             </Button>
-            <HStack>
-              <Button
-                onPress={this._takePicture.bind(this)}
-                size="lg"
-                variant="solid"
-                className="mr-2 rounded-full p-4"
-              >
-                <ButtonIcon size={24} as={CameraIcon} />
-              </Button>
-            </HStack>
+            <Button
+              onPress={this._takePicture.bind(this)}
+              size="lg"
+              variant="solid"
+              style={styles.cameraButton}
+            >
+              <ButtonIcon size={32} as={CameraIcon} />
+            </Button>
             <View
               style={[
                 styles.preview,
@@ -218,9 +216,7 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    padding: 15,
+    width: "100%",
   },
   preview: {
     flex: 1,
@@ -238,6 +234,14 @@ const styles = StyleSheet.create({
     top: 15,
     left: 15,
   },
+  cameraButton: {
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  }
 });
 
 function mapStateToProps(state) {
