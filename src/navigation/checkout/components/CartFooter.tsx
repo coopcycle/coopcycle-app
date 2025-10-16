@@ -10,43 +10,40 @@ import CartFooterButton from './CartFooterButton';
 interface CartFooterProps {
   testID: string;
   isLoading?: boolean;
+  initLoading?: boolean;
+  onSubmit(): void;
+  cart: unknown;
+  restaurant: unknown;
   disabled?: boolean;
 }
 
-class CartFooter extends Component<CartFooterProps> {
-  render() {
-    const { cart, restaurant, initLoading } = this.props;
+const CartFooter = ({ testID, isLoading, initLoading, onSubmit, cart, restaurant, disabled = false }: CartFooterProps) =>  {
 
-    return (
-      <HStack testID="cartFooter">
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            paddingHorizontal: 5,
-            paddingVertical: 5,
-          }}>
-          {initLoading && (
-            <Skeleton h="10" w={'100%'} startColor={'cyan.500'} />
-          )}
-          {!initLoading && (
-            <CartFooterButton
-              cart={cart}
-              restaurant={restaurant}
-              onPress={() => this.props.onSubmit()}
-              loading={this.props.isLoading}
-              testID={this.props.testID}
-              disabled={this.props.disabled}
-            />
-          )}
-        </View>
-      </HStack>
-    );
-  }
-
-  static defaultProps = {
-    disabled: false,
-  };
+  return (
+    <HStack testID="cartFooter">
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          paddingHorizontal: 5,
+          paddingVertical: 5,
+        }}>
+        {initLoading && (
+          <Skeleton h="10" w={'100%'} startColor={'cyan.500'} />
+        )}
+        {!initLoading && (
+          <CartFooterButton
+            cart={cart}
+            restaurant={restaurant}
+            onPress={() => this.props.onSubmit()}
+            loading={this.props.isLoading}
+            testID={this.props.testID}
+            disabled={this.props.disabled}
+          />
+        )}
+      </View>
+    </HStack>
+  );
 }
 
 function mapStateToProps(state, ownProps) {
