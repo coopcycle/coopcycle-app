@@ -26,20 +26,21 @@ interface TaskMarkerProps {
   task?: Task;
   count?: number;
   size?: number;
+  testID?: string;
 }
 
-const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
+const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
   const colorScheme = useColorScheme();
-
   const isDarkMode = colorScheme === 'dark';
+  testID = testID || `taskmarker-${task?.id}`
 
   // 🔹 Cluster: Tasks number
-  if (count) {
+  if (count > 1) {
     const color = '#1E88E5'; // Main blue
     const borderColor = lightenColor(color, 70);
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID={testID}>
         <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
           <Path
             d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
@@ -71,14 +72,12 @@ const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
     const borderColor = lightenColor(isUnassigned ? baseColor : iconColor, 80);
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID={testID}>
         <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
-          {/* Border */}
           <Path
             d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
             fill={borderColor}
           />
-          {/* Body */}
           <Path
             d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
             fill={baseColor}
@@ -110,14 +109,12 @@ const TaskMarker = ({ task, count, size = 45 }: TaskMarkerProps) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={testID}>
       <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
-        {/* Grey border */}
         <Path
           d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
           fill={borderColor}
         />
-        {/* White background */}
         <Path
           d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
           fill={baseColor}

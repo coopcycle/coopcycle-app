@@ -10,7 +10,6 @@ import {
     selectIsHideUnassignedFromMap,
     selectIsPolylineOn
 } from '../redux/Courier';
-import { UNASSIGNED_TASKS_LIST_ID } from '../shared/src/constants';
 
 type TaskListPolylinesProps = {
     taskLists: object[]; // @TODO We should define a TaskList type
@@ -30,53 +29,56 @@ const TaskListPolylines: React.FC<TaskListPolylinesProps> = ({
      * Decode or compute the coordinates of a polyline for a task list.
      */
     const getCoordinates = useCallback(
-        (taskList: object) => {
-            if (taskList.polyline) {
-                const decoded = decode(taskList.polyline).map(coords => ({
-                    latitude: coords[0],
-                    longitude: coords[1],
-                }));
-                return decoded;
-            }
-
-            const taskListTasks = getTaskListTasks(taskList, tasksEntities);
-            return taskListTasks.map(task => task.address.geo);
-        },
-        [tasksEntities],
+      (taskList: object) => {
+        if (taskList.polyline) {
+          try {
+            return decode(taskList.polyline).map(([latitude, longitude]) => ({
+              latitude,
+              longitude,
+            }));
+          } catch {
+            return [];
+          }
+        }
+        const tasks = getTaskListTasks(taskList, tasksEntities);
+        return tasks.map(t => t.address.geo);
+      },
+      [tasksEntities]
     );
 
     /**
      * Render all the polylines for the given task lists.
      */
     const renderPolylines = useCallback(() => {
-        if (!isPolylineOn) return null;
+      if (!isPolylineOn) return null;
 
-        return taskLists.map((taskList, index) => {
-            // Skip hidden unassigned routes
-            if (isHideUnassignedFromMap && taskList.id === UNASSIGNED_TASKS_LIST_ID) {
-                return null;
-            }
+      return taskLists.map((taskList, index) => {
+        // Skip hidden unassigned routes
+        if (isHideUnassignedFromMap && taskList.isUnassignedTaskList) {
+          return null;
+        }
 
-            const key = `polyline-${taskList.id}-${index}`;
-            const coordinates = getCoordinates(taskList);
+        const key = `polyline-${taskList.id}-${index}`;
+        const coordinates = getCoordinates(taskList);
 
-            // Skip invalid or empty coordinate sets
-            if (!coordinates || coordinates.length < 2) return null;
+        // Skip invalid or empty coordinate sets
+        if (!coordinates || coordinates.length < 2) return null;
 
-            const strokeColor = taskList.isUnassignedTaskList
-                ? unassignedPolylineColor || lightGreyColor
-                : taskList.color;
+        const strokeColor = taskList.isUnassignedTaskList
+            ? unassignedPolylineColor || lightGreyColor
+            : taskList.color;
 
-            return (
-                <Polyline
-                    key={key}
-                    coordinates={coordinates}
-                    strokeWidth={2}
-                    strokeColor={strokeColor}
-                    lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : undefined}
-                />
-            );
-        });
+        return (
+          <Polyline
+            key={key}
+            testID={key}
+            coordinates={coordinates}
+            strokeWidth={2}
+            strokeColor={strokeColor}
+            lineDashPattern={taskList.isUnassignedTaskList ? [20, 10] : undefined}
+          />
+        );
+      });
     }, [taskLists, getCoordinates, isPolylineOn, isHideUnassignedFromMap, unassignedPolylineColor]);
 
     return <>{renderPolylines()}</>;
