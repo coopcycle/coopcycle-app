@@ -43,6 +43,7 @@ import restaurantReducer from './Restaurant/reducers';
 import storeReducer from './Store/reducers';
 import keywordFiltersReducer from './Dispatch/keywordFiltersSlice';
 import selectedTasksReducer from './Dispatch/updateSelectedTasksSlice';
+import expandedSectionsReducer from './Dispatch/expandedSectionsSlice';
 
 const taskEntitiesPersistConfig = {
   key: 'entities.items',
@@ -187,6 +188,7 @@ export default combineReducers({
     ui: combineReducers({
       keywordFilters: keywordFiltersReducer,
       selectedTasks: selectedTasksReducer,
+      expandedSections: expandedSectionsReducer,
     }),
   }),
   logistics: combineReducers({
