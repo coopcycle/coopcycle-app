@@ -24,10 +24,18 @@ const styles = StyleSheet.create({
   colIcon: { flex: 0.05, alignItems: 'center', justifyContent: 'center' },
   colCode: { flex: 0.2, flexDirection: 'row', alignItems: 'center' },
   colTime: { flex: 0.4, alignItems: 'center', justifyContent: 'center' },
-  colAssigned: { flex: 0.35, alignItems: 'center', justifyContent: 'center' },
+  colAssigned: {
+    flex: 1,          // permite que el texto use el espacio disponible
+    overflow: 'hidden', // asegura que se corte el texto
+  },
+  taskCourier: {
+    fontSize: 14,
+    color: '#333',
+    flexShrink: 1,     // 🔑 evita que el texto empuje otros elementos
+  },
+
   taskCode: { fontWeight: '900', marginLeft: 4, color: 'black' },
-  taskTime: { color: '#555', textAlign: 'center', flexShrink: 0 },
-  taskCourier: { color: '#555', textAlign: 'center' },
+  taskTime: { color: '#555', textAlign: 'center', flexShrink: 0 }
 });
 
 const addressName = task => {
@@ -89,11 +97,16 @@ export default function TasksBottomSheetContent({ modalMarkers = [] }) {
                   </View>
                   <View style={styles.colAssigned}>
                     {item.assignedTo && (
-                      <Text style={styles.taskCourier}>
-                        {item.assignedTo}
+                      <Text
+                        style={styles.taskCourier}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
+                        aasdasd
                       </Text>
                     )}
                   </View>
+
                 </Pressable>
               );
             }}
