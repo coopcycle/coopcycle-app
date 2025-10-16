@@ -2,7 +2,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
-import React, { Component } from 'react';
+import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { greenColor, greyColor, redColor } from '../../../styles/common';
 
@@ -17,63 +17,50 @@ interface StepProps {
   errorLabel?: string;
 }
 
-class Step extends Component<StepProps> {
-  render() {
-    const {
-      active,
-      loading,
-      error,
-      hide,
-      start,
-      errorLabel,
-      activeLabel,
-      loadingLabel,
-    } = this.props;
-    const label = error ? errorLabel : active ? activeLabel : loadingLabel;
-    if (hide) {
-      return <View />;
-    }
+const Step = ({
+  start = false,
+  active = false,
+  loading = false,
+  error = false,
+  hide = false,
+  activeLabel = '',
+  loadingLabel = '',
+  errorLabel = ''
+}: StepProps) => {
 
-    return (
-      <HStack>
-        <VStack>
-          {!start && (
-            <Box
-              style={{
-                ...styles.line,
-                ...(active ? styles.active : {}),
-                ...(loading ? styles.loading : {}),
-              }}
-            />
-          )}
-          <Box
-            style={{
-              ...styles.dot,
-              ...(active ? styles.active : {}),
-              ...(error ? styles.error : {}),
-            }}
-          />
-        </VStack>
-        <View style={{ ...styles.labelContainer }}>
-          <Text style={{ ...styles.label }}>{label}</Text>
-          {loading && (
-            <ActivityIndicator size={'small'} style={{ height: 16 }} />
-          )}
-        </View>
-      </HStack>
-    );
+  const label = error ? errorLabel : active ? activeLabel : loadingLabel;
+  if (hide) {
+    return <View />;
   }
 
-  static defaultProps = {
-    start: false,
-    active: false,
-    loading: false,
-    error: false,
-    hide: false,
-    activeLabel: '',
-    loadingLabel: '',
-    errorLabel: '',
-  };
+  return (
+    <HStack>
+      <VStack>
+        {!start && (
+          <Box
+            style={{
+              ...styles.line,
+              ...(active ? styles.active : {}),
+              ...(loading ? styles.loading : {}),
+            }}
+          />
+        )}
+        <Box
+          style={{
+            ...styles.dot,
+            ...(active ? styles.active : {}),
+            ...(error ? styles.error : {}),
+          }}
+        />
+      </VStack>
+      <View style={{ ...styles.labelContainer }}>
+        <Text style={{ ...styles.label }}>{label}</Text>
+        {loading && (
+          <ActivityIndicator size={'small'} style={{ height: 16 }} />
+        )}
+      </View>
+    </HStack>
+  );
 }
 
 const styles = StyleSheet.create({
