@@ -2,16 +2,21 @@ import { Camera, CameraView } from 'expo-camera';
 import { Button, ButtonText, ButtonIcon} from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
-import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon } from 'lucide-react-native';
+import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon, Folder } from 'lucide-react-native';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+import Modal from 'react-native-modal';
 
 import { addPicture } from '../../redux/Courier';
+
+import Photos from './components/Photos';
 
 class Photo extends Component {
   constructor(props) {
@@ -22,6 +27,8 @@ class Photo extends Component {
       canStartCamera: false,
       canMountCamera: false,
       flash: false,
+      photos: [],
+      isPhotosModalVisible: false,
     };
 
     this.camera = React.createRef();
@@ -75,6 +82,22 @@ class Photo extends Component {
     }
   }
 
+  _loadPhotos() {
+    CameraRoll.getPhotos({
+       first: 20,
+       assetType: 'All',
+    })
+    .then(r => {
+      this.setState({
+        photos: r.edges,
+        isPhotosModalVisible: true
+      })
+    })
+    .catch((err) => {
+        // Error Loading Images
+    });
+  }
+
   toggleFlash() {
     this.setState({ flash: !this.state.flash });
   }
@@ -108,13 +131,23 @@ class Photo extends Component {
                 >
                   <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
                 </Button>
-                <Button
-                  onPress={this._takePicture.bind(this)}
-                  size="lg"
-                  variant="solid"
-                >
-                  <ButtonIcon as={CameraIcon} />
-                </Button>
+                <HStack>
+                  <Button
+                    onPress={this._takePicture.bind(this)}
+                    size="lg"
+                    variant="solid"
+                    className="mr-2"
+                  >
+                    <ButtonIcon as={CameraIcon} />
+                  </Button>
+                  <Button
+                    onPress={this._loadPhotos.bind(this)}
+                    size="lg"
+                    variant="solid"
+                  >
+                    <ButtonIcon as={Folder} />
+                  </Button>
+                </HStack>
                 <View
                   style={[
                     styles.preview,
@@ -137,6 +170,36 @@ class Photo extends Component {
             <ButtonText>{this.props.t('PHOTO_ADD')}</ButtonText>
           </Button>
         </VStack>
+        <Modal
+          isVisible={this.state.isPhotosModalVisible}
+          onSwipeComplete={() => console.log('swipeComplete')}
+          onBackdropPress={() => console.log('onBackdropPress')}>
+          <Photos photos={ this.state.photos }
+            onPressClose={ () => {
+              this.setState({
+                isPhotosModalVisible: false
+              })
+            }}
+            onSelectPhoto={ (base64) => {
+
+              this.setState({
+                isPhotosModalVisible: false
+              })
+
+              const task = this.props.route.params?.task;
+              const tasks = this.props.route.params?.tasks;
+
+              this.props.addPicture(task, base64);
+
+              this.props.navigation.navigate({
+                name: 'TaskCompleteHome',
+                params: { task, tasks },
+                merge: true,
+              });
+
+
+            }} />
+        </Modal>
       </VStack>
     );
   }
