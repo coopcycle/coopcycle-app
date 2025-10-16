@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react-native'
 import { Text } from '@/components/ui/text';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { Animated, View } from 'react-native';
 
@@ -12,7 +11,13 @@ import {
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 
-class CartFooterButton extends Component {
+interface CartFooterButtonProps {
+  testID: string;
+  isLoading?: boolean;
+  disabled?: boolean;
+}
+
+class CartFooterButton extends Component<CartFooterButtonProps> {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,11 +102,5 @@ class CartFooterButton extends Component {
     disabled: false,
   };
 }
-
-CartFooterButton.propTypes = {
-  testID: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool,
-  disabled: PropTypes.bool,
-};
 
 export default withTranslation()(CartFooterButton);

@@ -2,12 +2,22 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { greenColor, greyColor, redColor } from '../../../styles/common';
 
-class Step extends Component {
+interface StepProps {
+  start?: boolean;
+  active?: boolean;
+  loading?: boolean;
+  error?: boolean;
+  hide?: boolean;
+  activeLabel?: string;
+  loadingLabel?: string;
+  errorLabel?: string;
+}
+
+class Step extends Component<StepProps> {
   render() {
     const {
       active,
@@ -66,16 +76,6 @@ class Step extends Component {
   };
 }
 
-Step.propTypes = {
-  start: PropTypes.bool,
-  active: PropTypes.bool,
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-  hide: PropTypes.bool,
-  activeLabel: PropTypes.string,
-  loadingLabel: PropTypes.string,
-  errorLabel: PropTypes.string,
-};
 const styles = StyleSheet.create({
   dot: {
     width: 16,

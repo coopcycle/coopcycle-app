@@ -1,6 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { HStack } from '@/components/ui/hstack';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -8,7 +7,13 @@ import { connect } from 'react-redux';
 
 import CartFooterButton from './CartFooterButton';
 
-class CartFooter extends Component {
+interface CartFooterProps {
+  testID: string;
+  isLoading?: boolean;
+  disabled?: boolean;
+}
+
+class CartFooter extends Component<CartFooterProps> {
   render() {
     const { cart, restaurant, initLoading } = this.props;
 
@@ -43,12 +48,6 @@ class CartFooter extends Component {
     disabled: false,
   };
 }
-
-CartFooter.propTypes = {
-  testID: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool,
-  disabled: PropTypes.bool,
-};
 
 function mapStateToProps(state, ownProps) {
   return {

@@ -2,7 +2,6 @@ import _ from 'lodash';
 import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { FlatList, SectionList, StyleSheet, View } from 'react-native';
@@ -54,7 +53,12 @@ const itemsToSections = itemsGroupedByVendor =>
     data: items,
   }));
 
-class OrderItems extends Component {
+interface OrderItemsProps {
+  withDeliveryTotal?: boolean;
+  withTotals?: boolean;
+}
+
+class OrderItems extends Component<OrderItemsProps> {
   renderItemAdjustments(adjustments, important = false) {
     const textStyle = [styles.adjustmentText];
     if (important) {
@@ -201,10 +205,5 @@ class OrderItems extends Component {
     withTotals: true,
   };
 }
-
-OrderItems.propTypes = {
-  withDeliveryTotal: PropTypes.bool,
-  withTotals: PropTypes.bool,
-};
 
 export default withTranslation()(OrderItems);

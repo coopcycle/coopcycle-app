@@ -1,7 +1,6 @@
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -16,7 +15,17 @@ const TipCart = props => (
   </Button>
 );
 
-function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
+interface TipsProps {
+  onTip(...args: unknown[]): unknown;
+  value?: number;
+  values?: number[];
+}
+
+function Tips({
+  onTip,
+  value = 0,
+  values = [0, 100, 200, 400]
+}: TipsProps) {
   const [tip, setTip] = useState(value);
   const [advancedView, setAdvancedView] = useState(!values.includes(tip));
   const { t } = useTranslation();
@@ -72,11 +81,5 @@ function Tips({ onTip, value = 0, values = [0, 100, 200, 400] }) {
     </Box>
   );
 }
-
-Tips.propTypes = {
-  onTip: PropTypes.func.isRequired,
-  value: PropTypes.number,
-  values: PropTypes.arrayOf(PropTypes.number),
-};
 
 export default Tips;

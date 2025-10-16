@@ -1,7 +1,6 @@
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { Box } from '@/components/ui/box';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
@@ -10,7 +9,15 @@ import { connect } from 'react-redux';
 
 import { hideExpiredSessionModal } from '../../../redux/Checkout/actions';
 
-const ExpiredSessionModal = ({ isVisible, onModalHide, hideExpiredSessionModal }) => {
+interface ExpiredSessionModalProps {
+  onModalHide(...args: unknown[]): unknown;
+}
+
+const ExpiredSessionModal = ({
+  isVisible,
+  onModalHide,
+  hideExpiredSessionModal
+}: ExpiredSessionModalProps) => {
 
   const { t } = useTranslation()
 
@@ -31,10 +38,6 @@ const ExpiredSessionModal = ({ isVisible, onModalHide, hideExpiredSessionModal }
     </Modal>
   );
 }
-
-ExpiredSessionModal.propTypes = {
-  onModalHide: PropTypes.func.isRequired,
-};
 
 const styles = StyleSheet.create({
   modalText: {

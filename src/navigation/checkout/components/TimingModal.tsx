@@ -2,7 +2,6 @@ import { Heading } from '@/components/ui/heading';
 import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { Divider } from '@/components/ui/divider';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { withTranslation } from 'react-i18next';
@@ -11,7 +10,18 @@ import BottomModal from '../../../components/BottomModal';
 import { showTimingModal } from '../../../redux/Checkout/actions';
 import TimingCartSelect from './TimingCartSelect';
 
-class TimingModal extends Component {
+interface TimingModalProps {
+  openingHoursSpecification: object;
+  fulfillmentMethods?: string[];
+  orderNodeId?: string;
+  cartFulfillmentMethod?: string;
+  onFulfillmentMethodChange?(...args: unknown[]): unknown;
+  modalEnabled?: boolean;
+  onSchedule?(...args: unknown[]): unknown;
+  onSkip?(...args: unknown[]): unknown;
+}
+
+class TimingModal extends Component<TimingModalProps> {
   constructor(props) {
     super(props);
     this.state = {
@@ -116,17 +126,6 @@ class TimingModal extends Component {
     onSkip: () => {},
   };
 }
-
-TimingModal.propTypes = {
-  openingHoursSpecification: PropTypes.object.isRequired,
-  fulfillmentMethods: PropTypes.arrayOf(PropTypes.string),
-  orderNodeId: PropTypes.string,
-  cartFulfillmentMethod: PropTypes.string,
-  onFulfillmentMethodChange: PropTypes.func,
-  modalEnabled: PropTypes.bool,
-  onSchedule: PropTypes.func,
-  onSkip: PropTypes.func,
-};
 
 function mapStateToProps(state) {
   const { displayed, message } = state.checkout.timingModal;

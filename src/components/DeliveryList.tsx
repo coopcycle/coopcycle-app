@@ -2,7 +2,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import { Icon, ChevronRightIcon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
@@ -65,7 +64,17 @@ const captionTextProps = {
   ellipsizeMode: 'tail',
 };
 
-class DeliveryList extends Component {
+interface DeliveryListProps {
+  data?: object[];
+  loading?: boolean;
+  onItemPress(...args: unknown[]): unknown;
+  onEndReached(...args: unknown[]): unknown;
+  itemCaptionLines?(...args: unknown[]): unknown;
+  onRefresh?(...args: unknown[]): unknown;
+  refreshing?: boolean;
+}
+
+class DeliveryList extends Component<DeliveryListProps> {
   _onItemPress(item) {
     if (this.props.loading || this.props.refreshing) {
       return;
@@ -187,15 +196,5 @@ class DeliveryList extends Component {
     onRefresh: () => {},
   };
 }
-
-DeliveryList.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
-  loading: PropTypes.bool,
-  onItemPress: PropTypes.func.isRequired,
-  onEndReached: PropTypes.func.isRequired,
-  itemCaptionLines: PropTypes.func,
-  onRefresh: PropTypes.func,
-  refreshing: PropTypes.bool,
-};
 
 export default withTranslation()(DeliveryList);
