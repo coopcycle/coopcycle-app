@@ -8,17 +8,21 @@ import { CloseIcon } from '@/components/ui/icon';
 import * as FileSystem from 'expo-file-system';
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 
+import { useTranslation } from 'react-i18next';
+
 export default ({ photos, onPressClose, onSelectPhoto }) => {
+
+    const { t } = useTranslation();
 
     return (
         <Box className="bg-background-50 p-4 ">
             <HStack className="justify-between items-center mb-3">
-                <Text>Select a photo below</Text>
+                <Text>{ t('SELECT_PHOTO') }</Text>
                 <Button  variant="link" onPress={onPressClose}>
                     <ButtonIcon size="xl" as={CloseIcon} />
                 </Button>
             </HStack>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
             {photos.map((p, i) => {
                return (
                 <Pressable key={`photo-${i}`} className="mb-3" onPress={async () => {
