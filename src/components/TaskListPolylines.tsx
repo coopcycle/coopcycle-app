@@ -45,15 +45,11 @@ const TaskListPolylines: React.FC<TaskListPolylinesProps> = ({
         [tasksEntities],
     );
 
-    
     /**
      * Render all the polylines for the given task lists.
      */
     const renderPolylines = useCallback(() => {
         if (!isPolylineOn) return null;
-
-        console.log('TaskLists count:', taskLists?.length);
-
 
         return taskLists.map((taskList, index) => {
             // Skip hidden unassigned routes
@@ -82,7 +78,6 @@ const TaskListPolylines: React.FC<TaskListPolylinesProps> = ({
             );
         });
     }, [taskLists, getCoordinates, isPolylineOn, isHideUnassignedFromMap, unassignedPolylineColor]);
-
 
     return <>{renderPolylines()}</>;
 };

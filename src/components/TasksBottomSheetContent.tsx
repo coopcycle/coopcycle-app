@@ -1,16 +1,17 @@
-import React, { useRef } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import {
-  BottomSheetPortal,
   BottomSheetBackdrop,
-  BottomSheetFlatList,
   BottomSheetContent,
   BottomSheetDragIndicator,
+  BottomSheetFlatList,
+  BottomSheetPortal,
 } from '@/components/ui/bottomsheet';
 import FAIcon from './Icon';
-import { getTimeFrame } from '../navigation/task/components/utils';
+import { getName, getTimeFrame } from '../navigation/task/components/utils';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { navigateToTask } from '../navigation/utils';
+import { getOrderNumberWithPosition } from '../utils/tasks';
 
 const styles = StyleSheet.create({
   taskRow: {
@@ -18,8 +19,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     marginHorizontal: 1,
-    borderBottomColor: '#555555d1',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#555555d1',
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   colIcon: { flex: 0.05, alignItems: 'center', justifyContent: 'center' },
   colCode: { flex: 0.2, flexDirection: 'row', alignItems: 'center' },
@@ -39,21 +40,19 @@ const styles = StyleSheet.create({
 });
 
 const addressName = task => {
-  const customerName = task.address.firstName
-    ? [task.address.firstName, task.address.lastName].join(' ')
-    : null;
-  return task.address.name || customerName || task.address.streetAddress;
+  return task.address.name || getName(task);
 };
 
 export default function TasksBottomSheetContent({ modalMarkers = [] }) {
   const navigation = useNavigation();
   const route = useRoute();
-  const bottomSheetRef = useRef(null);
 
   if (!modalMarkers || modalMarkers.length === 0) return null;
 
-  const mainTask = modalMarkers[0];
-  const address = mainTask.address?.streetAddress || '';
+  // Find the 1st task with useful address name, or fallback to the first task
+  const mainTask = modalMarkers.find(addressName) || modalMarkers[0];
+  const mainName = addressName(mainTask);
+  const mainAddress = mainTask.address.streetAddress;
 
   return (
     <BottomSheetPortal
@@ -66,11 +65,14 @@ export default function TasksBottomSheetContent({ modalMarkers = [] }) {
       <BottomSheetContent>
         <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
           <Text style={{ fontWeight: '700', fontSize: 16 }}>
-            {addressName(mainTask)} ({modalMarkers.length})
+            {mainName || mainAddress} ({modalMarkers.length})
           </Text>
-          <Text style={{ color: '#666', marginBottom: 10 }}>{address}</Text>
+          {mainName && mainAddress !== mainName ? (
+            <Text style={{ color: '#666', marginBottom: 10 }}>{mainAddress}</Text>
+          ) : null}
 
           <BottomSheetFlatList
+            style={{ marginTop: 10 }}
             data={modalMarkers}
             keyExtractor={(item, i) => `${item.id}-${i}`}
             renderItem={({ item }) => {
@@ -87,24 +89,22 @@ export default function TasksBottomSheetContent({ modalMarkers = [] }) {
                   </View>
                   <View style={styles.colCode}>
                     <Text style={styles.taskCode}>
-                      #{item.short_id || item.id}
+                      #{getOrderNumberWithPosition(item) || item.short_id || item.id}
                     </Text>
                   </View>
                   <View style={styles.colTime}>
                     <Text style={styles.taskTime}>
-                      {getTimeFrame(item) || 'No time'}
+                      {getTimeFrame(item)}
                     </Text>
                   </View>
                   <View style={styles.colAssigned}>
-                    {item.assignedTo && (
-                      <Text
-                        style={styles.taskCourier}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                      >
-                        aasdasd
-                      </Text>
-                    )}
+                    <Text
+                      style={styles.taskCourier}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.address.contactName}
+                    </Text>
                   </View>
 
                 </Pressable>
