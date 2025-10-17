@@ -1,7 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { HStack } from '@/components/ui/hstack';
 import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -35,10 +34,10 @@ const CartFooter = ({ testID, isLoading, initLoading, onSubmit, cart, restaurant
           <CartFooterButton
             cart={cart}
             restaurant={restaurant}
-            onPress={() => this.props.onSubmit()}
-            loading={this.props.isLoading}
-            testID={this.props.testID}
-            disabled={this.props.disabled}
+            onPress={onSubmit}
+            loading={isLoading}
+            testID={testID}
+            disabled={disabled}
           />
         )}
       </View>
@@ -52,4 +51,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps)(withTranslation()(CartFooter));
+export default connect(mapStateToProps)(CartFooter);
