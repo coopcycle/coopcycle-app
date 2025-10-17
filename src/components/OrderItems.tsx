@@ -169,8 +169,6 @@ interface OrderItemsProps {
 
 const OrderItems = ({ order, withDeliveryTotal = false, withTotals = true}: OrderItemsProps) =>  {
 
-  const { order } = this.props;
-
   const itemsGroupedByVendor = _.groupBy(order.items, 'vendor.@id');
   const isMultiVendor = _.size(itemsGroupedByVendor) > 1;
 
