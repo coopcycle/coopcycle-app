@@ -34,12 +34,10 @@ describeif(device.getPlatform() === 'android')
 
   it('should correctly apply filters to tasks on different tasklists', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // Assign the 1st order in the list with tasks #1+#2+#3
     await assignOrderToUser(USER_JANE);
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Assign the 1st order in the list with tasks #5+#4
     await assignOrderToUser(USER_ZAK);
 
@@ -47,7 +45,7 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUnassigned();
     // Show USER_JANE's and USER_ZAK's tasks section
     await toggleSectionUser(USER_JANE);
-    //await toggleSectionUser(USER_ZAK); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUser(USER_ZAK);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
