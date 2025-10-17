@@ -59,9 +59,9 @@ const CartFooterButton = ({ cart, restaurant, onPress, testID, loading, disabled
         useNativeDriver: false,
       }),
     ]).start();
-  }, [])
+  }, [opacity])
 
-  useEffect(animate, [cart.total, opacity]);
+  useEffect(animate, [cart.total, animate]);
 
   const isAvailable = isRestaurantOrderingAvailable(restaurant);
   const showPreOrder = shouldShowPreOrder(restaurant);
