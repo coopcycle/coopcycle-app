@@ -7,7 +7,7 @@ import GorhomBottomSheet, {
   BottomSheetFlatList as GorhomBottomSheetFlatList,
   BottomSheetSectionList as GorhomBottomSheetSectionList,
 } from '@gorhom/bottom-sheet';
-import { Platform } from 'react-native';
+import { Platform, useColorScheme, Pressable, Text } from 'react-native';
 import type { PressableProps, TextProps } from 'react-native';
 import { FocusScope } from '@gluestack-ui/utils/aria';
 import React, {
@@ -18,27 +18,27 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Pressable, Text } from 'react-native';
 import { cssInterop } from 'nativewind';
 import { tva } from '@gluestack-ui/utils/nativewind-utils';
 
 const bottomSheetBackdropStyle = tva({
-  base: 'absolute inset-0 flex-1 touch-none select-none bg-black opacity-0',
+  base: 'absolute inset-0 flex-1 touch-none select-none bg-black opacity-40',
 });
 
 const bottomSheetContentStyle = tva({
   base: 'mt-2',
 });
+
 const bottomSheetTriggerStyle = tva({
   base: '',
 });
 
 const bottomSheetIndicatorStyle = tva({
-  base: 'py-1 w-full items-center rounded-t-lg ',
+  base: 'py-1 w-full items-center rounded-t-lg',
 });
 
 const bottomSheetItemStyle = tva({
-  base: 'p-3 flex-row items-center rounded-sm w-full disabled:opacity-0.4 web:pointer-events-auto disabled:cursor-not-allowed hover:bg-background-50 active:bg-background-100 focus:bg-background-100 web:focus-visible:bg-background-100',
+  base: 'p-3 flex-row items-center rounded-sm w-full disabled:opacity-40 web:pointer-events-auto disabled:cursor-not-allowed hover:bg-background-50 active:bg-background-100 focus:bg-background-100 web:focus-visible:bg-background-100',
 });
 
 export const BottomSheetContext = createContext<{
@@ -46,11 +46,13 @@ export const BottomSheetContext = createContext<{
   bottomSheetRef: React.RefObject<GorhomBottomSheet>;
   handleClose: () => void;
   handleOpen: () => void;
+  isDarkMode: boolean;
 }>({
   visible: false,
   bottomSheetRef: { current: null },
   handleClose: () => {},
   handleOpen: () => {},
+  isDarkMode: false,
 });
 
 type IBottomSheetProps = React.ComponentProps<typeof GorhomBottomSheet>;
@@ -66,6 +68,8 @@ export const BottomSheet = ({
   onClose?: () => void;
 }) => {
   const bottomSheetRef = useRef<GorhomBottomSheet>(null);
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
 
   const [visible, setVisible] = useState(false);
 
@@ -88,6 +92,7 @@ export const BottomSheet = ({
         bottomSheetRef,
         handleClose,
         handleOpen,
+        isDarkMode,
       }}
     >
       {props.children}
@@ -105,13 +110,11 @@ export const BottomSheetPortal = ({
   snapToIndex?: number;
   snapPoints: string[];
 }) => {
-  const { bottomSheetRef, handleClose } = useContext(BottomSheetContext);
+  const { bottomSheetRef, handleClose, isDarkMode } = useContext(BottomSheetContext);
 
   const handleSheetChanges = useCallback(
     (index: number) => {
-      if (index === 0 || index === -1) {
-        handleClose();
-      }
+      if (index === 0 || index === -1) handleClose();
     },
     [handleClose]
   );
@@ -124,7 +127,13 @@ export const BottomSheetPortal = ({
       backdropComponent={BackDrop}
       onChange={handleSheetChanges}
       handleComponent={DragIndicator}
-      enablePanDownToClose={true}
+      enablePanDownToClose
+      backgroundStyle={{
+        backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
+      }}
+      handleIndicatorStyle={{
+        backgroundColor: isDarkMode ? '#666' : '#CCC',
+      }}
       {...props}
     >
       {props.children}
@@ -144,30 +153,24 @@ export const BottomSheetTrigger = ({
         handleOpen();
       }}
       {...props}
-      className={bottomSheetTriggerStyle({
-        className: className,
-      })}
+      className={bottomSheetTriggerStyle({ className })}
     >
       {props.children}
     </Pressable>
   );
 };
-type IBottomSheetBackdrop = React.ComponentProps<
-  typeof GorhomBottomSheetBackdrop
->;
 
 export const BottomSheetBackdrop = ({
   disappearsOnIndex = -1,
   appearsOnIndex = 1,
   className,
   ...props
-}: Partial<IBottomSheetBackdrop> & { className?: string }) => {
+}: Partial<React.ComponentProps<typeof GorhomBottomSheetBackdrop>> & {
+  className?: string;
+}) => {
   return (
     <GorhomBottomSheetBackdrop
-      // @ts-ignore
-      className={bottomSheetBackdropStyle({
-        className: className,
-      })}
+      className={bottomSheetBackdropStyle({ className })}
       disappearsOnIndex={disappearsOnIndex}
       appearsOnIndex={appearsOnIndex}
       {...props}
@@ -177,20 +180,18 @@ export const BottomSheetBackdrop = ({
 
 cssInterop(GorhomBottomSheetBackdrop, { className: 'style' });
 
-type IBottomSheetDragIndicator = React.ComponentProps<typeof BottomSheetHandle>;
 
 export const BottomSheetDragIndicator = ({
   children,
   className,
   ...props
-}: Partial<IBottomSheetDragIndicator> & { className?: string }) => {
+}: Partial<React.ComponentProps<typeof BottomSheetHandle>> & {
+  className?: string;
+}) => {
   return (
     <BottomSheetHandle
       {...props}
-      // @ts-ignore
-      className={bottomSheetIndicatorStyle({
-        className: className,
-      })}
+      className={bottomSheetIndicatorStyle({ className })}
     >
       {children}
     </BottomSheetHandle>
@@ -199,10 +200,9 @@ export const BottomSheetDragIndicator = ({
 
 cssInterop(BottomSheetHandle, { className: 'style' });
 
-type IBottomSheetContent = React.ComponentProps<typeof GorhomBottomSheetView>;
+export const BottomSheetContent = (props: React.ComponentProps<typeof GorhomBottomSheetView>) => {
+  const { handleClose, visible, isDarkMode } = useContext(BottomSheetContext);
 
-export const BottomSheetContent = ({ ...props }: IBottomSheetContent) => {
-  const { handleClose, visible } = useContext(BottomSheetContext);
   const keyDownHandlers = useMemo(() => {
     return Platform.OS === 'web'
       ? {
@@ -210,43 +210,47 @@ export const BottomSheetContent = ({ ...props }: IBottomSheetContent) => {
             if (e.key === 'Escape') {
               e.preventDefault();
               handleClose();
-              return;
             }
           },
         }
       : {};
   }, [handleClose]);
 
-  if (Platform.OS === 'web')
-    return (
-      <GorhomBottomSheetView
-        {...props}
-        // @ts-ignore
-        {...keyDownHandlers}
-        className={bottomSheetContentStyle({
-          className: props.className,
-        })}
-      >
-        {visible && (
-          <FocusScope contain={visible} autoFocus={true} restoreFocus={true}>
-            {props.children}
-          </FocusScope>
-        )}
-      </GorhomBottomSheetView>
-    );
+  const backgroundColor = isDarkMode ? '#1E1E1E' : '#FFFFFF';
+  const textColor = isDarkMode ? '#FFFFFF' : '#000000';
 
-  return (
+  const contentStyle = [{ backgroundColor }, props.style];
+
+  const content = (
     <GorhomBottomSheetView
       {...props}
-      // @ts-ignore
       {...keyDownHandlers}
-      className={bottomSheetContentStyle({
-        className: props.className,
-      })}
+      style={contentStyle}
+      className={bottomSheetContentStyle({ className: props.className })}
     >
-      {props.children}
+      <React.Fragment>
+        {React.Children.map(props.children, (child) =>
+          React.isValidElement(child)
+            ? React.cloneElement(child as any, {
+                style: [
+                  (child.props as any)?.style,
+                  { color: textColor },
+                ],
+              })
+            : child
+        )}
+      </React.Fragment>
     </GorhomBottomSheetView>
   );
+
+  if (Platform.OS === 'web' && visible)
+    return (
+      <FocusScope contain={visible} autoFocus restoreFocus>
+        {content}
+      </FocusScope>
+    );
+
+  return content;
 };
 
 cssInterop(GorhomBottomSheetView, { className: 'style' });
@@ -256,38 +260,85 @@ export const BottomSheetItem = ({
   className,
   closeOnSelect = true,
   ...props
-}: PressableProps & {
-  closeOnSelect?: boolean;
-}) => {
-  const { handleClose } = useContext(BottomSheetContext);
+}: PressableProps & { closeOnSelect?: boolean }) => {
+  const { handleClose, isDarkMode } = useContext(BottomSheetContext);
+
+  const backgroundColor = isDarkMode ? '#2A2A2A' : '#FFF';
+  const textColor = isDarkMode ? '#FFF' : '#000';
+
   return (
     <Pressable
       {...props}
-      className={bottomSheetItemStyle({
-        className: className,
-      })}
+      className={bottomSheetItemStyle({ className })}
       onPress={(e) => {
-        if (closeOnSelect) {
-          handleClose();
-        }
+        if (closeOnSelect) handleClose();
         props.onPress && props.onPress(e);
       }}
+      style={{ backgroundColor }}
       role="button"
     >
-      {children}
+      {React.Children.map(children, (child) =>
+        typeof child === 'string' ? (
+          <Text style={{ color: textColor }}>{child}</Text>
+        ) : React.isValidElement(child) ? (
+          React.cloneElement(child, {
+            style: [
+              (child.props as any)?.style,
+              { color: textColor },
+            ],
+          })
+        ) : (
+          child
+        )
+      )}
     </Pressable>
   );
 };
 
-export const BottomSheetItemText = ({ ...props }: TextProps) => {
-  return <Text {...props} />;
+export const BottomSheetItemText = (props: TextProps) => {
+  const { isDarkMode } = useContext(BottomSheetContext);
+  return (
+    <Text {...props} style={[{ color: isDarkMode ? '#FFF' : '#000' }, props.style]} />
+  );
 };
 
-export const BottomSheetScrollView = GorhomBottomSheetScrollView;
-export const BottomSheetFlatList = GorhomBottomSheetFlatList;
-export const BottomSheetSectionList = GorhomBottomSheetSectionList;
-export const BottomSheetTextInput = GorhomBottomSheetInput;
+export const BottomSheetScrollView = (props: React.ComponentProps<typeof GorhomBottomSheetScrollView>) => {
+  const { isDarkMode } = useContext(BottomSheetContext);
+  return (
+    <GorhomBottomSheetScrollView
+      {...props}
+      style={[{ backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }, props.style]}
+    />
+  );
+};
 
+export const BottomSheetFlatList = (props: React.ComponentProps<typeof GorhomBottomSheetFlatList>) => {
+  const { isDarkMode } = useContext(BottomSheetContext);
+  return (
+    <GorhomBottomSheetFlatList
+      {...props}
+      style={[{ backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }, props.style]}
+      contentContainerStyle={[
+        { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' },
+        props.contentContainerStyle,
+      ]}
+    />
+  );
+};
+
+export const BottomSheetSectionList = (props: React.ComponentProps<typeof GorhomBottomSheetSectionList>) => {
+  const { isDarkMode } = useContext(BottomSheetContext);
+  return (
+    <GorhomBottomSheetSectionList
+      {...props}
+      style={[{ backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }, props.style]}
+      contentContainerStyle={[
+        { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' },
+        props.contentContainerStyle,
+      ]}
+    />
+  );
+};
 
 cssInterop(GorhomBottomSheetInput, { className: 'style' });
 cssInterop(GorhomBottomSheetScrollView, { className: 'style' });

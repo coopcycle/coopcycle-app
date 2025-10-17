@@ -59,7 +59,7 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
   let iconColor = '#000000';
 
   if (count > 1) { // Cluster marker
-    baseColor = '#1E88E5'; // Main blue
+    baseColor = '#1E88E5'; 
     borderColor = lightenColor(baseColor, 70);
   } else { // Single marker
     const tagColor = task?.tags?.[0]?.color;
@@ -68,10 +68,7 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
       baseColor = isUnassigned ? '#414141' : '#000000';
       iconColor = tagColor || (isUnassigned ? '#9c9c9c' : '#FFFFFF');
       borderColor = lightenColor(iconColor, 80);
-    } else {
-      iconColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
-      borderColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
-    }
+    } 
   }
 
   return (

@@ -1,11 +1,12 @@
-import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetContent,
   BottomSheetDragIndicator,
   BottomSheetFlatList,
   BottomSheetPortal,
+  BottomSheetContext,
 } from '@/components/ui/bottomsheet';
 import FAIcon from './Icon';
 import { getName, getTimeFrame } from '../navigation/task/components/utils';
@@ -19,33 +20,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     marginHorizontal: 1,
-    borderTopColor: '#555555d1',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   colIcon: { flex: 0.1, alignItems: 'center', justifyContent: 'center' },
   colCode: { flex: 0.2, flexDirection: 'row', alignItems: 'center' },
   colTime: { flex: 0.4, alignItems: 'center', justifyContent: 'center' },
   colAssigned: {
-    flex: 0.3,          
-    overflow: 'hidden', 
+    flex: 0.3,
+    overflow: 'hidden',
   },
   taskCourier: {
     fontSize: 14,
-    color: '#333',
-    flexShrink: 1,  
+    flexShrink: 1,
   },
-
-  taskCode: { fontWeight: '900', marginLeft: 4, color: 'black' },
-  taskTime: { color: '#555', textAlign: 'center', flexShrink: 0 }
+  taskCode: { fontWeight: '700', marginLeft: 4 },
+  taskTime: { textAlign: 'center', flexShrink: 0 },
+  headerContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
 });
 
 const addressName = task => {
   return task.address.name || getName(task);
 };
 
-export default function TasksBottomSheetContent({ modalMarkers = [] }) {
+export default function TasksBottomSheetContent({ modalMarkers = [], onListedTaskPress }) {
   const navigation = useNavigation();
   const route = useRoute();
+
+  const bsContext = useContext(BottomSheetContext);
+  const colorScheme = useColorScheme();
+  const isDarkMode = typeof bsContext?.isDarkMode === 'boolean' ? bsContext.isDarkMode : colorScheme === 'dark';
+
+  const colors = {
+    textPrimary: isDarkMode ? '#FFFFFF' : '#000000',
+    textSecondary: isDarkMode ? '#BBBBBB' : '#666666',
+    border: isDarkMode ? '#333333' : '#CCCCCC',
+    iconPickup: '#E53935',
+    iconDropoff: '#4CAF50',
+  };
 
   if (!modalMarkers || modalMarkers.length === 0) return null;
 
@@ -61,51 +75,82 @@ export default function TasksBottomSheetContent({ modalMarkers = [] }) {
       handleComponent={BottomSheetDragIndicator}
       enablePanDownToClose
     >
-      <BottomSheetContent>
-        <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-          <Text style={{ fontWeight: '700', fontSize: 16 }}>
+      <BottomSheetContent style={{ backgroundColor: colors.background }}>
+        <View style={styles.headerContainer}>
+          <Text
+            style={{
+              fontWeight: '700',
+              fontSize: 16,
+              color: colors.textPrimary,
+            }}
+          >
             {mainName || mainAddress} ({modalMarkers.length})
           </Text>
+
           {mainName && mainAddress !== mainName ? (
-            <Text style={{ color: '#666', marginBottom: 10 }}>{mainAddress}</Text>
+            <Text
+              style={{
+                color: colors.textSecondary,
+                marginBottom: 10,
+              }}
+            >
+              {mainAddress}
+            </Text>
           ) : null}
 
           <BottomSheetFlatList
             style={{ marginTop: 10 }}
+            contentContainerStyle={{ backgroundColor: colors.background }}
             data={modalMarkers}
             keyExtractor={(item, i) => `${item.id}-${i}`}
             renderItem={({ item }) => {
               const iconName = item.type === 'PICKUP' ? 'cube' : 'arrow-down';
               const iconColor =
-                item.type === 'PICKUP' ? '#E53935' : '#4CAF50';
+                item.type === 'PICKUP' ? colors.iconPickup : colors.iconDropoff;
 
               return (
                 <Pressable
-                  style={styles.taskRow}
-                  onPress={() => navigateToTask(navigation, route, item)}>
+                  style={[styles.taskRow, { borderTopColor: colors.border, backgroundColor: colors.background }]}
+                  onPress={() => onListedTaskPress(item)} // 
+                >
                   <View style={styles.colIcon}>
                     <FAIcon name={iconName} size={15} color={iconColor} />
                   </View>
+
                   <View style={styles.colCode}>
-                    <Text style={styles.taskCode}>
+                    <Text
+                      style={[
+                        styles.taskCode,
+                        { color: colors.textPrimary },
+                      ]}
+                    >
                       #{getOrderNumberWithPosition(item) || item.short_id || item.id}
                     </Text>
                   </View>
+
                   <View style={styles.colTime}>
-                    <Text style={styles.taskTime}>
+                    <Text
+                      style={[
+                        styles.taskTime,
+                        { color: colors.textSecondary },
+                      ]}
+                    >
                       {getTimeFrame(item)}
                     </Text>
                   </View>
+
                   <View style={styles.colAssigned}>
                     <Text
-                      style={styles.taskCourier}
+                      style={[
+                        styles.taskCourier,
+                        { color: colors.textPrimary },
+                      ]}
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
-                       {item.address.contactName}
+                      {item.address.contactName}
                     </Text>
                   </View>
-
                 </Pressable>
               );
             }}

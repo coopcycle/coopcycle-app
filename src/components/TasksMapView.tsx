@@ -24,6 +24,7 @@ import {
 import TasksBottomSheetContent from './TasksBottomSheetContent';
 import { lightMapStyle, darkMapStyle } from "../styles/mapStyles"
 import TaskListPolylines from './TaskListPolylines';
+import { navigateToTask } from '../navigation/utils';
 
 function TasksMapView(props) {
   const {
@@ -34,6 +35,10 @@ function TasksMapView(props) {
     tasksEntities,
     isHideUnassignedFromMap,
     mode = 'system',
+    navigation,
+    route,
+    courierTasks,
+    onListedTaskPress
   } = props;
 
   const [marginBottom, setMarginBottom] = useState(1);
@@ -107,14 +112,21 @@ function TasksMapView(props) {
       );
     });
   }, [groupedByCoord, onMarkerPress]);
+  ;
+
+  const handleNavigateToTaskDetail = (task) => {
+    navigateToTask(navigation, route, task, courierTasks);
+  };
 
   // render bottomsheet
   const renderBottomSheet = useCallback(() => {
     if (!modalMarkers || modalMarkers.length === 0) return null;
-
-    return <TasksBottomSheetContent modalMarkers={modalMarkers} />;
-
-  }, [modalMarkers]);
+    return (
+      <TasksBottomSheetContent
+        modalMarkers={modalMarkers}
+        onListedTaskPress={onListedTaskPress} 
+      />
+    ); },[modalMarkers, onListedTaskPress]);
 
   // map render
   return (

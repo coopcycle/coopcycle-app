@@ -76,6 +76,7 @@ export default function TasksMap({ navigation, route }) {
     navigateToTask(navigation, route, task, relatedTasks);
   };
 
+  //dispatch map render
   return (
     <>
       <View style={{ backgroundColor: bgHighlightColor }}>
@@ -92,8 +93,8 @@ export default function TasksMap({ navigation, route }) {
           <TasksMapView
             mapCenter={mapCenter}
             taskLists={mergedTaskListsWithUnassigned}
-            onMarkerCalloutPress={navigateToSelectedTask}
             uiFilters={uiFilters}
+            onListedTaskPress={navigateToSelectedTask}
           />
         </BottomSheet>
         {isFetching ? (
