@@ -29,6 +29,7 @@ import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TasksMapView from '../../components/TasksMapView';
 import { DateOnlyString } from '../../utils/date-types';
+import { BottomSheet } from '@/components/ui/bottomsheet';
 
 const styles = StyleSheet.create({
   container: {
@@ -82,15 +83,17 @@ function TaskMapPage({ navigation, route }) {
     <View style={styles.container}>
       <DateSelectHeader navigate={navigation.navigate} />
       <View style={{ flex: 1 }}>
-        <TasksMapView
-          mapCenter={mapCenter}
-          taskLists={[courierTaskList]}
-          unassignedPolylineColor={unassignedPolylineColor}
-          onMarkerCalloutPress={task =>
-            // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
-            navigateToTask(navigation, route, task, courierTaskList.items)
-          }
-        />
+        <BottomSheet>
+          <TasksMapView
+            mapCenter={mapCenter}
+            taskLists={[courierTaskList]}
+            unassignedPolylineColor={unassignedPolylineColor}
+            onMarkerCalloutPress={task =>
+              // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
+              navigateToTask(navigation, route, task, courierTaskList.items)
+            }
+          />
+        </BottomSheet>
         {isFetching ? (
           <View style={styles.activityContainer}>
             <ActivityIndicator

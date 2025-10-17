@@ -22,17 +22,17 @@ const styles = StyleSheet.create({
     borderTopColor: '#555555d1',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
-  colIcon: { flex: 0.05, alignItems: 'center', justifyContent: 'center' },
+  colIcon: { flex: 0.1, alignItems: 'center', justifyContent: 'center' },
   colCode: { flex: 0.2, flexDirection: 'row', alignItems: 'center' },
   colTime: { flex: 0.4, alignItems: 'center', justifyContent: 'center' },
   colAssigned: {
-    flex: 1,            // Allows the text to use the available space
-    overflow: 'hidden', // Cuts off the text if it's too long
+    flex: 0.3,          
+    overflow: 'hidden', 
   },
   taskCourier: {
     fontSize: 14,
     color: '#333',
-    flexShrink: 1,     // 🔑 Avoid the text pushing other elements
+    flexShrink: 1,  
   },
 
   taskCode: { fontWeight: '900', marginLeft: 4, color: 'black' },
@@ -49,7 +49,6 @@ export default function TasksBottomSheetContent({ modalMarkers = [] }) {
 
   if (!modalMarkers || modalMarkers.length === 0) return null;
 
-  // Find the 1st task with useful address name, or fallback to the first task
   const mainTask = modalMarkers.find(addressName) || modalMarkers[0];
   const mainName = addressName(mainTask);
   const mainAddress = mainTask.address.streetAddress;
@@ -103,7 +102,7 @@ export default function TasksBottomSheetContent({ modalMarkers = [] }) {
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
-                      {item.address.contactName}
+                       {item.address.contactName}
                     </Text>
                   </View>
 

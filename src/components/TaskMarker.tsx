@@ -34,7 +34,6 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
   const isDarkMode = colorScheme === 'dark';
   testID = testID || `taskmarker-${task?.id}`
 
-  // 🔹 Cluster: Tasks number
   if (count > 1) {
     const color = '#1E88E5'; // Main blue
     const borderColor = lightenColor(color, 70);
@@ -60,10 +59,10 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
     );
   }
 
-  // 🔸 Individual task
+  // individual task
   const isUnassigned = !task?.assignedTo;
   const tagColor = task?.tags?.[0]?.color || '#ffffff';
-
+    const iconName = task?.type === 'PICKUP' ? 'cube' : 'arrow-down';
   // --- dark mode ---
   // @TODO Is this really needed? Dark mode styles are handled diferently now (without requiring to manually define colors here)
   if (isDarkMode) {
@@ -85,24 +84,23 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
         </Svg>
 
         <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
-          <FAIcon name="arrow-down" color={iconColor} size={size * 0.3} />
+          <FAIcon name={iconName} color={iconColor} size={size * 0.3} />
         </View>
       </View>
     );
   }
 
-  // --- light mode ---
+  // light mode
   const baseColor = '#FFFFFF';
   let borderColor = '#a0a0a0';
   let iconColor = '#a0a0a0';
 
   if (!isUnassigned) {
     if (task?.tags?.[0]?.color) {
-      // Tiene tagColor
+      // tagColor
       borderColor = tagColor;
       iconColor = tagColor;
     } else {
-      // Assigned pero sin tagColor
       borderColor = '#000000';
       iconColor = '#000000';
     }
@@ -122,7 +120,7 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
       </Svg>
 
       <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
-        <FAIcon name="arrow-down" color={iconColor} size={size * 0.3} />
+        <FAIcon name={iconName} color={iconColor} size={size * 0.3} />
       </View>
     </View>
   );
