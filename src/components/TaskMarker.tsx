@@ -22,110 +22,6 @@ const lightenColor = (hex: string, amount: number = 80) => {
   }
 };
 
-interface TaskMarkerProps {
-  task?: Task;
-  count?: number;
-  size?: number;
-  testID?: string;
-}
-
-const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === 'dark';
-  testID = testID || `taskmarker-${task?.id}`
-
-  if (count > 1) {
-    const color = '#1E88E5'; // Main blue
-    const borderColor = lightenColor(color, 70);
-
-    return (
-      <View style={styles.container} testID={testID}>
-        <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
-          <Path
-            d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
-            fill={borderColor}
-          />
-          <Path
-            d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
-            fill={color}
-          />
-        </Svg>
-        <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
-          <Text style={[styles.count, { fontSize: size * 0.35 }]}>
-            {count}
-          </Text>
-        </View>
-      </View>
-    );
-  }
-
-  // individual task
-  const isUnassigned = !task?.assignedTo;
-  const tagColor = task?.tags?.[0]?.color || '#ffffff';
-    const iconName = task?.type === 'PICKUP' ? 'cube' : 'arrow-down';
-  // --- dark mode ---
-  // @TODO Is this really needed? Dark mode styles are handled diferently now (without requiring to manually define colors here)
-  if (isDarkMode) {
-    const iconColor = isUnassigned ? '#9c9c9c' : tagColor;
-    const baseColor = isUnassigned ? '#414141' : '#000000';
-    const borderColor = lightenColor(isUnassigned ? baseColor : iconColor, 80);
-
-    return (
-      <View style={styles.container} testID={testID}>
-        <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
-          <Path
-            d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
-            fill={borderColor}
-          />
-          <Path
-            d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
-            fill={baseColor}
-          />
-        </Svg>
-
-        <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
-          <FAIcon name={iconName} color={iconColor} size={size * 0.3} />
-        </View>
-      </View>
-    );
-  }
-
-  // light mode
-  const baseColor = '#FFFFFF';
-  let borderColor = '#a0a0a0';
-  let iconColor = '#a0a0a0';
-
-  if (!isUnassigned) {
-    if (task?.tags?.[0]?.color) {
-      // tagColor
-      borderColor = tagColor;
-      iconColor = tagColor;
-    } else {
-      borderColor = '#000000';
-      iconColor = '#000000';
-    }
-  }
-
-  return (
-    <View style={styles.container} testID={testID}>
-      <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
-        <Path
-          d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
-          fill={borderColor}
-        />
-        <Path
-          d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
-          fill={baseColor}
-        />
-      </Svg>
-
-      <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
-        <FAIcon name={iconName} color={iconColor} size={size * 0.3} />
-      </View>
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -143,5 +39,64 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+interface TaskMarkerProps {
+  task?: Task;
+  count?: number;
+  size?: number;
+  testID?: string;
+}
+
+const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+  const isUnassigned = !task?.assignedTo;
+  const iconName = task?.type === 'PICKUP' ? 'cube' : 'arrow-down';
+  testID = testID || `taskmarker-${task?.id}`
+
+  let baseColor = '#FFFFFF';
+  let borderColor = '#000000';
+  let iconColor = '#000000';
+
+  if (count > 1) { // Cluster marker
+    baseColor = '#1E88E5'; // Main blue
+    borderColor = lightenColor(baseColor, 70);
+  } else { // Single marker
+    const tagColor = task?.tags?.[0]?.color;
+    if (isDarkMode) {
+      // @TODO Is this really needed? Dark mode styles are handled diferently now (without requiring to manually define colors here)
+      baseColor = isUnassigned ? '#414141' : '#000000';
+      iconColor = tagColor || (isUnassigned ? '#9c9c9c' : '#FFFFFF');
+      borderColor = lightenColor(iconColor, 80);
+    } else {
+      iconColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
+      borderColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
+    }
+  }
+
+  return (
+    <View style={styles.container} testID={testID}>
+      <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
+        <Path
+          d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
+          fill={borderColor}
+        />
+        <Path
+          d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
+          fill={baseColor}
+        />
+      </Svg>
+      <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
+        <Text style={[styles.count, { fontSize: size * 0.35 }]}>
+          {count > 1 ? ( // Cluster marker
+            count
+          ) : ( // Single marker
+            <FAIcon name={iconName} color={iconColor} size={size * 0.3} />
+          )}
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 export default TaskMarker;

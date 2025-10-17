@@ -54,7 +54,6 @@ export default function TasksMap({ navigation, route }) {
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
   const bgHighlightColor = useBackgroundHighlightColor();
-  const unassignedPolylineColor = useSecondaryTextColor();
 
   const { isFetching } = useAllTasks(selectedDate);
 
@@ -93,7 +92,6 @@ export default function TasksMap({ navigation, route }) {
           <TasksMapView
             mapCenter={mapCenter}
             taskLists={mergedTaskListsWithUnassigned}
-            unassignedPolylineColor={unassignedPolylineColor}
             onMarkerCalloutPress={navigateToSelectedTask}
             uiFilters={uiFilters}
           />

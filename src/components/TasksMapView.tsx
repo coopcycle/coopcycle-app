@@ -143,7 +143,6 @@ function TasksMapView(props) {
           >
             <TaskListPolylines
               taskLists={taskLists}
-              unassignedPolylineColor="rgba(49, 49, 49, 0.8)"
             />
             {renderMarkers}
           </MapView>
