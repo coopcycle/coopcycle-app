@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react-native'
 import { Text } from '@/components/ui/text';
@@ -29,10 +29,10 @@ const ButtonLeft = () => {
   );
 }
 
-const ButtonRight = ({ opacityAnim, total }) => {
+const ButtonRight = ({ opacity, total }) => {
 
   return (
-    <Animated.View style={{ opacity: opacityAnim }}>
+    <Animated.View style={{ opacity }}>
       <ButtonText>
         {`${formatPrice(total)}`}
       </ButtonText>
@@ -44,26 +44,24 @@ const CartFooterButton = ({ cart, restaurant, onPress, testID, loading, disabled
 
   const { t } = useTranslation();
 
-  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
 
-  useEffect(() => {
-
+  const animate = useCallback(() => {
     Animated.sequence([
-      Animated.timing(opacityAnim, {
+      Animated.timing(opacity, {
         toValue: 0.4,
         duration: 500,
         useNativeDriver: false,
       }),
-      Animated.timing(opacityAnim, {
+      Animated.timing(opacity, {
         toValue: 1,
         duration: 250,
         useNativeDriver: false,
       }),
     ]).start();
+  }, [])
 
-
-  }, [cart.total]);
-
+  useEffect(animate, [cart.total, opacity]);
 
   const isAvailable = isRestaurantOrderingAvailable(restaurant);
   const showPreOrder = shouldShowPreOrder(restaurant);
@@ -88,7 +86,7 @@ const CartFooterButton = ({ cart, restaurant, onPress, testID, loading, disabled
         <ButtonText>
           {label}
         </ButtonText>
-        <ButtonRight opacityAnim={opacityAnim} total={cart.total} />
+        <ButtonRight opacity={opacity} total={cart.total} />
     </Button>
   );
 }
