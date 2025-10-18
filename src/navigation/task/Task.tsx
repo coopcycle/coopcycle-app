@@ -104,13 +104,40 @@ class Task extends Component {
     setTimeout(() => this.swipeRow.current.closeRow(), 250);
   }
 
+  normalizeTask(task) {
+    if (!task || !task.address) return task;
+
+    if (task.address.geo) return task;
+
+    const { lat, lng } = task.address;
+    if (lat && lng) {
+      return {
+        ...task,
+        address: {
+          ...task.address,
+          geo: {
+            latitude: lat,
+            longitude: lng,
+          },
+        },
+      };
+    }
+
+    return task;
+  }
+
   renderMap() {
     if (!this.state.canRenderMap) {
       return <View style={[styles.map, { backgroundColor: '#eeeeee' }]} />;
     }
 
-    const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks || (task ? [task] : []);
+    const taskParam = this.props.route.params?.task;
+    const tasksParam = this.props.route.params?.tasks || [];
+
+    const task = this.normalizeTask(taskParam);
+    const tasks = (tasksParam.length > 0 ? tasksParam : (taskParam ? [taskParam] : []))
+      .map(t => this.normalizeTask(t));
+
     const aspectRatio = getAspectRatio(this.state.mapDimensions);
 
     return (

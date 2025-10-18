@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, SectionList, View } from 'react-native';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -31,6 +31,7 @@ import {
   selectTaskLists,
   selectTasksEntities,
 } from '../../../shared/logistics/redux';
+import { selectIsExpandedSection } from '../../../redux/Dispatch/selectors';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
@@ -59,6 +60,7 @@ export default function GroupedTasks({
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
   const date = useSelector(selectSelectedDate);
+  const isExpandedSection = useSelector(selectIsExpandedSection);
   const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation();
 
   useEffect(() => {
@@ -101,25 +103,6 @@ export default function GroupedTasks({
   const filteredSections = hideEmptyTaskLists
     ? sections.filter(section => section.tasksCount > 0)
     : sections;
-
-  const [collapsedSections, setCollapsedSections] = useState(new Set());
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  // Initialize all sections as collapsed only on first load
-  useEffect(() => {
-    if (
-      !isInitialized &&
-      !isFetching &&
-      filteredSections.length > 0 &&
-      taskLists.length > 0
-    ) {
-      const allSectionTitles = new Set(
-        filteredSections.map(section => section.title),
-      );
-      setCollapsedSections(allSectionTitles);
-      setIsInitialized(true);
-    }
-  }, [filteredSections, isInitialized, isFetching, taskLists.length]);
 
   // Update tasks functions
   const {
@@ -286,7 +269,7 @@ export default function GroupedTasks({
   );
 
   const allowToSelect = useAllowTaskSelection();
-  
+
   const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
 
   const handleSortBefore = useCallback((tasklist: Task[]) => {
@@ -305,7 +288,7 @@ export default function GroupedTasks({
   const handleSort = useCallback((tasklist: Task[], index: number) => {
     const itemsIDs = [...tasklist.map(t => t['@id'])];
     const selectedTask = context?.selectedTasksToEdit[0];
-    
+
     const fromIndex = itemsIDs.indexOf(selectedTask['@id']);
     const toIndex = index;
 
@@ -341,23 +324,15 @@ export default function GroupedTasks({
 
   const renderSectionHeader = useCallback(
     ({ section }) => (
-      <SectionHeader
-        section={section}
-        collapsedSections={collapsedSections}
-        setCollapsedSections={setCollapsedSections}
-      />
-    ),
-    [collapsedSections],
+      <SectionHeader section={section}/>
+    ), []
   );
 
   const longPressHandler = useTaskLongPress();
 
   const renderItem = useCallback(
-    ({ section, item, index }) => {
-      console.log(
-        `Rendering section: ${section.title}, collapsed: ${collapsedSections.has(section.title)}, isFetching: ${isFetching}`,
-      );
-      if (!isFetching && !collapsedSections.has(section.title)) {
+    ({ section, item }) => {
+      if (!isFetching && isExpandedSection(section.title)) {
         const tasks = getTaskListTasks(item, tasksEntities);
 
         return (
@@ -381,9 +356,9 @@ export default function GroupedTasks({
       return null;
     },
     [
-      collapsedSections,
       longPressHandler,
       handleOnSwipeClose,
+      isExpandedSection,
       isFetching,
       onTaskClick,
       onOrderClick,
@@ -419,9 +394,9 @@ export default function GroupedTasks({
         keyboardShouldPersistTaps="handled"
         initialNumToRender={1}
         maxToRenderPerBatch={1}
-        windowSize={3}  
+        windowSize={3}
         renderSectionHeader={renderSectionHeader}
-        keyExtractor={(item, index) => item['@id']}
+        keyExtractor={(item) => item['@id']}
         renderItem={renderItem}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
