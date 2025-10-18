@@ -126,7 +126,7 @@ describeif(device.getPlatform() === 'android')
 
     // Open the map screen
     await tapById('toggleTasksMapListButton');
-    await sleep(5000); // Wait for the map to be fully loaded
+    await sleep(10000); // Wait for the map to be fully loaded
 
     // Verify all tasks markers are on the map
     await waitToExist('taskmarker-6,8,2,4'); // If we don't force the task list update, this marker testID will change..!

@@ -77,7 +77,11 @@ function TaskMapPage({ navigation, route }) {
     },
   );
 
-  //courier map render
+  const navigateToSelectedTask = task => {
+      // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
+      navigateToTask(navigation, route, task, courierTaskList.items)
+    };
+
   return (
     <View style={styles.container}>
       <DateSelectHeader navigate={navigation.navigate} />
@@ -86,13 +90,7 @@ function TaskMapPage({ navigation, route }) {
           <TasksMapView
             mapCenter={mapCenter}
             taskLists={[courierTaskList]}
-            route={route}
-            navigation={navigation}
-            courierTasks={courierTaskList.items}
-            // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
-            onListedTaskPress={task =>
-              navigateToTask(navigation, route, task, courierTaskList.items)
-            }
+            onListedTaskPress={navigateToSelectedTask}
           />
         </BottomSheet>
         {isFetching ? (

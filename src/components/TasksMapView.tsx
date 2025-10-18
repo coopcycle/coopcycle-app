@@ -22,23 +22,19 @@ import {
   BottomSheetContext,
 } from '@/components/ui/bottomsheet';
 import TasksBottomSheetContent from './TasksBottomSheetContent';
-import { lightMapStyle, darkMapStyle } from "../styles/mapStyles"
+import { darkMapStyle, lightMapStyle } from "../styles/mapStyles"
 import TaskListPolylines from './TaskListPolylines';
-import { navigateToTask } from '../navigation/utils';
 
 function TasksMapView(props) {
   const {
     mapCenter,
     onMapReady,
+    onListedTaskPress,
     taskLists = [],
     uiFilters,
     tasksEntities,
     isHideUnassignedFromMap,
     mode = 'system',
-    navigation,
-    route,
-    courierTasks,
-    onListedTaskPress
   } = props;
 
   const [marginBottom, setMarginBottom] = useState(1);
@@ -114,17 +110,13 @@ function TasksMapView(props) {
   }, [groupedByCoord, onMarkerPress]);
   ;
 
-  const handleNavigateToTaskDetail = (task) => {
-    navigateToTask(navigation, route, task, courierTasks);
-  };
-
   // render bottomsheet
   const renderBottomSheet = useCallback(() => {
     if (!modalMarkers || modalMarkers.length === 0) return null;
     return (
       <TasksBottomSheetContent
         modalMarkers={modalMarkers}
-        onListedTaskPress={onListedTaskPress} 
+        onListedTaskPress={onListedTaskPress}
       />
     ); },[modalMarkers, onListedTaskPress]);
 

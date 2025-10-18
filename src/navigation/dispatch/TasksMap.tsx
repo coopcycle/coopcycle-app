@@ -70,13 +70,12 @@ export default function TasksMap({ navigation, route }) {
   }, [allTaskLists, allUnassignedTasks]);
 
   const navigateToSelectedTask = task => {
-    // task is one the the task lists' tasks, so taskList is always defined
+    // Task is one the the task lists' tasks, so taskList is always defined
     const taskList = getTaskListByTask(task, mergedTaskListsWithUnassigned);
     const relatedTasks = getTaskListTasks(taskList, tasksEntities);
     navigateToTask(navigation, route, task, relatedTasks);
   };
 
-  //dispatch map render
   return (
     <>
       <View style={{ backgroundColor: bgHighlightColor }}>
