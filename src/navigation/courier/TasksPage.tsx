@@ -12,7 +12,6 @@ import { withTranslation } from 'react-i18next';
 import RNPinScreen from 'react-native-pin-screen';
 
 import { blueColor } from '../../styles/common';
-import { useSecondaryTextColor } from '../../styles/theme';
 import { connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
 import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskListUtils';
 import { navigateToTask } from '../../navigation/utils';
@@ -29,6 +28,7 @@ import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TasksMapView from '../../components/TasksMapView';
 import { DateOnlyString } from '../../utils/date-types';
+import { BottomSheet } from '@/components/ui/bottomsheet';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,7 +53,6 @@ function TaskMapPage({ navigation, route }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const latlng = useSelector(selectSettingsLatLng);
-  const unassignedPolylineColor = useSecondaryTextColor();
 
   const courierTaskList = useMemo(() => {
     const taskList = createCurrentTaskList(tasks);
@@ -78,19 +77,22 @@ function TaskMapPage({ navigation, route }) {
     },
   );
 
+  const navigateToSelectedTask = task => {
+      // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
+      navigateToTask(navigation, route, task, courierTaskList.items)
+    };
+
   return (
     <View style={styles.container}>
       <DateSelectHeader navigate={navigation.navigate} />
       <View style={{ flex: 1 }}>
-        <TasksMapView
-          mapCenter={mapCenter}
-          taskLists={[courierTaskList]}
-          unassignedPolylineColor={unassignedPolylineColor}
-          onMarkerCalloutPress={task =>
-            // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
-            navigateToTask(navigation, route, task, courierTaskList.items)
-          }
-        />
+        <BottomSheet>
+          <TasksMapView
+            mapCenter={mapCenter}
+            taskLists={[courierTaskList]}
+            onListedTaskPress={navigateToSelectedTask}
+          />
+        </BottomSheet>
         {isFetching ? (
           <View style={styles.activityContainer}>
             <ActivityIndicator

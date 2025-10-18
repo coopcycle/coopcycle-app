@@ -126,12 +126,13 @@ describeif(device.getPlatform() === 'android')
 
     // Open the map screen
     await tapById('toggleTasksMapListButton');
-    await sleep(5000); // Wait for the map to be fully loaded
+    await sleep(10000); // Wait for the map to be fully loaded
 
-    // Verify tasks #6+#7 markers are on the map
-    await waitToExist('taskmarker-6-0'); // If we don't force the task list update, this marker will be: 'taskmarker-6-5'
-    await waitToExist('taskmarker-7-1'); // If we don't force the task list update, this marker will be: 'taskmarker-7-6'
-    await waitToExist('taskmarker-3-7'); // If we don't force the task list update, this marker will be: 'taskmarker-3-2'
+    // Verify all tasks markers are on the map
+    await waitToExist('taskmarker-6,8,2,4'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-7,9'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-10'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-11,3'); // If we don't force the task list update, this marker testID will change..!
 
     // Open the filters screen and enable "Hide unassigned tasks from map"
     await tapById('showTasksFiltersButton');
@@ -141,11 +142,14 @@ describeif(device.getPlatform() === 'android')
     // Go back
     await device.pressBack();
 
-    // Verify tasks #6+#7 markers are NOT on the map
-    await expectToNotExist('taskmarker-6-0');
-    await expectToNotExist('taskmarker-7-1');
+    // Verify only assigned task markers are on the map
+    await expectToNotExist('taskmarker-6,8,2,4');
+    await expectToNotExist('taskmarker-7,9');
+    await expectToNotExist('taskmarker-10');
+    await expectToNotExist('taskmarker-11,3');
     // TODO FIX: If we don't force the task list update, ALL MARKERS DISAPPEAR!!!!!!!!!!
-    await waitToExist('taskmarker-3-7');
+    await waitToExist('taskmarker-2,4');
+    await waitToExist('taskmarker-3');
 
     //////////////
     // Show line linking tasks

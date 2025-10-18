@@ -21,6 +21,7 @@ import { useAllTasks } from './useAllTasks';
 import { useBackgroundHighlightColor, useSecondaryTextColor } from '../../styles/theme';
 import AddButton from './components/AddButton';
 import TasksMapView from '../../components/TasksMapView';
+import { BottomSheet } from '@/components/ui/bottomsheet';
 
 const styles = StyleSheet.create({
   newDeliveryBarDate: {
@@ -53,7 +54,6 @@ export default function TasksMap({ navigation, route }) {
   const defaultCoordinates = useSelector(selectSettingsLatLng);
   const selectedDate = useSelector(selectSelectedDate);
   const bgHighlightColor = useBackgroundHighlightColor();
-  const unassignedPolylineColor = useSecondaryTextColor();
 
   const { isFetching } = useAllTasks(selectedDate);
 
@@ -70,7 +70,7 @@ export default function TasksMap({ navigation, route }) {
   }, [allTaskLists, allUnassignedTasks]);
 
   const navigateToSelectedTask = task => {
-    // task is one the the task lists' tasks, so taskList is always defined
+    // Task is one the the task lists' tasks, so taskList is always defined
     const taskList = getTaskListByTask(task, mergedTaskListsWithUnassigned);
     const relatedTasks = getTaskListTasks(taskList, tasksEntities);
     navigateToTask(navigation, route, task, relatedTasks);
@@ -88,13 +88,14 @@ export default function TasksMap({ navigation, route }) {
         </AddButton>
       </View>
       <View style={styles.mapContainer}>
-        <TasksMapView
-          mapCenter={mapCenter}
-          taskLists={mergedTaskListsWithUnassigned}
-          unassignedPolylineColor={unassignedPolylineColor}
-          onMarkerCalloutPress={navigateToSelectedTask}
-          uiFilters={uiFilters}
-        />
+        <BottomSheet>
+          <TasksMapView
+            mapCenter={mapCenter}
+            taskLists={mergedTaskListsWithUnassigned}
+            uiFilters={uiFilters}
+            onListedTaskPress={navigateToSelectedTask}
+          />
+        </BottomSheet>
         {isFetching ? (
           <View style={styles.activityContainer}>
             <ActivityIndicator

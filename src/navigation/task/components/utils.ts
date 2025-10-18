@@ -33,9 +33,7 @@ export const getAddress = task => {
 
 export const getName = task => {
   return [task.address.firstName, task.address.lastName]
-    .filter(function (item) {
-      return item;
-    })
+    .filter(item => !!item)
     .join(' ');
 };
 

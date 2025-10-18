@@ -1,4 +1,4 @@
-.PHONY: setup start start-fresh android ios test test-only e2e-build-android e2e-build-ios e2e-android e2e-android-only e2e-ios e2e-ios-only lint adb emulator
+.PHONY: setup start start-fresh android ios test test-only e2e-build-android e2e-build-ios e2e-android e2e-android-only e2e-ios e2e-ios-only lint lint-quiet adb emulator
 
 ENV_FILE ?= .env
 
@@ -61,6 +61,8 @@ e2e-ios-only:
 
 lint:
 	@clear && yarn lint
+lint-quiet:
+	@clear && yarn lint --quiet
 
 adb:
 	@adb reverse tcp:9090 tcp:9090
