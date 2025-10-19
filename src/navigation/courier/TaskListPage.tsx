@@ -60,17 +60,12 @@ export default function TaskListPage({ navigation, route }) {
     },
   );
 
-  const allowToSelect = task => {
-    return task.status !== 'DONE';
-  };
-
   const longPressHandler = useTaskLongPress();
 
   const swipeLeftConfiguration = {
     onPressLeft: task =>
       navigateToCompleteTask(navigation, route, task, [], true),
     swipeOutLeftBackgroundColor: greenColor,
-    swipeOutLeftEnabled: allowToSelect,
     swipeOutLeftIcon: DoneIcon,
   };
 
@@ -78,7 +73,6 @@ export default function TaskListPage({ navigation, route }) {
     onPressRight: task =>
       navigateToCompleteTask(navigation, route, task, [], false),
     swipeOutRightBackgroundColor: yellowColor,
-    swipeOutRightEnabled: allowToSelect,
     swipeOutRightIcon: IncidentIcon,
   };
 

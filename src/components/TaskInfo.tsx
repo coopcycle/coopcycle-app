@@ -159,7 +159,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
               }}>
               <FAIcon name="level-down-alt" size={18} />
             </Animated.View>
-            <Text numberOfLines={1}  style={{ flex: 1 }}>
+            <Text numberOfLines={1} style={{ flex: 1 }}>
               {getDropoffPosition(task, orderTasks)}
               <Text italic={!taskTitle}> {taskTitle || `(${t('UNNAMED')})`}</Text>
             </Text>

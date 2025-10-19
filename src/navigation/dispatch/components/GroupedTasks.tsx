@@ -40,10 +40,8 @@ import { getOrderNumber } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation, useSetTaskListItemsMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
 import { useTaskLongPress } from '../hooks/useTaskLongPress';
-import { useAllowTaskSelection } from '../hooks/useAllowTaskSelection';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import Task from '@/src/types/task';
-import Spinner from '@/src/components/Spinner';
 import { moveAfter } from '../../task/components/utils';
 
 export default function GroupedTasks({
@@ -268,8 +266,6 @@ export default function GroupedTasks({
     [onSelectNewAssignation, bulkEditTasks, dispatch, navigation],
   );
 
-  const allowToSelect = useAllowTaskSelection();
-
   const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
 
   const handleSortBefore = useCallback((tasklist: Task[]) => {
@@ -304,22 +300,20 @@ export default function GroupedTasks({
         section.isUnassignedTaskList,
       ),
       onSwipeToLeft: handleOnSwipeToLeft(section.taskListId),
-      swipeOutLeftEnabled: allowToSelect,
       swipeOutLeftBackgroundColor: darkRedColor,
       swipeOutLeftIcon: AssignOrderIcon,
     }),
-    [assignTaskWithRelatedTasksHandler, handleOnSwipeToLeft, allowToSelect],
+    [assignTaskWithRelatedTasksHandler, handleOnSwipeToLeft],
   );
 
   const swipeRightConfiguration = useCallback(
     section => ({
       onPressRight: assignTaskHandler(section.isUnassignedTaskList),
       onSwipeToRight: handleOnSwipeToRight(section.taskListId),
-      swipeOutRightEnabled: allowToSelect,
       swipeOutRightBackgroundColor: darkRedColor,
       swipeOutRightIcon: AssignTaskIcon,
     }),
-    [assignTaskHandler, handleOnSwipeToRight, allowToSelect],
+    [assignTaskHandler, handleOnSwipeToRight],
   );
 
   const renderSectionHeader = useCallback(
@@ -401,7 +395,7 @@ export default function GroupedTasks({
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
         testID="dispatchTasksSectionList"
-        />
+      />
       <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );

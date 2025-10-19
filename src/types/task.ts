@@ -296,10 +296,8 @@ export interface TaskListProps {
   onSortBefore?: (tasklist: Task[]) => void;
   refreshing?: boolean;
   swipeOutLeftBackgroundColor?: string;
-  swipeOutLeftEnabled?: (task: Task) => boolean;
   swipeOutLeftIcon?: LucideIcon;
   swipeOutRightBackgroundColor?: string;
-  swipeOutRightEnabled?: (task: Task) => boolean;
   swipeOutRightIcon?: LucideIcon;
 }
 
