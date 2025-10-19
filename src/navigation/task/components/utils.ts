@@ -1,3 +1,4 @@
+import Task from '@/src/types/task';
 import moment from 'moment';
 
 export const addDayIfNotToday = (date, separator=' ') => {
@@ -52,3 +53,14 @@ export const getPackagesSummary = task => {
     { text: '', totalQuantity: 0 },
   );
 };
+
+export const moveAfter = (tasks: Task[], fromIndex: number, toIndex: number) => {
+  const out = [...tasks];
+  const [item] = out.splice(fromIndex, 1);
+
+  const adjustedTarget = fromIndex > toIndex ? toIndex : toIndex - 1;
+  const insertPos = Math.max(0, Math.min(out.length, adjustedTarget + 1));
+
+  out.splice(insertPos, 0, item);
+  return out;
+}

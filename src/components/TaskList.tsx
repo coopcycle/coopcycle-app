@@ -19,6 +19,8 @@ const TaskList: React.FC<TaskListProps> = ({
   onLongPress = () => {},
   onTaskClick = () => {},
   onOrderClick = () => {},
+  onSort = (tasks: Task[], index: number) => {},
+  onSortBefore = (tasks: Task[]) => {},
   refreshing = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIcon,
@@ -71,9 +73,11 @@ const TaskList: React.FC<TaskListProps> = ({
   // The use of context here is to avoid incorrectly being parsed in dispatch screen
   const context = useTaskListsContext();
   const isFromCourier = context && context.isFromCourier;
-  const onFabButtonPressed = isFromCourier ? (items => {
-    onMultipleSelectionAction(items);
-  }) : null;
+  const onFabButtonPressed = isFromCourier
+    ? items => {
+        onMultipleSelectionAction(items);
+      }
+    : null;
 
   // check this filter
   useEffect(() => {
@@ -82,16 +86,19 @@ const TaskList: React.FC<TaskListProps> = ({
   }, [tasks]);
 
   const renderItem = ({ item: task, index }) => {
+    const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
     return (
       <TaskListItem
         taskListId={id}
         appendTaskListTestID={appendTaskListTestID}
         task={task}
+        nextTask={nextTask}
         index={index}
         color={task.color}
-        isSelectedTask={tasks.includes(task)}
         onPress={() => onTaskClick(task)}
         onLongPress={onLongPress}
+        onSortBefore = {() => onSortBefore(tasks)}
+        onSort={() => onSort(tasks, index)}
         onOrderPress={() => onOrderClick(task)}
         {...swipeLeftConfiguration(task)}
         {...swipeRightConfiguration(task)}

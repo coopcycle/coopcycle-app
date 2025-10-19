@@ -76,7 +76,7 @@ export interface TaskMetadata {
   payment_method?: string;
   order_distance?: string;
   order_duration?: string;
-  polyline?: string; 
+  polyline?: string;
 }
 
 /**
@@ -256,13 +256,16 @@ export interface TaskFilterOptions {
 // Updated TypeScript interface
 export interface TaskListItemProps {
   task: Task;
+  nextTask?: Task | null;
   color: string;
   index: number;
   taskListId: string;
   appendTaskListTestID?: string;
   onPress?: () => void;
-  onLongPress?: () => void;
+  onLongPress?: (task: Task) => void;
   onOrderPress?: () => void;
+  onSortBefore?: (task: Task, tasklist: Task[]) => void;
+  onSort?: (task: Task, taskList: Task[]) => void;
   onPressLeft?: () => void;
   onPressRight?: () => void;
   swipeOutLeftBackgroundColor?: string;
@@ -277,6 +280,7 @@ export interface TaskListItemProps {
 export interface TaskListProps {
   id: string;
   tasks: Task[];
+  nextTask?: Task | null;
   appendTaskListTestID?: string;
   onMultipleSelectionAction?: (items: Task[]) => void;
   onRefresh?: () => void;
@@ -288,12 +292,12 @@ export interface TaskListProps {
   onLongPress?: (task: Task) => void;
   onTaskClick: (task: Task) => void;
   onOrderClick: (task: Task) => void;
+  onSort: (task: Task) => void;
+  onSortBefore?: (tasklist: Task[]) => void;
   refreshing?: boolean;
   swipeOutLeftBackgroundColor?: string;
-  swipeOutLeftEnabled?: (task: Task) => boolean;
   swipeOutLeftIcon?: LucideIcon;
   swipeOutRightBackgroundColor?: string;
-  swipeOutRightEnabled?: (task: Task) => boolean;
   swipeOutRightIcon?: LucideIcon;
 }
 
