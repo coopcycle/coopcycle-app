@@ -122,11 +122,10 @@ describeif(device.getPlatform() === 'android')
 
     // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
     await swipeDown('dispatchTasksSectionList');
-    await toggleSectionUnassigned();
 
     // Open the map screen
     await tapById('toggleTasksMapListButton');
-    await sleep(10000); // Wait for the map to be fully loaded
+    await sleep(5000); // Wait for the map to be fully loaded
 
     // Verify all tasks markers are on the map
     await waitToExist('taskmarker-6,8,2,4'); // If we don't force the task list update, this marker testID will change..!
@@ -187,8 +186,10 @@ describeif(device.getPlatform() === 'android')
     // Go back
     await tapById('keywordsFilterGoToAllTasksButton');
 
+    // Show unassigned tasks section
+    await toggleSectionUnassigned();
+
     // Verify tasks were found
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden but it's visible)
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #10)");
 
