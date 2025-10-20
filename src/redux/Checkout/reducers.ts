@@ -361,13 +361,16 @@ export default (state = initialState, action = {}) => {
       };
 
     case UPDATE_CART_SUCCESS:
+
+      const cartWithoutSoftDelete = _.omit(state.carts[action.payload.restaurant], ['softDelete']);
+
       return {
         ...state,
         loadingCarts: _.without(state.loadingCarts, action.payload.restaurant),
         carts: {
           ...state.carts,
           [action.payload.restaurant]: {
-            ...state.carts[action.payload.restaurant],
+            ...cartWithoutSoftDelete,
             cart: action.payload,
           },
         },
@@ -432,9 +435,13 @@ export default (state = initialState, action = {}) => {
       };
 
     case HIDE_EXPIRED_SESSION_MODAL:
+
+      const cartsWithoutExpiredCart = _.omit(state.carts, state.restaurant.id);
+
       return {
         ...state,
         isExpiredSessionModalVisible: false,
+        carts: cartsWithoutExpiredCart,
       };
 
     case SESSION_EXPIRED:
