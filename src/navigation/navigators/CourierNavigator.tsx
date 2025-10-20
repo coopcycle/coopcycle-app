@@ -26,8 +26,8 @@ const Tabs = () => (
       tabBarShowLabel: false,
     }}>
     <Tab.Screen
-      name="CourierTasks"
-      component={screens.CourierTasksPage}
+      name="CourierTaskMap"
+      component={screens.CourierTaskMapPage}
       options={({ navigation }) => ({
         tabBarLabel: i18n.t('TASKS'),
         tabBarTestID: 'messengerTabMap',
@@ -203,7 +203,7 @@ export default () => {
   });
 
   return (
-    <TaskListsProvider>  
+    <TaskListsProvider>
       <RootStack.Navigator screenOptions={screenOptions}>
         <RootStack.Screen
           name="Main"
