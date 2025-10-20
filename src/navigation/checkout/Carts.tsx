@@ -9,14 +9,15 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { Box } from '@/components/ui/box';
 import { Pressable } from '@/components/ui/pressable';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
+import React from 'react';
+import { withTranslation, useTranslation } from 'react-i18next';
 import { Animated, Dimensions, FlatList, Image, View, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Reanimated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import i18n from '../../i18n';
+import { useNavigation } from '@react-navigation/native';
+
 import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import { selectCarts } from '../../redux/Checkout/selectors';
 import { greyColor, primaryColor } from '../../styles/common';
@@ -44,9 +45,12 @@ function RightAction({ translation, onPress }) {
   );
 }
 
-class Carts extends Component {
+const EmptyList = ({ secondaryTextColor }) => {
 
-  emptyList = () => (
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  return (
     <View
       style={{
         alignItems: 'center',
@@ -62,19 +66,25 @@ class Carts extends Component {
         source={require('../../assets/images/empty_cart.png')}
         resizeMode={'contain'}
       />
-      <Heading>{this.props.t('EMPTY_CARTS_TITLE')}</Heading>
+      <Heading>{t('EMPTY_CARTS_TITLE')}</Heading>
       <Text
-        color={this.props.secondaryTextColor}>
-        {this.props.t('EMPTY_CARTS_SUBTITLE')}
+        color={secondaryTextColor}>
+        {t('EMPTY_CARTS_SUBTITLE')}
       </Text>
       <Button
-        onPress={() => this.props.navigation.navigate('Home')}>
-        <ButtonText>{this.props.t('GO_TO_SHOPPING')}</ButtonText>
+        onPress={() => navigation.navigate('Home')}>
+        <ButtonText>{t('GO_TO_SHOPPING')}</ButtonText>
       </Button>
     </View>
-  );
+  )
+}
 
-  _renderItem = (item, index) => (
+const ListItem = ({ item, deleteCart, setRestaurant, secondaryTextColor }) => {
+
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  return (
     <>
       <Swipeable
         friction={2}
@@ -83,12 +93,12 @@ class Carts extends Component {
         renderRightActions={(progress, translation) => (
           <RightAction
             translation={ translation }
-            onPress={ () => this.props.deleteCart(item.restaurant['@id']) } />
+            onPress={ () => deleteCart(item.restaurant['@id']) } />
         )}>
         <TouchableOpacity
           onPress={() => {
-            this.props.setRestaurant(item.restaurant['@id']);
-            this.props.navigation.navigate('CheckoutSummary', {
+            setRestaurant(item.restaurant['@id']);
+            navigation.navigate('CheckoutSummary', {
               cart: item.cart,
               restaurant: item.restaurant,
             });
@@ -101,14 +111,14 @@ class Carts extends Component {
             </Avatar>
             <VStack>
               <Text bold>{item.restaurant.name}</Text>
-              <Text color={this.props.secondaryTextColor}>
-                {i18n.t('ITEM', { count: item.cart.items.length })} •{' '}
+              <Text color={secondaryTextColor}>
+                {t('ITEM', { count: item.cart.items.length })} •{' '}
                 {formatPrice(item.cart.total)}
               </Text>
               <Text
                 numberOfLines={1}
                 maxWidth={width - 170}
-                color={this.props.secondaryTextColor}>
+                color={secondaryTextColor}>
                 {item.cart.shippingAddress?.streetAddress}
               </Text>
             </VStack>
@@ -120,35 +130,26 @@ class Carts extends Component {
       </Swipeable>
     </>
   );
-
-  render() {
-    return (
-      <FlatList
-        data={_.values(this.props.carts)}
-        alwaysBounceVertical={false}
-        keyExtractor={(item, index) => index}
-        renderItem={({ item, index }) => this._renderItem(item, index)}
-        ListEmptyComponent={this.emptyList}
-      />
-    );
-  }
 }
 
-const styles = {
-  deleteButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    backgroundColor: '#ffb7b7',
-    borderRadius: 50,
-  },
-  animatedView: {
-    justifyContent: 'center',
-    marginLeft: 15,
-    marginRight: 15,
-  },
-};
+const Carts = ({ carts, deleteCart, setRestaurant, secondaryTextColor }) => {
+
+  return (
+    <FlatList
+      data={_.values(carts)}
+      alwaysBounceVertical={false}
+      keyExtractor={(item, index) => index}
+      renderItem={({ item, index }) => (
+        <ListItem
+          item={item}
+          deleteCart={deleteCart}
+          setRestaurant={setRestaurant}
+          secondaryTextColor={secondaryTextColor} />
+      )}
+      ListEmptyComponent={() => <EmptyList secondaryTextColor={secondaryTextColor} />}
+    />
+  );
+}
 
 function mapStateToProps(state) {
   return {
