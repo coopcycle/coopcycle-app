@@ -11,13 +11,14 @@ export const TaskPriorityStatus = ({
   task: Task;
   cardBorderRadius: number;
 }) => {
-  const timeDifference = moment().diff(task.doneBefore);
+  //Ensure future tasks return a positive value and overdue tasks return a negative one.
+  const timeDifference = moment(task.doneBefore).diff(moment());
   let backgroundColor = whiteColor;
 
-  if (timeDifference < minutes(10)) {
-    backgroundColor = '#FFC300';
-  } else if (timeDifference < minutes(0)) {
+  if (timeDifference < 0) {
     backgroundColor = '#B42205';
+  } else if (timeDifference < minutes(10)) {
+    backgroundColor = '#FFC300';
   } else {
     return null;
   }
