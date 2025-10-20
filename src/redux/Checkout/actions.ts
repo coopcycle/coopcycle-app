@@ -71,7 +71,6 @@ export const INIT_CART_REQUEST = '@checkout/INIT_CART_REQUEST';
 export const INIT_CART_SUCCESS = '@checkout/INIT_CART_SUCCESS';
 export const INIT_CART_FAILURE = '@checkout/INIT_CART_FAILURE';
 export const UPDATE_CARTS = '@checkout/UPDATE_CARTS';
-export const DELETE_CART_REQUEST = '@checkout/DELETE_CART_REQUEST';
 
 export const LOAD_RESTAURANTS_REQUEST = '@checkout/LOAD_RESTAURANTS_REQUEST';
 export const LOAD_RESTAURANTS_SUCCESS = '@checkout/LOAD_RESTAURANTS_SUCCESS';
@@ -164,7 +163,6 @@ export const initCartRequest = createFsAction(INIT_CART_REQUEST);
 export const initCartSuccess = createFsAction(INIT_CART_SUCCESS);
 export const initCartFailure = createFsAction(INIT_CART_FAILURE);
 export const updateCarts = createFsAction(UPDATE_CARTS);
-export const deleteCartRequest = createFsAction(DELETE_CART_REQUEST);
 export const resetRestaurant = createFsAction(RESET_RESTAURANT);
 export const setRestaurant = createFsAction(SET_RESTAURANT);
 export const setToken = createFsAction(SET_TOKEN);
@@ -692,7 +690,6 @@ export function removeItem(item) {
     const { cart } = selectCartByVendor(getState(), item.vendor['@id']);
     const { items } = cart;
     if (items.length === 0) {
-      dispatch(deleteCartRequest(item.vendor['@id']));
       NavigationHolder.goBack();
     }
 
