@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     marginVertical: 4,
   },
   sortButtonIcon: {
-    
+
   }
 });
 
@@ -134,8 +134,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       onOrderPress = () => {},
       onPressLeft = () => {},
       onPressRight = () => {},
-      onSortBefore = () => {},
-      onSort = () => {},
+      onSortBefore = undefined,
+      onSort = undefined,
       swipeOutLeftBackgroundColor,
       swipeOutLeftIcon,
       swipeOutRightBackgroundColor,
@@ -146,7 +146,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     },
     _ref,
   ) => {
-    
+
     const isPickup = task.type === 'PICKUP';
     const context = useTaskListsContext();
 
@@ -155,11 +155,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     const isAssignedToSameCourier = useMemo(() => {
       return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
     }, [context?.selectedTasksToEdit, task]);
-    
+
     const isSortable = useMemo(() => {
-      return context?.selectedTasksToEdit?.length === 1 && !context?.selectedTasksToEdit.includes(task); 
+      return context?.selectedTasksToEdit?.length === 1 && !context?.selectedTasksToEdit.includes(task);
     }, [context?.selectedTasksToEdit, task]);
-    
+
     const isSelectedTask = useMemo(() => {
       if (!context?.selectedTasksToEdit?.length || !task['@id']) {
         return false;
@@ -168,7 +168,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
         selectedTask => selectedTask['@id'] === task['@id']
       );
     }, [context?.selectedTasksToEdit, task]);
-    
+
     const isPreviousToSelectedTask = useMemo(() => {
       return nextTask?.['@id'] === context?.selectedTasksToEdit[0]?.['@id'];
     }, [nextTask, context]);
@@ -250,19 +250,21 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     const renderPrevSortButton = () => {
       if (index === 0) {
-        return (sortButton(onSortBefore, true));
+        return sortButton(onSortBefore, true);
       }
     };
 
     const renderSortButton = () => {
-      if (isPreviousToSelectedTask) return null;
-      return (sortButton(onSort));
+      if (!isPreviousToSelectedTask) {
+        return sortButton(onSort);
+      }
     }
 
-    const sortButton = (onSortCallback: () => void, isFirstPosition: boolean = false) => {
+    const sortButton = (onSortCallback: TaskListItemProps['onSort'] | TaskListItemProps['onSortBefore'], isFirstPosition: boolean = false) => {
+      if (!onSortCallback || !isAssignedToSameCourier || !isSortable) return null;
       const appendSortID = isFirstPosition ? `sort:previous` : `sort`;
-      if (!isAssignedToSameCourier || !isSortable) return null;
       return (
+        // @ts-expect-error It doeson't like onPress={onSortCallback} (but it works)
         <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:${appendSortID}`}>
           <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
         </Pressable>
@@ -270,9 +272,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     }
 
     return (
-      // @ts-expect-error library's types don't include a children prop
-    <View>  
+    <View>
       {renderPrevSortButton()}
+      {/* @ts-expect-error library's types don't include a children prop */}
       <SwipeRow
         disableLeftSwipe={!allowSwipeLeft}
         disableRightSwipe={!allowSwipeRight}
@@ -347,7 +349,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             </ItemTouchable>
           </HStack>
           {isSelectedTask && (
-            <View 
+            <View
               pointerEvents='none'
               style={{
                 position:'absolute',
