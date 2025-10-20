@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { cancelTask } from '@/src/redux/Courier/taskActions';
-import { navigateToCompleteTask } from '../utils';
+import { navigateToCompleteTask, navigateToReportTask } from '../utils';
 import { startTask } from '@/src/redux/Courier';
 import { useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import TasksMenu from '../components/TasksMenu';
@@ -55,7 +55,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       text: t('REPORT_INCIDENT'),
       isDisabled: selectedTasks?.length > 1,
       action: () => {
-        navigateToCompleteTask(navigation, route, selectedTasks[0], [], false);
+        navigateToReportTask(navigation, route, selectedTasks[0], [], false);
         context?.clearSelectedTasks();
 
       },
