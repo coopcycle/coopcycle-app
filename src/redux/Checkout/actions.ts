@@ -466,7 +466,9 @@ function queueAddItem(item, quantity = 1, options = []) {
         .catch(e => {
           dispatch(setCheckoutLoading(false));
           dispatch(addItemRequestFinished(item));
-          dispatch(sessionExpired());
+          if (e.response?.status === 401) {
+            dispatch(sessionExpired());
+          }
         })
         .finally(next);
     },
@@ -598,7 +600,9 @@ function syncItem(item) {
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false));
-          dispatch(sessionExpired());
+          if (e.response?.status === 401) {
+            dispatch(sessionExpired());
+          }
         })
         .finally(next);
     },
@@ -660,7 +664,9 @@ function queueRemoveItem(item) {
         })
         .catch(e => {
           dispatch(setCheckoutLoading(false));
-          dispatch(sessionExpired());
+          if (e.response?.status === 401) {
+            dispatch(sessionExpired());
+          }
         })
         .finally(next);
     },
@@ -845,7 +851,9 @@ function syncAddress(cart, address) {
         .catch(e => {
           dispatch(setCheckoutLoading(false));
           dispatch(hideAddressModal());
-          dispatch(sessionExpired());
+          if (e.response?.status === 401) {
+            dispatch(sessionExpired());
+          }
         })
         .finally(next);
     },
