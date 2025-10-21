@@ -11,6 +11,9 @@ export const TaskPriorityStatus = ({
   task: Task;
   cardBorderRadius: number;
 }) => {
+  if (task.status === 'DONE' || task.status === 'FAILED') {
+    return null;
+  }
   //Ensure future tasks return a positive value and overdue tasks return a negative one.
   const timeDifference = moment(task.doneBefore).diff(moment());
   let backgroundColor = whiteColor;
