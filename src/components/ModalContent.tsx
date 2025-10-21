@@ -1,15 +1,17 @@
-import React from 'react';
+import { ElementType, ReactNode } from 'react';
 import { View, useColorScheme } from 'react-native';
 
-export default ({ children, as }) => {
+type ModalContentProps = {
+  children?: ReactNode;
+  as?: ElementType;
+};
+
+export default function ModalContent({ children, as: Component = View }: ModalContentProps) {
   const colorScheme = useColorScheme();
 
-  const Component = as ? as : View;
-
   return (
-    <Component
-      style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}>
+    <Component style={{ backgroundColor: colorScheme === 'dark' ? 'black' : 'white' }}>
       {children}
     </Component>
   );
-};
+}
