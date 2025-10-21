@@ -481,6 +481,7 @@
     "LOADING_ADDRESS": "Cargando dirección",
     "MOVE_MAP_TO_SELECT_LOCATION": "Mueve el mapa para seleccionar tu ubicación",
     "START": "Comenzar",
-    "FIND_ON_MAP": "Localizarme en el mapa"
+    "FIND_ON_MAP": "Localizarme en el mapa",
+    "TASK_DETAILS": "Task details"
   }
 }
