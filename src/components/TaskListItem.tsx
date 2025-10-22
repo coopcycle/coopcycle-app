@@ -1,7 +1,8 @@
 import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
-import { LucideIcon } from 'lucide-react-native';
+import { ArrowRightCircle, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
+  Pressable,
   StyleSheet,
   TouchableOpacity,
   TouchableOpacityProps,
@@ -22,6 +23,7 @@ import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import TaskInfo from './TaskInfo';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
+import { useTheme } from '@react-navigation/native';
 
 const cardBorderWidth = 4;
 const cardBorderRadius = 2.5;
@@ -58,6 +60,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  sortButton: {
+    marginLeft: 12,
+    marginVertical: 4,
+  },
+  sortButtonIcon: {
+    
+  }
 });
 
 interface ISwipeButtonContainerProps
@@ -115,6 +124,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
   (
     {
       task,
+      nextTask,
       color,
       index,
       taskListId,
@@ -124,6 +134,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       onOrderPress = () => {},
       onPressLeft = () => {},
       onPressRight = () => {},
+      onSortBefore = () => {},
+      onSort = () => {},
       swipeOutLeftBackgroundColor,
       swipeOutLeftIcon,
       swipeOutRightBackgroundColor,
@@ -134,9 +146,20 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     },
     _ref,
   ) => {
+    
     const isPickup = task.type === 'PICKUP';
-
     const context = useTaskListsContext();
+
+    const theme = useTheme();
+
+    const isAssignedToSameCourier = useMemo(() => {
+      return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
+    }, [context?.selectedTasksToEdit, task]);
+    
+    const isSortable = useMemo(() => {
+      return context?.selectedTasksToEdit?.length === 1 && !context?.selectedTasksToEdit.includes(task); 
+    }, [context?.selectedTasksToEdit, task]);
+    
     const isSelectedTask = useMemo(() => {
       if (!context?.selectedTasksToEdit?.length || !task['@id']) {
         return false;
@@ -145,6 +168,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
         selectedTask => selectedTask['@id'] === task['@id']
       );
     }, [context?.selectedTasksToEdit, task]);
+    
+    const isPreviousToSelectedTask = useMemo(() => {
+      return nextTask?.['@id'] === context?.selectedTasksToEdit[0]?.['@id'];
+    }, [nextTask, context]);
+
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
 
@@ -220,8 +248,31 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     const allowSwipeRight =
       task.status !== 'DONE' && !allTasksIdsFromTasks.includes(task['@id']);
 
+    const renderPrevSortButton = () => {
+      if (index === 0) {
+        return (sortButton(onSortBefore, true));
+      }
+    };
+
+    const renderSortButton = () => {
+      if (isPreviousToSelectedTask) return null;
+      return (sortButton(onSort));
+    }
+
+    const sortButton = (onSortCallback: () => void, isFirstPosition: boolean = false) => {
+      const appendSortID = isFirstPosition ? `sort:previous` : `sort`;
+      if (!isAssignedToSameCourier || !isSortable) return null;
+      return (
+        <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:${appendSortID}`}>
+          <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
+        </Pressable>
+      );
+    }
+
     return (
       // @ts-expect-error library's types don't include a children prop
+    <View>  
+      {renderPrevSortButton()}
       <SwipeRow
         disableLeftSwipe={!allowSwipeLeft}
         disableRightSwipe={!allowSwipeRight}
@@ -312,6 +363,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
           )}
         </View>
       </SwipeRow>
+      {renderSortButton()}
+    </View>
     );
   },
 );

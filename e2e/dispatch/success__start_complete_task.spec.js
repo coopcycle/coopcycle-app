@@ -25,13 +25,13 @@ describeif(device.getPlatform() === 'android')
     await loginDispatcherUser();
 
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // Assign task #1
     await assignTaskToUser(USER_JANE);
 
     // Hide unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it hides once we assign the order above)
+    await toggleSectionUnassigned();
     // Show USER_JANE's tasks section
     await toggleSectionUser(USER_JANE);
 

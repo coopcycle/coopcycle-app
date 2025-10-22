@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { SectionList } from 'react-native';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, SectionList, View } from 'react-native';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -31,14 +31,18 @@ import {
   selectTaskLists,
   selectTasksEntities,
 } from '../../../shared/logistics/redux';
+import { selectIsExpandedSection } from '../../../redux/Dispatch/selectors';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderNumber } from '../../../utils/tasks';
-import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
+import { useRecurrenceRulesGenerateOrdersMutation, useSetTaskListItemsMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
 import { useTaskLongPress } from '../hooks/useTaskLongPress';
+import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
+import Task from '@/src/types/task';
+import { moveAfter } from '../../task/components/utils';
 
 export default function GroupedTasks({
   hideEmptyTaskLists,
@@ -54,6 +58,7 @@ export default function GroupedTasks({
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
   const date = useSelector(selectSelectedDate);
+  const isExpandedSection = useSelector(selectIsExpandedSection);
   const [generateOrders] = useRecurrenceRulesGenerateOrdersMutation();
 
   useEffect(() => {
@@ -91,28 +96,11 @@ export default function GroupedTasks({
     [t, taskLists, unassignedTaskLists.length, unassignedTasks],
   );
 
+  const context = useTaskListsContext();
+
   const filteredSections = hideEmptyTaskLists
     ? sections.filter(section => section.tasksCount > 0)
     : sections;
-
-  const [collapsedSections, setCollapsedSections] = useState(new Set());
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  // Initialize all sections as collapsed only on first load
-  useEffect(() => {
-    if (
-      !isInitialized &&
-      !isFetching &&
-      filteredSections.length > 0 &&
-      taskLists.length > 0
-    ) {
-      const allSectionTitles = new Set(
-        filteredSections.map(section => section.title),
-      );
-      setCollapsedSections(allSectionTitles);
-      setIsInitialized(true);
-    }
-  }, [filteredSections, isInitialized, isFetching, taskLists.length]);
 
   // Update tasks functions
   const {
@@ -278,9 +266,33 @@ export default function GroupedTasks({
     [onSelectNewAssignation, bulkEditTasks, dispatch, navigation],
   );
 
-  const allowToSelect = task => {
-    return task.status !== 'DONE';
-  };
+  const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
+
+  const handleSortBefore = useCallback((tasklist: Task[]) => {
+    const itemsIDs = [...tasklist.map(t => t['@id'])];
+    const selectedTask = context?.selectedTasksToEdit[0];
+    const selectedTaskID = selectedTask['@id'];
+
+    const filteredIDs = itemsIDs.filter(id => id !== selectedTaskID);
+
+    filteredIDs.unshift(selectedTaskID);
+
+    setTaskListItems({items: filteredIDs, username: selectedTask.assignedTo, date: date.format('YYYY-MM-DD')});
+    context?.clearSelectedTasks();
+  }, [context, date, setTaskListItems]);
+
+  const handleSort = useCallback((tasklist: Task[], index: number) => {
+    const itemsIDs = [...tasklist.map(t => t['@id'])];
+    const selectedTask = context?.selectedTasksToEdit[0];
+
+    const fromIndex = itemsIDs.indexOf(selectedTask['@id']);
+    const toIndex = index;
+
+    const reordered = moveAfter(itemsIDs, fromIndex, toIndex);
+
+    setTaskListItems({items: reordered, username: selectedTask.assignedTo, date: date.format('YYYY-MM-DD')});
+    context?.clearSelectedTasks();
+  }, [context, date, setTaskListItems]);
 
   const swipeLeftConfiguration = useCallback(
     section => ({
@@ -288,7 +300,6 @@ export default function GroupedTasks({
         section.isUnassignedTaskList,
       ),
       onSwipeToLeft: handleOnSwipeToLeft(section.taskListId),
-      swipeOutLeftEnabled: allowToSelect,
       swipeOutLeftBackgroundColor: darkRedColor,
       swipeOutLeftIcon: AssignOrderIcon,
     }),
@@ -299,7 +310,6 @@ export default function GroupedTasks({
     section => ({
       onPressRight: assignTaskHandler(section.isUnassignedTaskList),
       onSwipeToRight: handleOnSwipeToRight(section.taskListId),
-      swipeOutRightEnabled: allowToSelect,
       swipeOutRightBackgroundColor: darkRedColor,
       swipeOutRightIcon: AssignTaskIcon,
     }),
@@ -308,23 +318,15 @@ export default function GroupedTasks({
 
   const renderSectionHeader = useCallback(
     ({ section }) => (
-      <SectionHeader
-        section={section}
-        collapsedSections={collapsedSections}
-        setCollapsedSections={setCollapsedSections}
-      />
-    ),
-    [collapsedSections],
+      <SectionHeader section={section}/>
+    ), []
   );
 
   const longPressHandler = useTaskLongPress();
 
   const renderItem = useCallback(
-    ({ section, item, index }) => {
-      console.log(
-        `Rendering section: ${section.title}, collapsed: ${collapsedSections.has(section.title)}, isFetching: ${isFetching}`,
-      );
-      if (!isFetching && !collapsedSections.has(section.title)) {
+    ({ section, item }) => {
+      if (!isFetching && isExpandedSection(section.title)) {
         const tasks = getTaskListTasks(item, tasksEntities);
 
         return (
@@ -335,6 +337,8 @@ export default function GroupedTasks({
             onLongPress={longPressHandler}
             onTaskClick={onTaskClick(section.isUnassignedTaskList)}
             onOrderClick={onOrderClick}
+            onSort={handleSort}
+            onSortBefore={handleSortBefore}
             onSwipeClosed={task => {
               handleOnSwipeClose(section, task);
             }}
@@ -343,16 +347,17 @@ export default function GroupedTasks({
           />
         );
       }
-
       return null;
     },
     [
-      collapsedSections,
       longPressHandler,
       handleOnSwipeClose,
+      isExpandedSection,
       isFetching,
       onTaskClick,
       onOrderClick,
+      handleSort,
+      handleSortBefore,
       swipeLeftConfiguration,
       swipeRightConfiguration,
       tasksEntities,
@@ -361,6 +366,22 @@ export default function GroupedTasks({
 
   return (
     <>
+      {isLoading && (
+        <View style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(102, 102, 102, 0.2)',
+          zIndex: 999,
+         }}>
+          <ActivityIndicator animating={true} size="large" />
+        </View>
+      )}
       <SectionList
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
@@ -369,7 +390,7 @@ export default function GroupedTasks({
         maxToRenderPerBatch={1}
         windowSize={3}
         renderSectionHeader={renderSectionHeader}
-        keyExtractor={(item, index) => item['@id']}
+        keyExtractor={(item) => item['@id']}
         renderItem={renderItem}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}

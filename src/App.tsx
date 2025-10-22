@@ -61,6 +61,7 @@ import {
   AccountRegisterConfirmScreen,
   AccountResetPasswordNewPasswordScreen,
 } from './navigation/navigators/AccountNavigator';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 if (Platform.OS === 'ios') {
   KeyboardManager.setEnable(false);
@@ -169,39 +170,41 @@ const App = () => {
 
   return (
     <DatadogWrapper>
-      <UIProvider>
-        <RootView>
-          <Provider store={store}>
-            <PersistGate
-              loading={
-                <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
-              }
-              persistor={persistor}>
-              <I18nextProvider i18n={i18n}>
-                <QueryClientProvider client={queryClient}>
-                  <SafeAreaProvider>
-                    <Spinner />
-                    <NavigationContainer
-                      ref={navigationRef}
-                      linking={linking}
-                      onReady={onReady}
-                      onStateChange={onNavigationStateChange}
-                      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                      <Root />
-                    </NavigationContainer>
-                    <DropdownAlert
-                      ref={ref => {
-                        DropdownHolder.setDropdown(ref);
-                      }}
-                    />
-                    <NotificationHandler />
-                  </SafeAreaProvider>
-                </QueryClientProvider>
-              </I18nextProvider>
-            </PersistGate>
-          </Provider>
-        </RootView>
-      </UIProvider>
+      <BottomSheetModalProvider>
+        <UIProvider>
+          <RootView>
+            <Provider store={store}>
+              <PersistGate
+                loading={
+                  <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
+                }
+                persistor={persistor}>
+                <I18nextProvider i18n={i18n}>
+                  <QueryClientProvider client={queryClient}>
+                    <SafeAreaProvider>
+                      <Spinner />
+                      <NavigationContainer
+                        ref={navigationRef}
+                        linking={linking}
+                        onReady={onReady}
+                        onStateChange={onNavigationStateChange}
+                        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                        <Root />
+                      </NavigationContainer>
+                      <DropdownAlert
+                        ref={ref => {
+                          DropdownHolder.setDropdown(ref);
+                        }}
+                      />
+                      <NotificationHandler />
+                    </SafeAreaProvider>
+                  </QueryClientProvider>
+                </I18nextProvider>
+              </PersistGate>
+            </Provider>
+          </RootView>
+        </UIProvider>
+      </BottomSheetModalProvider>
     </DatadogWrapper>
   );
 };

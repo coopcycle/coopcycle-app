@@ -25,13 +25,13 @@ describeif(device.getPlatform() === 'android')
     await loginDispatcherUser();
 
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // Assign order #1 (that has 3 tasks)
     await assignOrderToUser(USER_JANE);
 
     // Hide unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it hides once we assign the order above)
+    await toggleSectionUnassigned();
     // Show USER_JANE's tasks section
     await toggleSectionUser(USER_JANE);
 
@@ -77,11 +77,6 @@ describeif(device.getPlatform() === 'android')
 
     // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
     await swipeDown('dispatchTasksSectionList');
-
-    // Hide unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be already expanded but it's collapsed)
-    // Show USER_JANE's tasks section (THIS IS A BUG: it hides once we refresh the list)
-    await toggleSectionUser(USER_JANE); // TODO: Remove this line once the bug is fixed
 
     // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');

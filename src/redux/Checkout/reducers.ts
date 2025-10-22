@@ -7,7 +7,6 @@ import {
   CLEAR,
   CLEAR_ADDRESS,
   CLEAR_SEARCH_RESULTS,
-  DELETE_CART_REQUEST,
   GET_RESTAURANT_FAILURE,
   GET_RESTAURANT_REQUEST,
   GET_RESTAURANT_SUCCESS,
@@ -361,13 +360,16 @@ export default (state = initialState, action = {}) => {
       };
 
     case UPDATE_CART_SUCCESS:
+
+      const cartWithoutSoftDelete = _.omit(state.carts[action.payload.restaurant], ['softDelete']);
+
       return {
         ...state,
         loadingCarts: _.without(state.loadingCarts, action.payload.restaurant),
         carts: {
           ...state.carts,
           [action.payload.restaurant]: {
-            ...state.carts[action.payload.restaurant],
+            ...cartWithoutSoftDelete,
             cart: action.payload,
           },
         },
@@ -379,18 +381,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         carts: action.payload,
-      };
-
-    case DELETE_CART_REQUEST:
-      return {
-        ...state,
-        carts: {
-          ...state.carts,
-          [action.payload]: {
-            ...state.carts[action.payload],
-            softDelete: true,
-          },
-        },
       };
 
     case SET_CHECKOUT_LOADING:
@@ -432,9 +422,13 @@ export default (state = initialState, action = {}) => {
       };
 
     case HIDE_EXPIRED_SESSION_MODAL:
+
+      const cartsWithoutExpiredCart = _.omit(state.carts, state.restaurant.id);
+
       return {
         ...state,
         isExpiredSessionModalVisible: false,
+        carts: cartsWithoutExpiredCart,
       };
 
     case SESSION_EXPIRED:

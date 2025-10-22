@@ -1,23 +1,23 @@
 import _ from 'lodash';
 import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
-import { Icon, ChevronRightIcon, TrashIcon } from '@/components/ui/icon';
+import { Icon, ChevronRightIcon, CloseIcon } from '@/components/ui/icon';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
-import { Animated, Dimensions, FlatList, Image, View } from 'react-native';
-import {
-  RectButton,
-  Swipeable,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import { Box } from '@/components/ui/box';
+import { Pressable } from '@/components/ui/pressable';
+import React from 'react';
+import { withTranslation, useTranslation } from 'react-i18next';
+import { Animated, Dimensions, FlatList, Image, View, TouchableOpacity } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Reanimated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import i18n from '../../i18n';
+import { useNavigation } from '@react-navigation/native';
+
 import { deleteCart, setRestaurant } from '../../redux/Checkout/actions';
 import { selectCarts } from '../../redux/Checkout/selectors';
 import { greyColor, primaryColor } from '../../styles/common';
@@ -27,30 +27,30 @@ import { formatPrice } from '../../utils/formatting';
 const AnimatedView = Animated.createAnimatedComponent(View);
 const { width } = Dimensions.get('window');
 
-class Carts extends Component {
-  renderRightActions = (progress, dragX, restaurantID) => {
-    const scale = dragX.interpolate({
-      inputRange: [-80, 0],
-      outputRange: [1, 0],
-      extrapolate: 'clamp',
-    });
-    //FIXME: Close Swipeable on delete
-    return (
-      <AnimatedView style={{ ...styles.animatedView, transform: [{ scale }] }}>
-        <RectButton
-          style={styles.deleteButton}
-          onPress={() => this.props.deleteCart(restaurantID)}>
-          <Icon
-            as={TrashIcon}
-            size="sm"
-            style={{ color: '#ff0000' }}
-          />
-        </RectButton>
-      </AnimatedView>
-    );
-  };
+function RightAction({ translation, onPress }) {
 
-  emptyList = () => (
+  const styleAnimation = useAnimatedStyle(() => {
+
+    return {
+      transform: [{ translateX: translation.value + 80 }],
+    };
+  });
+
+  return (
+    <Reanimated.View style={[{ width: 80 }, styleAnimation]}>
+      <Pressable className="px-4 bg-error-400 flex-1 w-full items-center justify-center" onPress={ onPress }>
+        <Icon as={CloseIcon} />
+      </Pressable>
+    </Reanimated.View>
+  );
+}
+
+const EmptyList = ({ secondaryTextColor }) => {
+
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  return (
     <View
       style={{
         alignItems: 'center',
@@ -66,68 +66,70 @@ class Carts extends Component {
         source={require('../../assets/images/empty_cart.png')}
         resizeMode={'contain'}
       />
-      <Heading>{this.props.t('EMPTY_CARTS_TITLE')}</Heading>
+      <Heading>{t('EMPTY_CARTS_TITLE')}</Heading>
       <Text
-        color={this.props.secondaryTextColor}>
-        {this.props.t('EMPTY_CARTS_SUBTITLE')}
+        color={secondaryTextColor}>
+        {t('EMPTY_CARTS_SUBTITLE')}
       </Text>
       <Button
-        onPress={() => this.props.navigation.navigate('Home')}>
-        <ButtonText>{this.props.t('GO_TO_SHOPPING')}</ButtonText>
+        onPress={() => navigation.navigate('Home')}>
+        <ButtonText>{t('GO_TO_SHOPPING')}</ButtonText>
       </Button>
     </View>
-  );
+  )
+}
 
-  _renderItem = (item, index) => (
+const ListItem = ({ item, deleteCart, setRestaurant, secondaryTextColor }) => {
+
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+
+  return (
     <>
       <Swipeable
-        enabled={!item?.softDelete}
-        renderRightActions={(progress, dragX) =>
-          this.renderRightActions(progress, dragX, item.restaurant['@id'])
-        }>
+        friction={2}
+        enableTrackpadTwoFingerGesture
+        rightThreshold={40}
+        renderRightActions={(progress, translation) => (
+          <RightAction
+            translation={ translation }
+            onPress={ () => deleteCart(item.restaurant['@id']) } />
+        )}>
         <TouchableOpacity
-          disabled={item?.softDelete}
           onPress={() => {
-            this.props.setRestaurant(item.restaurant['@id']);
-            this.props.navigation.navigate('CheckoutSummary', {
-              cart: item.cart,
+
+            setRestaurant(item.restaurant['@id']);
+
+            // Push the routes, so that user can go to restaurant screen
+            navigation.push('CheckoutRestaurant', {
               restaurant: item.restaurant,
             });
+            navigation.push('CheckoutSummary', {
+              restaurant: item.restaurant,
+              cart: item.cart,
+            });
+
           }}>
-          <HStack space="md" className="p-2 items-center">
-            <Skeleton
-              className="w-1/5"
-              isLoaded={!item?.softDelete}>
-              <Avatar size="lg">
-                <AvatarImage
-                  source={{ uri: item.restaurant.image }}
-                />
-              </Avatar>
-            </Skeleton>
-            <SkeletonText
-                _lines={4}
-                className="h-2"
-                isLoaded={!item?.softDelete}>
-              <VStack>
-                <Text bold>{item.restaurant.name}</Text>
-                <Text color={this.props.secondaryTextColor}>
-                  {i18n.t('ITEM', { count: item.cart.items.length })} •{' '}
-                  {formatPrice(item.cart.total)}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  maxWidth={width - 170}
-                  color={this.props.secondaryTextColor}>
-                  {item.cart.shippingAddress?.streetAddress}
-                </Text>
-              </VStack>
-            </SkeletonText>
-            <View
-              style={{
-                flexGrow: 1,
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}>
+          <HStack space="md" className="flex-1 p-3 items-center justify-between">
+            <Avatar size="lg">
+              <AvatarImage
+                source={{ uri: item.restaurant.image }}
+              />
+            </Avatar>
+            <VStack>
+              <Text bold>{item.restaurant.name}</Text>
+              <Text color={secondaryTextColor}>
+                {t('ITEM', { count: item.cart.items.length })} •{' '}
+                {formatPrice(item.cart.total)}
+              </Text>
+              <Text
+                numberOfLines={1}
+                maxWidth={width - 170}
+                color={secondaryTextColor}>
+                {item.cart.shippingAddress?.streetAddress}
+              </Text>
+            </VStack>
+            <View>
               <Icon as={ChevronRightIcon} />
             </View>
           </HStack>
@@ -135,35 +137,26 @@ class Carts extends Component {
       </Swipeable>
     </>
   );
-
-  render() {
-    return (
-      <FlatList
-        data={_.values(this.props.carts)}
-        alwaysBounceVertical={false}
-        keyExtractor={(item, index) => index}
-        renderItem={({ item, index }) => this._renderItem(item, index)}
-        ListEmptyComponent={this.emptyList}
-      />
-    );
-  }
 }
 
-const styles = {
-  deleteButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    backgroundColor: '#ffb7b7',
-    borderRadius: 50,
-  },
-  animatedView: {
-    justifyContent: 'center',
-    marginLeft: 15,
-    marginRight: 15,
-  },
-};
+const Carts = ({ carts, deleteCart, setRestaurant, secondaryTextColor }) => {
+
+  return (
+    <FlatList
+      data={_.values(carts)}
+      alwaysBounceVertical={false}
+      keyExtractor={(item, index) => index}
+      renderItem={({ item, index }) => (
+        <ListItem
+          item={item}
+          deleteCart={deleteCart}
+          setRestaurant={setRestaurant}
+          secondaryTextColor={secondaryTextColor} />
+      )}
+      ListEmptyComponent={() => <EmptyList secondaryTextColor={secondaryTextColor} />}
+    />
+  );
+}
 
 function mapStateToProps(state) {
   return {

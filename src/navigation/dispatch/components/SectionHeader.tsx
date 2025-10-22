@@ -6,14 +6,17 @@ import { useBackgroundHighlightColor } from '../../../styles/theme';
 import { darkGreyColor, whiteColor } from '../../../styles/common';
 import FAIcon from '@/src/components/Icon';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsExpandedSection } from '../../../redux/Dispatch/selectors';
+import { toggleSection } from '../../../redux/Dispatch/expandedSectionsSlice';
+
 export function SectionHeader({
   section,
-  collapsedSections,
-  setCollapsedSections,
 }) {
   const { t } = useTranslation();
-
   const bgHighlightColor = useBackgroundHighlightColor();
+  const isExpandedSection = useSelector(selectIsExpandedSection);
+  const dispatch = useDispatch();
 
   // Disabled animation for now..!
   // if (Platform.OS === 'android') {
@@ -22,11 +25,7 @@ export function SectionHeader({
   const handleToggle = title => {
     // Disabled animation for now..!
     // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setCollapsedSections(() => {
-      const next = new Set(collapsedSections);
-      next[next.has(title) ? 'delete' : 'add'](title);
-      return next;
-    });
+    dispatch(toggleSection(title));
   };
 
   return (
@@ -70,9 +69,9 @@ export function SectionHeader({
         {section.tasksCount === 0 ? null : (
           <FAIcon
             name={
-              collapsedSections.has(section.title)
-                ? 'chevron-down'
-                : 'chevron-up'
+              isExpandedSection(section.title)
+                ? 'chevron-up'
+                : 'chevron-down'
             }
             testID={`${section.id}:toggler`}
             color={darkGreyColor}

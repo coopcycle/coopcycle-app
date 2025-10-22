@@ -34,12 +34,10 @@ describeif(device.getPlatform() === 'android')
 
   it('should correctly apply filters to tasks on different tasklists', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // Assign the 1st order in the list with tasks #1+#2+#3
     await assignOrderToUser(USER_JANE);
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Assign the 1st order in the list with tasks #5+#4
     await assignOrderToUser(USER_ZAK);
 
@@ -47,7 +45,7 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUnassigned();
     // Show USER_JANE's and USER_ZAK's tasks section
     await toggleSectionUser(USER_JANE);
-    //await toggleSectionUser(USER_ZAK); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUser(USER_ZAK);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
@@ -124,16 +122,16 @@ describeif(device.getPlatform() === 'android')
 
     // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
     await swipeDown('dispatchTasksSectionList');
-    await toggleSectionUnassigned();
 
     // Open the map screen
     await tapById('toggleTasksMapListButton');
     await sleep(5000); // Wait for the map to be fully loaded
 
-    // Verify tasks #6+#7 markers are on the map
-    await waitToExist('taskmarker-6-0'); // If we don't force the task list update, this marker will be: 'taskmarker-6-5'
-    await waitToExist('taskmarker-7-1'); // If we don't force the task list update, this marker will be: 'taskmarker-7-6'
-    await waitToExist('taskmarker-3-7'); // If we don't force the task list update, this marker will be: 'taskmarker-3-2'
+    // Verify all tasks markers are on the map
+    await waitToExist('taskmarker-6,8,2,4'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-7,9'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-10'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-11,3'); // If we don't force the task list update, this marker testID will change..!
 
     // Open the filters screen and enable "Hide unassigned tasks from map"
     await tapById('showTasksFiltersButton');
@@ -143,11 +141,14 @@ describeif(device.getPlatform() === 'android')
     // Go back
     await device.pressBack();
 
-    // Verify tasks #6+#7 markers are NOT on the map
-    await expectToNotExist('taskmarker-6-0');
-    await expectToNotExist('taskmarker-7-1');
+    // Verify only assigned task markers are on the map
+    await expectToNotExist('taskmarker-6,8,2,4');
+    await expectToNotExist('taskmarker-7,9');
+    await expectToNotExist('taskmarker-10');
+    await expectToNotExist('taskmarker-11,3');
     // TODO FIX: If we don't force the task list update, ALL MARKERS DISAPPEAR!!!!!!!!!!
-    await waitToExist('taskmarker-3-7');
+    await waitToExist('taskmarker-2,4');
+    await waitToExist('taskmarker-3');
 
     //////////////
     // Show line linking tasks
@@ -185,8 +186,10 @@ describeif(device.getPlatform() === 'android')
     // Go back
     await tapById('keywordsFilterGoToAllTasksButton');
 
+    // Show unassigned tasks section
+    await toggleSectionUnassigned();
+
     // Verify tasks were found
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden but it's visible)
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #10)");
 

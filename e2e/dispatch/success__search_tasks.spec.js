@@ -27,12 +27,10 @@ describeif(device.getPlatform() === 'android')
 
   it('should correctly find tasks on different tasklists', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // Assign the 1st order in the list with tasks #1+#2+#3
     await assignOrderToUser(USER_JANE);
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Assign the 1st order in the list with tasks #5+#4
     await assignOrderToUser(USER_ZAK);
 
@@ -40,7 +38,7 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUnassigned();
     // Show USER_JANE's and USER_ZAK's tasks section
     await toggleSectionUser(USER_JANE);
-    //await toggleSectionUser(USER_ZAK); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUser(USER_ZAK);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
@@ -54,8 +52,6 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', `${USER_JANE}\n`);
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
-    // Show USER_JANE's tasks section on search results
-    await toggleSectionUser(USER_JANE);
     // Verify tasks #1+#2+#3 were found on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksListSearchResults`, 0, "Acme (task #1)");
     await expectTaskTitleToHaveText(`${USER_JANE}TasksListSearchResults`, 1, "Acme (task #2)");
@@ -72,13 +68,9 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUnassigned();
     // Verify tasks were found on different task lists
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #7)");
-    // Hide unassigned and show USER_JANE's tasks section on search results
+    // Hide unassigned tasks section on search results
     await toggleSectionUnassigned();
-    await toggleSectionUser(USER_JANE);
     await expectTaskTitleToHaveText(`${USER_JANE}TasksListSearchResults`, 0, "Acme (task #1)");
-    // Hide USER_JANE's and show USER_ZAK's tasks section on search results
-    await toggleSectionUser(USER_JANE);
-    await toggleSectionUser(USER_ZAK);
     await expectTaskTitleToHaveText(`${USER_ZAK}TasksListSearchResults`, 0, "Acme (task #5)");
 
     // Go back
@@ -88,9 +80,8 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', '#1\n');
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
-    // Show unassigned and USER_JANE's tasks section on search results
+    // Show unassigned tasks section on search results
     await toggleSectionUnassigned();
-    await toggleSectionUser(USER_JANE);
     // Verify tasks were found on different task lists
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #10)");
@@ -103,9 +94,6 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', 'rue Milton\n');
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
-    // Show unassigned and USER_JANE's tasks section on search results
-    await toggleSectionUnassigned();
-    await toggleSectionUser(USER_JANE);
     // Verify tasks were found on different task lists
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
     await expectTaskTitleToHaveText(`${USER_JANE}TasksListSearchResults`, 0, "Acme (task #3)");
@@ -117,8 +105,6 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', 'Maradona\n');
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
-    // Show unassigned tasks section on search results
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
     // Verify task #10 was found on unassigled task list
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #10)");
 
@@ -129,9 +115,6 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', 'Marley\n');
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
-    // Show unassigned and USER_JANE's tasks section on search results
-    await toggleSectionUnassigned();
-    await toggleSectionUser(USER_JANE);
     // Verify tasks were found on different task lists
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
     await expectTaskTitleToHaveText(`${USER_JANE}TasksListSearchResults`, 0, "Acme (task #3)");

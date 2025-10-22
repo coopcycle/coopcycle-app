@@ -32,7 +32,7 @@ describeif(device.getPlatform() === 'android')
 
   it('should assign a single task to a courier and then unassign it', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // All 3 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #1)");
@@ -42,8 +42,6 @@ describeif(device.getPlatform() === 'android')
     // Assign task #2
     await assignTaskToUser(USER_JANE, 1);
 
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Verify task #1 and #3 were not assigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #1)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #3)");
@@ -70,7 +68,7 @@ describeif(device.getPlatform() === 'android')
 
   it('should assign a single order (with 3 tasks) to a courier and then unassign it', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // All 4 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #1)");
@@ -81,8 +79,6 @@ describeif(device.getPlatform() === 'android')
     // Assign order #1 (that has 3 tasks) from task #2
     await assignOrderToUser(USER_JANE, 1);
 
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Verify that now the 1st unassigned task is #5
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #5)");
 
@@ -111,7 +107,7 @@ describeif(device.getPlatform() === 'android')
 
   it('should bulk assign two tasks to a courier and then unassign them', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // All 3 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #1)");
@@ -123,8 +119,6 @@ describeif(device.getPlatform() === 'android')
     await swipeLeftTask(UNASSIGNED_TASKS_LIST_ID, 2);
     await bulkAssignToUser(USER_JANE);
 
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Verify that now the 1st unassigned task is #2 and then #5
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #2)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #5)");
@@ -154,7 +148,7 @@ describeif(device.getPlatform() === 'android')
 
   it('should bulk assign a task and an order to a courier and then unassign them', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // All 4 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #1)");
@@ -167,8 +161,6 @@ describeif(device.getPlatform() === 'android')
     await swipeLeftTask(UNASSIGNED_TASKS_LIST_ID, 3);
     await bulkAssignToUser(USER_JANE);
 
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Verify that now the 1st unassigned task is #7
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #7)");
 
@@ -200,7 +192,7 @@ describeif(device.getPlatform() === 'android')
 
   it('should bulk assign a task and an order to a courier and then reassign them to another courier and then unassign them all again', async () => {
     // Show unassigned tasks section
-    //await toggleSectionUnassigned(); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUnassigned();
 
     // All 5 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #1)");
@@ -215,8 +207,6 @@ describeif(device.getPlatform() === 'android')
     await swipeLeftTask(UNASSIGNED_TASKS_LIST_ID, 3);
     await bulkAssignToUser(USER_JANE);
 
-    // Show unassigned tasks section (THIS IS A BUG: it hides once we assign the order above)
-    await toggleSectionUnassigned(); // TODO: Remove this line once the bug is fixed
     // Verify that now the 1st unassigned task is #7 and then #9
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #7)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #9)");
@@ -250,7 +240,7 @@ describeif(device.getPlatform() === 'android')
     // Hide USER_JANE's tasks section
     await toggleSectionUser(USER_JANE);
     // Show USER_ZAK's tasks section
-    //await toggleSectionUser(USER_ZAK); (THIS IS A BUG: it should be hidden by default but it's visible)
+    await toggleSectionUser(USER_ZAK);
 
     // Verify all the 5 tasks are on USER_ZAK's task list
     await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (task #7)");
