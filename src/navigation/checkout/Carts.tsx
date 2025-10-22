@@ -97,11 +97,18 @@ const ListItem = ({ item, deleteCart, setRestaurant, secondaryTextColor }) => {
         )}>
         <TouchableOpacity
           onPress={() => {
+
             setRestaurant(item.restaurant['@id']);
-            navigation.navigate('CheckoutSummary', {
-              cart: item.cart,
+
+            // Push the routes, so that user can go to restaurant screen
+            navigation.push('CheckoutRestaurant', {
               restaurant: item.restaurant,
             });
+            navigation.push('CheckoutSummary', {
+              restaurant: item.restaurant,
+              cart: item.cart,
+            });
+
           }}>
           <HStack space="md" className="flex-1 p-3 items-center justify-between">
             <Avatar size="lg">
