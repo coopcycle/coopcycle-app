@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
+import ReportIncidentNavigator from './ReportIncidentNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -229,6 +230,13 @@ export default () => {
         <RootStack.Screen
           name="Order"
           component={OrderNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+      <RootStack.Screen
+          name="ReportIncident"
+          component={ReportIncidentNavigator}
           options={{
             headerShown: false,
           }}

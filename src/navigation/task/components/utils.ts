@@ -63,4 +63,13 @@ export const moveAfter = (tasks: Task[], fromIndex: number, toIndex: number) => 
 
   out.splice(insertPos, 0, item);
   return out;
+};
+
+export const isDropoff = (task: Task, tasks: Task[]) => {
+  if (tasks && tasks.length > 1) {
+    return tasks.every(t => t.type === 'DROPOFF');
+  } else if (tasks && tasks.length === 1) {
+    return tasks[0].type === 'DROPOFF';
+  }
+  return task && task.type === 'DROPOFF';
 }

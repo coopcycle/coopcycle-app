@@ -47,3 +47,22 @@ export const navigateToCompleteTask = (
     },
   });
 };
+
+export const navigateToReportTask = (
+  navigation,
+  route,
+  task,
+  tasks = [],
+  success = false,
+) => {
+  const params = {
+    task,
+    tasks,
+    navigateAfter: route.name,
+  };
+
+  navigation.navigate('ReportIncident', {
+    screen: 'ReportIncident',
+    params: { ...params, success },
+  });
+};
