@@ -45,7 +45,7 @@ import CourierDate from './courier/Date';
 import CourierSettings from './courier/Settings';
 import CourierSettingsTags from './courier/Tags';
 import CourierTaskListPage from './courier/TaskListPage';
-import CourierTasksPage from './courier/TasksPage';
+import CourierTaskMapPage from './courier/TaskMapPage';
 import CourierBarcodePage from './courier/barcode/Barcode';
 import CourierBarcodeReportPage from './courier/barcode/BarcodeReport';
 import CourierBarcodeIncidentPage from './courier/barcode/BarcodeIncident';
@@ -107,7 +107,7 @@ export default {
   CheckoutPayment,
   CheckoutMercadopago,
   CheckoutMoreInfos,
-  CourierTasksPage,
+  CourierTaskMapPage,
   CourierBarcodePage,
   CourierBarcodeReportPage,
   CourierBarcodeIncidentPage,

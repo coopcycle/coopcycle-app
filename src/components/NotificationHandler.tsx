@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -43,14 +43,16 @@ export default function NotificationHandler() {
 
   const dispatch = useDispatch();
 
+  const onDismiss = useCallback(() => {
+    dispatch(clearNotifications());
+  }, [dispatch]);
+
   useEffect(() => {
     // use memoized value to avoid re-setting timeout when more notifications arrive
     if (hasNotifications) {
-      setTimeout(() => {
-        dispatch(clearNotifications());
-      }, NOTIFICATION_DURATION_MS);
+      setTimeout(onDismiss, NOTIFICATION_DURATION_MS);
     }
-  }, [hasNotifications, dispatch]);
+  }, [hasNotifications, onDismiss]);
 
   useEffect(() => {
     // on Android, when notification is received, OS let us execute some code
@@ -75,9 +77,7 @@ export default function NotificationHandler() {
   return (
     <NotificationModal
       notifications={notificationsToDisplay}
-      onDismiss={() => {
-        dispatch(clearNotifications());
-      }}
+      onDismiss={onDismiss}
     />
   );
 }

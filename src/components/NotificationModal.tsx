@@ -1,13 +1,11 @@
 import Modal from 'react-native-modal';
 import ModalContent from './ModalContent';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Icon, BellIcon, ChevronRightIcon } from '@/components/ui/icon';
+import { BellIcon, ChevronRightIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment/moment';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import NavigationHolder from '../NavigationHolder';
 import { CommonActions } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -59,6 +57,7 @@ export default function NotificationModal({ notifications, onDismiss }) {
   const _navigateToOrder = order => {
     onDismiss();
 
+    // @TODO See if this can be changed to use NavigationHolder.navigate() and remove CommonActions
     NavigationHolder.dispatch(
       CommonActions.navigate({
         name: 'RestaurantNav',
@@ -81,17 +80,7 @@ export default function NotificationModal({ notifications, onDismiss }) {
   const _navigateToTasks = date => {
     onDismiss();
 
-    NavigationHolder.dispatch(
-      CommonActions.navigate({
-        name: 'CourierNav',
-        params: {
-          screen: 'CourierHome',
-          params: {
-            screen: 'CourierTaskList',
-          },
-        },
-      }),
-    );
+    NavigationHolder.navigate('CourierTaskList', {});
 
     dispatch(loadTasks(moment(date)));
   };
@@ -167,7 +156,7 @@ export default function NotificationModal({ notifications, onDismiss }) {
           keyExtractor={_keyExtractor}
           renderItem={({ item }) => renderItem(item)}
         />
-        <TouchableOpacity style={styles.footer} onPress={() => onDismiss()}>
+        <TouchableOpacity style={styles.footer} onPress={onDismiss}>
           <Text style={{ color: '#FF4136' }}>{t('CLOSE')}</Text>
         </TouchableOpacity>
       </ModalContent>
