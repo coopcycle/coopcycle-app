@@ -2,14 +2,18 @@ import { Camera, CameraView } from 'expo-camera';
 import { Button, ButtonText, ButtonIcon} from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { HStack } from '@/components/ui/hstack';
+import { Box } from '@/components/ui/box';
 import { Icon } from '@/components/ui/icon';
-import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon } from 'lucide-react-native';
+import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon, FolderSearch } from 'lucide-react-native';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import { addPicture } from '../../redux/Courier';
 
@@ -84,13 +88,48 @@ class Photo extends Component {
     const previewSize = width / 3 - 15;
     const { image } = this.state;
 
+    const pickImage = async () => {
+
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding: 'base64' })
+
+        const task = this.props.route.params?.task;
+        const tasks = this.props.route.params?.tasks;
+
+        this.props.addPicture(task, base64);
+
+        this.props.navigation.navigate({
+          name: 'TaskCompleteHome',
+          params: { task, tasks },
+          merge: true,
+        });
+      }
+    };
+
     return (
       <VStack flex={1}>
-        <VStack flex={1} className="p-2">
-          <Text note style={{ textAlign: 'center', marginBottom: 20 }}>
-            {this.props.t('PHOTO_DISCLAIMER')}
-          </Text>
-          <View style={styles.canvasContainer}>
+        <VStack flex={1} className="p-3">
+          <HStack className="justify-between items-center mb-5 pt-3">
+            <Text className="text-md">
+              {this.props.t('PHOTO_DISCLAIMER')}
+            </Text>
+            <Button
+              onPress={pickImage}
+              size={36}
+              variant="link"
+            >
+              <ButtonIcon as={FolderSearch} />
+            </Button>
+          </HStack>
+          <Box className="border-2 border-outline-600 flex-1 items-center">
             {/*
             // Only one Camera preview can be active at any given time.
             // If you have multiple screens in your app, you should unmount Camera components whenever a screen is unfocused.
@@ -100,37 +139,38 @@ class Photo extends Component {
                 ref={this.camera}
                 style={styles.camera}
                 flashMode={this.state.flash ? 'on' : 'off'}>
-                <Button
-                  onPress={this.toggleFlash.bind(this)}
-                  variant="solid"
-                  colorScheme="yellow"
-                  style={styles.flash}
-                >
-                  <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
-                </Button>
-                <Button
-                  onPress={this._takePicture.bind(this)}
-                  size="lg"
-                  variant="solid"
-                >
-                  <ButtonIcon as={CameraIcon} />
-                </Button>
-                <View
-                  style={[
-                    styles.preview,
-                    { width: previewSize, height: previewSize },
-                  ]}>
-                  {!image && <Icon as={ImageIcon} size="xl" className="text-color-light" />}
-                  {image && (
-                    <Image
-                      style={{ width: previewSize, height: previewSize }}
-                      source={{ uri: image.uri }}
-                    />
-                  )}
-                </View>
               </CameraView>
             ) : null}
-          </View>
+            <Button
+              onPress={this.toggleFlash.bind(this)}
+              variant="solid"
+              colorScheme="yellow"
+              style={styles.flash}
+            >
+              <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
+            </Button>
+            <Button
+              onPress={this._takePicture.bind(this)}
+              size="lg"
+              variant="solid"
+              style={styles.cameraButton}
+            >
+              <ButtonIcon size={32} as={CameraIcon} />
+            </Button>
+            <View
+              style={[
+                styles.preview,
+                { width: previewSize, height: previewSize },
+              ]}>
+              {!image && <Icon as={ImageIcon} size="xl" className="text-color-light" />}
+              {image && (
+                <Image
+                  style={{ width: previewSize, height: previewSize }}
+                  source={{ uri: image.uri }}
+                />
+              )}
+            </View>
+          </Box>
         </VStack>
         <VStack className="p-2">
           <Button size="lg" onPress={this._saveImage.bind(this)}>
@@ -146,16 +186,13 @@ const styles = StyleSheet.create({
   canvasContainer: {
     flex: 1,
     flexDirection: 'row',
-    borderColor: '#000000',
     borderWidth: 1,
     overflow: 'hidden',
     marginBottom: 20,
   },
   camera: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    padding: 15,
+    width: "100%",
   },
   preview: {
     flex: 1,
@@ -173,6 +210,14 @@ const styles = StyleSheet.create({
     top: 15,
     left: 15,
   },
+  cameraButton: {
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  }
 });
 
 function mapStateToProps(state) {

@@ -60,6 +60,7 @@
     "esc-pos-encoder": "^2.0.2",
     "expo": "^53",
     "expo-camera": "16.1.11",
+    "expo-image-picker": "16.1.4",
     "expo-notifications": "0.31.4",
     "formik": "^2.4.6",
     "fuse.js": "^6.6.2",

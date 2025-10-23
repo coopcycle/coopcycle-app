@@ -283,7 +283,7 @@
     "SIGNATURE_CLEAR": "Effacer",
     "SIGNATURE_ADD": "Ajouter la signature",
     "PHOTO": "Photo",
-    "PHOTO_DISCLAIMER": "Prenez une photo",
+    "PHOTO_DISCLAIMER": "Prenez une photo ou sélectionnez une photo",
     "LOAD_MORE": "Charger plus",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploadée !",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "L'image a été uploadée avec succès",
@@ -576,6 +576,7 @@
     "LOADING_ADDRESS": "Chargement de l'adresse",
     "MOVE_MAP_TO_SELECT_LOCATION": "Déplacez la carte pour sélectionner votre emplacement",
     "START": "Commencer",
-    "FIND_ON_MAP": "Me localiser sur la carte"
+    "FIND_ON_MAP": "Me localiser sur la carte",
+    "SELECT_PHOTO": "Sélectionnez une photo ci-dessous"
   }
 }
