@@ -11,7 +11,6 @@ import { Input, InputField } from '@/components/ui/input';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
-import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -49,6 +48,14 @@ const fuseOptions = {
   keys: ['contactName', 'streetAddress'],
 };
 
+interface AddressAutocompleteProps {
+  minChars?: number;
+  addresses?: unknown[];
+  renderRight?(...args: unknown[]): unknown;
+  onMapPickerPress?(...args: unknown[]): unknown;
+  mapPickerStyle?: "small" | "large";
+}
+
 function AddressAutocomplete({
   country,
   t,
@@ -67,7 +74,7 @@ function AddressAutocomplete({
   location,
   mapPickerStyle = 'small',
   ...otherProps
-}) {
+}: AddressAutocompleteProps) {
   const props = arguments[0];
 
   const [query, setQuery] = useState(
@@ -502,14 +509,6 @@ function AddressAutocomplete({
     </>
   );
 }
-
-AddressAutocomplete.propTypes = {
-  minChars: PropTypes.number,
-  addresses: PropTypes.array,
-  renderRight: PropTypes.func,
-  onMapPickerPress: PropTypes.func,
-  mapPickerStyle: PropTypes.oneOf(['small', 'large']),
-};
 
 const styles = StyleSheet.create({
   poweredContainer: {

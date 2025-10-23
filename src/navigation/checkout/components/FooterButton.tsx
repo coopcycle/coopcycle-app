@@ -1,9 +1,14 @@
 import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-class FooterButton extends Component {
+interface FooterButtonProps {
+  text: string;
+  testID?: string;
+  onPress?(...args: unknown[]): unknown;
+}
+
+class FooterButton extends Component<FooterButtonProps> {
   render() {
     const { text, ...otherProps } = this.props;
 
@@ -16,11 +21,5 @@ class FooterButton extends Component {
     );
   }
 }
-
-FooterButton.propTypes = {
-  text: PropTypes.string.isRequired,
-  testID: PropTypes.string,
-  onPress: PropTypes.func,
-};
 
 export default FooterButton;
