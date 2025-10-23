@@ -268,8 +268,8 @@ export default function GroupedTasks({
 
   const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
 
-  const handleSortBefore = useCallback((tasklist: Task[]) => {
-    const itemsIDs = [...tasklist.map(t => t['@id'])];
+  const handleSortBefore = useCallback((tasks: Task[]) => {
+    const itemsIDs = [...tasks.map(t => t['@id'])];
     const selectedTask = context?.selectedTasksToEdit[0];
     const selectedTaskID = selectedTask['@id'];
 
@@ -281,8 +281,8 @@ export default function GroupedTasks({
     context?.clearSelectedTasks();
   }, [context, date, setTaskListItems]);
 
-  const handleSort = useCallback((tasklist: Task[], index: number) => {
-    const itemsIDs = [...tasklist.map(t => t['@id'])];
+  const handleSort = useCallback((tasks: Task[], index: number) => {
+    const itemsIDs = [...tasks.map(t => t['@id'])];
     const selectedTask = context?.selectedTasksToEdit[0];
 
     const fromIndex = itemsIDs.indexOf(selectedTask['@id']);

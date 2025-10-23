@@ -107,7 +107,8 @@ function TaskMapPage({ navigation, route }) {
   );
 }
 
-class TasksPage extends Component {
+// @TODO Convert to functional component (move into the 'TaskMapPage' one above)
+class TaskMapPageContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -196,4 +197,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(TasksPage));
+)(withTranslation()(TaskMapPageContainer));
