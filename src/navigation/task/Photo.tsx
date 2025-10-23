@@ -12,12 +12,10 @@ import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import { CameraRoll } from "@react-native-camera-roll/camera-roll";
-import Modal from 'react-native-modal';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import { addPicture } from '../../redux/Courier';
-
-import Photos from './components/Photos';
 
 class Photo extends Component {
   constructor(props) {
@@ -28,8 +26,6 @@ class Photo extends Component {
       canStartCamera: false,
       canMountCamera: false,
       flash: false,
-      photos: [],
-      isPhotosModalVisible: false,
     };
 
     this.camera = React.createRef();
@@ -83,22 +79,6 @@ class Photo extends Component {
     }
   }
 
-  _loadPhotos() {
-    CameraRoll.getPhotos({
-       first: 20,
-       assetType: 'All',
-    })
-    .then(r => {
-      this.setState({
-        photos: r.edges,
-        isPhotosModalVisible: true
-      })
-    })
-    .catch((err) => {
-        // Error Loading Images
-    });
-  }
-
   toggleFlash() {
     this.setState({ flash: !this.state.flash });
   }
@@ -108,6 +88,32 @@ class Photo extends Component {
     const previewSize = width / 3 - 15;
     const { image } = this.state;
 
+    const pickImage = async () => {
+
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding: 'base64' })
+
+        const task = this.props.route.params?.task;
+        const tasks = this.props.route.params?.tasks;
+
+        this.props.addPicture(task, base64);
+
+        this.props.navigation.navigate({
+          name: 'TaskCompleteHome',
+          params: { task, tasks },
+          merge: true,
+        });
+      }
+    };
+
     return (
       <VStack flex={1}>
         <VStack flex={1} className="p-3">
@@ -116,7 +122,7 @@ class Photo extends Component {
               {this.props.t('PHOTO_DISCLAIMER')}
             </Text>
             <Button
-              onPress={this._loadPhotos.bind(this)}
+              onPress={pickImage}
               size={36}
               variant="link"
             >
@@ -171,33 +177,6 @@ class Photo extends Component {
             <ButtonText>{this.props.t('PHOTO_ADD')}</ButtonText>
           </Button>
         </VStack>
-        <Modal isVisible={this.state.isPhotosModalVisible}>
-          <Photos photos={ this.state.photos }
-            onPressClose={ () => {
-              this.setState({
-                isPhotosModalVisible: false
-              })
-            }}
-            onSelectPhoto={ (base64) => {
-
-              this.setState({
-                isPhotosModalVisible: false
-              })
-
-              const task = this.props.route.params?.task;
-              const tasks = this.props.route.params?.tasks;
-
-              this.props.addPicture(task, base64);
-
-              this.props.navigation.navigate({
-                name: 'TaskCompleteHome',
-                params: { task, tasks },
-                merge: true,
-              });
-
-
-            }} />
-        </Modal>
       </VStack>
     );
   }
