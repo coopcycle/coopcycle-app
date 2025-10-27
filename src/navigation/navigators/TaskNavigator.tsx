@@ -28,6 +28,16 @@ const CompleteNavigator = () => {
   return (
     <CompleteStack.Navigator screenOptions={screenOptions}>
       <CompleteStack.Screen
+        name="ReportIncidentHome"
+        component={screens.Report}
+        options={({ route, navigation }) => ({
+          title: completeTitle(route.params),
+          headerShown: true,
+          headerLeft: props => (
+          <HeaderBackButton {...props} onPress={() => navigation.goBack()} />),
+        })}
+      />
+      <CompleteStack.Screen
         name="TaskCompleteHome"
         component={screens.TaskComplete}
         options={({ navigation, route }) => ({

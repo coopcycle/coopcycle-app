@@ -27,7 +27,6 @@ import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
-import ReportIncidentNavigator from './ReportIncidentNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -252,7 +251,7 @@ export default function DispatchNavigator({ navigation }) {
           />
           <RootStack.Screen
             name="ReportIncident"
-            component={ReportIncidentNavigator}
+            component={TaskNavigator}
             options={{
               headerShown: false,
             }}

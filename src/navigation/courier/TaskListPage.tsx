@@ -7,6 +7,7 @@ import { blueColor, greenColor, yellowColor } from '../../styles/common';
 import {
   navigateToCompleteTask,
   navigateToOrder,
+  navigateToReportTask,
   navigateToTask,
 } from '../../navigation/utils';
 import {
@@ -71,7 +72,7 @@ export default function TaskListPage({ navigation, route }) {
 
   const swipeRightConfiguration = {
     onPressRight: task =>
-      navigateToCompleteTask(navigation, route, task, [], false),
+      navigateToReportTask(navigation, route, task, [], false),
     swipeOutRightBackgroundColor: yellowColor,
     swipeOutRightIcon: IncidentIcon,
   };
