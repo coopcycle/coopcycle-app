@@ -120,9 +120,6 @@ describeif(device.getPlatform() === 'android')
     // Hide unassigned tasks from map
     //////////////
 
-    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
-    await swipeDown('dispatchTasksSectionList');
-
     // Open the map screen
     await tapById('toggleTasksMapListButton');
     await sleep(5000); // Wait for the map to be fully loaded

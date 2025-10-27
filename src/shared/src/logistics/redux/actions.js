@@ -133,6 +133,7 @@ export function updateTask(action, task) {
           dispatch(markTaskDoneSuccess(task));
           break;
         case 'task:updated':
+        case 'task:incident-reported':
           dispatch(updateTaskSuccess(task));
           break;
         case 'task:failed':

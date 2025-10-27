@@ -75,9 +75,6 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('task:finishButton');
     await tapByText('Report incident');
 
-    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
-    await swipeDown('dispatchTasksSectionList');
-
     // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
