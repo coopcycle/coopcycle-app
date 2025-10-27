@@ -5,11 +5,24 @@ import { EditTask } from "./Edit";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 import { TabBar } from "./components/TabBar";
+import { Header } from "./components/Header";
+import { useRoute } from "@react-navigation/native";
 
 export const Report = () => {
+
     const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
+    const { params } = useRoute();
+    const task = params?.task;
 
     const styles = StyleSheet.create({
+      header: {
+        flex: 1,
+        height: '5%',
+        alignContent: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+      },
       buttonTab: {
         flex: 1,
         margin: 4,
@@ -38,6 +51,7 @@ export const Report = () => {
             <HStack style={ styles.tabBar }> 
                 <TabBar onPress={handleTabChange}/>
             </HStack>
+            <Header task={task} />
             {isReportTab ? <Complete /> : <EditTask onSubmit={() => {}} />}
         </VStack>
     )

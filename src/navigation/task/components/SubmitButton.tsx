@@ -5,7 +5,6 @@ import { TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 
 import { HStack } from "@/components/ui/hstack";
-import { CheckIcon, Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import { greenColor, yellowColor } from "@/src/styles/common";
 import { markTaskDone, markTasksDone } from "@/src/redux/Courier";
@@ -81,7 +80,6 @@ export const SubmitButton = ({
       style={{ alignItems: 'center', backgroundColor: footerBgColor }}
       testID="task:finishButton">
       <HStack className="py-3 items-center">
-        <Icon as={CheckIcon} style={{ color: '#fff', marginRight: 10 }} />
         <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
       </HStack>
     </TouchableOpacity>

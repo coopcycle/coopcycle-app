@@ -609,6 +609,10 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Move the map to select location",
     "START": "Start",
     "FIND_ON_MAP": "Or find myself on the map",
-    "TASK_DETAILS": "Task details"
+    "TASK_DETAILS": "Task details",
+    "INCIDENT_TYPE": "Incident type",
+    "SELECT_INCIDENT_TYPE": "Select an incident type",
+    "VALIDATE_TASK": "Validate task after reporting incident"
+
   }
 }

@@ -27,7 +27,7 @@ export default () => {
   return (
     <RootStack.Navigator screenOptions={screenOptions}>
       <RootStack.Screen
-        name="ReportIncident"
+        name="ReportIncidentHome"
         component={screens.Report}
         options={({ route, navigation }) => ({
           title: completeTitle(route.params),

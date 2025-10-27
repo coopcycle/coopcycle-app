@@ -52,7 +52,7 @@ export const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
         onValueChange={v => onChange(v)}>
         <SelectTrigger variant="outline" size="md" className="justify-between">
           <SelectInput
-            placeholder={t('SELECT_FAILURE_REASON')}
+            placeholder={t('SELECT_INCIDENT_TYPE')}
             value={
               selectedFailureReason
                 ? data['hydra:member'].find(

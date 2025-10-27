@@ -577,7 +577,10 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Déplacez la carte pour sélectionner votre emplacement",
     "START": "Commencer",
     "FIND_ON_MAP": "Me localiser sur la carte",
-    "TASK_DETAILS": "Détails de la tâche"
+    "TASK_DETAILS": "Détails de la tâche",
+    "INCIDENT_TYPE": "Type d'incident",
+    "SELECT_INCIDENT_TYPE": "Sélectionner le type d'incident",
+    "VALIDATE_TASK": "Valider la tâche"
 
   }
 }

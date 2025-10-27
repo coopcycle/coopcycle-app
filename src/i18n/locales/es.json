@@ -258,7 +258,7 @@
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "¡Imagen añadida!",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "La imagen fue añadida con éxito",
     "AN_ERROR_OCCURRED": "Se ha producido un error",
-    "TASK_ADD_PROOF_OF_DELIVERY": "Añadir una prueba de entrega",
+    "TASK_ADD_PROOF_OF_DELIVERY": "Añadir un comprobante de entrega",
     "SEARCH": "Buscar restaurantes...",
     "GO_BACK_TO_RESTAURANTS": "Empezar de nuevo",
     "SESSION_EXPIRED": "Tu sesión ha expirado",
@@ -482,6 +482,9 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Mueve el mapa para seleccionar tu ubicación",
     "START": "Comenzar",
     "FIND_ON_MAP": "Localizarme en el mapa",
-    "TASK_DETAILS": "Task details"
+    "TASK_DETAILS": "Task details",
+    "INCIDENT_TYPE": "Tipo de incidente",
+    "SELECT_INCIDENT_TYPE": "Selecciona el tipo de incidente",
+    "VALIDATE_TASK": "Validar tarea tras informar del incidente"
   }
 }

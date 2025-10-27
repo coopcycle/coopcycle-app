@@ -62,7 +62,21 @@ export const navigateToReportTask = (
   };
 
   navigation.navigate('ReportIncident', {
-    screen: 'ReportIncident',
+    screen: 'ReportIncidentHome',
     params: { ...params, success },
   });
+};
+
+export const navigateToProofOfDeliveryFromReportIncident = (
+  navigation, route, task, tasks
+) => {
+  const params = {
+    task, tasks, navigateAfter: route.name
+  }
+  navigation.navigate('Task', {
+    screen: 'TaskComplete',
+    params: { 
+      screen: 'TaskCompleteProofOfDelivery',
+      params: {...params}}
+    })
 };

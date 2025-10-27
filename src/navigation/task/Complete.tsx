@@ -1,4 +1,3 @@
-import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
 import {
   FormControl,
@@ -16,7 +15,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import _ from 'lodash';
-import { Camera, Signature, User } from 'lucide-react-native';
+import { User } from 'lucide-react-native';
 import qs from 'qs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,6 +53,8 @@ import { FailureReasonForm } from './components/FailureReasonForm';
 import { MultipleTasksLabel } from './components/MultipleTasksLabel';
 import { FailureReasonPicker } from './components/FailureReasonPicker';
 import { AttachmentItem } from './components/AttachmentItem';
+import { Checkbox, CheckboxIndicator, CheckboxLabel } from '@/components/ui/checkbox';
+import { PoDButton } from './components/PoDButton';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -170,7 +171,7 @@ const CompleteTask = ({
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
             contentInsetAdjustmentBehavior="always">
-            <VStack flex={1} className="w-full">
+            <VStack style={{flex:1}} className="w-full">
               <MultipleTasksLabel tasks={tasks} />
               <TouchableWithoutFeedback
                 // We need to disable TouchableWithoutFeedback when keyboard is not visible,
@@ -200,7 +201,7 @@ const CompleteTask = ({
                     <FormControl className="p-3">
                       <FormControlLabel>
                         <FormControlLabelText>
-                          {t('FAILURE_REASON')}
+                          {t('INCIDENT_TYPE')}
                         </FormControlLabelText>
                       </FormControlLabel>
                       <FailureReasonPicker
@@ -235,7 +236,7 @@ const CompleteTask = ({
                     <FormControlLabel>
                       <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
                     </FormControlLabel>
-                    <Textarea className="mb-3">
+                    <Textarea className="mb-6">
                       <TextareaInput
                         autoCorrect={false}
                         totalLines={2}
@@ -243,19 +244,14 @@ const CompleteTask = ({
                       />
                     </Textarea>
                     {!success && (
-                      <Button
-                        onPress={() =>
-                          setValidateTaskAfterReport(!validateTaskAfterReport)
-                        }
-                        variant={validateTaskAfterReport ? 'solid' : 'outline'}>
-                        <ButtonText>
-                          Validate the task after reporting
-                        </ButtonText>
-                        {validateTaskAfterReport && (
-                          <ButtonIcon as={CheckIcon} />
-                        )}
-                      </Button>
+                      <Checkbox className="mb-6" value={'validate_task'} defaultIsChecked={validateTaskAfterReport} onChange={() => {setValidateTaskAfterReport(!validateTaskAfterReport)}}>
+                        <CheckboxIndicator>
+                          {validateTaskAfterReport && <CheckIcon />}
+                        </CheckboxIndicator>
+                        <CheckboxLabel>{t("VALIDATE_TASK")}</CheckboxLabel>
+                      </Checkbox>
                     )}
+                  <PoDButton task={task} tasks={tasks}/>
                   </FormControl>
                   <View>
                     <ScrollView style={{ height: '50%' }}>
@@ -288,19 +284,6 @@ const CompleteTask = ({
           style={[buttonContainerAnimatedStyle, styles.ctaButtonWrapper]}>
           <View style={styles.ctaButtonContainer}>
             <VStack className="w-full">
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('TaskCompleteProofOfDelivery', {
-                    task,
-                    tasks,
-                  })
-                }>
-                <HStack className="items-center justify-between p-3">
-                  <Icon as={Signature} />
-                  <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
-                  <Icon as={Camera} />
-                </HStack>
-              </TouchableOpacity>
               <SubmitButton
                 task={task}
                 tasks={tasks}
