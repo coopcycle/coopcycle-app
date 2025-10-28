@@ -2896,7 +2896,7 @@ PODS:
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.26.0):
+  - RNGestureHandler (2.29.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3109,7 +3109,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSentry (6.13.1):
+  - RNSentry (6.22.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3136,7 +3136,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.49.2)
+    - Sentry/HybridSDK (= 8.56.2)
     - SocketRocket
     - Yoga
   - RNShare (7.9.1):
@@ -3343,7 +3343,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - Sentry/HybridSDK (8.49.2)
+  - Sentry/HybridSDK (8.56.2)
   - SocketRocket (0.7.1)
   - Stripe (23.28.3):
     - StripeApplePay (= 23.28.3)
@@ -3965,19 +3965,19 @@ SPEC CHECKSUMS:
   RNFBAnalytics: c8310fe67b6750e0b6362d4049773db272475ab2
   RNFBApp: 90cf0209fb8f0460ab069a7de857d7ec851c8476
   RNFBCrashlytics: f9c67f58b800bbb713a14286243cd8fa3a3c43f8
-  RNGestureHandler: 33eba143733cf9b25e66b74f53f72d7d45fdf731
+  RNGestureHandler: a09b5a2ced37b31d7e4c035d77056c30a94e2759
   RNGoogleSignin: 7eecf032e0512f9488bb2d76ec2e313b9a4422de
   RNInAppBrowser: 6d3eb68d471b9834335c664704719b8be1bfdb20
   RNLocalize: d8ccb568b40c72c767714db3808ce66a1ecf444a
   RNReanimated: e1690cdd7f215cfb96a3b7986b81889867dfdb4f
   RNScreens: 2e9c41cd099b1ca50136af8d57c3594214d0086a
-  RNSentry: 12dc99fde37c93f5e5226cf00a5e273b0ea28859
+  RNSentry: 9584c841b049b0b751befefc324d2edb769f546e
   RNShare: 06d69a0de7cc111302172cd8bd6d228462a6bbc1
   RNSound: 9a20f42f674d5cf0aba1dc3c4ac6c4bbf16552e7
   RNSVG: 94a1be05fab4043354bcf7104f0f9b0e2231ef05
   RNVectorIcons: b822419238727deba7f1e9a2695b5b62007aca6d
   RNWorklets: 88b4f0eb7d19cbc07d19274ee66b15200e206d38
-  Sentry: 47021097466aa130802420d485a34da445963d99
+  Sentry: b53951377b78e21a734f5dc8318e333dbfc682d7
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Stripe: cdf416cf2efe286f532a6306de0fcaa0ecc8c71a
   stripe-react-native: cfd043258216a17eaf49b3cdd67954f90438b7e9
