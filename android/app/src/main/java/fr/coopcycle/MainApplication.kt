@@ -12,6 +12,8 @@ import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeApplicationEntryPoint.loadReactNative
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
+import com.facebook.react.common.ReleaseLevel
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.config.ReactFeatureFlags
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
@@ -51,6 +53,11 @@ class MainApplication : MultiDexApplication(), ReactApplication {
   override fun onCreate() {
     super.onCreate()
     upgradeSecurityProvider()
+    try {
+      DefaultNewArchitectureEntryPoint.releaseLevel = ReleaseLevel.valueOf(BuildConfig.REACT_NATIVE_RELEASE_LEVEL.uppercase())
+    } catch (e: IllegalArgumentException) {
+      DefaultNewArchitectureEntryPoint.releaseLevel = ReleaseLevel.STABLE
+    }
     loadReactNative(this)
     ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }

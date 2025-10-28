@@ -59,16 +59,16 @@ PODS:
   - DatadogWebViewTracking (2.30.0):
     - DatadogInternal (= 2.30.0)
   - DoubleConversion (1.1.6)
-  - EXApplication (6.1.5):
+  - EXApplication (7.0.7):
     - ExpoModulesCore
-  - EXConstants (17.1.7):
+  - EXConstants (18.0.10):
     - ExpoModulesCore
-  - EXImageLoader (5.1.0):
+  - EXImageLoader (6.0.0):
     - ExpoModulesCore
     - React-Core
-  - EXNotifications (0.31.4):
+  - EXNotifications (0.32.12):
     - ExpoModulesCore
-  - Expo (53.0.23):
+  - Expo (54.0.20):
     - boost
     - DoubleConversion
     - ExpoModulesCore
@@ -103,21 +103,21 @@ PODS:
     - ExpoModulesCore
     - FBSDKCoreKit
     - React-Core
-  - ExpoAsset (11.1.7):
+  - ExpoAsset (12.0.9):
     - ExpoModulesCore
-  - ExpoCamera (16.1.11):
+  - ExpoCamera (17.0.8):
     - ExpoModulesCore
     - ZXingObjC/OneD
     - ZXingObjC/PDF417
-  - ExpoFileSystem (18.1.11):
+  - ExpoFileSystem (19.0.17):
     - ExpoModulesCore
-  - ExpoFont (13.3.2):
+  - ExpoFont (14.0.9):
     - ExpoModulesCore
-  - ExpoImagePicker (16.1.4):
+  - ExpoImagePicker (17.0.8):
     - ExpoModulesCore
-  - ExpoKeepAwake (14.1.4):
+  - ExpoKeepAwake (15.0.7):
     - ExpoModulesCore
-  - ExpoModulesCore (2.5.0):
+  - ExpoModulesCore (3.0.22):
     - boost
     - DoubleConversion
     - fast_float
@@ -3798,19 +3798,19 @@ SPEC CHECKSUMS:
   DatadogTrace: bfea32b6ed2870829629a9296cf526221493cc3e
   DatadogWebViewTracking: 78c20d8e5f1ade506f4aadaec5690c1a63283fe2
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
-  EXApplication: 1e06972201838375ca1ec1ba34d586a98a5dc718
-  EXConstants: 98bcf0f22b820f9b28f9fee55ff2daededadd2f8
-  EXImageLoader: 4d3d3284141f1a45006cc4d0844061c182daf7ee
-  EXNotifications: be5e949edf1d60b70e77178b81aa505298fadd07
-  Expo: 4b1676a697d92635b6c7fa137eb89a747466aba1
+  EXApplication: 296622817d459f46b6c5fe8691f4aac44d2b79e7
+  EXConstants: fd688cef4e401dcf798a021cfb5d87c890c30ba3
+  EXImageLoader: 189e3476581efe3ad4d1d3fb4735b7179eb26f05
+  EXNotifications: 7cff475adb5d7a255a9ea46bbd2589cb3b454506
+  Expo: 81ba4a2c33801acd036c3253be6b7f8d94fea59c
   ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
-  ExpoAsset: ef06e880126c375f580d4923fdd1cdf4ee6ee7d6
-  ExpoCamera: e1879906d41184e84b57d7643119f8509414e318
-  ExpoFileSystem: 7f92f7be2f5c5ed40a7c9efc8fa30821181d9d63
-  ExpoFont: cf508bc2e6b70871e05386d71cab927c8524cc8e
-  ExpoImagePicker: 0963da31800c906e01c03e25d7c849f16ebf02a2
-  ExpoKeepAwake: bf0811570c8da182bfb879169437d4de298376e7
-  ExpoModulesCore: e12862592c94fc1bf981fe5e38496e6996b35bb7
+  ExpoAsset: 9ba6fbd677fb8e241a3899ac00fa735bc911eadf
+  ExpoCamera: e75f6807a2c047f3338bbadd101af4c71a1d13a5
+  ExpoFileSystem: b79eadbda7b7f285f378f95f959cc9313a1c9c61
+  ExpoFont: cf9d90ec1d3b97c4f513211905724c8171f82961
+  ExpoImagePicker: d251aab45a1b1857e4156fed88511b278b4eee1c
+  ExpoKeepAwake: 1a2e820692e933c94a565ec3fbbe38ac31658ffe
+  ExpoModulesCore: e4068e939ad50fed49285c6379934da8c04f378b
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
   FBAEMKit: b2ed182002dbcb65d5a60059c9693d322186cd00
   FBLazyVector: 5beb8028d5a2e75dd9634917f23e23d3a061d2aa
@@ -3955,6 +3955,6 @@ SPEC CHECKSUMS:
   Yoga: cc4a6600d61e4e9276e860d4d68eebb834a050ba
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 1024843f63a7ecc61421581cc6fac7f0778ae9a1
+PODFILE CHECKSUM: 022f8e5a5ba7d5990ef142a390fd1701c4849c78
 
 COCOAPODS: 1.15.2
