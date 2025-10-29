@@ -7,7 +7,7 @@ import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator';
-import TaskTitle from '../../components/TaskTitle';
+import { getTaskTitle } from '../../components/TaskTitle';
 
 const CompleteStack = createNativeStackNavigator();
 
@@ -61,7 +61,7 @@ export default () => {
         name="TaskHome"
         component={screens.TaskHome}
         options={({ route }) => ({
-          title: <TaskTitle task={route.params?.task} />,
+          headerTitle: getTaskTitle(route.params?.task),
         })}
       />
       <RootStack.Screen
