@@ -52,7 +52,7 @@ export const Report = () => {
                 <TabBar onPress={handleTabChange}/>
             </HStack>
             <Header task={task} />
-            {isReportTab ? <Complete /> : <EditTask onSubmit={() => {}} />}
+            {isReportTab ? <Complete /> : <EditTask task={task} onSubmit={() => {}} />}
         </VStack>
     )
 };

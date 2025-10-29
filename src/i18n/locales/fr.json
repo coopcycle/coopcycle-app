@@ -580,7 +580,18 @@
     "TASK_DETAILS": "Détails de la tâche",
     "INCIDENT_TYPE": "Type d'incident",
     "SELECT_INCIDENT_TYPE": "Sélectionner le type d'incident",
-    "VALIDATE_TASK": "Valider la tâche"
+    "VALIDATE_TASK": "Valider la tâche",
+    "TIMESLOT_PACKAGE_FORM": "Tranche horaire et colis",
+
+    "ORDER_CLIENT_HELPER": "Modifier le client",
+    "ADDRESS_HELPER": "Modifier l'adresse",
+    "BUSINESS_HELPER": "Modifier le nom de l'entreprise",
+    "CONTACT_HELPER": "Modifier le nom du contact",
+    "PHONE_HELPER": "Modifier le numéro de téléphone", 
+    "ACCESS_INFORMATION_HELPER": "Modifier les informations d'accès",
+    "TIMESLOT_TYPES_HELPER": "Modifier les types de créneau horaire",
+    "TIMESLOT_HELPER": "Modifier le créneau horaire",
+    "WEIGHT_HELPER": "Modifier le poids personnalisé"
 
   }
 }

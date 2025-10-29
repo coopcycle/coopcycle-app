@@ -421,11 +421,17 @@ export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
             httpClient.execUploadTask(uploadTasks);
             dispatch(clearFiles());
             dispatch(markTasksDoneSuccess(res.success));
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100);
-            }
+            return true;
+            // if (typeof onSuccess === 'function') {
+            //   setTimeout(() => onSuccess(), 100);
+            // }
           }
-        });
+        })
+      })
+      .then((result) => {
+        if (result && typeof onSuccess === 'function') {
+          setTimeout(() => onSuccess(), 100);
+        }
       })
       .catch(e => {
         dispatch(markTasksDoneFailure(e));

@@ -11,7 +11,6 @@ import { Textarea, TextareaInput } from '@/components/ui/textarea';
 import { VStack } from '@/components/ui/vstack';
 import {
   useFocusEffect,
-  useNavigation,
   useRoute,
 } from '@react-navigation/native';
 import _ from 'lodash';
@@ -91,7 +90,9 @@ const CompleteTask = ({
 }) => {
   const { t } = useTranslation();
   const route = useRoute();
-  const navigation = useNavigation();
+  const task = route.params?.task;
+  const tasks = route.params?.tasks;
+  const success = isSuccessRoute(route);
 
   const [notes, setNotes] = useState('');
   const [failureReason, setFailureReason] = useState(null);
@@ -99,7 +100,7 @@ const CompleteTask = ({
     useState(false);
   const [contactName, setContactName] = useState('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(false);
+  const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(task?.status === 'DONE');
 
   const [failureReasonMetadata, setFailureReasonMetadata] = useState([]);
   const [failureReasonMetadataToSend, setFailureReasonMetadataToSend] =
@@ -119,9 +120,6 @@ const CompleteTask = ({
     };
   }, []);
 
-  const task = route.params?.task;
-  const tasks = route.params?.tasks;
-  const success = isSuccessRoute(route);
 
   const initialValues = {
     contactName: resolveContactName(contactName, task, tasks),
@@ -159,7 +157,7 @@ const CompleteTask = ({
    * });
    */
   useSoftInputHeightChanged(({ softInputHeight }) => {
-    buttonContainerPaddingValue.value = withTiming(softInputHeight);
+    buttonContainerPaddingValue.value = withTiming(softInputHeight);failureReasonMetadataToSend
   });
 
   return (
@@ -243,6 +241,7 @@ const CompleteTask = ({
                         onChangeText={text => setNotes(text)}
                       />
                     </Textarea>
+                    {/* task.status !== 'DONE' DISABLE CHECKBOX display always checked if DONE */}
                     {!success && (
                       <Checkbox className="mb-6" value={'validate_task'} defaultIsChecked={validateTaskAfterReport} onChange={() => {setValidateTaskAfterReport(!validateTaskAfterReport)}}>
                         <CheckboxIndicator>

@@ -612,7 +612,23 @@
     "TASK_DETAILS": "Task details",
     "INCIDENT_TYPE": "Incident type",
     "SELECT_INCIDENT_TYPE": "Select an incident type",
-    "VALIDATE_TASK": "Validate task after reporting incident"
-
+    "VALIDATE_TASK": "Validate task after reporting incident",
+    "TIMESLOT_PACKAGE_FORM": "Timeslots and packages",
+    "BUSINESS": "Business",
+    "CONTACT": "Contact",
+    "PHONE": "Telephone",
+    "ACCESS_INFORMATION": "Access information",
+    "TIMESLOT_TYPES": "Timeslot types",
+    "TIMESLOT": "Timeslot",
+    "WEIGHT": "Custom weight",
+    "ORDER_CLIENT_HELPER": "Modify client",
+    "ADDRESS_HELPER": "Modify address",
+    "BUSINESS_HELPER": "Modify business name",
+    "CONTACT_HELPER": "Modify contact name",
+    "PHONE_HELPER": "Modify phone number",
+    "ACCESS_INFORMATION_HELPER": "Modify the additional information to access the business",
+    "TIMESLOT_TYPES_HELPER": "Modify the timeslot types",
+    "TIMESLOT_HELPER": "Modify the timeslot",
+    "WEIGHT_HELPER": "Modify custom weight"
   }
 }

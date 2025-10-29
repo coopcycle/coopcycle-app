@@ -60,7 +60,7 @@ export const SubmitButton = ({
           failureReason,
           failureReasonMetadataToSend,
           () => {
-            if (validateTaskAfterReport) {
+            if (task.status !== 'DONE' && validateTaskAfterReport) {
               dispatch(
                 markTaskDone(task, notes, navigateOnSuccess, contactName),
               );
@@ -77,7 +77,7 @@ export const SubmitButton = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={isDisabled}
-      style={{ alignItems: 'center', backgroundColor: footerBgColor }}
+      style={{ alignItems: 'center', backgroundColor: footerBgColor, marginTop: 16 }}
       testID="task:finishButton">
       <HStack className="py-3 items-center">
         <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
