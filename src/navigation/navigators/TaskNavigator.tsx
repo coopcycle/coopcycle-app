@@ -1,5 +1,5 @@
 import { HeaderBackButton } from '@react-navigation/elements';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
 import screens from '..';
@@ -9,7 +9,7 @@ import { useStackNavigatorScreenOptions } from '../styles';
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator';
 import TaskTitle from '../../components/TaskTitle';
 
-const CompleteStack = createStackNavigator();
+const CompleteStack = createNativeStackNavigator();
 
 const completeTitle = routeParams => {
   if (routeParams) {
@@ -48,7 +48,7 @@ const CompleteNavigator = () => {
   );
 };
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions({

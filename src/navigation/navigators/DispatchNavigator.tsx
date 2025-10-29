@@ -4,7 +4,7 @@ import { Icon } from '@/components/ui/icon';
 import { HStack } from '@/components/ui/hstack';
 import { List, ListFilter, Map } from 'lucide-react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -131,7 +131,7 @@ function Tabs() {
   );
 }
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 const HeaderRightBody = ({navigation}) => {
   const context = useTaskListsContext();

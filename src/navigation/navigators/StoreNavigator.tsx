@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import React from 'react';
 import { Dimensions } from 'react-native';
@@ -13,7 +13,7 @@ import i18n from '../../i18n';
 import NavigationHolder from '../../NavigationHolder';
 import screens, { headerLeft } from '..';
 
-const MainStack = createStackNavigator();
+const MainStack = createNativeStackNavigator();
 
 function MainNavigator() {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -70,7 +70,7 @@ function MainNavigator() {
   );
 }
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default ({ navigation }) => {
   const screenOptions = useStackNavigatorScreenOptions({

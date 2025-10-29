@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon } from '@/components/ui/icon';
 import { List, Map, ScanBarcode, Settings } from 'lucide-react-native'
 import React from 'react';
@@ -72,7 +72,7 @@ const ButtonWithIcon = ({ as, onPress }) => {
   );
 };
 
-const MainStack = createStackNavigator();
+const MainStack = createNativeStackNavigator();
 
 function HeaderButtons({ nav }) {
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled);
@@ -128,7 +128,7 @@ const MainNavigator = () => {
   );
 };
 
-const BarcodeStack = createStackNavigator();
+const BarcodeStack = createNativeStackNavigator();
 const BarcodeNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
@@ -158,7 +158,7 @@ const BarcodeNavigator = () => {
   );
 };
 
-const SettingsStack = createStackNavigator();
+const SettingsStack = createNativeStackNavigator();
 
 const SettingsNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -195,7 +195,7 @@ const HeaderRightBody = ({navigation}) => {
   );
 };
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions({

@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
 import screens, { headerLeft } from '..';
@@ -8,7 +8,7 @@ import SettingsNavigator from '../restaurant/SettingsNavigator';
 import HeaderRight from '../restaurant/components/HeaderRight';
 import { useStackNavigatorScreenOptions } from '../styles';
 
-const MainStack = createStackNavigator();
+const MainStack = createNativeStackNavigator();
 
 const MainNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -39,7 +39,7 @@ const MainNavigator = () => {
   );
 };
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions({
