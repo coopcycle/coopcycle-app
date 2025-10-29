@@ -238,10 +238,7 @@ const SubmitOrderNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <SubmitOrderStack.Navigator screenOptions={{
-      ...screenOptions,
-      headerBackButtonDisplayMode: 'minimal'
-    }}>
+    <SubmitOrderStack.Navigator screenOptions={screenOptions}>
       {isAuthenticatedUser || isGuest ? (
         <SubmitOrderStack.Screen
           name="CheckoutMoreInfos"
