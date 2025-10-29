@@ -176,20 +176,6 @@ const MainNavigator = () => {
         })}
       />
       <MainStack.Screen
-        name="CheckoutPayment"
-        component={screens.CheckoutPayment}
-        options={{
-          title: i18n.t('PAYMENT'),
-        }}
-      />
-      <MainStack.Screen
-        name="CheckoutMercadopago"
-        component={screens.CheckoutMercadopago}
-        options={{
-          title: i18n.t('PAYMENT'),
-        }}
-      />
-      <MainStack.Screen
         name="AccountOrders"
         component={screens.AccountOrdersPage}
         options={{
@@ -252,7 +238,10 @@ const SubmitOrderNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <SubmitOrderStack.Navigator screenOptions={screenOptions}>
+    <SubmitOrderStack.Navigator screenOptions={{
+      ...screenOptions,
+      headerBackButtonDisplayMode: 'minimal'
+    }}>
       {isAuthenticatedUser || isGuest ? (
         <SubmitOrderStack.Screen
           name="CheckoutMoreInfos"
@@ -284,6 +273,65 @@ const SubmitOrderNavigator = () => {
           />
         </SubmitOrderStack.Group>
       )}
+      <SubmitOrderStack.Screen
+        name="CheckoutPayment"
+        component={screens.CheckoutPayment}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutMercadopago"
+        component={screens.CheckoutMercadopago}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaymentMethodCard"
+        component={screens.CheckoutPaymentMethodCard}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.card'),
+          headerBackTitleVisible: false,
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaymentMethodCashOnDelivery"
+        component={screens.CheckoutPaymentMethodCashOnDelivery}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
+          headerBackTitleVisible: false,
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaymentMethodEdenred"
+        component={screens.CheckoutPaymentMethodEdenred}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.edenred'),
+          headerBackTitleVisible: false,
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutLoopeat"
+        component={screens.CheckoutLoopeat}
+        options={{
+          title: i18n.t('ZERO_WASTE'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaygreenReturn"
+        component={screens.CheckoutPaygreenReturn}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaygreenCancel"
+        component={screens.CheckoutPaygreenCancel}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
     </SubmitOrderStack.Navigator>
   );
 };
@@ -297,7 +345,7 @@ const DefaultNav = () => {
   return (
     <RootStack.Navigator screenOptions={screenOptions}>
       <RootStack.Screen
-        name="Main"
+        name="CheckoutMain"
         component={MainNavigator}
         options={{
           headerShown: false,
@@ -318,51 +366,6 @@ const DefaultNav = () => {
         component={SubmitOrderNavigator}
         options={{
           headerShown: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaymentMethodCard"
-        component={screens.CheckoutPaymentMethodCard}
-        options={{
-          title: i18n.t('PAYMENT_METHOD.card'),
-          headerBackTitleVisible: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaymentMethodCashOnDelivery"
-        component={screens.CheckoutPaymentMethodCashOnDelivery}
-        options={{
-          title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
-          headerBackTitleVisible: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaymentMethodEdenred"
-        component={screens.CheckoutPaymentMethodEdenred}
-        options={{
-          title: i18n.t('PAYMENT_METHOD.edenred'),
-          headerBackTitleVisible: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutLoopeat"
-        component={screens.CheckoutLoopeat}
-        options={{
-          title: i18n.t('ZERO_WASTE'),
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaygreenReturn"
-        component={screens.CheckoutPaygreenReturn}
-        options={{
-          title: i18n.t('PAYMENT'),
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaygreenCancel"
-        component={screens.CheckoutPaygreenCancel}
-        options={{
-          title: i18n.t('PAYMENT'),
         }}
       />
     </RootStack.Navigator>
