@@ -13,9 +13,6 @@ import FAIcon from './Icon';
 export const TaskStatusIcon = ({ task }: { task: Task }) => {
   const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
-  // We wrap the element in a <View>,
-  // to avoid Detox sayins "matches 2 views in the hierarchy"
-  // because the "testID" prop is propagated to the child elements
   const renderIcon = () => {
     switch (task.status) {
       case 'DOING':

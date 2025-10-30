@@ -4,6 +4,7 @@ import {
   expectToNotExist,
   sleep,
   swipeDown,
+  swipeLeft,
   swipeRight,
   tapById,
   tapByText,
@@ -81,7 +82,6 @@ describeif(device.getPlatform() === 'android')
     await tapById('showTasksFiltersButton');
     await waitToBeVisible('dispatchTasksFiltersView');
     await tapById('hideDoneTasksSwitch');
-
     // Go back
     await device.pressBack();
 
@@ -93,39 +93,39 @@ describeif(device.getPlatform() === 'android')
 
     //////////////
     // Hide incidents
-    // TODO FIXME: This check was disabled because the task isn't auto-refreshed!
     //////////////
 
-    // // Open assigned task #2 and mark it as FAILED
-    // await tapById(`${USER_JANE}TasksList:task:0`);
-    // await swipeLeft('task:completeButton');
-    // await tapById('task:completeFailureButton');
-    // // Click the finish button and verify task #2 has status "FAILED"
-    // await tapById('task:finishButton');
-    // // TODO FIXME: This check was disabled because the task isn't auto-refreshed!
-    // //await waitToBeVisible('taskListItemIcon:FAILED:2');
+    // Open assigned task #2 and mark it as INCIDENT
+    await tapById(`${USER_JANE}TasksList:task:0`);
+    await swipeLeft('task:completeButton');
+    await tapById('task:completeFailureButton');
+    // Click the finish button and verify task #2 has the "INCIDENT" icon
+    await tapById('task:finishButton');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:2');
 
     // Open the filters screen and enable "Hide incidents"
     await tapById('showTasksFiltersButton');
     await waitToBeVisible('dispatchTasksFiltersView');
     await tapById('hideIncidentsSwitch');
-
     // Go back
     await device.pressBack();
 
-    // // Verify task #2 is not on USER_JANE's task list
-    // await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #3)");
+    // Verify task #2 is not on USER_JANE's task list
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #3)");
 
     //////////////
     // Hide unassigned tasks from map
     //////////////
+
+    // TODO FIX: FORCE TASK LIST UPDATE because sometimes all the tasks goes back to unassigned or just dissapear from map..!
+    await swipeDown('dispatchTasksSectionList');
 
     // Open the map screen
     await tapById('toggleTasksMapListButton');
     await sleep(5000); // Wait for the map to be fully loaded
 
     // Verify all tasks markers are on the map
-    await waitToExist('taskmarker-2,4,6,8'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-4,6,8'); // If we don't force the task list update, this marker testID will change..!
     await waitToExist('taskmarker-7,9'); // If we don't force the task list update, this marker testID will change..!
     await waitToExist('taskmarker-10'); // If we don't force the task list update, this marker testID will change..!
     await waitToExist('taskmarker-3,11'); // If we don't force the task list update, this marker testID will change..!
@@ -134,37 +134,47 @@ describeif(device.getPlatform() === 'android')
     await tapById('showTasksFiltersButton');
     await waitToBeVisible('dispatchTasksFiltersView');
     await tapById('toggleUnassignedFromMapSwitch');
-
     // Go back
     await device.pressBack();
 
     // Verify only assigned task markers are on the map
-    await expectToNotExist('taskmarker-2,4,6,8');
+    await expectToNotExist('taskmarker-4,6,8');
     await expectToNotExist('taskmarker-7,9');
     await expectToNotExist('taskmarker-10');
     await expectToNotExist('taskmarker-3,11');
-    // TODO FIX: If we don't force the task list update, ALL MARKERS DISAPPEAR!!!!!!!!!!
-    await waitToExist('taskmarker-2,4');
+    await waitToExist('taskmarker-4');
     await waitToExist('taskmarker-3');
 
     //////////////
     // Show line linking tasks
     //////////////
 
+    // Open the filters screen and disable "Hide unassigned tasks from map"
+    await tapById('showTasksFiltersButton');
+    await waitToBeVisible('dispatchTasksFiltersView');
+    await tapById('toggleUnassignedFromMapSwitch');
+    // Go back
+    await device.pressBack();
+
     // Verify polylines are on the map
     // TODO FIXME: Tried a lot but I can't find the polyline by testID although it's rendered..!!
-    // await waitToExist('polyline-1-3');
+    // await waitToExist('polyline-UNASSIGNED_TASKS_LIST-/api/tasks/6-0');
+    // await waitToExist('polyline-UNASSIGNED_TASKS_LIST-/api/tasks/8-1');
+    // await waitToExist('polyline-UNASSIGNED_TASKS_LIST-/api/tasks/10-2');
+    // await waitToExist('polyline-1-3'); // TODO FIXME: This one shouldn't be there (jane has only one task)
+    // await waitToExist('polyline-2-4'); // TODO FIXME: This one shouldn't be there (zak has only one task)
 
     // Open the filters screen and disable "Show line linking tasks"
     await tapById('showTasksFiltersButton');
     await waitToBeVisible('dispatchTasksFiltersView');
     await tapById('togglePolylinesFromMapSwitch');
-
     // Go back
     await device.pressBack();
 
     // Verify polylines are NOT on the map
-    await expectToNotExist('polyline-1-3');
+    await expectToNotExist('polyline-UNASSIGNED_TASKS_LIST-/api/tasks/6-0');
+    await expectToNotExist('polyline-UNASSIGNED_TASKS_LIST-/api/tasks/8-1');
+    await expectToNotExist('polyline-UNASSIGNED_TASKS_LIST-/api/tasks/10-2');
 
     //////////////
     // Filter by keywords
