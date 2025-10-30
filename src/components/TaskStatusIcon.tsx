@@ -19,14 +19,7 @@ export const TaskStatusIcon = ({ task }: { task: Task }) => {
   const renderIcon = () => {
     switch (task.status) {
       case 'DOING':
-        return (
-          <FAIcon
-            name={doingIconName}
-            color="#2C81CC"
-            size={20}
-            testID={testID}
-          />
-        );
+        return <FAIcon name={doingIconName} color="#2C81CC" testID={testID} size={20} />;
       case 'DONE':
         return <FAIcon name={doneIconName} color={greenColor} testID={testID} />;
       case 'FAILED':
