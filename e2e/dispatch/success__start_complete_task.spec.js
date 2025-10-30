@@ -65,39 +65,16 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('taskListItemIcon:DONE:1');
   });
 
-  // TODO FIXME: Somehow the step to tap 'task:completeFailureButton' isn't working..!
-  // The new view is loaded fine but the console keeps saying:
-  //     The app is busy with the following tasks:
-  //       • UI elements are busy:
-  //         - Reason: Animations running on screen.
-  //
-  // And then, after a while, the console says:
-  //     The app has not responded to the network requests below:
-  //     (id = 32) invoke:
-  //       {"target":{"type":"Class","value":"com.wix.detox.espresso.EspressoDetox"},
-  //       "method":"perform", "args":[
-  //         {"type":"Invocation","value":{"target":{"type":"Class","value":"com.wix.detox.espresso.DetoxMatcher"},"method":"matcherForTestId","args":["task:completeFailureButton",{"type":"boolean","value":false}]}},
-  //         {"type":"Invocation","value":{"target":{"type":"Class","value":"com.wix.detox.espresso.DetoxViewActions"},"method":"click","args":[]}}
-  //       ]}
-  //
-  // UGLY WORKAROUND: Disable synchronization for this test and use `waitToBeVisible`
-  it('should mark a task as FAILED', async () => {
-    // Ugly workaround: disable synchronization..
-    await device.disableSynchronization();
-
+  it('should mark a task as INCIDENT', async () => {
     // Swipe complete button, tap 'failed' and press 'Report incident'
     await swipeLeft('task:completeButton');
-    await waitToBeVisible('task:completeFailureButton'); // Remove if `disableSynchronization` is removed..!
     await tapById('task:completeFailureButton');
 
     // Click the finish button in the new view
-    await waitToBeVisible('task:finishButton'); // Remove if `disableSynchronization` is removed..!
     await tapById('task:finishButton');
 
-    // Verify task #1 has status "FAILED"
-    // TODO FIXME: This check was disabled because the task isn't auto-refreshed!
-    // It seems that the backend doesn't send the update event.
-    //await waitToBeVisible('taskListItemIcon:FAILED:1');
+    // Verify task #1 has the "INCIDENT" icon
+    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
 
 });
