@@ -125,10 +125,10 @@ describeif(device.getPlatform() === 'android')
     await sleep(5000); // Wait for the map to be fully loaded
 
     // Verify all tasks markers are on the map
-    await waitToExist('taskmarker-6,8,2,4'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-2,4,6,8'); // If we don't force the task list update, this marker testID will change..!
     await waitToExist('taskmarker-7,9'); // If we don't force the task list update, this marker testID will change..!
     await waitToExist('taskmarker-10'); // If we don't force the task list update, this marker testID will change..!
-    await waitToExist('taskmarker-11,3'); // If we don't force the task list update, this marker testID will change..!
+    await waitToExist('taskmarker-3,11'); // If we don't force the task list update, this marker testID will change..!
 
     // Open the filters screen and enable "Hide unassigned tasks from map"
     await tapById('showTasksFiltersButton');
@@ -139,10 +139,10 @@ describeif(device.getPlatform() === 'android')
     await device.pressBack();
 
     // Verify only assigned task markers are on the map
-    await expectToNotExist('taskmarker-6,8,2,4');
+    await expectToNotExist('taskmarker-2,4,6,8');
     await expectToNotExist('taskmarker-7,9');
     await expectToNotExist('taskmarker-10');
-    await expectToNotExist('taskmarker-11,3');
+    await expectToNotExist('taskmarker-3,11');
     // TODO FIX: If we don't force the task list update, ALL MARKERS DISAPPEAR!!!!!!!!!!
     await waitToExist('taskmarker-2,4');
     await waitToExist('taskmarker-3');
