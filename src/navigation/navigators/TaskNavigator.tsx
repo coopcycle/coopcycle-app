@@ -1,5 +1,6 @@
 import { HeaderBackButton } from '@react-navigation/elements';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
 import screens from '..';
@@ -14,7 +15,7 @@ const CompleteStack = createNativeStackNavigator();
 const completeTitle = routeParams => {
   if (routeParams) {
     if (routeParams.task) {
-      return <TaskTitle task={routeParams.task} />;
+      return getTaskTitle(routeParams.task);
     }
     if (routeParams.tasks) {
       return i18n.t('COMPLETE_TASKS');
