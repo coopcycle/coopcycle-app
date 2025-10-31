@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -18,7 +18,7 @@ import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../r
 import { HeaderButton, HeaderButtons } from '../../components/HeaderButton';
 import { RouteType } from '../order/types';
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 interface HeaderProps {
   route: {
