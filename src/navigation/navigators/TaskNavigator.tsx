@@ -52,6 +52,9 @@ const CompleteNavigator = () => {
 const RootStack = createNativeStackNavigator();
 
 export default () => {
+
+  const navigation = useNavigation();
+
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
   });
@@ -63,6 +66,7 @@ export default () => {
         component={screens.TaskHome}
         options={({ route }) => ({
           headerTitle: getTaskTitle(route.params?.task),
+          headerLeft: (props) => <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
         })}
       />
       <RootStack.Screen
