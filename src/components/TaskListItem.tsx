@@ -8,10 +8,15 @@ import {
   TouchableOpacityProps,
   View,
 } from 'react-native';
-import { SwipeRow } from 'react-native-swipe-list-view';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Reanimated, {
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
 
 import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import { Icon } from '@/components/ui/icon';
 import { Task, TaskListItemProps } from '../types/task';
 import {
@@ -63,62 +68,43 @@ export const styles = StyleSheet.create({
   sortButton: {
     marginLeft: 12,
     marginVertical: 4,
-  },
-  sortButtonIcon: {
-
   }
 });
 
-interface ISwipeButtonContainerProps
-  extends Omit<TouchableOpacityProps, 'style'> {
-  backgroundColor?: string;
-  children: React.ReactNode;
-  left?: boolean;
-  right?: boolean;
-  width: number;
-}
-const SwipeButtonContainer = ({
-  backgroundColor,
-  children,
-  left,
-  right,
-  width,
-  ...otherProps
-}: ISwipeButtonContainerProps) => {
-  const alignItems = left ? 'flex-start' : 'flex-end';
-  const borderRadiusLeft = left ? cardBorderRadius : 0;
-  const borderRadiusRight = right ? cardBorderRadius : 0;
-
-  return (
-    <TouchableOpacity
-      style={{
-        alignItems,
-        backgroundColor,
-        justifyContent: 'center',
-        width,
-        borderTopLeftRadius: borderRadiusLeft,
-        borderBottomLeftRadius: borderRadiusLeft,
-        borderTopRightRadius: borderRadiusRight,
-        borderBottomRightRadius: borderRadiusRight,
-      }}
-      {...otherProps}>
-      {children}
-    </TouchableOpacity>
-  );
-};
-
-interface ISwipeButtonProps {
+interface ISwipeableActionProps {
   icon: LucideIcon | undefined;
   width: number;
-  size?: number;
+  backgroundColor: string;
+  iconSize?: number;
 }
 
-const SwipeButton = ({ icon, width, size = 42 }: ISwipeButtonProps) => (
-  <View
-    style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width }}>
-    <Icon as={icon} size={size} style={{ color: '#ffffff' }} />
-  </View>
-);
+function SwipeableAction({ prog, drag, width, backgroundColor, icon, onPress, testID, iconSize = 42, right = false }: ISwipeableActionProps) {
+
+  const styleAnimation = useAnimatedStyle(() => {
+
+    return {
+      transform: [{ translateX: right ? (drag.value + width) : (drag.value - width) }],
+    };
+  });
+
+  return (
+    <Reanimated.View style={styleAnimation}>
+      <Pressable
+        className="items-center justify-center"
+        style={{
+          flex: 1,
+          width,
+          backgroundColor
+        }}
+        testID={testID}
+        onPress={onPress}
+      >
+        <Icon as={icon} size={iconSize} style={{ color: '#fff' }} />
+      </Pressable>
+    </Reanimated.View>
+  );
+
+}
 
 const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
   (
@@ -199,7 +185,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     useEffect(() => {
       if (task.status === 'DONE') {
-        swipeRow.current?.closeRow();
+        swipeRow.current?.close();
       }
     }, [task.status]);
 
@@ -216,7 +202,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
         swipeRow.current?.manuallySwipeRow?.(buttonWidth);
       } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
-        swipeRow.current?.closeRow?.();
+        swipeRow.current?.close?.();
       }
       prevShouldSwipeLeftRef.current = shouldSwipeLeft;
     }, [shouldSwipeLeft, buttonWidth]);
@@ -225,15 +211,15 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
         swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
       } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
-        swipeRow.current?.closeRow?.();
+        swipeRow.current?.close?.();
       }
       prevShouldSwipeRightRef.current = shouldSwipeRight;
     }, [shouldSwipeRight, buttonWidth]);
 
-    function _onRowOpen(toValue: number) {
-      if (toValue > 0 && onSwipedToLeft) {
+    function _onRowOpen(direction) {
+      if (direction === 'right') {
         onSwipedToLeft();
-      } else if (toValue < 0 && onSwipedToRight) {
+      } else {
         onSwipedToRight();
       }
     }
@@ -271,11 +257,56 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       );
     }
 
+    let swipeableProps = {}
+    if (allowSwipeLeft) {
+      swipeableProps = {
+        ...swipeableProps,
+        renderLeftActions: (prog, drag) => {
+          return (
+            <SwipeableAction
+              prog={prog}
+              drag={drag}
+              width={buttonWidth}
+              backgroundColor={swipeOutLeftBackgroundColor}
+              icon={swipeOutLeftIcon}
+              onPress={() => {
+                swipeRow.current?.close();
+                onPressLeft();
+              }}
+              testID={`${taskTestId}:left`}
+            />
+          );
+        }
+      }
+    }
+    if (allowSwipeRight) {
+      swipeableProps = {
+        ...swipeableProps,
+        renderRightActions: (prog, drag) => {
+          return (
+            <SwipeableAction
+              prog={prog}
+              drag={drag}
+              width={buttonWidth}
+              backgroundColor={swipeOutRightBackgroundColor}
+              icon={swipeOutRightIcon}
+              onPress={() => {
+                swipeRow.current?.close();
+                onPressRight();
+              }}
+              testID={`${taskTestId}:left`}
+              right
+            />
+          );
+        }
+      }
+    }
+
     return (
     <View>
       {renderPrevSortButton()}
       {/* @ts-expect-error library's types don't include a children prop */}
-      <SwipeRow
+      {/*<SwipeRow
         disableLeftSwipe={!allowSwipeLeft}
         disableRightSwipe={!allowSwipeRight}
         leftOpenValue={buttonWidth}
@@ -315,6 +346,22 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             <SwipeButton icon={swipeOutRightIcon} width={buttonWidth} />
           </SwipeButtonContainer>
         </View>
+      </SwipeRow>*/}
+      <Swipeable
+        ref={swipeRow}
+        containerStyle={{
+          borderRadius: cardBorderRadius,
+          marginVertical: 1.5,
+          marginLeft: marginHorizontal,
+          marginRight: marginHorizontal,
+        }}
+        friction={2}
+        enableTrackpadTwoFingerGesture
+        rightThreshold={10}
+        onSwipeableOpen={_onRowOpen}
+        onSwipeableClose={_onRowClose}
+        {...swipeableProps}
+      >
         <View style={{ position: 'relative', flex: 1}}>
           <HStack
             style={{
@@ -364,7 +411,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             />
           )}
         </View>
-      </SwipeRow>
+      </Swipeable>
       {renderSortButton()}
     </View>
     );

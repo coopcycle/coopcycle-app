@@ -1,5 +1,5 @@
-import { SwipeListView } from 'react-native-swipe-list-view';
 import React, { useCallback, useEffect, useRef } from 'react';
+import { FlatList } from 'react-native';
 
 import ItemsBulkFabButton from './ItemsBulkFabButton';
 import ItemSeparatorComponent from './ItemSeparator';
@@ -108,7 +108,7 @@ const TaskList: React.FC<TaskListProps> = ({
 
   return (
     <>
-      <SwipeListView
+      <FlatList
         testID={`${id}SwipeListView`}
         data={tasks}
         keyExtractor={(item, index) => {
