@@ -100,10 +100,8 @@ jobs:
       # Allow tests to continue on other devices if they fail on one device.
       fail-fast: false
       matrix:
-        EMULATOR_API_LEVEL:
-#          - 21
-          - 28
-#          - 33
+        #EMULATOR_API_LEVEL: [21, 28, 33, 35]
+        EMULATOR_API_LEVEL: [35]
     steps:
       - name: Set timezone
         uses: szenius/set-timezone@v2.0
