@@ -1,30 +1,11 @@
 import { Formik } from 'formik';
 import moment from 'moment';
-import { Box } from '@/components/ui/box';
-import { Button, ButtonText } from '@/components/ui/button';
-import { HStack } from '@/components/ui/hstack';
-import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  InteractionManager,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import KeyboardManager from 'react-native-keyboard-manager';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { IconPackage } from '@tabler/icons-react-native';
-import {
-  loadPackages,
-  loadTimeSlot,
-  loadTimeSlotChoices,
-  loadTimeSlots,
-} from '../../redux/Delivery/actions';
 import {
   selectHasTimeSlot,
   selectPackages,
@@ -40,14 +21,21 @@ import Range from '../checkout/ProductDetails/Range';
 import FormInput from './components/FormInput';
 import TimeSlotSelector from './components/TimeSlotSelector';
 import ModalFormWrapper from './ModalFormWrapper';
+import { DateTimePicker } from './components/DateTimePicker';
+import { useDeliveryTimeSlot } from './hooks/useDeliveryTimeSlot';
+import { useTimeSlotChoice } from './hooks/useTimeSlotChoice';
+import { useDeliveryDataLoader } from './hooks/useDeliveryDataLoader';
+import { usePackagesCount } from './hooks/usePackagesCount';
+import {
+  createDeliveryObject,
+  getInitialValues,
+  handleChangeWeight,
+  validateDeliveryForm,
+} from './utils.tsx';
 
 function NewDeliveryDropoffDetails({ navigation, route }) {
-  const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const backgroundColor = useBackgroundContainerColor();
   const primaryColor = usePrimaryColor();
-  const [selectedChoice, setSelectedChoice] = React.useState(null);
-  const [packagesCount, setPackagesCount] = useState([]);
   const { t } = useTranslation();
 
   const packages = useSelector(selectPackages);
@@ -56,211 +44,41 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
   const timeSlots = useSelector(selectTimeSlots);
   const hasTimeSlot = useSelector(selectHasTimeSlot);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (selectedTimeSlot) return;
-    if (store.timeSlot && store.timeSlot.trim() !== '') {
-      setSelectedTimeSlot(store.timeSlot);
-    } else if (timeSlots.length > 0) {
-      setSelectedTimeSlot(timeSlots[0]['@id']);
-    }
-  }, [store.timeSlot, timeSlots, selectedTimeSlot]);
-
-  useEffect(() => {
-    if (!selectedTimeSlot || !timeSlots.length) return;
-    dispatch(
-      loadTimeSlotChoices(timeSlots.find(ts => ts['@id'] === selectedTimeSlot)),
-    );
-  }, [selectedTimeSlot, timeSlots, dispatch]);
-
-  useEffect(() => {
-    if (timeSlotChoices.length) setSelectedChoice(timeSlotChoices[0].value);
-  }, [timeSlotChoices]);
-
-  useEffect(() => {
-    InteractionManager.runAfterInteractions(() => {
-      dispatch(loadTimeSlots(store));
-      dispatch(loadTimeSlot(store));
-      dispatch(loadPackages(store));
-    });
-    // This will add a "OK" button above keyboard, to dismiss keyboard
-    if (Platform.OS === 'ios') {
-      KeyboardManager.setEnable(true);
-      KeyboardManager.setEnableAutoToolbar(true);
-    }
-
-    return () => {
-      if (Platform.OS === 'ios') {
-        KeyboardManager.setEnable(false);
-        KeyboardManager.setEnableAutoToolbar(false);
-      }
-    };
-  }, [store, dispatch]);
-
-  useEffect(() => {
-    if (!packages) return;
-    setPackagesCount(
-      packages.map(item => {
-        return {
-          type: item.name,
-          quantity: 0,
-        };
-      }),
-    );
-  }, [packages]);
-
-  function incrementQuantity(packageType, setFieldTouched) {
-    setFieldTouched('packages');
-    setPackagesCount(prev => {
-      return prev.map(item => {
-        if (item.type === packageType) {
-          item.quantity += 1;
-        }
-        return item;
-      });
-    });
-  }
-
-  function decrementQuantity(packageType, setFieldTouched) {
-    setFieldTouched('packages');
-    setPackagesCount(prev => {
-      return prev.map(item => {
-        if (item.type === packageType) {
-          item.quantity -= 1;
-        }
-        return item;
-      });
-    });
-  }
-
-  function updateSelectedTimeSlot(timeSlot) {
-    setSelectedTimeSlot(timeSlot['@id']);
-  }
-
-  function showDateTimePicker() {
-    setIsDateTimePickerVisible(true);
-  }
-
-  function hideDateTimePicker() {
-    setIsDateTimePickerVisible(false);
-  }
+  const { selectedTimeSlot, updateSelectedTimeSlot } = useDeliveryTimeSlot(
+    store,
+    timeSlots,
+  );
+  const { selectedChoice, setSelectedChoice } =
+    useTimeSlotChoice(timeSlotChoices);
+  useDeliveryDataLoader(store);
+  const { packagesCount, incrementQuantity, decrementQuantity } =
+    usePackagesCount(packages);
 
   function submit(values) {
-    const delivery = {
-      store: store['@id'],
-      pickup: route.params?.pickup || undefined,
-      dropoff: {
-        address: {
-          ...values.address,
-          telephone: values.telephone,
-          contactName: values.contactName,
-          name: values.businessName.trim() || null,
-          description: values.description.trim() || null,
-        },
-        comments: values.comments,
-        weight: values.weight * 1000,
-        packages: packagesCount.filter(item => item.quantity > 0),
-        ...(selectedChoice
-          ? {
-              timeSlotUrl: selectedTimeSlot,
-              timeSlot: selectedChoice,
-            }
-          : { before: values.before }),
-      },
-    };
-
+    const delivery = createDeliveryObject(
+      values,
+      store,
+      route,
+      packagesCount,
+      selectedTimeSlot,
+      selectedChoice,
+    );
     navigation.navigate('NewDeliveryPrice', { delivery });
   }
 
   function validate(values) {
-    const errors = {};
-
-    if (hasTimeSlot && !selectedChoice) {
-      errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
-    }
-
-    if (!values.weight && store.weightRequired) {
-      errors.weight = t('STORE_NEW_DELIVERY_ERROR.EMPTY_WEIGHT');
-    }
-
-    if (!packagesCount.some(item => item.quantity) && store.packagesRequired) {
-      errors.packages = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PACKAGES');
-    }
-    return errors;
-  }
-
-  function renderDateTimePicker(
-    initialValues,
-    values,
-    errors,
-    setFieldValue,
-    setFieldTouched,
-  ) {
-    return (
-      <Box className="py-4">
-        <HStack className="justify-between">
-          <VStack>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_DROPOFF_BEFORE')}
-            </Text>
-            <Text>{moment(values.before).format('LLL')}</Text>
-          </VStack>
-          <Button onPress={showDateTimePicker}>
-            <ButtonText>{t('EDIT')}</ButtonText>
-          </Button>
-        </HStack>
-        <DateTimePickerModal
-          isVisible={isDateTimePickerVisible}
-          mode="datetime"
-          onConfirm={value => {
-            setFieldValue('before', moment(value).format());
-            setFieldTouched('before');
-            hideDateTimePicker();
-          }}
-          onCancel={hideDateTimePicker}
-          minimumDate={moment(initialValues.before).toDate()}
-        />
-      </Box>
+    return validateDeliveryForm(
+      values,
+      hasTimeSlot,
+      selectedChoice,
+      packagesCount,
+      store,
+      t,
     );
   }
 
-  function handleChangeWeight(value, setFieldValue, setFieldTouched) {
-    let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
-
-    const firstDecimalIndex = newValue.indexOf('.');
-    if (firstDecimalIndex === 0) {
-      newValue = `0${newValue}`;
-    } else if (firstDecimalIndex !== -1) {
-      newValue =
-        newValue.substring(0, firstDecimalIndex + 1) +
-        newValue.substring(firstDecimalIndex + 1).replace(/\./g, '');
-    }
-
-    if (newValue.includes('.')) {
-      const decimalIndex = newValue.indexOf('.');
-      newValue =
-        newValue.substring(0, decimalIndex + 1) +
-        newValue.substring(decimalIndex + 1, decimalIndex + 4);
-    }
-
-    setFieldValue('weight', newValue);
-    setFieldTouched('weight');
-  }
-
   const dropoff = route.params?.dropoff;
-
-  let initialValues = {
-    address: dropoff.address,
-    // set from the first step newDeliveryAddress
-    description: dropoff.description || '',
-    contactName: dropoff.contactName || '',
-    businessName: dropoff.businessName || '',
-    telephone: dropoff.telephone || '',
-    // ----------------
-    weight: null,
-    comments: dropoff.comments || '',
-  };
+  let initialValues = getInitialValues(dropoff, hasTimeSlot);
 
   if (hasTimeSlot) {
     initialValues = {
@@ -320,13 +138,13 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
               selectedTimeSlot={selectedTimeSlot}
             />
           ) : (
-            renderDateTimePicker(
-              initialValues,
-              values,
-              errors,
-              setFieldValue,
-              setFieldTouched,
-            )
+            <DateTimePicker
+              initialValues={initialValues}
+              values={values}
+              errors={errors}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+            />
           )}
 
           <View style={[styles.formGroup]}>
@@ -349,9 +167,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
               placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
             />
             {errors.weight && touched.weight && (
-              <Text note style={styles.errorText}>
-                {errors.weight}
-              </Text>
+              <Text style={styles.errorText}>{errors.weight}</Text>
             )}
           </View>
 

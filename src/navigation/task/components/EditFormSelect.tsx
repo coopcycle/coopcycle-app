@@ -2,11 +2,11 @@ import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragI
 import { ScrollView } from 'react-native';
 import i18n from '@/src/i18n';
 import { ChevronDownIcon } from '@/components/ui/icon';
-import { FormControlHelper, FormControlHelperText, FormControlLabel, FormControlLabelText } from '@/components/ui/form-control';
+import { FormControlLabel, FormControlLabelText } from '@/components/ui/form-control';
+import { useMemo } from 'react';
 
 interface EditFormSelectProps {
   label: string;
-  helperText: string;
   defaultValue: string;
   values: string[];
   handler?: (value: string) => void;
@@ -14,23 +14,27 @@ interface EditFormSelectProps {
 
 export const EditFormSelect: React.FC<EditFormSelectProps> = ({
   label,
-  helperText,
   defaultValue,
   values,
   handler,
 }) => {
   const { t } = i18n;
+  const vals = useMemo(() => {
+    return values.map((value, index) => (
+      <SelectItem key={index} value={value} label={value} />
+    ));
+  }, [values]);
+
   return (
     <>
-      <FormControlLabel style={{ marginTop: 8 }}>
+      {label && <FormControlLabel style={{ marginTop: 8 }}>
         <FormControlLabelText>{t(label)}</FormControlLabelText>
-      </FormControlLabel>
+      </FormControlLabel>}
       <Select
         selectedValue={defaultValue}
         onValueChange={handler}>
         <SelectTrigger variant="outline" size="md" className="justify-between">
           <SelectInput
-            placeholder={t('SELECT_INCIDENT_TYPE')}
             value={defaultValue}
           />
           <SelectIcon className="mr-3" as={ChevronDownIcon} />
@@ -48,14 +52,11 @@ export const EditFormSelect: React.FC<EditFormSelectProps> = ({
                 label={`-- ${t('SELECT_FAILURE_REASON')} --`}
                 value={null}
               />
-              {values}
+              {vals}
             </ScrollView>
           </SelectContent>
         </SelectPortal>
       </Select>
-      <FormControlHelper>
-        <FormControlHelperText>{t(helperText)}</FormControlHelperText>
-      </FormControlHelper>
     </>
   );
 };

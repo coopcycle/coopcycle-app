@@ -582,6 +582,8 @@
     "SELECT_INCIDENT_TYPE": "Sélectionner le type d'incident",
     "VALIDATE_TASK": "Valider la tâche",
     "TIMESLOT_PACKAGE_FORM": "Tranche horaire et colis",
+    "PACKAGES_TYPE": "Types de paquets",
+    "SUPPLEMENTS": "Suppléments",
 
     "ORDER_CLIENT_HELPER": "Modifier le client",
     "ADDRESS_HELPER": "Modifier l'adresse",
@@ -591,7 +593,9 @@
     "ACCESS_INFORMATION_HELPER": "Modifier les informations d'accès",
     "TIMESLOT_TYPES_HELPER": "Modifier les types de créneau horaire",
     "TIMESLOT_HELPER": "Modifier le créneau horaire",
-    "WEIGHT_HELPER": "Modifier le poids personnalisé"
+    "WEIGHT_HELPER": "Modifier le poids personnalisé",
+    "PACKAGES_TYPE_HELPER": "Modifier les types de paquets",
+    "SUPPLEMENTS_HELPER": "Modifier les suppléments"
 
   }
 }

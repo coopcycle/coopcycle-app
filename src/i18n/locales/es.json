@@ -495,6 +495,8 @@
     "TIMESLOT_TYPES": "Tipo de franja horaria",
     "TIMESLOT": "Franja horaria",
     "WEIGHT": "Peso personalizado",
+    "PACKAGES_TYPE": "Tipo de paquetes",
+    "SUPPLEMENTS": "Suplementos",
 
     "ORDER_CLIENT_HELPER": "Modifique el cliente",
     "ADDRESS_HELPER": "Modifique la dirección",
@@ -504,6 +506,8 @@
     "ACCESS_INFORMATION_HELPER": "Modifique la información adicional de acceso al negocio",
     "TIMESLOT_TYPES_HELPER": "Modifique los tipos de franja horaria",
     "TIMESLOT_HELPER": "Modifique la franja horaria",
-    "WEIGHT_HELPER": "Modifique el peso personalizado"
+    "WEIGHT_HELPER": "Modifique el peso personalizado",
+    "PACKAGES_TYPE_HELPER": "Modifique el tipo de paquetes",
+    "SUPPLEMENTS_HELPER": "Modifique los suplementos"
   }
 }

@@ -621,6 +621,9 @@
     "TIMESLOT_TYPES": "Timeslot types",
     "TIMESLOT": "Timeslot",
     "WEIGHT": "Custom weight",
+    "PACKAGES_TYPE": "Packages type",
+    "SUPPLEMENTS": "Supplements",
+
     "ORDER_CLIENT_HELPER": "Modify client",
     "ADDRESS_HELPER": "Modify address",
     "BUSINESS_HELPER": "Modify business name",
@@ -629,6 +632,8 @@
     "ACCESS_INFORMATION_HELPER": "Modify the additional information to access the business",
     "TIMESLOT_TYPES_HELPER": "Modify the timeslot types",
     "TIMESLOT_HELPER": "Modify the timeslot",
-    "WEIGHT_HELPER": "Modify custom weight"
+    "WEIGHT_HELPER": "Modify custom weight",
+    "PACKAGES_TYPE_HELPER": "Modify packages",
+    "SUPPLEMENTS_HELPER": "Modify supplements"
   }
 }

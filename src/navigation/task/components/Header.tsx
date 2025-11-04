@@ -9,7 +9,6 @@ import { useBaseTextColor } from '@/src/styles/theme';
 import { getTaskTitleForOrder } from '../../order/utils';
 
 export const Header = ({ task }) => {
-  console.log('Header task:', task);
   const t = useTranslation().t;
   const headerText = useBaseTextColor();
   const taskTitle = getTaskTitleForOrder(task);

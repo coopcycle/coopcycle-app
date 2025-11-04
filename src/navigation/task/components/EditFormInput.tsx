@@ -8,7 +8,6 @@ import i18n from '@/src/i18n';
 
 interface EditFormInputProps {
   label: string;
-  helperText: string;
   value: string;
   inputType?: 'text' | 'password';
   handler?: (value: string) => void;
@@ -16,7 +15,6 @@ interface EditFormInputProps {
 
 export const EditFormInput: React.FC<EditFormInputProps> = ({
   label,
-  helperText,
   value,
   handler,
   inputType = 'text'
@@ -31,7 +29,6 @@ export const EditFormInput: React.FC<EditFormInputProps> = ({
       <Input>
         <InputField value={value} onChangeText={handler} type={inputType} />
       </Input>
-      <FormControlHelperText>{t(helperText)}</FormControlHelperText>
     </>
   );
 };
