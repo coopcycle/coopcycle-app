@@ -146,18 +146,12 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     },
     _ref,
   ) => {
-
     const isPickup = task.type === 'PICKUP';
     const context = useTaskListsContext();
-
     const theme = useTheme();
 
     const isAssignedToSameCourier = useMemo(() => {
       return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
-    }, [context?.selectedTasksToEdit, task]);
-
-    const isSortable = useMemo(() => {
-      return context?.selectedTasksToEdit?.length === 1 && !context?.selectedTasksToEdit.includes(task);
     }, [context?.selectedTasksToEdit, task]);
 
     const isSelectedTask = useMemo(() => {
@@ -169,6 +163,10 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       );
     }, [context?.selectedTasksToEdit, task]);
 
+    const isSortable = useMemo(() => {
+      return context?.selectedTasksToEdit?.length === 1 && !isSelectedTask;
+    }, [context?.selectedTasksToEdit, isSelectedTask]);
+
     const isPreviousToSelectedTask = useMemo(() => {
       return nextTask?.['@id'] === context?.selectedTasksToEdit[0]?.['@id'];
     }, [nextTask, context]);
@@ -176,8 +174,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
     const textStyle = [styles.text];
 
-    const itemProps: { opacity?: number } = {};
-    const swipeButtonsProps: { display?: string } = {};
+    const itemProps = {opacity: 1};
+    const swipeButtonsProps = {display: 'flex'};
 
     if (task.status === 'DONE' || task.status === 'FAILED') {
       itemProps.opacity = 0.4;
@@ -203,14 +201,13 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       }
     }, [task.status]);
 
-    // swipeLeft
     const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
     const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
     const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
     const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
 
-    const prevShouldSwipeLeftRef = useRef<boolean>();
-    const prevShouldSwipeRightRef = useRef<boolean>();
+    const prevShouldSwipeLeftRef = useRef(false);
+    const prevShouldSwipeRightRef = useRef(false);
 
     useEffect(() => {
       if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
@@ -243,6 +240,7 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
         onSwipeClosed();
       }
     }
+
     const allowSwipeLeft =
       task.status !== 'DONE' && !allTasksIdsFromOrders.includes(task['@id']);
     const allowSwipeRight =

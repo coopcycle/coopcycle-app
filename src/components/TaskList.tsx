@@ -85,26 +85,29 @@ const TaskList: React.FC<TaskListProps> = ({
     bulkFabButton.current?.updateItems(doneTasks);
   }, [tasks]);
 
-  const renderItem = ({ item: task, index }) => {
-    const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
-    return (
-      <TaskListItem
-        taskListId={id}
-        appendTaskListTestID={appendTaskListTestID}
-        task={task}
-        nextTask={nextTask}
-        index={index}
-        color={task.color}
-        onPress={() => onTaskClick(task)}
-        onLongPress={onLongPress}
-        onSortBefore={onSortBefore ? () => onSortBefore(tasks) : undefined}
-        onSort={onSort ? () => onSort(tasks, index) : undefined}
-        onOrderPress={() => onOrderClick(task)}
-        {...swipeLeftConfiguration(task)}
-        {...swipeRightConfiguration(task)}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({ item: task, index }) => {
+      const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
+      return (
+        <TaskListItem
+          taskListId={id}
+          appendTaskListTestID={appendTaskListTestID}
+          task={task}
+          nextTask={nextTask}
+          index={index}
+          color={task.color}
+          onPress={() => onTaskClick(task)}
+          onLongPress={onLongPress}
+          onSortBefore={onSortBefore ? () => onSortBefore(tasks) : undefined}
+          onSort={onSort ? () => onSort(tasks, index) : undefined}
+          onOrderPress={() => onOrderClick(task)}
+          {...swipeLeftConfiguration(task)}
+          {...swipeRightConfiguration(task)}
+        />
+      );
+    },
+    [id, appendTaskListTestID, tasks, onTaskClick, onLongPress, onSortBefore, onSort, onOrderClick, swipeLeftConfiguration, swipeRightConfiguration]
+  );
 
   return (
     <>

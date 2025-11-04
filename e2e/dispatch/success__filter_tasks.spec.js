@@ -118,7 +118,7 @@ describeif(device.getPlatform() === 'android')
     //////////////
 
     // TODO FIX: FORCE TASK LIST UPDATE because sometimes all the tasks goes back to unassigned or just dissapear from map..!
-    await swipeDown('dispatchTasksSectionList');
+    await swipeDown('dispatchTaskLists');
 
     // Open the map screen
     await tapById('toggleTasksMapListButton');

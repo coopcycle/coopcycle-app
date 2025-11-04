@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { ActivityIndicator, SectionList, View } from 'react-native';
-import { useCallback, useEffect, useMemo } from 'react';
+import { ActivityIndicator, SectionList, View, Text } from 'react-native';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -35,6 +35,7 @@ import { selectIsExpandedSection } from '../../../redux/Dispatch/selectors';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskList from '../../../components/TaskList';
+import TaskListItem from '../../../components/TaskListItem';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderNumber } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation, useSetTaskListItemsMutation } from '../../../redux/api/slice';
@@ -44,13 +45,18 @@ import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import Task from '@/src/types/task';
 import { moveAfter } from '../../task/components/utils';
 
+import { SwipeListView } from 'react-native-swipe-list-view';
+import ItemSeparatorComponent from '../../../components/ItemSeparator';
+
+import { FlashList } from "@shopify/flash-list";
+
 export default function GroupedTasks({
-  hideEmptyTaskLists,
   isFetching,
   refetch,
   route,
   taskLists,
   unassignedTasks,
+  hideEmptyTaskLists = false,
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -65,43 +71,6 @@ export default function GroupedTasks({
     generateOrders(date.format('YYYY-MM-DD'));
   }, [generateOrders, date]);
 
-  const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
-  // Combine unassigned tasks and task lists to use in SectionList
-  const sections = useMemo(
-    () => [
-      {
-        backgroundColor: whiteColor,
-        data: [createTempTaskList(UNASSIGNED_TASKS_LIST_ID, unassignedTasks)],
-        id: UNASSIGNED_TASKS_LIST_ID,
-        isUnassignedTaskList: true,
-        ordersCount: unassignedTaskLists.length,
-        taskListId: UNASSIGNED_TASKS_LIST_ID,
-        tasksCount: unassignedTasks.length,
-        textColor: darkGreyColor,
-        title: t('DISPATCH_UNASSIGNED_TASKS'),
-      },
-      ...taskLists.map(taskList => ({
-        backgroundColor: taskList.color ? taskList.color : darkGreyColor,
-        data: [taskList],
-        id: `${taskList.username.toLowerCase()}TasksList`,
-        appendTaskListTestID: taskList.appendTaskListTestID,
-        isUnassignedTaskList: false,
-        ordersCount: 0,
-        taskListId: taskList['@id'],
-        tasksCount: taskList.tasksIds.length,
-        textColor: whiteColor,
-        title: taskList.username,
-      })),
-    ],
-    [t, taskLists, unassignedTaskLists.length, unassignedTasks],
-  );
-
-  const context = useTaskListsContext();
-
-  const filteredSections = hideEmptyTaskLists
-    ? sections.filter(section => section.tasksCount > 0)
-    : sections;
-
   // Update tasks functions
   const {
     assignTask,
@@ -115,6 +84,48 @@ export default function GroupedTasks({
     allTaskLists,
     tasksEntities,
   });
+
+  const unassignedTaskLists = createUnassignedTaskLists(unassignedTasks);
+  // Combine unassigned tasks and task lists to use in SectionList
+  const sections = useMemo(() => {
+    const unassignedTaskList = createTempTaskList(UNASSIGNED_TASKS_LIST_ID, unassignedTasks);
+
+    return [
+      {
+        id: UNASSIGNED_TASKS_LIST_ID,
+        title: t('DISPATCH_UNASSIGNED_TASKS'),
+        data: unassignedTasks,
+        taskList: unassignedTaskList,
+        taskListId: UNASSIGNED_TASKS_LIST_ID,
+        isUnassignedTaskList: true,
+        ordersCount: unassignedTaskLists.length,
+        tasksCount: unassignedTasks.length,
+        backgroundColor: whiteColor,
+        textColor: darkGreyColor,
+        type: 'section'
+      },
+      ...taskLists.map(taskList => ({
+        id: `${taskList.username.toLowerCase()}TasksList`,
+        title: taskList.username,
+        data: getTaskListTasks(taskList, tasksEntities),
+        taskList,
+        taskListId: taskList['@id'],
+        isUnassignedTaskList: false,
+        ordersCount: 0,
+        tasksCount: taskList.tasksIds.length,
+        backgroundColor: taskList.color ? taskList.color : darkGreyColor,
+        textColor: whiteColor,
+        appendTaskListTestID: taskList.appendTaskListTestID,
+        type: 'section'
+      })),
+    ];
+  }, [t, tasksEntities, taskLists, unassignedTaskLists.length, unassignedTasks]);
+
+  const context = useTaskListsContext();
+
+  const filteredSections = hideEmptyTaskLists
+    ? sections.filter(section => section.tasksCount > 0)
+    : sections;
 
   const onOrderClick = useCallback(
     task => {
@@ -295,11 +306,9 @@ export default function GroupedTasks({
   }, [context, date, setTaskListItems]);
 
   const swipeLeftConfiguration = useCallback(
-    section => ({
-      onPressLeft: assignTaskWithRelatedTasksHandler(
-        section.isUnassignedTaskList,
-      ),
-      onSwipeToLeft: handleOnSwipeToLeft(section.taskListId),
+    section => task => ({
+      onPressLeft: () => assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList)(task),
+      onSwipedToLeft: () => handleOnSwipeToLeft(section.taskListId)(task),
       swipeOutLeftBackgroundColor: darkRedColor,
       swipeOutLeftIcon: AssignOrderIcon,
     }),
@@ -307,13 +316,14 @@ export default function GroupedTasks({
   );
 
   const swipeRightConfiguration = useCallback(
-    section => ({
-      onPressRight: assignTaskHandler(section.isUnassignedTaskList),
-      onSwipeToRight: handleOnSwipeToRight(section.taskListId),
+    section => task => ({
+      onPressRight: () => assignTaskHandler(section.isUnassignedTaskList)(task),
+      onSwipedToRight: () => handleOnSwipeToRight(section.taskListId)(task),
+      onSwipeClosed: () => handleOnSwipeClose(section, task),
       swipeOutRightBackgroundColor: darkRedColor,
       swipeOutRightIcon: AssignTaskIcon,
     }),
-    [assignTaskHandler, handleOnSwipeToRight],
+    [assignTaskHandler, handleOnSwipeToRight, handleOnSwipeClose],
   );
 
   const renderSectionHeader = useCallback(
@@ -325,44 +335,99 @@ export default function GroupedTasks({
   const longPressHandler = useTaskLongPress();
 
   const renderItem = useCallback(
-    ({ section, item }) => {
-      if (!isFetching && isExpandedSection(section.title)) {
-        const tasks = getTaskListTasks(item, tasksEntities);
+    //({ section, item: task, index }) => {
+    ({ item: task, index }) => {
+      const section = task.section;
+      // console.log('ASDASD AllTasks section:', section.taskListId);
+      // console.log('ASDASD AllTasks item:', task['@id']);
+      // if (isFetching || !isExpandedSection(section.title)) {
+      //   //return <View style={{ display: 'none', height: 0 }} />;
+      //   //return <Text style={{ display: 'none', height: 0 }}>asd</Text>;
+      //   return null;
+      // }
 
-        return (
-          <TaskList
-            id={section.id}
-            tasks={tasks}
-            appendTaskListTestID={section.appendTaskListTestID}
-            onLongPress={longPressHandler}
-            onTaskClick={onTaskClick(section.isUnassignedTaskList)}
-            onOrderClick={onOrderClick}
-            onSort={handleSort}
-            onSortBefore={handleSortBefore}
-            onSwipeClosed={task => {
-              handleOnSwipeClose(section, task);
-            }}
-            {...swipeLeftConfiguration(section)}
-            {...swipeRightConfiguration(section)}
-          />
-        );
-      }
-      return null;
+      // const tasks = getTaskListTasks(item, tasksEntities);
+      // return (
+      //   <TaskList
+      //     id={section.id}
+      //     tasks={tasks}
+      //     appendTaskListTestID={section.appendTaskListTestID}
+      //     onLongPress={longPressHandler}
+      //     onTaskClick={onTaskClick(section.isUnassignedTaskList)}
+      //     onOrderClick={onOrderClick}
+      //     onSort={handleSort}
+      //     onSortBefore={handleSortBefore}
+      //     onSwipeClosed={task => {
+      //       handleOnSwipeClose(section, task);
+      //     }}
+      //     {...swipeLeftConfiguration(section)}
+      //     {...swipeRightConfiguration(section)}
+      //   />
+      // );
+
+      const tasks = section.data;
+      const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
+      const MemoizedTaskListItem = memo(TaskListItem);
+
+      return (
+        <MemoizedTaskListItem
+          taskListId={section.id}
+          appendTaskListTestID={section.appendTaskListTestID}
+          task={task}
+          nextTask={nextTask}
+          index={index}
+          color={task.color}
+          onPress={() => onTaskClick(section.isUnassignedTaskList)(task)}
+          onLongPress={longPressHandler}
+          onSortBefore={() => handleSortBefore(tasks)}
+          onSort={() => handleSort(tasks, index)}
+          onOrderPress={() => onOrderClick(task)}
+          {...(swipeLeftConfiguration(section)(task))}
+          {...(swipeRightConfiguration(section)(task))}
+        />
+      );
     },
     [
       longPressHandler,
-      handleOnSwipeClose,
-      isExpandedSection,
-      isFetching,
+      //handleOnSwipeClose,
+      //isExpandedSection,
+      //isFetching,
       onTaskClick,
       onOrderClick,
       handleSort,
       handleSortBefore,
       swipeLeftConfiguration,
       swipeRightConfiguration,
-      tasksEntities,
+      //tasksEntities,
     ],
   );
+
+  // const renderNoContent = ({ section }) => {
+  //   return <View style={{ display: 'none', height: 0 }} />;
+  //   //return null; // Return null if the section is not empty
+  // };
+
+  const flashListData = useMemo(() => {
+    if (isFetching) {
+      return [];
+    }
+    return filteredSections.flatMap(section => {
+      if (!isExpandedSection(section.title)) {
+        return [section];
+      }
+      return [section, ...section.data.map(t => Object.assign({}, t, { section }))];
+    })
+    .map(item => {
+      //console.log('ASDASD flashListData item:', item['type'], item.type === 'section' ? item.id : item['@id']);
+      return item;
+    });
+  }, [filteredSections, isFetching, isExpandedSection]);
+
+  const stickyHeaderIndices = useMemo(() => {
+      return flashListData
+        .map((item, index) => item.type === 'section' ? index : null)
+        .filter((item) => item !== null) as number[];
+    }, [flashListData]);
 
   return (
     <>
@@ -378,24 +443,69 @@ export default function GroupedTasks({
           alignItems: 'center',
           backgroundColor: 'rgba(102, 102, 102, 0.2)',
           zIndex: 999,
-         }}>
+        }}>
           <ActivityIndicator animating={true} size="large" />
         </View>
       )}
-      <SectionList
+      <FlashList
+        data={flashListData}
+        //renderItem={({ item, index }) => {
+        renderItem={({ item }) => {
+          if (item.type === 'section') {
+            return renderSectionHeader({ section: item });
+          } else {
+            //return renderItem({ section: item.section, item, index });
+            return renderItem({ section: item.section, item, index: item.index });
+          }
+        }}
+        stickyHeaderIndices={stickyHeaderIndices}
+        //ItemSeparatorComponent={ItemSeparatorComponent}
+        //ListEmptyComponent={renderNoContent}
+        getItemType={(item) => item.type === 'section' ? "section" : "task"}
+        keyExtractor={(item) => item.type === 'section' ? item.id : item['@id']}
+        refreshing={!!isFetching}
+        onRefresh={() => refetch && refetch()}
+        testID="dispatchTaskLists"
+      />
+      {/* <SwipeListView
+        useSectionList={true}
+        sections={filteredSections}
+        stickySectionHeadersEnabled={true}
+        keyExtractor={(item) => item['@id']}
+        // keyExtractor={(item, index) => {
+        //   const tagNames = (item.tags || []).map(t => t.name);
+        //   return `${item['@id']}-${item.status}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
+        // }}
+        renderSectionHeader={renderSectionHeader}
+        renderItem={renderItem}
+        renderSectionFooter={renderNoContent}
+        refreshing={!!isFetching}
+        onRefresh={() => refetch && refetch()}
+        ItemSeparatorComponent={ItemSeparatorComponent}
+        // initialNumToRender={10}
+        // maxToRenderPerBatch={6}
+        // windowSize={3}
+        testID="dispatchTaskLists"
+      /> */}
+      {/* <SectionList
         sections={filteredSections}
         stickySectionHeadersEnabled={true}
         keyboardShouldPersistTaps="handled"
-        initialNumToRender={1}
-        maxToRenderPerBatch={1}
-        windowSize={3}
+        // initialNumToRender={10}
+        // maxToRenderPerBatch={10}
+        // windowSize={3}
+        //removeClippedSubviews={true}
         renderSectionHeader={renderSectionHeader}
-        keyExtractor={(item) => item['@id']}
         renderItem={renderItem}
+        keyExtractor={(item) => item['@id']}
+        // keyExtractor={(item, index) => {
+        //   const tagNames = (item.tags || []).map(t => t.name);
+        //   return `${item['@id']}-${item.status}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
+        // }}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
-        testID="dispatchTasksSectionList"
-      />
+        testID="dispatchTaskLists"
+      /> */}
       <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );
