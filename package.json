@@ -21,7 +21,6 @@
     "@gluestack-ui/core": "^3.0.10",
     "@gluestack-ui/utils": "^3.0.7",
     "@gorhom/bottom-sheet": "5.0.0-alpha.11",
-    "@heasy/react-native-sunmi-printer": "^1.8.4",
     "@invertase/react-native-apple-authentication": "^2.2.2",
     "@legendapp/motion": "^2.4.0",
     "@mapbox/polyline": "^1.2.1",
