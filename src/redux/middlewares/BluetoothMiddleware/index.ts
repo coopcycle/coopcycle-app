@@ -1,4 +1,4 @@
-//import SunmiPrinter from '@heasy/react-native-sunmi-printer';
+import SunmiPrinter from '@heasy/react-native-sunmi-printer';
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { canStartBluetooth } from '../../../utils/bluetooth';
@@ -65,13 +65,13 @@ export default ({ dispatch }) => {
     });
   });
 
-  // if (Platform.OS === 'android') {
-  //   SunmiPrinter.hasPrinter().then(hasPrinter => {
-  //     if (hasPrinter) {
-  //       dispatch(sunmiPrinterDetected());
-  //     }
-  //   });
-  // }
+  if (Platform.OS === 'android') {
+    SunmiPrinter.hasPrinter().then(hasPrinter => {
+      if (hasPrinter) {
+        dispatch(sunmiPrinterDetected());
+      }
+    });
+  }
 
   return next => action => next(action);
 };
