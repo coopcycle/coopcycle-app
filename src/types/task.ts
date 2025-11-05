@@ -5,7 +5,7 @@ import { LucideIcon } from 'lucide-react-native';
 /**
  * Task status enumeration
  */
-export type TaskStatus = 'TODO' | 'DOING' | 'DONE' | 'FAILED';
+export type TaskStatus = 'TODO' | 'DOING' | 'DONE' | 'FAILED' | 'CANCELLED';
 
 /**
  * Task type enumeration
