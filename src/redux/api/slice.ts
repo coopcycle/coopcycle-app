@@ -157,6 +157,10 @@ export const apiSlice = createApi({
         return { data: sortByName(result.data) };
       },
     }),
+    getPricingRuleSet: builder.query({
+      query: (uri: string) => uri,
+      providesTags: (result, error, id) => [{ type: 'PricingRuleSet', id }],
+    }),
     getMyTasks: builder.query({
       query: (date: DateOnlyString) => `api/me/tasks/${date}`,
     }),
@@ -194,6 +198,7 @@ export const {
   useGetTaskContextQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,
+  useGetPricingRuleSetQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,
