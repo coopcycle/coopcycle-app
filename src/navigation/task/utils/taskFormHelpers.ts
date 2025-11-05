@@ -1,28 +1,7 @@
-import { moment } from '@/src/shared';
 import { createDeliveryObject, getInitialValues } from '../../delivery/utils';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import _ from 'lodash';
 import { Task } from '@/src/types/task';
-
-export const getInitialFormValues = (task: Partial<Task>, hasTimeSlot: boolean) => {
-  return {
-    telephone: task?.address?.telephone || '',
-    contactName: task?.address?.contactName || '',
-    businessName: task?.orgName || task?.address?.name || '',
-    description: task?.address?.description || '',
-    address: task?.address?.streetAddress || '',
-    weight: task?.weight ? task.weight.toString() : '',
-    comments: task?.comments || '',
-    // Time slot related - usar los valores de la task
-    timeSlot: task?.timeSlot || null,
-    timeSlotUrl: task?.timeSlotUrl || null,
-    before: task?.before || moment().add(1, 'hours').add(30, 'minutes').format(),
-    after: task?.after || '',
-    // Incluir otros campos que puedan ser relevantes
-    doorstep: task?.doorstep || false,
-    ...getInitialValues({}, hasTimeSlot),
-  };
-};
 
 export const handleFormSubmit = (
   values,
@@ -35,24 +14,33 @@ export const handleFormSubmit = (
   task?: Partial<Task>,
   onSubmit?: (data) => void
 ) => {
+  console.log('Creating delivery object with:', {
+    address, selectedTimeSlot, selectedChoice
+  });
+
   const dropoff = {
     telephone: parsePhoneNumberFromString(values.telephone, country)?.format('E.164') || values.telephone,
     contactName: values.contactName,
     description: values.description,
     businessName: values.businessName,
-    address,
+    address: address.streetAddress,
   };
 
-  const delivery = createDeliveryObject(
-    values,
-    store,
-    { params: { dropoff } },
-    packagesCount,
-    selectedTimeSlot,
-    selectedChoice,
-  );
+  let delivery;
+  try {
+    delivery = createDeliveryObject(
+      values,
+      store,
+      { params: { dropoff } },
+      packagesCount,
+      selectedTimeSlot,
+      selectedChoice,
+    );
+  } catch (error) {
+    console.error('Error creating delivery object:', error);
+    delivery = {};
+  }
 
-  // Preservar todos los campos importantes de la task original
   if (task?.['@id']) {
     delivery['@id'] = task['@id'];
   }
@@ -60,7 +48,6 @@ export const handleFormSubmit = (
     delivery.id = task.id;
   }
   
-  // Preservar campos de tiempo
   if (task?.after) {
     delivery.after = task.after;
   }
@@ -68,7 +55,6 @@ export const handleFormSubmit = (
     delivery.before = task.before;
   }
   
-  // Preservar estado y metadatos
   if (task?.status) {
     delivery.status = task.status;
   }
@@ -76,10 +62,9 @@ export const handleFormSubmit = (
     delivery.type = task.type;
   }
   if (task?.metadata) {
-    delivery.metadata = task.metadata;
+    delivery.metadata = { ...task.metadata };
   }
   
-  // Preservar otros campos importantes
   if (task?.doorstep !== undefined) {
     delivery.doorstep = task.doorstep;
   }
@@ -87,9 +72,13 @@ export const handleFormSubmit = (
     delivery.ref = task.ref;
   }
   if (task?.tags) {
-    delivery.tags = task.tags;
+    delivery.tags = [...task.tags];
   }
+  
+  // Asegurar que los paquetes se envíen correctamente
+  delivery.packages = packagesCount.filter(pkg => pkg.quantity > 0);
 
+  console.log('Final delivery object:', delivery);
   onSubmit?.(delivery);
 };
 
@@ -113,23 +102,4 @@ export const getAutocompleteProps = (deliveryError) => {
         },
       }
     : baseProps;
-};
-
-// Helper para obtener el timeslot inicial desde la task
-export const getInitialTimeSlot = (task?: Partial<Task>) => {
-  if (task?.timeSlot) {
-    return task.timeSlot;
-  }
-  return null;
-};
-
-// Helper para obtener la selección de paquetes inicial
-export const getInitialPackageSelection = (task?: Partial<Task>) => {
-  if (!task?.packages) return [];
-  
-  return task.packages.map(pkg => ({
-    type: pkg.type,
-    quantity: pkg.quantity,
-    ...pkg
-  }));
 };

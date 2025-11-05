@@ -9,6 +9,21 @@ import { Text } from "@/components/ui/text";
 import { greenColor, yellowColor } from "@/src/styles/common";
 import { markTaskDone, markTasksDone } from "@/src/redux/Courier";
 import { reportIncident } from "@/src/redux/Courier/taskActions";
+import Task from "@/src/types/task";
+
+interface SubmitButtonProps {
+  task: Task;
+  tasks?: Task[];
+  notes?: string;
+  contactName?: string;
+  failureReason?: string;
+  validateTaskAfterReport?: boolean;
+  failureReasonMetadataToSend?: [];
+  success: boolean;
+  formData?;
+  onSubmit?: (formData) => void;
+  onPress?: () => void;
+}
 
 export const SubmitButton = ({
   task,
@@ -19,7 +34,10 @@ export const SubmitButton = ({
   validateTaskAfterReport,
   failureReasonMetadataToSend,
   success,
-}) => {
+  formData,
+  onSubmit,
+  onPress: customOnPress,
+}: SubmitButtonProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
@@ -28,11 +46,33 @@ export const SubmitButton = ({
 
   const footerBgColor = success ? greenColor : yellowColor;
 
-  const onPress = () => {
-    const navigateOnSuccess = () => {
-      // Make sure to use merge = true, so that it doesn't break
-      // when navigating to DispatchTaskList
+  const handlePress = () => {
+    console.log('SubmitButton - handlePress called', {
+      success,
+      formData,
+      task,
+      notes,
+      contactName
+    });
 
+    // Disable the button immediately
+    setIsDisabled(true);
+
+    // Si hay un custom onPress, usarlo (para el formulario)
+    if (customOnPress) {
+      console.log('Using custom onPress');
+      customOnPress(); 
+      return;
+    }
+
+    // Si hay onSubmit con formData, usarlo
+    if (onSubmit && formData) {
+      console.log('Calling onSubmit with formData:', formData);
+      onSubmit(formData);
+      return;
+    }
+
+    const navigateOnSuccess = () => {
       if (route.params?.navigateAfter !== null) {
         navigation.navigate({
           name: route.params?.navigateAfter,
@@ -42,9 +82,6 @@ export const SubmitButton = ({
         navigation.goBack();
       }
     };
-
-    // Disable the button
-    setIsDisabled(true);
 
     if (success) {
       if (tasks && tasks.length) {
@@ -75,12 +112,19 @@ export const SubmitButton = ({
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={handlePress}
       disabled={isDisabled}
-      style={{ alignItems: 'center', backgroundColor: footerBgColor, marginTop: 16 }}
+      style={{ 
+        alignItems: 'center', 
+        backgroundColor: footerBgColor, 
+        marginTop: 16,
+        opacity: isDisabled ? 0.6 : 1 
+      }}
       testID="task:finishButton">
       <HStack className="py-3 items-center">
-        <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
+        <Text style={{ fontWeight: 'bold', color: '#000' }}>
+          {success ? t('VALIDATE') : t('REPORT_INCIDENT')}
+        </Text>
       </HStack>
     </TouchableOpacity>
   );

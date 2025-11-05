@@ -30,7 +30,7 @@ export const AddressSection: React.FC<AddressSectionProps> = React.memo(({
     <View style={[styles.formGroup, { zIndex: 1 }]}>
       <Text style={styles.label}>
         {t('STORE_NEW_DELIVERY_ADDRESS')}
-        {validAddress && ' ✓'}
+        {validAddress}
       </Text>
       <View style={styles.autocompleteWrapper}>
         <AddressAutocomplete

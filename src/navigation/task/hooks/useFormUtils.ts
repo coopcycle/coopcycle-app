@@ -9,23 +9,23 @@ export const useFormUtils = (store) => {
   const country = useSelector((state) => state.app.settings.country.toUpperCase());
   const dispatch = useDispatch();
 
-  const setAddressData = useCallback((data, setFieldValue) => {
-    const {
-      contactName = '',
-      telephone = '',
-      name: businessName = '',
-      description = '',
-      streetAddress,
-      geo,
-    } = data;
+const setAddressData = useCallback((data: any, setFieldValue: any) => {
+  const {
+    contactName = '',
+    telephone = '',
+    name: businessName = '',
+    description = '',
+    streetAddress,
+    geo,
+  } = data;
 
-    setFieldValue('contactName', contactName);
-    setFieldValue('telephone', telephone);
-    setFieldValue('businessName', businessName);
-    setFieldValue('description', description);
+  setFieldValue('contactName', contactName);
+  setFieldValue('telephone', telephone);
+  setFieldValue('businessName', businessName);
+  setFieldValue('description', description);
 
-    return { streetAddress, geo };
-  }, []);
+  return { streetAddress, geo };
+}, []);
 
   const onSelectAddress = useCallback(
     (addr, setFieldValue, setAddress, setValidAddress) => {

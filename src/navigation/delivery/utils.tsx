@@ -36,7 +36,7 @@ export function createDeliveryObject(
     pickup: route.params?.pickup || undefined,
     dropoff: {
       address: {
-        ...values.address,
+        address: values.address,
         telephone: values.telephone,
         contactName: values.contactName,
         name: values.businessName.trim() || null,
