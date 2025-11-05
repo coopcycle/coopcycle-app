@@ -136,6 +136,7 @@
         "HIDE_DONE_TASKS": "Elvégzett feladatok elrejtése",
         "HIDE_FAILED_TASKS": "Meghiúsult feladatok elrejtése",
         "HIDE_TASKS_TAGGED_WITH": "Címkével ellátott feladatok elrejtése",
+        "HIDE_CANCELLED_TASKS": "Megszakított feladatok elrejtése",
         "TASKS_CHANGED_ALERT_SOUND": "Feladatváltozás hangja",
         "RESTAURANT_LIST_CLICK_BELOW": "Kattints az éttermek listájára",
         "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Új rendelések {{count}}",

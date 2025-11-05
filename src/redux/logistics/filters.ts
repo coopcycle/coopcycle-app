@@ -2,6 +2,8 @@ export const filterStatusDone = { status: 'DONE' };
 
 export const filterStatusFailed = { status: 'FAILED' };
 
+export const filterStatusCancelled = { status: 'CANCELLED' };
+
 export const filterHasIncidents = { hasIncidents: true };
 
 export const filterByKeyword = keyword => ({ keyword });

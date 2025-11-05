@@ -13,11 +13,17 @@ export function isSameDayTour(tour, date) {
 }
 
 export function getDropoffPosition(task, tasks) {
-  const pickupOrderTasks = tasks.filter(t => t.type === 'PICKUP');
-  const dropoffOrderTasks = tasks.filter(t => t.type === 'DROPOFF');
-  const taskCurrentPosition =
-    task.metadata.delivery_position - pickupOrderTasks.length;
-  return `(${taskCurrentPosition}/${dropoffOrderTasks.length})`;
+  if (!task || !Array.isArray(tasks)) return '';
+  
+  const validDropoffs = tasks.filter(
+    t => t.type === 'DROPOFF' && t.status !== 'CANCELLED',
+  );
+
+  const taskCurrentPosition = validDropoffs.findIndex(t => t.id === task.id);
+
+  if (taskCurrentPosition === -1) return '';
+
+  return `(${taskCurrentPosition + 1}/${validDropoffs.length})`;
 }
 
 export function getDropoffCount(tasks) {

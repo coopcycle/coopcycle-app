@@ -142,6 +142,7 @@
         "HIDE_DONE_TASKS": "Ezkutatu egindako zereginak",
         "HIDE_FAILED_TASKS": "Ezkutatu huts egindako zereginak",
         "HIDE_TASKS_TAGGED_WITH": "Ezkutatu honela etiketatutako zereginak",
+        "HIDE_CANCELLED_TASKS": "Ezkutatu bertan behera utzitako atazak",
         "TASKS_CHANGED_ALERT_SOUND": "'Zereginak aldatu dira' ohar-soinua",
         "RESTAURANT_LIST_CLICK_BELOW": "Azpiko zerrendako jatetxe bat aukeratu",
         "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Eskaera berriak ({{count}})",
