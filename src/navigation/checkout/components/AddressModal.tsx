@@ -1,5 +1,4 @@
 import { Text } from '@/components/ui/text';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
@@ -26,7 +25,12 @@ import {
 } from '../../../redux/Checkout/actions';
 import { selectIsCollectionEnabled } from '../../../redux/Checkout/selectors';
 
-class AddressModal extends Component {
+interface AddressModalProps {
+  onSelect(...args: unknown[]): unknown;
+  value?: object;
+}
+
+class AddressModal extends Component<AddressModalProps> {
   constructor(props) {
     super(props);
     this.state = {
@@ -143,11 +147,6 @@ class AddressModal extends Component {
     );
   }
 }
-
-AddressModal.propTypes = {
-  onSelect: PropTypes.func.isRequired,
-  value: PropTypes.object,
-};
 
 const styles = StyleSheet.create({
   autocompleteContainer: {

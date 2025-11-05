@@ -3,11 +3,10 @@ import {
   describeif,
   loadFixturesAndConnect,
   longPressById,
-  swipeDown,
   tapById,
   tapByText,
   waitToBeVisible,
-} from "../support/commands";
+} from '@/e2e/support/commands';
 
 const USER_JANE = 'jane';
 
@@ -57,24 +56,12 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('taskListItemIcon:DONE:1');
   });
 
-  it('should mark a task as CANCELLED', async () => {
-    // Tap Cancel button
-    await tapById('CancelTaskButton');
-
-    // Waits to see if it's removed
-    //TODO FIX: The task doesn't dissapear if it's assigned..!
-    //await expectToNotExist(`courierTasksList:task:0`);
-  });
-
   it('should mark a task as INCIDENT ', async () => {
     // Tap Report incident button
     await tapById('ReportIncidenceButton');
 
     await waitToBeVisible('task:finishButton');
     await tapByText('Report incident');
-
-    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to refresh later on..!
-    await swipeDown('courierTaskListSwipeListView');
 
     // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');

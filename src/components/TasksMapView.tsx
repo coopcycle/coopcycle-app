@@ -88,7 +88,8 @@ function TasksMapView(props) {
   //markers render
   const renderMarkers = useMemo(() => {
     return Object.values(groupedByCoord).map((tasks) => {
-      const key = `taskmarker-${tasks.map(t => t.id)}`;
+      const ids = tasks.map(t => t.id).sort((a, b) => a - b);
+      const key = `taskmarker-${ids.join(',')}`;
       const firstTask = tasks[0];
       const { latitude, longitude } = firstTask.address.geo;
 

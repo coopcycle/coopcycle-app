@@ -4,7 +4,6 @@ import { Box } from '@/components/ui/box';
 import { FormControl, FormControlLabel, FormControlLabelText } from '@/components/ui/form-control';
 import { VStack } from '@/components/ui/vstack';
 import { Button, ButtonText } from '@/components/ui/button';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import Modal from 'react-native-modal';
@@ -12,7 +11,12 @@ import { connect } from 'react-redux';
 
 import ModalContent from '../../../components/ModalContent';
 
-class CouponModal extends Component {
+interface CouponModalProps {
+  onSwipeComplete(...args: unknown[]): unknown;
+  onSubmit(...args: unknown[]): unknown;
+}
+
+class CouponModal extends Component<CouponModalProps> {
   _validate(values) {
     return {};
   }
@@ -77,11 +81,6 @@ class CouponModal extends Component {
     );
   }
 }
-
-CouponModal.propTypes = {
-  onSwipeComplete: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-};
 
 function mapStateToProps(state) {
   return {};

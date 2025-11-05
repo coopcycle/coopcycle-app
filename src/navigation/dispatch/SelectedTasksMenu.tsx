@@ -43,6 +43,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
     {
       key: 'CancelTask',
       text: t('CANCEL'),
+      isDisabled: context?.isFromCourier,
       action: () => {
         selectedTasks?.forEach(t => {
           return dispatch(cancelTask(t, () => {}));
@@ -57,7 +58,6 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       action: () => {
         navigateToCompleteTask(navigation, route, selectedTasks[0], [], false);
         context?.clearSelectedTasks();
-
       },
     },
     {
