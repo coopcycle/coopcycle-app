@@ -45,7 +45,7 @@ describe('Redux | Tasks | Reducers', () => {
 
       expect(newState).toEqual(
         expect.objectContaining({
-          excludeFilters: [{ status: 'TODO' }],
+          excludeFilters: [{ status: 'CANCELLED' }, { status: 'TODO' }],
         }),
       );
       expect(restOldState).toEqual(restNewState);
