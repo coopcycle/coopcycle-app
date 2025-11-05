@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRightCircle, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
@@ -138,6 +138,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     const theme = useTheme();
 
+    const [isOpenLeft, setIsOpenLeft] = useState(false);
+    const [isOpenRight, setIsOpenRight] = useState(false);
+
     const isAssignedToSameCourier = useMemo(() => {
       return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
     }, [context?.selectedTasksToEdit, task]);
@@ -199,9 +202,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     const prevShouldSwipeRightRef = useRef<boolean>();
 
     useEffect(() => {
-      if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
-        swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-      } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
+      if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current && !isOpenLeft) {
+        swipeRow.current?.openLeft();
+        console.log('shouldSwipeLeft', isOpenLeft);
+      } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current && isOpenLeft) {
+        console.log('shouldCloseLeft');
         swipeRow.current?.close?.();
       }
       prevShouldSwipeLeftRef.current = shouldSwipeLeft;
@@ -209,8 +214,10 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
 
     useEffect(() => {
       if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
-        swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
+        console.log('shouldSwipeRight');
+        swipeRow.current?.openRight();
       } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
+        console.log('shouldCloseRight');
         swipeRow.current?.close?.();
       }
       prevShouldSwipeRightRef.current = shouldSwipeRight;
@@ -219,14 +226,20 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     function _onRowOpen(direction) {
       if (direction === 'right') {
         onSwipedToLeft();
+        setIsOpenLeft(true);
+        // console.log('onSwipedToLeft')
       } else {
         onSwipedToRight();
+        setIsOpenRight(true);
+        // console.log('onSwipedToRight')
       }
     }
 
     function _onRowClose() {
       if (onSwipeClosed) {
         onSwipeClosed();
+        setIsOpenLeft(false);
+        setIsOpenRight(false);
       }
     }
     const allowSwipeLeft =
