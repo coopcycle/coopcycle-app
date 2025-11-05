@@ -1,7 +1,6 @@
 import {
   describeif,
   longPressById,
-  swipeDown,
   tapById,
   tapByText,
   waitToBeVisible,
