@@ -102,7 +102,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
       )}
 
       {/* Select para agregar nuevos suplementos */}
-      <View style={styles.selectorContainer}>
+      <View>
         <Text style={styles.selectorLabel}>Agregar suplemento:</Text>
 
         {/* Lista de opciones disponibles */}
@@ -151,11 +151,6 @@ const styles = StyleSheet.create({
   supplementName: {
     fontSize: 14,
     color: '#333',
-  },
-  selectorContainer: {
-    borderTopWidth: 1,
-    borderTopColor: '#e9ecef',
-    paddingTop: 16,
   },
   selectorLabel: {
     fontSize: 14,

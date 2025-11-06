@@ -116,9 +116,10 @@ export const SubmitButton = ({
       disabled={isDisabled}
       style={{ 
         alignItems: 'center', 
+        justifyContent: 'center',
         backgroundColor: footerBgColor, 
         marginTop: 16,
-        opacity: isDisabled ? 0.6 : 1 
+        opacity: isDisabled ? 0.6 : 1,
       }}
       testID="task:finishButton">
       <HStack className="py-3 items-center">

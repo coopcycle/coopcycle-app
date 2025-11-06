@@ -2,8 +2,8 @@ import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import Complete from './Complete';
 import { EditTask } from './Edit';
-import { StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
 import { Header } from './components/Header';
 import { useRoute } from '@react-navigation/native';
@@ -13,10 +13,9 @@ export const Report = () => {
   const { params } = useRoute();
   const task = params?.task;
 
-  const handleTabChange = (tab: string) => {
+  const handleTabChange = useCallback((tab: string) => {
     setCurrentTab(tab as 'edit' | 'report');
-  };
-  const isReportTab = currentTab === 'report';
+  }, []);
 
   return (
     <VStack style={{ flex: 1 }}>
@@ -24,11 +23,22 @@ export const Report = () => {
         <TabBar onPress={handleTabChange} />
       </HStack>
       <Header task={task} />
-      {isReportTab ? (
-        <Complete />
-      ) : (
-        <EditTask task={task} onSubmit={(r) => {console.log("SUBMIT: ",r)}} />
-      )}
+      <View style={{ flex: 1, position: 'relative' }}>
+        <View
+          style={[
+            styles.tabContent,
+            currentTab === 'report' ? styles.visible : styles.hidden,
+          ]}>
+          <Complete />
+        </View>
+        <View
+          style={[
+            styles.tabContent,
+            currentTab === 'edit' ? styles.visible : styles.hidden,
+          ]}>
+          <EditTask task={task} onSubmit={r => console.log('SUBMIT: ', r)} />
+        </View>
+      </View>
     </VStack>
   );
 };
@@ -57,5 +67,21 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  tabContent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flex: 1,
+  },
+  visible: {
+    opacity: 1,
+    zIndex: 1,
+  },
+  hidden: {
+    opacity: 0,
+    zIndex: 0,
   },
 });

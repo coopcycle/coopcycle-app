@@ -9,10 +9,7 @@ import { CheckIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { Textarea, TextareaInput } from '@/components/ui/textarea';
 import { VStack } from '@/components/ui/vstack';
-import {
-  useFocusEffect,
-  useRoute,
-} from '@react-navigation/native';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import _ from 'lodash';
 import { User } from 'lucide-react-native';
 import qs from 'qs';
@@ -52,7 +49,11 @@ import { FailureReasonForm } from './components/FailureReasonForm';
 import { MultipleTasksLabel } from './components/MultipleTasksLabel';
 import { FailureReasonPicker } from './components/FailureReasonPicker';
 import { AttachmentItem } from './components/AttachmentItem';
-import { Checkbox, CheckboxIndicator, CheckboxLabel } from '@/components/ui/checkbox';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from '@/components/ui/checkbox';
 import { PoDButton } from './components/PoDButton';
 
 const DELETE_ICON_SIZE = 32;
@@ -86,7 +87,7 @@ const CompleteTask = ({
   signatures,
   pictures,
   deleteSignatureAt,
-  deletePictureAt,
+  deletePictureAt
 }) => {
   const { t } = useTranslation();
   const route = useRoute();
@@ -95,12 +96,18 @@ const CompleteTask = ({
   const success = isSuccessRoute(route);
 
   const [notes, setNotes] = useState('');
-  const [failureReason, setFailureReason] = useState(null);
+  const [failureReason, setFailureReason] = useState(
+    null,
+  );
   const [isContactNameModalVisible, setIsContactNameModalVisible] =
     useState(false);
-  const [contactName, setContactName] = useState('');
+  const [contactName, setContactName] = useState(
+    '',
+  );
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(task?.status === 'DONE');
+  const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(
+    task?.status === 'DONE',
+  );
 
   const [failureReasonMetadata, setFailureReasonMetadata] = useState([]);
   const [failureReasonMetadataToSend, setFailureReasonMetadataToSend] =
@@ -157,7 +164,8 @@ const CompleteTask = ({
    * });
    */
   useSoftInputHeightChanged(({ softInputHeight }) => {
-    buttonContainerPaddingValue.value = withTiming(softInputHeight);failureReasonMetadataToSend
+    buttonContainerPaddingValue.value = withTiming(softInputHeight);
+    failureReasonMetadataToSend;
   });
 
   return (
@@ -169,7 +177,7 @@ const CompleteTask = ({
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
             contentInsetAdjustmentBehavior="always">
-            <VStack style={{flex:1}} className="w-full">
+            <VStack style={{ flex: 1 }} className="w-full">
               <MultipleTasksLabel tasks={tasks} />
               <TouchableWithoutFeedback
                 // We need to disable TouchableWithoutFeedback when keyboard is not visible,
@@ -243,14 +251,20 @@ const CompleteTask = ({
                     </Textarea>
                     {/* task.status !== 'DONE' DISABLE CHECKBOX display always checked if DONE */}
                     {!success && (
-                      <Checkbox className="mb-6" value={'validate_task'} defaultIsChecked={validateTaskAfterReport} onChange={() => {setValidateTaskAfterReport(!validateTaskAfterReport)}}>
+                      <Checkbox
+                        className="mb-6"
+                        value={'validate_task'}
+                        defaultIsChecked={validateTaskAfterReport}
+                        onChange={() => {
+                          setValidateTaskAfterReport(!validateTaskAfterReport);
+                        }}>
                         <CheckboxIndicator>
                           {validateTaskAfterReport && <CheckIcon />}
                         </CheckboxIndicator>
-                        <CheckboxLabel>{t("VALIDATE_TASK")}</CheckboxLabel>
+                        <CheckboxLabel>{t('VALIDATE_TASK')}</CheckboxLabel>
                       </Checkbox>
                     )}
-                  <PoDButton task={task} tasks={tasks}/>
+                    <PoDButton task={task} tasks={tasks} />
                   </FormControl>
                   <View>
                     <ScrollView style={{ height: '50%' }}>
