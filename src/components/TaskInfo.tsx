@@ -18,7 +18,7 @@ import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redux/Courier/taskSelectors';
-import { selectIncomingTasksReordered} from '../redux/logistics/selectors';
+import { selectIncomingTasksReordered } from '../redux/logistics/selectors';
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { getTimeFrame } from '../navigation/task/components/utils';

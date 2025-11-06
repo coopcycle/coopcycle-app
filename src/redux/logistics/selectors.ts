@@ -3,8 +3,8 @@ import { selectAllTasks, selectTaskLists } from '../../shared/logistics/redux';
 import { Task } from '../../types/task';
 
 export const selectTasksByOrder = (orderNumber: string) =>
-  createSelector(selectAllTasks, all =>
-    all.filter(t => t.metadata.order_number === orderNumber),
+  createSelector(selectAllTasks, tasks =>
+    tasks.filter(t => t.metadata.order_number === orderNumber),
   );
 
 // Reorder tasks by their position in taskLists
