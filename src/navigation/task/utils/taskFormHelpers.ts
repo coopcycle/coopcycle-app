@@ -40,40 +40,6 @@ export const handleFormSubmit = (
     console.error('Error creating delivery object:', error);
     delivery = {};
   }
-
-  if (task?.['@id']) {
-    delivery['@id'] = task['@id'];
-  }
-  if (task?.id) {
-    delivery.id = task.id;
-  }
-  
-  if (task?.after) {
-    delivery.after = task.after;
-  }
-  if (task?.before) {
-    delivery.before = task.before;
-  }
-  
-  if (task?.status) {
-    delivery.status = task.status;
-  }
-  if (task?.type) {
-    delivery.type = task.type;
-  }
-  if (task?.metadata) {
-    delivery.metadata = { ...task.metadata };
-  }
-  
-  if (task?.doorstep !== undefined) {
-    delivery.doorstep = task.doorstep;
-  }
-  if (task?.ref) {
-    delivery.ref = task.ref;
-  }
-  if (task?.tags) {
-    delivery.tags = [...task.tags];
-  }
   
   // Asegurar que los paquetes se envíen correctamente
   delivery.packages = packagesCount.filter(pkg => pkg.quantity > 0);
@@ -102,4 +68,27 @@ export const getAutocompleteProps = (deliveryError) => {
         },
       }
     : baseProps;
+};
+
+export const getInitialFormValues = (
+  task?: Partial<Task>,
+  store?,
+) => {
+  const businessName =
+    task?.orgName || store?.name || task?.address?.name || '';
+
+  return {
+    telephone: task?.address?.telephone || '',
+    contactName: task?.address?.contactName || '',
+    businessName: businessName,
+    description: task?.address?.description || '',
+    address: task?.address?.streetAddress || '',
+    weight: task?.weight ? task.weight.toString() : '0',
+    timeSlot: task?.timeSlot || null,
+    timeSlotUrl: task?.timeSlotUrl || null,
+    before: task?.before || '',
+    after: task?.after || '',
+    doorstep: task?.doorstep || false,
+    storeName: businessName,
+  };
 };

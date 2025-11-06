@@ -33,27 +33,22 @@ export function createDeliveryObject(
 ) {
   return {
     store: store['@id'],
-    pickup: route.params?.pickup || undefined,
-    dropoff: {
-      address: {
-        address: values.address,
-        telephone: values.telephone,
-        contactName: values.contactName,
-        name: values.businessName.trim() || null,
-        description: values.description.trim() || null,
-      },
-      comments: values.comments,
-      weight: values.weight * 1000,
-      packages: packagesCount.filter(item => item.quantity > 0),
-      ...(selectedChoice
-        ? {
-            timeSlotUrl: selectedTimeSlot,
-            timeSlot: selectedChoice,
-          }
-        : { before: values.before }),
-    },
+    address: values.address,
+    telephone: values.telephone,
+    contactName: values.contactName,
+    name: values.businessName.trim() || null,
+    description: values.description.trim() || null,
+    comments: values.comments,
+    weight: values.weight * 1000,
+    packages: packagesCount.filter(item => item.quantity > 0),
+    ...(selectedChoice
+      ? {
+          timeSlotUrl: selectedTimeSlot,
+          timeSlot: selectedChoice,
+        }
+      : { before: values.before }),
+    }
   };
-}
 
 export function validateDeliveryForm(
   values,

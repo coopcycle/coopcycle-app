@@ -47,23 +47,8 @@ export const SubmitButton = ({
   const footerBgColor = success ? greenColor : yellowColor;
 
   const handlePress = () => {
-    console.log('SubmitButton - handlePress called', {
-      success,
-      formData,
-      task,
-      notes,
-      contactName
-    });
-
-    // Disable the button immediately
     setIsDisabled(true);
 
-    // Si hay un custom onPress, usarlo (para el formulario)
-    if (customOnPress) {
-      console.log('Using custom onPress');
-      customOnPress(); 
-      return;
-    }
 
     // Si hay onSubmit con formData, usarlo
     if (onSubmit && formData) {

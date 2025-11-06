@@ -35,41 +35,19 @@ import { PackageItem } from './components/PackageItem';
 import { FormField } from './components/FormField';
 import {
   getAutocompleteProps,
+  getInitialFormValues,
   handleFormSubmit,
 } from '@/src/navigation/task/utils/taskFormHelpers';
 import { Text } from '@/components/ui/text';
 import { useStore } from '@/src/navigation/task/hooks/useStore';
 import { useSupplements } from './hooks/useSupplements';
+import { ClientSearchSection } from './components/ClientSearchSection';
 
 interface TaskFormProps {
   task?: Partial<Task>;
   onSubmit: (data: Partial<Task>) => void;
   isLoading?: boolean;
 }
-
-const getInitialFormValues = (
-  task?: Partial<Task>,
-  store?,
-  hasTimeSlot?: boolean,
-) => {
-  const businessName =
-    task?.orgName || store?.name || task?.address?.name || '';
-
-  return {
-    telephone: task?.address?.telephone || '',
-    contactName: task?.address?.contactName || '',
-    businessName: businessName,
-    description: task?.address?.description || '',
-    address: task?.address?.streetAddress || '',
-    weight: task?.weight ? task.weight.toString() : '0',
-    timeSlot: task?.timeSlot || null,
-    timeSlotUrl: task?.timeSlotUrl || null,
-    before: task?.before || '',
-    after: task?.after || '',
-    doorstep: task?.doorstep || false,
-    storeName: businessName,
-  };
-};
 
 export const EditTask: React.FC<TaskFormProps> = ({ task, onSubmit }) => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(
@@ -154,7 +132,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, onSubmit }) => {
   const handleSubmit = useCallback(
     values => {
       console.log('Submitting form with values:', values);
-      console.log('Current address:', address);
 
       handleFormSubmit(
         values,
@@ -224,91 +201,62 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, onSubmit }) => {
         return (
           <SafeAreaView style={styles.wrapper}>
             <ScrollView
-              style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+              style={styles.container}
+              contentContainerStyle={{ flexGrow: 1 }}>
               <VStack space={4} style={styles.content}>
                 <FormControl style={styles.formControl}>
                   {/* Client Search */}
-                  <View style={[styles.formGroup, { zIndex: 2 }]}>
-                    <FormField
-                      label={t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}
-                      optional
-                      error={errors.searchClient}
-                      touched={touched.searchClient}>
-                      <View style={styles.autocompleteWrapper}>
-                        <ClientListInput
-                          onSelectAddress={selectedAddress => {
-                            console.log(
-                              'EditTask - Address selected from ClientList:',
-                              selectedAddress,
-                            );
+                  <ClientSearchSection
+                    styles={styles}
+                    t={t}
+                    addresses={addresses}
+                    task={task}
+                    errors={errors}
+                    touched={touched}
+                    setAddress={setAddress}
+                    setFieldValue={setFieldValue}
+                    setFieldTouched={setFieldTouched}
+                    setValidAddress={setValidAddress}
+                    onSelectAddress={selectedAddress => {
+                      if (selectedAddress.contactName) {
+                        setFieldValue(
+                          'contactName',
+                          selectedAddress.contactName,
+                        );
+                      }
+                      if (selectedAddress.telephone) {
+                        setFieldValue('telephone', selectedAddress.telephone);
+                      }
+                      if (selectedAddress.name) {
+                        setFieldValue('businessName', selectedAddress.name);
+                      }
+                      if (selectedAddress.description) {
+                        setFieldValue(
+                          'description',
+                          selectedAddress.description,
+                        );
+                      }
+                      if (selectedAddress.streetAddress) {
+                        setFieldValue('address', selectedAddress.streetAddress);
+                      }
 
-                            if (selectedAddress.contactName) {
-                              setFieldValue(
-                                'contactName',
-                                selectedAddress.contactName,
-                              );
-                            }
-                            if (selectedAddress.telephone) {
-                              setFieldValue(
-                                'telephone',
-                                selectedAddress.telephone,
-                              );
-                            }
-                            if (selectedAddress.name) {
-                              setFieldValue(
-                                'businessName',
-                                selectedAddress.name,
-                              );
-                            }
-                            if (selectedAddress.description) {
-                              setFieldValue(
-                                'description',
-                                selectedAddress.description,
-                              );
-                            }
-                            if (selectedAddress.streetAddress) {
-                              setFieldValue(
-                                'address',
-                                selectedAddress.streetAddress,
-                              );
-                            }
+                      setAddress({
+                        streetAddress: selectedAddress.streetAddress,
+                        geo: selectedAddress.geo,
+                        contactName: selectedAddress.contactName,
+                        telephone: selectedAddress.telephone,
+                        name: selectedAddress.name,
+                        description: selectedAddress.description,
+                      });
 
-                            setAddress({
-                              streetAddress: selectedAddress.streetAddress,
-                              geo: selectedAddress.geo,
-                              contactName: selectedAddress.contactName,
-                              telephone: selectedAddress.telephone,
-                              name: selectedAddress.name,
-                              description: selectedAddress.description,
-                            });
+                      setFieldTouched('contactName', true);
+                      setFieldTouched('telephone', true);
+                      setFieldTouched('businessName', true);
+                      setFieldTouched('description', true);
 
-                            setFieldTouched('contactName', true);
-                            setFieldTouched('telephone', true);
-                            setFieldTouched('businessName', true);
-                            setFieldTouched('description', true);
-
-                            setValidAddress(true);
-                          }}
-                          addresses={addresses}
-                          placeholder={t(
-                            'STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT',
-                          )}
-                          initialValue={
-                            task?.address
-                              ? {
-                                  contactName: task.address.contactName,
-                                  telephone: task.address.telephone,
-                                  name: task.address.name,
-                                  description: task.address.description,
-                                  streetAddress: task.address.streetAddress,
-                                  geo: task.address.geo,
-                                }
-                              : null
-                          }
-                        />
-                      </View>
-                    </FormField>
-                  </View>
+                      setValidAddress(true);
+                    }}
+                  />
 
                   {/* Address Section */}
                   <AddressSection

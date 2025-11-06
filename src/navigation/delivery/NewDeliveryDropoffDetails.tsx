@@ -55,14 +55,28 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
     usePackagesCount(packages);
 
   function submit(values) {
-    const delivery = createDeliveryObject(
-      values,
-      store,
-      route,
-      packagesCount,
-      selectedTimeSlot,
-      selectedChoice,
-    );
+    const delivery = {
+      store: store['@id'],
+      pickup: route.params?.pickup || undefined,
+      dropoff: {
+        address: {
+          ...values.address,
+          telephone: values.telephone,
+          contactName: values.contactName,
+          name: values.businessName.trim() || null,
+          description: values.description.trim() || null,
+        },
+        comments: values.comments,
+        weight: values.weight * 1000,
+        packages: packagesCount.filter(item => item.quantity > 0),
+        ...(selectedChoice
+          ? {
+              timeSlotUrl: selectedTimeSlot,
+              timeSlot: selectedChoice,
+            }
+          : { before: values.before }),
+      },
+    };
     navigation.navigate('NewDeliveryPrice', { delivery });
   }
 
