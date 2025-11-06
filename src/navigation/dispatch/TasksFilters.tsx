@@ -144,7 +144,7 @@ function SettingsItemInner({ item }) {
 
 function SettingsItemSwitch({ item }) {
   return (
-    <HStack className="items-center justify-between py-3">
+    <HStack className="items-center justify-between py-3 mr-5">
       <Text>{item.label}</Text>
       <Switch
         onToggle={item.onToggle}
