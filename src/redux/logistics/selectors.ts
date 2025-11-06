@@ -26,28 +26,7 @@ export const selectAllIncomingTasksReordered = createSelector(
       });
     });
 
-    const visible = [...ordered, ...allTasks.filter(t => !taskIndex.has(t['@id']))];
-
-    // Group and sort by order_number + list position
-    const tasksByOrder: Record<string, Task[]> = {};
-    for (const task of visible) {
-      const order = task.metadata?.order_number;
-      if (!order) continue;
-      (tasksByOrder[order] ??= []).push(task);
-    }
-
-    for (const order in tasksByOrder) {
-      tasksByOrder[order].sort((a, b) => {
-        const A = taskIndex.get(a['@id']);
-        const B = taskIndex.get(b['@id']);
-        if (A && B) return A[0] - B[0] || A[1] - B[1];
-        if (A) return -1;
-        if (B) return 1;
-        return (a.id ?? 0) - (b.id ?? 0);
-      });
-    }
-
-    return visible;
+    return [...ordered, ...allTasks.filter(t => !taskIndex.has(t['@id']))];
   },
 );
 

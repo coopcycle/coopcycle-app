@@ -27,6 +27,8 @@ export function getDropoffPosition(task, tasks) {
 }
 
 export function getDropoffCount(tasks) {
-  const dropoffOrderTasks = tasks.filter(t => t.type === 'DROPOFF');
+  const dropoffOrderTasks = tasks.filter(
+    t => t.type === 'DROPOFF' && t.status !== 'CANCELLED'
+  );
   return dropoffOrderTasks.length;
 }
