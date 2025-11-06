@@ -1,10 +1,10 @@
 import { View } from 'react-native';
 
 import {
-  IncidentIcon,
   doingIconName,
   doneIconName,
   failedIconName,
+  incidentIconName,
 } from '../navigation/task/styles/common';
 import { greenColor, redColor } from '../styles/common';
 import { Task } from '../types/task.ts';
@@ -41,9 +41,9 @@ const Incident = ({task}: {task: Task}) => {
       accessible={true}
       accessibilityLabel={`Incident icon for task ${task.id}`}
     >
-      <IncidentIcon
-        size={24}
-        color={redColor}
+      <FAIcon
+        name={incidentIconName}
+        size={16}
       />
     </View>
   );

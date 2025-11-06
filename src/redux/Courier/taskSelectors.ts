@@ -45,8 +45,7 @@ export const selectTasks = createSelector(
   state => state.entities.tasks.items,
   (date, tasks) => {
     const key = moment(date).format('YYYY-MM-DD');
-
-    return tasks[key] ? tasks[key].filter(t => t.status !== 'CANCELLED') : [];
+    return tasks[key] || [];
   },
 );
 
@@ -63,11 +62,13 @@ export const selectFilteredTasks = createSelector(
 export const selectFilteredTasksByOrder = orderNumber =>
   createSelector(selectFilteredTasks, filteredTasks =>
     filteredTasks
-      .filter(task => task.metadata.order_number === orderNumber)
-      .sort(
-        (a, b) => a.metadata.delivery_position - b.metadata.delivery_position,
-      ),
+      .filter(task => task.metadata.order_number === orderNumber),
   );
+
+export const selectAreCancelledTasksHidden = createSelector(
+  selectTaskFilters,
+  filters => filters.some(f => f.status === 'CANCELLED'),
+);
 
 /**
  * @param   {State}   state Redux state

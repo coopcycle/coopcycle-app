@@ -40,8 +40,7 @@ export const selectUnassignedTasks = createSelector(selectAllTasks, allTasks =>
 
 export const selectUnassignedTasksNotCancelled = createSelector(
   selectUnassignedTasks,
-  tasks =>
-    _.filter(_.uniqBy(tasks, '@id'), task => task.status !== 'CANCELLED'),
+  tasks => _.uniqBy(tasks, '@id'),
 );
 
 // Selections for TaskLists

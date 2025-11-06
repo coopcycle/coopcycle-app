@@ -141,6 +141,7 @@
     "HIDE_DONE_TASKS": "Esconder tarefas realizadas",
     "HIDE_FAILED_TASKS": "Esconder tarefas falhadas",
     "HIDE_TASKS_TAGGED_WITH": "Esconder tarefas etiquetadas com",
+    "HIDE_CANCELLED_TASKS": "Ocultar tarefas canceladas",
     "TASKS_CHANGED_ALERT_SOUND": "Som de alerta para a alteração de tarefas",
     "RESTAURANT_LIST_CLICK_BELOW": "Pressione num restaurante na lista abaixo",
     "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Novos pedidos ({{count}})",

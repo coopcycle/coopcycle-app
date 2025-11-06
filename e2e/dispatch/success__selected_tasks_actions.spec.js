@@ -1,5 +1,6 @@
 import {
   describeif,
+  expectToNotExist,
   longPressById,
   tapById,
   tapByText,
@@ -7,6 +8,7 @@ import {
 } from '@/e2e/support/commands';
 import {
   assignOrderToUser,
+  expectTaskTitleToHaveText,
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
@@ -61,10 +63,20 @@ describeif(device.getPlatform() === 'android')
   it('should mark a task as CANCELLED', async () => {
     // Tap Cancel button
     await tapById('CancelTaskButton');
+    // Verify task #1 has the "CANCELLED" background
+    await waitToBeVisible(`${USER_JANE}TasksList:task:0:cancelledBg`);
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
 
-    // Waits to see if it's removed
-    //TODO FIX: The task doesn't dissapear if it's assigned..!
-    //await expectToNotExist(`${USER_JANE}TasksList:task:0`);
+    // Open the filters screen and enable "Hide unassigned tasks from map"
+    await tapById('showTasksFiltersButton');
+    await waitToBeVisible('dispatchTasksFiltersView');
+    await tapById('hideCancelledTasksSwitch');
+    // Go back
+    await device.pressBack();
+
+    // Verify task #1 has gone from the list
+    await expectToNotExist(`${USER_JANE}TasksList:task:0:cancelledBg`);
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #2)");
   });
 
   it('should mark a task as INCIDENT', async () => {

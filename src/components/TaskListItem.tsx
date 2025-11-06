@@ -64,9 +64,23 @@ export const styles = StyleSheet.create({
     marginLeft: 12,
     marginVertical: 4,
   },
-  sortButtonIcon: {
-
-  }
+  cancelledTask: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+  cancelledLine: {
+    position: 'absolute',
+    top: -100,
+    bottom: -100,
+    width: 25,
+    backgroundColor: 'rgba(150,150,150,0.2)',
+    transform: [{ rotate: '-35deg' }],
+  },
 });
 
 interface ISwipeButtonContainerProps
@@ -112,6 +126,28 @@ interface ISwipeButtonProps {
   width: number;
   size?: number;
 }
+
+const CancelledBackground = ({taskTestId}) => {
+  const { width } = Dimensions.get('window');
+  const stripeWidth = 25;
+  const numLines = Math.ceil(width / stripeWidth) + 2;
+
+  return (
+    <View style={styles.cancelledTask} pointerEvents='none' testID={`${taskTestId}:cancelledBg`}>
+      {Array.from({ length: numLines }).map((_, i) => (
+        <View
+          key={i}
+          style={[
+            styles.cancelledLine,
+            {
+              left: i * stripeWidth,
+            },
+          ]}
+        />
+      ))}
+    </View>
+  );
+};
 
 const SwipeButton = ({ icon, width, size = 42 }: ISwipeButtonProps) => (
   <View
@@ -315,7 +351,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
             <SwipeButton icon={swipeOutRightIcon} width={buttonWidth} />
           </SwipeButtonContainer>
         </View>
-        <View style={{ position: 'relative', flex: 1}}>
+        <View style={{ position: 'relative', flex: 1, overflow: 'visible' }}>
+          {task.status === 'CANCELLED' && <CancelledBackground taskTestId={taskTestId} />}
           <HStack
             style={{
               flex: 1,
