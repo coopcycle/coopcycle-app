@@ -147,6 +147,7 @@
     "TASKS_FILTER": "Filtrer les tâches",
     "HIDE_DONE_TASKS": "Masquer les tâches effectuées",
     "TASKS_HIDE_UNASSIGNED": "Masquer les tâches non assignées",
+    "HIDE_CANCELLED_TASKS": "Masquer les tâches annulées",
     "TASKS_SHOW_POLYLINE": "Montrer la ligne entre les tâches",
     "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
     "FILTER_BY_KEYWORDS": "Filtrer par mots-clés",

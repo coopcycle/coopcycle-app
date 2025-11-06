@@ -14,6 +14,7 @@ import {
   SET_TASKS_CHANGED_ALERT_SOUND,
   SET_TASK_FILTER,
 } from './taskActions';
+import { filterStatusCancelled } from '../logistics/filters';
 
 type TaskUiState = {
   selectedDate: string;
@@ -32,7 +33,7 @@ type TaskUiState = {
  */
 const tasksUiInitialState: TaskUiState = {
   selectedDate: moment().toISOString(), // Date selected by the user
-  excludeFilters: [], // Key-value pairs of active filters (e.g. status: 'done')
+  excludeFilters: [filterStatusCancelled], // Key-value pairs of active filters (e.g. status: 'done')
   tasksChangedAlertSound: true,
   keepAwake: false,
   isHideUnassignedFromMap: false,
