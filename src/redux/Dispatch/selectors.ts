@@ -90,7 +90,7 @@ export const makeIsSelectedTaskFromOrders = (taskUri: Uri) => {
     (allTasksIdsFromOrders) => allTasksIdsFromOrders.includes(taskUri),
   );
 
-  return selectIsSelectedTaskFromOrders
+  return selectIsSelectedTaskFromOrders;
 }
 
 // https://redux.js.org/usage/deriving-data-selectors#selector-factories
@@ -100,5 +100,5 @@ export const makeIsSelectedTaskFromTasks = (taskUri: Uri) => {
     (allTasksIdsFromTasks) => allTasksIdsFromTasks.includes(taskUri),
   );
 
-  return selectIsSelectedTaskFromTasks
+  return selectIsSelectedTaskFromTasks;
 }

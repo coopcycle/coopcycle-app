@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import { ActivityIndicator, SectionList, View, Text } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 import {
   addOrder,
@@ -34,8 +35,8 @@ import {
 import { selectIsExpandedSection } from '../../../redux/Dispatch/selectors';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
-import TaskList from '../../../components/TaskList';
 import TaskListItem from '../../../components/TaskListItem';
+//import ItemSeparatorComponent from '../../../components/ItemSeparator';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderNumber } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation, useSetTaskListItemsMutation } from '../../../redux/api/slice';
@@ -44,11 +45,6 @@ import { useTaskLongPress } from '../hooks/useTaskLongPress';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import Task from '@/src/types/task';
 import { moveAfter } from '../../task/components/utils';
-
-import { SwipeListView } from 'react-native-swipe-list-view';
-import ItemSeparatorComponent from '../../../components/ItemSeparator';
-
-//import { FlashList } from "@shopify/flash-list";
 
 export default function GroupedTasks({
   isFetching,
@@ -94,13 +90,11 @@ export default function GroupedTasks({
     }
 
     const unassignedTaskList = createTempTaskList(UNASSIGNED_TASKS_LIST_ID, unassignedTasks);
-    //console.log('ASDASD GroupedTasks unassignedTaskLists.length:', unassignedTaskLists.length);
 
-    return [
+    const sectionsList = [
       {
         id: UNASSIGNED_TASKS_LIST_ID,
         title: t('DISPATCH_UNASSIGNED_TASKS'),
-        //data: unassignedTasks,
         data: isExpandedSection(t('DISPATCH_UNASSIGNED_TASKS')) ? unassignedTasks : [],
         taskList: unassignedTaskList,
         taskListId: UNASSIGNED_TASKS_LIST_ID,
@@ -114,7 +108,6 @@ export default function GroupedTasks({
       ...taskLists.map(taskList => ({
         id: `${taskList.username.toLowerCase()}TasksList`,
         title: taskList.username,
-        //data: getTaskListTasks(taskList, tasksEntities),
         data: isExpandedSection(taskList.username) ? getTaskListTasks(taskList, tasksEntities) : [],
         taskList,
         taskListId: taskList['@id'],
@@ -126,7 +119,9 @@ export default function GroupedTasks({
         appendTaskListTestID: taskList.appendTaskListTestID,
         type: 'section'
       })),
-    ].filter(section => !hideEmptyTaskLists || section.tasksCount > 0);
+    ];
+
+    return sectionsList.filter(section => !hideEmptyTaskLists || section.tasksCount > 0);
   }, [t, tasksEntities, taskLists, unassignedTaskLists.length, unassignedTasks, hideEmptyTaskLists, isFetching, isExpandedSection]);
 
   const onOrderClick = useCallback(
@@ -338,35 +333,6 @@ export default function GroupedTasks({
 
   const renderItem = useCallback(
     ({ section, item: task, index }) => {
-    // ({ item: task, index }) => {
-      // const section = task.section;
-      // console.log('ASDASD AllTasks section:', section.taskListId);
-      // console.log('ASDASD AllTasks item:', task['@id']);
-      // if (isFetching || !isExpandedSection(section.title)) {
-      //   //return <View style={{ display: 'none', height: 0 }} />;
-      //   //return <Text style={{ display: 'none', height: 0 }}>asd</Text>;
-      //   return null;
-      // }
-
-      // const tasks = getTaskListTasks(item, tasksEntities);
-      // return (
-      //   <TaskList
-      //     id={section.id}
-      //     tasks={tasks}
-      //     appendTaskListTestID={section.appendTaskListTestID}
-      //     onLongPress={longPressHandler}
-      //     onTaskClick={onTaskClick(section.isUnassignedTaskList)}
-      //     onOrderClick={onOrderClick}
-      //     onSort={handleSort}
-      //     onSortBefore={handleSortBefore}
-      //     onSwipeClosed={task => {
-      //       handleOnSwipeClose(section, task);
-      //     }}
-      //     {...swipeLeftConfiguration(section)}
-      //     {...swipeRightConfiguration(section)}
-      //   />
-      // );
-
       const tasks = section.data;
       const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
       const MemoizedTaskListItem = memo(TaskListItem);
@@ -391,45 +357,14 @@ export default function GroupedTasks({
     },
     [
       longPressHandler,
-      //handleOnSwipeClose,
-      //isExpandedSection,
-      //isFetching,
       onTaskClick,
       onOrderClick,
       handleSort,
       handleSortBefore,
       swipeLeftConfiguration,
       swipeRightConfiguration,
-      //tasksEntities,
     ],
   );
-
-  // const renderNoContent = ({ section }) => {
-  //   return <View style={{ display: 'none', height: 0 }} />;
-  //   //return null; // Return null if the section is not empty
-  // };
-
-  // const flashListData = useMemo(() => {
-  //   if (isFetching) {
-  //     return [];
-  //   }
-  //   return sections.flatMap(section => {
-  //     if (!isExpandedSection(section.title)) {
-  //       return [section];
-  //     }
-  //     return [section, ...section.data.map(t => Object.assign({}, t, { section }))];
-  //   })
-  //   .map(item => {
-  //     //console.log('ASDASD flashListData item:', item['type'], item.type === 'section' ? item.id : item['@id']);
-  //     return item;
-  //   });
-  // }, [sections, isFetching, isExpandedSection]);
-
-  // const stickyHeaderIndices = useMemo(() => {
-  //     return flashListData
-  //       .map((item, index) => item.type === 'section' ? index : null)
-  //       .filter((item) => item !== null) as number[];
-  //   }, [flashListData]);
 
   return (
     <>
@@ -449,38 +384,11 @@ export default function GroupedTasks({
           <ActivityIndicator animating={true} size="large" />
         </View>
       )}
-      {/* <FlashList
-        data={flashListData}
-        //renderItem={({ item, index }) => {
-        renderItem={({ item }) => {
-          if (item.type === 'section') {
-            return renderSectionHeader({ section: item });
-          } else {
-            //return renderItem({ section: item.section, item, index });
-            return renderItem({ section: item.section, item, index: item.index });
-          }
-        }}
-        stickyHeaderIndices={stickyHeaderIndices}
-        //ItemSeparatorComponent={ItemSeparatorComponent}
-        //ListEmptyComponent={renderNoContent}
-        getItemType={(item) => item.type === 'section' ? "section" : "task"}
-        keyExtractor={(item) => item.type === 'section' ? item.id : item['@id']}
-        refreshing={!!isFetching}
-        onRefresh={() => refetch && refetch()}
-        testID="dispatchTaskLists"
-      /> */}
       <SwipeListView
         useSectionList={true}
         sections={sections}
         stickySectionHeadersEnabled={true}
-        //keyExtractor={(item) => item['@id']}
         keyExtractor={(item, index) => `${item['@id']}-${index}`}
-        // keyExtractor={(item, index) => {
-        //   //const tagNames = (item.tags || []).map(t => t.name);
-        //   //return `${item['@id']}-${item.status}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
-        //   //console.log('ASDASD SwipeListView keyExtractor item:', item['@id'], 'index:', index);
-        //   return `${item['@id']}-${index}`;
-        // }}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
         refreshing={!!isFetching}
@@ -491,28 +399,6 @@ export default function GroupedTasks({
         // windowSize={3}
         testID="dispatchTaskLists"
       />
-      {/* <SectionList
-        sections={sections}
-        stickySectionHeadersEnabled={true}
-        keyboardShouldPersistTaps="handled"
-        // initialNumToRender={10}
-        // maxToRenderPerBatch={10}
-        // windowSize={3}
-        //removeClippedSubviews={true}
-        renderSectionHeader={renderSectionHeader}
-        renderItem={renderItem}
-        //keyExtractor={(item) => item['@id']}
-        keyExtractor={(item, index) => `${item['@id']}-${index}`}
-        // keyExtractor={(item, index) => {
-        //   //const tagNames = (item.tags || []).map(t => t.name);
-        //   //return `${item['@id']}-${item.status}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
-        //   //console.log('ASDASD SwipeListView keyExtractor item:', item['@id'], 'index:', index);
-        //   return `${item['@id']}-${index}`;
-        // }}
-        refreshing={!!isFetching}
-        onRefresh={() => refetch && refetch()}
-        testID="dispatchTaskLists"
-      /> */}
       <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );

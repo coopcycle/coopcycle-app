@@ -16,7 +16,7 @@ start:
 
 start-fresh:
 	@cd android && ./gradlew clean && ./gradlew --stop
-	@rm -rf node_modules/ ~/.gradle/caches/
+	@rm -rf node_modules/ ~/.gradle/caches/ android/app/.cxx android/app/build android/build
 	@yarn cache clean
 	@$(MAKE) setup start
 
@@ -74,4 +74,4 @@ android-light-mode:
 
 emulator: ANDROID_SDK_ROOT?=~/Android/Sdk
 emulator:
-	@clear && ${ANDROID_SDK_ROOT}/emulator/emulator -avd Pixel_6_API_28
+	@clear && ${ANDROID_SDK_ROOT}/emulator/emulator -avd Pixel_6_API_35

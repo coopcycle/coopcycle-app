@@ -157,159 +157,153 @@ const SwipeButton = ({ icon, width, size = 42 }: ISwipeButtonProps) => (
   </View>
 );
 
-const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
-  (
-    {
-      task,
-      nextTask,
-      color,
-      index,
-      taskListId,
-      appendTaskListTestID = '',
-      onPress = () => {},
-      onLongPress = () => {},
-      onOrderPress = () => {},
-      onPressLeft = () => {},
-      onPressRight = () => {},
-      onSortBefore = undefined,
-      onSort = undefined,
-      swipeOutLeftBackgroundColor,
-      swipeOutLeftIcon,
-      swipeOutRightBackgroundColor,
-      swipeOutRightIcon,
-      onSwipedToLeft,
-      onSwipedToRight,
-      onSwipeClosed,
-    },
-    _ref,
-  ) => {
-    const taskUri: Uri = task['@id'];
+export default function TaskListItem({
+  task,
+  nextTask,
+  color,
+  index,
+  taskListId,
+  appendTaskListTestID = '',
+  onPress = () => {},
+  onLongPress = () => {},
+  onOrderPress = () => {},
+  onPressLeft = () => {},
+  onPressRight = () => {},
+  onSortBefore = undefined,
+  onSort = undefined,
+  swipeOutLeftBackgroundColor,
+  swipeOutLeftIcon,
+  swipeOutRightBackgroundColor,
+  swipeOutRightIcon,
+  onSwipedToLeft,
+  onSwipedToRight,
+  onSwipeClosed,
+}) {
+  const isPickup = task.type === 'PICKUP';
+  const context = useTaskListsContext();
+  const theme = useTheme();
 
-    const isPickup = task.type === 'PICKUP';
-    const context = useTaskListsContext();
-    const theme = useTheme();
+  const isAssignedToSameCourier = useMemo(() => {
+    return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
+  }, [context?.selectedTasksToEdit, task]);
 
-    const isAssignedToSameCourier = useMemo(() => {
-      return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
-    }, [context?.selectedTasksToEdit, task]);
-
-    const isSelectedTask = useMemo(() => {
-      if (!context?.selectedTasksToEdit?.length || !task['@id']) {
-        return false;
-      }
-      return context?.selectedTasksToEdit.some(
-        selectedTask => selectedTask['@id'] === task['@id']
-      );
-    }, [context?.selectedTasksToEdit, task]);
-
-    const isSortable = useMemo(() => {
-      return context?.selectedTasksToEdit?.length === 1 && !isSelectedTask;
-    }, [context?.selectedTasksToEdit, isSelectedTask]);
-
-    const isPreviousToSelectedTask = useMemo(() => {
-      return nextTask?.['@id'] === context?.selectedTasksToEdit[0]?.['@id'];
-    }, [nextTask, context]);
-
-    const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
-    const textStyle = [styles.text];
-
-    const itemProps = {opacity: 1};
-    const swipeButtonsProps = {display: 'flex'};
-
-    if (task.status === 'DONE' || task.status === 'FAILED') {
-      itemProps.opacity = 0.4;
-      swipeButtonsProps.display = 'none';
+  const isSelectedTask = useMemo(() => {
+    if (!context?.selectedTasksToEdit?.length || !task['@id']) {
+      return false;
     }
+    return context?.selectedTasksToEdit.some(
+      selectedTask => selectedTask['@id'] === task['@id']
+    );
+  }, [context?.selectedTasksToEdit, task]);
 
-    // TODO check - are we using this?
-    if (task.status === 'FAILED') {
-      textStyle.push(styles.textDanger);
+  const isSortable = useMemo(() => {
+    return context?.selectedTasksToEdit?.length === 1 && !isSelectedTask;
+  }, [context?.selectedTasksToEdit, isSelectedTask]);
+
+  const isPreviousToSelectedTask = useMemo(() => {
+    return nextTask?.['@id'] === context?.selectedTasksToEdit[0]?.['@id'];
+  }, [nextTask, context]);
+
+  const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
+  const textStyle = [styles.text];
+
+  const itemProps = {opacity: 1};
+  const swipeButtonsProps = {display: 'flex'};
+
+  if (task.status === 'DONE' || task.status === 'FAILED') {
+    itemProps.opacity = 0.4;
+    swipeButtonsProps.display = 'none';
+  }
+
+  // TODO check - are we using this?
+  if (task.status === 'FAILED') {
+    textStyle.push(styles.textDanger);
+  }
+
+  const marginHorizontal = 6;
+  const { width } = Dimensions.get('window');
+  const cardWidth = width - marginHorizontal * 2;
+  const buttonWidth = cardWidth / 4;
+  const visibleButtonWidth = buttonWidth + 25;
+
+  const swipeRow = useRef<SwipeRow<Task>>(null);
+
+  useEffect(() => {
+    if (task.status === 'DONE') {
+      swipeRow.current?.closeRow();
     }
+  }, [task.status]);
 
-    const marginHorizontal = 6;
-    const { width } = Dimensions.get('window');
-    const cardWidth = width - marginHorizontal * 2;
-    const buttonWidth = cardWidth / 4;
-    const visibleButtonWidth = buttonWidth + 25;
+  const taskUri: Uri = task['@id'];
+  const isSelectedTaskFromOrders = useSelector(makeIsSelectedTaskFromOrders(taskUri));
+  const shouldSwipeLeft = isSelectedTaskFromOrders;
+  const isSelectedTaskFromTasks = useSelector(makeIsSelectedTaskFromTasks(taskUri));
+  const shouldSwipeRight = isSelectedTaskFromTasks;
 
-    const swipeRow = useRef<SwipeRow<Task>>(null);
+  const prevShouldSwipeLeftRef = useRef(false);
+  const prevShouldSwipeRightRef = useRef(false);
 
-    useEffect(() => {
-      if (task.status === 'DONE') {
-        swipeRow.current?.closeRow();
-      }
-    }, [task.status]);
-
-    const isSelectedTaskFromOrders = useSelector(makeIsSelectedTaskFromOrders(taskUri));
-    const shouldSwipeLeft = isSelectedTaskFromOrders;
-
-    const isSelectedTaskFromTasks = useSelector(makeIsSelectedTaskFromTasks(taskUri));
-    const shouldSwipeRight = isSelectedTaskFromTasks;
-
-    const prevShouldSwipeLeftRef = useRef(false);
-    const prevShouldSwipeRightRef = useRef(false);
-
-    useEffect(() => {
-      if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
-        swipeRow.current?.manuallySwipeRow?.(buttonWidth);
-      } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
-        swipeRow.current?.closeRow?.();
-      }
-      prevShouldSwipeLeftRef.current = shouldSwipeLeft;
-    }, [shouldSwipeLeft, buttonWidth]);
-
-    useEffect(() => {
-      if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
-        swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
-      } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
-        swipeRow.current?.closeRow?.();
-      }
-      prevShouldSwipeRightRef.current = shouldSwipeRight;
-    }, [shouldSwipeRight, buttonWidth]);
-
-    function _onRowOpen(toValue: number) {
-      if (toValue > 0 && onSwipedToLeft) {
-        onSwipedToLeft();
-      } else if (toValue < 0 && onSwipedToRight) {
-        onSwipedToRight();
-      }
+  useEffect(() => {
+    if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
+      swipeRow.current?.manuallySwipeRow?.(buttonWidth);
+    } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
+      swipeRow.current?.closeRow?.();
     }
+    prevShouldSwipeLeftRef.current = shouldSwipeLeft;
+  }, [shouldSwipeLeft, buttonWidth]);
 
-    function _onRowClose() {
-      if (onSwipeClosed) {
-        onSwipeClosed();
-      }
+  useEffect(() => {
+    if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
+      swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
+    } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
+      swipeRow.current?.closeRow?.();
     }
+    prevShouldSwipeRightRef.current = shouldSwipeRight;
+  }, [shouldSwipeRight, buttonWidth]);
 
-    const allowSwipeLeft =
-      task.status !== 'DONE' && !isSelectedTaskFromOrders;
-    const allowSwipeRight =
-      task.status !== 'DONE' && !isSelectedTaskFromTasks;
-
-    const renderPrevSortButton = () => {
-      if (index === 0) {
-        return sortButton(onSortBefore, true);
-      }
-    };
-
-    const renderSortButton = () => {
-      if (!isPreviousToSelectedTask) {
-        return sortButton(onSort);
-      }
+  function _onRowOpen(toValue: number) {
+    if (toValue > 0 && onSwipedToLeft) {
+      onSwipedToLeft();
+    } else if (toValue < 0 && onSwipedToRight) {
+      onSwipedToRight();
     }
+  }
 
-    const sortButton = (onSortCallback: TaskListItemProps['onSort'] | TaskListItemProps['onSortBefore'], isFirstPosition: boolean = false) => {
-      if (!onSortCallback || !isAssignedToSameCourier || !isSortable) return null;
-      const appendSortID = isFirstPosition ? `sort:previous` : `sort`;
-      return (
-        // @ts-expect-error It doeson't like onPress={onSortCallback} (but it works)
-        <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:${appendSortID}`}>
-          <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
-        </Pressable>
-      );
+  function _onRowClose() {
+    if (onSwipeClosed) {
+      onSwipeClosed();
     }
+  }
 
+  const allowSwipeLeft =
+    task.status !== 'DONE' && !isSelectedTaskFromOrders;
+  const allowSwipeRight =
+    task.status !== 'DONE' && !isSelectedTaskFromTasks;
+
+  const renderPrevSortButton = () => {
+    if (index === 0) {
+      return sortButton(onSortBefore, true);
+    }
+  };
+
+  const renderSortButton = () => {
+    if (!isPreviousToSelectedTask) {
+      return sortButton(onSort);
+    }
+  }
+
+  const sortButton = (onSortCallback: TaskListItemProps['onSort'] | TaskListItemProps['onSortBefore'], isFirstPosition: boolean = false) => {
+    if (!onSortCallback || !isAssignedToSameCourier || !isSortable) return null;
+    const appendSortID = isFirstPosition ? `sort:previous` : `sort`;
     return (
+      // @ts-expect-error It doeson't like onPress={onSortCallback} (but it works)
+      <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:${appendSortID}`}>
+        <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
+      </Pressable>
+    );
+  }
+
+  return (
     <View>
       {renderPrevSortButton()}
       {/* @ts-expect-error library's types don't include a children prop */}
@@ -406,8 +400,5 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       </SwipeRow>
       {renderSortButton()}
     </View>
-    );
-  },
-);
-
-export default TaskListItem;
+  );
+};
