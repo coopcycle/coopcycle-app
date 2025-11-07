@@ -303,7 +303,7 @@ export default function GroupedTasks({
   }, [context, date, setTaskListItems]);
 
   const swipeLeftConfiguration = useCallback(
-    section => task => ({
+    (section, task) => ({
       onPressLeft: () => assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList, task),
       onSwipedToLeft: () => handleOnSwipeToLeft(section.taskListId, task),
       swipeOutLeftBackgroundColor: darkRedColor,
@@ -313,7 +313,7 @@ export default function GroupedTasks({
   );
 
   const swipeRightConfiguration = useCallback(
-    section => task => ({
+    (section, task) => ({
       onPressRight: () => assignTaskHandler(section.isUnassignedTaskList, task),
       onSwipedToRight: () => handleOnSwipeToRight(section.taskListId, task),
       onSwipeClosed: () => handleOnSwipeClose(section, task),
@@ -350,8 +350,8 @@ export default function GroupedTasks({
           onSortBefore={() => handleSortBefore(tasks)}
           onSort={() => handleSort(tasks, index)}
           onOrderPress={() => onOrderClick(task)}
-          {...(swipeLeftConfiguration(section)(task))}
-          {...(swipeRightConfiguration(section)(task))}
+          {...(swipeLeftConfiguration(section, task))}
+          {...(swipeRightConfiguration(section, task))}
         />
       );
     },
@@ -391,13 +391,14 @@ export default function GroupedTasks({
         keyExtractor={(item, index) => `${item['@id']}-${index}`}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
+        // ItemSeparatorComponent={ItemSeparatorComponent}
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
-        // ItemSeparatorComponent={ItemSeparatorComponent}
-        // initialNumToRender={10}
-        // maxToRenderPerBatch={6}
-        // windowSize={3}
         testID="dispatchTaskLists"
+        // Change the ones below to adjust performance / memory consumption
+        initialNumToRender={20}
+        maxToRenderPerBatch={10}
+        windowSize={11}
       />
       <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
