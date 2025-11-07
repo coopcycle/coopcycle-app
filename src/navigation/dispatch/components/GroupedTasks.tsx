@@ -469,7 +469,7 @@ export default function GroupedTasks({
         onRefresh={() => refetch && refetch()}
         testID="dispatchTaskLists"
       /> */}
-      {/* <SwipeListView
+      <SwipeListView
         useSectionList={true}
         sections={sections}
         stickySectionHeadersEnabled={true}
@@ -490,11 +490,11 @@ export default function GroupedTasks({
         // maxToRenderPerBatch={6}
         // windowSize={3}
         testID="dispatchTaskLists"
-      /> */}
-      <SectionList
+      />
+      {/* <SectionList
         sections={sections}
         stickySectionHeadersEnabled={true}
-        // keyboardShouldPersistTaps="handled"
+        keyboardShouldPersistTaps="handled"
         // initialNumToRender={10}
         // maxToRenderPerBatch={10}
         // windowSize={3}
@@ -512,7 +512,7 @@ export default function GroupedTasks({
         refreshing={!!isFetching}
         onRefresh={() => refetch && refetch()}
         testID="dispatchTaskLists"
-      />
+      /> */}
       <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );
