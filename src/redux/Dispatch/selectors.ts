@@ -8,6 +8,7 @@ import {
   selectUnassignedTasksNotCancelled,
 } from '../../shared/logistics/redux';
 import { selectTaskFilters } from '../Courier/taskSelectors';
+import { Uri } from '@/src/redux/api/types';
 
 export const selectIsDispatchFetching = createSelector(
   state => state.logistics.ui.isAssigningTasks,
@@ -81,3 +82,23 @@ export const selectAllTasksIdsFromTasks = createSelector(
     );
   },
 );
+
+// https://redux.js.org/usage/deriving-data-selectors#selector-factories
+export const makeIsSelectedTaskFromOrders = (taskUri: Uri) => {
+  const selectIsSelectedTaskFromOrders = createSelector(
+    selectAllTasksIdsFromOrders,
+    (allTasksIdsFromOrders) => allTasksIdsFromOrders.includes(taskUri),
+  );
+
+  return selectIsSelectedTaskFromOrders
+}
+
+// https://redux.js.org/usage/deriving-data-selectors#selector-factories
+export const makeIsSelectedTaskFromTasks = (taskUri: Uri) => {
+  const selectIsSelectedTaskFromTasks = createSelector(
+    selectAllTasksIdsFromTasks,
+    (allTasksIdsFromTasks) => allTasksIdsFromTasks.includes(taskUri),
+  );
+
+  return selectIsSelectedTaskFromTasks
+}
