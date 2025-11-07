@@ -15,8 +15,8 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Task, TaskListItemProps } from '../types/task';
 import {
-  selectAllTasksIdsFromOrders,
-  selectAllTasksIdsFromTasks,
+  makeIsSelectedTaskFromOrders,
+  makeIsSelectedTaskFromTasks,
 } from '../redux/Dispatch/selectors';
 import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
@@ -24,6 +24,7 @@ import { OrderInfo } from './OrderInfo';
 import TaskInfo from './TaskInfo';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 import { useTheme } from '@react-navigation/native';
+import { Uri } from '@/src/redux/api/types';
 
 const cardBorderWidth = 4;
 const cardBorderRadius = 2.5;
@@ -146,6 +147,8 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     },
     _ref,
   ) => {
+    const taskUri: Uri = task['@id'];
+
     const isPickup = task.type === 'PICKUP';
     const context = useTaskListsContext();
     const theme = useTheme();
@@ -201,10 +204,11 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
       }
     }, [task.status]);
 
-    const allTasksIdsFromOrders = useSelector(selectAllTasksIdsFromOrders);
-    const shouldSwipeLeft = allTasksIdsFromOrders.includes(task['@id']);
-    const allTasksIdsFromTasks = useSelector(selectAllTasksIdsFromTasks);
-    const shouldSwipeRight = allTasksIdsFromTasks.includes(task['@id']);
+    const isSelectedTaskFromOrders = useSelector(makeIsSelectedTaskFromOrders(taskUri));
+    const shouldSwipeLeft = isSelectedTaskFromOrders;
+
+    const isSelectedTaskFromTasks = useSelector(makeIsSelectedTaskFromTasks(taskUri));
+    const shouldSwipeRight = isSelectedTaskFromTasks;
 
     const prevShouldSwipeLeftRef = useRef(false);
     const prevShouldSwipeRightRef = useRef(false);
@@ -242,9 +246,9 @@ const TaskListItem = forwardRef<SwipeRow<Task>, TaskListItemProps>(
     }
 
     const allowSwipeLeft =
-      task.status !== 'DONE' && !allTasksIdsFromOrders.includes(task['@id']);
+      task.status !== 'DONE' && !isSelectedTaskFromOrders;
     const allowSwipeRight =
-      task.status !== 'DONE' && !allTasksIdsFromTasks.includes(task['@id']);
+      task.status !== 'DONE' && !isSelectedTaskFromTasks;
 
     const renderPrevSortButton = () => {
       if (index === 0) {
