@@ -180,6 +180,13 @@ export const apiSlice = createApi({
         body: patch,
       }),
     }),
+    postIncident: builder.mutation({
+      query: ({ payload }) => ({
+        url: `/api/incidents/`,
+        method: 'POST',
+        body: payload,
+      }),
+    }),
     recurrenceRulesGenerateOrders: builder.mutation ({
       query: (date: DateOnlyString) => ({
         url: 'api/recurrence_rules/generate_orders',
@@ -207,6 +214,7 @@ export const {
   useSetTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
+  usePostIncidentMutation,
   useRecurrenceRulesGenerateOrdersMutation,
 } = apiSlice;
 
