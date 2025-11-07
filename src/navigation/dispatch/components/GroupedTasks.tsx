@@ -151,7 +151,7 @@ export default function GroupedTasks({
   );
 
   const assignTaskWithRelatedTasksHandler = useCallback(
-    isUnassignedTaskList => task => {
+    (isUnassignedTaskList, task) => {
       const onItemPress = user =>
         onSelectNewAssignation(() =>
           (isUnassignedTaskList
@@ -178,7 +178,7 @@ export default function GroupedTasks({
   );
 
   const assignTaskHandler = useCallback(
-    isUnassignedTaskList => task => {
+    (isUnassignedTaskList, task) => {
       const onItemPress = user =>
         onSelectNewAssignation(() =>
           (isUnassignedTaskList ? assignTask : reassignTask)(task, user),
@@ -211,7 +211,7 @@ export default function GroupedTasks({
   );
 
   const handleOnSwipeToLeft = useCallback(
-    taskListId => task => {
+    (taskListId, task) => {
       const allTasks = Object.values(tasksEntities);
       const tasksByTaskList = getLinkedTasks(
         task,
@@ -226,7 +226,7 @@ export default function GroupedTasks({
   );
 
   const handleOnSwipeToRight = useCallback(
-    taskListId => task => {
+    (taskListId, task) => {
       dispatch(addTask({ task, taskListId }));
     },
     [dispatch],
@@ -304,8 +304,8 @@ export default function GroupedTasks({
 
   const swipeLeftConfiguration = useCallback(
     section => task => ({
-      onPressLeft: () => assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList)(task),
-      onSwipedToLeft: () => handleOnSwipeToLeft(section.taskListId)(task),
+      onPressLeft: () => assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList, task),
+      onSwipedToLeft: () => handleOnSwipeToLeft(section.taskListId, task),
       swipeOutLeftBackgroundColor: darkRedColor,
       swipeOutLeftIcon: AssignOrderIcon,
     }),
@@ -314,8 +314,8 @@ export default function GroupedTasks({
 
   const swipeRightConfiguration = useCallback(
     section => task => ({
-      onPressRight: () => assignTaskHandler(section.isUnassignedTaskList)(task),
-      onSwipedToRight: () => handleOnSwipeToRight(section.taskListId)(task),
+      onPressRight: () => assignTaskHandler(section.isUnassignedTaskList, task),
+      onSwipedToRight: () => handleOnSwipeToRight(section.taskListId, task),
       onSwipeClosed: () => handleOnSwipeClose(section, task),
       swipeOutRightBackgroundColor: darkRedColor,
       swipeOutRightIcon: AssignTaskIcon,
