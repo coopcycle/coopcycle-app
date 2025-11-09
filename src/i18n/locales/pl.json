@@ -138,6 +138,7 @@
     "HIDE_DONE_TASKS": "Ukryj zakończone zlecenia",
     "HIDE_FAILED_TASKS": "Ukryj nieudane zlecenia",
     "HIDE_TASKS_TAGGED_WITH": "Ukryj zadania oznaczone jako",
+    "HIDE_CANCELLED_TASKS": "Ukryj anulowane zadania",
     "TASKS_CHANGED_ALERT_SOUND": "Dźwięk powiadomienia dla zleceń został zmieniony",
     "RESTAURANT_LIST_CLICK_BELOW": "Wybierz restauracje",
     "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nowe zamówienie ({{count}})",

@@ -142,6 +142,7 @@
         "HIDE_DONE_TASKS": "Nascondi gli incarichi completati",
         "HIDE_FAILED_TASKS": "Nascondi gli incarichi falliti",
         "HIDE_TASKS_TAGGED_WITH": "Nascondi gli incarichi taggati con",
+        "HIDE_CANCELLED_TASKS": "Nascondi le attività annullate",
         "TASKS_CHANGED_ALERT_SOUND": "Gli incarichi hanno cambiato il suono di notifica",
         "RESTAURANT_LIST_CLICK_BELOW": "Clicca su un ristorante della lista",
         "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nuovi ordini ({{count}})",

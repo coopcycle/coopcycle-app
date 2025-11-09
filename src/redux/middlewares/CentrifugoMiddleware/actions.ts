@@ -29,6 +29,7 @@ export function message(payload) {
         case 'task:done':
         case 'task:failed':
         case 'task:updated':
+        case 'task:incident-reported':
           dispatch(updateTask(name, data.task));
           break;
         case 'v2:task_list:updated':

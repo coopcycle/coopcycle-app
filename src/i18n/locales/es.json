@@ -140,6 +140,7 @@
     "TASKS_FILTER": "Tareas",
     "HIDE_DONE_TASKS": "Ocultar tareas completadas",
     "HIDE_FAILED_TASKS": "Ocultar tareas fallidas",
+    "HIDE_CANCELLED_TASKS": "Ocultar tareas canceladas",
     "TASKS_HIDE_UNASSIGNED": "Ocultar tareas sin asignar del mapa",
     "TASKS_SHOW_POLYLINE": "Mostrar recorrido entre tareas",
     "FILTER_BY_KEYWORDS": "Filtrar por palabras clave",

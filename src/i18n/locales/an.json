@@ -142,6 +142,7 @@
     "HIDE_DONE_TASKS": "Amagar fayenas completadas",
     "HIDE_FAILED_TASKS": "Amagar fayenas fallidas",
     "HIDE_TASKS_TAGGED_WITH": "Amagar fayenas marcadas con",
+    "HIDE_CANCELLED_TASKS": "Amagar as treballs cancelaus",
     "TASKS_CHANGED_ALERT_SOUND": "Las fayenas cambioron lo son d'alerta",
     "RESTAURANT_LIST_CLICK_BELOW": "Faiga clic en un restaurant d'a lista d'abaixo",
     "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nuevos pedius ({{count}})",

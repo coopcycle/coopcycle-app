@@ -1,10 +1,10 @@
 import { View } from 'react-native';
 
 import {
-  IncidentIcon,
   doingIconName,
   doneIconName,
   failedIconName,
+  incidentIconName,
 } from '../navigation/task/styles/common';
 import { greenColor, redColor } from '../styles/common';
 import { Task } from '../types/task.ts';
@@ -13,20 +13,10 @@ import FAIcon from './Icon';
 export const TaskStatusIcon = ({ task }: { task: Task }) => {
   const testID = `taskListItemIcon:${task.status}:${task.id}`;
 
-  // We wrap the element in a <View>,
-  // to avoid Detox sayins "matches 2 views in the hierarchy"
-  // because the "testID" prop is propagated to the child elements
   const renderIcon = () => {
     switch (task.status) {
       case 'DOING':
-        return (
-          <FAIcon
-            name={doingIconName}
-            color="#2C81CC"
-            size={20}
-            testID={testID}
-          />
-        );
+        return <FAIcon name={doingIconName} color="#2C81CC" testID={testID} size={20} />;
       case 'DONE':
         return <FAIcon name={doneIconName} color={greenColor} testID={testID} />;
       case 'FAILED':
@@ -51,9 +41,9 @@ const Incident = ({task}: {task: Task}) => {
       accessible={true}
       accessibilityLabel={`Incident icon for task ${task.id}`}
     >
-      <IncidentIcon
-        size={24}
-        color={redColor}
+      <FAIcon
+        name={incidentIconName}
+        size={16}
       />
     </View>
   );

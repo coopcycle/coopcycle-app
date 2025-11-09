@@ -18,7 +18,7 @@ import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redux/Courier/taskSelectors';
-import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
+import { selectIncomingTasksReordered } from '../redux/logistics/selectors';
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { getTimeFrame } from '../navigation/task/components/utils';
@@ -40,6 +40,19 @@ export const styles = StyleSheet.create({
   invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
+  },
+  packageText: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+  },
+  row: {
+    flexWrap: 'wrap',
+  },
+  rowRight: {
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
   },
 });
 
@@ -74,7 +87,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
   const context = useTaskListsContext();
   const selectSelector = context?.isFromCourier
   ? selectTasksByOrderCourier
-  : selectTasksByOrderLogistics;
+  : selectIncomingTasksReordered;
   const orderTasks = useSelector(selectSelector(getOrderNumber(task)));
   const taskTitle = getTaskTitleForOrder(task);
   const alignedTextStyle = isPickup
@@ -87,6 +100,10 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
     { flex: 1, marginRight: 8 },
     ...(isPickup ? [{ textAlign: 'right' as const }] : []),
   ];
+
+  const packagesText = task.packages?.length
+    ? task.packages.map(p => `${p.quantity} x ${p.short_code}`).join('   ')
+    : '';
 
   // TODO check if we should replace by SVG icons (css rotation not working on load)
   const pickupRotation = useRef(new Animated.Value(0)).current;
@@ -169,14 +186,32 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
         <Text numberOfLines={1} style={alignedTextStyle}>
           {task.address.streetAddress}
         </Text>
-        <HStack
-          className="items-center"
-          style={isPickup ? { justifyContent: 'flex-end' } : undefined}>
-          <Text className="pr-2" style={alignedTextStyle}>
-            {getTimeFrame(task)}
-          </Text>
-          {/* TODO confirm -- why this? shouldn't this be comments? */}
-          {task.comments ? <FAIcon name="comments" /> : null}
+        <HStack className="items-center" style={isPickup ? styles.rowRight : styles.row}>
+          {isPickup ? (
+            <>
+              {packagesText && (
+                <View style={styles.packageText}>
+                  <Text style={{ textAlign: 'right' }}>
+                    {packagesText} |
+                  </Text>
+                </View>
+              )}
+              <Text style={{ textAlign: 'right' }}> {getTimeFrame(task)} </Text>
+              {task.comments && <FAIcon name="comments" />}
+            </>
+          ) : (
+            <>
+              <Text>{getTimeFrame(task)} </Text>
+              {packagesText && (
+                <View style={styles.packageText}>
+                  <Text>
+                    | {packagesText}
+                  </Text>
+                </View>
+              )}
+              {task.comments && <FAIcon name="comments" />}
+            </>
+          )}
         </HStack>
         {task.tags && task.tags.length ? (
           <View style={isPickup ? { alignSelf: 'flex-end' } : undefined}>
