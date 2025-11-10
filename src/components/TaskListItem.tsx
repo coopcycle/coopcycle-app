@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { ArrowRightCircle, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
@@ -245,6 +245,10 @@ export default function TaskListItem({
 
   useEffect(() => {
     if (shouldSwipeLeft && !prevShouldSwipeLeftRef.current) {
+      // don't swipe if already open
+      if (swipeRow.current?.isOpen) {
+        return;
+      }
       swipeRow.current?.manuallySwipeRow?.(buttonWidth);
     } else if (!shouldSwipeLeft && prevShouldSwipeLeftRef.current) {
       swipeRow.current?.closeRow?.();
@@ -254,6 +258,10 @@ export default function TaskListItem({
 
   useEffect(() => {
     if (shouldSwipeRight && !prevShouldSwipeRightRef.current) {
+      // don't swipe if already open
+      if (swipeRow.current?.isOpen) {
+        return;
+      }
       swipeRow.current?.manuallySwipeRow?.(-buttonWidth);
     } else if (!shouldSwipeRight && prevShouldSwipeRightRef.current) {
       swipeRow.current?.closeRow?.();
@@ -314,8 +322,8 @@ export default function TaskListItem({
         stopLeftSwipe={visibleButtonWidth}
         rightOpenValue={-buttonWidth}
         stopRightSwipe={-visibleButtonWidth}
-        onRowOpen={toValue => _onRowOpen(toValue)}
-        onRowClose={_onRowClose}
+        onRowDidOpen={_onRowOpen}
+        onRowDidClose={_onRowClose}
         ref={swipeRow}
         style={{
           borderRadius: cardBorderRadius,
@@ -328,7 +336,7 @@ export default function TaskListItem({
             backgroundColor={swipeOutLeftBackgroundColor}
             left
             onPress={() => {
-              swipeRow.current?.closeRow();
+              swipeRow.current?.closeRowWithoutAnimation();
               onPressLeft();
             }}
             testID={`${taskTestId}:left`}
@@ -339,7 +347,7 @@ export default function TaskListItem({
             backgroundColor={swipeOutRightBackgroundColor}
             right
             onPress={() => {
-              swipeRow.current?.closeRow();
+              swipeRow.current?.closeRowWithoutAnimation();
               onPressRight();
             }}
             testID={`${taskTestId}:right`}
