@@ -610,6 +610,13 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Move the map to select location",
     "START": "Start",
     "FIND_ON_MAP": "Or find myself on the map",
-    "SELECT_PHOTO": "Select a photo below"
-  }
+    "CANCEL_TITLE": "Cancel {{entity}}",
+    "CANCEL_MESSAGE": "Are you sure you want to cancel {{entity}} {{name}}?",
+    "CANCEL_MESSAGE_PLURAL": "Are you sure you want to cancel {{count}} {{entity}}?",
+    "CANCEL_MESSAGE_WITH_TASKS": "Are you sure you want to cancel {{entity}} {{name}}?",
+    "CANCEL_ERROR_TITLE": "Error",
+    "CANCEL_ERROR_MESSAGE": "The {{entity}} could not be canceled.",
+    "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
+    "PROCEED": "Proceed"
+}
 }

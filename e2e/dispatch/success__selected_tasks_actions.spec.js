@@ -63,6 +63,7 @@ describeif(device.getPlatform() === 'android')
   it('should mark a task as CANCELLED', async () => {
     // Tap Cancel button
     await tapById('CancelTaskButton');
+    await tapByText('Proceed');
     // Verify task #1 has the "CANCELLED" background
     await waitToBeVisible(`${USER_JANE}TasksList:task:0:cancelledBg`);
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");

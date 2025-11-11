@@ -578,6 +578,13 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Déplacez la carte pour sélectionner votre emplacement",
     "START": "Commencer",
     "FIND_ON_MAP": "Me localiser sur la carte",
-    "SELECT_PHOTO": "Sélectionnez une photo ci-dessous"
+    "CANCEL_TITLE": "Annuler {{entity}}",
+    "CANCEL_MESSAGE": "Êtes-vous sûr de vouloir annuler {{entity}} {{name}} ?",
+    "CANCEL_MESSAGE_PLURAL": "Êtes-vous sûr de vouloir annuler {{count}} {{entity}} ?",
+    "CANCEL_MESSAGE_WITH_TASKS": "Êtes-vous sûr de vouloir annuler {{entity}} {{name}} ?",
+    "CANCEL_ERROR_TITLE": "Erreur",
+    "CANCEL_ERROR_MESSAGE": "{{entity}} n’a pas pu être annulé.",
+    "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
+    "PROCEED": "Continuer"
   }
 }
