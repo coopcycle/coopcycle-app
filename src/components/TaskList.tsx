@@ -9,7 +9,7 @@ import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsCon
 
 const TaskList: React.FC<TaskListProps> = ({
   id,
-  onMultipleSelectionAction,
+  onMultipleSelectionAction = () => {},
   onRefresh = () => {},
   onPressLeft = () => {},
   onPressRight = () => {},
@@ -30,21 +30,6 @@ const TaskList: React.FC<TaskListProps> = ({
   appendTaskListTestID = '',
 }) => {
   const bulkFabButton = useRef(null);
-
-  const swipeLeftConfiguration = (task: Task) => ({
-    onPressLeft: () => onPressLeft(task),
-    onSwipedToLeft: () => _handleSwipeToLeft(task),
-    swipeOutLeftBackgroundColor,
-    swipeOutLeftIcon,
-  });
-
-  const swipeRightConfiguration = (task: Task) => ({
-    onPressRight: () => onPressRight(task),
-    onSwipeClosed: () => _handleSwipeClosed(task),
-    onSwipedToRight: () => _handleSwipeToRight(task),
-    swipeOutRightBackgroundColor,
-    swipeOutRightIcon,
-  });
 
   const _handleSwipeToLeft = useCallback(
     (task: Task) => {
@@ -69,14 +54,31 @@ const TaskList: React.FC<TaskListProps> = ({
     [onSwipeClosed],
   );
 
+  const swipeLeftConfiguration = useCallback((task: Task) => ({
+    onPressLeft: () => onPressLeft(task),
+    onSwipedToLeft: () => _handleSwipeToLeft(task),
+    swipeOutLeftBackgroundColor,
+    swipeOutLeftIcon,
+  }),
+    [onPressLeft, _handleSwipeToLeft, swipeOutLeftBackgroundColor, swipeOutLeftIcon],
+  );
+
+  const swipeRightConfiguration = useCallback((task: Task) => ({
+    onPressRight: () => onPressRight(task),
+    onSwipedToRight: () => _handleSwipeToRight(task),
+    onSwipeClosed: () => _handleSwipeClosed(task),
+    swipeOutRightBackgroundColor,
+    swipeOutRightIcon,
+  }),
+    [onPressRight, _handleSwipeToRight, _handleSwipeClosed, swipeOutRightBackgroundColor, swipeOutRightIcon],
+  );
+
   // TODO Review this button with the incoming new design/layout..!
   // The use of context here is to avoid incorrectly being parsed in dispatch screen
   const context = useTaskListsContext();
   const isFromCourier = context && context.isFromCourier;
   const onFabButtonPressed = isFromCourier
-    ? items => {
-        onMultipleSelectionAction(items);
-      }
+    ? items => onMultipleSelectionAction(items)
     : null;
 
   // check this filter
@@ -85,26 +87,29 @@ const TaskList: React.FC<TaskListProps> = ({
     bulkFabButton.current?.updateItems(doneTasks);
   }, [tasks]);
 
-  const renderItem = ({ item: task, index }) => {
-    const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
-    return (
-      <TaskListItem
-        taskListId={id}
-        appendTaskListTestID={appendTaskListTestID}
-        task={task}
-        nextTask={nextTask}
-        index={index}
-        color={task.color}
-        onPress={() => onTaskClick(task)}
-        onLongPress={onLongPress}
-        onSortBefore={onSortBefore ? () => onSortBefore(tasks) : undefined}
-        onSort={onSort ? () => onSort(tasks, index) : undefined}
-        onOrderPress={() => onOrderClick(task)}
-        {...swipeLeftConfiguration(task)}
-        {...swipeRightConfiguration(task)}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({ item: task, index }) => {
+      const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
+      return (
+        <TaskListItem
+          taskListId={id}
+          appendTaskListTestID={appendTaskListTestID}
+          task={task}
+          nextTask={nextTask}
+          index={index}
+          color={task.color}
+          onPress={() => onTaskClick(task)}
+          onLongPress={onLongPress}
+          onSortBefore={onSortBefore ? () => onSortBefore(tasks) : undefined}
+          onSort={onSort ? () => onSort(tasks, index) : undefined}
+          onOrderPress={() => onOrderClick(task)}
+          {...swipeLeftConfiguration(task)}
+          {...swipeRightConfiguration(task)}
+        />
+      );
+    },
+    [id, appendTaskListTestID, tasks, onTaskClick, onLongPress, onSortBefore, onSort, onOrderClick, swipeLeftConfiguration, swipeRightConfiguration]
+  );
 
   return (
     <>

@@ -47,7 +47,7 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
         gap: 4,
       }}>
       {!_.isEmpty(orderNumber) ? (
-        <Box>
+        <Box style={{alignItems: 'center', gap: 2}}>
           <TaskTypeIcon task={task} size="lg" color="light" />
           <VStack>
             <Text
