@@ -7,7 +7,10 @@ export const useTaskLongPress = () => {
 
   return useCallback(
     (task: Task) => {
-        context?.toggleTaskSelection(task);
+      if (task.status === 'CANCELLED') {
+        return;
+      }
+      context?.toggleTaskSelection(task);
     },
     [context]
   );

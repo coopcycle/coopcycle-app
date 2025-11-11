@@ -82,42 +82,42 @@ const Header: React.FC<HeaderProps> = ({ route }) => {
     onSelectNewAssignation,
   ]);
 
-const handleDeletePress = useCallback(() => {
+const handleCancelPress = useCallback(() => {
   const entity = t('ORDER');
   const name = orderNumber;
   const taskEntity = orderTasks.length > 1 ? t('TASKS') : t('TASK');
 
   Alert.alert(
-    t('DELETE_TITLE', { entity }),
-    t('DELETE_MESSAGE_WITH_TASKS', { entity, name }),
+    t('CANCEL_TITLE', { entity }),
+    t('CANCEL_MESSAGE_WITH_TASKS', { entity, name }),
     [
       { text: t('CANCEL'), style: 'cancel' },
       {
-        text: t('DELETE'),
+        text: t('PROCEED'),
         style: 'destructive',
         onPress: async () => {
           try {
             for (const task of orderTasks) {
-              await dispatch(cancelTask(task, () => {}));
+              dispatch(cancelTask(task, () => {}));
             }
 
             Alert.alert(
-              t('DELETE_SUCCESS_TITLE'),
+              t('CANCEL_SUCCESS_TITLE'),
               orderTasks.length > 1
-                ? t('DELETE_ORDER_SUCCESS_PLURAL', {
+                ? t('CANCEL_ORDER_SUCCESS_PLURAL', {
                     entity,
                     count: orderTasks.length,
                     taskEntity,
                   })
-                : t('DELETE_SUCCESS_MESSAGE', { entity }),
+                : t('CANCEL_SUCCESS_MESSAGE', { entity }),
             );
 
             navigation.goBack();
           } catch (error) {
-            console.error('Error eliminando orden:', error);
+            console.error('Error cancelando orden:', error);
             Alert.alert(
-              t('DELETE_ERROR_TITLE'),
-              t('DELETE_ERROR_MESSAGE', { entity }),
+              t('CANCEL_ERROR_TITLE'),
+              t('CANCEL_ERROR_MESSAGE', { entity }),
             );
           }
         },
@@ -128,11 +128,13 @@ const handleDeletePress = useCallback(() => {
 
   return (
     <HeaderButtons>
-    <HeaderButton
-        onPress={!isCancelDisabled ? handleDeletePress : undefined}
-        iconName="close-circle-outline"
+    {!isFromCourier && (
+      <HeaderButton
+        onPress={!isCancelDisabled ? handleCancelPress : undefined}
+        iconName="ban"
         disabled={isCancelDisabled}
       />
+    )}
       <HeaderButton onPress={handleBulkEditPress} iconName="person" />
     </HeaderButtons>
   );
