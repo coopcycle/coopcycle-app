@@ -322,8 +322,8 @@ export default function TaskListItem({
         stopLeftSwipe={visibleButtonWidth}
         rightOpenValue={-buttonWidth}
         stopRightSwipe={-visibleButtonWidth}
-        onRowDidOpen={_onRowOpen}
-        onRowDidClose={_onRowClose}
+        onRowOpen={_onRowOpen}
+        onRowClose={_onRowClose}
         ref={swipeRow}
         style={{
           borderRadius: cardBorderRadius,
