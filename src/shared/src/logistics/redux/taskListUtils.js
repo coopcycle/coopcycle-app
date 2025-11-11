@@ -17,13 +17,16 @@ export function replaceItemsWithItemIds(taskList) {
 }
 
 export function getTaskListTasks(taskList, tasksEntities) {
+  let tasks = [];
+
   if (taskList.items) {
-    return taskList.items;
+    tasks = taskList.items;
+  } else {
+    tasks = taskList.tasksIds.map(taskId => tasksEntities[taskId]).filter(maybeTask => !!maybeTask);
   }
 
-  return taskList.tasksIds
-    .map(taskId => tasksEntities[taskId])
-    .filter(maybeTask => maybeTask);
+  // Add an index to each task
+  return tasks.map((t, index) => Object.assign({}, t, { index }));
 }
 
 export function createCurrentTaskList(items = []) {
@@ -45,8 +48,8 @@ export function createTempTaskList(username, items = []) {
     distance: 0,
     duration: 0,
     polyline: '',
-    createdAt: moment().toISOString(),
-    updatedAt: moment().toISOString(),
+    createdAt: moment().format('YYYY-MM-DD'),
+    updatedAt: moment().format('YYYY-MM-DD'),
     username,
     items,
     tasksIds: items.map(item => item['@id']),
