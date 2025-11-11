@@ -65,7 +65,7 @@ export default ({ getState, dispatch }) => {
       // Here in any case, we navigate to the delivery/order that was tapped,
       // it should have been loaded via WebSocket already.
       // (and we always assume to be admin/dispatcher, so isFromCourier = false)
-      navigateToOrder(navigationRef.current, orderNumber, false, extraData);
+      navigateToOrder(navigationRef.current, orderNumber, false, 'TODO', extraData);
     }
 
     if (event && event.name === EVENT_TASK_COLLECTION.CHANGED) {

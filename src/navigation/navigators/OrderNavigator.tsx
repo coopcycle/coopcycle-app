@@ -18,7 +18,7 @@ import { HeaderButton, HeaderButtons } from '../../components/HeaderButton';
 import { RouteType } from '../order/types';
 import { Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { cancelTask } from '../../redux/Courier/taskActions'; 
+import { cancelTask } from '../../redux/Courier/taskActions';
 
 const RootStack = createStackNavigator();
 
@@ -85,7 +85,6 @@ const Header: React.FC<HeaderProps> = ({ route }) => {
 const handleCancelPress = useCallback(() => {
   const entity = t('ORDER');
   const name = orderNumber;
-  const taskEntity = orderTasks.length > 1 ? t('TASKS') : t('TASK');
 
   Alert.alert(
     t('CANCEL_TITLE', { entity }),
@@ -95,26 +94,15 @@ const handleCancelPress = useCallback(() => {
       {
         text: t('PROCEED'),
         style: 'destructive',
-        onPress: async () => {
+        onPress: () => {
           try {
             for (const task of orderTasks) {
               dispatch(cancelTask(task, () => {}));
             }
 
-            Alert.alert(
-              t('CANCEL_SUCCESS_TITLE'),
-              orderTasks.length > 1
-                ? t('CANCEL_ORDER_SUCCESS_PLURAL', {
-                    entity,
-                    count: orderTasks.length,
-                    taskEntity,
-                  })
-                : t('CANCEL_SUCCESS_MESSAGE', { entity }),
-            );
-
             navigation.goBack();
           } catch (error) {
-            console.error('Error cancelando orden:', error);
+            console.error('Cancel order error:', error);
             Alert.alert(
               t('CANCEL_ERROR_TITLE'),
               t('CANCEL_ERROR_MESSAGE', { entity }),

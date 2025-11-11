@@ -60,23 +60,13 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
             {
               text: t('PROCEED'),
               style: 'destructive',
-              onPress: async () => {
+              onPress: () => {
                 try {
                   for (const task of selectedTasks) {
-                    dispatch(cancelTask(task, () => { }));
+                    dispatch(cancelTask(task, () => {}));
                   }
-
-                  Alert.alert(
-                    t('CANCEL_SUCCESS_TITLE'),
-                    isPlural
-                      ? t('CANCEL_SUCCESS_MESSAGE_PLURAL', {
-                        count: selectedTasks.length,
-                        entity: t('TASKS'),
-                      })
-                      : t('CANCEL_SUCCESS_MESSAGE', { entity }),
-                  );
                 } catch (error) {
-                  console.error('Error cancelando tareas:', error);
+                  console.error('Cancel task/s error:', error);
                   Alert.alert(
                     t('CANCEL_ERROR_TITLE'),
                     t('CANCEL_ERROR_MESSAGE', { entity }),

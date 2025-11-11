@@ -126,8 +126,7 @@ export default function GroupedTasks({
 
   const onOrderClick = useCallback(
     task => {
-      const orderNumber = getOrderNumber(task);
-      navigateToOrder(navigation, orderNumber, false, undefined, task.status);
+      navigateToOrder(navigation, getOrderNumber(task), false, task.status);
     },
     [navigation],
   );
