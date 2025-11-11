@@ -610,6 +610,17 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Move the map to select location",
     "START": "Start",
     "FIND_ON_MAP": "Or find myself on the map",
-    "SELECT_PHOTO": "Select a photo below"
-  }
+    "DELETE_TITLE": "Delete {{entity}}",
+    "DELETE_MESSAGE": "Are you sure you want to delete {{entity}} {{name}}?",
+    "DELETE_MESSAGE_PLURAL": "Are you sure you want to delete {{count}} {{entity}}?",
+    "DELETE_MESSAGE_WITH_TASKS": "Are you sure you want to delete {{entity}} {{name}}?",
+    "DELETE_SUCCESS_TITLE": "Success",
+    "DELETE_SUCCESS_MESSAGE": "The {{entity}} has been successfully deleted.",
+    "DELETE_SUCCESS_MESSAGE_PLURAL": "{{count}} {{entity}} have been successfully deleted.",
+    "DELETE_ORDER_SUCCESS_PLURAL": "The {{entity}} and its {{count}} {{taskEntity}} have been successfully deleted.",
+    "DELETE_ERROR_TITLE": "Error",
+    "DELETE_ERROR_MESSAGE": "The {{entity}} could not be deleted.",
+    "DELETE_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to delete.",
+    "DELETE": "Delete"
+}
 }

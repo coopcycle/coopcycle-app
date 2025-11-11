@@ -578,6 +578,17 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Déplacez la carte pour sélectionner votre emplacement",
     "START": "Commencer",
     "FIND_ON_MAP": "Me localiser sur la carte",
-    "SELECT_PHOTO": "Sélectionnez une photo ci-dessous"
+    "DELETE_TITLE": "Supprimer {{entity}}",
+    "DELETE_MESSAGE": "Êtes-vous sûr de vouloir supprimer la {{entity}} {{name}} ?",
+    "DELETE_MESSAGE_PLURAL": "Êtes-vous sûr de vouloir supprimer {{count}} {{entity}} ?",
+    "DELETE_MESSAGE_WITH_TASKS": "Êtes-vous sûr de vouloir supprimer la {{entity}} {{name}} ? ",
+    "DELETE_SUCCESS_TITLE": "Succès",
+    "DELETE_SUCCESS_MESSAGE": "La {{entity}} a été supprimée avec succès.",
+    "DELETE_SUCCESS_MESSAGE_PLURAL": "{{count}} {{entity}} ont été supprimées avec succès.",
+    "DELETE_ORDER_SUCCESS_PLURAL": "La {{entity}} et ses {{count}} {{taskEntity}} ont été supprimées avec succès.",
+    "DELETE_ERROR_TITLE": "Erreur",
+    "DELETE_ERROR_MESSAGE": "Impossible de supprimer la {{entity}}.",
+    "DELETE_NO_TASKS_MESSAGE": "Cette {{entity}} n’a aucune tâche associée à supprimer.",
+    "DELETE": "Supprimer"
   }
 }

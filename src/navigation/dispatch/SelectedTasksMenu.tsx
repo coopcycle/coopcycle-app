@@ -1,6 +1,6 @@
 import { EllipsisVertical } from 'lucide-react-native';
 import { NavigationProp, useRoute } from '@react-navigation/native';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -45,10 +45,50 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       text: t('CANCEL'),
       isDisabled: context?.isFromCourier,
       action: () => {
-        selectedTasks?.forEach(t => {
-          return dispatch(cancelTask(t, () => {}));
-        });
-        context?.clearSelectedTasks();
+        if (!selectedTasks?.length) return;
+
+        const isPlural = selectedTasks.length > 1;
+        const entity = isPlural ? t('TASKS') : t('TASK');
+        const name = isPlural
+          ? `${selectedTasks.length} ${entity}`
+          : String(selectedTasks?.[0]?.id || '');
+
+        Alert.alert(
+          t('DELETE_TITLE', { entity }),
+          t(isPlural ? 'DELETE_MESSAGE_PLURAL' : 'DELETE_MESSAGE', { entity , name }),
+          [
+            { text: t('CANCEL'), style: 'cancel' },
+            {
+              text: t('DELETE'),
+              style: 'destructive',
+              onPress: async () => {
+                try {
+                  for (const task of selectedTasks) {
+                    await dispatch(cancelTask(task, () => { }));
+                  }
+
+                  Alert.alert(
+                    t('DELETE_SUCCESS_TITLE'),
+                    isPlural
+                      ? t('DELETE_SUCCESS_MESSAGE_PLURAL', {
+                        count: selectedTasks.length,
+                        entity: t('TASKS'),
+                      })
+                      : t('DELETE_SUCCESS_MESSAGE', { entity }),
+                  );
+                } catch (error) {
+                  console.error('Error eliminando tareas:', error);
+                  Alert.alert(
+                    t('DELETE_ERROR_TITLE'),
+                    t('DELETE_ERROR_MESSAGE', { entity }),
+                  );
+                } finally {
+                  context?.clearSelectedTasks();
+                }
+              },
+            },
+          ],
+        );
       },
     },
     {

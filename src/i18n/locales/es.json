@@ -482,6 +482,18 @@
     "LOADING_ADDRESS": "Cargando dirección",
     "MOVE_MAP_TO_SELECT_LOCATION": "Mueve el mapa para seleccionar tu ubicación",
     "START": "Comenzar",
-    "FIND_ON_MAP": "Localizarme en el mapa"
+    "FIND_ON_MAP": "Localizarme en el mapa",
+    "DELETE_TITLE": "Eliminar {{entity}}",
+    "DELETE_MESSAGE": "¿Estás seguro de que querés eliminar {{entity}} {{name}}?",
+    "DELETE_MESSAGE_PLURAL": "¿Estás seguro de que querés eliminar {{count}} {{entity}}?",
+    "DELETE_MESSAGE_WITH_TASKS": "¿Estás seguro de que querés eliminar la {{entity}} {{name}}?",
+    "DELETE_SUCCESS_TITLE": "Éxito",
+    "DELETE_SUCCESS_MESSAGE": "La {{entity}} fue eliminada correctamente.",
+    "DELETE_SUCCESS_MESSAGE_PLURAL": "Las {{count}} {{entity}} fueron eliminadas correctamente.",
+    "DELETE_ORDER_SUCCESS_PLURAL": "La {{entity}} y sus {{count}} {{taskEntity}} fueron eliminadas correctamente.",
+    "DELETE_ERROR_TITLE": "Error",
+    "DELETE_ERROR_MESSAGE": "No se pudo eliminar la {{entity}}.",
+    "DELETE_NO_TASKS_MESSAGE": "Esta {{entity}} no tiene tareas asociadas para eliminar.",
+    "DELETE": "Eliminar"
   }
 }
