@@ -90,7 +90,7 @@
     "react-native-ble-manager": "^8.4.4",
     "react-native-calendars": "^1.1313.0",
     "react-native-communications": "^2.2.1",
-    "react-native-config": "^1.5.9",
+    "react-native-config": "^1.5.10",
     "react-native-dropdownalert": "^4.5.1",
     "react-native-email-link": "^1.16.1",
     "react-native-fbsdk-next": "^13.4.1",

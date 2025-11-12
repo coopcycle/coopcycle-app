@@ -2029,10 +2029,36 @@ PODS:
     - React-Core
   - react-native-ble-manager (8.8.0):
     - React-Core
-  - react-native-config (1.5.9):
-    - react-native-config/App (= 1.5.9)
-  - react-native-config/App (1.5.9):
+  - react-native-config (1.6.0):
+    - react-native-config/App (= 1.6.0)
+  - react-native-config/App (1.6.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - react-native-fbsdk-next (13.4.1):
     - React-Core
     - react-native-fbsdk-next/Core (= 13.4.1)
@@ -3974,7 +4000,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 63ee6730cec233feab9cdcc0c100dc28a12e4165
   react-native-app-auth: eb42594042a25455119a8c57194b4fd25b9352f4
   react-native-ble-manager: 9b2df5891d2ad0bb6e3e684096f32dda3c89f504
-  react-native-config: d08b60865268872495a43e211059b4606131fe01
+  react-native-config: 713f8c05838addc7e947446f02f7e3cd92f85e7c
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-maps: 9febd31278b35cd21e4fad2cf6fa708993be5dab
