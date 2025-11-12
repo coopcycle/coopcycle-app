@@ -1,9 +1,8 @@
 import { EllipsisVertical } from 'lucide-react-native';
 import { NavigationProp, useRoute } from '@react-navigation/native';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
 import { cancelTask } from '@/src/redux/Courier/taskActions';
 import { navigateToCompleteTask } from '../utils';
 import { startTask } from '@/src/redux/Courier';
@@ -45,10 +44,40 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       text: t('CANCEL'),
       isDisabled: context?.isFromCourier,
       action: () => {
-        selectedTasks?.forEach(t => {
-          return dispatch(cancelTask(t, () => {}));
-        });
-        context?.clearSelectedTasks();
+        if (!selectedTasks?.length) return;
+
+        const isPlural = selectedTasks.length > 1;
+        const entity = isPlural ? t('TASKS') : t('TASK');
+        const name = isPlural
+          ? `${selectedTasks.length} ${entity}`
+          : String(selectedTasks?.[0]?.id || '');
+
+        Alert.alert(
+          t('CANCEL_TITLE', { entity }),
+          t(isPlural ? 'CANCEL_MESSAGE_PLURAL' : 'CANCEL_MESSAGE', { entity, name, count: selectedTasks.length}),
+          [
+            { text: t('CANCEL'), style: 'cancel' },
+            {
+              text: t('PROCEED'),
+              style: 'destructive',
+              onPress: () => {
+                try {
+                  for (const task of selectedTasks) {
+                    dispatch(cancelTask(task, () => {}));
+                  }
+                } catch (error) {
+                  console.error('Cancel task/s error:', error);
+                  Alert.alert(
+                    t('CANCEL_ERROR_TITLE'),
+                    t('CANCEL_ERROR_MESSAGE', { entity }),
+                  );
+                } finally {
+                  context?.clearSelectedTasks();
+                }
+              },
+            },
+          ],
+        );
       },
     },
     {

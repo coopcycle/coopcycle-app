@@ -482,6 +482,14 @@
     "LOADING_ADDRESS": "Cargando dirección",
     "MOVE_MAP_TO_SELECT_LOCATION": "Mueve el mapa para seleccionar tu ubicación",
     "START": "Comenzar",
-    "FIND_ON_MAP": "Localizarme en el mapa"
+    "FIND_ON_MAP": "Localizarme en el mapa",
+    "CANCEL_TITLE": "Cancelar {{entity}}",
+    "CANCEL_MESSAGE": "¿Estás seguro de que deseas cancelar {{entity}} {{name}}?",
+    "CANCEL_MESSAGE_PLURAL": "¿Estás seguro de que deseas cancelar {{count}} {{entity}}?",
+    "CANCEL_MESSAGE_WITH_TASKS": "¿Estás seguro de que deseas cancelar {{entity}} {{name}}?",
+    "CANCEL_ERROR_TITLE": "Error",
+    "CANCEL_ERROR_MESSAGE": "No se pudo cancelar el {{entity}}.",
+    "CANCEL_NO_TASKS_MESSAGE": "Este {{entity}} no tiene tareas asociadas para cancelar.",
+    "PROCEED": "Continuar"
   }
 }

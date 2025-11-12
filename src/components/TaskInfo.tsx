@@ -2,8 +2,8 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React/*, { useEffect, useRef }*/ from 'react';
+import { /*Animated,*/ StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Task } from '../types/task';
 import FAIcon from './Icon';
@@ -82,7 +82,7 @@ interface ITaskInfoProps {
   taskTestId: string;
 }
 
-function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
+export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
   const { t } = useTranslation();
   const context = useTaskListsContext();
   const selectSelector = context?.isFromCourier
@@ -105,33 +105,34 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
     ? task.packages.map(p => `${p.quantity} x ${p.short_code}`).join('   ')
     : '';
 
-  // TODO check if we should replace by SVG icons (css rotation not working on load)
-  const pickupRotation = useRef(new Animated.Value(0)).current;
-  const dropoffRotation = useRef(new Animated.Value(0)).current;
+  // TODO We should replace by SVG icons (rotation takes too much resources on big lists)
+  // const pickupRotation = useRef(new Animated.Value(0)).current;
+  // const dropoffRotation = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    Animated.timing(pickupRotation, {
-      toValue: 90,
-      duration: 0,
-      useNativeDriver: true,
-    }).start();
+  // useEffect(() => {
+  //   Animated.timing(pickupRotation, {
+  //     toValue: 90,
+  //     duration: 0,
+  //     useNativeDriver: true,
+  //   }).start();
 
-    Animated.timing(dropoffRotation, {
-      toValue: 90,
-      duration: 0,
-      useNativeDriver: true,
-    }).start();
-  }, [dropoffRotation, pickupRotation]);
+  //   Animated.timing(dropoffRotation, {
+  //     toValue: 90,
+  //     duration: 0,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [dropoffRotation, pickupRotation]);
 
-  const pickupRotationInterpolated = pickupRotation.interpolate({
-    inputRange: [0, 360],
-    outputRange: ['0deg', '360deg'],
-  });
+  // const pickupRotationInterpolated = pickupRotation.interpolate({
+  //   inputRange: [0, 360],
+  //   outputRange: ['0deg', '360deg'],
+  // });
 
-  const dropoffRotationInterpolated = dropoffRotation.interpolate({
-    inputRange: [0, 360],
-    outputRange: ['0deg', '360deg'],
-  });
+  // const dropoffRotationInterpolated = dropoffRotation.interpolate({
+  //   inputRange: [0, 360],
+  //   outputRange: ['0deg', '360deg'],
+  // });
+
   return (
     <HStack>
       <VStack
@@ -158,16 +159,16 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
           <HStack space="md">
             <Text numberOfLines={1} style={{ flex: 1, textAlign: 'right' }} italic={!taskTitle}>{taskTitle || `(${t('UNNAMED')})`}</Text>
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
-            <Animated.View
+            {/* <Animated.View
               style={{
                 transform: [{ rotate: pickupRotationInterpolated }],
               }}>
               <FAIcon name="level-down-alt" size={18} />
-            </Animated.View>
+            </Animated.View> */}
           </HStack>
         ) : (
           <HStack space="md">
-            <Animated.View
+            {/* <Animated.View
               style={{
                 transform: [
                   { rotate: dropoffRotationInterpolated },
@@ -175,7 +176,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
                 ],
               }}>
               <FAIcon name="level-down-alt" size={18} />
-            </Animated.View>
+            </Animated.View> */}
             <Text numberOfLines={1} style={{ flex: 1 }}>
               {getDropoffPosition(task, orderTasks)}
               <Text italic={!taskTitle}> {taskTitle || `(${t('UNNAMED')})`}</Text>
@@ -223,6 +224,4 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
       <TaskPriorityStatus task={task} cardBorderRadius={cardBorderRadius} />
     </HStack>
   );
-}
-
-export default TaskInfo;
+};
