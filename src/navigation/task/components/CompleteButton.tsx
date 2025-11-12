@@ -5,7 +5,7 @@ import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { SwipeRow } from 'react-native-swipe-list-view';
+import { EAnimationType, SwipeableItemWrapper } from 'react-native-swipe-reveal';
 
 import { greenColor, redColor, yellowColor } from '../../../styles/common';
 import { DoneIcon, FailedIcon } from '../styles/common';
@@ -61,6 +61,8 @@ const CompleteButton = React.forwardRef((props, ref) => {
 
   const buttonWidth = width / 3;
 
+  console.log('CompleteButton ref', ref)
+
   return (
     <View>
       <HStack className="px-3 py-2">
@@ -68,18 +70,15 @@ const CompleteButton = React.forwardRef((props, ref) => {
           {t('SWIPE_TO_END')}
         </Text>
       </HStack>
-      <SwipeRow
-        leftOpenValue={buttonWidth}
-        stopLeftSwipe={buttonWidth + 25}
-        rightOpenValue={buttonWidth * -1}
-        stopRightSwipe={(buttonWidth + 25) * -1}
-        ref={ref}>
-        <View style={styles.rowBack}>
+      <SwipeableItemWrapper
+        id={`task-${task['@id']}`}
+        animationType={EAnimationType['left-right-swipe']}
+        ref={ref}
+        rightSwipeView={
           <TouchableOpacity
             testID="task:completeSuccessButton"
             style={{
               flex: 1,
-              alignItems: 'flex-start',
               justifyContent: 'center',
               backgroundColor: greenColor,
               width: buttonWidth,
@@ -87,11 +86,12 @@ const CompleteButton = React.forwardRef((props, ref) => {
             onPress={onPressSuccess}>
             <LeftButton width={buttonWidth} />
           </TouchableOpacity>
+        }
+        leftSwipeView={
           <TouchableOpacity
             testID="task:completeFailureButton"
             style={{
               flex: 1,
-              alignItems: 'flex-end',
               justifyContent: 'center',
               backgroundColor: yellowColor,
               width: buttonWidth,
@@ -99,7 +99,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
             onPress={onPressFailure}>
             <RightButton width={buttonWidth} />
           </TouchableOpacity>
-        </View>
+        }>
         <Box
           className="bg-secondary-600"
           style={{ padding: 28, width }}
@@ -108,7 +108,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
             {t('COMPLETE_TASK')}
           </Text>
         </Box>
-      </SwipeRow>
+      </SwipeableItemWrapper>
     </View>
   );
 });
