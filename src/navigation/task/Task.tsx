@@ -75,13 +75,13 @@ class Task extends Component {
           {
             text: this.props.t('CANCEL'),
             style: 'cancel',
-            onPress: () => this.swipeRow.current?.close()
+            onPress: () => this.swipeRow.current?.closeRow(),
           },
           {
             text: this.props.t('TASK_COMPLETE_ALERT_NEGATIVE'),
             onPress: () => {
               this.props.startTask(task);
-              setTimeout(() => this.swipeRow.current?.close(), 250);
+              setTimeout(() => this.swipeRow.current?.closeRow(), 250);
             },
           },
           {
@@ -101,7 +101,7 @@ class Task extends Component {
         success,
       },
     });
-    setTimeout(() => this.swipeRow.current.close(), 250);
+    setTimeout(() => this.swipeRow.current.closeRow(), 250);
   }
 
   normalizeTask(task) {
