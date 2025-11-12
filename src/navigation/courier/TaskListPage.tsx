@@ -54,11 +54,11 @@ export default function TaskListPage({ navigation, route }) {
         context?.clearSelectedTasks();
         return true;
       }
-      return false; 
+      return false;
     });
 
     return () => backHandler.remove();
-  }, [context?.isEditMode, context]);
+  }, [context]);
 
   const containerStyle = [styles.container];
   if (tasks.length === 0) {

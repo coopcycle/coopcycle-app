@@ -269,6 +269,17 @@ export default function TaskListItem({
     prevShouldSwipeRightRef.current = shouldSwipeRight;
   }, [shouldSwipeRight, buttonWidth]);
 
+  const onTaskPress = () => {
+    if (context?.isEditMode && task.status === 'CANCELLED') return;
+
+    if (context?.isEditMode) {
+      context.toggleTaskSelection(task);
+      return;
+    }
+
+    onPress();
+  }
+
   function _onRowOpen(toValue: number) {
     if (toValue > 0 && onSwipedToLeft) {
       onSwipedToLeft();
@@ -376,20 +387,9 @@ export default function TaskListItem({
               onPress={onOrderPress}
             />
             <ItemTouchable
-              onPress={() => {
-                const isCancelled = task.status === 'CANCELLED';
-                
-                if (context?.isEditMode && isCancelled) return;
-                
-                if (context?.isEditMode) {
-                  context.toggleTaskSelection(task);
-                  return;
-                }
-
-                onPress();
-              }}
+              onPress={onTaskPress}
               onLongPress={() => onLongPress(task)}
-              delayLongPress={200}
+              delayLongPress={1000}
               testID={taskTestId}
               style={{
                 borderBottomRightRadius: cardBorderRadius,

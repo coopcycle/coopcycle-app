@@ -46,18 +46,17 @@ export default function AllTasks({ navigation, route }) {
   };
 
   useEffect(() => {
-    const onBackPress = () => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       if (context?.isEditMode) {
-        context.clearSelectedTasks?.();
+        context?.clearSelectedTasks();
         dispatch(clearSelectedTasks());
         return true;
       }
       return false;
-    };
+    });
 
-    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    return () => subscription.remove();
-  }, [context?.isEditMode, dispatch]);
+    return () => backHandler.remove();
+  }, [context, dispatch]);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
