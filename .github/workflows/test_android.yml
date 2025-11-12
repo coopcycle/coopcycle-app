@@ -25,6 +25,9 @@ jobs:
           android: false
           swap-storage: false
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -44,7 +47,7 @@ jobs:
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
 
       - name: Install dependencies (yarn)
-        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+        run: yarn install
 
       - run: cp google-services.json.dist android/app/google-services.json
 
@@ -134,6 +137,9 @@ jobs:
           name: app-official-release-androidTest.apk
           path: coopcycle-app-repo/android/app/build/outputs/apk/androidTest/official/release
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -147,7 +153,7 @@ jobs:
           cache: 'gradle'
 
       - name: Install dependencies (yarn)
-        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+        run: yarn install
 
       - name: Enable clear text traffic in release builds
         run: |
