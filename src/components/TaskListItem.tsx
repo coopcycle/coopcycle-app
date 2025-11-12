@@ -376,8 +376,15 @@ export default function TaskListItem({
               onPress={onOrderPress}
             />
             <ItemTouchable
-              onPress={onPress}
+              onPress={() => {
+                if (context?.isEditMode && task.status !== 'CANCELLED') {
+                  context?.toggleTaskSelection(task);
+                } else {
+                  onPress();
+                }
+              }}
               onLongPress={() => onLongPress(task)}
+              delayLongPress={200}
               testID={taskTestId}
               style={{
                 borderBottomRightRadius: cardBorderRadius,
