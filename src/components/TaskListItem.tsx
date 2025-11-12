@@ -377,11 +377,16 @@ export default function TaskListItem({
             />
             <ItemTouchable
               onPress={() => {
-                if (context?.isEditMode && task.status !== 'CANCELLED') {
-                  context?.toggleTaskSelection(task);
-                } else {
-                  onPress();
+                const isCancelled = task.status === 'CANCELLED';
+                
+                if (context?.isEditMode && isCancelled) return;
+                
+                if (context?.isEditMode) {
+                  context.toggleTaskSelection(task);
+                  return;
                 }
+
+                onPress();
               }}
               onLongPress={() => onLongPress(task)}
               delayLongPress={200}
