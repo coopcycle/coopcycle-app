@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -20,7 +20,7 @@ import { Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { cancelTask } from '../../redux/Courier/taskActions';
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 interface HeaderProps {
   route: {

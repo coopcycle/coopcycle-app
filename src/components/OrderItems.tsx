@@ -199,8 +199,8 @@ const OrderItems = ({ order, withDeliveryTotal = false, withTotals = true}: Orde
       {withTotals && (
         <View style={{ flex: 0, flexShrink: 1 }}>
           <ItemsTotal order={order} />
-          {this.props.withDeliveryTotal === true && <Adjustments order={order} />}
-          {this.props.withDeliveryTotal === true && <Total order={order} />}
+          {withDeliveryTotal === true && <Adjustments order={order} />}
+          {withDeliveryTotal === true && <Total order={order} />}
         </View>
       )}
     </View>

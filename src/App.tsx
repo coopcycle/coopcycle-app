@@ -187,7 +187,8 @@ const App = () => {
                         linking={linking}
                         onReady={onReady}
                         onStateChange={onNavigationStateChange}
-                        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                        navigationInChildEnabled>
                         <Root />
                       </NavigationContainer>
                       <DropdownAlert
