@@ -4,33 +4,37 @@ import { AsYouType } from 'libphonenumber-js';
 import { assertDelivery } from '@/src/redux/Delivery/actions';
 import i18n from '@/src/i18n';
 
-export const useFormUtils = (store) => {
+export const useFormUtils = store => {
+  
   const { t } = i18n;
-  const country = useSelector((state) => state.app.settings.country.toUpperCase());
+
+  const country = useSelector(state =>
+    state.app.settings.country.toUpperCase(),
+  );
   const dispatch = useDispatch();
 
-const setAddressData = useCallback((data: any, setFieldValue: any) => {
-  const {
-    contactName = '',
-    telephone = '',
-    name: businessName = '',
-    description = '',
-    streetAddress,
-    geo,
-  } = data;
+  const setAddressData = useCallback((data, setFieldValue) => {
+    const {
+      contactName = '',
+      telephone = '',
+      name: businessName = '',
+      description = '',
+      streetAddress,
+      geo,
+    } = data;
 
-  setFieldValue('contactName', contactName);
-  setFieldValue('telephone', telephone);
-  setFieldValue('businessName', businessName);
-  setFieldValue('description', description);
+    setFieldValue('contactName', contactName);
+    setFieldValue('telephone', telephone);
+    setFieldValue('businessName', businessName);
+    setFieldValue('description', description);
 
-  return { streetAddress, geo };
-}, []);
+    return { streetAddress, geo };
+  }, []);
 
   const onSelectAddress = useCallback(
     (addr, setFieldValue, setAddress, setValidAddress) => {
-      const newAddress = addr['@id'] 
-        ? addr 
+      const newAddress = addr['@id']
+        ? addr
         : { streetAddress: addr.streetAddress, geo: addr.geo };
 
       setAddress(newAddress);
@@ -56,20 +60,11 @@ const setAddressData = useCallback((data: any, setFieldValue: any) => {
     [country],
   );
 
-  const handleChangeWeight = useCallback(
-    (value: string, setFieldValue, setFieldTouched) => {
-      setFieldValue('weight', value.replace(/[^0-9.]/g, ''));
-      setFieldTouched('weight', true);
-    },
-    [],
-  );
-
   return {
     t,
     country,
     setAddressData,
     onSelectAddress,
     handleChangeTelephone,
-    handleChangeWeight,
   };
 };

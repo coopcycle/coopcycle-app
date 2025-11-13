@@ -1,51 +1,44 @@
-import { createDeliveryObject, getInitialValues } from '../../delivery/utils';
+import { createUpdatedTaskBody } from '../../delivery/utils';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import _ from 'lodash';
 import { Task } from '@/src/types/task';
 
 export const handleFormSubmit = (
   values,
+  report,
   address,
-  store,
-  packagesCount: [],
-  selectedTimeSlot: string,
+  selectedTimeSlot,
   selectedChoice,
-  country: string,
-  task?: Partial<Task>,
-  onSubmit?: (data) => void
+  packagesCount,
+  onSubmit?: (data) => void,
+  selectedSupplements?: []
 ) => {
-  console.log('Creating delivery object with:', {
-    address, selectedTimeSlot, selectedChoice
-  });
+  // console.log('Creating delivery object with:', {
+  //   values,
+  //   address,
+  //   selectedTimeSlot,
+  //   selectedChoice,
+  //   packagesCount,
+  //   selectedSupplements
+  // });
 
-  const dropoff = {
-    telephone: parsePhoneNumberFromString(values.telephone, country)?.format('E.164') || values.telephone,
-    contactName: values.contactName,
-    description: values.description,
-    businessName: values.businessName,
-    address: address.streetAddress,
-  };
-
-  let delivery;
+  let body;
   try {
-    delivery = createDeliveryObject(
+    body = createUpdatedTaskBody(
       values,
-      store,
-      { params: { dropoff } },
       packagesCount,
       selectedTimeSlot,
-      selectedChoice,
+      selectedChoice,      
+      selectedSupplements,
     );
   } catch (error) {
-    console.error('Error creating delivery object:', error);
-    delivery = {};
+    console.error('Error creating payload object:', error);
+    body = {};
   }
   
-  // Asegurar que los paquetes se envíen correctamente
-  delivery.packages = packagesCount.filter(pkg => pkg.quantity > 0);
+  const payload = buildReportIncidentPayload(reportBody, body);
 
-  console.log('Final delivery object:', delivery);
-  onSubmit?.(delivery);
+  onSubmit?.(payload);
 };
 
 export const getAutocompleteProps = (deliveryError) => {
@@ -89,6 +82,48 @@ export const getInitialFormValues = (
     before: task?.before || '',
     after: task?.after || '',
     doorstep: task?.doorstep || false,
-    storeName: businessName,
   };
+};
+
+export const buildReportIncidentPayload = (report, updatedTask) => {
+  return {
+    description: report.description,
+    failureReasonCode: report.failureReasonCode,
+    task: report.taskID,
+    // metadata: [
+    //   {
+    //     suggestion: {
+    //       // tasks: [{
+    //       //   id: updatedTask.id,
+    //       //   // ...updatedTaskToSend
+    //       // }]
+    //     }
+    //   }
+    // ]
+  };
+};
+
+// BUILD DATA STRUCTURE ACCORDING TO API EXPECTATIONS
+export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
+  console.log('buildUpdatedTaskFields called with:', { field, value });
+  switch (field) {
+    case 'address':
+      return { address: value.streetAddress };
+    case 'packagesCount':
+      return { packages: value };
+    case 'weight':
+      return { weight: value };
+      case 'telephone':
+      return { telephone: value };
+    case 'selectedTimeSlot':
+      return { timeSlot: value };
+    case 'selectedChoice':
+      return { choice: value };
+    case 'selectedSupplements':
+      return { supplements: value };
+    // case 'values':
+    //   return value as Partial<Task>;
+    default:
+      return {};
+  }
 };

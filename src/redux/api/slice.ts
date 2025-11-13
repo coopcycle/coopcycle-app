@@ -4,6 +4,7 @@ import { baseQueryWithReauth } from './baseQuery';
 import { sortByName, sortByString } from '../util';
 import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
+import { TimeSlot, TimeSlotChoices } from './types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -157,6 +158,18 @@ export const apiSlice = createApi({
         return { data: sortByName(result.data) };
       },
     }),
+    getTimeSlots: builder.query<TimeSlot[], void>({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ<TimeSlot>(
+          baseQuery,
+          'api/time_slots',
+          100,
+        );
+      },
+    }),
+    getTimeSlotChoices: builder.query<TimeSlotChoices, string>({
+      query: (uri: string) => `${uri}/choices`,
+    }),
     getPricingRuleSet: builder.query({
       query: (uri: string) => uri,
       providesTags: (result, error, id) => [{ type: 'PricingRuleSet', id }],
@@ -181,13 +194,20 @@ export const apiSlice = createApi({
       }),
     }),
     postIncident: builder.mutation({
-      query: ({ payload }) => ({
-        url: `/api/incidents/`,
-        method: 'POST',
-        body: payload,
-      }),
+      query: ({ payload }) => {
+        console.log('Payload object:', payload);
+        return {
+          url: `/api/incidents`,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/ld+json',
+            Accept: 'application/ld+json',
+          },
+          body: payload,
+        };
+      },
     }),
-    recurrenceRulesGenerateOrders: builder.mutation ({
+    recurrenceRulesGenerateOrders: builder.mutation({
       query: (date: DateOnlyString) => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
@@ -195,7 +215,7 @@ export const apiSlice = createApi({
         },
       }),
     }),
-  })
+  }),
 });
 
 // Export the auto-generated hook for the query endpoints
@@ -205,6 +225,8 @@ export const {
   useGetTaskContextQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,
+  useGetTimeSlotsQuery,
+  useGetTimeSlotChoicesQuery,
   useGetPricingRuleSetQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,

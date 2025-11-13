@@ -8,8 +8,10 @@ import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
 import { greenColor, yellowColor } from "@/src/styles/common";
 import { markTaskDone, markTasksDone } from "@/src/redux/Courier";
-import { reportIncident } from "@/src/redux/Courier/taskActions";
 import Task from "@/src/types/task";
+import { useReportFormContext } from "../contexts/ReportFormContext";
+import { usePostIncidentMutation } from "@/src/redux/api/slice";
+import { buildReportIncidentPayload } from "../utils/taskFormHelpers";
 
 interface SubmitButtonProps {
   task: Task;
@@ -20,7 +22,7 @@ interface SubmitButtonProps {
   validateTaskAfterReport?: boolean;
   failureReasonMetadataToSend?: [];
   success: boolean;
-  formData?;
+  values?;
   onSubmit?: (formData) => void;
   onPress?: () => void;
 }
@@ -30,33 +32,24 @@ export const SubmitButton = ({
   tasks,
   notes,
   contactName,
-  failureReason,
-  validateTaskAfterReport,
-  failureReasonMetadataToSend,
   success,
-  formData,
+  values,
   onSubmit,
-  onPress: customOnPress,
+  onPress,
 }: SubmitButtonProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
+
+  const { formStateToSend } = useReportFormContext();
   const [isDisabled, setIsDisabled] = useState(false);
 
   const footerBgColor = success ? greenColor : yellowColor;
+  const [postIncident, { isLoading, error }] =  usePostIncidentMutation();
 
   const handlePress = () => {
     setIsDisabled(true);
-
-
-    // Si hay onSubmit con formData, usarlo
-    if (onSubmit && formData) {
-      console.log('Calling onSubmit with formData:', formData);
-      onSubmit(formData);
-      return;
-    }
-
     const navigateOnSuccess = () => {
       if (route.params?.navigateAfter !== null) {
         navigation.navigate({
@@ -75,30 +68,26 @@ export const SubmitButton = ({
         dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
       }
     } else {
-      dispatch(
-        reportIncident(
-          task,
-          notes,
-          failureReason,
-          failureReasonMetadataToSend,
-          () => {
-            if (task.status !== 'DONE' && validateTaskAfterReport) {
-              dispatch(
-                markTaskDone(task, notes, navigateOnSuccess, contactName),
-              );
-            } else {
-              navigateOnSuccess();
-            }
-          },
-        ),
-      );
-    }
+      const payload = buildReportIncidentPayload(formStateToSend, task);
+      postIncident({ payload }).unwrap()
+      .then((r) => {
+        console.log('Incident reported response:', r);
+      })
+      .catch((e) => {
+        console.error('Error reporting incident:', e);
+      })
+      .finally(() => {
+        setIsDisabled(false);
+      });
+    };
   };
 
+  const isButtonDisabled = isDisabled || isLoading;
+  
   return (
     <TouchableOpacity
       onPress={handlePress}
-      disabled={isDisabled}
+      disabled={isButtonDisabled}
       style={{ 
         alignItems: 'center', 
         justifyContent: 'center',

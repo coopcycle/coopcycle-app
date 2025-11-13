@@ -225,7 +225,7 @@ export default function TimeSlotSelector({
     <View style={[styles.formGroup]}>
       <Text style={styles.label}>{t('STORE_NEW_DELIVERY_TIME_SLOT')}</Text>
       <View style={styles.buttonWrapper}>
-        {timeSlots.map((timeSlot, index) => {
+        {timeSlots && timeSlots.map((timeSlot, index) => {
           return (
             <Button
               onPress={() => updateSelectedTimeSlot(timeSlot)}
@@ -279,7 +279,7 @@ export default function TimeSlotSelector({
             <ScrollView
               style={{ maxHeight: 350 }}
               showsVerticalScrollIndicator={true}>
-              {choices.map((choice, index) => (
+              {choices && choices.map((choice, index) => (
                 <SelectItem
                   key={index}
                   value={choice.value}

@@ -23,16 +23,14 @@ export function handleChangeWeight(value, setFieldValue, setFieldTouched) {
   setFieldTouched('weight');
 }
 
-export function createDeliveryObject(
+export function createUpdatedTaskBody(
   values,
-  store,
-  route,
   packagesCount,
   selectedTimeSlot,
   selectedChoice,
+  supplements,
 ) {
   return {
-    store: store['@id'],
     address: values.address,
     telephone: values.telephone,
     contactName: values.contactName,
@@ -40,6 +38,7 @@ export function createDeliveryObject(
     description: values.description.trim() || null,
     comments: values.comments,
     weight: values.weight * 1000,
+    supplements: supplements || [],
     packages: packagesCount.filter(item => item.quantity > 0),
     ...(selectedChoice
       ? {

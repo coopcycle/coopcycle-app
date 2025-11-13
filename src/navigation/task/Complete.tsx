@@ -55,6 +55,7 @@ import {
   CheckboxLabel,
 } from '@/components/ui/checkbox';
 import { PoDButton } from './components/PoDButton';
+import { useReportFormContext } from './contexts/ReportFormContext';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -87,29 +88,28 @@ const CompleteTask = ({
   signatures,
   pictures,
   deleteSignatureAt,
-  deletePictureAt
+  deletePictureAt,
 }) => {
   const { t } = useTranslation();
   const route = useRoute();
   const task = route.params?.task;
   const tasks = route.params?.tasks;
+
+  const { formState, updateFormField } = useReportFormContext();
+
   const success = isSuccessRoute(route);
 
-  const [notes, setNotes] = useState('');
-  const [failureReason, setFailureReason] = useState(
-    null,
-  );
+  const [notes, setNotes] = useState(formState.notes);
+  const [failureReason, setFailureReason] = useState(formState.failureReasonCode);
   const [isContactNameModalVisible, setIsContactNameModalVisible] =
     useState(false);
-  const [contactName, setContactName] = useState(
-    '',
-  );
+  const [contactName, setContactName] = useState('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(
-    task?.status === 'DONE',
+    formState.task.status === 'DONE',
   );
 
-  const [failureReasonMetadata, setFailureReasonMetadata] = useState([]);
+  const [failureReasonMetadata, setFailureReasonMetadata] = useState(formState.failureReasonMetadata);
   const [failureReasonMetadataToSend, setFailureReasonMetadataToSend] =
     useState([]);
 
@@ -215,15 +215,15 @@ const CompleteTask = ({
                         httpClient={httpClient}
                         onValueChange={(code, obj) => {
                           if (obj && obj.metadata) {
-                            setFailureReasonMetadata(obj.metadata);
+                            updateFormField('failureReasonMetadata', obj.metadata);
                             setFailureReasonMetadataToSend(
                               parseInitialData(obj.metadata),
                             );
                           } else {
-                            setFailureReasonMetadata([]);
+                            updateFormField('failureReasonMetadata', []);
                             setFailureReasonMetadataToSend([]);
                           }
-                          setFailureReason(code);
+                          updateFormField('failureReason', code);
                         }}
                       />
                       {Array.isArray(failureReasonMetadata) &&
@@ -231,7 +231,7 @@ const CompleteTask = ({
                         <FailureReasonForm
                           data={failureReasonMetadata}
                           onChange={metadata => {
-                            setFailureReasonMetadataToSend(metadata);
+                            updateFormField('failureReasonMetadata', metadata);
                           }}
                           parseInitialData={parseInitialData}
                         />
@@ -246,7 +246,7 @@ const CompleteTask = ({
                       <TextareaInput
                         autoCorrect={false}
                         totalLines={2}
-                        onChangeText={text => setNotes(text)}
+                        onChangeText={text => updateFormField('notes', text)}
                       />
                     </Textarea>
                     {/* task.status !== 'DONE' DISABLE CHECKBOX display always checked if DONE */}
@@ -300,11 +300,11 @@ const CompleteTask = ({
               <SubmitButton
                 task={task}
                 tasks={tasks}
-                notes={notes}
-                contactName={contactName}
-                failureReason={failureReason}
+                // notes={notes}
+                // contactName={contactName}
+                // failureReason={failureReason}
                 validateTaskAfterReport={validateTaskAfterReport}
-                failureReasonMetadataToSend={failureReasonMetadataToSend}
+                //failureReasonMetadataToSend={failureReasonMetadataToSend}
                 success={isSuccessRoute(route)}
               />
             </VStack>

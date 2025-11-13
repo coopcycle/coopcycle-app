@@ -7,6 +7,9 @@ import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
 import { Header } from './components/Header';
 import { useRoute } from '@react-navigation/native';
+import {
+  ReportFormProvider,
+} from './contexts/ReportFormContext';
 
 export const Report = () => {
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
@@ -18,28 +21,30 @@ export const Report = () => {
   }, []);
 
   return (
-    <VStack style={{ flex: 1 }}>
-      <HStack style={styles.tabBar}>
-        <TabBar onPress={handleTabChange} />
-      </HStack>
-      <Header task={task} />
-      <View style={{ flex: 1, position: 'relative' }}>
-        <View
-          style={[
-            styles.tabContent,
-            currentTab === 'report' ? styles.visible : styles.hidden,
-          ]}>
-          <Complete />
+    <ReportFormProvider initialTask={task}>
+      <VStack style={{ flex: 1 }}>
+        <HStack style={styles.tabBar}>
+          <TabBar onPress={handleTabChange} />
+        </HStack>
+        <Header task={task} />
+        <View style={{ flex: 1, position: 'relative' }}>
+          <View
+            style={[
+              styles.tabContent,
+              currentTab === 'report' ? styles.visible : styles.hidden,
+            ]}>
+            <Complete />
+          </View>
+          <View
+            style={[
+              styles.tabContent,
+              currentTab === 'edit' ? styles.visible : styles.hidden,
+            ]}>
+            <EditTask task={task} />
+          </View>
         </View>
-        <View
-          style={[
-            styles.tabContent,
-            currentTab === 'edit' ? styles.visible : styles.hidden,
-          ]}>
-          <EditTask task={task} onSubmit={r => console.log('SUBMIT: ', r)} />
-        </View>
-      </View>
-    </VStack>
+      </VStack>
+    </ReportFormProvider>
   );
 };
 
