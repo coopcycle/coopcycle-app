@@ -27,6 +27,7 @@ import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
+import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 
 const Tab = createBottomTabNavigator();
 
@@ -133,6 +134,31 @@ function Tabs() {
 
 const RootStack = createStackNavigator();
 
+const HeaderLeftButton = ({navigation}) => {
+  const context = useTaskListsContext();
+  const dispatch = useDispatch();
+
+  const handleExitEditMode = () => {
+    context?.clearSelectedTasks();
+    dispatch(clearSelectedTasks());
+  };
+
+  if (context?.isEditMode) {
+    return (
+      <HeaderButtons>
+        <HeaderButton
+          iconName="close"
+          onPress={handleExitEditMode}
+          testID="exitEditModeBtn"
+          style={{ marginLeft: 16 }}
+        />
+      </HeaderButtons>
+    );
+  }
+
+  return headerLeft(navigation, 'menuBtnDispatch')();
+};
+
 const HeaderRightBody = ({navigation}) => {
   const context = useTaskListsContext();
   return (
@@ -175,7 +201,7 @@ export default function DispatchNavigator({ navigation }) {
             component={Tabs}
             options={({ navigation }) => ({
               title: i18n.t('DISPATCH'),
-              headerLeft: headerLeft(navigation, 'menuBtnDispatch'),
+              headerLeft: () => <HeaderLeftButton navigation={navigation} />,
               headerRight: () => (
                 <HeaderRightBody
                   isEditMode={taskListsContext?.isEditMode}

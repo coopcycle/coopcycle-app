@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
+import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 
 const Tab = createBottomTabNavigator();
 
@@ -74,7 +75,7 @@ const ButtonWithIcon = ({ as, onPress }) => {
 
 const MainStack = createStackNavigator();
 
-function HeaderButtons({ nav }) {
+function HeaderCourierButtons({ nav }) {
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled);
   return (
     <View style={styles.buttonBar}>
@@ -105,7 +106,7 @@ const MainNavigator = () => {
         component={Tabs}
         options={({ navigation }) => ({
           title: i18n.t('COURIER'),
-          headerLeft: headerLeft(navigation, 'menuBtnCourier'),
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
           headerRight: () => <HeaderRightBody navigation={navigation}/>,
         })}
       />
@@ -183,6 +184,29 @@ const SettingsNavigator = () => {
   );
 };
 
+const HeaderLeftButton = ({navigation}) => {
+  const context = useTaskListsContext();
+
+  const handleExitEditMode = () => {
+    context?.clearSelectedTasks();
+  };
+
+  if (context?.isEditMode) {
+    return (
+      <HeaderButtons>
+        <HeaderButton
+          iconName="close"
+          onPress={handleExitEditMode}
+          testID="exitEditModeBtn"
+          style={{ marginLeft: 16 }}
+        />
+      </HeaderButtons>
+    );
+  }
+
+  return headerLeft(navigation, 'menuBtnCourier')();
+};
+
 const HeaderRightBody = ({navigation}) => {
   const context = useTaskListsContext();
   return (
@@ -190,7 +214,7 @@ const HeaderRightBody = ({navigation}) => {
       {context?.isEditMode ?
       <SelectedTasksMenu navigation={navigation}/>
       :
-      <HeaderButtons nav={navigation} />}
+      <HeaderCourierButtons nav={navigation} />}
     </>
   );
 };
