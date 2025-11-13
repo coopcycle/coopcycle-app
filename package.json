@@ -118,6 +118,7 @@
     "react-native-sound": "^0.12.0",
     "react-native-svg": "15.12.1",
     "react-native-swipe-list-view": "^3.2.9",
+    "react-native-swipe-reveal": "https://github.com/alexsegura/react-native-swipe-reveal#no-native-modules",
     "react-native-tab-view": "^4.1.3",
     "react-native-vector-icons": "^10.0.3",
     "react-native-version-number": "^0.3.6",

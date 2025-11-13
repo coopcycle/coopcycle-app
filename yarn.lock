@@ -9179,6 +9179,7 @@ __metadata:
     react-native-svg: "npm:15.12.1"
     react-native-svg-transformer: "npm:^1.5.1"
     react-native-swipe-list-view: "npm:^3.2.9"
+    react-native-swipe-reveal: "https://github.com/alexsegura/react-native-swipe-reveal#no-native-modules"
     react-native-tab-view: "npm:^4.1.3"
     react-native-vector-icons: "npm:^10.0.3"
     react-native-version-number: "npm:^0.3.6"
@@ -18675,6 +18676,18 @@ __metadata:
     react: ">=0.14.8"
     react-native: ">=0.23.1"
   checksum: 10c0/6df334ca69fdc5b6578ee772e0c82d843a0ac78e3156ac0da84842bcd0429fad38d226dddf1fc9fa58cb52b59120ec7ae14187a8f3a35924c7a7de01b3922a29
+  languageName: node
+  linkType: hard
+
+"react-native-swipe-reveal@https://github.com/alexsegura/react-native-swipe-reveal#no-native-modules":
+  version: 0.1.6
+  resolution: "react-native-swipe-reveal@https://github.com/alexsegura/react-native-swipe-reveal.git#commit=a0f1e0ebf366633dde4a418635492a5e811a3966"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-native: ">=0.63.0"
+    react-native-gesture-handler: 2.21.2
+    react-native-reanimated: ">=3.0.0 <4.0.0"
+  checksum: 10c0/f9112ca93375c164e573e0d206c244177a886902e0e596ee7515ef2f302c0f1ad3e5464705563cd8a8a5a82180916bfb1187c6a24c7e94896907af0294de6c8b
   languageName: node
   linkType: hard
 
