@@ -21,8 +21,9 @@ import {
 import {
   filterHasIncidents,
   filterStatusDone,
+  filterStatusCancelled
 } from '../../redux/logistics/filters';
-import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
+import { selectAreIncidentsHidden, selectAreCancelledTasksHidden } from '../../redux/Courier/taskSelectors';
 import ActiveKeywordFilters from './components/ActiveKeywordFilters';
 import BasicSafeAreaView from '../../components/BasicSafeAreaView';
 import ItemSeparatorComponent from '../../components/ItemSeparator';
@@ -32,6 +33,7 @@ export default function TasksFilters() {
   const dispatch = useDispatch();
 
   const areDoneTasksHidden = useSelector(selectAreDoneTasksHidden);
+  const areCancelledTasksHidden = useSelector(selectAreCancelledTasksHidden);
   const areIncidentsHidden = useSelector(selectAreIncidentsHidden);
   const tasksChangedAlertSound = useSelector(selectTasksChangedAlertSound);
   const isHideUnassignedFromMap = useSelector(selectIsHideUnassignedFromMap);
@@ -50,6 +52,14 @@ export default function TasksFilters() {
       dispatch(clearTasksFilter(filterHasIncidents));
     } else {
       dispatch(filterTasks(filterHasIncidents));
+    }
+  }
+
+  function toggleDisplayCancelled(isHidden) {
+    if (isHidden) {
+      dispatch(clearTasksFilter(filterStatusCancelled));
+    } else {
+      dispatch(filterTasks(filterStatusCancelled));
     }
   }
 
@@ -77,6 +87,12 @@ export default function TasksFilters() {
       onToggle: () => toggleDisplayIncidents(areIncidentsHidden),
       isChecked: areIncidentsHidden,
       testID: 'hideIncidentsSwitch',
+    },
+    {
+      label: t('HIDE_CANCELLED_TASKS'),
+      onToggle: () => toggleDisplayCancelled(areCancelledTasksHidden),
+      isChecked: areCancelledTasksHidden,
+      testID: 'hideCancelledTasksSwitch',
     },
     {
       label: t('TASKS_CHANGED_ALERT_SOUND'),
@@ -128,7 +144,7 @@ function SettingsItemInner({ item }) {
 
 function SettingsItemSwitch({ item }) {
   return (
-    <HStack className="items-center justify-between py-3">
+    <HStack className="items-center justify-between py-3 mr-5">
       <Text>{item.label}</Text>
       <Switch
         onToggle={item.onToggle}

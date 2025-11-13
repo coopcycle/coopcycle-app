@@ -142,6 +142,7 @@
     "HIDE_DONE_TASKS": "Skrýt hotové úkoly",
     "HIDE_FAILED_TASKS": "Skrýt selhané úkoly",
     "HIDE_TASKS_TAGGED_WITH": "Skrýt úkoly označené s",
+    "HIDE_CANCELLED_TASKS": "Skrýt zrušené úkoly",
     "TASKS_CHANGED_ALERT_SOUND": "Výstražný zvuk změněného úkolu",
     "RESTAURANT_LIST_CLICK_BELOW": "V seznamu níže klikněte na restauraci",
     "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nové objednávky ({{count}})",

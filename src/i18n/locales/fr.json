@@ -147,6 +147,7 @@
     "TASKS_FILTER": "Filtrer les tâches",
     "HIDE_DONE_TASKS": "Masquer les tâches effectuées",
     "TASKS_HIDE_UNASSIGNED": "Masquer les tâches non assignées",
+    "HIDE_CANCELLED_TASKS": "Masquer les tâches annulées",
     "TASKS_SHOW_POLYLINE": "Montrer la ligne entre les tâches",
     "HIDE_FAILED_TASKS": "Masquer les tâches ayant échoué",
     "FILTER_BY_KEYWORDS": "Filtrer par mots-clés",
@@ -283,7 +284,7 @@
     "SIGNATURE_CLEAR": "Effacer",
     "SIGNATURE_ADD": "Ajouter la signature",
     "PHOTO": "Photo",
-    "PHOTO_DISCLAIMER": "Prenez une photo",
+    "PHOTO_DISCLAIMER": "Prenez une photo ou sélectionnez une photo",
     "LOAD_MORE": "Charger plus",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploadée !",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "L'image a été uploadée avec succès",
@@ -595,7 +596,15 @@
     "TIMESLOT_HELPER": "Modifier le créneau horaire",
     "WEIGHT_HELPER": "Modifier le poids personnalisé",
     "PACKAGES_TYPE_HELPER": "Modifier les types de paquets",
-    "SUPPLEMENTS_HELPER": "Modifier les suppléments"
+    "SUPPLEMENTS_HELPER": "Modifier les suppléments",
 
+    "CANCEL_TITLE": "Annuler {{entity}}",
+    "CANCEL_MESSAGE": "Êtes-vous sûr de vouloir annuler {{entity}} {{name}} ?",
+    "CANCEL_MESSAGE_PLURAL": "Êtes-vous sûr de vouloir annuler {{count}} {{entity}} ?",
+    "CANCEL_MESSAGE_WITH_TASKS": "Êtes-vous sûr de vouloir annuler {{entity}} {{name}} ?",
+    "CANCEL_ERROR_TITLE": "Erreur",
+    "CANCEL_ERROR_MESSAGE": "{{entity}} n’a pas pu être annulé.",
+    "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
+    "PROCEED": "Continuer"
   }
 }

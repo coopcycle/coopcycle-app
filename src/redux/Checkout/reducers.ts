@@ -7,7 +7,6 @@ import {
   CLEAR,
   CLEAR_ADDRESS,
   CLEAR_SEARCH_RESULTS,
-  DELETE_CART_REQUEST,
   GET_RESTAURANT_FAILURE,
   GET_RESTAURANT_REQUEST,
   GET_RESTAURANT_SUCCESS,
@@ -382,18 +381,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         carts: action.payload,
-      };
-
-    case DELETE_CART_REQUEST:
-      return {
-        ...state,
-        carts: {
-          ...state.carts,
-          [action.payload]: {
-            ...state.carts[action.payload],
-            softDelete: true,
-          },
-        },
       };
 
     case SET_CHECKOUT_LOADING:

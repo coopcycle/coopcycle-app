@@ -2,7 +2,6 @@ import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { Heading } from '@/components/ui/heading';
 import { Text } from '@/components/ui/text';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { FlatList, Image, TouchableOpacity, View } from 'react-native';
@@ -20,7 +19,11 @@ import { greyColor } from '../../styles/common';
 import { useSecondaryTextColor } from '../../styles/theme';
 import Address from '../../utils/Address';
 
-class AccountAddressesPage extends Component {
+interface AccountAddressesPageProps {
+  onSelect?(...args: unknown[]): unknown;
+}
+
+class AccountAddressesPage extends Component<AccountAddressesPageProps> {
   constructor(props) {
     super(props);
     this.state = {
@@ -122,10 +125,6 @@ class AccountAddressesPage extends Component {
     );
   }
 }
-
-AccountAddressesPage.propTypes = {
-  onSelect: PropTypes.func,
-};
 
 function mapStateToProps(state, ownProps) {
   const fnSelect = () => {

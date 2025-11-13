@@ -140,6 +140,7 @@
     "TASKS_FILTER": "Tareas",
     "HIDE_DONE_TASKS": "Ocultar tareas completadas",
     "HIDE_FAILED_TASKS": "Ocultar tareas fallidas",
+    "HIDE_CANCELLED_TASKS": "Ocultar tareas canceladas",
     "TASKS_HIDE_UNASSIGNED": "Ocultar tareas sin asignar del mapa",
     "TASKS_SHOW_POLYLINE": "Mostrar recorrido entre tareas",
     "FILTER_BY_KEYWORDS": "Filtrar por palabras clave",
@@ -253,7 +254,7 @@
     "SIGNATURE_CLEAR": "Borrar",
     "SIGNATURE_SIGN": "Enviar la imagen",
     "PHOTO": "Foto",
-    "PHOTO_DISCLAIMER": "Tomar una foto",
+    "PHOTO_DISCLAIMER": "Toma una foto o selecciona una foto",
     "LOAD_MORE": "Añadir más",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "¡Imagen añadida!",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "La imagen fue añadida con éxito",
@@ -497,7 +498,6 @@
     "WEIGHT": "Peso personalizado",
     "PACKAGES_TYPE": "Tipo de paquetes",
     "SUPPLEMENTS": "Suplementos",
-
     "ORDER_CLIENT_HELPER": "Modifique el cliente",
     "ADDRESS_HELPER": "Modifique la dirección",
     "BUSINESS_HELPER": "Modifique el nombre del negocio",
@@ -508,6 +508,14 @@
     "TIMESLOT_HELPER": "Modifique la franja horaria",
     "WEIGHT_HELPER": "Modifique el peso personalizado",
     "PACKAGES_TYPE_HELPER": "Modifique el tipo de paquetes",
-    "SUPPLEMENTS_HELPER": "Modifique los suplementos"
+    "SUPPLEMENTS_HELPER": "Modifique los suplementos",
+    "CANCEL_TITLE": "Cancelar {{entity}}",
+    "CANCEL_MESSAGE": "¿Estás seguro de que deseas cancelar {{entity}} {{name}}?",
+    "CANCEL_MESSAGE_PLURAL": "¿Estás seguro de que deseas cancelar {{count}} {{entity}}?",
+    "CANCEL_MESSAGE_WITH_TASKS": "¿Estás seguro de que deseas cancelar {{entity}} {{name}}?",
+    "CANCEL_ERROR_TITLE": "Error",
+    "CANCEL_ERROR_MESSAGE": "No se pudo cancelar el {{entity}}.",
+    "CANCEL_NO_TASKS_MESSAGE": "Este {{entity}} no tiene tareas asociadas para cancelar.",
+    "PROCEED": "Continuar"
   }
 }

@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react-native'
 import { Text } from '@/components/ui/text';
-import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
+import { withTranslation, useTranslation } from 'react-i18next';
 import { Animated, View } from 'react-native';
 
 import { formatPrice } from '../../../utils/formatting';
@@ -12,96 +11,84 @@ import {
   shouldShowPreOrder,
 } from '../../../utils/checkout';
 
-class CartFooterButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opacityAnim: new Animated.Value(1),
-    };
-  }
+interface CartFooterButtonProps {
+  testID: string;
+  isLoading?: boolean;
+  disabled?: boolean;
+  onPress(): unknown;
+}
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.cart.total !== prevProps.cart.total) {
-      this.animate();
-    }
-  }
+const ButtonLeft = () => {
 
-  animate() {
+  return (
+    <ButtonIcon
+      as={ShoppingCart}
+      size="sm"
+      className="mr-1"
+    />
+  );
+}
+
+const ButtonRight = ({ opacity, total }) => {
+
+  return (
+    <Animated.View style={{ opacity }}>
+      <ButtonText>
+        {`${formatPrice(total)}`}
+      </ButtonText>
+    </Animated.View>
+  );
+}
+
+const CartFooterButton = ({ cart, restaurant, onPress, testID, loading, disabled }: CartFooterButtonProps) => {
+
+  const { t } = useTranslation();
+
+  const opacity = useRef(new Animated.Value(1)).current;
+
+  const animate = useCallback(() => {
     Animated.sequence([
-      Animated.timing(this.state.opacityAnim, {
+      Animated.timing(opacity, {
         toValue: 0.4,
         duration: 500,
         useNativeDriver: false,
       }),
-      Animated.timing(this.state.opacityAnim, {
+      Animated.timing(opacity, {
         toValue: 1,
         duration: 250,
         useNativeDriver: false,
       }),
     ]).start();
+  }, [opacity])
+
+  useEffect(animate, [cart.total, animate]);
+
+  const isAvailable = isRestaurantOrderingAvailable(restaurant);
+  const showPreOrder = shouldShowPreOrder(restaurant);
+
+  if (!cart || cart.items.length === 0 || !isAvailable) {
+    return <View />;
   }
 
-  renderLeft() {
-    return (
-      <ButtonIcon
-        as={ShoppingCart}
-        size="sm"
-        className="mr-1"
-      />
-    );
-  }
+  const label = showPreOrder
+    ? t('SCHEDULE_ORDER')
+    : t('ORDER');
 
-  renderRight() {
-    return (
-      <Animated.View style={{ opacity: this.state.opacityAnim }}>
+  return (
+    <Button
+      onPress={onPress}
+      testID={testID}
+      isLoading={loading}
+      isDisabled={disabled}
+      className="w-full px-4"
+      >
+        <ButtonLeft />
         <ButtonText>
-          {`${formatPrice(this.props.cart.total)}`}
+          {label}
         </ButtonText>
-      </Animated.View>
-    );
-  }
-
-  render() {
-    const { cart, restaurant } = this.props;
-
-    const isAvailable = isRestaurantOrderingAvailable(restaurant);
-    const showPreOrder = shouldShowPreOrder(restaurant);
-
-    if (!cart || cart.items.length === 0 || !isAvailable) {
-      return <View />;
-    }
-
-    const label = showPreOrder
-      ? this.props.t('SCHEDULE_ORDER')
-      : this.props.t('ORDER');
-
-    return (
-      <Button
-        onPress={this.props.onPress}
-        testID={this.props.testID}
-        isLoading={this.props.loading}
-        isDisabled={this.props.disabled}
-        className="w-full px-4"
-        >
-          {this.renderLeft()}
-          <ButtonText>
-            {label}
-          </ButtonText>
-          {this.renderRight()}
-      </Button>
-    );
-  }
-
-  static defaultProps = {
-    isLoading: false,
-    disabled: false,
-  };
+        <ButtonRight opacity={opacity} total={cart.total} />
+    </Button>
+  );
 }
-
-CartFooterButton.propTypes = {
-  testID: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool,
-  disabled: PropTypes.bool,
-};
 
 export default withTranslation()(CartFooterButton);

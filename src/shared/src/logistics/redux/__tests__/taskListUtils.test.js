@@ -96,7 +96,7 @@ describe('taskListUtils', () => {
 
       const result = getTaskListTasks(taskList, tasksEntities);
 
-      expect(result).toEqual([allTasks[3], allTasks[4]]);
+      expect(result).toEqual([{...allTasks[3], index: 0}, {...allTasks[4], index: 1}]);
     });
 
     it('should return all tasks if all tasks are loaded', () => {
@@ -112,7 +112,7 @@ describe('taskListUtils', () => {
 
       const result = getTaskListTasks(taskList, tasksEntities);
 
-      expect(result).toEqual([allTasks[3], allTasks[4], allTasks[5]]);
+      expect(result).toEqual([{...allTasks[3], index: 0}, {...allTasks[4], index: 1}, {...allTasks[5], index: 2}]);
     });
   });
 

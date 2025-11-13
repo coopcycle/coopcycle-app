@@ -2,8 +2,8 @@ import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React/*, { useEffect, useRef }*/ from 'react';
+import { /*Animated,*/ StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Task } from '../types/task';
 import FAIcon from './Icon';
@@ -18,7 +18,7 @@ import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../redux/Courier/taskSelectors';
-import { selectTasksByOrder as selectTasksByOrderLogistics } from '../redux/logistics/selectors';
+import { selectIncomingTasksReordered } from '../redux/logistics/selectors';
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { getTimeFrame } from '../navigation/task/components/utils';
@@ -40,6 +40,19 @@ export const styles = StyleSheet.create({
   invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
+  },
+  packageText: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+  },
+  row: {
+    flexWrap: 'wrap',
+  },
+  rowRight: {
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
   },
 });
 
@@ -69,12 +82,12 @@ interface ITaskInfoProps {
   taskTestId: string;
 }
 
-function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
+export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
   const { t } = useTranslation();
   const context = useTaskListsContext();
   const selectSelector = context?.isFromCourier
   ? selectTasksByOrderCourier
-  : selectTasksByOrderLogistics;
+  : selectIncomingTasksReordered;
   const orderTasks = useSelector(selectSelector(getOrderNumber(task)));
   const taskTitle = getTaskTitleForOrder(task);
   const alignedTextStyle = isPickup
@@ -88,33 +101,38 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
     ...(isPickup ? [{ textAlign: 'right' as const }] : []),
   ];
 
-  // TODO check if we should replace by SVG icons (css rotation not working on load)
-  const pickupRotation = useRef(new Animated.Value(0)).current;
-  const dropoffRotation = useRef(new Animated.Value(0)).current;
+  const packagesText = task.packages?.length
+    ? task.packages.map(p => `${p.quantity} x ${p.short_code}`).join('   ')
+    : '';
 
-  useEffect(() => {
-    Animated.timing(pickupRotation, {
-      toValue: 90,
-      duration: 0,
-      useNativeDriver: true,
-    }).start();
+  // TODO We should replace by SVG icons (rotation takes too much resources on big lists)
+  // const pickupRotation = useRef(new Animated.Value(0)).current;
+  // const dropoffRotation = useRef(new Animated.Value(0)).current;
 
-    Animated.timing(dropoffRotation, {
-      toValue: 90,
-      duration: 0,
-      useNativeDriver: true,
-    }).start();
-  }, [dropoffRotation, pickupRotation]);
+  // useEffect(() => {
+  //   Animated.timing(pickupRotation, {
+  //     toValue: 90,
+  //     duration: 0,
+  //     useNativeDriver: true,
+  //   }).start();
 
-  const pickupRotationInterpolated = pickupRotation.interpolate({
-    inputRange: [0, 360],
-    outputRange: ['0deg', '360deg'],
-  });
+  //   Animated.timing(dropoffRotation, {
+  //     toValue: 90,
+  //     duration: 0,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [dropoffRotation, pickupRotation]);
 
-  const dropoffRotationInterpolated = dropoffRotation.interpolate({
-    inputRange: [0, 360],
-    outputRange: ['0deg', '360deg'],
-  });
+  // const pickupRotationInterpolated = pickupRotation.interpolate({
+  //   inputRange: [0, 360],
+  //   outputRange: ['0deg', '360deg'],
+  // });
+
+  // const dropoffRotationInterpolated = dropoffRotation.interpolate({
+  //   inputRange: [0, 360],
+  //   outputRange: ['0deg', '360deg'],
+  // });
+
   return (
     <HStack>
       <VStack
@@ -141,16 +159,16 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
           <HStack space="md">
             <Text numberOfLines={1} style={{ flex: 1, textAlign: 'right' }} italic={!taskTitle}>{taskTitle || `(${t('UNNAMED')})`}</Text>
             <DropoffArrows size="lg" count={getDropoffCount(orderTasks)} />
-            <Animated.View
+            {/* <Animated.View
               style={{
                 transform: [{ rotate: pickupRotationInterpolated }],
               }}>
               <FAIcon name="level-down-alt" size={18} />
-            </Animated.View>
+            </Animated.View> */}
           </HStack>
         ) : (
           <HStack space="md">
-            <Animated.View
+            {/* <Animated.View
               style={{
                 transform: [
                   { rotate: dropoffRotationInterpolated },
@@ -158,7 +176,7 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
                 ],
               }}>
               <FAIcon name="level-down-alt" size={18} />
-            </Animated.View>
+            </Animated.View> */}
             <Text numberOfLines={1} style={{ flex: 1 }}>
               {getDropoffPosition(task, orderTasks)}
               <Text italic={!taskTitle}> {taskTitle || `(${t('UNNAMED')})`}</Text>
@@ -169,14 +187,32 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
         <Text numberOfLines={1} style={alignedTextStyle}>
           {task.address.streetAddress}
         </Text>
-        <HStack
-          className="items-center"
-          style={isPickup ? { justifyContent: 'flex-end' } : undefined}>
-          <Text className="pr-2" style={alignedTextStyle}>
-            {getTimeFrame(task)}
-          </Text>
-          {/* TODO confirm -- why this? shouldn't this be comments? */}
-          {task.comments ? <FAIcon name="comments" /> : null}
+        <HStack className="items-center" style={isPickup ? styles.rowRight : styles.row}>
+          {isPickup ? (
+            <>
+              {packagesText && (
+                <View style={styles.packageText}>
+                  <Text style={{ textAlign: 'right' }}>
+                    {packagesText} |
+                  </Text>
+                </View>
+              )}
+              <Text style={{ textAlign: 'right' }}> {getTimeFrame(task)} </Text>
+              {task.comments && <FAIcon name="comments" />}
+            </>
+          ) : (
+            <>
+              <Text>{getTimeFrame(task)} </Text>
+              {packagesText && (
+                <View style={styles.packageText}>
+                  <Text>
+                    | {packagesText}
+                  </Text>
+                </View>
+              )}
+              {task.comments && <FAIcon name="comments" />}
+            </>
+          )}
         </HStack>
         {task.tags && task.tags.length ? (
           <View style={isPickup ? { alignSelf: 'flex-end' } : undefined}>
@@ -188,6 +224,4 @@ function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps) {
       <TaskPriorityStatus task={task} cardBorderRadius={cardBorderRadius} />
     </HStack>
   );
-}
-
-export default TaskInfo;
+};

@@ -5,7 +5,7 @@ import { LucideIcon } from 'lucide-react-native';
 /**
  * Task status enumeration
  */
-export type TaskStatus = 'TODO' | 'DOING' | 'DONE' | 'FAILED';
+export type TaskStatus = 'TODO' | 'DOING' | 'DONE' | 'FAILED' | 'CANCELLED';
 
 /**
  * Task type enumeration
@@ -253,30 +253,6 @@ export interface TaskFilterOptions {
   organization?: string;
 }
 
-// Updated TypeScript interface
-export interface TaskListItemProps {
-  task: Task;
-  nextTask?: Task | null;
-  color: string;
-  index: number;
-  taskListId: string;
-  appendTaskListTestID?: string;
-  onPress?: () => void;
-  onLongPress?: (task: Task) => void;
-  onOrderPress?: () => void;
-  onSortBefore?: (task: Task, tasklist: Task[]) => void;
-  onSort?: (task: Task, taskList: Task[]) => void;
-  onPressLeft?: () => void;
-  onPressRight?: () => void;
-  swipeOutLeftBackgroundColor?: string;
-  swipeOutLeftIcon?: LucideIcon;
-  swipeOutRightBackgroundColor?: string;
-  swipeOutRightIcon?: LucideIcon;
-  onSwipedToLeft?: () => void;
-  onSwipedToRight?: () => void;
-  onSwipeClosed?: () => void;
-}
-
 export interface TaskListProps {
   id: string;
   tasks: Task[];
@@ -292,13 +268,36 @@ export interface TaskListProps {
   onLongPress?: (task: Task) => void;
   onTaskClick: (task: Task) => void;
   onOrderClick: (task: Task) => void;
-  onSort: (task: Task) => void;
-  onSortBefore?: (tasklist: Task[]) => void;
+  onSortBefore?: (tasks: Task[]) => void;
+  onSort?: (tasks: Task[], index: number) => void;
   refreshing?: boolean;
   swipeOutLeftBackgroundColor?: string;
   swipeOutLeftIcon?: LucideIcon;
   swipeOutRightBackgroundColor?: string;
   swipeOutRightIcon?: LucideIcon;
+}
+
+export interface TaskListItemProps {
+  task: Task;
+  nextTask?: Task | null;
+  color: string;
+  index: number;
+  taskListId: string;
+  appendTaskListTestID?: string;
+  onPress?: () => void;
+  onLongPress?: TaskListProps['onLongPress'];
+  onOrderPress?: () => void;
+  onPressLeft?: () => void;
+  onPressRight?: () => void;
+  onSortBefore?: TaskListProps['onSortBefore'];
+  onSort?: TaskListProps['onSort'];
+  swipeOutLeftBackgroundColor?: string;
+  swipeOutLeftIcon?: LucideIcon;
+  swipeOutRightBackgroundColor?: string;
+  swipeOutRightIcon?: LucideIcon;
+  onSwipedToLeft?: () => void;
+  onSwipedToRight?: () => void;
+  onSwipeClosed?: () => void;
 }
 
 export default Task;

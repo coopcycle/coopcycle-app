@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-
 import { useStackNavigatorScreenOptions } from '../styles';
 import OrderTitle from '../../components/OrderTitle';
 import screens from '..';
@@ -17,6 +16,9 @@ import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/l
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
 import { HeaderButton, HeaderButtons } from '../../components/HeaderButton';
 import { RouteType } from '../order/types';
+import { Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { cancelTask } from '../../redux/Courier/taskActions';
 
 const RootStack = createStackNavigator();
 
@@ -29,10 +31,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ route }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const tasksEntities = useSelector(selectTasksEntities);
   const allTaskLists = useSelector(selectTaskLists);
-
-  const { orderNumber, isFromCourier } = route.params || {};
+  const { orderNumber, isFromCourier, status } = route.params || {};
+  const isCancelDisabled = status === 'CANCELLED' || status === 'DONE' || status === 'FAILED';
 
   const selectSelector = isFromCourier
     ? selectTasksByOrderCourier
@@ -53,7 +56,6 @@ const Header: React.FC<HeaderProps> = ({ route }) => {
   );
 
   const handleBulkEditPress = useCallback(() => {
-    // Build selected tasks structure similar to GroupedTasks
     const selectedTasks = buildSelectedTasks(orderTasks, [], allTaskLists);
 
     navigation.navigate('DispatchPickUser', {
@@ -80,8 +82,47 @@ const Header: React.FC<HeaderProps> = ({ route }) => {
     onSelectNewAssignation,
   ]);
 
+const handleCancelPress = useCallback(() => {
+  const entity = t('ORDER');
+  const name = orderNumber;
+
+  Alert.alert(
+    t('CANCEL_TITLE', { entity }),
+    t('CANCEL_MESSAGE_WITH_TASKS', { entity, name }),
+    [
+      { text: t('CANCEL'), style: 'cancel' },
+      {
+        text: t('PROCEED'),
+        style: 'destructive',
+        onPress: () => {
+          try {
+            for (const task of orderTasks) {
+              dispatch(cancelTask(task, () => {}));
+            }
+
+            navigation.goBack();
+          } catch (error) {
+            console.error('Cancel order error:', error);
+            Alert.alert(
+              t('CANCEL_ERROR_TITLE'),
+              t('CANCEL_ERROR_MESSAGE', { entity }),
+            );
+          }
+        },
+      },
+    ],
+  );
+}, [t, orderNumber, orderTasks, dispatch, navigation]);
+
   return (
     <HeaderButtons>
+    {!isFromCourier && (
+      <HeaderButton
+        onPress={!isCancelDisabled ? handleCancelPress : undefined}
+        iconName="ban"
+        disabled={isCancelDisabled}
+      />
+    )}
       <HeaderButton onPress={handleBulkEditPress} iconName="person" />
     </HeaderButtons>
   );

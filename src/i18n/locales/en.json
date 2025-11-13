@@ -148,6 +148,7 @@
     "TASKS_FILTER": "Tasks",
     "HIDE_DONE_TASKS": "Hide done tasks",
     "TASKS_HIDE_UNASSIGNED": "Hide unassigned tasks from map",
+    "HIDE_CANCELLED_TASKS": "Hide cancelled tasks",
     "TASKS_SHOW_POLYLINE": "Show line linking tasks",
     "HIDE_FAILED_TASKS": "Hide failed tasks",
     "FILTER_BY_KEYWORDS": "Filter by keywords",
@@ -289,7 +290,7 @@
     "SIGNATURE_ADD": "Add signature",
     "PHOTO": "Picture",
     "PHOTO_ADD": "Add picture",
-    "PHOTO_DISCLAIMER": "Take a picture",
+    "PHOTO_DISCLAIMER": "Take a picture or select a picture",
     "LOAD_MORE": "Load more",
     "TASK_IMAGE_UPLOAD_CONFIRM_SHORT": "Image uploaded!",
     "TASK_IMAGE_UPLOAD_CONFIRM_LONG": "Image was successfully uploaded",
@@ -634,6 +635,14 @@
     "TIMESLOT_HELPER": "Modify the timeslot",
     "WEIGHT_HELPER": "Modify custom weight",
     "PACKAGES_TYPE_HELPER": "Modify packages",
-    "SUPPLEMENTS_HELPER": "Modify supplements"
-  }
+    "SUPPLEMENTS_HELPER": "Modify supplements",
+    "CANCEL_TITLE": "Cancel {{entity}}",
+    "CANCEL_MESSAGE": "Are you sure you want to cancel {{entity}} {{name}}?",
+    "CANCEL_MESSAGE_PLURAL": "Are you sure you want to cancel {{count}} {{entity}}?",
+    "CANCEL_MESSAGE_WITH_TASKS": "Are you sure you want to cancel {{entity}} {{name}}?",
+    "CANCEL_ERROR_TITLE": "Error",
+    "CANCEL_ERROR_MESSAGE": "The {{entity}} could not be canceled.",
+    "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
+    "PROCEED": "Proceed"
+}
 }
