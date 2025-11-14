@@ -132,22 +132,15 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
     }
   }, [task?.packages, reduxPackages]);
 
-  useEffect(() => {
-    if (task?.timeSlot) {
-      setSelectedTimeSlot(task.timeSlot);
-      updateFormField('selectedTimeSlot', task.timeSlot);
-      return;
-    }
-
-    if (
-      hasTimeSlot &&
-      !formState.selectedTimeSlot
-    ) {
-      const initialSlot = timeSlots[0];
-      setSelectedTimeSlot(initialSlot);
-      updateFormField('selectedTimeSlot', initialSlot);
-    }
-  }, [task?.timeSlot, timeSlots,hasTimeSlot , formState.selectedTimeSlot, updateFormField]);
+  const handleTimeSlotChange = useCallback(
+    (choice: string, timeSlot: string) => {
+      setSelectedChoice(choice);
+      setSelectedTimeSlot(timeSlot);
+      updateFormField('selectedChoice', choice);
+      updateFormField('selectedTimeSlot', timeSlot);
+    },
+    [updateFormField],
+  );
 
   const validate = useValidation(
     validAddress,
@@ -411,6 +404,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                         choices={timeSlotChoices}
                         selectedTimeSlot={selectedTimeSlot}
                         initialTimeSlot={task?.timeSlot}
+                        onTimeSlotChange={handleTimeSlotChange}
                       />
                     ) : (
                       <DateTimePicker
