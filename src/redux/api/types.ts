@@ -20,4 +20,29 @@ export interface HydraCollection<T> {
     'hydra:previous'?: string;
     'hydra:next'?: string;
   };
-}
+};
+
+export type TimeSlot = JsonLdEntity & {
+  id: number;
+  name: string;
+  interval: string;
+  workingDaysOnly: boolean;
+  priorNotice?: string;
+  openingHours?: string[];
+  choices?: TimeSlotChoice[];
+};
+
+export type StoreTimeSlot = JsonLdEntity & {
+  id: number;
+  name: string;
+};
+
+export type TimeSlotChoice = {
+  // "2025-07-24T07:00:00Z/2025-07-25T06:59:00Z"
+  value: string;
+  label: string;
+};
+
+export type TimeSlotChoices = {
+  choices: TimeSlotChoice[];
+};

@@ -1,16 +1,23 @@
-import { IconChevronDown } from '@tabler/icons-react-native';
+import { ChevronDownIcon } from '@/components/ui/icon';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import {
-  useBackgroundColor,
-  useBackgroundContainerColor,
+  Select,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectIcon,
+  SelectInput,
+  SelectItem,
+  SelectPortal,
+  SelectTrigger,
+} from '@/components/ui/select';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import {
   useBackgroundHighlightColor,
-  useBaseTextColor,
-  usePrimaryColor,
 } from '../../../styles/theme';
 
 const styles = StyleSheet.create({
@@ -37,24 +44,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const selectStyles = {
-  borderWidth: 1,
-  borderRadius: 4,
-  paddingRight: 30,
-  paddingVertical: 12,
-  paddingHorizontal: 10,
-  fontSize: 16,
-};
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    ...selectStyles,
-  },
-  inputAndroid: {
-    ...selectStyles,
-  },
-});
-
 export default function TimeSlotSelector({
   errors,
   touched,
@@ -66,24 +55,48 @@ export default function TimeSlotSelector({
   selectedTimeSlot,
   selectValue,
   setSelectValue,
+  onTimeSlotChange,
 }) {
   const { t } = useTranslation();
-  const primaryColor = usePrimaryColor();
-  const backgroundContainerColor = useBackgroundContainerColor();
-  const backgroundColor = useBackgroundColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
-  const textColor = useBaseTextColor();
 
-  const [isFocused, setIsFocused] = useState(false);
+  const handleButtonPress = (timeSlot) => {
+    updateSelectedTimeSlot(timeSlot);
+    
+    if (onTimeSlotChange) {
+      const correspondingChoice = choices?.find(choice => 
+        choice.value?.key === timeSlot['@id']
+      );
+      
+      onTimeSlotChange(correspondingChoice?.value, timeSlot['@id']);
+    }
+  };
+
+  const handleSelectChange = (value) => {
+    if (!value) return;
+    
+    setFieldValue('timeSlot', value.key);
+    setFieldTouched('timeSlot');
+    setSelectValue(value);
+    
+    const selectedSlot = timeSlots?.find(slot => slot['@id'] === value.key);
+    if (selectedSlot) {
+      updateSelectedTimeSlot(selectedSlot);
+      
+      if (onTimeSlotChange) {
+        onTimeSlotChange(value, value.key);
+      }
+    }
+  };
 
   return (
     <View style={[styles.formGroup]}>
       <Text style={styles.label}>{t('STORE_NEW_DELIVERY_TIME_SLOT')}</Text>
       <View style={styles.buttonWrapper}>
-        {timeSlots.map((timeSlot, index) => {
+        {timeSlots && timeSlots.map((timeSlot, index) => {
           return (
             <Button
-              onPress={() => updateSelectedTimeSlot(timeSlot)}
+              onPress={() => handleButtonPress(timeSlot)}
               style={[
                 {
                   borderColor:
@@ -111,47 +124,36 @@ export default function TimeSlotSelector({
           );
         })}
       </View>
-      <RNPickerSelect
-        style={{
-          ...pickerSelectStyles,
-          inputIOS: {
-            ...pickerSelectStyles.inputIOS,
-            backgroundColor: backgroundContainerColor,
-            borderColor: isFocused ? primaryColor : backgroundHighlightColor,
-            color: textColor,
-          },
-          inputAndroid: {
-            ...pickerSelectStyles.inputAndroid,
-            backgroundColor: backgroundContainerColor,
-            borderColor: isFocused ? primaryColor : backgroundHighlightColor,
-            color: textColor,
-          },
-          iconContainer: {
-            top: 12,
-            right: 12,
-          },
-        }}
-        useNativeAndroidPickerStyle={false}
-        Icon={() => {
-          return <IconChevronDown color={'gray'} />;
-        }}
-        onValueChange={value => {
-          if (!value) return;
-          setFieldValue('timeSlot', value.key);
-          setFieldTouched('timeSlot');
-          setSelectValue(value);
-        }}
-        onOpen={() => setIsFocused(true)}
-        onClose={() => setIsFocused(false)}
-        items={choices.map(
-          choice => (choice = { value: choice.value, label: choice.label }),
-        )}
-        placeholder={{
-          label: t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT'),
-          value: null,
-        }}
-        value={selectValue}
-      />
+      <Select
+        selectedValue={selectValue}
+        onValueChange={handleSelectChange}
+      >
+        <SelectTrigger variant="outline" size="md">
+          <SelectInput
+            placeholder={t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT')}
+          />
+          <SelectIcon className="mr-3" as={ChevronDownIcon} />
+        </SelectTrigger>
+        <SelectPortal>
+          <SelectBackdrop style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
+          <SelectContent>
+            <SelectDragIndicatorWrapper>
+              <SelectDragIndicator />
+            </SelectDragIndicatorWrapper>
+            <ScrollView
+              style={{ maxHeight: 350 }}
+              showsVerticalScrollIndicator={true}>
+              {choices && choices.map((choice, index) => (
+                <SelectItem
+                  key={index}
+                  value={choice.value}
+                  label={choice.label}
+                />
+              ))}
+            </ScrollView>
+          </SelectContent>
+        </SelectPortal>
+      </Select>
       {errors.timeSlot && touched.timeSlot && (
         <Text note style={styles.errorText}>
           {errors.timeSlot}

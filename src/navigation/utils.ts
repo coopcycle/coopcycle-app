@@ -48,3 +48,37 @@ export const navigateToCompleteTask = (
     },
   });
 };
+
+export const navigateToReportTask = (
+  navigation,
+  route,
+  task,
+  tasks = [],
+  success = false,
+) => {
+  const params = {
+    task,
+    tasks,
+    navigateAfter: route.name,
+  };
+
+  navigation.navigate('ReportIncident', {
+    screen: 'TaskComplete',
+    params: { 
+      screen:'ReportIncidentHome',
+      params: {...params, success} 
+    },
+  });
+};
+
+export const navigateToProofOfDeliveryFromReportIncident = (
+  navigation, route, task, tasks
+) => {
+  const params = {
+    task, tasks, navigateAfter: route.name
+  }
+  navigation.navigate('TaskComplete', {
+      screen: 'TaskCompleteProofOfDelivery',
+      params: {...params}
+    });
+};

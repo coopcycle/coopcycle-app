@@ -208,7 +208,7 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
   );
 }
 
-function getTaskTimeFrame(task: Task, separator: string) {
+export function getTaskTimeFrame(task: Task, separator: string) {
   return (
     addDayIfNotToday(task.doneAfter, separator) +
     getTimeFrame(task)

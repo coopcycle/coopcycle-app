@@ -46,8 +46,8 @@ class Task extends Component {
   componentDidUpdate(prevProps, prevState) {
     const task = this.props.route.params?.task;
 
-    let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']);
-    let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id']);
+    const previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']);
+    const currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id']);
 
     // Task status has been updated
     if (
@@ -93,12 +93,15 @@ class Task extends Component {
       return;
     }
 
-    this.props.navigation.navigate('TaskComplete', {
-      screen: 'TaskCompleteHome',
+    this.props.navigation.navigate('ReportIncident', {
+      screen: 'TaskComplete',
       params: {
-        task,
-        navigateAfter: this.props.route.params?.navigateAfter,
-        success,
+        screen: 'ReportIncidentHome',
+        params: {
+          task,
+          navigateAfter: this.props.route.params?.navigateAfter,
+          success,
+        }
       },
     });
     setTimeout(() => this.swipeRow.current.closeRow(), 250);
