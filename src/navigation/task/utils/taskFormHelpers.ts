@@ -11,7 +11,7 @@ export const handleFormSubmit = (
   selectedChoice,
   packagesCount,
   onSubmit?: (data) => void,
-  selectedSupplements?: []
+  selectedSupplements?: [],
 ) => {
   // console.log('Creating delivery object with:', {
   //   values,
@@ -28,20 +28,20 @@ export const handleFormSubmit = (
       values,
       packagesCount,
       selectedTimeSlot,
-      selectedChoice,      
+      selectedChoice,
       selectedSupplements,
     );
   } catch (error) {
     console.error('Error creating payload object:', error);
     body = {};
   }
-  
+
   const payload = buildReportIncidentPayload(reportBody, body);
 
   onSubmit?.(payload);
 };
 
-export const getAutocompleteProps = (deliveryError) => {
+export const getAutocompleteProps = deliveryError => {
   const baseProps = {
     inputContainerStyle: {
       flex: 1,
@@ -63,10 +63,7 @@ export const getAutocompleteProps = (deliveryError) => {
     : baseProps;
 };
 
-export const getInitialFormValues = (
-  task?: Partial<Task>,
-  store?,
-) => {
+export const getInitialFormValues = (task?: Partial<Task>, store?) => {
   const businessName =
     task?.orgName || store?.name || task?.address?.name || '';
 
@@ -85,25 +82,48 @@ export const getInitialFormValues = (
   };
 };
 
-export const buildReportIncidentPayload = (report, updatedTask) => {
-  return {
-    description: report.description,
-    failureReasonCode: report.failureReasonCode,
-    task: report.taskID,
-    // metadata: [
-    //   {
-    //     suggestion: {
-    //       // tasks: [{
-    //       //   id: updatedTask.id,
-    //       //   // ...updatedTaskToSend
-    //       // }]
-    //     }
-    //   }
-    // ]
+const buildMetadataPayload = (task, id) => {
+  if (!task.tasks || Object.keys(task.tasks).length === 0) {
+    return [];
+  }
+
+  const order = {
+    order: {
+      manualSupplements: task.selectedSupplements,
+    },
   };
+
+  const suggestion = {
+    suggestion: {
+      tasks: [
+        {
+          id: id,
+          ...task.tasks,
+        },
+      ],
+    },
+  };
+
+  const metadata = [
+    task.selectedSupplements ? order : null,
+    task ? suggestion : null,
+  ].filter(item => item !== null);
+
+  return metadata;
 };
 
-// BUILD DATA STRUCTURE ACCORDING TO API EXPECTATIONS
+export const buildReportIncidentPayload = report => {
+  const metadata = buildMetadataPayload(report.updatedTask, report.task.id);
+  const payload = {
+    description: report.description,
+    failureReasonCode: report.failureReason,
+    task: report.taskID,
+  };
+
+  if (metadata.length > 0) payload.metadata = metadata;
+  return payload;
+};
+
 export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
   console.log('buildUpdatedTaskFields called with:', { field, value });
   switch (field) {
@@ -112,18 +132,24 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
     case 'packagesCount':
       return { packages: value };
     case 'weight':
-      return { weight: value };
-      case 'telephone':
+      return { weight: Number(value) };
+    case 'telephone':
       return { telephone: value };
     case 'selectedTimeSlot':
       return { timeSlot: value };
     case 'selectedChoice':
       return { choice: value };
-    case 'selectedSupplements':
-      return { supplements: value };
-    // case 'values':
-    //   return value as Partial<Task>;
     default:
       return {};
   }
+};
+
+export const mapSupplements = supplements => {
+  return supplements.map(supplement => {
+    console.log(supplement);
+    return {
+      pricingRule: supplement.originalRule['@id'],
+      quantity: supplement.quantity,
+    };
+  });
 };

@@ -6,7 +6,10 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import { buildUpdatedTaskFields } from '../utils/taskFormHelpers';
+import {
+  buildUpdatedTaskFields,
+  mapSupplements,
+} from '../utils/taskFormHelpers';
 
 interface Package {
   id: number;
@@ -30,16 +33,18 @@ interface FormState {
   selectedSupplements: Supplement[];
   // REPORT INCIDENT FIELDS
   failureReason?: string;
-  failureReasonMetadata: Record<string, unknown>;
   notes: string;
   task: Task;
 }
 
 interface ReportFormContextType {
   formState: FormState;
+  isSubmitting: boolean;
+  startSubmitting: () => void;
+  stopSubmitting: () => void;
   formStateToSend: {
     failureReason: string;
-    description: string;
+    notes: string;
     updatedTask: Record<string, unknown>;
     taskID: string;
   };
@@ -67,7 +72,8 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
 }) => {
   const [formStateToSend, setFormStateToSend] = useState({
     failureReason: '',
-    description: '',
+    notes: '',
+    task: initialTask || {},
     updatedTask: {},
     taskID: initialTask?.['@id'] || '',
   });
@@ -86,6 +92,17 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     notes: '',
     task: initialTask,
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const startSubmitting = useCallback(() => {
+    setIsSubmitting(true);
+  }, []);
+
+  const stopSubmitting = useCallback(() => {
+    setIsSubmitting(false);
+  }, []);
+
 
   const updateFormState = useCallback((updates: Partial<FormState>) => {
     setFormState(prev => ({
@@ -108,20 +125,25 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
 
       switch (field) {
         case 'notes':
-          updates.description = value as string ?? '';
+          updates.notes = (value as string) ?? '';
           break;
-        case 'failureReason':
-          updates.failureReasonCode = value as string ?? '';
+        case 'failureReasonCode':
+          updates.failureReasonCode = (value as string) ?? '';
           break;
-        case 'address':
         case 'weight':
+        case 'address':
         case 'telephone':
         case 'packagesCount':
         case 'selectedTimeSlot':
         case 'selectedChoice':
+        case 'description':
+          updates.updatedTask = {
+            tasks: { ...buildUpdatedTaskFields(field, value) },
+          };
+          break;
         case 'selectedSupplements':
           updates.updatedTask = {
-            ...buildUpdatedTaskFields(field, value),
+            selectedSupplements: mapSupplements(value),
           };
           break;
         default:
@@ -150,6 +172,9 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
 
   const value: ReportFormContextType = {
     formState,
+    isSubmitting,
+    startSubmitting,
+    stopSubmitting,
     formStateToSend,
     updateFormState,
     updateFormField,
