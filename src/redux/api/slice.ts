@@ -195,7 +195,6 @@ export const apiSlice = createApi({
     }),
     postIncident: builder.mutation({
       query: ({ payload }) => {
-        console.log('Payload object:', payload);
         return {
           url: `/api/incidents`,
           method: 'POST',
@@ -203,7 +202,7 @@ export const apiSlice = createApi({
             'Content-Type': 'application/ld+json',
             Accept: 'application/ld+json',
           },
-          body: payload,
+          body: JSON.stringify(payload),
         };
       },
     }),
