@@ -100,7 +100,7 @@ const CompleteTask = ({
   const success = isSuccessRoute(route);
 
   const [notes, setNotes] = useState(formState.notes);
-  const [failureReason, setFailureReason] = useState(formState.failureReasonCode);
+  const [failureReason, setFailureReason] = useState(formState.failureReason);
   const [isContactNameModalVisible, setIsContactNameModalVisible] =
     useState(false);
   const [contactName, setContactName] = useState('');
