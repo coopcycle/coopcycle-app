@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ import Task from "@/src/types/task";
 import { useReportFormContext } from "../contexts/ReportFormContext";
 import { usePostIncidentMutation } from "@/src/redux/api/slice";
 import { buildReportIncidentPayload } from "../utils/taskFormHelpers";
+import { showAlert } from "@/src/utils/alert";
 
 interface SubmitButtonProps {
   task: Task;
@@ -22,7 +23,6 @@ interface SubmitButtonProps {
   validateTaskAfterReport?: boolean;
   failureReasonMetadataToSend?: [];
   success: boolean;
-  values?;
   onSubmit?: (formData) => void;
   onPress?: () => void;
 }
@@ -33,22 +33,20 @@ export const SubmitButton = ({
   notes,
   contactName,
   success,
-  values,
-  onSubmit,
-  onPress,
 }: SubmitButtonProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
 
-  const { formStateToSend } = useReportFormContext();
+  const { formStateToSend, startSubmitting, stopSubmitting } = useReportFormContext();
   const [isDisabled, setIsDisabled] = useState(false);
 
   const footerBgColor = success ? greenColor : yellowColor;
   const [postIncident, { isLoading, error }] =  usePostIncidentMutation();
 
   const handlePress = () => {
+    startSubmitting();
     setIsDisabled(true);
     const navigateOnSuccess = () => {
       if (route.params?.navigateAfter !== null) {
@@ -68,22 +66,27 @@ export const SubmitButton = ({
         dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
       }
     } else {
-      const payload = buildReportIncidentPayload(formStateToSend, task);
+      const payload = buildReportIncidentPayload(formStateToSend);
       postIncident({ payload }).unwrap()
-      .then((r) => {
-        console.log('Incident reported response:', r);
+      .then(() => {
+        navigateOnSuccess();
       })
-      .catch((e) => {
-        console.error('Error reporting incident:', e);
-      })
+      .catch((e) => {})
       .finally(() => {
+        stopSubmitting();
         setIsDisabled(false);
       });
     };
   };
 
   const isButtonDisabled = isDisabled || isLoading;
-  
+
+  useEffect(() => {
+    if (error) {
+      showAlert(error.data);
+    }
+  }, [error]);
+
   return (
     <TouchableOpacity
       onPress={handlePress}
