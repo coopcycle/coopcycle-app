@@ -285,8 +285,6 @@ export function reportIncident(
       task: task['@id'],
     };
 
-    console.log('Reporting incident with payload:', payload);
-
     // Make sure to return a promise for testing
     return httpClient
       .post('/api/incidents', payload)
