@@ -2,16 +2,35 @@ import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import Complete from './Complete';
 import { EditTask } from './Edit';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
 import { Header } from './components/Header';
 import { useRoute } from '@react-navigation/native';
 import {
   ReportFormProvider,
+  useReportFormContext,
 } from './contexts/ReportFormContext';
 
-export const Report = () => {
+const Indicator = () => (
+  <View
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(102, 102, 102, 0.2)',
+      zIndex: 999,
+    }}>
+    <ActivityIndicator animating={true} size="large" />
+  </View>
+);
+
+export const ReportContent = () => {
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
   const { params } = useRoute();
   const task = params?.task;
@@ -20,8 +39,11 @@ export const Report = () => {
     setCurrentTab(tab as 'edit' | 'report');
   }, []);
 
+  const { isSubmitting } = useReportFormContext();
+
   return (
-    <ReportFormProvider initialTask={task}>
+    <>
+      {isSubmitting && <Indicator />}
       <VStack style={{ flex: 1 }}>
         <HStack style={styles.tabBar}>
           <TabBar onPress={handleTabChange} />
@@ -44,6 +66,17 @@ export const Report = () => {
           </View>
         </View>
       </VStack>
+    </>
+  );
+};
+
+export const Report = () => {
+  const { params } = useRoute();
+  const task = params?.task;
+
+  return (
+    <ReportFormProvider initialTask={task}>
+      <ReportContent />
     </ReportFormProvider>
   );
 };
