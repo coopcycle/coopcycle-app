@@ -1,4 +1,4 @@
-import { ActivityIndicator, InteractionManager, View } from 'react-native';
+import { ActivityIndicator, BackHandler, InteractionManager, View } from 'react-native';
 import { Center } from '@/components/ui/center';
 import { Heading } from '@/components/ui/heading';
 import { Text } from '@/components/ui/text';
@@ -44,6 +44,19 @@ export default function AllTasks({ navigation, route }) {
     refetch();
     dispatch(clearSelectedTasks());
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (context?.isEditMode) {
+        context?.clearSelectedTasks();
+        dispatch(clearSelectedTasks());
+        return true;
+      }
+      return false;
+    });
+
+    return () => backHandler.remove();
+  }, [context, dispatch]);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
