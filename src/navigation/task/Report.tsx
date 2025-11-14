@@ -6,7 +6,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
 import { Header } from './components/Header';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useTheme } from '@react-navigation/native';
 import {
   ReportFormProvider,
   useReportFormContext,
@@ -34,6 +34,7 @@ export const ReportContent = () => {
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
   const { params } = useRoute();
   const task = params?.task;
+  const theme = useTheme();
 
   const handleTabChange = useCallback((tab: string) => {
     setCurrentTab(tab as 'edit' | 'report');
@@ -45,7 +46,7 @@ export const ReportContent = () => {
     <>
       {isSubmitting && <Indicator />}
       <VStack style={{ flex: 1 }}>
-        <HStack style={styles.tabBar}>
+        <HStack style={[styles.tabBar, { backgroundColor: theme.dark ? '#111111' : '#D9D9D9' }]}>
           <TabBar onPress={handleTabChange} />
         </HStack>
         <Header task={task} />
@@ -100,7 +101,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabBar: {
-    backgroundColor: '#D9D9D9',
     flexDirection: 'row',
     textAlignVertical: 'center',
     alignItems: 'center',
