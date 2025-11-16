@@ -595,7 +595,7 @@
     "ADDRESS_HELPER": "Modifier l'adresse",
     "BUSINESS_HELPER": "Modifier le nom de l'entreprise",
     "CONTACT_HELPER": "Modifier le nom du contact",
-    "PHONE_HELPER": "Modifier le numéro de téléphone", 
+    "PHONE_HELPER": "Modifier le numéro de téléphone",
     "ACCESS_INFORMATION_HELPER": "Modifier les informations d'accès",
     "TIMESLOT_TYPES_HELPER": "Modifier les types de créneau horaire",
     "TIMESLOT_HELPER": "Modifier le créneau horaire",
@@ -610,6 +610,8 @@
     "CANCEL_ERROR_TITLE": "Erreur",
     "CANCEL_ERROR_MESSAGE": "{{entity}} n’a pas pu être annulé.",
     "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
-    "PROCEED": "Continuer"
+    "PROCEED": "Continuer",
+    "ADD_SUPPLEMENT": "Ajouter des suppléments",
+    "ADDED_SUPPLEMENTS": "Suppléments ajoutés"
   }
 }

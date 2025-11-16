@@ -525,6 +525,8 @@
     "CANCEL_ERROR_TITLE": "Error",
     "CANCEL_ERROR_MESSAGE": "No se pudo cancelar el {{entity}}.",
     "CANCEL_NO_TASKS_MESSAGE": "Este {{entity}} no tiene tareas asociadas para cancelar.",
-    "PROCEED": "Continuar"
+    "PROCEED": "Continuar",
+    "ADD_SUPPLEMENT": "Agregar suplementos",
+    "ADDED_SUPPLEMENTS": "Suplementos agregados"
   }
 }

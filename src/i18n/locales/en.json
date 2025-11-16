@@ -648,6 +648,9 @@
     "CANCEL_ERROR_TITLE": "Error",
     "CANCEL_ERROR_MESSAGE": "The {{entity}} could not be canceled.",
     "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
-    "PROCEED": "Proceed"
+    "PROCEED": "Proceed",
+    "ADD_SUPPLEMENT": "Add supplements",
+    "ADDED_SUPPLEMENTS": "Added supplements"
+
 }
 }
