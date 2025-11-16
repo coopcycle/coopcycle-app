@@ -27,7 +27,7 @@ interface FormState {
   values: Record<string, unknown> | null;
   address: string | null;
   telephone?: string;
-  packagesCount: Package[];
+  packages: Package[];
   selectedTimeSlot: string;
   selectedChoice: string | null;
   selectedSupplements: Supplement[];
@@ -82,7 +82,7 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     telephone: initialTask?.address?.telephone || '',
     weight: initialTask?.weight ? initialTask.weight.toString() : '0',
     address: initialTask?.address ?? null,
-    packagesCount: initialTask?.packages ?? [],
+    packages: [],
     selectedTimeSlot: initialTask?.timeSlot ?? '',
     selectedChoice: null,
     selectedSupplements: [],
@@ -133,7 +133,7 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
         case 'weight':
         case 'address':
         case 'telephone':
-        case 'packagesCount':
+        case 'packages':
         case 'selectedTimeSlot':
         case 'selectedChoice':
         case 'description':
@@ -163,7 +163,7 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     setFormState({
       values: null,
       address: initialTask?.address ?? null,
-      packagesCount: initialTask?.packages ?? [],
+      packages: initialTask?.packages ?? [],
       selectedTimeSlot: initialTask?.timeSlot ?? '',
       selectedChoice: null,
       selectedSupplements: [],
