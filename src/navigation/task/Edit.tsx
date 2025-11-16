@@ -16,8 +16,6 @@ import { useSelector } from 'react-redux';
 import {
   selectAddresses,
   selectAssertDeliveryError,
-  selectPackages as selectReduxPackages,
-  selectTimeSlotChoices,
 } from '@/src/redux/Delivery/selectors';
 import TimeSlotSelector from '../delivery/components/TimeSlotSelector';
 import { Formik } from 'formik';
@@ -39,8 +37,8 @@ import { useStore } from '@/src/navigation/task/hooks/useStore';
 import { useSupplements } from './hooks/useSupplements';
 import { ClientSearchSection } from './components/ClientSearchSection';
 import { useReportFormContext } from './contexts/ReportFormContext';
-import { useHandleSubmit } from './hooks/useSubmitHandler';
 import { useTimeSlot, useTimeSlotChoices } from './hooks/useTimeslots';
+import { usePackages } from './hooks/usePackages';
 
 interface TaskFormProps {
   task?: Partial<Task>;
@@ -58,23 +56,22 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
   );
   const [validAddress, setValidAddress] = useState(!!formState.address);
   const [address, setAddress] = useState(formState.address);
-  const [packagesCount, setPackagesCount] = useState(formState.packagesCount);
+  const [packages, setPackages] = useState(formState.packages);
   const [selectedSupplements, setSelectedSupplements] = useState(
     formState.selectedSupplements,
   );
 
   const store = useStore(task);
-  // When Choice or TS is selected seems that choices reset to undefined
   const timeSlots = useTimeSlot(store);
   const hasTimeSlot = Array.isArray(timeSlots) && timeSlots.length > 0;
   const timeSlotChoices = useTimeSlotChoices(store);
 
+  const { storePackages } = usePackages(task, store);
+
   const { supplements: availableSupplements } = useSupplements(store);
 
-  // Redux selectors
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
-  const reduxPackages = useSelector(selectReduxPackages);
 
   const { t, country, setAddressData, handleChangeTelephone } =
     useFormUtils(store);
@@ -86,12 +83,10 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
   }, [address, formState, updateFormField]);
 
   useEffect(() => {
-    if (
-      JSON.stringify(packagesCount) !== JSON.stringify(formState.packagesCount)
-    ) {
-      updateFormField('packagesCount', packagesCount);
+    if (JSON.stringify(packages) !== JSON.stringify(formState.packages)) {
+      updateFormField('packages', packages);
     }
-  }, [packagesCount, formState, updateFormField]);
+  }, [packages, formState, updateFormField]);
 
   useEffect(() => {
     if (selectedTimeSlot !== formState.selectedTimeSlot) {
@@ -114,23 +109,12 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
     }
   }, [selectedSupplements, formState, updateFormField]);
 
-  // Initialize packages from initial task.
   useEffect(() => {
-    if (task?.packages && task.packages.length > 0) {
-      const initialPackages = task.packages.map(pkg => ({
-        type: pkg.type,
-        quantity: pkg.quantity || 0,
-        ...pkg,
-      }));
-      setPackagesCount(initialPackages);
-    } else if (reduxPackages?.length) {
-      const initialPackages = reduxPackages.map(pkg => ({
-        type: pkg.name || pkg.type,
-        quantity: 0,
-      }));
-      setPackagesCount(initialPackages);
+    if (storePackages && storePackages.length > 0) {
+      setPackages(storePackages);
+      updateFormField('packages', storePackages);
     }
-  }, [task?.packages, reduxPackages]);
+  }, [storePackages, updateFormField]);
 
   const handleTimeSlotChange = useCallback(
     (choice: string, timeSlot: string) => {
@@ -146,7 +130,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
     validAddress,
     hasTimeSlot,
     selectedChoice,
-    packagesCount,
+    packages,
     store,
     country,
   );
@@ -160,24 +144,39 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
     return getInitialFormValues(task, store);
   }, [task, store]);
 
-  const triggerQuantity = useCallback(() => {
-    return ToastAndroid.show(
-      'To change this, go to report the corresponding dropoff',
-      2500,
-    );
-  }, []);
 
-  const handleSubmit = useHandleSubmit(formState);
+  const handleIncrement = useCallback(
+    (packageName: string) => {
+      const updatedPkg = packages.map(pkg =>
+        pkg.name === packageName ? { ...pkg, quantity: pkg.quantity + 1 } : pkg,
+      );
+      setPackages(updatedPkg);
+      updateFormField('packages', updatedPkg);
+    },
+    [packages, updateFormField],
+  );
+
+  const handleDecrement = useCallback(
+    (packageName: string) => {
+      const updatedPkg = packages.map(pkg =>
+        pkg.name === packageName ? { ...pkg, quantity: pkg.quantity - 1 } : pkg,
+      );
+      setPackages(updatedPkg);
+      updateFormField('packages', updatedPkg);
+    },
+    [packages, updateFormField],
+  );
 
   const renderPackageItem = useCallback(
     (item, setFieldTouched) => (
       <PackageItem
+        task={task}
         item={item}
-        onIncrement={() => triggerQuantity()}
-        onDecrement={() => triggerQuantity()}
+        onIncrement={() => handleIncrement(item.name)}
+        onDecrement={() => handleDecrement(item.name)}
       />
     ),
-    [triggerQuantity],
+    [task, handleIncrement, handleDecrement],
   );
 
   const handleSelectAddress = useCallback(
@@ -206,7 +205,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
     <Formik
       initialValues={initialValues}
       validate={validate}
-      onSubmit={handleSubmit}
+      onSubmit={()=>{}}
       validateOnBlur={true}
       validateOnChange={true}
       enableReinitialize>
@@ -279,7 +278,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       setValidAddress(true);
                     }}
                   />
-
                   {/* Address Section */}
                   <AddressSection
                     address={address}
@@ -297,7 +295,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       setAddress,
                     }}
                   />
-
                   {/* Business Information */}
                   <FormField
                     label={t('STORE_NEW_DELIVERY_BUSINESS_NAME')}
@@ -317,7 +314,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       editable={true}
                     />
                   </FormField>
-
                   {/* Contact Information */}
                   <FormField
                     label={t('STORE_NEW_DELIVERY_CONTACT_NAME')}
@@ -337,7 +333,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       testID="delivery__dropoff__contact_name"
                     />
                   </FormField>
-
                   {/* Telephone */}
                   <FormField
                     label={t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
@@ -361,7 +356,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       testID="delivery__dropoff__phone"
                     />
                   </FormField>
-
                   {/* Address Description */}
                   <FormField
                     label={t('STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION')}
@@ -383,12 +377,10 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       )}
                     />
                   </FormField>
-
                   {/* Packages and Timeslot Section */}
                   <Text style={styles.sectionTitle}>
                     {t('TIMESLOT_PACKAGE_FORM')}
                   </Text>
-
                   {/* Timeslot */}
                   <View style={styles.timeSlot}>
                     {hasTimeSlot ? (
@@ -417,7 +409,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       />
                     )}
                   </View>
-
                   {/* Weight */}
                   <FormField
                     label={t('STORE_NEW_DELIVERY_WEIGHT')}
@@ -439,30 +430,33 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
                     />
                   </FormField>
-
                   {/* Packages */}
-                  <FormField
-                    label={t('STORE_NEW_DELIVERY_PACKAGES')}
-                    error={errors.packages}>
-                    <View style={styles.packagesContainer}>
-                      {packagesCount?.length ? (
-                        packagesCount.map(item =>
-                          renderPackageItem(item, setFieldTouched),
-                        )
-                      ) : (
-                        <Text>{t('STORE_NEW_DELIVERY_NO_PACKAGES')}</Text>
-                      )}
-                    </View>
-                  </FormField>
-
+                  {packages.length > 0 && (
+                    <FormField
+                      label={t('STORE_NEW_DELIVERY_PACKAGES')}
+                      error={errors.packages}>
+                      <View style={styles.packagesContainer}>
+                        {packages &&
+                          packages.map(item =>
+                            renderPackageItem(item, setFieldTouched),
+                          )}
+                      </View>
+                    </FormField>
+                  )}
                   {/* Supplements */}
-                  <Text style={styles.sectionTitle}>{t('SUPPLEMENTS')}</Text>
-                  <EditSupplements
-                    availableSupplements={availableSupplements}
-                    onSupplementsChange={updatedSupplements => {
-                      setSelectedSupplements(updatedSupplements);
-                    }}
-                  />
+                  {availableSupplements && availableSupplements.length > 0 && (
+                    <>
+                      <Text style={styles.sectionTitle}>
+                        {t('SUPPLEMENTS')}
+                      </Text>
+                      <EditSupplements
+                        availableSupplements={availableSupplements}
+                        onSupplementsChange={updatedSupplements => {
+                          setSelectedSupplements(updatedSupplements);
+                        }}
+                      />
+                    </>
+                  )}
                   <View style={{ marginBottom: 44, marginHorizontal: -12 }}>
                     <SubmitButton
                       onPress={formikSubmit}
@@ -472,9 +466,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       contactName={values.contactName}
                       success={false}
                       formData={values}
-                      onSubmit={data => {
-                        handleSubmit(data);
-                      }}
                     />
                   </View>
                 </FormControl>

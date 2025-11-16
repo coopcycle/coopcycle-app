@@ -1,36 +1,37 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectPackages } from '@/src/redux/Delivery/selectors';
 import { Task } from '@/src/types/task';
+import { useGetStorePackagesQuery } from '@/src/redux/api/slice';
 
-export const usePackages = (task?: Partial<Task>) => {
-  const [packagesCount, setPackagesCount] = useState<[]>([]);
-  const packages = useSelector(selectPackages);
+export const usePackages = (task?: Partial<Task>, store?) => {
+  const [storePackages, setStorePackages] = useState<[]>([]);
+
+  const { data } = useGetStorePackagesQuery(store?.['@id'], {
+    skip: !store?.['@id']
+  });
 
   useEffect(() => {
-    if (task?.packages && packages?.length) {
-      const initialPackages = packages.map(pkg => {
-        const taskPackage = task.packages.find(taskPkg => taskPkg.type === pkg.name);
-        return {
-          type: pkg.name || pkg.type,
-          quantity: taskPackage?.quantity || 0,
-          ...taskPackage
-        };
-      });
-      setPackagesCount(initialPackages);
-    } else if (task?.packages && !packages?.length) {
-      // Si no hay paquetes en Redux pero sí en la task, usar los de la task
-      const taskPackages = task.packages.map(pkg => ({
-        type: pkg.type,
-        quantity: pkg.quantity,
-        ...pkg
-      }));
-      setPackagesCount(taskPackages);
-    }
-  }, [task?.packages, packages]);
+    const initial = task?.packages || [];
+    const api = data || [];
 
-  return { 
-    packagesCount, 
-    setPackagesCount 
+    const merged = mergePackages(initial, api);
+    console.log(api)
+    setStorePackages(merged);
+  }, [task?.packages, data]);
+
+  return {
+    storePackages,
   };
+};
+
+const mergePackages = (initialPackages: [] = [], packages: [] = []) => {
+  if (!packages.length) {
+    return initialPackages;
+  }
+  return packages.map(pkg => {
+    const initialPkg = initialPackages?.find(p => p.name === pkg.name);
+    return {
+      ...pkg,
+      quantity: initialPkg ? initialPkg.quantity : 0,
+    };
+  });
 };

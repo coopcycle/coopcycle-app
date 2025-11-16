@@ -2,30 +2,34 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import Range from '../../checkout/ProductDetails/Range';
+import Task from '@/src/types/task';
 
 interface PackageItemProps {
   item;
+  task: Task;
   onIncrement: () => void;
   onDecrement: () => void;
 }
 
 export const PackageItem: React.FC<PackageItemProps> = React.memo(({
   item,
+  task,
   onIncrement,
-  onDecrement
+  onDecrement,
 }) => {
+  const isDisabled = item?.tasks?.includes(task['@id']);
+
   return (
-    <View style={styles.packageItem} key={item.type}>
+    <View style={styles.packageItem} key={item.name}>
       <Range
-        onPress={() => {}}
-        onPressIncrement={onIncrement}
-        onPressDecrement={onDecrement}
+        isDisabled={isDisabled}
+        onPressIncrement={() => onIncrement()}
+        onPressDecrement={() => onDecrement()}
         quantity={item.quantity}
       />
       <TouchableOpacity
-        style={styles.packageLabel}
-        onPress={onIncrement}>
-        <Text>{item.type}</Text>
+        style={styles.packageLabel} >
+        <Text>{item.name}</Text>
       </TouchableOpacity>
     </View>
   );
