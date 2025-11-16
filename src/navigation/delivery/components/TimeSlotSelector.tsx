@@ -78,22 +78,6 @@ const handleSelectChange = (value) => {
   }
 };
 
-// const handleSelectChange = (value) => {
-//     if (!value) return;
-    
-//     setFieldValue('timeSlot', value.key);
-//     setFieldTouched('timeSlot');
-//     setSelectValue(value);
-    
-//     const selectedSlot = timeSlots?.find(slot => slot['@id'] === value.key);
-//     if (selectedSlot) {
-//       updateSelectedTimeSlot(selectedSlot);
-      
-//       if (onTimeSlotChange) {
-//         onTimeSlotChange(value, value.key);
-//       }
-//     }
-//   };
 
   return (
     <View style={[styles.formGroup]}>
