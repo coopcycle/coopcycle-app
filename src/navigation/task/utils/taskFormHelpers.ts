@@ -1,45 +1,6 @@
-import { createUpdatedTaskBody } from '../../delivery/utils';
-import parsePhoneNumberFromString from 'libphonenumber-js';
 import _ from 'lodash';
 import { Task } from '@/src/types/task';
 
-export const handleFormSubmit = (
-  values,
-  report,
-  address,
-  selectedTimeSlot,
-  selectedChoice,
-  packagesCount,
-  onSubmit?: (data) => void,
-  selectedSupplements?: [],
-) => {
-  // console.log('Creating delivery object with:', {
-  //   values,
-  //   address,
-  //   selectedTimeSlot,
-  //   selectedChoice,
-  //   packagesCount,
-  //   selectedSupplements
-  // });
-
-  let body;
-  try {
-    body = createUpdatedTaskBody(
-      values,
-      packagesCount,
-      selectedTimeSlot,
-      selectedChoice,
-      selectedSupplements,
-    );
-  } catch (error) {
-    console.error('Error creating payload object:', error);
-    body = {};
-  }
-
-  const payload = buildReportIncidentPayload(reportBody, body);
-
-  onSubmit?.(payload);
-};
 
 export const getAutocompleteProps = deliveryError => {
   const baseProps = {
@@ -125,7 +86,6 @@ export const buildReportIncidentPayload = report => {
 };
 
 export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
-  console.log('buildUpdatedTaskFields called with:', { field, value });
   switch (field) {
     case 'address':
       return { address: value.streetAddress };
@@ -146,7 +106,6 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
 
 export const mapSupplements = supplements => {
   return supplements.map(supplement => {
-    console.log(supplement);
     return {
       pricingRule: supplement.originalRule['@id'],
       quantity: supplement.quantity,
