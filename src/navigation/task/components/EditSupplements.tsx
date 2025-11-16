@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import Range from '../../checkout/ProductDetails/Range';
+import i18n from '@/src/i18n';
 
 interface Supplement {
   id: string;
@@ -19,6 +20,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
   availableSupplements,
   onSupplementsChange,
 }) => {
+  const { t } = i18n;
   const [selectedSupplements, setSelectedSupplements] = useState<Supplement[]>([]);
   const [selectedValue, setSelectedValue] = useState<string>('');
 
@@ -28,7 +30,6 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
     const supplementToAdd = availableSupplements.find(sup => sup.type === supplementType);
     
     if (supplementToAdd) {
-      // Verificar si el suplemento ya está en la lista
       const existingSupplement = selectedSupplements.find(sup => sup.type === supplementType);
       
       let updatedSupplements: Supplement[];
@@ -70,16 +71,15 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
       sup.type === supplementType
         ? { ...sup, quantity: Math.max(0, sup.quantity - 1) }
         : sup
-    ).filter(sup => sup.quantity > 0); // Eliminar si la cantidad llega a 0
+    ).filter(sup => sup.quantity > 0);
     
     setSelectedSupplements(updatedSupplements);
     onSupplementsChange(updatedSupplements);
   };
 
   const renderSupplementItem = (item: Supplement) => (
-    <View style={styles.supplementItem} key={item.type}>
+    <View style={[styles.supplementItem]} key={item.type}>
       <Range
-        onPress={() => {}}
         onPressIncrement={() => handleIncrement(item.type)}
         onPressDecrement={() => handleDecrement(item.type)}
         quantity={item.quantity}
@@ -96,16 +96,13 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
     <View style={styles.container}>
       {selectedSupplements.length > 0 && (
         <View style={styles.selectedSupplements}>
-          <Text style={styles.sectionTitle}>Suplementos agregados:</Text>
+          <Text style={styles.sectionTitle}>{t('ADDED_SUPPLEMENTS')}</Text>
           {selectedSupplements.map(renderSupplementItem)}
         </View>
       )}
 
-      {/* Select para agregar nuevos suplementos */}
       <View>
-        <Text style={styles.selectorLabel}>Agregar suplemento:</Text>
-
-        {/* Lista de opciones disponibles */}
+        <Text style={styles.selectorLabel}>{t('ADD_SUPPLEMENT')}</Text>
         {availableSupplements && (<View style={styles.optionsContainer}>
           {availableSupplements.map(supplement => (
             <TouchableOpacity
@@ -140,10 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     gap: 16,
-    marginBottom: 12,
-    padding: 12,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 8,
+    backgroundColor: 'transparent'
   },
   supplementLabel: {
     flex: 1,
@@ -156,7 +150,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,
-    color: '#333',
   },
   selectWrapper: {
     borderWidth: 1,
