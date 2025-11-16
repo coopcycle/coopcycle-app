@@ -60,34 +60,40 @@ export default function TimeSlotSelector({
   const { t } = useTranslation();
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
-  const handleButtonPress = (timeSlot) => {
-    updateSelectedTimeSlot(timeSlot);
-    
-    if (onTimeSlotChange) {
-      const correspondingChoice = choices?.find(choice => 
-        choice.value?.key === timeSlot['@id']
-      );
-      
-      onTimeSlotChange(correspondingChoice?.value, timeSlot['@id']);
-    }
-  };
+const handleButtonPress = (timeSlot) => {
+  updateSelectedTimeSlot(timeSlot);
+  
+  if (onTimeSlotChange) {
+    onTimeSlotChange(null, timeSlot['@id']);
+  }
+};
 
-  const handleSelectChange = (value) => {
-    if (!value) return;
+const handleSelectChange = (value) => {
+  if (!value) return;
+  
+  setSelectValue(value);
+  
+  if (onTimeSlotChange) {
+    onTimeSlotChange(value, selectedTimeSlot);
+  }
+};
+
+// const handleSelectChange = (value) => {
+//     if (!value) return;
     
-    setFieldValue('timeSlot', value.key);
-    setFieldTouched('timeSlot');
-    setSelectValue(value);
+//     setFieldValue('timeSlot', value.key);
+//     setFieldTouched('timeSlot');
+//     setSelectValue(value);
     
-    const selectedSlot = timeSlots?.find(slot => slot['@id'] === value.key);
-    if (selectedSlot) {
-      updateSelectedTimeSlot(selectedSlot);
+//     const selectedSlot = timeSlots?.find(slot => slot['@id'] === value.key);
+//     if (selectedSlot) {
+//       updateSelectedTimeSlot(selectedSlot);
       
-      if (onTimeSlotChange) {
-        onTimeSlotChange(value, value.key);
-      }
-    }
-  };
+//       if (onTimeSlotChange) {
+//         onTimeSlotChange(value, value.key);
+//       }
+//     }
+//   };
 
   return (
     <View style={[styles.formGroup]}>
