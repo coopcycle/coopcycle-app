@@ -170,6 +170,15 @@ export const apiSlice = createApi({
     getTimeSlotChoices: builder.query<TimeSlotChoices, string>({
       query: (uri: string) => `${uri}/choices`,
     }),
+    getStorePackages: builder.query({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ(
+          baseQuery,
+          `${args}/packages`,
+          100,
+        );
+      },
+    }),
     getPricingRuleSet: builder.query({
       query: (uri: string) => uri,
       providesTags: (result, error, id) => [{ type: 'PricingRuleSet', id }],
@@ -226,6 +235,7 @@ export const {
   useGetStoresQuery,
   useGetTimeSlotsQuery,
   useGetTimeSlotChoicesQuery,
+  useGetStorePackagesQuery,
   useGetPricingRuleSetQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
