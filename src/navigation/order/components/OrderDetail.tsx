@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
 
   statusText: {
-    color: 'white',
+    color: 'black',
     fontSize: 11,
     fontWeight: '600',
   },

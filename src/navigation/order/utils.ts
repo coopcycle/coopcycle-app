@@ -190,9 +190,9 @@ export function getStatusBackgroundColor(
     case 'FAILED':
       return '#ef4444'; 
     case 'DOING':
-      return '#51b2e0'; 
+      return '#73c5eb'; 
     case 'TODO':
     default:
-      return '#9ca3af'; 
+      return '#c0c5cf'; 
   }
 }

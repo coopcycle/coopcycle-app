@@ -199,13 +199,13 @@ function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
                         {task.hasIncidents ?
                           (
                             <View style={{ backgroundColor: "#facc15", borderRadius: 12, paddingHorizontal: 6, alignSelf: 'flex-start', marginTop: 4 }}>
-                              <Text style={{ color: 'white', fontSize: 11, fontWeight: '600' }}>
+                              <Text style={{  fontSize: 11, fontWeight: '600', color: '#000' }}>
                                 {t('INCIDENT').toUpperCase()}
                               </Text>
                             </View>
                           ) : (
                             <View style={{ backgroundColor: getStatusBackgroundColor(task.status), borderRadius: 12 }} className="px-2 mt-1 self-start">
-                              <Text style={{ color: 'white', fontSize: 11, fontWeight: '600' }}>
+                              <Text style={{ fontSize: 11, fontWeight: '600', color: '#000' }}>
                                 {task.status}
                               </Text>
                             </View>
@@ -273,10 +273,5 @@ const styles = StyleSheet.create({
     gap: 6,
     alignSelf: 'center',
     paddingVertical: 4,
-  },
-
-  incidentButtonText: {
-    fontSize: 14,
-    color: '#000',
   },
 });
