@@ -136,11 +136,11 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
         case 'packages':
         case 'selectedTimeSlot':
         case 'selectedChoice':
-        case 'description':
-          updates.updatedTask = {
-            tasks: { ...buildUpdatedTaskFields(field, value) },
-          };
-          break;
+        // case 'description':
+        //   updates.updatedTask = {
+        //     tasks: { ...buildUpdatedTaskFields(field, value) },
+        //   };
+        //   break;
         case 'selectedSupplements':
           updates.updatedTask = {
             selectedSupplements: mapSupplements(value),
@@ -191,8 +191,5 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
 
 export const useReportFormContext = (): ReportFormContextType => {
   const context = useContext(ReportFormContext);
-  if (!context) {
-    throw new Error('useReportForm must be used within a ReportFormProvider');
-  }
   return context;
 };

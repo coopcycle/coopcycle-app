@@ -95,7 +95,14 @@ const CompleteTask = ({
   const task = route.params?.task;
   const tasks = route.params?.tasks;
 
-  const { formState, updateFormField } = useReportFormContext();
+  const formContext = useReportFormContext();
+  
+  const formState = formContext?.formState || {
+    notes,
+    failureReason,
+    failureReasonMetadata,
+    task,
+  };
 
   const success = isSuccessRoute(route);
 
@@ -106,7 +113,7 @@ const CompleteTask = ({
   const [contactName, setContactName] = useState('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(
-    formState.task.status === 'DONE',
+    formState.task.status === 'DONE'
   );
 
   const [failureReasonMetadata, setFailureReasonMetadata] = useState(formState.failureReasonMetadata);
@@ -215,15 +222,15 @@ const CompleteTask = ({
                         httpClient={httpClient}
                         onValueChange={(code, obj) => {
                           if (obj && obj.metadata) {
-                            updateFormField('failureReasonMetadata', obj.metadata);
+                            formContext.updateFormField('failureReasonMetadata', obj.metadata);
                             setFailureReasonMetadataToSend(
                               parseInitialData(obj.metadata),
                             );
                           } else {
-                            updateFormField('failureReasonMetadata', []);
+                            formContext.updateFormField('failureReasonMetadata', []);
                             setFailureReasonMetadataToSend([]);
                           }
-                          updateFormField('failureReason', code);
+                          formContext.updateFormField('failureReason', code);
                         }}
                       />
                       {Array.isArray(failureReasonMetadata) &&
@@ -231,7 +238,7 @@ const CompleteTask = ({
                         <FailureReasonForm
                           data={failureReasonMetadata}
                           onChange={metadata => {
-                            updateFormField('failureReasonMetadata', metadata);
+                            formContext.updateFormField('failureReasonMetadata', metadata);
                           }}
                           parseInitialData={parseInitialData}
                         />
@@ -246,7 +253,7 @@ const CompleteTask = ({
                       <TextareaInput
                         autoCorrect={false}
                         totalLines={2}
-                        onChangeText={text => updateFormField('notes', text)}
+                        onChangeText={text => formContext.updateFormField('notes', text)}
                       />
                     </Textarea>
                     {/* task.status !== 'DONE' DISABLE CHECKBOX display always checked if DONE */}
@@ -300,11 +307,11 @@ const CompleteTask = ({
               <SubmitButton
                 task={task}
                 tasks={tasks}
-                // notes={notes}
-                // contactName={contactName}
-                // failureReason={failureReason}
+                notes={notes}
+                contactName={contactName}
+                failureReason={failureReason}
                 validateTaskAfterReport={validateTaskAfterReport}
-                //failureReasonMetadataToSend={failureReasonMetadataToSend}
+                failureReasonMetadataToSend={failureReasonMetadataToSend}
                 success={isSuccessRoute(route)}
               />
             </VStack>

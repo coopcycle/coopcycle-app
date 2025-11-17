@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { Task } from '@/src/types/task';
 
-
 export const getAutocompleteProps = deliveryError => {
   const baseProps = {
     inputContainerStyle: {
@@ -44,8 +43,9 @@ export const getInitialFormValues = (task?: Partial<Task>, store?) => {
 };
 
 const buildMetadataPayload = (task, id) => {
+  console.log("REPORT: ", JSON.stringify(task, null, 2))
   if (!task.tasks || Object.keys(task.tasks).length === 0) {
-    return [];
+    const tasks = [];
   }
 
   const order = {
@@ -76,7 +76,7 @@ const buildMetadataPayload = (task, id) => {
 export const buildReportIncidentPayload = report => {
   const metadata = buildMetadataPayload(report.updatedTask, report.task.id);
   const payload = {
-    description: report.description,
+    description: report.notes,
     failureReasonCode: report.failureReason,
     task: report.taskID,
   };

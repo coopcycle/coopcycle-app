@@ -39,14 +39,20 @@ export const SubmitButton = ({
   const route = useRoute();
   const dispatch = useDispatch();
 
-  const { formStateToSend, startSubmitting, stopSubmitting } = useReportFormContext();
+  
+
+
+const formContext = useReportFormContext();
+const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
+  const hasFormContext = !!formContext;
+  
   const [isDisabled, setIsDisabled] = useState(false);
 
   const footerBgColor = success ? greenColor : yellowColor;
   const [postIncident, { isLoading, error }] =  usePostIncidentMutation();
 
   const handlePress = () => {
-    startSubmitting();
+    hasFormContext && startSubmitting();
     setIsDisabled(true);
     const navigateOnSuccess = () => {
       if (route.params?.navigateAfter !== null) {
@@ -67,8 +73,10 @@ export const SubmitButton = ({
       }
     } else {
       const payload = buildReportIncidentPayload(formStateToSend);
+      console.log(JSON.stringify(payload, null, 1))
       postIncident({ payload }).unwrap()
-      .then(() => {
+      .then((r) => {
+        console.log("RESPONSE:", JSON.stringify(r, null, 2))
         navigateOnSuccess();
       })
       .catch((e) => {})

@@ -1,19 +1,19 @@
 import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
-import { Icon, ArrowRightIcon } from '@/components/ui/icon';
+import { ArrowRightIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
-import { MapPin, Clock, Phone, Recycle, Info, MessageCircle, Tag, Box, Weight } from 'lucide-react-native';
+import { Box, Clock, Info, MapPin, MessageCircle, Phone, Recycle, Tag, Weight } from 'lucide-react-native';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
+  getIcon,
   isDisplayPaymentMethodInList,
   loadDescriptionTranslationKey,
-  getIcon,
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
 import { getAddress, getName, getPackagesSummary, getTimeFrame } from './utils';
