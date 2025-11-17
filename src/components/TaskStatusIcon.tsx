@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-
 import {
   doingIconName,
   doneIconName,
@@ -22,12 +21,12 @@ export const TaskStatusIcon = ({ task }: { task: Task }) => {
       case 'FAILED':
         return <FAIcon name={failedIconName} color={redColor} testID={testID} />;
       default:
-        return <View />;
+        return null;
     }
   }
 
   return (
-    <View>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap:4 }}>
       {task.hasIncidents && <Incident task={task}/>}
       {renderIcon()}
     </View>

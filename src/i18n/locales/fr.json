@@ -590,6 +590,8 @@
     "CANCEL_ERROR_TITLE": "Erreur",
     "CANCEL_ERROR_MESSAGE": "{{entity}} n’a pas pu être annulé.",
     "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
-    "PROCEED": "Continuer"
+    "PROCEED": "Continuer",
+    "ASSIGN": "Assigner",
+    "INCIDENT": "Incident" 
   }
 }

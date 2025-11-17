@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
 import { Box } from '@/components/ui/box';
 import { Divider } from '@/components/ui/divider';
@@ -17,14 +18,13 @@ import {
   getUniqueTagsFromTasks,
   orderInfoInMetadata,
   packagesInOrderSummary,
+  getOrderStatus,
+  getStatusBackgroundColor
 } from './../utils';
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();
 
-  // In some cases, there might be no tasks in the order yet..!
-  // (e.g., the user taps the new delivery push notification to navigate to the order details,
-  // but the tasks havent't been updated from websocket/centrifugo yet)
   if (tasks.length === 0) {
     return null;
   }
@@ -38,16 +38,20 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const orderTags = getUniqueTagsFromTasks(tasks);
   const orderValue = orderInfoInMetadata(tasks, 'order_total');
   const comments = commentsInOrder(tasks);
+  const status = getOrderStatus(tasks);
+  const statusBgColor = getStatusBackgroundColor(status);
 
   return (
-    <Box style={{ gap: 12, padding: 24 }}>
-      <Text
-        size="xl"
-        style={{
-          textTransform: 'uppercase',
-        }}>
-        {orderTitle}
-      </Text>
+    <Box style={styles.container}>
+      <View style={styles.titleRow}>
+        <Text size="xl" style={styles.title}>
+          {orderTitle}
+        </Text>
+
+        <View style={[styles.statusBadge, { backgroundColor: statusBgColor }]}>
+          <Text style={styles.statusText}>{status}</Text>
+        </View>
+      </View>
       {orderTags.length > 0 && (
         <>
           <Divider />
@@ -110,3 +114,35 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
 };
 
 export default OrderDetail;
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 12,
+    padding: 24,
+  },
+
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  title: {
+    textTransform: 'uppercase',
+    maxWidth: '75%',
+  },
+
+  statusBadge: {
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    alignSelf: 'flex-start',
+    marginTop: 4,
+  },
+
+  statusText: {
+    color: 'white',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+});
