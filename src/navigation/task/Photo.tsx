@@ -59,13 +59,16 @@ class Photo extends Component {
   _saveImage() {
     const task = this.props.route.params?.task;
     const tasks = this.props.route.params?.tasks;
+    const navigateAfter = this.props.route.params?.navigateAfter;
     const { image } = this.state;
     if (image) {
       this.props.addPicture(task, image.uri);
       this.props.navigation.navigate({
         name: 'TaskCompleteHome',
-        params: { task, tasks },
-        merge: true,
+        params: { task, tasks, navigateAfter },
+        options: {
+          merge: true,
+        }
       });
     }
   }
@@ -105,13 +108,16 @@ class Photo extends Component {
         if (file.exists) {
           const task = this.props.route.params?.task;
           const tasks = this.props.route.params?.tasks;
+          const navigateAfter = this.props.route.params?.navigateAfter;
 
           this.props.addPicture(task, file.uri);
 
           this.props.navigation.navigate({
             name: 'TaskCompleteHome',
-            params: { task, tasks },
-            merge: true,
+            params: { task, tasks, navigateAfter },
+            options: {
+              merge: true,
+            }
           });
         }
       }

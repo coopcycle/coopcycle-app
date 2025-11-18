@@ -330,10 +330,12 @@ const SubmitButton = ({
       // Make sure to use merge = true, so that it doesn't break
       // when navigating to DispatchTaskList
 
-      if (route.params?.navigateAfter !== null) {
+      if (route.params?.navigateAfter) {
         navigation.navigate({
-          name: route.params?.navigateAfter,
-          merge: true,
+          name: route.params.navigateAfter,
+          options: {
+            merge: true,
+          }
         });
       } else {
         navigation.goBack();
@@ -637,7 +639,8 @@ const CompleteTask = ({
                 navigation.navigate('TaskCompleteProofOfDelivery', {
                   task,
                   tasks,
-                })
+                  navigateAfter: route.params?.navigateAfter,
+                }, { merge: true})
               }>
               <HStack className="items-center justify-between p-3">
                 <Icon as={Signature} />
