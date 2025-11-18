@@ -163,7 +163,7 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "detox": "^20.41.2",
+    "detox": "^20.46.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.19.0",
     "eslint-plugin-jest": "^29.0.1",
