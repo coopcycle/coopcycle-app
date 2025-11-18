@@ -54,7 +54,7 @@ jobs:
       - name: Enable clear text traffic in release builds
         run: |
           sudo apt install xmlstarlet
-          xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
+          xmlstarlet ed --inplace --ps --update "/manifest/application/@android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
 
       - name: Configure .env variables
         run: |
