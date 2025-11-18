@@ -218,7 +218,6 @@ const HeaderRightBody = ({navigation}) => {
         tasks={selectedTasks}
         onClearSelection={context?.clearSelectedTasks}
         showCounter={true}
-        isFromCourier={context?.isFromCourier}
         enabledActions={{
           start: true,
           complete: true,

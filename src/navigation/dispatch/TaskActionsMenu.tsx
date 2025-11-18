@@ -31,7 +31,6 @@ export interface TaskActionsMenuProps {
 export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
   navigation,
   tasks,
-  onClearSelection,
   showCounter = false,
   enabledActions = {
     start: false,
@@ -40,9 +39,12 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
     reportIncident: false,
   },
   onAssign,
+  onClearSelection,
   cancelContext = 'tasks',
   entityName
 }) => {
+  if (!tasks?.length) return null;
+
   const { t } = useTranslation();
   const iconColor = useIconColor();
   const dispatch = useDispatch();
@@ -65,9 +67,9 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       key: 'StartTask',
       text: t('START'),
       action: () => {
-        tasks?.forEach(task => {
-          return dispatch(startTask(task, () => {}));
-        });
+        for (const task of tasks) {
+          dispatch(startTask(task, () => {}));
+        }
         onClearSelection?.();
       },
     });
@@ -79,7 +81,7 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       key: 'CompleteTask',
       text: t('COMPLETE_TASK'),
       action: () => {
-        navigateToCompleteTask(navigation, route, null, tasks, true);
+        navigateToCompleteTask(navigation, route, tasks[0], tasks, true);
         onClearSelection?.();
       },
     });
@@ -91,8 +93,6 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       key: 'CancelTask',
       text: t('CANCEL'),
       action: () => {
-        if (!tasks?.length) return;
-
         const isPlural = tasks.length > 1;
         let entity: string;
         let name: string;

@@ -58,9 +58,11 @@ const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
       tasks={orderTasks}
       showCounter={false}
       enabledActions={{
+        start: true,
         complete: true,
-        cancel: !isFromCourier,
         assign: !isFromCourier,
+        cancel: !isFromCourier,
+        reportIncident: true,
       }}
       onAssign={handleAssignPress}
       cancelContext="order"

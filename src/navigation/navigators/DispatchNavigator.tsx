@@ -166,19 +166,19 @@ const HeaderRightBody = ({navigation}) => {
   return (
     <>
       {context?.isEditMode ?
-        <TaskActionsMenu
-            navigation={navigation}
-            tasks={selectedTasks}
-            onClearSelection={context?.clearSelectedTasks}
-            showCounter={true}
-            isFromCourier={context?.isFromCourier}
-            enabledActions={{
-              start: true,
-              complete: true,
-              cancel: true,
-              reportIncident: true,
-            }}
-          />
+      <TaskActionsMenu
+        navigation={navigation}
+        tasks={selectedTasks}
+        onClearSelection={context?.clearSelectedTasks}
+        showCounter={true}
+        enabledActions={{
+          start: true,
+          complete: true,
+          assign: true,
+          cancel: true,
+          reportIncident: true,
+        }}
+      />
       :
       <HeaderRightButton
         onPress={() => navigation.navigate('DispatchDate')}
