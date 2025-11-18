@@ -73,10 +73,8 @@ const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
       }
     } else {
       const payload = buildReportIncidentPayload(formStateToSend);
-      console.log(JSON.stringify(payload, null, 1))
       postIncident({ payload }).unwrap()
       .then((r) => {
-        console.log("RESPONSE:", JSON.stringify(r, null, 2))
         navigateOnSuccess();
       })
       .catch((e) => {})
