@@ -347,7 +347,8 @@ Client.prototype.cloneWithToken = function (token) {
   return new Client(this.getBaseURL(), { token });
 };
 
-Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
+Client.prototype.uploadFileAsync = async function (uri, file, options = {}) {
+
   options = {
     headers: {},
     parameters: {},
@@ -359,16 +360,27 @@ Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
   const formData = new FormData();
   formData.append('file', f);
 
-  // FIXME Implement token expiration
-
-  return fetch(`${this.getBaseURL()}${uri}`, {
+  const response = await fetch(`${this.getBaseURL()}${uri}`, {
     method: 'POST',
     body: formData,
     headers: {
       Authorization: `Bearer ${this.getToken()}`,
       ...options.headers,
     },
-  });
+  })
+
+  if (!response.ok) {
+
+    if (401 === response.status) {
+      const token = await this.refreshToken()
+
+      return this.uploadFileAsync(uri, file, options);
+    }
+
+  }
+
+  return response
+
 };
 
 Client.prototype.loginWithFacebook = function (accessToken) {
