@@ -194,11 +194,6 @@ export default function DispatchNavigator({ navigation }) {
     presentation: 'modal',
   });
 
-  const deliveryCallback = newDelivery => {
-    navigation.navigate('DispatchAllTasks');
-    dispatch(createDeliverySuccess(newDelivery));
-  };
-
   useEffect(() => {
     const clearSelectedTasksState = navigation.addListener('blur', () => {
       dispatch(clearSelectedTasks());
@@ -206,8 +201,16 @@ export default function DispatchNavigator({ navigation }) {
     return clearSelectedTasksState;
   }, [navigation, dispatch]);
 
+  const deliveryCallback = newDelivery => {
+    navigation.navigate('DispatchAllTasks');
+    dispatch(createDeliverySuccess(newDelivery));
+  };
+  const deliveryCallbackOptions = {
+    allowManualPrice: true,
+  };
+
   return (
-    <DeliveryCallbackProvider callback={deliveryCallback}>
+    <DeliveryCallbackProvider callback={deliveryCallback} options={deliveryCallbackOptions}>
       <TaskListsProvider defaultIsFromCourier={false}>
         <RootStack.Navigator screenOptions={screenOptions}>
           <RootStack.Screen

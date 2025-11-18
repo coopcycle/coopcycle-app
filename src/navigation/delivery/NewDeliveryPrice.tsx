@@ -25,7 +25,7 @@ export default function NewDeliveryPrice({ route }) {
   const priceExcludingTax = useSelector(selectPriceExcludingTax);
   const [isManualPriceEnabled, setIsManualPriceEnabled] = useState(false);
 
-  const { deliveryCallback } = useDeliveryCallback();
+  const { deliveryCallback, allowManualPrice = false } = useDeliveryCallback();
 
   useEffect(() => {
     dispatch(getPrice(delivery));
@@ -130,9 +130,11 @@ export default function NewDeliveryPrice({ route }) {
               )}
             </View>
           </>) : null}
-          <Button onPress={onPressManualPriceToggle(setFieldValue)}>
-            <ButtonText>{t('MANUAL_PRICE_TOGGLE_' + (isManualPriceEnabled ? 'OFF' : 'ON'))}</ButtonText>
-          </Button>
+          {allowManualPrice ? (
+            <Button onPress={onPressManualPriceToggle(setFieldValue)}>
+              <ButtonText>{t('MANUAL_PRICE_TOGGLE_' + (isManualPriceEnabled ? 'OFF' : 'ON'))}</ButtonText>
+            </Button>
+          ) : null}
         </ModalFormWrapper>
       )}
     </Formik>
