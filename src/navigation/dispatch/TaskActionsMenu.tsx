@@ -8,11 +8,11 @@ import { navigateToCompleteTask } from '../utils';
 import { startTask } from '@/src/redux/Courier';
 import TasksMenu from '../components/TasksMenu';
 import { useIconColor } from '@/src/styles/theme';
+import { Tasks } from '@/src/types/tasks';
 
 export interface TaskActionsMenuProps {
-  navigation: NavigationProp<any>;
-  tasks: any[];
-  onClearSelection?: () => void;
+  navigation: NavigationProp<object>;
+  tasks: Tasks;
   showCounter?: boolean;
   enabledActions?: {
     start?: boolean;
@@ -22,11 +22,11 @@ export interface TaskActionsMenuProps {
     edit?: boolean;
     assign?: boolean;
   };
+  onClearSelection?: () => void;
   onAssign?: () => void;
   isCancelDisabled?: boolean;
   cancelContext?: 'tasks' | 'order';
   entityName?: string;
-  isFromOrder?: boolean;
 }
 
 export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({

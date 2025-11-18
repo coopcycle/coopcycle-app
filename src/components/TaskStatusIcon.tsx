@@ -26,7 +26,7 @@ export const TaskStatusIcon = ({ task }: { task: Task }) => {
   }
 
   return (
-     <View className="flex flex-row items-center gap-1">
+    <View className="flex flex-row items-center gap-1">
       {task.hasIncidents && <Incident task={task}/>}
       {renderIcon()}
     </View>

@@ -25,6 +25,7 @@ import { Task, TaskTag } from '../../../types/task';
 import { addDayIfNotToday, getPackagesSummary, getTimeFrame } from '../../task/components/utils';
 import { getStatusBackgroundColor, getTaskTitleForOrder } from '../utils';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 import FAIcon from '@/src/components/Icon';
 import { navigateToCompleteTask } from '../../utils';
 
@@ -131,8 +132,8 @@ const ContentText = ({
 
 interface OrderAccordeonProps {
   task: Task;
-  navigation: any;
-  route: any;
+  navigation: NavigationProp<object>;
+  route: object;
 }
 
 function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {

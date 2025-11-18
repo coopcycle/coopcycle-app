@@ -64,7 +64,6 @@ const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
       isCancelDisabled={isCancelDisabled}
       cancelContext="order"
       entityName={orderNumber}
-      isFromOrder={true}
     />
   );
 };
