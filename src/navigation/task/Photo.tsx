@@ -13,7 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
+import { File } from 'expo-file-system';
 
 import { addPicture } from '../../redux/Courier';
 
@@ -99,7 +99,9 @@ class Photo extends Component {
       });
 
       if (!result.canceled) {
-        const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding: 'base64' })
+
+        const file = new File(result.assets[0].uri);
+        const base64 = await file.base64();
 
         const task = this.props.route.params?.task;
         const tasks = this.props.route.params?.tasks;
