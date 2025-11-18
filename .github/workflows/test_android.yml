@@ -23,7 +23,7 @@ jobs:
           # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
           tool-cache: true
           android: false
-          swap-storage: false
+          # swap-storage: false
 
       - name: Enable Corepack
         run: corepack enable
