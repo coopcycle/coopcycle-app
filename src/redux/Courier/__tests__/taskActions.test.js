@@ -203,7 +203,6 @@ describe('Redux | Tasks | Actions', () => {
 
     const client = {
       put: jest.fn(),
-      execUploadTask: jest.fn(),
     };
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
@@ -249,7 +248,6 @@ describe('Redux | Tasks | Actions', () => {
       getBaseURL: () => 'https://test.coopcycle.org',
       uploadFile: jest.fn(),
       uploadFileAsync: jest.fn(),
-      execUploadTask: jest.fn(),
     };
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
@@ -297,7 +295,6 @@ describe('Redux | Tasks | Actions', () => {
 
     const client = {
       put: jest.fn(),
-      execUploadTask: jest.fn(),
     };
     client.put.mockRejectedValue(rejectValue);
     httpClientService.setTestClient(client);
@@ -338,7 +335,6 @@ describe('Redux | Tasks | Actions', () => {
 
     const client = {
       put: jest.fn(),
-      execUploadTask: jest.fn(),
     };
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);

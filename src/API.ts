@@ -1,5 +1,7 @@
 import axios from 'axios';
-import * as FileSystem from 'expo-file-system';
+import 'web-streams-polyfill/polyfill'; // Fix "ReferenceError: Property 'ReadableStream' doesn't exist"
+import { fetch } from 'expo/fetch'
+import { File, Paths } from 'expo-file-system'
 import _ from 'lodash';
 import qs from 'qs';
 import VersionNumber from 'react-native-version-number';
@@ -345,45 +347,6 @@ Client.prototype.cloneWithToken = function (token) {
   return new Client(this.getBaseURL(), { token });
 };
 
-Client.prototype.execUploadTask = function (uploadTasks, retry = 0) {
-  if (_.isUndefined(uploadTasks)) {
-    return Promise.resolve();
-  }
-
-  if (_.isArray(uploadTasks)) {
-    return Promise.all(
-      uploadTasks.map(uploadTask => this.execUploadTask(uploadTask)),
-    );
-  }
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      const data = await uploadTasks.uploadAsync();
-      switch (data.status) {
-        case 401:
-          if (retry < 2) {
-            const token = await this.refreshToken();
-            _.set(
-              uploadTasks,
-              'options.headers.Authorization',
-              `Bearer ${token}`,
-            );
-            resolve(await this.execUploadTask(uploadTasks, ++retry));
-          }
-          reject(new Error('Too many retries'));
-          break;
-        case 201:
-          resolve(data);
-          break;
-        default:
-          reject(new Error(`Unhandled status code: ${data.status}`));
-      }
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
 Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
   options = {
     headers: {},
@@ -391,16 +354,20 @@ Client.prototype.uploadFileAsync = function (uri, file, options = {}) {
     ...options,
   };
 
-  return FileSystem.createUploadTask(`${this.getBaseURL()}${uri}`, file, {
-    fieldName: 'file',
-    httpMethod: 'POST',
+  const f = new File(file);
+
+  const formData = new FormData();
+  formData.append('file', f);
+
+  // FIXME Implement token expiration
+
+  return fetch(`${this.getBaseURL()}${uri}`, {
+    method: 'POST',
+    body: formData,
     headers: {
       Authorization: `Bearer ${this.getToken()}`,
       ...options.headers,
     },
-    parameters: options.parameters,
-    uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-    sessionType: FileSystem.FileSystemSessionType.BACKGROUND,
   });
 };
 
@@ -704,7 +671,6 @@ export type HttpClient = {
   delete: (uri: string, options?) => Promise;
   request: (method: string, uri: string, data, options?) => Promise;
   uploadFileAsync: (uri: string, file, options?) => Promise;
-  execUploadTask: (uploadTasks, retry?) => Promise;
   getBaseURL: () => string;
   getToken: () => string;
   cloneWithToken: (token: string) => HttpClient;

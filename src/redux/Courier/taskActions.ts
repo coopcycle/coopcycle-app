@@ -289,15 +289,15 @@ export function reportIncident(
     return httpClient
       .post('/api/incidents', payload)
       .then(incident => {
-        uploadEntityImages(incident, '/api/incident_images', getState()).then(
-          uploadTasks => httpClient.execUploadTask(uploadTasks),
-        );
-        dispatch(clearFiles());
-        dispatch(reportIncidentSuccess(incident));
-        console.log(onSuccess);
-        if (typeof onSuccess === 'function') {
-          setTimeout(onSuccess, 100);
-        }
+        uploadEntityImages(incident, '/api/incident_images', getState()).then(() => {
+          dispatch(clearFiles());
+          dispatch(reportIncidentSuccess(incident));
+          console.log(onSuccess);
+          if (typeof onSuccess === 'function') {
+            setTimeout(onSuccess, 100);
+          }
+        });
+
       })
       .catch(e => {
         dispatch(reportIncidentFailure(e));
@@ -339,7 +339,6 @@ export function markTaskFailed(
         return httpClient
           .put(task['@id'] + '/failed', payload)
           .then(savedTask => {
-            httpClient.execUploadTask(uploadTasks);
             dispatch(clearFiles());
             dispatch(markTaskFailedSuccess(savedTask));
             if (typeof onSuccess === 'function') {
@@ -376,7 +375,6 @@ export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
         return httpClient
           .put(task['@id'] + '/done', payload)
           .then(savedTask => {
-            httpClient.execUploadTask(uploadTasks);
             dispatch(clearFiles());
             dispatch(markTaskDoneSuccess(savedTask));
             if (typeof onSuccess === 'function') {
@@ -418,7 +416,6 @@ export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
             }
           }
           if (res.success && res.success.length) {
-            httpClient.execUploadTask(uploadTasks);
             dispatch(clearFiles());
             dispatch(markTasksDoneSuccess(res.success));
             if (typeof onSuccess === 'function') {
