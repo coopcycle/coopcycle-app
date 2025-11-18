@@ -63,7 +63,7 @@ export const ReportContent = () => {
               styles.tabContent,
               currentTab === 'edit' ? styles.visible : styles.hidden,
             ]}>
-            <EditTask task={task} />
+            <EditTask task={task} currentTab={currentTab}/>
           </View>
         </View>
       </VStack>

@@ -17,8 +17,8 @@ export const useSupplements = (store) => {
       return;
     }
     
-    const deliverySupplements = pricingRulesData.rules // ARE THESE THE SUPPLEMENTS?
-      .filter((rule) => (rule.target === 'DELIVERY' || rule.target === 'TASK'))
+    const deliverySupplements = pricingRulesData.rules
+      .filter((rule) => rule.expression === 'false')
       .map((rule) => ({
         id: rule.id,
         type: rule.id,

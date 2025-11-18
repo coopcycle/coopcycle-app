@@ -41,10 +41,10 @@ import { usePackages } from './hooks/usePackages';
 
 interface TaskFormProps {
   task?: Partial<Task>;
-  isLoading?: boolean;
+  currentTab: string;
 }
 
-export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
+export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
   const { formState, updateFormField } = useReportFormContext();
 
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(
@@ -465,6 +465,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task }) => {
                       contactName={values.contactName}
                       success={false}
                       formData={values}
+                      currentTab={currentTab}
                     />
                   </View>
                 </FormControl>

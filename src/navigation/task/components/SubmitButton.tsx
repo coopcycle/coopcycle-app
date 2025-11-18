@@ -23,6 +23,7 @@ interface SubmitButtonProps {
   validateTaskAfterReport?: boolean;
   failureReasonMetadataToSend?: [];
   success: boolean;
+  currentTab?: string;
   onSubmit?: (formData) => void;
   onPress?: () => void;
 }
@@ -33,6 +34,7 @@ export const SubmitButton = ({
   notes,
   contactName,
   success,
+  currentTab = null
 }: SubmitButtonProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -97,14 +99,14 @@ const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
     <TouchableOpacity
       onPress={handlePress}
       disabled={isButtonDisabled}
-      style={{ 
-        alignItems: 'center', 
+      style={{
+        alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: footerBgColor, 
+        backgroundColor: footerBgColor,
         marginTop: 16,
         opacity: isDisabled ? 0.6 : 1,
       }}
-      testID="task:finishButton">
+      testID={`task:finishButton${currentTab ? '-' + currentTab : ''}`}>
       <HStack className="py-3 items-center">
         <Text style={{ fontWeight: 'bold', color: '#000' }}>
           {success ? t('VALIDATE') : t('REPORT_INCIDENT')}

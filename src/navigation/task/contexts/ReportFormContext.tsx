@@ -137,10 +137,10 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
         case 'selectedTimeSlot':
         case 'selectedChoice':
         // case 'description':
-        //   updates.updatedTask = {
-        //     tasks: { ...buildUpdatedTaskFields(field, value) },
-        //   };
-        //   break;
+          updates.updatedTask = {
+            tasks: { ...buildUpdatedTaskFields(field, value) },
+          };
+          break;
         case 'selectedSupplements':
           updates.updatedTask = {
             selectedSupplements: mapSupplements(value),

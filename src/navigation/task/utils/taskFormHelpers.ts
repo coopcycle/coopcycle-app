@@ -107,8 +107,8 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
 export const mapSupplements = supplements => {
   return supplements.map(supplement => {
     return {
-      pricingRule: supplement.originalRule['@id'],
-      quantity: supplement.quantity,
+      pricingRule: supplement?.originalRule?.['@id'] || "",
+      quantity: supplement?.quantity,
     };
   });
 };
