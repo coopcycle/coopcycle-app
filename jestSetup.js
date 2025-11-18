@@ -53,3 +53,52 @@ jest.mock('react-native/Libraries/AppState/AppState', () => ({
     addEventListener: jest.fn(),
   },
 }))
+
+jest.mock('expo/fetch', () => ({
+  fetch: jest.fn(),
+}));
+
+// https://github.com/expo/expo/issues/39922
+
+// undo the ts-side mock
+jest.unmock("expo-file-system");
+
+// mock the parts from native modules
+jest.mock("expo-file-system/src/ExpoFileSystem", () => {
+  return {
+    __esModule: true,
+    default: {
+      // this class is extended by the ts File-class
+      FileSystemFile: class {
+        uri: string;
+        constructor(uri: string) {
+          this.uri = uri;
+        }
+        validatePath() {}
+      },
+      // this class is extended by the ts Directory-class
+      FileSystemDirectory: class {
+        uri: string;
+        constructor(uri: string) {
+          this.uri = uri;
+        }
+        validatePath() {}
+      },
+      documentDirectory: "file:///mocked/document/directory/",
+    },
+  };
+});
+
+// hacky fixture creation code to create files and directories with specific names
+const createFile = (name: string, list: string[]) => {
+  return new (class extends File {
+    exists = list.includes(name);
+    get parentDirectory(): Directory {
+      return new (class extends Directory {
+        list() {
+          return list.map((it) => new File(it));
+        }
+      })();
+    }
+  })(name);
+};
