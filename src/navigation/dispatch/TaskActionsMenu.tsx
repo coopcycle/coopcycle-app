@@ -24,7 +24,6 @@ export interface TaskActionsMenuProps {
   };
   onClearSelection?: () => void;
   onAssign?: () => void;
-  isCancelDisabled?: boolean;
   cancelContext?: 'tasks' | 'order';
   entityName?: string;
 }
@@ -41,7 +40,6 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
     reportIncident: false,
   },
   onAssign,
-  isCancelDisabled = false,
   cancelContext = 'tasks',
   entityName
 }) => {
@@ -51,6 +49,15 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
   const route = useRoute();
 
   const options = [];
+
+  // Assign option
+  if (enabledActions.assign && onAssign) {
+    options.push({
+      key: 'Assign',
+      text: t('ASSIGN'),
+      action: onAssign,
+    });
+  }
 
   // Start Task option
   if (enabledActions.start) {
@@ -78,21 +85,11 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
     });
   }
 
-  // Assign option
-  if (enabledActions.assign && onAssign) {
-    options.push({
-      key: 'Assign',
-      text: t('ASSIGN'),
-      action: onAssign,
-    });
-  }
-
   // Cancel option
   if (enabledActions.cancel) {
     options.push({
       key: 'CancelTask',
       text: t('CANCEL'),
-      isDisabled: isCancelDisabled,
       action: () => {
         if (!tasks?.length) return;
 
@@ -158,8 +155,6 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       },
     });
   }
-
-  if (isCancelDisabled ) return;
 
   return (
     <View>
