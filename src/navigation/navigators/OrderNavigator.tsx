@@ -16,11 +16,6 @@ import useSetTaskListItems from '@/src/shared/src/logistics/redux/hooks/useSetTa
 const RootStack = createStackNavigator();
 
 const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
-  // Do not display the menu if the status is one of these
-  if (status === 'CANCELLED' || status === 'DONE' || status === 'FAILED') {
-    return null;
-  }
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const allTaskLists = useSelector(selectTaskLists);
@@ -51,6 +46,11 @@ const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
       },
     });
   }, [orderTasks, allTaskLists, bulkEditTasks, navigation, dispatch]);
+
+  // Do not display the menu if the status is one of these
+  if (status === 'CANCELLED' || status === 'DONE' || status === 'FAILED') {
+    return null;
+  }
 
   return (
     <TaskActionsMenu

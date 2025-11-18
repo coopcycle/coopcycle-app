@@ -43,8 +43,6 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
   cancelContext = 'tasks',
   entityName
 }) => {
-  if (!tasks?.length) return null;
-
   const { t } = useTranslation();
   const iconColor = useIconColor();
   const dispatch = useDispatch();
@@ -106,7 +104,7 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
           entity = isPlural ? t('TASKS') : t('TASK');
           name = isPlural
             ? `${tasks.length} ${entity}`
-            : String(tasks?.[0]?.id || '');
+            : String(tasks[0].id || '');
           messageKey = isPlural ? 'CANCEL_MESSAGE_PLURAL' : 'CANCEL_MESSAGE';
         }
 
@@ -148,7 +146,7 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
     options.push({
       key: 'ReportIncidence',
       text: t('REPORT_INCIDENT'),
-      isDisabled: tasks?.length > 1,
+      isDisabled: tasks.length > 1,
       action: () => {
         navigateToCompleteTask(navigation, route, tasks[0], [], false);
         onClearSelection?.();
