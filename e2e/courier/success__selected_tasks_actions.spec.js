@@ -61,7 +61,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('ReportIncidenceButton');
 
     await waitToBeVisible('task:finishButton');
-    await tapByText('Report incident');
+    await tapById('task:finishButton');
 
     // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');
