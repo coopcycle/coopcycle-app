@@ -101,18 +101,19 @@ class Photo extends Component {
       if (!result.canceled) {
 
         const file = new File(result.assets[0].uri);
-        const base64 = await file.base64();
 
-        const task = this.props.route.params?.task;
-        const tasks = this.props.route.params?.tasks;
+        if (file.exists) {
+          const task = this.props.route.params?.task;
+          const tasks = this.props.route.params?.tasks;
 
-        this.props.addPicture(task, base64);
+          this.props.addPicture(task, file.uri);
 
-        this.props.navigation.navigate({
-          name: 'TaskCompleteHome',
-          params: { task, tasks },
-          merge: true,
-        });
+          this.props.navigation.navigate({
+            name: 'TaskCompleteHome',
+            params: { task, tasks },
+            merge: true,
+          });
+        }
       }
     };
 
