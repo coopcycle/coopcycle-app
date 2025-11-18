@@ -151,7 +151,10 @@ export default function DispatchNavigator({ navigation }) {
   const taskListsContext = useTaskListsContext();
   const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
-    presentation: 'modal',
+    // Do *NOT* use presentation = modal,
+    // to avoid conflicting with gestures to close the modal when signing proofs of delivery.
+    // gestureEnabled should be used for this, but it doesn't work as expected.
+    presentation: 'card',
   });
 
   const deliveryCallback = newDelivery => {
