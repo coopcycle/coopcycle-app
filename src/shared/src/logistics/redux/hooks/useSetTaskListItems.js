@@ -27,9 +27,10 @@ import {
 } from '../selectors';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants';
 import {
+  apiSlice,
   useSetTaskListItemsMutation,
   useSetTourItemsMutation,
-} from '../../../../../redux/api/slice';
+} from '@/src/redux/api/slice';
 
 export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
   const allTasksRef = useRef([]);
@@ -37,6 +38,8 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
   const toursTasksIndex = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
   const dispatch = useDispatch();
+
+  const [refreshTaskLists/*, { data, isLoading, isError, error }*/] = apiSlice.endpoints.getTaskListsV2.useLazyQuery();
 
   const [
     setTaskListItems,
@@ -170,6 +173,11 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const bulkEditTasks = useCallback(
     async (selectedTasks, user) => {
+      if (!__taskListsSanityCheck()) {
+        // @TODO We should display an alert modal to inform the user to refresh+retry
+        return Promise.reject(new Error('Task lists sanity check failed. Please refresh data by swiping down and try again.'));
+      }
+
       const isJustUnassign = !user;
       const taskListToEdit = getTasksListsToEdit(
         selectedTasks,
@@ -207,8 +215,27 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
 
       return result;
     },
-    [_assignTasks, _unassignTasks, allTaskLists, dispatch],
+    [allTaskLists, dispatch, _assignTasks, _unassignTasks, __taskListsSanityCheck],
   );
+
+  const __taskListsSanityCheck = useCallback(async () => {
+    //console.log('STATE task lists:', JSON.stringify(allTaskLists, null, 2));
+    const { data: updatedTaskLists } = await refreshTaskLists(selectedDate.format('YYYY-MM-DD'));
+    //console.log('API task lists:', JSON.stringify(updatedTaskLists, null, 2));
+    // Let's check that all `items` from `updatedTaskLists` are present in `itemIds` from `allTaskLists`
+    const allWereFound = allTaskLists.every(taskList => {
+      const foundTaskList = updatedTaskLists.find(t => t['@id'] === taskList['@id']);
+      return foundTaskList && foundTaskList.items.every(
+        itemId => taskList.itemIds.includes(itemId)
+      )
+    });
+
+    if (!allWereFound) {
+      console.error(`Sanity check failed before bulkEditTasks execution!\nAll task lists from state: ${JSON.stringify(allTaskLists, null, 2)}\nAll task lists from API: ${JSON.stringify(updatedTaskLists, null, 2)}`);
+    }
+
+    return allWereFound;
+  }, [allTaskLists, selectedDate, refreshTaskLists]);
 
   /**
    * Unassign tasks from a single/same courier
