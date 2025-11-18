@@ -37,7 +37,7 @@ export const navigateToCompleteTask = (
   const params = {
     task,
     tasks,
-    navigateAfter: route.name,
+    navigateAfter: route?.name || null,
   };
 
   navigation.navigate('Task', {

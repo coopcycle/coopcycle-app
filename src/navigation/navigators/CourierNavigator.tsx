@@ -15,8 +15,8 @@ import TaskNavigator from './TaskNavigator';
 import { useSelector } from 'react-redux';
 import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
-import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
+import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 
 const Tab = createBottomTabNavigator();
 
@@ -209,10 +209,21 @@ const HeaderLeftButton = ({navigation}) => {
 
 const HeaderRightBody = ({navigation}) => {
   const context = useTaskListsContext();
+  const selectedTasks = context?.selectedTasksToEdit || [];
   return (
     <>
       {context?.isEditMode ?
-      <SelectedTasksMenu navigation={navigation}/>
+      <TaskActionsMenu
+        navigation={navigation}
+        tasks={selectedTasks}
+        onClearSelection={context?.clearSelectedTasks}
+        showCounter={true}
+        enabledActions={{
+          start: true,
+          complete: true,
+          reportIncident: true,
+        }}
+      />
       :
       <HeaderCourierButtons nav={navigation} />}
     </>

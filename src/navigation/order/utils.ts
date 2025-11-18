@@ -157,3 +157,42 @@ export function formatDuration(duration: string | null | undefined): string {
 
   return `${hours}h ${minutes}m`;
 }
+
+
+export function getOrderStatus(tasks: Tasks): 'TODO' | 'DOING' | 'DONE' | 'FAILED' | 'CANCELLED' {
+  if (!tasks || tasks.length === 0) {
+    return 'TODO';
+  }
+
+  const hasDoing = tasks.some(t => t.status === 'DOING');
+  if (hasDoing) return 'DOING';
+
+  const allDone = tasks.every(t => t.status === 'DONE');
+  if (allDone) return 'DONE';
+
+  const allCancelled = tasks.every(t => t.status === 'CANCELLED');
+  if (allCancelled) return 'CANCELLED';
+
+  const hasFailed = tasks.some(t => t.status === 'FAILED');
+  if (hasFailed) return 'FAILED';
+
+  return 'TODO';
+}
+
+export function getStatusBackgroundColor(
+  status?: 'TODO' | 'DOING' | 'DONE' | 'FAILED' | 'CANCELLED',
+): string {
+
+  switch (status) {
+    case 'DONE':
+      return '#4ade80'; 
+    case 'CANCELLED':
+    case 'FAILED':
+      return '#ef4444'; 
+    case 'DOING':
+      return '#73c5eb'; 
+    case 'TODO':
+    default:
+      return '#c0c5cf'; 
+  }
+}
