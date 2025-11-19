@@ -75,6 +75,20 @@ export function createDelivery(delivery, onSuccess) {
       };
     }
 
+    if (delivery.manualPriceVariantTotal) {
+      delivery = {
+        ...delivery,
+        order: {
+          arbitraryPrice: {
+            variantName: delivery.manualPriceVariantName,
+            variantPrice: delivery.manualPriceVariantTotal,
+          },
+        },
+      };
+    }
+    delete delivery.manualPriceVariantName;
+    delete delivery.manualPriceVariantTotal;
+
     dispatch(setLoading(true));
 
     httpClient

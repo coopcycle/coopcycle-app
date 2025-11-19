@@ -1,11 +1,12 @@
 import React, { createContext, useContext } from 'react';
 
-const DeliveryCallbackContext = createContext();
+const DeliveryCallbackContext = createContext({});
 
-export const DeliveryCallbackProvider = ({ children, callback }) => (
+export const DeliveryCallbackProvider = ({ children, callback, options = {} }) => (
   <DeliveryCallbackContext.Provider
     value={{
       deliveryCallback: callback,
+      ...options
     }}>
     {children}
   </DeliveryCallbackContext.Provider>

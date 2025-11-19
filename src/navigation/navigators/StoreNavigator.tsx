@@ -32,9 +32,12 @@ export default ({ navigation }) => {
     navigation.navigate('StoreDashboard');
     dispatch(createDeliverySuccess(newDelivery));
   };
+  const deliveryCallbackOptions = {
+    allowManualPrice: false,
+  };
 
   return (
-    <DeliveryCallbackProvider callback={deliveryCallback}>
+    <DeliveryCallbackProvider callback={deliveryCallback} options={deliveryCallbackOptions}>
       <RootStack.Navigator
         screenOptions={useStackNavigatorScreenOptions()}
       >

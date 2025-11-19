@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { useEffect, useMemo } from 'react';
+import { ActivityIndicator, BackHandler, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { DoneIcon, IncidentIcon } from '../task/styles/common';
@@ -47,6 +47,18 @@ export default function TaskListPage({ navigation, route }) {
 
     return taskList;
   }, [tasks]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (context?.isEditMode) {
+        context?.clearSelectedTasks();
+        return true;
+      }
+      return false;
+    });
+
+    return () => backHandler.remove();
+  }, [context]);
 
   const containerStyle = [styles.container];
   if (tasks.length === 0) {

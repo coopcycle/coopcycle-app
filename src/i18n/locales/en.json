@@ -559,6 +559,11 @@
     "PRICE_TOTAL": "Total price",
     "PRICE_CALCULATION_FAILED": "Price calculation failed",
     "PRICE_CALCULATION_FAILED_DISCLAIMER": "The price could not be calculated; please contact us to resolve the issue.",
+    "MANUAL_PRICE_TOGGLE_ON": "Enter manual price",
+    "MANUAL_PRICE_TOGGLE_OFF": "Use calculated price",
+    "MANUAL_PRICE_VARIANT_NAME": "Product name",
+    "MANUAL_PRICE_VARIANT_TOTAL": "Total price including taxes",
+    "MANUAL_PRICE_VARIANT_TOTAL_ERROR": "A valid price is required",
     "HIDE_INCIDENTS_TASKS": "Hide incidents",
     "CART_TIME_RANGE_CHANGED_MODAL_TITLE": "Selected time range is no longer available for today anymore",
     "CART_TIME_RANGE_CHANGED_MODAL_MESSAGE": "The opening hours do not allow the order to be placed today",
@@ -617,6 +622,8 @@
     "CANCEL_ERROR_TITLE": "Error",
     "CANCEL_ERROR_MESSAGE": "The {{entity}} could not be canceled.",
     "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
-    "PROCEED": "Proceed"
+    "PROCEED": "Proceed",
+    "ASSIGN": "Assign",
+    "INCIDENT": "Incident"
 }
 }
