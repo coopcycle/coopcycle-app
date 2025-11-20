@@ -145,6 +145,11 @@ function TasksMapView(props) {
               setMarginBottom(0);
               if (onMapReady) onMapReady();
             }}
+            zoomEnabled={true}
+            zoomControlEnabled={true}
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+            loadingEnabled={true}
           >
             <TaskListPolylines
               taskLists={taskLists}
