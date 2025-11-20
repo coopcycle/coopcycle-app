@@ -50,28 +50,6 @@ const Tabs = () => (
   </Tab.Navigator>
 );
 
-const styles = StyleSheet.create({
-  buttonBar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    paddingHorizontal: 10,
-  },
-});
-
-const ButtonWithIcon = ({ as, onPress }) => {
-  const color = useBaseTextColor();
-
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.button}>
-      <Icon size="xl" as={as} style={{ color }} />
-    </TouchableOpacity>
-  );
-};
-
 const MainStack = createNativeStackNavigator();
 
 function HeaderCourierButtons({ navigation }) {
