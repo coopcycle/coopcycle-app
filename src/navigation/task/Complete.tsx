@@ -113,7 +113,7 @@ const CompleteTask = ({
   const [contactName, setContactName] = useState('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(
-    formState.task.status === 'DONE' || false
+    task.status === 'DONE'
   );
 
   const [failureReasonMetadata, setFailureReasonMetadata] = useState(formState.failureReasonMetadata);
