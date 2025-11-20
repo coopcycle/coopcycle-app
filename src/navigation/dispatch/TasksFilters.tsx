@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native';
+import { FlatList, Platform, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { Switch } from '@/components/ui/switch';
@@ -161,6 +161,9 @@ function SettingsItemSwitch({ item }) {
         thumbColor={isDark ? '#e5e5e5' : '#fafafa'}
         activeThumbColor={isDark ? '#e5e5e5' : '#fafafa'}
         ios_backgroundColor={isDark ? '#3a3a3a' : '#d4d4d4'}
+        style={{
+          marginRight: Platform.OS === 'ios' ? 12 : 0,
+        }}
       />
     </HStack>
   );

@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   badgeText: {
+    color: "white",
     fontWeight: '500',
     fontSize: 12,
     paddingRight: 4,
