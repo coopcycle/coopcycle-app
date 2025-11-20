@@ -34,7 +34,7 @@ export const SelectedTasksMenu: React.FC<SelectedTasksMenuIProps> = ({
       key: 'CompleteTask',
       text: t('COMPLETE_TASK'),
       action: () => {
-        navigateToCompleteTask(navigation, route, null, selectedTasks, true);
+        navigateToCompleteTask(navigation, route,  null, selectedTasks, true);
         context?.clearSelectedTasks();
 
       },
