@@ -206,7 +206,8 @@ function NewDeliveryPickupAddress({ navigation }) {
           </View>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
             <Checkbox
-              value={customAddress}
+              value="customAddress"
+              isChecked={customAddress}
               onChange={() => setCustomAddress(!customAddress)}>
               <CheckboxIndicator>
                 <CheckboxIcon as={CheckIcon} />
