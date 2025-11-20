@@ -6,7 +6,6 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import screens, { headerLeft } from '..';
-import TrackingIcon from '../../components/TrackingIcon';
 import i18n from '../../i18n';
 import { useBaseTextColor } from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
@@ -75,25 +74,16 @@ const ButtonWithIcon = ({ as, onPress }) => {
 
 const MainStack = createNativeStackNavigator();
 
-function HeaderCourierButtons({ nav }) {
+function HeaderCourierButtons({ navigation }) {
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled);
+
   return (
-    <View style={styles.buttonBar}>
-      {isBarcodeEnabled && (
-        <ButtonWithIcon
-          as={ScanBarcode}
-          onPress={() => nav.navigate('CourierBarcode')}
-        />
-      )}
-      <ButtonWithIcon
-        as={Settings}
-        onPress={() => nav.navigate('CourierSettings')}
-      />
-      <TouchableOpacity style={styles.button}>
-        <TrackingIcon />
-      </TouchableOpacity>
-    </View>
-  );
+    <HeaderButtons>
+      {isBarcodeEnabled &&
+      <HeaderButton iconName="scan" onPress={() => navigation.navigate('CourierBarcode')} /> }
+      <HeaderButton iconName="settings-outline" onPress={() => navigation.navigate('CourierSettings')} />
+    </HeaderButtons>
+  )
 }
 
 const MainNavigator = () => {
@@ -105,7 +95,7 @@ const MainNavigator = () => {
         name="CourierHome"
         component={Tabs}
         options={({ navigation }) => ({
-          title: i18n.t('COURIER'),
+          headerTitle: i18n.t('COURIER'),
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
           headerRight: () => <HeaderRightBody navigation={navigation}/>,
         })}
@@ -207,7 +197,7 @@ const HeaderLeftButton = ({navigation}) => {
   return headerLeft(navigation, 'menuBtnCourier')();
 };
 
-const HeaderRightBody = ({navigation}) => {
+const HeaderRightBody = ({ navigation }) => {
   const context = useTaskListsContext();
   const selectedTasks = context?.selectedTasksToEdit || [];
   return (
@@ -225,7 +215,7 @@ const HeaderRightBody = ({navigation}) => {
         }}
       />
       :
-      <HeaderCourierButtons nav={navigation} />}
+      <HeaderCourierButtons navigation={navigation} />}
     </>
   );
 };
