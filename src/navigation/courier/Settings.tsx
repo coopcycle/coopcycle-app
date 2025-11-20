@@ -41,7 +41,7 @@ const SettingsItemInner = ({ item }) => (
       <Text>{item.label}</Text>
     </HStack>
     {!item.onPress && (
-      <Switch onToggle={item.onToggle} value={item.isChecked} />
+      <Switch onValueChange={item.onToggle} value={item.isChecked} />
     )}
     {item.onPress && <ArrowRightIcon />}
   </HStack>
