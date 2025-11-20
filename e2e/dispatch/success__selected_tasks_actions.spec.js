@@ -85,10 +85,9 @@ describeif(device.getPlatform() === 'android')
     await tapById('ReportIncidenceButton');
 
     await waitToBeVisible('task:finishButton');
-    await tapByText('Report incident');
+    await tapById('task:finishButton');
 
-    // FIX: As courier test, this will fail due to task not having a related delivery 
     // Verify task #1 has status "INCIDENT"
-    //await waitToBeVisible('taskListItemIcon:INCIDENT:1');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
 });
