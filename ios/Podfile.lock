@@ -147,21 +147,21 @@ PODS:
     - SocketRocket
     - Yoga
   - fast_float (8.0.0)
-  - FBAEMKit (18.0.1):
-    - FBSDKCoreKit_Basics (= 18.0.1)
+  - FBAEMKit (18.0.2):
+    - FBSDKCoreKit_Basics (= 18.0.2)
   - FBLazyVector (0.81.5)
-  - FBSDKCoreKit (18.0.1):
-    - FBAEMKit (= 18.0.1)
-    - FBSDKCoreKit_Basics (= 18.0.1)
-  - FBSDKCoreKit_Basics (18.0.1)
-  - FBSDKGamingServicesKit (18.0.1):
-    - FBSDKCoreKit (= 18.0.1)
-    - FBSDKCoreKit_Basics (= 18.0.1)
-    - FBSDKShareKit (= 18.0.1)
-  - FBSDKLoginKit (18.0.1):
-    - FBSDKCoreKit (= 18.0.1)
-  - FBSDKShareKit (18.0.1):
-    - FBSDKCoreKit (= 18.0.1)
+  - FBSDKCoreKit (18.0.2):
+    - FBAEMKit (= 18.0.2)
+    - FBSDKCoreKit_Basics (= 18.0.2)
+  - FBSDKCoreKit_Basics (18.0.2)
+  - FBSDKGamingServicesKit (18.0.2):
+    - FBSDKCoreKit (= 18.0.2)
+    - FBSDKCoreKit_Basics (= 18.0.2)
+    - FBSDKShareKit (= 18.0.2)
+  - FBSDKLoginKit (18.0.2):
+    - FBSDKCoreKit (= 18.0.2)
+  - FBSDKShareKit (18.0.2):
+    - FBSDKCoreKit (= 18.0.2)
   - Firebase/CoreOnly (11.15.0):
     - FirebaseCore (~> 11.15.0)
   - Firebase/Crashlytics (11.15.0):
@@ -3991,13 +3991,13 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 1a2e820692e933c94a565ec3fbbe38ac31658ffe
   ExpoModulesCore: 9613dfd4f33c2ab5b29cdabd5c1e71ec7a5f6f9d
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
-  FBAEMKit: b2ed182002dbcb65d5a60059c9693d322186cd00
+  FBAEMKit: 56a4f5a9607957b547b6458b17a98c5bb2736367
   FBLazyVector: 5beb8028d5a2e75dd9634917f23e23d3a061d2aa
-  FBSDKCoreKit: 7f96852f2539bdb88ba8d47e5ab4ae70a6f8d691
-  FBSDKCoreKit_Basics: 22d4c1a509ded4e45116f3bb167a14907550f62e
-  FBSDKGamingServicesKit: acde62310212678446f81b0a14da88231b918feb
-  FBSDKLoginKit: f48c06446995cd209332831f692cea28b26e51da
-  FBSDKShareKit: d3fef7f6690e173369134beb5f43983d7338e933
+  FBSDKCoreKit: 54f1240567e16862ab71c53c33dc347db5c524c5
+  FBSDKCoreKit_Basics: eb530cd6a79030dbb11df460aafb2767bcad9028
+  FBSDKGamingServicesKit: a967e47b5cbf759fb3e42a87f11a999aa7c36b24
+  FBSDKLoginKit: 6a70798793e499335a98fab1a758d7da34af196e
+  FBSDKShareKit: e52c6b1584c77c708bcb4001c9a48223c115cbd9
   Firebase: d99ac19b909cd2c548339c2241ecd0d1599ab02e
   FirebaseAnalytics: 6433dfd311ba78084fc93bdfc145e8cb75740eae
   FirebaseCore: efb3893e5b94f32b86e331e3bd6dadf18b66568e
