@@ -27,7 +27,9 @@ const routesByCardGateway = {
   // 'mercadopago': 'CheckoutMercadopago',
 };
 
-const inAppBrowserOptions = {};
+const inAppBrowserOptions = {
+  dismissButtonStyle: 'cancel',
+};
 
 const CreditCard = ({
   cart,
@@ -36,7 +38,18 @@ const CreditCard = ({
   loadPaymentMethods,
   setPaymentMethod,
 }) => {
+
   const navigation = useNavigation();
+
+  useEffect(() => {
+    Linking.addEventListener('url', ({ url }) => {
+      if (url.startsWith('coopcycle://paygreen')) {
+        try {
+          InAppBrowser.close();
+        } catch (e) {}
+      }
+    })
+  }, []);
 
   const onPaymentMethodSelected = useCallback(
     type => {
@@ -59,22 +72,18 @@ const CreditCard = ({
           try {
             if (await InAppBrowser.isAvailable()) {
               // https://github.com/proyecto26/react-native-inappbrowser/issues/131#issuecomment-663492025
-              await InAppBrowser.closeAuth();
-              InAppBrowser.openAuth(
-                result.redirectUrl,
-                'coopcycle://',
-                inAppBrowserOptions,
-              ).then(response => {
-                if (response.type === 'success' && response.url) {
-                  const { hostname, pathname } = parseUrl(response.url, true);
-                  if (
-                    hostname === 'paygreen' &&
-                    (pathname === '/cancel' || pathname === '/return')
-                  ) {
-                    Linking.openURL(response.url);
-                  }
+              await InAppBrowser.close();
+              const response = await InAppBrowser.open(result.redirectUrl, inAppBrowserOptions);
+              console.log('InAppBrowser response', response)
+              if (response.type === 'success' && response.url) {
+                const { hostname, pathname } = parseUrl(response.url, true);
+                if (
+                  hostname === 'paygreen' &&
+                  (pathname === '/cancel' || pathname === '/return')
+                ) {
+                  Linking.openURL(response.url);
                 }
-              });
+              }
             } else {
               Linking.openURL(result.redirectUrl);
             }
