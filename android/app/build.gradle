@@ -94,7 +94,7 @@ android {
         multiDexEnabled true
         // No need to increment the versionCode, it will be automatically incremented by the fastlane
         versionCode 221
-        versionName "2.37.2"
+        versionName "2.37.3"
 
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
