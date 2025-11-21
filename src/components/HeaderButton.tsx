@@ -26,7 +26,7 @@ const HeaderButtonsWrapper = ({ children }) => {
 
 const ItemWrapper = (props) => {
   const colorScheme = useColorScheme();
-  const { disabled, ...restProps } = props;
+  const { disabled, style, ...restProps } = props;
 
   const color = colorScheme === 'dark' ? '#fff' : '#000';
   const opacity = disabled ? 0.4 : 1;
@@ -36,7 +36,7 @@ const ItemWrapper = (props) => {
       {...restProps}
       disabled={disabled}
       color={color}
-      style={{ opacity }}
+      style={{ ...style, opacity }}
     />
   );
 };
