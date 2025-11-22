@@ -11,7 +11,7 @@ export const navigateToOrder = (navigation, orderNumber: string, isFromCourier =
 };
 
 export const navigateToTask = (navigation, route, task, tasks = []) => {
-  if (route !== null && route.name !== 'TaskHome') {
+  if (route?.name !== 'TaskHome') {
     navigateAfter = route.name;
   }
 

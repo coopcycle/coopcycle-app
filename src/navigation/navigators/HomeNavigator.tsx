@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
@@ -9,8 +9,8 @@ import ConfigureServer from '../ConfigureServer';
 import ChooseCity from '../home/ChooseCity';
 import CustomServer from '../home/CustomServer';
 
-const MainStack = createStackNavigator();
-const RootStack = createStackNavigator();
+const MainStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 const MainNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();

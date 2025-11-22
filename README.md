@@ -34,6 +34,12 @@ Follow the [Firebase instructions](https://firebase.google.com/docs/ios/setup) t
 Setup - All Platforms
 ---------------------
 
+Enable Corepack
+
+```sh
+$ corepack enable
+```
+
 Install dependencies with Yarn.
 
 ```sh

@@ -11,7 +11,6 @@ import {
 import FAIcon from './Icon';
 import { getName, getTimeFrame } from '../navigation/task/components/utils';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { navigateToTask } from '../navigation/utils';
 import { getOrderNumberWithPosition } from '../utils/tasks';
 
 const styles = StyleSheet.create({

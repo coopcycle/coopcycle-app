@@ -57,6 +57,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ inputs.tag }}
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -154,10 +156,8 @@ jobs:
       - name: Install RubyGems
         working-directory: android/
         run: bundle install
-      - name: Install latest yarn binary
-        run: yarn set version latest --yarn-path
       - name: yarn install
-        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+        run: yarn install
       - name: Run Fastlane
         working-directory: android/
         run: bundle exec fastlane ${{env.FASTLANE_CMD}}

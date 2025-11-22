@@ -1,52 +1,45 @@
-import React, { PureComponent } from 'react';
-import Spinner from 'react-native-loading-spinner-overlay';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+} from 'react-native';
+
+import {
   selectIsLoading,
-  selectIsSpinnerDelayEnabled,
 } from '../redux/App/selectors';
 
-class SpinnerWrapper extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: props.loading,
-    };
+const Spinner = ({ isLoading }) => {
+  if (!isLoading) {
+    return null;
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.loading !== this.props.loading) {
-      if (this.props.isSpinnerDelayEnabled) {
-        // VISIBLE -> HIDDEN
-        if (prevProps.loading && !this.props.loading) {
-          // FIXME; why do we need to apply a delay to a spinner itself on top of the delay on a modal/alert to be shown after the spinner?
-          // https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
-          // https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30
-          setTimeout(
-            () => this.setState({ isLoading: this.props.loading }),
-            250,
-          );
-        } else {
-          this.setState({ isLoading: this.props.loading });
-        }
-      } else {
-        this.setState({ isLoading: this.props.loading });
-      }
-    }
-  }
-
-  render() {
-    return <Spinner visible={this.state.isLoading} />;
-  }
+  return (
+    <View style={styles.overlay}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+});
 
 function mapStateToProps(state) {
   return {
-    loading: selectIsLoading(state),
-    isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state),
+    isLoading: selectIsLoading(state),
   };
 }
 
-export default connect(mapStateToProps)(SpinnerWrapper);
+export default connect(mapStateToProps)(Spinner);

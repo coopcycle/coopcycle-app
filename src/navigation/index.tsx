@@ -164,7 +164,6 @@ export const headerLeft = (navigation, testID = 'menuBtn') => {
         iconName="menu"
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
         testID={testID}
-        style={{ marginLeft: 16 }}
       />
     </HeaderButtons>
   );
