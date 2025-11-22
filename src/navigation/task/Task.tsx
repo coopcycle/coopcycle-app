@@ -46,8 +46,12 @@ class Task extends Component {
   componentDidUpdate(prevProps, prevState) {
     const task = this.props.route.params?.task;
 
-    let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']);
-    let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id']);
+    if (!task || !task['@id']) {
+      return;
+    }
+
+    const previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']);
+    const currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id']);
 
     // Task status has been updated
     if (
@@ -66,7 +70,6 @@ class Task extends Component {
 
   _complete(success = true, force = false) {
     const task = this.props.route.params?.task;
-
     if (success && task.status === 'TODO' && !force) {
       Alert.alert(
         this.props.t('TASK_COMPLETE_ALERT_TITLE'),
@@ -90,6 +93,20 @@ class Task extends Component {
           },
         ],
       );
+      return;
+    }
+
+    if (!success) {
+      this.props.navigation.navigate('TaskComplete', {
+        screen: 'ReportIncidentHome',
+        params: {
+          task,
+          navigateAfter: this.props.route.params?.navigateAfter,
+          success,
+        },
+      });
+
+      setTimeout(() => this.swipeRow.current?.closeRow(), 250);
       return;
     }
 
@@ -135,8 +152,9 @@ class Task extends Component {
     const tasksParam = this.props.route.params?.tasks || [];
 
     const task = this.normalizeTask(taskParam);
-    const tasks = (tasksParam.length > 0 ? tasksParam : (taskParam ? [taskParam] : []))
-      .map(t => this.normalizeTask(t));
+    const tasks = (
+      tasksParam.length > 0 ? tasksParam : taskParam ? [taskParam] : []
+    ).map(t => this.normalizeTask(t));
 
     const aspectRatio = getAspectRatio(this.state.mapDimensions);
 

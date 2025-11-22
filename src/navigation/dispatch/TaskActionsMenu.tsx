@@ -4,7 +4,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { cancelTask } from '@/src/redux/Courier/taskActions';
-import { navigateToCompleteTask } from '../utils';
+import { navigateToCompleteTask, navigateToReportTask } from '../utils';
 import { startTask } from '@/src/redux/Courier';
 import TasksMenu from '../components/TasksMenu';
 import { useIconColor } from '@/src/styles/theme';
@@ -148,7 +148,7 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       text: t('REPORT_INCIDENT'),
       isDisabled: tasks.length > 1,
       action: () => {
-        navigateToCompleteTask(navigation, route, tasks[0], [], false);
+        navigateToReportTask(navigation, route, tasks[0], [], false);
         onClearSelection?.();
       },
     });
