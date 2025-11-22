@@ -17,6 +17,7 @@ const MainStack = createNativeStackNavigator();
 const MainNavigator = () => {
 
   const { t } = useTranslation();
+  const restaurant = useSelector(selectRestaurant)
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
@@ -25,8 +26,6 @@ const MainNavigator = () => {
         name="RestaurantHome"
         component={screens.RestaurantDashboard}
         options={({ navigation, route }) => {
-
-          const restaurant = useSelector(selectRestaurant)
 
           return {
             title: restaurant?.name || t('RESTAURANT'),
