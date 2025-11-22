@@ -501,6 +501,9 @@
     "CANCEL_NO_TASKS_MESSAGE": "Este {{entity}} no tiene tareas asociadas para cancelar.",
     "PROCEED": "Continuar",
     "ASSIGN": "Asignar",
-    "INCIDENT": "Incidente"
+    "INCIDENT": "Incidente",
+    "CHECKOUT_STOP": "Cancelar la compra",
+    "CHECKOUT_STOP_CONFIRM": "¿Deseas interrumpir el pedido? Puedes completarlo más tarde",
+    "CHECKOUT_CONTINUE": "Continuar con la compra"
   }
 }

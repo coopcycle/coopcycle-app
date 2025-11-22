@@ -6,7 +6,7 @@ import { Icon } from '@/components/ui/icon';
 import { User, House, Search, ShoppingCart } from 'lucide-react-native';
 import { Text } from '@/components/ui/text';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Alert } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect, useSelector } from 'react-redux';
 import screens, { headerLeft } from '..';
@@ -24,6 +24,7 @@ import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
 import { useStackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
+import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 
 const MyOrderButton = ({ navigation }) => {
   const color = useBaseTextColor();
@@ -233,12 +234,42 @@ const MainNavigator = () => {
 const SubmitOrderStack = createNativeStackNavigator();
 
 const SubmitOrderNavigator = () => {
+
   const isAuthenticatedUser = useSelector(selectIsAuthenticated);
   const isGuest = useSelector(selectIsGuest);
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <SubmitOrderStack.Navigator screenOptions={screenOptions}>
+    <SubmitOrderStack.Navigator screenOptions={ ({ navigation }) => ({
+      ...screenOptions,
+      headerLeft: () => (
+        <HeaderButtons>
+          <HeaderButton
+            iconName="close"
+            onPress={() => {
+              Alert.alert(
+                i18n.t('CHECKOUT_STOP'),
+                i18n.t('CHECKOUT_STOP_CONFIRM'),
+                [
+                  {
+                    text: i18n.t('CHECKOUT_CONTINUE'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: i18n.t('BACK'),
+                    onPress: () => navigation.navigate('CheckoutSummary'),
+                    style: 'destructive',
+                  },
+                ],
+                {
+                  cancelable: true,
+                },
+              );
+            }}
+          />
+        </HeaderButtons>
+      )
+    })}>
       {isAuthenticatedUser || isGuest ? (
         <SubmitOrderStack.Screen
           name="CheckoutMoreInfos"
@@ -335,9 +366,7 @@ const SubmitOrderNavigator = () => {
 const RootStack = createNativeStackNavigator();
 
 const DefaultNav = () => {
-  const screenOptions = useStackNavigatorScreenOptions({
-    presentation: 'modal',
-  });
+  const screenOptions = useStackNavigatorScreenOptions();
 
   return (
     <RootStack.Navigator screenOptions={screenOptions}>
@@ -351,7 +380,7 @@ const DefaultNav = () => {
       <RootStack.Screen
         name="CheckoutProductDetails"
         component={screens.CheckoutProductDetails}
-        options={({ _, route }) => {
+        options={({ route }) => {
           const productName = route.params?.product.name || '';
           return {
             title: productName,
@@ -370,9 +399,7 @@ const DefaultNav = () => {
 };
 
 const CheckoutNav = ({ address }) => {
-  const screenOptions = useStackNavigatorScreenOptions({
-    presentation: 'modal',
-  });
+  const screenOptions = useStackNavigatorScreenOptions();
 
   if (!address) {
     return (
