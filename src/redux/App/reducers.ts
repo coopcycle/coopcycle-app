@@ -55,7 +55,6 @@ import {
   SET_SETTINGS,
   SET_USER,
   appStateChanged,
-  setSpinnerDelayEnabled,
   setBarcodeEnabled,
 } from './actions';
 
@@ -114,7 +113,6 @@ type AppState = {
   loadingPrivacyPolicy: boolean;
   termsAndConditionsText: string;
   privacyPolicyText: string;
-  isSpinnerDelayEnabled: boolean;
   isBarcodeEnabled: boolean;
 };
 
@@ -168,7 +166,6 @@ const initialState: AppState = {
   loadingPrivacyPolicy: false,
   termsAndConditionsText: '',
   privacyPolicyText: '',
-  isSpinnerDelayEnabled: true,
   isBarcodeEnabled: false,
 };
 
@@ -518,12 +515,6 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         loadingTerms: false,
-      };
-
-    case setSpinnerDelayEnabled.type:
-      return {
-        ...state,
-        isSpinnerDelayEnabled: action.payload,
       };
 
     case setBarcodeEnabled.type:

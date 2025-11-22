@@ -20,7 +20,6 @@ import DangerAlert from '../../../components/DangerAlert';
 import { useBackgroundColor } from '../../../styles/theme';
 import { useGetOrderTimingQuery } from '../../../redux/api/slice';
 import { useNavigation } from '@react-navigation/native';
-import { useIsModalVisible } from '../../../hooks/useIsModalVisible';
 import tracker from '../../../analytics/Tracker';
 import { DatadogLogger } from '../../../Datadog';
 
@@ -125,9 +124,7 @@ function Content({ isModalOpen }) {
 }
 
 export default function TimeRangeChangedModal() {
-  const isModalVisible = useIsModalVisible(
-    selectIsTimeRangeChangedModalVisible,
-  );
+  const isModalVisible = useSelector(selectIsTimeRangeChangedModalVisible);
   const backgroundColor = useBackgroundColor();
 
   const { t } = useTranslation();

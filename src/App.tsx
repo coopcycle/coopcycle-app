@@ -185,7 +185,6 @@ const App = () => {
                 <I18nextProvider i18n={i18n}>
                   <QueryClientProvider client={queryClient}>
                     <SafeAreaProvider>
-                      <Spinner />
                       <NavigationContainer
                         ref={navigationRef}
                         linking={linking}
@@ -195,6 +194,7 @@ const App = () => {
                         navigationInChildEnabled>
                         <Root />
                       </NavigationContainer>
+                      <Spinner />
                       <DropdownAlert
                         ref={ref => {
                           DropdownHolder.setDropdown(ref);

@@ -218,10 +218,6 @@ const loadPrivacyPolicyFailure = createFsAction(LOAD_PRIVACY_POLICY_FAILURE);
 const registrationErrors = createFsAction(REGISTRATION_ERRORS);
 const loginByEmailErrors = createFsAction(LOGIN_BY_EMAIL_ERRORS);
 
-export const setSpinnerDelayEnabled = createAction(
-  '@app/SET_IS_SPINNER_DELAY_ENABLED',
-);
-
 export const setBarcodeEnabled = createAction('@app/SET_IS_BARCODE_ENABLED');
 
 export const startSound = createAction('START_SOUND');
