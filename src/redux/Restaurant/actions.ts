@@ -455,8 +455,9 @@ export function acceptOrder(order, cb) {
             id: order.id,
           }),
         );
-
-        cb(res);
+        if (typeof cb === 'function') {
+          cb(res);
+        }
       })
       .catch(e => dispatch(acceptOrderFailure(e)));
   };

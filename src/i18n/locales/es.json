@@ -527,6 +527,8 @@
     "CANCEL_NO_TASKS_MESSAGE": "Este {{entity}} no tiene tareas asociadas para cancelar.",
     "PROCEED": "Continuar",
     "ADD_SUPPLEMENT": "Agregar suplementos",
-    "ADDED_SUPPLEMENTS": "Suplementos agregados"
+    "ADDED_SUPPLEMENTS": "Suplementos agregados",
+    "ASSIGN": "Asignar",
+    "INCIDENT": "Incidente"
   }
 }

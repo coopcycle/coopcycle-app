@@ -612,6 +612,8 @@
     "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
     "PROCEED": "Continuer",
     "ADD_SUPPLEMENT": "Ajouter des suppléments",
-    "ADDED_SUPPLEMENTS": "Suppléments ajoutés"
+    "ADDED_SUPPLEMENTS": "Suppléments ajoutés",
+    "ASSIGN": "Assigner",
+    "INCIDENT": "Incident" 
   }
 }

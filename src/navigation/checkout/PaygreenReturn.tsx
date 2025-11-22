@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { Center } from '@/components/ui/center';
 import { Text } from '@/components/ui/text';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -19,8 +19,8 @@ export default () => {
   }, [dispatch, route.params.po_id]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Center flex={1} className="p-4">
       <Text>{t('PAYGREEN_RETURN_TEXT')}</Text>
-    </View>
+    </Center>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, LayoutChangeEvent, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '../../redux/Courier/taskSelectors';
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '../../redux/logistics/selectors';
@@ -17,6 +18,7 @@ import { Box } from '@/components/ui/box';
 import { apiSlice, useGetTaskContextQuery } from '@/src/redux/api/slice';
 
 const Order = ({ route }: RouteType) => {
+  const navigation = useNavigation();
   const [mapDimensions, setMapDimensions] = useState({ height: 0, width: 0 });
   const aspectRatio = useMemo(
     () => getAspectRatio(mapDimensions),
@@ -102,7 +104,7 @@ const Order = ({ route }: RouteType) => {
         keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({ item }) => (
           <Box style={{ paddingHorizontal: 12 }}>
-            <OrderAccordeon task={item as Task} />
+            <OrderAccordeon task={item as Task} navigation={navigation} route={route} />
           </Box>
         )}
         ListHeaderComponent={<OrderDetail tasks={tasks} />}

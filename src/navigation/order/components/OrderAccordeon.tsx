@@ -23,7 +23,11 @@ import TaskTypeIcon from '../../../components/TaskTypeIcon';
 import { useBaseTextColor } from '../../../styles/theme';
 import { Task, TaskTag } from '../../../types/task';
 import { addDayIfNotToday, getPackagesSummary, getTimeFrame } from '../../task/components/utils';
-import { getTaskTitleForOrder } from '../utils';
+import { getStatusBackgroundColor, getTaskTitleForOrder } from '../utils';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
+import FAIcon from '@/src/components/Icon';
+import { navigateToCompleteTask } from '../../utils';
 
 interface PackageSummary {
   text: string;
@@ -39,6 +43,9 @@ interface ContentProps {
   telephone: string;
   firstName: string | null;
   onPhonePress?: () => void;
+  status?: string;
+  hasIncidents?: boolean;
+  onReportIncident?: () => void;
 }
 
 const ContentText = ({
@@ -51,6 +58,9 @@ const ContentText = ({
   telephone,
   firstName,
   onPhonePress,
+  status,
+  hasIncidents,
+  onReportIncident
 }: ContentProps) => {
   const { t } = useTranslation();
 
@@ -102,15 +112,31 @@ const ContentText = ({
           />
         </>
       )}
+      {!hasIncidents && status !== 'DONE' && status !== 'CANCELLED' && (
+        <>
+          <Divider />
+          <TouchableOpacity
+            onPress={onReportIncident}
+            style={styles.incidentButton}
+          >
+            <FAIcon name="exclamation-triangle" />
+            <Text style={styles.incidentButtonText}>
+              {t('REPORT_INCIDENT')}
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
     </Box>
   );
 };
 
 interface OrderAccordeonProps {
   task: Task;
+  navigation: NavigationProp<object>;
+  route: object;
 }
 
-function OrderAccordeon({ task }: OrderAccordeonProps) {
+function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
   const { t } = useTranslation();
   const taskTitle = getTaskTitleForOrder(task);
   const address = task.address.streetAddress;
@@ -136,6 +162,11 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
     }
   };
 
+  // Function to handle report incident
+  const handleReportIncident = () => {
+    navigateToCompleteTask(navigation, route, task, [], false);
+  };
+
   return (
     <Accordion
       size="md"
@@ -154,17 +185,34 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
               return (
                 <>
                   <Box className="flex-1 flex-col">
-                    <HStack space="xs" className="mb-2">
+                    <HStack space="xs" className="mb-2" style={{ alignItems: 'center' }}>
                       <TaskTypeIcon colored task={task} />
                       <AccordionTitleText
                         style={{
-                          lineHeight: 22,
                           textTransform: 'uppercase',
                           color: headerText,
-                          marginLeft: 12,
-                        }}>
+                          marginLeft: 6,
+                        }}
+                      >
                         {taskTitle || (task.type === 'PICKUP' ? t('PICKUP') : t('DROPOFF'))}
                       </AccordionTitleText>
+                      <View>
+                        {task.hasIncidents ?
+                          (
+                            <View style={{ backgroundColor: "#facc15", borderRadius: 12, paddingHorizontal: 6, alignSelf: 'flex-start', marginTop: 4 }}>
+                              <Text style={{  fontSize: 11, fontWeight: '600', color: '#000' }}>
+                                {t('INCIDENT').toUpperCase()}
+                              </Text>
+                            </View>
+                          ) : (
+                            <View style={{ backgroundColor: getStatusBackgroundColor(task.status), borderRadius: 12 }} className="px-2 mt-1 self-start">
+                              <Text style={{ fontSize: 11, fontWeight: '600', color: '#000' }}>
+                                {task.status}
+                              </Text>
+                            </View>
+                          )
+                        }
+                      </View>
                     </HStack>
                     <HStack space="md" style={{ alignItems: 'center' }}>
                       <Text bold style={{ color: headerText }}>
@@ -201,6 +249,9 @@ function OrderAccordeon({ task }: OrderAccordeonProps) {
             firstName={task.address.firstName}
             comments={comments}
             onPhonePress={handlePhonePress}
+            status={task.status}
+            hasIncidents={task.hasIncidents}
+            onReportIncident={handleReportIncident}
           />
         </AccordionContent>
       </AccordionItem>
@@ -216,3 +267,12 @@ export function getTaskTimeFrame(task: Task, separator: string) {
 }
 
 export default OrderAccordeon;
+const styles = StyleSheet.create({
+  incidentButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    alignSelf: 'center',
+    paddingVertical: 4,
+  },
+});

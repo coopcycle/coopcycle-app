@@ -1,4 +1,4 @@
-.PHONY: setup start start-fresh android ios test test-only e2e-build-android e2e-build-ios e2e-android e2e-android-only e2e-ios e2e-ios-only lint lint-quiet adb emulator
+.PHONY: setup start start-fresh android ios test test-only e2e-build-android e2e-build-ios e2e-android e2e-android-only e2e-ios e2e-ios-only lint lint-full adb emulator
 
 ENV_FILE ?= .env
 
@@ -60,9 +60,9 @@ e2e-ios-only:
 	@clear && APP_ENV=test detox test ./e2e/${TESTFILE} -c ios.sim.debug --retries 0
 
 lint:
-	@clear && yarn lint
-lint-quiet:
 	@clear && yarn lint --quiet
+lint-full:
+	@clear && yarn lint
 
 adb:
 	@adb reverse tcp:9090 tcp:9090

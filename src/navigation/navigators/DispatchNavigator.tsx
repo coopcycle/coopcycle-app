@@ -25,9 +25,9 @@ import OrderNavigator from './OrderNavigator';
 import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
-import { SelectedTasksMenu } from '../dispatch/SelectedTasksMenu';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
+import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 
 const Tab = createBottomTabNavigator();
 
@@ -161,10 +161,24 @@ const HeaderLeftButton = ({navigation}) => {
 
 const HeaderRightBody = ({navigation}) => {
   const context = useTaskListsContext();
+  const selectedTasks = context?.selectedTasksToEdit || [];
+
   return (
     <>
       {context?.isEditMode ?
-      <SelectedTasksMenu navigation={navigation}/>
+      <TaskActionsMenu
+        navigation={navigation}
+        tasks={selectedTasks}
+        onClearSelection={context?.clearSelectedTasks}
+        showCounter={true}
+        enabledActions={{
+          start: true,
+          complete: true,
+          assign: true,
+          cancel: true,
+          reportIncident: true,
+        }}
+      />
       :
       <HeaderRightButton
         onPress={() => navigation.navigate('DispatchDate')}
@@ -180,11 +194,6 @@ export default function DispatchNavigator({ navigation }) {
     presentation: 'modal',
   });
 
-  const deliveryCallback = newDelivery => {
-    navigation.navigate('DispatchAllTasks');
-    dispatch(createDeliverySuccess(newDelivery));
-  };
-
   useEffect(() => {
     const clearSelectedTasksState = navigation.addListener('blur', () => {
       dispatch(clearSelectedTasks());
@@ -192,8 +201,16 @@ export default function DispatchNavigator({ navigation }) {
     return clearSelectedTasksState;
   }, [navigation, dispatch]);
 
+  const deliveryCallback = newDelivery => {
+    navigation.navigate('DispatchAllTasks');
+    dispatch(createDeliverySuccess(newDelivery));
+  };
+  const deliveryCallbackOptions = {
+    allowManualPrice: true,
+  };
+
   return (
-    <DeliveryCallbackProvider callback={deliveryCallback}>
+    <DeliveryCallbackProvider callback={deliveryCallback} options={deliveryCallbackOptions}>
       <TaskListsProvider defaultIsFromCourier={false}>
         <RootStack.Navigator screenOptions={screenOptions}>
           <RootStack.Screen

@@ -82,9 +82,12 @@ export default ({ navigation }) => {
     navigation.navigate('StoreHome');
     dispatch(createDeliverySuccess(newDelivery));
   };
+  const deliveryCallbackOptions = {
+    allowManualPrice: false,
+  };
 
   return (
-    <DeliveryCallbackProvider callback={deliveryCallback}>
+    <DeliveryCallbackProvider callback={deliveryCallback} options={deliveryCallbackOptions}>
       <RootStack.Navigator screenOptions={screenOptions}>
         <RootStack.Screen
           name="StoreHome"

@@ -650,7 +650,8 @@
     "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
     "PROCEED": "Proceed",
     "ADD_SUPPLEMENT": "Add supplements",
-    "ADDED_SUPPLEMENTS": "Added supplements"
-
+    "ADDED_SUPPLEMENTS": "Added supplements",
+    "ASSIGN": "Assign",
+    "INCIDENT": "Incident"
 }
 }
