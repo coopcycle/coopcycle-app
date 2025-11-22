@@ -296,19 +296,22 @@ function updateUserProperties(user) {
   tracker.setUserProperty(userProperty.roles, roles.toString());
 }
 
-function navigateToHome(dispatch, getState) {
-  dispatch(loadMyRestaurantsRequest());
+function navigateToHome() {
 
-  loadAll(getState).then(values => {
-    const [restaurants, stores] = values;
+  return async (dispatch, getState) => {
 
-    dispatch(loadMyRestaurantsSuccess(restaurants));
+    dispatch(loadMyRestaurantsRequest());
+
+    const [restaurants, stores] = await loadAll(getState)
+
+    await dispatch(loadMyRestaurantsSuccess(restaurants));
     if (stores) {
-      dispatch(_loadMyStoresSuccess(stores));
+      await dispatch(_loadMyStoresSuccess(stores));
     }
 
     NavigationHolder.navigate(selectInitialRouteName(getState()));
-  });
+  }
+
 }
 
 function loadAll(getState) {
@@ -507,7 +510,7 @@ export function login(
     if (navigateOnSuccess) {
       // FIXME
       // Use setTimeout() to let room for loader to hide
-      setTimeout(() => navigateToHome(dispatch, getState), 250);
+      setTimeout(() => dispatch(navigateToHome()), 250);
     }
   };
 }
@@ -586,7 +589,7 @@ export function confirmRegistration(token) {
         if (checkoutToResumeAfterActivation) {
           dispatch(resumeCheckout(checkoutToResumeAfterActivation));
         } else {
-          navigateToHome(dispatch, getState);
+          dispatch(navigateToHome());
         }
       })
       .catch(err => {
@@ -706,7 +709,7 @@ export function setNewPassword(token, password) {
         if (checkoutToResumeAfterActivation) {
           dispatch(resumeCheckout(checkoutToResumeAfterActivation));
         } else {
-          navigateToHome(dispatch, getState);
+          dispatch(navigateToHome());
         }
       })
       .catch(err => {
@@ -756,7 +759,7 @@ export function loginWithFacebook(accessToken, navigate = true) {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide
-          setTimeout(() => navigateToHome(dispatch, getState), 250);
+          setTimeout(() => dispatch(navigateToHome()), 250);
         }
       })
       .catch(err => {
@@ -785,7 +788,7 @@ export function signInWithApple(identityToken, navigate = true) {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide
-          setTimeout(() => navigateToHome(dispatch, getState), 250);
+          setTimeout(() => dispatch(navigateToHome()), 250);
         }
       })
       .catch(err => {
@@ -814,7 +817,7 @@ export function googleSignIn(idToken, navigate = true) {
         if (navigate) {
           // FIXME
           // Use setTimeout() to let room for loader to hide
-          setTimeout(() => navigateToHome(dispatch, getState), 250);
+          setTimeout(() => dispatch(navigateToHome()), 250);
         }
       })
       .catch(err => {
