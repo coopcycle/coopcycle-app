@@ -80,7 +80,6 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       text: t('COMPLETE_TASK'),
       action: () => {
         navigateToCompleteTask(navigation, route, tasks[0], tasks, true);
-        onClearSelection?.();
       },
     });
   }

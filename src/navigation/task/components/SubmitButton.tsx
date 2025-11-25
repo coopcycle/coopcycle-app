@@ -10,6 +10,7 @@ import { greenColor, yellowColor } from "@/src/styles/common";
 import { markTaskDone, markTasksDone } from "@/src/redux/Courier";
 import Task from "@/src/types/task";
 import { useReportFormContext } from "../contexts/ReportFormContext";
+import { useTaskListsContext } from "../../courier/contexts/TaskListsContext";
 import { usePostIncidentMutation } from "@/src/redux/api/slice";
 import { buildReportIncidentPayload } from "../utils/taskFormHelpers";
 import { showAlert } from "@/src/utils/alert";
@@ -45,6 +46,7 @@ export const SubmitButton = ({
 
 
 const formContext = useReportFormContext();
+const TaskListsContext = useTaskListsContext();
 const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
   const hasFormContext = !!formContext;
   
@@ -57,6 +59,7 @@ const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
     hasFormContext && startSubmitting();
     setIsDisabled(true);
     const navigateOnSuccess = () => {
+      TaskListsContext?.clearSelectedTasks();
       if (route.params?.navigateAfter !== null) {
         navigation.navigate({
           name: route.params?.navigateAfter,
