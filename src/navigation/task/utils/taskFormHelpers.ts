@@ -43,7 +43,6 @@ export const getInitialFormValues = (task?: Partial<Task>, store?) => {
 };
 
 const buildMetadataPayload = (task, id) => {
-  console.log("REPORT: ", JSON.stringify(task, null, 2))
   if (!task.tasks || Object.keys(task.tasks).length === 0) {
     const tasks = [];
   }
