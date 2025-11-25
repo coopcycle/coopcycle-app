@@ -157,6 +157,33 @@ export const apiSlice = createApi({
         return { data: sortByName(result.data) };
       },
     }),
+    getRestaurants: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/restaurants',
+          100,
+        );
+
+        if (result.error) {
+          return result;
+        }
+        return { data: sortByName(result.data) };
+      },
+    }),
+    getTags: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/tags',
+          100,
+        );
+        if (result.error) {
+          return result;
+        }
+        return { data: sortByName(result.data) };
+      },
+    }),
     getMyTasks: builder.query({
       query: (date: DateOnlyString) => `api/me/tasks/${date}`,
     }),
@@ -194,6 +221,8 @@ export const {
   useGetTaskContextQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,
+  useGetTagsQuery,
+  useGetRestaurantsQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,

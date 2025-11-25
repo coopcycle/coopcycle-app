@@ -1,5 +1,5 @@
 import { Icon, SearchIcon } from '@/components/ui/icon';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View, useColorScheme } from 'react-native';
 import { blackColor, darkGreyColor } from '../styles/common';
 
 export default function SearchInput({
@@ -8,23 +8,30 @@ export default function SearchInput({
   placeholder = 'Search',
   value,
   style,
+  onFocus,
+  onBlur,
   ...props
 }) {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+
   return (
-    <View style={[styles.searchContainer, style]} {...props}>
+    <View style={[styles.searchContainer, { backgroundColor: isDarkMode ? '#2A2A2A' : '#EFEFEF' }, style]} {...props}>
       <Icon
         as={SearchIcon}
         name="search"
         size="xl"
-        style={[styles.searchIcon, {color: blackColor}]}
+        style={[styles.searchIcon, { color: isDarkMode ? '#FFFFFF' : blackColor }]}
       />
       <TextInput
-        style={styles.searchInput}
+        style={[styles.searchInput, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
         placeholder={placeholder}
-        placeholderTextColor={darkGreyColor}
+        placeholderTextColor={isDarkMode ? '#888888' : darkGreyColor}
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
+        onFocus={onFocus}
+        onBlur={onBlur}
         returnKeyType="search"
         testID="searchTextInput"
       />
@@ -35,7 +42,6 @@ export default function SearchInput({
 const styles = StyleSheet.create({
   searchContainer: {
     alignItems: 'center',
-    backgroundColor: '#EFEFEF',
     borderRadius: 20.5,
     flexDirection: 'row',
     height: 40,
@@ -45,7 +51,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   searchInput: {
-    color: '#000000',
     flex: 1,
     fontFamily: 'OpenSans-SemiBold',
     fontSize: 14,

@@ -80,7 +80,6 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       text: t('COMPLETE_TASK'),
       action: () => {
         navigateToCompleteTask(navigation, route, tasks[0], tasks, true);
-        onClearSelection?.();
       },
     });
   }
@@ -149,7 +148,6 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
       isDisabled: tasks.length > 1,
       action: () => {
         navigateToCompleteTask(navigation, route, tasks[0], [], false);
-        onClearSelection?.();
       },
     });
   }
