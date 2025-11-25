@@ -379,3 +379,25 @@ export const sleep = (timeout) => {
   console.log(`Sleeping for ${timeout} ms..`);
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
+
+export const scrollToElement = async (scrollViewId, elementId, options = {}) => {
+  const {
+    direction = 'down',
+    scrollAmount = 200
+  } = options;
+  await waitFor(element(by.id(elementId))).toBeVisible()
+    .whileElement(by.id(scrollViewId))
+    .scroll(scrollAmount, direction, 0.5, 0.5);
+};
+
+export const scrollUntilVisible = async (scrollViewId, elementId, maxAttempts = 5) => {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      await waitToBeVisible(elementId)
+      return;
+    } catch (error) {
+      await element(by.id(scrollViewId)).scroll(300, 'down');
+    }
+  }
+  throw new Error(`Element ${elementId} not found after ${maxAttempts} scroll attempts`);
+};
