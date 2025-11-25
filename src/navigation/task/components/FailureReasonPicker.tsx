@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
 import { useQuery } from "react-query";
 
-
 export const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   const [selectedFailureReason, setFailureReason] = useState(null);
   const { t } = useTranslation();
@@ -25,7 +24,12 @@ export const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
       return null;
     }
     return data['hydra:member'].map((value, index) => (
-      <SelectItem key={index} value={value.code} label={value.description} />
+      <SelectItem 
+        key={index} 
+        value={value.code} 
+        label={value.description}
+        testID={`failure-reason-option-${index}`}
+      />
     ));
   }, [data, isSuccess]);
 
@@ -48,9 +52,15 @@ export const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
   return (
     <Skeleton isLoaded={isSuccess} className="h-10 rounded">
       <Select
+        testID="failure-reason-select"
         selectedValue={selectedFailureReason}
         onValueChange={v => onChange(v)}>
-        <SelectTrigger variant="outline" size="md" className="justify-between">
+        <SelectTrigger 
+          variant="outline" 
+          size="md" 
+          className="justify-between"
+          testID="failure-reason-select-trigger"
+        >
           <SelectInput
             placeholder={t('SELECT_INCIDENT_TYPE')}
             value={
@@ -60,21 +70,28 @@ export const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
                   )?.description || ''
                 : ''
             }
+            testID="failure-reason-select-input"
           />
           <SelectIcon className="mr-3" as={ChevronDownIcon} />
         </SelectTrigger>
         <SelectPortal>
-          <SelectBackdrop style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
-          <SelectContent>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
+          <SelectBackdrop 
+            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} 
+            testID="failure-reason-select-backdrop"
+          />
+          <SelectContent testID="failure-reason-select-content">
+            <SelectDragIndicatorWrapper testID="failure-reason-drag-indicator-wrapper">
+              <SelectDragIndicator testID="failure-reason-drag-indicator" />
             </SelectDragIndicatorWrapper>
             <ScrollView
               style={{ maxHeight: 350 }}
-              showsVerticalScrollIndicator={true}>
+              showsVerticalScrollIndicator={true}
+              testID="failure-reason-options-scrollview"
+            >
               <SelectItem
                 label={`-- ${t('SELECT_FAILURE_REASON')} --`}
                 value={null}
+                testID="failure-reason-option-none"
               />
               {values}
             </ScrollView>

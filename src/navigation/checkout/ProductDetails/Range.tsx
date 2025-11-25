@@ -30,12 +30,13 @@ const styles = StyleSheet.create({
   },
 });
 
-function Range({ onPressDecrement, quantity, onPressIncrement, minimum = 0 }) {
+function Range({ onPressDecrement, quantity, onPressIncrement, minimum = 0, testID }) {
   const buttonBackgroundColor = useBackgroundHighlightColor();
 
   return (
     <View style={styles.rangeButtonWrapper}>
       <TouchableOpacity
+        testID="`range-decrement-button${testID ? '-' + testID : ''}`"
         style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
         onPress={onPressDecrement}
         disabled={quantity <= minimum}>
@@ -47,6 +48,7 @@ function Range({ onPressDecrement, quantity, onPressIncrement, minimum = 0 }) {
         <Text style={styles.quantity}>{quantity}</Text>
       </View>
       <TouchableOpacity
+        testID="range-increment-button"
         style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
         onPress={onPressIncrement}>
         <Text>+</Text>

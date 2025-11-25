@@ -56,96 +56,124 @@ export default function TimeSlotSelector({
   selectValue,
   setSelectValue,
   onTimeSlotChange,
+  testID = "time-slot-selector",
 }) {
   const { t } = useTranslation();
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
-const handleButtonPress = (timeSlot) => {
-  updateSelectedTimeSlot(timeSlot);
-  
-  if (onTimeSlotChange) {
-    onTimeSlotChange(null, timeSlot['@id']);
-  }
-};
+  const handleButtonPress = (timeSlot) => {
+    updateSelectedTimeSlot(timeSlot);
+    
+    if (onTimeSlotChange) {
+      onTimeSlotChange(null, timeSlot['@id']);
+    }
+  };
 
-const handleSelectChange = (value) => {
-  if (!value) return;
-  
-  setSelectValue(value);
-  
-  if (onTimeSlotChange) {
-    onTimeSlotChange(value, selectedTimeSlot);
-  }
-};
-
+  const handleSelectChange = (value) => {
+    if (!value) return;
+    
+    setSelectValue(value);
+    
+    if (onTimeSlotChange) {
+      onTimeSlotChange(value, selectedTimeSlot);
+    }
+  };
 
   return (
-    <View style={[styles.formGroup]}>
-      <Text style={styles.label}>{t('STORE_NEW_DELIVERY_TIME_SLOT')}</Text>
-      <View style={styles.buttonWrapper}>
+    <View style={[styles.formGroup]} testID={testID}>
+      <Text style={styles.label} testID={`${testID}-label`}>
+        {t('STORE_NEW_DELIVERY_TIME_SLOT')}
+      </Text>
+      
+      <View style={styles.buttonWrapper} testID={`${testID}-buttons-container`}>
         {timeSlots && timeSlots.map((timeSlot, index) => {
+          const isSelected = selectedTimeSlot === timeSlot['@id'];
           return (
             <Button
               onPress={() => handleButtonPress(timeSlot)}
               style={[
                 {
-                  borderColor:
-                    selectedTimeSlot === timeSlot['@id']
-                      ? 'transparent'
-                      : backgroundHighlightColor,
+                  borderColor: isSelected
+                    ? 'transparent'
+                    : backgroundHighlightColor,
                 },
                 styles.button,
-                !(selectedTimeSlot === timeSlot['@id']) && {
+                !isSelected && {
                   backgroundColor: 'transparent',
                 },
               ]}
-              key={index}>
+              key={index}
+              testID={`${testID}-button-${index}`}
+            >
               <ButtonText
                 numberOfLines={1}
                 style={{
-                  color:
-                    selectedTimeSlot === timeSlot['@id']
-                      ? backgroundHighlightColor
-                      : '#878787',
-                }}>
+                  color: isSelected
+                    ? backgroundHighlightColor
+                    : '#878787',
+                }}
+                testID={`${testID}-button-text-${index}`}
+              >
                 {timeSlot.name}
               </ButtonText>
             </Button>
           );
         })}
       </View>
+
       <Select
         selectedValue={selectValue}
         onValueChange={handleSelectChange}
+        testID={`${testID}-dropdown`}
       >
-        <SelectTrigger variant="outline" size="md">
+        <SelectTrigger 
+          variant="outline" 
+          size="md"
+          testID={`${testID}-trigger`}
+        >
           <SelectInput
             placeholder={t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT')}
+            testID={`${testID}-input`}
           />
-          <SelectIcon className="mr-3" as={ChevronDownIcon} />
+          <SelectIcon 
+            className="mr-3" 
+            as={ChevronDownIcon}
+            testID={`${testID}-icon`}
+          />
         </SelectTrigger>
         <SelectPortal>
-          <SelectBackdrop style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
-          <SelectContent>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
+          <SelectBackdrop 
+            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} 
+            testID={`${testID}-backdrop`}
+          />
+          <SelectContent testID={`${testID}-content`}>
+            <SelectDragIndicatorWrapper testID={`${testID}-drag-indicator-wrapper`}>
+              <SelectDragIndicator testID={`${testID}-drag-indicator`} />
             </SelectDragIndicatorWrapper>
             <ScrollView
               style={{ maxHeight: 350 }}
-              showsVerticalScrollIndicator={true}>
+              showsVerticalScrollIndicator={true}
+              testID={`${testID}-options-scrollview`}
+            >
               {choices && choices.map((choice, index) => (
                 <SelectItem
                   key={index}
                   value={choice.value}
                   label={choice.label}
+                  testID={`${testID}-option-${choice.value}`}
                 />
               ))}
             </ScrollView>
           </SelectContent>
         </SelectPortal>
       </Select>
+
       {errors.timeSlot && touched.timeSlot && (
-        <Text note style={styles.errorText}>
+        <Text 
+          note 
+          style={styles.errorText}
+          testID={`${testID}-error`}
+        >
           {errors.timeSlot}
         </Text>
       )}

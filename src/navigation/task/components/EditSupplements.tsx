@@ -20,6 +20,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
   availableSupplements,
   onSupplementsChange,
 }) => {
+  const testID = "supplement-selector";
   const { t } = i18n;
   const [selectedSupplements, setSelectedSupplements] = useState<Supplement[]>([]);
   const [selectedValue, setSelectedValue] = useState<string>('');
@@ -77,43 +78,80 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
     onSupplementsChange(updatedSupplements);
   };
 
-  const renderSupplementItem = (item: Supplement) => (
-    <View style={[styles.supplementItem]} key={item.type}>
+  const renderSupplementItem = (item: Supplement, index: number) => (
+    <View 
+      style={[styles.supplementItem]} 
+      key={item.type}
+      testID={`${testID}-selected-item-${index}`}
+    >
       <Range
         onPressIncrement={() => handleIncrement(item.type)}
         onPressDecrement={() => handleDecrement(item.type)}
         quantity={item.quantity}
+        testID={`supplement-${index}`}
       />
       <TouchableOpacity
         style={styles.supplementLabel}
-        onPress={() => handleIncrement(item.type)}>
-        <Text style={styles.supplementName}>{item.name || item.type}</Text>
+        onPress={() => handleIncrement(item.type)}
+        testID={`${testID}-selected-item-${index}-label`}
+      >
+        <Text 
+          style={styles.supplementName}
+          testID={`${testID}-selected-item-${index}-name`}
+        >
+          {item.name || item.type}
+        </Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={testID}>
       {selectedSupplements.length > 0 && (
-        <View style={styles.selectedSupplements}>
-          <Text style={styles.sectionTitle}>{t('ADDED_SUPPLEMENTS')}</Text>
-          {selectedSupplements.map(renderSupplementItem)}
+        <View 
+          style={styles.selectedSupplements}
+          testID={`${testID}-selected-section`}
+        >
+          <Text 
+            style={styles.sectionTitle}
+            testID={`${testID}-selected-title`}
+          >
+            {t('ADDED_SUPPLEMENTS')}
+          </Text>
+          {selectedSupplements.map((item, index) => renderSupplementItem(item, index))}
         </View>
       )}
 
-      <View>
-        <Text style={styles.selectorLabel}>{t('ADD_SUPPLEMENT')}</Text>
-        {availableSupplements && (<View style={styles.optionsContainer}>
-          {availableSupplements.map(supplement => (
-            <TouchableOpacity
-              key={supplement.type}
-              style={styles.optionButton}
-              onPress={() => handleSelectSupplement(supplement.type)}
-            >
-              <Text style={styles.optionText}>{supplement.name || supplement.type}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>)}
+      <View testID={`${testID}-selector-section`}>
+        <Text 
+          style={styles.selectorLabel}
+          testID={`${testID}-selector-label`}
+        >
+          {t('ADD_SUPPLEMENT')}
+        </Text>
+        
+        {availableSupplements && (
+          <View 
+            style={styles.optionsContainer}
+            testID={`${testID}-options-container`}
+          >
+            {availableSupplements.map((supplement, index) => (
+              <TouchableOpacity
+                key={supplement.type}
+                style={styles.optionButton}
+                onPress={() => handleSelectSupplement(supplement.type)}
+                testID={`${testID}-option-${supplement.type}`}
+              >
+                <Text 
+                  style={styles.optionText}
+                  testID={`${testID}-option-${supplement.type}-text`}
+                >
+                  {supplement.name || supplement.type}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
       </View>
     </View>
   );

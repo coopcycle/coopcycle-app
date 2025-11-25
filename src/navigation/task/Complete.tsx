@@ -251,6 +251,7 @@ const CompleteTask = ({
                     </FormControlLabel>
                     <Textarea className="mb-6">
                       <TextareaInput
+                        testID='ReportTextareaInput'
                         autoCorrect={false}
                         totalLines={2}
                         onChangeText={text => formContext.updateFormField('notes', text)}
@@ -259,6 +260,8 @@ const CompleteTask = ({
                     {/* task.status !== 'DONE' DISABLE CHECKBOX display always checked if DONE */}
                     {!success && (
                       <Checkbox
+                        isDisabled={task.status !== "DONE"}
+                        testID='ValidateTaskCheckbox'
                         className="mb-6"
                         value={'validate_task'}
                         defaultIsChecked={validateTaskAfterReport}

@@ -26,6 +26,7 @@ export const PackageItem: React.FC<PackageItemProps> = React.memo(({
         onPressIncrement={() => onIncrement()}
         onPressDecrement={() => onDecrement()}
         quantity={item.quantity}
+        testID={`package-${item.id}`}
       />
       <TouchableOpacity
         style={styles.packageLabel} >

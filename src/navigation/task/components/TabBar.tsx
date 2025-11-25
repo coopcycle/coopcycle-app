@@ -24,11 +24,11 @@ export const TabBar = ({onPress}) => {
     });
     return (
         <>
-            <Button style={styles.buttonTab} onPress={() => onPress('edit')}>
+            <Button testID="editTabButton" style={styles.buttonTab} onPress={() => onPress('edit')}>
                 <Text>{i18n.t('TASK_DETAILS')}</Text>
             </Button>
             <Divider orientation={'vertical'} style={styles.divider}/>
-            <Button style={styles.buttonTab} onPress={() => onPress('report')}>
+            <Button testID="reportTabButton" style={styles.buttonTab} onPress={() => onPress('report')}>
                 <Text>{i18n.t('REPORT_INCIDENT')}</Text>
             </Button>
         </>

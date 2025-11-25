@@ -221,6 +221,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
         return (
           <SafeAreaView style={styles.wrapper}>
             <ScrollView
+            testID='scrollView:edit'
               style={styles.container}
               contentContainerStyle={{ flexGrow: 1 }}>
               <VStack space={4} style={styles.content}>
@@ -311,6 +312,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       value={values.businessName}
                       placeholder={t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
                       editable={true}
+                      testID="edit-task-business-name-input"
                     />
                   </FormField>
                   {/* Contact Information */}
@@ -329,7 +331,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       onBlur={handleBlur('contactName')}
                       value={values.contactName}
                       placeholder={t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
-                      testID="delivery__dropoff__contact_name"
+                      testID="task_dropoff_contact_name"
                     />
                   </FormField>
                   {/* Telephone */}
@@ -352,7 +354,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       onBlur={handleBlur('telephone')}
                       value={values.telephone}
                       placeholder={t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
-                      testID="delivery__dropoff__phone"
+                      testID="task_dropoff_phone"
                     />
                   </FormField>
                   {/* Address Description */}
@@ -374,6 +376,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       placeholder={t(
                         'STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION',
                       )}
+                       testID="edit-task-address-description-input"
                     />
                   </FormField>
                   {/* Packages and Timeslot Section */}
@@ -427,6 +430,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       onBlur={handleBlur('weight')}
                       value={values.weight}
                       placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
+                      testID={'task-weight-input'}
                     />
                   </FormField>
                   {/* Packages */}
