@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Task } from '@/src/types/task';
 import { VStack } from '@/components/ui/vstack';
 import { FormControl } from '@/components/ui/form-control';
@@ -11,33 +11,19 @@ import {
 } from 'react-native';
 import { SubmitButton } from './components/SubmitButton';
 import { SupplementSelector as EditSupplements } from './components/EditSupplements';
-import { useSelector } from 'react-redux';
-import {
-  selectAddresses,
-  selectAssertDeliveryError,
-} from '@/src/redux/Delivery/selectors';
 import TimeSlotSelector from '../delivery/components/TimeSlotSelector';
 import { Formik } from 'formik';
 import FormInput from '../delivery/components/FormInput';
 import { DateTimePicker } from '../delivery/components/DateTimePicker';
 
-import { useFormUtils } from '@/src/navigation/task/hooks/useFormUtils';
-import { useValidation } from '@/src/navigation/task/hooks/useValidation';
 
 import { AddressSection } from './components/AddressSection';
 import { PackageItem } from './components/PackageItem';
 import { FormField } from './components/FormField';
-import {
-  getAutocompleteProps,
-  getInitialFormValues,
-} from '@/src/navigation/task/utils/taskFormHelpers';
 import { Text } from '@/components/ui/text';
-import { useStore } from '@/src/navigation/task/hooks/useStore';
-import { useSupplements } from './hooks/useSupplements';
 import { ClientSearchSection } from './components/ClientSearchSection';
 import { useReportFormContext } from './contexts/ReportFormContext';
-import { useTimeSlot, useTimeSlotChoices } from './hooks/useTimeslots';
-import { usePackages } from './hooks/usePackages';
+import { useEditTaskForm } from './hooks/useEditTaskForm';
 
 interface TaskFormProps {
   task?: Partial<Task>;
@@ -45,126 +31,38 @@ interface TaskFormProps {
 }
 
 export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
-  const { formState, updateFormField } = useReportFormContext();
-
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(
-    formState.selectedTimeSlot,
-  );
-  const [selectedChoice, setSelectedChoice] = useState(
-    formState.selectedChoice,
-  );
-  const [validAddress, setValidAddress] = useState(!!formState.address);
-  const [address, setAddress] = useState(formState.address);
-  const [packages, setPackages] = useState(formState.packages);
-  const [selectedSupplements, setSelectedSupplements] = useState(
-    formState.selectedSupplements,
-  );
-
-  const store = useStore(task);
-  const timeSlots = useTimeSlot(store);
-  const hasTimeSlot = Array.isArray(timeSlots) && timeSlots.length > 0;
-  const timeSlotChoices = useTimeSlotChoices(store);
-
-  const { storePackages } = usePackages(task, store);
-
-  const { supplements: availableSupplements } = useSupplements(store);
-
-  const addresses = useSelector(selectAddresses);
-  const deliveryError = useSelector(selectAssertDeliveryError);
-
-  const { t, country, setAddressData, handleChangeTelephone } =
-    useFormUtils(store);
-
-  useEffect(() => {
-    if (address !== formState.address) {
-      updateFormField('address', address);
-    }
-  }, [address, formState, updateFormField]);
-
-  useEffect(() => {
-    if (JSON.stringify(packages) !== JSON.stringify(formState.packages)) {
-      updateFormField('packages', packages);
-    }
-  }, [packages, formState, updateFormField]);
-
-  useEffect(() => {
-    if (selectedTimeSlot !== formState.selectedTimeSlot) {
-      updateFormField('selectedTimeSlot', selectedTimeSlot);
-    }
-  }, [selectedTimeSlot, formState, updateFormField]);
-
-  useEffect(() => {
-    if (selectedChoice !== formState.selectedChoice) {
-      updateFormField('selectedChoice', selectedChoice);
-    }
-  }, [selectedChoice, formState, updateFormField]);
-
-  useEffect(() => {
-    if (
-      JSON.stringify(selectedSupplements) !==
-      JSON.stringify(formState.selectedSupplements)
-    ) {
-      updateFormField('selectedSupplements', selectedSupplements);
-    }
-  }, [selectedSupplements, formState, updateFormField]);
-
-  useEffect(() => {
-    if (storePackages && storePackages.length > 0) {
-      setPackages(storePackages);
-      updateFormField('packages', storePackages);
-    }
-  }, [storePackages, updateFormField]);
-
-  const handleTimeSlotChange = useCallback(
-    (choice: string, timeSlot: string) => {
-      setSelectedChoice(choice);
-      setSelectedTimeSlot(timeSlot);
-      updateFormField('selectedChoice', choice);
-      updateFormField('selectedTimeSlot', timeSlot);
-    },
-    [updateFormField],
-  );
-
-  const validate = useValidation(
-    validAddress,
-    hasTimeSlot,
+    const {
+    selectedTimeSlot,
+    setSelectedTimeSlot,
     selectedChoice,
+    setSelectedChoice,
+    validAddress,
+    setValidAddress,
+    address,
     packages,
-    store,
-    country,
-  );
+    setAddress,
+    setSelectedSupplements,
+    
+    timeSlots,
+    hasTimeSlot,
+    timeSlotChoices,
+    availableSupplements,
+    addresses,
+    t,
+    
+    handleTimeSlotChange,
+    handleIncrement,
+    handleDecrement,
+    handleSelectAddress,
+    createHandleChange,
+    handleChangeTelephone,
+    
+    validate,
+    autocompleteProps,
+    initialValues
+  } = useEditTaskForm(task);
 
-  const autocompleteProps = useMemo(
-    () => getAutocompleteProps(deliveryError),
-    [deliveryError],
-  );
-
-  const initialValues = useMemo(() => {
-    return getInitialFormValues(task, store);
-  }, [task, store]);
-
-
-  const handleIncrement = useCallback(
-    (packageName: string) => {
-      const updatedPkg = packages.map(pkg =>
-        pkg.name === packageName ? { ...pkg, quantity: pkg.quantity + 1 } : pkg,
-      );
-      setPackages(updatedPkg);
-      updateFormField('packages', updatedPkg);
-    },
-    [packages, updateFormField],
-  );
-
-  const handleDecrement = useCallback(
-    (packageName: string) => {
-      const updatedPkg = packages.map(pkg =>
-        pkg.name === packageName ? { ...pkg, quantity: pkg.quantity - 1 } : pkg,
-      );
-      setPackages(updatedPkg);
-      updateFormField('packages', updatedPkg);
-    },
-    [packages, updateFormField],
-  );
+  const { updateFormField } = useReportFormContext();
 
   const renderPackageItem = useCallback(
     (item, setFieldTouched) => (
@@ -176,28 +74,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
       />
     ),
     [task, handleIncrement, handleDecrement],
-  );
-
-  const handleSelectAddress = useCallback(
-    (addr, setFieldValue) => {
-      if (addr['@id']) {
-        setAddressData(addr, setFieldValue);
-      } else {
-        setAddress(addr);
-      }
-      setValidAddress(!!addr.streetAddress);
-    },
-    [setAddressData],
-  );
-
-  const createHandleChange = useCallback(
-    (formikHandleChange, fieldName) => {
-      return value => {
-        formikHandleChange(fieldName)(value);
-        updateFormField(fieldName, value);
-      };
-    },
-    [updateFormField],
   );
 
   return (
