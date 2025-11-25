@@ -43,10 +43,6 @@ export const getInitialFormValues = (task?: Partial<Task>, store?) => {
 };
 
 const buildMetadataPayload = (task, id) => {
-  if (!task.tasks || Object.keys(task.tasks).length === 0) {
-    const tasks = [];
-  }
-
   const order = {
     order: {
       manualSupplements: task.selectedSupplements,
@@ -58,7 +54,7 @@ const buildMetadataPayload = (task, id) => {
       tasks: [
         {
           id: id,
-          ...task.tasks,
+          ...task,
         },
       ],
     },
@@ -88,16 +84,22 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
   switch (field) {
     case 'address':
       return { address: value.streetAddress };
-    case 'packagesCount':
-      return { packages: value };
+    case 'packages':
+      return {packages: value.map(p => {return {type: p['@type'], quantity: p.quantity}})}
     case 'weight':
       return { weight: Number(value) };
     case 'telephone':
       return { telephone: value };
     case 'selectedTimeSlot':
-      return { timeSlot: value };
+      return { timeSlotID: value };
     case 'selectedChoice':
-      return { choice: value };
+      return { timeSlot: value };
+      case 'contactName':
+      return { contactName: value };
+    case 'businessName':
+      return { businessName: value };
+      case 'description':
+      return { description: value };
     default:
       return {};
   }
@@ -106,7 +108,7 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
 export const mapSupplements = supplements => {
   return supplements.map(supplement => {
     return {
-      pricingRule: supplement?.originalRule?.['@id'] || "",
+      pricingRule: supplement?.originalRule?.['@id'] || '',
       quantity: supplement?.quantity,
     };
   });

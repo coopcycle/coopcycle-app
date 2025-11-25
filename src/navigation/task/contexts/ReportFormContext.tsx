@@ -4,6 +4,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import {
@@ -123,29 +124,29 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     setFormStateToSend(prev => {
       const updates = {};
 
+      let updatedTask = { ...prev.updatedTask };
+
       switch (field) {
         case 'notes':
           updates.notes = (value as string) ?? '';
           break;
-        case 'failureReasonCode':
-          updates.failureReasonCode = (value as string) ?? '';
-          break;
-        case 'weight':
-        case 'address':
-        case 'telephone':
-        case 'packages':
-        case 'selectedTimeSlot':
-        case 'selectedChoice':
-          updates.updatedTask = {
-            tasks: { ...buildUpdatedTaskFields(field, value) },
-          };
-          break;
         case 'selectedSupplements':
-          updates.updatedTask = {
+          const supplementUpdates = {
             selectedSupplements: mapSupplements(value),
           };
+          updatedTask = {
+            ...updatedTask,
+            ...supplementUpdates
+          };
+          updates.updatedTask = updatedTask;
           break;
         default:
+          const taskUpdates = { ...buildUpdatedTaskFields(field, value) }; 
+          updatedTask = {
+            ...updatedTask,
+            ...taskUpdates
+          };
+          updates.updatedTask = updatedTask;
           break;
       }
 
