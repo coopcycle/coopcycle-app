@@ -501,6 +501,8 @@
     "CANCEL_NO_TASKS_MESSAGE": "Este {{entity}} no tiene tareas asociadas para cancelar.",
     "PROCEED": "Continuar",
     "ASSIGN": "Asignar",
-    "INCIDENT": "Incidente"
+    "INCIDENT": "Incidente",
+    "TASKLIST_SANITY_CHECK_FAILED_ALERT_TITLE": "Fallo de integridad de datos",
+    "TASKLIST_SANITY_CHECK_FAILED_ALERT_BODY": "Por favor, actualice la lista de tareas deslizando hacia abajo la pantalla e intente nuevamente."
   }
 }

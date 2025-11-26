@@ -624,6 +624,8 @@
     "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
     "PROCEED": "Proceed",
     "ASSIGN": "Assign",
-    "INCIDENT": "Incident"
-}
+    "INCIDENT": "Incident",
+    "TASKLIST_SANITY_CHECK_FAILED_ALERT_TITLE": "Data sanity check failed",
+    "TASKLIST_SANITY_CHECK_FAILED_ALERT_BODY": "Please refresh the list of tasks by swiping down the screen and try again."
+  }
 }
