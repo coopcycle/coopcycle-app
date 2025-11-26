@@ -13,7 +13,6 @@ import {
 } from '../../../../redux/Checkout/actions';
 import {
   selectCart,
-  // selectCheckoutError,
 } from '../../../../redux/Checkout/selectors';
 import { formatPrice } from '../../../../utils/formatting';
 
@@ -38,15 +37,6 @@ const HTML = `
       type="text/css"
       rel="stylesheet"
     />
-    <style>
-    #paygreen-pan-frame {
-      margin-bottom: 20px;
-    }
-    #payButton {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-    </style>
   </head>
   <body>
     <!--Paygreen-->
@@ -55,7 +45,9 @@ const HTML = `
     <div id="paygreen-methods-container"></div>
     <div style="padding: 20px;">
       <!--Paygreen-->
-      <div id="paygreen-pan-frame"></div>
+      <div style="margin-bottom: 20px;">
+        <div id="paygreen-pan-frame"></div>
+      </div>
       <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
         <div style="margin-right: 5px">
           <div id="paygreen-exp-frame"></div>
@@ -95,10 +87,6 @@ window.paygreenjs.init({
   paymentMethod: 'bank_card',
   displayAuthentication: 'inline'
 });
-
-const handlePay = () => {
-  window.paygreenjs.submitPayment();
-};
 `;
 
 const PGWebview = ({ ref, publicKey, loadPaymentDetails, paymentDetails, checkout }) => {
@@ -107,12 +95,8 @@ const PGWebview = ({ ref, publicKey, loadPaymentDetails, paymentDetails, checkou
   const [objectSecret, setObjectSecret] = useState(null);
 
   const [authUrl, setAuthUrl] = useState(null);
-  // const mainWebViewRef = useRef();
-  // const authWebviewRef = useRef();
 
   useEffect(() => loadPaymentDetails(), [loadPaymentDetails]);
-
-  console.log('paymentDetails', paymentDetails)
 
   if ((!paymentOrderID && !objectSecret) && paymentDetails?.payments?.length === 1) {
     setPaymentOrderID(paymentDetails.payments[0].paygreenPaymentOrderId);
@@ -131,12 +115,9 @@ const PGWebview = ({ ref, publicKey, loadPaymentDetails, paymentDetails, checkou
           content = nativeEvent?.data;
         }
 
-        // TODO Test with 3D Secure
-
         if (content?.type) {
           switch (content.type) {
             case 'FULL_PAYMENT_DONE':
-              console.log('paymentOrderID', paymentOrderID)
               checkout(paymentOrderID);
               break;
           }
@@ -174,7 +155,6 @@ const Paygreen = ({
   cart,
   paygreenPublicKey,
   loadPaymentDetails,
-  // paymentDetailsLoaded,
   paymentDetails,
   checkout,
 }) => {
@@ -201,27 +181,20 @@ const Paygreen = ({
             ref={ webViewRef }
             publicKey={ paygreenPublicKey }
             loadPaymentDetails={ loadPaymentDetails }
-            // paymentDetailsLoaded={ paymentDetailsLoaded }
             paymentDetails={ paymentDetails }
             checkout={ checkout }
           />
         </View>
       </View>
       <FooterButton
-        isLoading={
-          false // this.state.isLoading && this.props.errors.length === 0
-        }
+        isLoading={false}
         testID="creditCardSubmit"
         text={ t('PAY_AMOUNT', { amount: formatPrice(cart.total) }) }
         onPress={ () => {
           webViewRef.current.injectJavaScript(`
             window.paygreenjs.submitPayment();
           `);
-        }
-          /*_.debounce(handleSubmit, 1000, {
-          leading: true,
-          trailing: false,
-        })*/ }
+        }}
       />
     </View>
   )
@@ -234,7 +207,6 @@ function mapStateToProps(state) {
   return {
     cart,
     paygreenPublicKey: state.app.settings.paygreen_public_key,
-    // paymentDetailsLoaded: state.checkout.paymentDetailsLoaded,
     paymentDetails: state.checkout.paymentDetails,
 
   };
