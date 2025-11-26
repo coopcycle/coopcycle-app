@@ -6,7 +6,7 @@ import { Text } from '@/components/ui/text';
 import { Switch } from '@/components/ui/switch';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { SectionList, TouchableOpacity } from 'react-native';
+import { Platform, SectionList, TouchableOpacity, useColorScheme } from 'react-native';
 import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
 import { ArrowRightIcon, Power, Route, Signature, Tag, Volume } from 'lucide-react-native'
@@ -34,18 +34,38 @@ import {
 } from '../../redux/logistics/filters';
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 
-const SettingsItemInner = ({ item }) => (
-  <HStack className="items-center justify-between py-3">
-    <HStack className="items-center">
-      <Icon size={16} className="mr-2" as={item.icon} />
-      <Text>{item.label}</Text>
+const SettingsItemInner = ({ item }) => {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+
+  const iconColor = isDark ? '#FFFFFF' : '#000000';
+
+  return (
+    <HStack className="items-center justify-between py-3">
+      <HStack className="items-center">
+        <Icon size={16} className="mr-2" as={item.icon} color={iconColor} />
+        <Text>{item.label}</Text>
+      </HStack>
+
+      {!item.onPress && (
+        <Switch
+          onValueChange={item.onToggle}
+          value={item.isChecked}
+          style={{
+            marginRight: Platform.OS === 'ios' ? 12 : 0,
+          }}
+        />
+      )}
+
+      {item.onPress && (
+        <ArrowRightIcon
+          size={18}
+          color={iconColor}
+        />
+      )}
     </HStack>
-    {!item.onPress && (
-      <Switch onToggle={item.onToggle} value={item.isChecked} />
-    )}
-    {item.onPress && <ArrowRightIcon />}
-  </HStack>
-);
+  );
+};
 
 const SettingsItem = ({ item }) => {
   if (item.onPress) {

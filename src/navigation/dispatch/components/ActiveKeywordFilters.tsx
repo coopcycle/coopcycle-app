@@ -2,10 +2,11 @@ import { Icon, CloseIcon } from '@/components/ui/icon';
 import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import ColorHash from 'color-hash';
+import { Badge, BadgeText, BadgeIcon } from '@/components/ui/badge';
 
 import { isKeywordFilterNegative } from '../../../redux/logistics/utils';
 import { removeKeywordFilter } from '../../../redux/Dispatch/keywordFiltersSlice';
@@ -14,16 +15,24 @@ import { whiteColor } from '../../../styles/common';
 
 export default function ActiveKeywordFilters({ style, ...props }) {
   const keywordFilters = useSelector(selectKeywordFilters);
+  const isDark = useColorScheme() === 'dark';
 
   return (
-    <Box style={[style, styles.container]} {...props}>
+    <Box
+      style={[
+        style,
+        styles.container,
+        { backgroundColor: isDark ? '#1E1E1E' : whiteColor }
+      ]}
+      {...props}
+    >
       {keywordFilters.length === 0 ? (
-        <NoFiltersPlaceholder />
+        <NoFiltersPlaceholder isDark={isDark} />
       ) : (
         <Box style={styles.activeFiltersContainer}>
           {keywordFilters.map((filter, index) => {
             const key = `active-filter-${index}`;
-            return <ActiveFilter filter={filter} key={key} testID={key} />;
+            return <ActiveFilter filter={filter} key={key} testID={key} isDark={isDark} />;
           })}
         </Box>
       )}
@@ -31,48 +40,50 @@ export default function ActiveKeywordFilters({ style, ...props }) {
   );
 }
 
-function NoFiltersPlaceholder() {
+function NoFiltersPlaceholder({ isDark }) {
   const { t } = useTranslation();
-
-  return <Text style={styles.noFiltersLabel}>{t('NO_KEYWORDS_FILTERS')}</Text>;
+  return (
+    <Text style={{ color: isDark ? '#AAAAAA' : '#8B8B8B' }}>
+      {t('NO_KEYWORDS_FILTERS')}
+    </Text>
+  );
 }
 
 const colorHash = new ColorHash();
 
-function ActiveFilter({ filter, ...props }) {
+function ActiveFilter({ filter, isDark, ...props }) {
   const dispatch = useDispatch();
 
   const isNegative = isKeywordFilterNegative(filter);
-
   const color = colorHash.hex(filter.keyword);
   const mainColor = isNegative ? color : whiteColor;
-  const secondaryColor = isNegative ? whiteColor : color;
-
-  const removeFilter = () => {
-    dispatch(removeKeywordFilter(filter.keyword));
-  };
+  const background = isNegative ? whiteColor : color;
 
   return (
-    <TouchableOpacity onPress={removeFilter} {...props}>
-      <HStack
-        style={[styles.activeFilter, {
-          backgroundColor: secondaryColor,
-          borderColor: color,
-        }]}>
-        <Text
-          style={[styles.activeFilterLabel, {
-            color: mainColor,
-            borderRightColor: mainColor,
-          }]}
-          >
+    <TouchableOpacity onPress={() => dispatch(removeKeywordFilter(filter.keyword))}>
+      <Badge
+        variant="solid"
+        {...props}
+        style={[
+          styles.badge,
+          {
+            backgroundColor: background,
+            borderColor: color,
+            borderWidth: 1,
+          },
+        ]}
+      >
+        <BadgeText style={styles.badgeText}>
           {filter.keyword}
-        </Text>
-        <Icon
+        </BadgeText>
+        <BadgeIcon
           as={CloseIcon}
-          size="xs"
-          style={[styles.activeFilterClose, { color: mainColor }]}
+          style={{
+            color: mainColor,
+            marginLeft: 4,
+          }}
         />
-      </HStack>
+      </Badge>
     </TouchableOpacity>
   );
 }
@@ -80,17 +91,12 @@ function ActiveFilter({ filter, ...props }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: whiteColor,
     borderRadius: 28,
     justifyContent: 'center',
     minHeight: 56,
   },
-  noFiltersLabel: {
-    color: '#8B8B8B',
-  },
   activeFiltersContainer: {
     alignItems: 'center',
-    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
@@ -98,16 +104,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 16,
   },
-  activeFilter: {
+  badge: {
+    flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
-    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
-  activeFilterLabel: {
+  badgeText: {
+    color: "white",
+    fontWeight: '500',
+    fontSize: 12,
+    paddingRight: 4,
     borderRightWidth: 1,
-    paddingHorizontal: 6,
-  },
-  activeFilterClose: {
-    marginHorizontal: 6,
-  },
+    borderRightColor: whiteColor,
+  }
 });

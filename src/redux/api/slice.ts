@@ -183,6 +183,33 @@ export const apiSlice = createApi({
       query: (uri: string) => uri,
       providesTags: (result, error, id) => [{ type: 'PricingRuleSet', id }],
     }),
+    getRestaurants: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/restaurants',
+          100,
+        );
+
+        if (result.error) {
+          return result;
+        }
+        return { data: sortByName(result.data) };
+      },
+    }),
+    getTags: builder.query({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/tags',
+          100,
+        );
+        if (result.error) {
+          return result;
+        }
+        return { data: sortByName(result.data) };
+      },
+    }),
     getMyTasks: builder.query({
       query: (date: DateOnlyString) => `api/me/tasks/${date}`,
     }),
@@ -237,6 +264,8 @@ export const {
   useGetTimeSlotChoicesQuery,
   useGetStorePackagesQuery,
   useGetPricingRuleSetQuery,
+  useGetTagsQuery,
+  useGetRestaurantsQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,
