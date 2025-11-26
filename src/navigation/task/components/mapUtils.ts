@@ -1,9 +1,9 @@
-import Task from "@/src/types/task";
+import Tasks from '@/src/types/tasks';
 import { decode } from '@mapbox/polyline';
 
 
-export const getRegionForTasks = (tasks, zoomLevel, aspectRatio = 1) => {
-  if (!tasks || tasks.length === 0) return null;
+export const getRegionForTasks = (tasks: Tasks, zoomLevel: number, aspectRatio = 1) => {
+  if (!(tasks && tasks.length > 0)) return undefined;
 
   const lats = tasks.map(task => task.address.geo.latitude);
   const lngs = tasks.map(task => task.address.geo.longitude);
@@ -32,7 +32,7 @@ export const getRegionForTasks = (tasks, zoomLevel, aspectRatio = 1) => {
   };
 };
 
-export const getAspectRatio = mapDimensions => {
+export const getAspectRatio = (mapDimensions: { height: number; width: number; }) => {
   let aspectRatio = 1;
   if (mapDimensions.height > 0) {
     aspectRatio = mapDimensions.width / mapDimensions.height;
@@ -40,7 +40,7 @@ export const getAspectRatio = mapDimensions => {
   return aspectRatio;
 };
 
-export const getCoordinates = (tasks: Task[]) => {
+export const getCoordinates = (tasks: Tasks) => {
   const polyline = tasks.length && tasks[0].metadata ? tasks[0].metadata.polyline : null;
   if (polyline) {
       const decodedCoordinates = decode(polyline).map(coords => ({
