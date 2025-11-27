@@ -1,4 +1,4 @@
-import SunmiPrinter from '@heasy/react-native-sunmi-printer';
+import * as SunmiPrinterLibrary from '@mitsuharu/react-native-sunmi-printer-library'
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { canStartBluetooth } from '../../../utils/bluetooth';
@@ -66,11 +66,13 @@ export default ({ dispatch }) => {
   });
 
   if (Platform.OS === 'android') {
-    SunmiPrinter.hasPrinter().then(hasPrinter => {
-      if (hasPrinter) {
+    SunmiPrinterLibrary.prepare()
+      .then(() => {
         dispatch(sunmiPrinterDetected());
-      }
-    });
+      })
+      .catch(() => {
+        console.warn('Not a Sunmi device')
+      })
   }
 
   return next => action => next(action);

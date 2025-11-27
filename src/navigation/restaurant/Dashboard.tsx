@@ -95,15 +95,6 @@ export default function DashboardPage({ navigation, route }) {
     }
   }, [restaurant, date, dispatch, route.params?.loadOrders]);
 
-  // This is needed to display the title
-  useEffect(() => {
-    // WARNING Make sure to call navigation.setParams() only when needed to avoid infinite loop
-    const navRestaurant = route.params?.restaurant;
-    if (!navRestaurant || navRestaurant !== restaurant) {
-      navigation.setParams({ restaurant: restaurant });
-    }
-  }, [restaurant, navigation, route.params?.restaurant]);
-
   const _checkSystemVolume = useCallback(() => {
     RNSound.getSystemVolume(volume => {
       if (volume < 0.4) {

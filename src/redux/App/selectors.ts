@@ -190,26 +190,6 @@ export const selectServersWithoutRepeats = createSelector(
   },
 );
 
-const _selectIsSpinnerDelayFeatureFlagEnabled = state =>
-  state.app.isSpinnerDelayEnabled ?? true;
-
-/**
- * FIXME: the aim is to get rid of the spinner delay: https://github.com/coopcycle/coopcycle-app/issues/1670
- * However currently the app got stuck sometimes after the task is completed (only on iOS?):
- * https://github.com/coopcycle/coopcycle-app/issues/1877
- * https://github.com/facebook/react-native/issues/32329
- * So temporary put the delay back for the courier role only
- */
-export const selectIsSpinnerDelayEnabled = createSelector(
-  _selectIsSpinnerDelayFeatureFlagEnabled,
-  selectIsCourier,
-  (isSpinnerDelayFeatureFlagEnabled, isCourier) => {
-    return (
-      isSpinnerDelayFeatureFlagEnabled && isCourier && Platform.OS === 'ios'
-    );
-  },
-);
-
 export const selectIsBarcodeEnabled = state =>
   state.app.isBarcodeEnabled ?? true;
 

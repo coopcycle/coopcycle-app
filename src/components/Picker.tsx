@@ -5,7 +5,7 @@ import { useBaseTextColor } from '../styles/theme';
 
 // wrapper for Picker component with some defaults to support the dark mode
 
-const _Picker = props => {
+const InnerPicker = props => {
   const baseTextColor = useBaseTextColor();
 
   return (
@@ -31,6 +31,6 @@ export class Picker extends React.Component {
   static Item = RNPicker.Item;
 
   render() {
-    return <_Picker {...this.props} />;
+    return <InnerPicker {...this.props} />;
   }
 }

@@ -1,14 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import {
-  TransitionPresets,
-  createStackNavigator,
-} from '@react-navigation/stack';
+import { TransitionPresets } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon } from '@/components/ui/icon';
 import { User, House, Search, ShoppingCart } from 'lucide-react-native';
 import { Text } from '@/components/ui/text';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Alert } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { connect, useSelector } from 'react-redux';
 import screens, { headerLeft } from '..';
@@ -26,6 +24,7 @@ import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
 import { useStackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
+import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 
 const MyOrderButton = ({ navigation }) => {
   const color = useBaseTextColor();
@@ -130,7 +129,7 @@ function Tabs({ rootNavigation: navigation }) {
   );
 }
 
-const MainStack = createStackNavigator();
+const MainStack = createNativeStackNavigator();
 
 const MainNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -176,20 +175,6 @@ const MainNavigator = () => {
             </TouchableOpacity>
           ),
         })}
-      />
-      <MainStack.Screen
-        name="CheckoutPayment"
-        component={screens.CheckoutPayment}
-        options={{
-          title: i18n.t('PAYMENT'),
-        }}
-      />
-      <MainStack.Screen
-        name="CheckoutMercadopago"
-        component={screens.CheckoutMercadopago}
-        options={{
-          title: i18n.t('PAYMENT'),
-        }}
       />
       <MainStack.Screen
         name="AccountOrders"
@@ -246,15 +231,45 @@ const MainNavigator = () => {
   );
 };
 
-const SubmitOrderStack = createStackNavigator();
+const SubmitOrderStack = createNativeStackNavigator();
 
 const SubmitOrderNavigator = () => {
+
   const isAuthenticatedUser = useSelector(selectIsAuthenticated);
   const isGuest = useSelector(selectIsGuest);
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <SubmitOrderStack.Navigator screenOptions={screenOptions}>
+    <SubmitOrderStack.Navigator screenOptions={ ({ navigation }) => ({
+      ...screenOptions,
+      headerLeft: () => (
+        <HeaderButtons>
+          <HeaderButton
+            iconName="close"
+            onPress={() => {
+              Alert.alert(
+                i18n.t('CHECKOUT_STOP'),
+                i18n.t('CHECKOUT_STOP_CONFIRM'),
+                [
+                  {
+                    text: i18n.t('CHECKOUT_CONTINUE'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: i18n.t('BACK'),
+                    onPress: () => navigation.navigate('CheckoutSummary'),
+                    style: 'destructive',
+                  },
+                ],
+                {
+                  cancelable: true,
+                },
+              );
+            }}
+          />
+        </HeaderButtons>
+      )
+    })}>
       {isAuthenticatedUser || isGuest ? (
         <SubmitOrderStack.Screen
           name="CheckoutMoreInfos"
@@ -286,20 +301,77 @@ const SubmitOrderNavigator = () => {
           />
         </SubmitOrderStack.Group>
       )}
+      <SubmitOrderStack.Screen
+        name="CheckoutPayment"
+        component={screens.CheckoutPayment}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutMercadopago"
+        component={screens.CheckoutMercadopago}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaymentMethodCard"
+        component={screens.CheckoutPaymentMethodCard}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.card'),
+          headerBackTitleVisible: false,
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaymentMethodCashOnDelivery"
+        component={screens.CheckoutPaymentMethodCashOnDelivery}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
+          headerBackTitleVisible: false,
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaymentMethodEdenred"
+        component={screens.CheckoutPaymentMethodEdenred}
+        options={{
+          title: i18n.t('PAYMENT_METHOD.edenred'),
+          headerBackTitleVisible: false,
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutLoopeat"
+        component={screens.CheckoutLoopeat}
+        options={{
+          title: i18n.t('ZERO_WASTE'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaygreenReturn"
+        component={screens.CheckoutPaygreenReturn}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
+      <SubmitOrderStack.Screen
+        name="CheckoutPaygreenCancel"
+        component={screens.CheckoutPaygreenCancel}
+        options={{
+          title: i18n.t('PAYMENT'),
+        }}
+      />
     </SubmitOrderStack.Navigator>
   );
 };
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 const DefaultNav = () => {
-  const screenOptions = useStackNavigatorScreenOptions({
-    presentation: 'modal',
-  });
+  const screenOptions = useStackNavigatorScreenOptions();
 
   return (
     <RootStack.Navigator screenOptions={screenOptions}>
       <RootStack.Screen
-        name="Main"
+        name="CheckoutMain"
         component={MainNavigator}
         options={{
           headerShown: false,
@@ -308,7 +380,7 @@ const DefaultNav = () => {
       <RootStack.Screen
         name="CheckoutProductDetails"
         component={screens.CheckoutProductDetails}
-        options={({ _, route }) => {
+        options={({ route }) => {
           const productName = route.params?.product.name || '';
           return {
             title: productName,
@@ -322,59 +394,12 @@ const DefaultNav = () => {
           headerShown: false,
         }}
       />
-      <RootStack.Screen
-        name="CheckoutPaymentMethodCard"
-        component={screens.CheckoutPaymentMethodCard}
-        options={{
-          title: i18n.t('PAYMENT_METHOD.card'),
-          headerBackTitleVisible: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaymentMethodCashOnDelivery"
-        component={screens.CheckoutPaymentMethodCashOnDelivery}
-        options={{
-          title: i18n.t('PAYMENT_METHOD.cash_on_delivery'),
-          headerBackTitleVisible: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaymentMethodEdenred"
-        component={screens.CheckoutPaymentMethodEdenred}
-        options={{
-          title: i18n.t('PAYMENT_METHOD.edenred'),
-          headerBackTitleVisible: false,
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutLoopeat"
-        component={screens.CheckoutLoopeat}
-        options={{
-          title: i18n.t('ZERO_WASTE'),
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaygreenReturn"
-        component={screens.CheckoutPaygreenReturn}
-        options={{
-          title: i18n.t('PAYMENT'),
-        }}
-      />
-      <RootStack.Screen
-        name="CheckoutPaygreenCancel"
-        component={screens.CheckoutPaygreenCancel}
-        options={{
-          title: i18n.t('PAYMENT'),
-        }}
-      />
     </RootStack.Navigator>
   );
 };
 
 const CheckoutNav = ({ address }) => {
-  const screenOptions = useStackNavigatorScreenOptions({
-    presentation: 'modal',
-  });
+  const screenOptions = useStackNavigatorScreenOptions();
 
   if (!address) {
     return (

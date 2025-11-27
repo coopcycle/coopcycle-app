@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -28,7 +28,7 @@ import DispatchNavigator from './DispatchNavigator';
 import RestaurantNavigator from './RestaurantNavigator';
 import StoreNavigator from './StoreNavigator';
 
-const AboutStack = createStackNavigator();
+const AboutStack = createNativeStackNavigator();
 
 const AboutNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -47,7 +47,7 @@ const AboutNavigator = () => {
   );
 };
 
-const TermsStack = createStackNavigator();
+const TermsStack = createNativeStackNavigator();
 
 const TermsNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -68,7 +68,7 @@ const TermsNavigator = () => {
   );
 };
 
-const PrivacyStack = createStackNavigator();
+const PrivacyStack = createNativeStackNavigator();
 
 const PrivacyNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -89,7 +89,7 @@ const PrivacyNavigator = () => {
   );
 };
 
-const FeatureFlagsStack = createStackNavigator();
+const FeatureFlagsStack = createNativeStackNavigator();
 
 const FeatureFlagsNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();

@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
 import screens from '..';
@@ -6,7 +6,7 @@ import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
 import ProductOptions from './ProductOptions';
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions();

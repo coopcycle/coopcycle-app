@@ -127,7 +127,6 @@ const appPersistConfig = {
     'hasDisclosedBackgroundPermission',
     'firstRun',
     'resumeCheckoutAfterActivation',
-    'isSpinnerDelayEnabled',
     'isBarcodeEnabled',
   ],
   migrate: state => {
