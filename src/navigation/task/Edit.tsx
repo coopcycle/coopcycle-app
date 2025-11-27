@@ -42,21 +42,21 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     packages,
     setAddress,
     setSelectedSupplements,
-    
+
     timeSlots,
     hasTimeSlot,
     timeSlotChoices,
     availableSupplements,
     addresses,
     t,
-    
+
     handleTimeSlotChange,
     handleIncrement,
     handleDecrement,
     handleSelectAddress,
     createHandleChange,
     handleChangeTelephone,
-    
+
     validate,
     autocompleteProps,
     initialValues
@@ -317,7 +317,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       error={errors.packages}>
                       <View style={styles.packagesContainer}>
                         {packages &&
-                          packages.map((item, index) =>
+                          packages.map((item) =>
                             renderPackageItem(item, setFieldTouched),
                           )}
                       </View>

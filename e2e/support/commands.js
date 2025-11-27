@@ -380,24 +380,20 @@ export const sleep = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 
-export const scrollToElement = async (scrollViewId, elementId, options = {}) => {
-  const {
-    direction = 'down',
-    scrollAmount = 200
-  } = options;
-  await waitFor(element(by.id(elementId))).toBeVisible()
+export const scrollToElement = async (scrollViewId, testID, direction = 'down', scrollAmount = 200) => {
+  return await waitToBeVisible(testID)
     .whileElement(by.id(scrollViewId))
     .scroll(scrollAmount, direction, 0.5, 0.5);
 };
 
-export const scrollUntilVisible = async (scrollViewId, elementId, maxAttempts = 5) => {
+export const scrollUntilVisible = async (scrollViewId, testID, maxAttempts = 5) => {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      await waitToBeVisible(elementId)
+      await waitToBeVisible(testID);
       return;
     } catch (error) {
       await element(by.id(scrollViewId)).scroll(300, 'down');
     }
   }
-  throw new Error(`Element ${elementId} not found after ${maxAttempts} scroll attempts`);
+  throw new Error(`Element ${testID} not found after ${maxAttempts} scroll attempts`);
 };

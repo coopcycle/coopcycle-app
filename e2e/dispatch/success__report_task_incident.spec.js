@@ -3,7 +3,6 @@ import {
   longPressById,
   scrollToElement,
   tapById,
-  tapByText,
   typeTextQuick,
   waitToBeVisible,
 } from '@/e2e/support/commands';
@@ -41,12 +40,12 @@ describeif(device.getPlatform() === 'android')
 
     // Press the 3-dot menu button
     await tapById('selectedTasksToEditMenuButton');
+
+    // Tap Report incident button
+    await tapById('ReportIncidenceButton');
   });
 
   it('should report an incident', async () => {
-    // Tap Report incident button
-    await tapById('ReportIncidenceButton');
-
     // To open select
     await tapById('failure-reason-select-trigger')
 
@@ -55,7 +54,7 @@ describeif(device.getPlatform() === 'android')
 
     // Fills description input
     await typeTextQuick('ReportTextareaInput', 'Some text to describe any incident')
-    
+
     // Check validateTaskAfterReport
     await tapById('ValidateTaskCheckbox');
 
@@ -67,10 +66,7 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should report an incident with suggested changes', async () => {
-    // Tap Report incident button
-    await tapById('ReportIncidenceButton');
-
-    //Tap Edit Tab
+    // Tap Edit Tab
     await tapById('editTabButton')
 
     // Scroll to submit button

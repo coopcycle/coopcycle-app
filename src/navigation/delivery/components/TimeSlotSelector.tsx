@@ -63,7 +63,7 @@ export default function TimeSlotSelector({
 
   const handleButtonPress = (timeSlot) => {
     updateSelectedTimeSlot(timeSlot);
-    
+
     if (onTimeSlotChange) {
       onTimeSlotChange(null, timeSlot['@id']);
     }
@@ -71,9 +71,9 @@ export default function TimeSlotSelector({
 
   const handleSelectChange = (value) => {
     if (!value) return;
-    
+
     setSelectValue(value);
-    
+
     if (onTimeSlotChange) {
       onTimeSlotChange(value, selectedTimeSlot);
     }
@@ -84,7 +84,7 @@ export default function TimeSlotSelector({
       <Text style={styles.label} testID={`${testID}-label`}>
         {t('STORE_NEW_DELIVERY_TIME_SLOT')}
       </Text>
-      
+
       <View style={styles.buttonWrapper} testID={`${testID}-buttons-container`}>
         {timeSlots && timeSlots.map((timeSlot, index) => {
           const isSelected = selectedTimeSlot === timeSlot['@id'];
@@ -126,8 +126,8 @@ export default function TimeSlotSelector({
         onValueChange={handleSelectChange}
         testID={`${testID}-dropdown`}
       >
-        <SelectTrigger 
-          variant="outline" 
+        <SelectTrigger
+          variant="outline"
           size="md"
           testID={`${testID}-trigger`}
         >
@@ -135,15 +135,15 @@ export default function TimeSlotSelector({
             placeholder={t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT')}
             testID={`${testID}-input`}
           />
-          <SelectIcon 
-            className="mr-3" 
+          <SelectIcon
+            className="mr-3"
             as={ChevronDownIcon}
             testID={`${testID}-icon`}
           />
         </SelectTrigger>
         <SelectPortal>
-          <SelectBackdrop 
-            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} 
+          <SelectBackdrop
+            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
             testID={`${testID}-backdrop`}
           />
           <SelectContent testID={`${testID}-content`}>
@@ -169,11 +169,7 @@ export default function TimeSlotSelector({
       </Select>
 
       {errors.timeSlot && touched.timeSlot && (
-        <Text 
-          note 
-          style={styles.errorText}
-          testID={`${testID}-error`}
-        >
+        <Text note style={styles.errorText} testID={`${testID}-error`}>
           {errors.timeSlot}
         </Text>
       )}

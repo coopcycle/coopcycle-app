@@ -422,9 +422,6 @@ export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
             dispatch(clearFiles());
             dispatch(markTasksDoneSuccess(res.success));
             return true;
-            // if (typeof onSuccess === 'function') {
-            //   setTimeout(() => onSuccess(), 100);
-            // }
           }
         })
       })
@@ -461,7 +458,7 @@ export function startTask(task, cb) {
 export function cancelTask(task: Task, cb) {
   return function(dispatch, getState) {
     dispatch(createTaskRequest())
-    
+
     const httpClient = selectHttpClient(getState());
 
     httpClient

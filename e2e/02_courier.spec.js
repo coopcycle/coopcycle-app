@@ -12,7 +12,7 @@ describeif(device.getPlatform() === 'android')
   ('Courier', () => {
 
   beforeEach(async () => {
-    await loadFixturesAndConnect('courier.yml');
+    await loadFixturesAndConnect('courier.yml', true);
     await authenticateWithCredentials('jane', '12345678');
   });
 
