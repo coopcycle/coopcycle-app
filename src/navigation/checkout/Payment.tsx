@@ -101,10 +101,6 @@ const CreditCard = ({
   }
 
   if (paymentMethods.length === 1 && paymentMethods[0].type === 'card') {
-    if (paymentGateway === 'mercadopago') {
-      navigation.navigate('CheckoutMercadopago');
-      return null;
-    }
 
     return (
       <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
