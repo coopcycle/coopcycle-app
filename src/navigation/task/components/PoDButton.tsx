@@ -12,7 +12,6 @@ export const PoDButton = ({ task, tasks }) => {
     <Button
         style={{ backgroundColor: '#BB4711' }}
       onPress={() =>
-        // BE CAREFUL DOESNT NAVIGATE BACK to prev screen
         navigateToProofOfDeliveryFromReportIncident(navigation, route, task, tasks)
         
       }>
