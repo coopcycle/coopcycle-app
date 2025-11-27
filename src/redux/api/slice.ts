@@ -181,7 +181,6 @@ export const apiSlice = createApi({
     }),
     getPricingRuleSet: builder.query({
       query: (uri: string) => uri,
-      providesTags: (result, error, id) => [{ type: 'PricingRuleSet', id }],
     }),
     getRestaurants: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
