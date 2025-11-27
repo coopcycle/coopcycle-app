@@ -149,12 +149,12 @@ class Task extends Component {
     }
 
     const taskParam = this.props.route.params?.task;
-    const tasksParam = this.props.route.params?.tasks || [];
+    // const tasksParam = this.props.route.params?.tasks || [];
 
     const task = this.normalizeTask(taskParam);
-    const tasks = (
-      tasksParam.length > 0 ? tasksParam : taskParam ? [taskParam] : []
-    ).map(t => this.normalizeTask(t));
+    // const tasks = (tasksParam.length > 0 ? tasksParam : (taskParam ? [taskParam] : []))
+    //   .map(t => this.normalizeTask(t));
+    const tasks = [task];
 
     const aspectRatio = getAspectRatio(this.state.mapDimensions);
 

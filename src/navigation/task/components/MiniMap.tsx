@@ -5,7 +5,7 @@ import TaskMarker from '../../../components/TaskMarker';
 import { getCoordinates, getRegionForTasks } from './mapUtils';
 import Task from '../../../types/task';
 import Tasks from '../../../types/tasks';
-import { lightMapStyle, darkMapStyle } from "../../../styles/mapStyles"
+import { darkMapStyle, lightMapStyle } from "../../../styles/mapStyles"
 
 const zoomLevel = 15;
 
