@@ -65,9 +65,10 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
   const { updateFormField } = useReportFormContext();
 
   const renderPackageItem = useCallback(
-    (item, setFieldTouched) => (
+    (item, index, setFieldTouched) => (
       <PackageItem
         task={task}
+        key={`${item.name}-${index}`}
         item={item}
         onIncrement={() => handleIncrement(item.name)}
         onDecrement={() => handleDecrement(item.name)}
@@ -316,7 +317,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       error={errors.packages}>
                       <View style={styles.packagesContainer}>
                         {packages &&
-                          packages.map(item =>
+                          packages.map((item, index) =>
                             renderPackageItem(item, setFieldTouched),
                           )}
                       </View>
