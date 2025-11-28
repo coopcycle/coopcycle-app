@@ -85,7 +85,7 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
     case 'address':
       return { address: value.streetAddress };
     case 'packages':
-      return { packages: value.map(p => {return {type: p['@type'], quantity: p.quantity}})}
+      return { packages: value}
     case 'weight':
       return { weight: Number(value) };
     case 'telephone':
