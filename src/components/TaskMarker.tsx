@@ -1,17 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { StyleSheet, Text, View, useColorScheme, Platform } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import FAIcon from './Icon';
 import { Task } from '../types/task';
+import { PLATFORM } from '@/native-base-theme/variables/commonColor';
 
 // @TODO Is this function really needed? If yes, move it to a more generic util file
 const lightenColor = (hex: string, amount: number = 80) => {
   try {
     let c = hex.startsWith('#') ? hex.slice(1) : hex;
-    if (c.length === 3) c = c.split('').map(x => x + x).join('');
-    const num = parseInt(c, 16);
-    let r = (num >> 16) + amount;
-    let g = ((num >> 8) & 0x00ff) + amount;
     let b = (num & 0x0000ff) + amount;
     r = Math.min(255, r);
     g = Math.min(255, g);
@@ -25,8 +22,7 @@ const lightenColor = (hex: string, amount: number = 80) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
-    transform: [{ translateY: 12 }],
+    justifyContent: 'center'
   },
   centered: {
     position: 'absolute',
@@ -74,8 +70,15 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
     }
   }
 
+  const getContainerTransform = () => {
+  if (Platform.OS === PLATFORM.IOS) {
+    return [{ translateY: -17 }, { translateX: 1 }];
+  }
+  return [{ translateY: 12 }];
+};
+
   return (
-    <View style={styles.container} testID={testID}>
+   <View style={[styles.container, { transform: getContainerTransform() }]} testID={testID}>
       <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
         <Path
           d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
