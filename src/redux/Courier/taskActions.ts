@@ -385,7 +385,7 @@ export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
           });
       })
       .catch(e => {
-        dispatch(markTaskDoneFailure(e));
+        dispatch(markTaskDoneFailure());
         setTimeout(() => showAlert(e), 100);
       });
   };
