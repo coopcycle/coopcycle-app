@@ -24,13 +24,11 @@ export const getAutocompleteProps = deliveryError => {
 };
 
 export const getInitialFormValues = (task?: Partial<Task>, store?) => {
-  const businessName =
-    task?.address?.name || '';
 
   return {
     telephone: task?.address?.telephone || '',
     contactName: task?.address?.contactName || '',
-    businessName: businessName,
+    businessName: task?.address?.name || '';,
     description: task?.address?.description || '',
     address: task?.address?.streetAddress || '',
     weight: task?.weight ? task.weight.toString() : '0',
