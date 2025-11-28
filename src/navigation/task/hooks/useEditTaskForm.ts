@@ -20,6 +20,7 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
   const [address, setAddress] = useState(formState.address);
   const [packages, setPackages] = useState(formState.packages);
   const [selectedSupplements, setSelectedSupplements] = useState(formState.selectedSupplements);
+  const [packagesChanged, setPackagesChanged] = useState(false);
 
   const store = useStore(task);
   const timeSlots = useTimeSlot(store);
@@ -62,11 +63,10 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
   }, [selectedSupplements, formState, updateFormField]);
 
   useEffect(() => {
-    if (storePackages && storePackages.length > 0) {
+    if (storePackages && storePackages.length > 0 && !packagesChanged) {
       setPackages(storePackages);
-      updateFormField('packages', storePackages);
     }
-  }, [storePackages, updateFormField]);
+  }, [storePackages, packagesChanged]);
 
   // Handlers
   const handleTimeSlotChange = useCallback((choice: string, timeSlot: string) => {
@@ -81,6 +81,7 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
       pkg.name === packageName ? { ...pkg, quantity: pkg.quantity + 1 } : pkg,
     );
     setPackages(updatedPkg);
+    setPackagesChanged(true);
     updateFormField('packages', updatedPkg);
   }, [packages, updateFormField]);
 
@@ -89,6 +90,7 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
       pkg.name === packageName ? { ...pkg, quantity: pkg.quantity - 1 } : pkg,
     );
     setPackages(updatedPkg);
+    setPackagesChanged(true);
     updateFormField('packages', updatedPkg);
   }, [packages, updateFormField]);
 
@@ -132,6 +134,7 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
     setValidAddress,
     setAddress,
     setPackages,
+    packagesChanged,
     setSelectedSupplements,
     
     store,
