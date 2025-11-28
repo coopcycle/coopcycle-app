@@ -127,6 +127,9 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
       let updatedTask = { ...prev.updatedTask };
 
       switch (field) {
+        case 'failureReason':
+        updates.failureReasonCode = (value as string) ?? '';  
+          break;
         case 'notes':
           updates.notes = (value as string) ?? '';
           break;
