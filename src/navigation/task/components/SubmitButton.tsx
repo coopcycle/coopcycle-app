@@ -85,7 +85,9 @@ export const SubmitButton = ({
           }
           navigateOnSuccess();
         })
-        .catch(e => {})
+        .catch(e => {
+          showAlert(e)
+        })
         .finally(() => {
           stopSubmitting();
           setIsDisabled(false);
