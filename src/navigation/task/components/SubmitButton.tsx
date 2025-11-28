@@ -35,7 +35,8 @@ export const SubmitButton = ({
   notes,
   contactName,
   success,
-  currentTab = null
+  currentTab = null,
+  validateTaskAfterReport
 }: SubmitButtonProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -77,11 +78,14 @@ const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
         dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
       }
     } else {
+
       const payload = buildReportIncidentPayload(formStateToSend);
       postIncident({ payload }).unwrap()
       .then((r) => {
+        if (validateTaskAfterReport) {
+          dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
         navigateOnSuccess();
-      })
+      }})
       .catch((e) => {})
       .finally(() => {
         stopSubmitting();
