@@ -28,7 +28,7 @@ export const getInitialFormValues = (task?: Partial<Task>, store?) => {
   return {
     telephone: task?.address?.telephone || '',
     contactName: task?.address?.contactName || '',
-    businessName: task?.address?.name || '';,
+    businessName: task?.address?.name || '',
     description: task?.address?.description || '',
     address: task?.address?.streetAddress || '',
     weight: task?.weight ? task.weight.toString() : '0',
