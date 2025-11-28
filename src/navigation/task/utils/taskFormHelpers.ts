@@ -25,7 +25,7 @@ export const getAutocompleteProps = deliveryError => {
 
 export const getInitialFormValues = (task?: Partial<Task>, store?) => {
   const businessName =
-    task?.orgName || store?.name || task?.address?.name || '';
+    task?.address?.name || '';
 
   return {
     telephone: task?.address?.telephone || '',
