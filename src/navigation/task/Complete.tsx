@@ -257,10 +257,9 @@ const CompleteTask = ({
                         onChangeText={text => formContext.updateFormField('notes', text)}
                       />
                     </Textarea>
-                    {/* task.status !== 'DONE' DISABLE CHECKBOX display always checked if DONE */}
                     {!success && (
                       <Checkbox
-                        isDisabled={task.status !== "DONE"}
+                        isDisabled={task.status === "DONE"}
                         testID='ValidateTaskCheckbox'
                         className="mb-6"
                         value={'validate_task'}

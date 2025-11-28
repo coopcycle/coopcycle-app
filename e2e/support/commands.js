@@ -381,7 +381,7 @@ export const sleep = (timeout) => {
 };
 
 export const scrollToElement = async (scrollViewId, testID, direction = 'down', scrollAmount = 200) => {
-  return await waitToBeVisible(testID)
+  return await waitToBeVisible(testID, 0)
     .whileElement(by.id(scrollViewId))
     .scroll(scrollAmount, direction, 0.5, 0.5);
 };
