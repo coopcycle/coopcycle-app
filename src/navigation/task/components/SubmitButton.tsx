@@ -1,19 +1,19 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
-import { useDispatch } from "react-redux";
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { HStack } from "@/components/ui/hstack";
-import { Text } from "@/components/ui/text";
-import { greenColor, yellowColor } from "@/src/styles/common";
-import { markTaskDone, markTasksDone } from "@/src/redux/Courier";
-import Task from "@/src/types/task";
-import { useReportFormContext } from "../contexts/ReportFormContext";
-import { useTaskListsContext } from "../../courier/contexts/TaskListsContext";
-import { usePostIncidentMutation } from "@/src/redux/api/slice";
-import { buildReportIncidentPayload } from "../utils/taskFormHelpers";
-import { showAlert } from "@/src/utils/alert";
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { greenColor, yellowColor } from '@/src/styles/common';
+import { markTaskDone, markTasksDone } from '@/src/redux/Courier';
+import Task from '@/src/types/task';
+import { useReportFormContext } from '../contexts/ReportFormContext';
+import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
+import { usePostIncidentMutation } from '@/src/redux/api/slice';
+import { buildReportIncidentPayload } from '../utils/taskFormHelpers';
+import { showAlert } from '@/src/utils/alert';
 
 interface SubmitButtonProps {
   task: Task;
@@ -36,25 +36,23 @@ export const SubmitButton = ({
   contactName,
   success,
   currentTab = null,
-  validateTaskAfterReport
+  validateTaskAfterReport,
 }: SubmitButtonProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
 
-  
-
-
-const formContext = useReportFormContext();
-const TaskListsContext = useTaskListsContext();
-const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
+  const formContext = useReportFormContext();
+  const TaskListsContext = useTaskListsContext();
+  const { formStateToSend, startSubmitting, stopSubmitting } =
+    formContext || {};
   const hasFormContext = !!formContext;
-  
+
   const [isDisabled, setIsDisabled] = useState(false);
 
   const footerBgColor = success ? greenColor : yellowColor;
-  const [postIncident, { isLoading, error }] =  usePostIncidentMutation();
+  const [postIncident, { isLoading, error }] = usePostIncidentMutation();
 
   const handlePress = () => {
     hasFormContext && startSubmitting();
@@ -78,20 +76,21 @@ const { formStateToSend, startSubmitting, stopSubmitting } = formContext || {};
         dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
       }
     } else {
-
       const payload = buildReportIncidentPayload(formStateToSend);
-      postIncident({ payload }).unwrap()
-      .then((r) => {
-        if (validateTaskAfterReport) {
-          dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
-        navigateOnSuccess();
-      }})
-      .catch((e) => {})
-      .finally(() => {
-        stopSubmitting();
-        setIsDisabled(false);
-      });
-    };
+      postIncident({ payload })
+        .unwrap()
+        .then(r => {
+          if (validateTaskAfterReport) {
+            dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
+          }
+          navigateOnSuccess();
+        })
+        .catch(e => {})
+        .finally(() => {
+          stopSubmitting();
+          setIsDisabled(false);
+        });
+    }
   };
 
   const isButtonDisabled = isDisabled || isLoading;
