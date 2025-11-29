@@ -442,7 +442,9 @@
       "edenred+card": "Edenred",
       "conecs": "Titres-restaurant",
       "swile": "Swile",
-      "restoflash": "Restoflash"
+      "restoflash": "Restoflash",
+      "apple_pay": "Apple Pay",
+      "google_pay": "Google Pay"
     },
     "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
     "STORES": "Stores",
