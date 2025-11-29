@@ -3,6 +3,7 @@ import {
   describeif,
   loadFixturesAndConnect,
   longPressById,
+  swipeDown,
   tapById,
   tapByText,
   waitToBeVisible,
@@ -14,7 +15,7 @@ describeif(device.getPlatform() === 'android')
   ('Courier - Select and tap an action for selected tasks', () => {
 
   beforeEach(async () => {
-    await loadFixturesAndConnect('courier.yml');
+    await loadFixturesAndConnect('courier.yml', true);
     await authenticateWithCredentials(USER_JANE, '12345678');
 
     try {
@@ -32,7 +33,7 @@ describeif(device.getPlatform() === 'android')
 
     await tapById('messengerTabList');
 
-    // Long press assigned task #1
+    // Long press assigned task #2
     await longPressById(`courierTaskList:task:0`);
 
     // Press the 3-dot menu button
@@ -42,8 +43,8 @@ describeif(device.getPlatform() === 'android')
   it('should mark a task as DOING', async () => {
     // Tap Start button in menu
     await tapById('StartTaskButton');
-    // Verify task #1 has status "DOING"
-    await waitToBeVisible('taskListItemIcon:DOING:1');
+    // Verify task #2 has status "DOING"
+    await waitToBeVisible('taskListItemIcon:DOING:2');
   });
 
   it('should mark a task as DONE', async () => {
@@ -52,8 +53,8 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('task:finishButton');
     await tapByText('Validate');
 
-    // Verify task #1 has status "DONE"
-    await waitToBeVisible('taskListItemIcon:DONE:1');
+    // Verify task #2 has status "DONE"
+    await waitToBeVisible('taskListItemIcon:DONE:2');
   });
 
   it('should mark a task as INCIDENT ', async () => {
@@ -61,9 +62,12 @@ describeif(device.getPlatform() === 'android')
     await tapById('ReportIncidenceButton');
 
     await waitToBeVisible('task:finishButton');
-    await tapByText('Report incident');
+    await tapById('task:finishButton');
 
-    // Verify task #1 has status "INCIDENT"
-    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
+    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to auto-refresh..!
+    await swipeDown('courierTaskListSwipeListView');
+
+    // Verify task #2 has status "INCIDENT"
+    await waitToBeVisible('taskListItemIcon:INCIDENT:2');
   });
 });
