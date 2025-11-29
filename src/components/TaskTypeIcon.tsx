@@ -1,12 +1,12 @@
 import { taskTypeIconName } from '../navigation/task/styles/common';
-import { blackColor, whiteColor } from '../styles/common';
+import { blackColor, greenColor, redColor, whiteColor } from '../styles/common';
 import type { Task } from '../types/task';
 import FAIcon from './Icon';
 
 interface TaskTypeIconProps {
   task: Pick<Task, 'status' | 'type'>;
   size?: 'sm' | 'lg';
-  color?: 'dark' | 'light';
+  color?: 'dark' | 'light' | 'green' | 'red';
 }
 
 // Size mappings
@@ -19,6 +19,8 @@ const SIZE_MAP = {
 const COLOR_MAP = {
   dark: blackColor, // gray-700
   light: whiteColor,
+  green: greenColor,
+  red: redColor,
 } as const;
 
 const TaskTypeIcon = ({
@@ -30,7 +32,7 @@ const TaskTypeIcon = ({
   const iconColor = COLOR_MAP[color];
 
   return (
-    <FAIcon name={taskTypeIconName(task)} size={iconSize} color={iconColor} />
+    <FAIcon style={{ alignSelf: 'center' }} name={taskTypeIconName(task)} size={iconSize} color={iconColor} />
   );
 };
 

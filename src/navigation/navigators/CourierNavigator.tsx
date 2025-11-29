@@ -268,6 +268,13 @@ export default () => {
             headerShown: false,
           }}
         />
+      <RootStack.Screen
+          name="ReportIncident"
+          component={TaskNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
       </RootStack.Navigator>
     </TaskListsProvider>
   );

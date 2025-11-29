@@ -385,7 +385,7 @@ export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
           });
       })
       .catch(e => {
-        dispatch(markTaskDoneFailure(e));
+        dispatch(markTaskDoneFailure());
         setTimeout(() => showAlert(e), 100);
       });
   };
@@ -421,11 +421,14 @@ export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
             httpClient.execUploadTask(uploadTasks);
             dispatch(clearFiles());
             dispatch(markTasksDoneSuccess(res.success));
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100);
-            }
+            return true;
           }
-        });
+        })
+      })
+      .then((result) => {
+        if (result && typeof onSuccess === 'function') {
+          setTimeout(() => onSuccess(), 100);
+        }
       })
       .catch(e => {
         dispatch(markTasksDoneFailure(e));
@@ -455,7 +458,7 @@ export function startTask(task, cb) {
 export function cancelTask(task: Task, cb) {
   return function(dispatch, getState) {
     dispatch(createTaskRequest())
-    
+
     const httpClient = selectHttpClient(getState());
 
     httpClient
