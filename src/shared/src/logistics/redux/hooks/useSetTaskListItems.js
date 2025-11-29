@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -25,11 +27,13 @@ import {
   selectSelectedDate,
   selectToursTasksIndex,
 } from '../selectors';
+import { httpClientService } from '../../../../../services/httpClientService';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../../constants';
 import {
+  //apiSlice,
   useSetTaskListItemsMutation,
   useSetTourItemsMutation,
-} from '../../../../../redux/api/slice';
+} from '@/src/redux/api/slice';
 
 export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
   const allTasksRef = useRef([]);
@@ -37,6 +41,9 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
   const toursTasksIndex = useSelector(selectToursTasksIndex);
   const selectedDate = useSelector(selectSelectedDate);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  //const [refreshTaskLists/*, { data, isLoading, isError, error }*/] = apiSlice.endpoints.getTaskListsV2.useLazyQuery();
+  const httpClient = httpClientService.getClient();
 
   const [
     setTaskListItems,
@@ -170,6 +177,14 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const bulkEditTasks = useCallback(
     async (selectedTasks, user) => {
+      if (!await __taskListsSanityCheck()) {
+        Alert.alert(
+          t('TASKLIST_SANITY_CHECK_FAILED_ALERT_TITLE'),
+          t('TASKLIST_SANITY_CHECK_FAILED_ALERT_BODY'),
+        );
+        return Promise.reject(new Error('Task lists sanity check failed.'));
+      }
+
       const isJustUnassign = !user;
       const taskListToEdit = getTasksListsToEdit(
         selectedTasks,
@@ -207,8 +222,35 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
 
       return result;
     },
-    [_assignTasks, _unassignTasks, allTaskLists, dispatch],
+    [allTaskLists, dispatch, _assignTasks, _unassignTasks, __taskListsSanityCheck, t],
   );
+
+  const __taskListsSanityCheck = useCallback(async () => {
+    //console.log('STATE task lists:', JSON.stringify(allTaskLists, null, 2));
+    //const { data: updatedTaskLists } = await refreshTaskLists(selectedDate.format('YYYY-MM-DD'));
+    const updatedTaskLists = await httpClient
+      .get(`/api/task_lists/v2?date=${selectedDate.format('YYYY-MM-DD')}`)
+      .then(res => res['hydra:member'])
+      .catch(err => {
+        console.error('Error fetching task lists for sanity check:', err);
+        return [];
+      })
+    //console.log('API task lists:', JSON.stringify(updatedTaskLists, null, 2));
+
+    // Let's check that all `items` from `updatedTaskLists` are present in `itemIds` from `allTaskLists`
+    const allWereFound = allTaskLists.every(taskList => {
+      const foundTaskList = updatedTaskLists.find(t => t['@id'] === taskList['@id']);
+      return foundTaskList && foundTaskList.items.every(
+        itemId => taskList.itemIds.includes(itemId)
+      )
+    });
+
+    if (!allWereFound) {
+      console.error(`Task list data sanity check failed!\nAll task lists from STATE: ${JSON.stringify(allTaskLists, null, 2)}\nAll task lists from API: ${JSON.stringify(updatedTaskLists, null, 2)}`);
+    }
+
+    return allWereFound;
+  }, [allTaskLists, selectedDate, httpClient/*, refreshTaskLists*/]);
 
   /**
    * Unassign tasks from a single/same courier

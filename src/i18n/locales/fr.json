@@ -592,6 +592,8 @@
     "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
     "PROCEED": "Continuer",
     "ASSIGN": "Assigner",
-    "INCIDENT": "Incident" 
+    "INCIDENT": "Incident",
+    "TASKLIST_SANITY_CHECK_FAILED_ALERT_TITLE": "Vérification de l'intégrité des données échouée",
+    "TASKLIST_SANITY_CHECK_FAILED_ALERT_BODY": "Veuillez rafraîchir la liste des tâches en balayant l'écran vers le bas et réessayez."
   }
 }
