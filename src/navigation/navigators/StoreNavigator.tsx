@@ -1,11 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, CommonActions } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 import { Dimensions } from 'react-native';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
+import { selectStore } from '../../redux/Store/selectors';
 import { DeliveryCallbackProvider } from '../delivery/contexts/DeliveryCallbackContext';
 import { NewDeliveryNavigator } from './NewDeliveryNavigator';
 import { useStackNavigatorScreenOptions } from '../styles';
@@ -27,9 +28,19 @@ export default ({ navigation }) => {
   const width = Dimensions.get('window').width;
 
   const dispatch = useDispatch();
+  const store = useSelector(selectStore);
 
   const deliveryCallback = newDelivery => {
-    navigation.navigate('StoreDashboard');
+
+    navigation.dispatch(CommonActions.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'StoreDashboard',
+        },
+      ],
+    }));
+
     dispatch(createDeliverySuccess(newDelivery));
   };
   const deliveryCallbackOptions = {
@@ -45,10 +56,7 @@ export default ({ navigation }) => {
           <RootStack.Screen
             name="StoreDashboard"
             component={screens.StoreDashboard}
-            options={({ navigation, route }) => {
-
-              const store = route.params?.store;
-              const title = store ? store.name : '';
+            options={({ navigation }) => {
 
               const navigateToDelivery = () => {
                 navigation.navigate('NewDelivery', {
@@ -57,7 +65,7 @@ export default ({ navigation }) => {
               };
 
               return {
-                title,
+                title: store?.name || '',
                 headerTitleStyle: {
                   width: width - 160,
                 },
