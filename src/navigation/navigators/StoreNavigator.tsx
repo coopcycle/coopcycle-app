@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StackActions, CommonActions } from '@react-navigation/native';
-import { HeaderBackButton } from '@react-navigation/elements';
+import { HeaderButton as RNHeaderButton } from '@react-navigation/elements';
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 import { Dimensions } from 'react-native';
+import { Text } from '@/components/ui/text';
 
 import { createDeliverySuccess } from '../../redux/Store/actions';
 import { selectStore } from '../../redux/Store/selectors';
@@ -102,12 +103,12 @@ export default ({ navigation }) => {
             presentation: 'modal',
             headerTitle: t('STORE_NEW_DELIVERY'),
             headerLeft: props => (
-              <HeaderBackButton
+              <RNHeaderButton
                 {...props}
-                label={ t('CANCEL') }
-                backImage={ () => null }
                 onPress={() => navigation.dispatch(StackActions.popToTop())}
-              />
+              >
+                <Text>{ t('CANCEL') }</Text>
+              </RNHeaderButton>
             )
           }) }>
           <RootStack.Screen
