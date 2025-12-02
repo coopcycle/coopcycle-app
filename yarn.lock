@@ -9257,7 +9257,7 @@ __metadata:
     react-native-loading-spinner-overlay: "npm:^3.0.1"
     react-native-localize: "npm:^3.5.2"
     react-native-map-link: "npm:^2.11.4"
-    react-native-maps: "npm:^1.26.1"
+    react-native-maps: "npm:^1.26.19"
     react-native-markdown-display: "npm:^7.0.2"
     react-native-modal: "npm:^13.0.1"
     react-native-modal-datetime-picker: "npm:^18.0.0"
@@ -18887,9 +18887,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-maps@npm:^1.26.1":
-  version: 1.26.18
-  resolution: "react-native-maps@npm:1.26.18"
+"react-native-maps@npm:^1.26.19":
+  version: 1.26.19
+  resolution: "react-native-maps@npm:1.26.19"
   dependencies:
     "@types/geojson": "npm:^7946.0.13"
   peerDependencies:
@@ -18899,7 +18899,7 @@ __metadata:
   peerDependenciesMeta:
     react-native-web:
       optional: true
-  checksum: 10c0/ffa2fb0cfb848f37ffca44ca4e59526634e0de52488b168301e1272681cba79bc48a5cc3f677bbffe9d3b0c0b6fac3221edefcfe12a25ced86fc126d5d5d8958
+  checksum: 10c0/1c1f546f722138e9e8a4ef3d22c44054946c4530329456be2b57729b8740d8644c321c0c6640661609828618e417e19873b8e7b5415e4e43095da80b79c4ff6b
   languageName: node
   linkType: hard
 
