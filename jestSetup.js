@@ -54,10 +54,6 @@ jest.mock('react-native/Libraries/AppState/AppState', () => ({
   },
 }))
 
-jest.mock('expo/fetch', () => ({
-  fetch: jest.fn(),
-}));
-
 // https://github.com/expo/expo/issues/39922
 
 // undo the ts-side mock

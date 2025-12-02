@@ -1,6 +1,5 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { fetch } from 'expo/fetch';
 import allSettled from 'promise.allsettled';
 
 import { createClient } from '../API';
@@ -123,17 +122,16 @@ describe('HTTP client', () => {
       refresh_token: '123456',
     });
 
-    fetch.mockResolvedValueOnce({ ok: false, status: 401 })
-    fetch.mockResolvedValueOnce({ ok: true,  status: 201 })
+    mock.onPost('http://demo.coopcycle.org/api/task_images').replyOnce(401);
+    mock.onPost('http://demo.coopcycle.org/api/task_images').replyOnce(201);
 
     const client = createClient('http://demo.coopcycle.org', {
       token: expiredToken,
       refreshToken: '123456',
     });
 
-    const response = await client.uploadFileAsync('/api/images', '12345678');
+    const response = await client.uploadFileAsync('/api/task_images', '12345678');
 
-    expect(fetch).toHaveBeenCalledTimes(2);
     expect(response.status).toEqual(201);
   });
 
@@ -144,14 +142,14 @@ describe('HTTP client', () => {
       refresh_token: '123456',
     });
 
-    fetch.mockResolvedValueOnce({ ok: false, status: 400 })
+    mock.onPost('http://demo.coopcycle.org/api/task_images').reply(400);
 
     const client = createClient('http://demo.coopcycle.org', {
       token: expiredToken,
       refreshToken: '123456',
     });
 
-    const response = await client.uploadFileAsync('/api/images', '12345678');
+    const response = await client.uploadFileAsync('/api/task_images', '12345678');
 
     expect(response.status).toEqual(400);
   });

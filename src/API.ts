@@ -361,27 +361,28 @@ Client.prototype.uploadFileAsync = async function (uri, file, options = {}) {
     name: f.name || `${f.md5}.${f.extension || 'jpg'}` // FIXME Sometimes name is empty
   });
 
-  const response = await fetch(`${this.getBaseURL()}${uri}`, {
-    method: 'POST',
-    body: formData,
-    headers: {
-      Authorization: `Bearer ${this.getToken()}`,
-      ...headers,
-    },
-  })
+  try {
 
-  if (!response.ok) {
+    const response = await axios.post(`${this.getBaseURL()}${uri}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${this.getToken()}`,
+        ...headers,
+      },
+    });
 
-    if (401 === response.status) {
+    return response
+
+  } catch (error) {
+
+    if (401 === error.response?.status) {
       const token = await this.refreshToken()
 
       return this.uploadFileAsync(uri, file, options);
     }
 
+    return error.response
   }
-
-  return response
-
 };
 
 Client.prototype.loginWithFacebook = function (accessToken) {

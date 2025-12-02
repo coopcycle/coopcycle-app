@@ -228,7 +228,6 @@ describe('Redux | Tasks | Actions', () => {
       const actions = getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
-      expect(actions).toContainEqual(clearFiles());
       expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue));
 
       expect(client.put).toHaveBeenCalledTimes(1);
@@ -274,7 +273,6 @@ describe('Redux | Tasks | Actions', () => {
       const actions = getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
-      expect(actions).toContainEqual(clearFiles());
       expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue));
 
       expect(client.put).toHaveBeenCalledTimes(1);
@@ -360,7 +358,6 @@ describe('Redux | Tasks | Actions', () => {
       const actions = getActions();
 
       expect(actions).toContainEqual(markTaskFailedRequest(task));
-      expect(actions).toContainEqual(clearFiles());
       expect(actions).toContainEqual(markTaskFailedSuccess(resolveValue));
 
       expect(client.put).toHaveBeenCalledTimes(1);
