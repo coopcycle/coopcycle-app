@@ -35,9 +35,9 @@ jobs:
 
       - uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: '17'
-          cache: 'gradle'
+          # cache: 'gradle'
 
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
@@ -64,8 +64,8 @@ jobs:
           sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
           sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
-      - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v3
+      # - name: Gradle cache
+      #   uses: gradle/actions/setup-gradle@v3
 
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c android.emu.release
