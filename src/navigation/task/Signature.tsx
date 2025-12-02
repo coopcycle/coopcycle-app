@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import { File, Paths } from 'expo-file-system';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';

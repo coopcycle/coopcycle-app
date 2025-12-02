@@ -1,6 +1,5 @@
 import axios from 'axios';
 import 'web-streams-polyfill/polyfill'; // Fix "ReferenceError: Property 'ReadableStream' doesn't exist"
-import { fetch } from 'expo/fetch'
 import { File, Paths } from 'expo-file-system'
 import _ from 'lodash';
 import qs from 'qs';
@@ -349,23 +348,25 @@ Client.prototype.cloneWithToken = function (token) {
 
 Client.prototype.uploadFileAsync = async function (uri, file, options = {}) {
 
-  options = {
-    headers: {},
-    parameters: {},
-    ...options,
-  };
+  console.log('Uploading file...', uri, file, options);
+
+  const headers = options.headers || {};
 
   const f = new File(file);
 
   const formData = new FormData();
-  formData.append('file', f);
+  formData.append('file', {
+    uri: f.uri,
+    type: f.type,
+    name: f.name || `${f.md5}.${f.extension || 'jpg'}` // FIXME Sometimes name is empty
+  });
 
   const response = await fetch(`${this.getBaseURL()}${uri}`, {
     method: 'POST',
     body: formData,
     headers: {
       Authorization: `Bearer ${this.getToken()}`,
-      ...options.headers,
+      ...headers,
     },
   })
 
