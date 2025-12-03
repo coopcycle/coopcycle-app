@@ -12,6 +12,7 @@ import FAIcon from './Icon';
 import { getName, getTimeFrame } from '../navigation/task/components/utils';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getOrderNumberWithPosition } from '../utils/tasks';
+import { getOrderTitle } from '../navigation/order/utils';
 
 const styles = StyleSheet.create({
   taskRow: {
@@ -65,6 +66,7 @@ export default function TasksBottomSheetContent({ modalMarkers = [], onListedTas
   const mainTask = modalMarkers.find(addressName) || modalMarkers[0];
   const mainName = addressName(mainTask);
   const mainAddress = mainTask.address.streetAddress;
+  const orderTitle = getOrderTitle([mainTask]);
 
   return (
     <BottomSheetPortal
@@ -76,10 +78,23 @@ export default function TasksBottomSheetContent({ modalMarkers = [], onListedTas
     >
       <BottomSheetContent style={{ backgroundColor: colors.background }}>
         <View style={styles.headerContainer}>
+          {orderTitle &&
+            orderTitle !== mainName &&
+            orderTitle !== mainAddress && (
+              <Text
+                style={{
+                  fontWeight: '700',
+                  fontSize: 17,
+                  color: colors.textPrimary
+                }}
+              >
+                {orderTitle.toUpperCase()}
+              </Text>
+            )}
           <Text
             style={{
               fontWeight: '700',
-              fontSize: 16,
+              fontSize: 15,
               color: colors.textPrimary,
             }}
           >

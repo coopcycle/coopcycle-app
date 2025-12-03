@@ -47,6 +47,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect, useDispatch } from 'react-redux';
+import { useTaskListsContext } from '../courier/contexts/TaskListsContext';
 
 import {
   Select,
@@ -318,6 +319,7 @@ const SubmitButton = ({
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
+  const context = useTaskListsContext();
   const [isDisabled, setIsDisabled] = useState(false);
 
   const success = isSuccessRoute(route);
@@ -327,6 +329,9 @@ const SubmitButton = ({
 
   const onPress = () => {
     const navigateOnSuccess = () => {
+      // Clear selection after successful completion
+      context?.clearSelectedTasks();
+
       // Make sure to use merge = true, so that it doesn't break
       // when navigating to DispatchTaskList
 

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Platform, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { Switch } from '@/components/ui/switch';
@@ -143,13 +143,27 @@ function SettingsItemInner({ item }) {
 }
 
 function SettingsItemSwitch({ item }) {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+
+  const trackColor = isDark
+    ? { false: '#9e9e9e', true: '#636363' }  // dark mode
+    : { false: '#d4d4d4', true: '#525252' };
+
   return (
-    <HStack className="items-center justify-between py-3 mr-5">
+    <HStack className="items-center justify-between py-3">
       <Text>{item.label}</Text>
       <Switch
-        onToggle={item.onToggle}
         value={item.isChecked}
-        testID={item.testID || ''}
+        onValueChange={item.onToggle}
+        testID={item.testID}
+        trackColor={trackColor}
+        thumbColor={isDark ? '#e5e5e5' : '#fafafa'}
+        activeThumbColor={isDark ? '#e5e5e5' : '#fafafa'}
+        ios_backgroundColor={isDark ? '#3a3a3a' : '#d4d4d4'}
+        style={{
+          marginRight: Platform.OS === 'ios' ? 12 : 0,
+        }}
       />
     </HStack>
   );

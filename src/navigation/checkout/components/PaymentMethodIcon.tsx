@@ -2,10 +2,10 @@ import React from 'react';
 import { Image } from 'react-native';
 import { Box } from '@/components/ui/box';
 import { Icon, createIcon } from '@/components/ui/icon';
-import Foundation from 'react-native-vector-icons/Foundation';
 import Svg, { Path } from 'react-native-svg';
 import ConecsIcon from './PaymentMethodIcon/ConecsIcon';
 import { CreditCard, Banknote } from 'lucide-react-native';
+import { FontAwesome5Brands } from 'react-native-vector-icons/FontAwesome5Brands';
 
 const icons = {
   card: CreditCard,
@@ -69,6 +69,30 @@ const PaymentMethodIcon = ({ type }) => {
 
     return (
       <Icon as={EdenredIcon} size="xl" />
+    );
+  }
+
+  if (type === 'apple_pay') {
+    return (
+      <Box className="mr-2">
+        <Image
+          resizeMode="contain"
+          source={require('../../../../assets/images/apple-pay.png')}
+          style={{ width: 40, height: 40 }}
+        />
+      </Box>
+    );
+  }
+
+  if (type === 'google_pay') {
+    return (
+      <Box className="mr-2">
+        <Image
+          resizeMode="contain"
+          source={require('../../../../assets/images/google-pay.png')}
+          style={{ width: 40, height: 40 }}
+        />
+      </Box>
     );
   }
 
