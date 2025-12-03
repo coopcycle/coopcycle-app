@@ -50,7 +50,7 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/release/app-official-release.apk',
       build:
-        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no -PreactNativeArchitectures=x86,x86_64 --warning-mode all && cd ..',
+        'cd android && ./gradlew assembleOfficial assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no -PreactNativeArchitectures=x86,x86_64 --warning-mode all && cd ..',
       launchArgs: {},
     },
   },
