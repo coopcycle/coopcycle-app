@@ -50,7 +50,8 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/release/app-official-release.apk',
       build:
-        'cd android && ./gradlew assembleOfficialRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no -PreactNativeArchitectures=x86,x86_64 --warning-mode all && cd ..',
+        // Do not use assembleRelease as it will build both variants
+        'cd android && ./gradlew assembleOfficialRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no -PreactNativeArchitectures=x86,x86_64 --warning-mode none && cd ..',
       launchArgs: {},
     },
   },
