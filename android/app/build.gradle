@@ -159,9 +159,9 @@ android {
         }
     }
     productFlavors {
-//        instance {
-//            dimension "default"
-//        }
+        instance {
+            dimension "default"
+        }
         official {
             dimension "default"
             isDefault true
