@@ -13,6 +13,8 @@ import {
   loadMoreDeliveries,
 } from '../../redux/Store/actions';
 import { loadAddresses, setStore } from '../../redux/Delivery/actions';
+import { RootState } from '@/src/redux/store';
+import { Store } from '@/src/redux/api/types';
 
 class StoreDashboard extends Component {
   componentDidMount() {
@@ -60,7 +62,7 @@ class StoreDashboard extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: RootState) {
   return {
     store: state.store.store,
     deliveries: state.store.deliveries,
@@ -73,7 +75,7 @@ function mapDispatchToProps(dispatch) {
   return {
     loadDeliveries: (store, refresh = false) =>
       dispatch(loadDeliveries(store, refresh)),
-    init: store => {
+    init: (store: Store) => {
       dispatch(init(store));
       dispatch(setStore(store));
       dispatch(loadAddresses(store));

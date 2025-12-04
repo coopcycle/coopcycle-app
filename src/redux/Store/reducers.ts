@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import { PayloadAction, Reducer } from '@reduxjs/toolkit';
+import { Store } from '@/src/redux/api/types';
 import {
   CREATE_DELIVERY_SUCCESS,
   INIT_SUCCESS,
@@ -11,9 +14,20 @@ import { LOAD_MY_STORES_SUCCESS } from '../App/actions';
 
 import { composeWithState } from '../../utils/delivery';
 
-import _ from 'lodash';
+type StoreState = {
+  fetchError;
+  myStores: Store[];
+  store: Store | null | undefined;
+  deliveries;
+  pagination: {
+    next;
+    totalItems;
+  };
+  loadingMore;
+  refreshing;
+};
 
-const initialState = {
+const initialState: StoreState = {
   fetchError: null, // Error object describing the error
   myStores: [], // Array of stores
   store: null,
@@ -45,7 +59,7 @@ const replace = (deliveries, delivery, pickup, dropoff) => {
   return deliveries;
 };
 
-export default (state = initialState, action = {}) => {
+const reducer: Reducer<StoreState, PayloadAction<unknown>> = (state = initialState, action = {}) => {
   let newState;
 
   switch (action.type) {
@@ -96,7 +110,7 @@ export default (state = initialState, action = {}) => {
       newState = {
         ...state,
         fetchError: false,
-        myStores: action.payload,
+        myStores: action.payload as Store[],
       };
 
       if (action.payload.length > 0) {
@@ -104,7 +118,7 @@ export default (state = initialState, action = {}) => {
           ...newState,
           // We select by default the first restaurant from the list
           // Most of the time, users will own only one restaurant
-          store: _.first(action.payload),
+          store: _.first(action.payload as Store[]),
         };
       }
 
@@ -133,3 +147,5 @@ export default (state = initialState, action = {}) => {
 
   return state;
 };
+
+export default reducer;

@@ -4,6 +4,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { setLoading } from '../App/actions';
 import { selectTimeSlots } from './selectors';
 import { selectHttpClient } from '../App/selectors';
+import { Store } from '@/src/redux/api/types';
 
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
@@ -28,8 +29,8 @@ export const loadTimeSlotChoicesSuccess = createAction(
 export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
-export const setStore = createAction(SET_STORE);
-export const setStores = createAction(SET_STORES);
+export const setStore = createAction<Store>(SET_STORE);
+export const setStores = createAction<Store[]>(SET_STORES);
 
 const loadAddressesSuccess = createAction(
   LOAD_ADDRESSES_SUCCESS,

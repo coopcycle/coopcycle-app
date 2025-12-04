@@ -14,7 +14,7 @@ import {
 } from './actions';
 import { formatPrice } from '../../utils/formatting';
 import { LOGOUT_SUCCESS } from '../App/actions';
-import { TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
+import { Store, TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
 
 type DeliveryState = {
   addresses;
@@ -22,8 +22,8 @@ type DeliveryState = {
   packages;
   price;
   priceExcludingTax;
-  store;
-  stores;
+  store: Store | null;
+  stores: Store[];
   timeSlotChoices: TimeSlotChoice[];
   timeSlots: TimeSlot[];
 };
@@ -98,13 +98,13 @@ const reducer: Reducer<DeliveryState, PayloadAction<unknown>> = (state = initial
     case SET_STORE:
       return {
         ...state,
-        store: action.payload,
+        store: action.payload as Store,
       };
 
     case SET_STORES:
       return {
         ...state,
-        stores: action.payload,
+        stores: action.payload as Store[],
       };
   }
 
