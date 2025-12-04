@@ -42,7 +42,7 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/debug/app-official-debug.apk',
       build:
-        'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --warning-mode all && cd ..',
+        'cd android && ./gradlew assembleOfficialDebug assembleOfficialAndroidTest -DtestBuildType=debug --warning-mode all && cd ..',
       launchArgs: {},
     },
     'android.release': {
@@ -52,7 +52,7 @@ module.exports = {
       build:
         // Do not use assembleRelease & assembleAndroidTest as it will build both variants
         // https://wix.github.io/Detox/docs/introduction/project-setup#product-flavors
-        'cd android && ./gradlew assembleOfficialRelease assembleOfficialReleaseAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no -PreactNativeArchitectures=x86,x86_64 --warning-mode none && cd ..',
+        'cd android && ./gradlew assembleOfficialRelease assembleOfficialAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no -PreactNativeArchitectures=x86,x86_64 --warning-mode none && cd ..',
       launchArgs: {},
     },
   },
