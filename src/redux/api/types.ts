@@ -20,6 +20,32 @@ export interface HydraCollection<T> {
     'hydra:previous'?: string;
     'hydra:next'?: string;
   };
+}
+
+export interface HydraError {
+  '@type': string;
+  'hydra:title': string;
+  'hydra:description': string;
+}
+
+export type GeoCoordinates = {
+  latitude: number;
+  longitude: number;
+};
+
+export type Address = JsonLdEntity & {
+  id: number;
+  streetAddress: string;
+  addressLocality: string;
+  addressCountry: string;
+  addressRegion?: string;
+  postalCode: string;
+  geo: GeoCoordinates;
+  name?: string;
+  description?: string;
+  contactName?: string;
+  telephone?: string;
+  company?: string;
 };
 
 export type TimeSlot = JsonLdEntity & {
@@ -45,4 +71,19 @@ export type TimeSlotChoice = {
 
 export type TimeSlotChoices = {
   choices: TimeSlotChoice[];
+};
+
+export type Store = JsonLdEntity & {
+  id: number;
+  name: string;
+  enabled: boolean;
+  address: Address;
+  timeSlot?: Uri;
+  timeSlots: Uri[];
+  pricingRuleSet?: Uri;
+  prefillPickupAddress: boolean;
+  weightRequired: boolean;
+  packagesRequired: boolean;
+  multiDropEnabled: boolean;
+  multiPickupEnabled: boolean;
 };

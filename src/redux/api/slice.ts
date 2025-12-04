@@ -4,7 +4,7 @@ import { baseQueryWithReauth } from './baseQuery';
 import { sortByName, sortByString } from '../util';
 import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
-import { TimeSlot, TimeSlotChoices } from './types';
+import { Store, TimeSlot, TimeSlotChoices } from './types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -144,9 +144,9 @@ export const apiSlice = createApi({
         return { data: sortByString(result.data, 'username') };
       },
     }),
-    getStores: builder.query({
+    getStores: builder.query<Store[], void>({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsUsingFetchWithBQ(
+        const result = await fetchAllRecordsUsingFetchWithBQ<Store>(
           fetchWithBQ,
           '/api/stores',
           100,
@@ -160,7 +160,7 @@ export const apiSlice = createApi({
     }),
     getTimeSlots: builder.query<TimeSlot[], void>({
       queryFn: async (args, queryApi, extraOptions, baseQuery) => {
-        return await fetchAllRecordsUsingFetchWithBQ<TimeSlot>(
+        return await fetchAllRecordsUsingFetchWithBQ(
           baseQuery,
           'api/time_slots',
           100,
