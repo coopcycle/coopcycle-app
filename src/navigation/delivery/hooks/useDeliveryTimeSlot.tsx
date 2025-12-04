@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadTimeSlotChoices } from '@/src/redux/Delivery/actions';
+import { Store, TimeSlot, Uri } from '@/src/redux/api/types';
 
-export function useDeliveryTimeSlot(store: object, timeSlots: []) {
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+export function useDeliveryTimeSlot(store: Store, timeSlots: TimeSlot[]) {
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(undefined as Uri | undefined);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export function useDeliveryTimeSlot(store: object, timeSlots: []) {
     );
   }, [selectedTimeSlot, timeSlots, dispatch]);
 
-  function updateSelectedTimeSlot(timeSlot) {
+  function updateSelectedTimeSlot(timeSlot: TimeSlot) {
     setSelectedTimeSlot(timeSlot['@id']);
   }
 
