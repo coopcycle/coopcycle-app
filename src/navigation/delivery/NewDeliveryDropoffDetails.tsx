@@ -137,7 +137,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
               {t('STORE_NEW_DELIVERY_PACKAGES_DESCRIPTION')}
             </Text>
           </View>
-          {hasTimeSlot ? (
+          {(hasTimeSlot && selectedChoice) ? (
             <TimeSlotSelector
               selectValue={selectedChoice}
               setSelectValue={setSelectedChoice}
@@ -145,7 +145,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
               touched={touched}
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
-              updateSelectedTimeSlot={updateSelectedTimeSlot}
+              setSelectedTimeSlot={updateSelectedTimeSlot}
               timeSlots={timeSlots}
               choices={timeSlotChoices}
               selectedTimeSlot={selectedTimeSlot}

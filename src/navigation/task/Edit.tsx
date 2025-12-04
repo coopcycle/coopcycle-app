@@ -24,6 +24,7 @@ import { Text } from '@/components/ui/text';
 import { ClientSearchSection } from './components/ClientSearchSection';
 import { useReportFormContext } from './contexts/ReportFormContext';
 import { useEditTaskForm } from './hooks/useEditTaskForm';
+import { TimeSlot } from '@/src/redux/api/types';
 
 interface TaskFormProps {
   task?: Partial<Task>;
@@ -270,12 +271,14 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                         touched={touched}
                         setFieldValue={setFieldValue}
                         setFieldTouched={setFieldTouched}
-                        updateSelectedTimeSlot={setSelectedTimeSlot}
+                        setSelectedTimeSlot={(timeSlot: TimeSlot) => {
+                          setSelectedTimeSlot(timeSlot['@id']);
+                        }}
                         timeSlots={timeSlots}
                         choices={timeSlotChoices}
                         selectedTimeSlot={selectedTimeSlot}
                         initialTimeSlot={task?.timeSlot}
-                        onTimeSlotChange={handleTimeSlotChange}
+                        onTimeSlotChoiceChange={handleTimeSlotChange}
                       />
                     ) : (
                       <DateTimePicker

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { TimeSlotChoice } from '@/src/redux/api/types';
 
 export function useTimeSlotChoice(timeSlotChoices: TimeSlotChoice[]) {
-  const [selectedChoice, setSelectedChoice] = useState(null as string | null);
+  const [selectedChoice, setSelectedChoice] = useState(undefined as string | undefined);
 
   useEffect(() => {
     if (timeSlotChoices.length) {

@@ -50,13 +50,13 @@ type Props = {
   touched: Record<string, boolean>;
   setFieldValue: (field: string, value) => void;
   setFieldTouched: (field: string, value: boolean) => void;
-  updateSelectedTimeSlot: (timeSlot: TimeSlot) => void;
   timeSlots: TimeSlot[];
   choices: TimeSlotChoice[];
   selectedTimeSlot: string;
+  setSelectedTimeSlot: (timeSlot: TimeSlot) => void;
   selectValue: string;
   setSelectValue: (value: string) => void;
-  onTimeSlotChange: (timeSlot: string, choice: string) => void;
+  onTimeSlotChoiceChange: (choice: string, timeSlot: string) => void;
   testID?: string;
 }
 
@@ -65,33 +65,33 @@ export default function TimeSlotSelector({
   touched,
   setFieldValue,
   setFieldTouched,
-  updateSelectedTimeSlot,
   timeSlots,
   choices,
   selectedTimeSlot,
+  setSelectedTimeSlot,
   selectValue,
   setSelectValue,
-  onTimeSlotChange,
+  onTimeSlotChoiceChange,
   testID = "time-slot-selector",
 } : Props) {
   const { t } = useTranslation();
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
-  const handleButtonPress = (timeSlot: TimeSlot) => {
-    updateSelectedTimeSlot(timeSlot);
+  const onTimeSlotPress = (timeSlot: TimeSlot) => {
+    setSelectedTimeSlot(timeSlot);
 
-    if (onTimeSlotChange) {
-      onTimeSlotChange(null, timeSlot['@id']);
+    if (onTimeSlotChoiceChange) {
+      onTimeSlotChoiceChange(null, timeSlot['@id']);
     }
   };
 
-  const handleSelectChange = (value) => {
+  const onTimeSlotChoiceValueChange = (value: string) => {
     if (!value) return;
 
     setSelectValue(value);
 
-    if (onTimeSlotChange) {
-      onTimeSlotChange(value, selectedTimeSlot);
+    if (onTimeSlotChoiceChange) {
+      onTimeSlotChoiceChange(value, selectedTimeSlot);
     }
   };
 
@@ -106,7 +106,7 @@ export default function TimeSlotSelector({
           const isSelected = selectedTimeSlot === timeSlot['@id'];
           return (
             <Button
-              onPress={() => handleButtonPress(timeSlot)}
+              onPress={() => onTimeSlotPress(timeSlot)}
               style={[
                 {
                   borderColor: isSelected
@@ -139,7 +139,7 @@ export default function TimeSlotSelector({
 
       <Select
         selectedValue={selectValue}
-        onValueChange={handleSelectChange}
+        onValueChange={onTimeSlotChoiceValueChange}
         testID={`${testID}-dropdown`}
       >
         <SelectTrigger
