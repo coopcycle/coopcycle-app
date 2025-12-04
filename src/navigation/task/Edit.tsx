@@ -24,7 +24,6 @@ import { Text } from '@/components/ui/text';
 import { ClientSearchSection } from './components/ClientSearchSection';
 import { useReportFormContext } from './contexts/ReportFormContext';
 import { useEditTaskForm } from './hooks/useEditTaskForm';
-import { TimeSlot } from '@/src/redux/api/types';
 
 interface TaskFormProps {
   task?: Partial<Task>;
@@ -34,9 +33,9 @@ interface TaskFormProps {
 export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     const {
     selectedTimeSlot,
-    setSelectedTimeSlot,
+    handleSelectTimeSlot,
     selectedChoice,
-    setSelectedChoice,
+    handleSelectTimeSlotChoice,
     validAddress,
     setValidAddress,
     address,
@@ -51,7 +50,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     addresses,
     t,
 
-    handleTimeSlotChange,
     handleIncrement,
     handleDecrement,
     handleSelectAddress,
@@ -265,19 +263,16 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                   <View style={styles.timeSlot}>
                     {hasTimeSlot ? (
                       <TimeSlotSelector
-                        selectValue={selectedChoice}
-                        setSelectValue={setSelectedChoice}
                         errors={errors}
                         touched={touched}
                         setFieldValue={setFieldValue}
                         setFieldTouched={setFieldTouched}
-                        setSelectedTimeSlot={(timeSlot: TimeSlot) => {
-                          setSelectedTimeSlot(timeSlot['@id']);
-                        }}
                         timeSlots={timeSlots}
                         choices={timeSlotChoices}
                         selectedTimeSlot={selectedTimeSlot}
-                        onTimeSlotChoiceChange={handleTimeSlotChange}
+                        setSelectedTimeSlot={handleSelectTimeSlot}
+                        selectedChoice={selectedChoice}
+                        setSelectedChoice={handleSelectTimeSlotChoice}
                       />
                     ) : (
                       <DateTimePicker

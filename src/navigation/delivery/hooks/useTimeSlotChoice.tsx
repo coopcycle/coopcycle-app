@@ -10,8 +10,13 @@ export function useTimeSlotChoice(timeSlotChoices: TimeSlotChoice[]) {
     }
   }, [timeSlotChoices]);
 
+  function updateChoice(choice: TimeSlotChoice) {
+    setSelectedChoice(choice.value);
+  }
+
   return {
     selectedChoice,
     setSelectedChoice,
+    updateChoice,
   };
 }

@@ -54,9 +54,8 @@ type Props = {
   choices: TimeSlotChoice[];
   selectedTimeSlot: Uri;
   setSelectedTimeSlot: (timeSlot: TimeSlot) => void;
-  selectValue: string;
-  setSelectValue: (value: string) => void;
-  onTimeSlotChoiceChange: (choice: string, timeSlot: Uri) => void;
+  selectedChoice: string;
+  setSelectedChoice: (value: TimeSlotChoice) => void;
   testID?: string;
 }
 
@@ -69,9 +68,8 @@ export default function TimeSlotSelector({
   choices,
   selectedTimeSlot,
   setSelectedTimeSlot,
-  selectValue,
-  setSelectValue,
-  onTimeSlotChoiceChange,
+  selectedChoice,
+  setSelectedChoice,
   testID = "time-slot-selector",
 } : Props) {
   const { t } = useTranslation();
@@ -79,20 +77,17 @@ export default function TimeSlotSelector({
 
   const onTimeSlotPress = (timeSlot: TimeSlot) => {
     setSelectedTimeSlot(timeSlot);
-
-    if (onTimeSlotChoiceChange) {
-      onTimeSlotChoiceChange(null, timeSlot['@id']);
-    }
   };
 
   const onTimeSlotChoiceValueChange = (value: string) => {
     if (!value) return;
 
-    setSelectValue(value);
+    const choice = choices.find(c => c.value === value);
 
-    if (onTimeSlotChoiceChange) {
-      onTimeSlotChoiceChange(value, selectedTimeSlot);
-    }
+    if (!choice) return;
+
+    setSelectedChoice(choice);
+
   };
 
   return (
@@ -138,7 +133,8 @@ export default function TimeSlotSelector({
       </View>
 
       <Select
-        selectedValue={selectValue}
+        selectedValue={selectedChoice}
+        initialLabel={choices.find(c => c.value === selectedChoice)?.label}
         onValueChange={onTimeSlotChoiceValueChange}
         testID={`${testID}-dropdown`}
       >

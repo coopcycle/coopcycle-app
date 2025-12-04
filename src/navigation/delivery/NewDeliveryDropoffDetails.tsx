@@ -47,7 +47,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
     store,
     timeSlots,
   );
-  const { selectedChoice, setSelectedChoice } =
+  const { selectedChoice, updateChoice } =
     useTimeSlotChoice(timeSlotChoices);
   useDeliveryDataLoader(store);
   const { packagesCount, incrementQuantity, decrementQuantity } =
@@ -139,16 +139,16 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
           </View>
           {(hasTimeSlot && selectedTimeSlot && selectedChoice) ? (
             <TimeSlotSelector
-              selectValue={selectedChoice}
-              setSelectValue={setSelectedChoice}
               errors={errors}
               touched={touched}
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
-              setSelectedTimeSlot={updateSelectedTimeSlot}
               timeSlots={timeSlots}
               choices={timeSlotChoices}
               selectedTimeSlot={selectedTimeSlot}
+              setSelectedTimeSlot={updateSelectedTimeSlot}
+              selectedChoice={selectedChoice}
+              setSelectedChoice={updateChoice}
             />
           ) : (
             <DateTimePicker

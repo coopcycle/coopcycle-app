@@ -10,6 +10,7 @@ import { useReportFormContext } from '../contexts/ReportFormContext';
 import { useTimeSlot, useTimeSlotChoices } from './useTimeslots';
 import { usePackages } from './usePackages';
 import { getAutocompleteProps, getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
+import { TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
 
 export const useEditTaskForm = (task?: Partial<Task>) => {
   const { formState, updateFormField } = useReportFormContext();
@@ -69,11 +70,14 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
   }, [storePackages, packagesChanged]);
 
   // Handlers
-  const handleTimeSlotChange = useCallback((choice: string, timeSlot: string) => {
-    setSelectedChoice(choice);
-    setSelectedTimeSlot(timeSlot);
-    updateFormField('selectedChoice', choice);
-    updateFormField('selectedTimeSlot', timeSlot);
+  const handleSelectTimeSlot = useCallback((timeSlot: TimeSlot) => {
+    setSelectedTimeSlot(timeSlot['@id']);
+    updateFormField('selectedTimeSlot', timeSlot['@id']);
+  }, [updateFormField]);
+
+  const handleSelectTimeSlotChoice = useCallback((choice: TimeSlotChoice) => {
+    setSelectedChoice(choice.value);
+    updateFormField('selectedChoice', choice.value);
   }, [updateFormField]);
 
   const handleIncrement = useCallback((packageName: string) => {
@@ -146,8 +150,9 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
     deliveryError,
     t,
     country,
-    
-    handleTimeSlotChange,
+
+    handleSelectTimeSlot,
+    handleSelectTimeSlotChoice,
     handleIncrement,
     handleDecrement,
     handleSelectAddress,
