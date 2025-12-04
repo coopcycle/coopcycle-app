@@ -27,7 +27,7 @@ export const EditPackages: React.FC<{ task: Task }> = ({ task }) => {
 
   return (
     <>
-      <Text>{t('PACKAGES_TYPE')}</Text>
+      <Text>{t('STORE_NEW_DELIVERY_PACKAGES')}</Text>
       {task?.packages?.map((p) => {
         return (
           <HStack style={styles.rowButton}>

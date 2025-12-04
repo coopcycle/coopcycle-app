@@ -258,7 +258,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                   </FormField>
                   {/* Packages and Timeslot Section */}
                   <Text style={styles.sectionTitle}>
-                    {t('TIMESLOT_PACKAGE_FORM')}
+                    {t('STORE_NEW_DELIVERY_PACKAGES_TITLE')}
                   </Text>
                   {/* Timeslot */}
                   <View style={styles.timeSlot}>
