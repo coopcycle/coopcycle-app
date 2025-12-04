@@ -277,7 +277,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                         timeSlots={timeSlots}
                         choices={timeSlotChoices}
                         selectedTimeSlot={selectedTimeSlot}
-                        initialTimeSlot={task?.timeSlot}
                         onTimeSlotChoiceChange={handleTimeSlotChange}
                       />
                     ) : (
