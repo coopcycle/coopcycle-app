@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useGetStoresQuery } from '@/src/redux/api/slice';
 import { Task } from '@/src/types/task';
+import { Store } from '@/src/redux/api/types';
 
 export const useStore = (task?: Partial<Task>) => {
-  const [store, setStore] = useState(null);
+  const [store, setStore] = useState(null as Store | null);
   const { data: backendStores, isLoading, error } = useGetStoresQuery();
 
   useEffect(() => {
