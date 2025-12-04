@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { PayloadAction, Reducer } from '@reduxjs/toolkit';
 
 import {
   ASSERT_DELIVERY_ERROR,
@@ -13,8 +14,21 @@ import {
 } from './actions';
 import { formatPrice } from '../../utils/formatting';
 import { LOGOUT_SUCCESS } from '../App/actions';
+import { TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
 
-const initialState = {
+type DeliveryState = {
+  addresses;
+  assertDeliveryError;
+  packages;
+  price;
+  priceExcludingTax;
+  store;
+  stores;
+  timeSlotChoices: TimeSlotChoice[];
+  timeSlots: TimeSlot[];
+};
+
+const initialState: DeliveryState = {
   addresses: [],
   assertDeliveryError: null,
   packages: [],
@@ -26,7 +40,7 @@ const initialState = {
   timeSlots: [],
 };
 
-export default (state = initialState, action = {}) => {
+const reducer: Reducer<DeliveryState, PayloadAction<unknown>> = (state = initialState, action = {}) => {
   switch (action.type) {
     case LOGOUT_SUCCESS:
       return initialState;
@@ -72,13 +86,13 @@ export default (state = initialState, action = {}) => {
     case LOAD_TIME_SLOTS_SUCCESS:
       return {
         ...state,
-        timeSlots: action.payload,
+        timeSlots: action.payload as TimeSlot[],
       };
 
     case LOAD_TIME_SLOT_CHOICES_SUCCESS:
       return {
         ...state,
-        timeSlotChoices: action.payload,
+        timeSlotChoices: action.payload as TimeSlotChoice[],
       };
 
     case SET_STORE:
@@ -96,3 +110,5 @@ export default (state = initialState, action = {}) => {
 
   return state;
 };
+
+export default reducer;

@@ -31,7 +31,6 @@ import {
   handleChangeWeight,
   validateDeliveryForm,
 } from './utils.tsx';
-import { TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
 
 function NewDeliveryDropoffDetails({ navigation, route }) {
   const backgroundColor = useBackgroundContainerColor();
@@ -40,9 +39,8 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
 
   const packages = useSelector(selectPackages);
   const store = useSelector(selectStore);
-  //TODO: add types to selectors
-  const timeSlotChoices = useSelector(selectTimeSlotChoices) as TimeSlotChoice[];
-  const timeSlots = useSelector(selectTimeSlots) as TimeSlot[];
+  const timeSlotChoices = useSelector(selectTimeSlotChoices);
+  const timeSlots = useSelector(selectTimeSlots);
   const hasTimeSlot = useSelector(selectHasTimeSlot);
 
   const { selectedTimeSlot, updateSelectedTimeSlot } = useDeliveryTimeSlot(
