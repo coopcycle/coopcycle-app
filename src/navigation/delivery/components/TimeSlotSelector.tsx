@@ -19,6 +19,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import {
   useBackgroundHighlightColor,
 } from '../../../styles/theme';
+import { TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
 
 const styles = StyleSheet.create({
   label: {
@@ -44,6 +45,21 @@ const styles = StyleSheet.create({
   },
 });
 
+type Props = {
+  errors: Record<string, string>;
+  touched: Record<string, boolean>;
+  setFieldValue: (field: string, value) => void;
+  setFieldTouched: (field: string, value: boolean) => void;
+  updateSelectedTimeSlot: (timeSlot: TimeSlot) => void;
+  timeSlots: TimeSlot[];
+  choices: TimeSlotChoice[];
+  selectedTimeSlot: string;
+  selectValue: string;
+  setSelectValue: (value: string) => void;
+  onTimeSlotChange: (timeSlot: string, choice: string) => void;
+  testID?: string;
+}
+
 export default function TimeSlotSelector({
   errors,
   touched,
@@ -57,11 +73,11 @@ export default function TimeSlotSelector({
   setSelectValue,
   onTimeSlotChange,
   testID = "time-slot-selector",
-}) {
+} : Props) {
   const { t } = useTranslation();
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
-  const handleButtonPress = (timeSlot) => {
+  const handleButtonPress = (timeSlot: TimeSlot) => {
     updateSelectedTimeSlot(timeSlot);
 
     if (onTimeSlotChange) {
