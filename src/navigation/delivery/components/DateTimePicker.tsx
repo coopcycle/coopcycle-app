@@ -1,22 +1,20 @@
+import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useFormikContext } from 'formik';
+import { useTranslation } from 'react-i18next';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { moment } from '@/src/shared';
-import { Box } from 'lucide-react-native';
-import i18n from '@/src/i18n';
-import { StyleSheet, View } from 'react-native';
 import { Button, ButtonText } from '@/components/ui/button';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useState } from 'react';
+import { CreateTaskWithDateTimePayload } from '@/src/types/task';
 
-export const DateTimePicker = ({
-  initialValues,
-  values,
-  errors,
-  setFieldValue,
-  setFieldTouched,
-}) => {
-  const { t } = i18n;
+export const DateTimePicker = () => {
+  const { t } = useTranslation();
+
+  const { initialValues, values, setFieldValue, setFieldTouched } = useFormikContext<Partial<CreateTaskWithDateTimePayload>>();
+
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
 
   function showDateTimePicker() {

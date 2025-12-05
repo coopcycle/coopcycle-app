@@ -1,4 +1,10 @@
 import moment from 'moment';
+import {
+  CreateTaskWithDateTimePayload,
+  CreateTaskWithTimeSlotPayload,
+} from '@/src/types/task';
+import { Store } from '@/src/redux/api/types';
+
 export type NewDeliveryDropoffAddressFormValues = {
   address: string;
   description: string;
@@ -7,6 +13,7 @@ export type NewDeliveryDropoffAddressFormValues = {
   telephone: string;
 }
 
+export type FormValues = Partial<CreateTaskWithDateTimePayload> | Partial<CreateTaskWithTimeSlotPayload>;
 
 export function handleChangeWeight(value, setFieldValue, setFieldTouched) {
   let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
@@ -60,14 +67,14 @@ export function createUpdatedTaskBody(
 export function validateDeliveryForm(
   values,
   hasTimeSlot,
-  selectedChoice,
+  // selectedChoice,// replaced with values.timeSlot
   packagesCount,
   store,
   t,
 ) {
   const errors = {};
 
-  if (hasTimeSlot && !selectedChoice) {
+  if (hasTimeSlot && !values.timeSlot) {
     errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
   }
 
@@ -82,29 +89,37 @@ export function validateDeliveryForm(
   return errors;
 }
 
-export function getInitialValues(dropoff, hasTimeSlot) {
+export function getInitialValues(dropoff: NewDeliveryDropoffAddressFormValues, store: Store) : FormValues {
   let initialValues = {
     address: dropoff.address,
     description: dropoff.description || '',
     contactName: dropoff.contactName || '',
     businessName: dropoff.businessName || '',
     telephone: dropoff.telephone || '',
-    weight: null,
+    weight: undefined,
     comments: dropoff.comments || '',
   };
 
-  if (hasTimeSlot) {
-    initialValues = {
+  let timeSlot = store.timeSlot;
+
+  if (timeSlot) {
+    timeSlot = timeSlot.trim();
+  }
+
+  if (!timeSlot && store.timeSlots.length > 0) {
+    timeSlot = store.timeSlots[0];
+  }
+
+  if (timeSlot) {
+    return {
       ...initialValues,
-      timeSlotUrl: null,
-      timeSlot: null,
+      timeSlotUrl: timeSlot,
+      timeSlot: undefined,
     };
   } else {
-    initialValues = {
+    return {
       ...initialValues,
       before: moment().add(1, 'hours').add(30, 'minutes').format(),
     };
   }
-
-  return initialValues;
 }

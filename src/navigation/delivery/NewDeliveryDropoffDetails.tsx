@@ -1,5 +1,4 @@
 import { Formik } from 'formik';
-import moment from 'moment';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +9,6 @@ import {
   selectHasTimeSlot,
   selectPackages,
   selectStore,
-  selectTimeSlotChoices,
   selectTimeSlots,
 } from '../../redux/Delivery/selectors';
 import {
@@ -19,18 +17,29 @@ import {
 } from '../../styles/theme';
 import Range from '../checkout/ProductDetails/Range';
 import FormInput from './components/FormInput';
-import TimeSlotSelector from './components/TimeSlotSelector';
+import TimeSlotPicker from './components/TimeSlotPicker';
 import ModalFormWrapper from './ModalFormWrapper';
 import { DateTimePicker } from './components/DateTimePicker';
-import { useDeliveryTimeSlot } from './hooks/useDeliveryTimeSlot';
-import { useTimeSlotChoice } from './hooks/useTimeSlotChoice';
 import { useDeliveryDataLoader } from './hooks/useDeliveryDataLoader';
 import { usePackagesCount } from './hooks/usePackagesCount';
 import {
+  FormValues,
+  NewDeliveryDropoffAddressFormValues,
   getInitialValues,
   handleChangeWeight,
   validateDeliveryForm,
 } from './utils.tsx';
+import { Uri } from '@/src/redux/api/types';
+import {
+  CreateTaskWithDateTimePayload,
+  CreateTaskWithTimeSlotPayload,
+} from '@/src/types/task';
+
+type PostDeliveryBody = {
+  store: Uri,
+  pickup: CreateTaskWithDateTimePayload | CreateTaskWithTimeSlotPayload;
+  dropoff: CreateTaskWithDateTimePayload | CreateTaskWithTimeSlotPayload;
+}
 
 function NewDeliveryDropoffDetails({ navigation, route }) {
   const backgroundColor = useBackgroundContainerColor();
@@ -39,22 +48,15 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
 
   const packages = useSelector(selectPackages);
   const store = useSelector(selectStore);
-  const timeSlotChoices = useSelector(selectTimeSlotChoices);
   const timeSlots = useSelector(selectTimeSlots);
   const hasTimeSlot = useSelector(selectHasTimeSlot);
 
-  const { selectedTimeSlot, updateSelectedTimeSlot } = useDeliveryTimeSlot(
-    store,
-    timeSlots,
-  );
-  const { selectedChoice, updateChoice } =
-    useTimeSlotChoice(timeSlotChoices);
   useDeliveryDataLoader(store);
   const { packagesCount, incrementQuantity, decrementQuantity } =
     usePackagesCount(packages);
 
-  function submit(values) {
-    const delivery = {
+  function submit(values: FormValues) {
+    const delivery: PostDeliveryBody = {
       store: store['@id'],
       pickup: route.params?.pickup || undefined,
       dropoff: {
@@ -68,10 +70,10 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
         comments: values.comments,
         weight: values.weight * 1000,
         packages: packagesCount.filter(item => item.quantity > 0),
-        ...(selectedChoice
+        ...(hasTimeSlot
           ? {
-              timeSlotUrl: selectedTimeSlot,
-              timeSlot: selectedChoice,
+              timeSlotUrl: values.timeSlotUrl,
+              timeSlot: values.timeSlot,
             }
           : { before: values.before }),
       },
@@ -79,32 +81,18 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
     navigation.navigate('NewDeliveryPrice', { delivery });
   }
 
-  function validate(values) {
+  function validate(values: FormValues) {
     return validateDeliveryForm(
       values,
       hasTimeSlot,
-      selectedChoice,
       packagesCount,
       store,
       t,
     );
   }
 
-  const dropoff = route.params?.dropoff;
-  let initialValues = getInitialValues(dropoff, hasTimeSlot);
-
-  if (hasTimeSlot) {
-    initialValues = {
-      ...initialValues,
-      timeSlotUrl: null,
-      timeSlot: null,
-    };
-  } else {
-    initialValues = {
-      ...initialValues,
-      before: moment().add(1, 'hours').add(30, 'minutes').format(),
-    };
-  }
+  const dropoff = route.params?.dropoff as NewDeliveryDropoffAddressFormValues;
+  const initialValues = getInitialValues(dropoff, store);
 
   return (
     <Formik
@@ -137,27 +125,12 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
               {t('STORE_NEW_DELIVERY_PACKAGES_DESCRIPTION')}
             </Text>
           </View>
-          {(hasTimeSlot && selectedTimeSlot && selectedChoice) ? (
-            <TimeSlotSelector
-              errors={errors}
-              touched={touched}
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
+          {(hasTimeSlot) ? (
+            <TimeSlotPicker
               timeSlots={timeSlots}
-              choices={timeSlotChoices}
-              selectedTimeSlot={selectedTimeSlot}
-              setSelectedTimeSlot={updateSelectedTimeSlot}
-              selectedChoice={selectedChoice}
-              setSelectedChoice={updateChoice}
             />
           ) : (
-            <DateTimePicker
-              initialValues={initialValues}
-              values={values}
-              errors={errors}
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
-            />
+            <DateTimePicker/>
           )}
 
           <View style={[styles.formGroup]}>
