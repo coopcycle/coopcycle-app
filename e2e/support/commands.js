@@ -113,15 +113,7 @@ export const loadFixturesAndConnect = async (fixtures, setup = false) => {
 export const authenticateWithCredentials = async (username, password) => {
   console.log(`Authenticating with "${username}:${password}"`);
   await tapById('menuBtn');
-
   await tapById('drawerAccountBtn');
-  //FIXME: for some reason drawer menu does not close after the first tap on Android
-  await ifandroid(async () => {
-    const attrs = await element(by.id('drawerAccountBtn')).getAttributes();
-    if (attrs.visible) {
-      await tapById('drawerAccountBtn');
-    }
-  });
 
   await typeTextQuick('loginUsername', `${username}\n`);
   await typeTextQuick('loginPassword', `${password}\n`);

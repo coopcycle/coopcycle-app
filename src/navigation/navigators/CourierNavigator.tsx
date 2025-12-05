@@ -1,12 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon } from '@/components/ui/icon';
 import { List, Map, ScanBarcode, Settings } from 'lucide-react-native'
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import screens, { headerLeft } from '..';
-import TrackingIcon from '../../components/TrackingIcon';
 import i18n from '../../i18n';
 import { useBaseTextColor } from '../../styles/theme';
 import { useStackNavigatorScreenOptions } from '../styles';
@@ -51,49 +50,18 @@ const Tabs = () => (
   </Tab.Navigator>
 );
 
-const styles = StyleSheet.create({
-  buttonBar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    paddingHorizontal: 10,
-  },
-});
+const MainStack = createNativeStackNavigator();
 
-const ButtonWithIcon = ({ as, onPress }) => {
-  const color = useBaseTextColor();
-
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.button}>
-      <Icon size="xl" as={as} style={{ color }} />
-    </TouchableOpacity>
-  );
-};
-
-const MainStack = createStackNavigator();
-
-function HeaderCourierButtons({ nav }) {
+function HeaderCourierButtons({ navigation }) {
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled);
+
   return (
-    <View style={styles.buttonBar}>
-      {isBarcodeEnabled && (
-        <ButtonWithIcon
-          as={ScanBarcode}
-          onPress={() => nav.navigate('CourierBarcode')}
-        />
-      )}
-      <ButtonWithIcon
-        as={Settings}
-        onPress={() => nav.navigate('CourierSettings')}
-      />
-      <TouchableOpacity style={styles.button}>
-        <TrackingIcon />
-      </TouchableOpacity>
-    </View>
-  );
+    <HeaderButtons>
+      {isBarcodeEnabled &&
+      <HeaderButton iconName="scan" onPress={() => navigation.navigate('CourierBarcode')} /> }
+      <HeaderButton iconName="settings-outline" onPress={() => navigation.navigate('CourierSettings')} />
+    </HeaderButtons>
+  )
 }
 
 const MainNavigator = () => {
@@ -105,7 +73,7 @@ const MainNavigator = () => {
         name="CourierHome"
         component={Tabs}
         options={({ navigation }) => ({
-          title: i18n.t('COURIER'),
+          headerTitle: i18n.t('COURIER'),
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
           headerRight: () => <HeaderRightBody navigation={navigation}/>,
         })}
@@ -129,7 +97,7 @@ const MainNavigator = () => {
   );
 };
 
-const BarcodeStack = createStackNavigator();
+const BarcodeStack = createNativeStackNavigator();
 const BarcodeNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
@@ -159,7 +127,7 @@ const BarcodeNavigator = () => {
   );
 };
 
-const SettingsStack = createStackNavigator();
+const SettingsStack = createNativeStackNavigator();
 
 const SettingsNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -207,7 +175,7 @@ const HeaderLeftButton = ({navigation}) => {
   return headerLeft(navigation, 'menuBtnCourier')();
 };
 
-const HeaderRightBody = ({navigation}) => {
+const HeaderRightBody = ({ navigation }) => {
   const context = useTaskListsContext();
   const selectedTasks = context?.selectedTasksToEdit || [];
   return (
@@ -225,12 +193,12 @@ const HeaderRightBody = ({navigation}) => {
         }}
       />
       :
-      <HeaderCourierButtons nav={navigation} />}
+      <HeaderCourierButtons navigation={navigation} />}
     </>
   );
 };
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions({

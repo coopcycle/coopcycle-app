@@ -102,8 +102,8 @@ export default (state = initialState, action = {}) => {
       if (action.payload.length > 0) {
         newState = {
           ...newState,
-          // We select by default the first restaurant from the list
-          // Most of the time, users will own only one restaurant
+          // We select by default the first store from the list
+          // Most of the time, users will own only one store
           store: _.first(action.payload),
         };
       }

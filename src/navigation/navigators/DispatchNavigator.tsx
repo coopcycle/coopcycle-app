@@ -4,7 +4,7 @@ import { Icon } from '@/components/ui/icon';
 import { HStack } from '@/components/ui/hstack';
 import { List, ListFilter, Map } from 'lucide-react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -132,7 +132,7 @@ function Tabs() {
   );
 }
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 const HeaderLeftButton = ({navigation}) => {
   const context = useTaskListsContext();
@@ -191,7 +191,10 @@ export default function DispatchNavigator({ navigation }) {
   const taskListsContext = useTaskListsContext();
   const dispatch = useDispatch();
   const screenOptions = useStackNavigatorScreenOptions({
-    presentation: 'modal',
+    // Do *NOT* use presentation = modal,
+    // to avoid conflicting with gestures to close the modal when signing proofs of delivery.
+    // gestureEnabled should be used for this, but it doesn't work as expected.
+    presentation: 'card',
   });
 
   useEffect(() => {

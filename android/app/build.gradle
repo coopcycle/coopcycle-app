@@ -96,6 +96,8 @@ android {
         versionCode 221
         versionName "2.37.5"
 
+        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
+
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
             googleMapsApiKey: project.env.get("GOOGLE_MAPS_ANDROID_KEY"),

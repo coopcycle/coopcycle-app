@@ -592,6 +592,9 @@
     "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
     "PROCEED": "Continuer",
     "ASSIGN": "Assigner",
-    "INCIDENT": "Incident" 
+    "INCIDENT": "Incident",
+    "CHECKOUT_STOP": "Arrêter la commande",
+    "CHECKOUT_STOP_CONFIRM": "Voulez-vous interrompre la commande ? Vous pourrez la terminer plus tard",
+    "CHECKOUT_CONTINUE": "Continuer la commande"
   }
 }
