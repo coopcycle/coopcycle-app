@@ -3192,7 +3192,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSentry (6.22.0):
+  - RNSentry (7.2.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3219,7 +3219,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.56.2)
+    - Sentry/HybridSDK (= 8.56.1)
     - SocketRocket
     - Yoga
   - RNShare (7.9.1):
@@ -3426,7 +3426,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - Sentry/HybridSDK (8.56.2)
+  - Sentry/HybridSDK (8.56.1)
   - SocketRocket (0.7.1)
   - Stripe (24.25.0):
     - StripeApplePay (= 24.25.0)
@@ -4115,13 +4115,13 @@ SPEC CHECKSUMS:
   RNLocalize: d8ccb568b40c72c767714db3808ce66a1ecf444a
   RNReanimated: c3de6d69dba4054d4f35562b14c84061699188e5
   RNScreens: 98771ad898d1c0528fc8139606bbacf5a2e9d237
-  RNSentry: 9584c841b049b0b751befefc324d2edb769f546e
+  RNSentry: 6b471d6f5651fc3265ad3ae1995374f33cc64f4c
   RNShare: 06d69a0de7cc111302172cd8bd6d228462a6bbc1
   RNSound: 9a20f42f674d5cf0aba1dc3c4ac6c4bbf16552e7
   RNSVG: 94a1be05fab4043354bcf7104f0f9b0e2231ef05
   RNVectorIcons: b822419238727deba7f1e9a2695b5b62007aca6d
   RNWorklets: ab618bf7d1c7fd2cb793b9f0f39c3e29274b3ebf
-  Sentry: b53951377b78e21a734f5dc8318e333dbfc682d7
+  Sentry: b3ec44d01708fce73f99b544beb57e890eca4406
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Stripe: fe028a764ff6cc0b4884ffd1e3adfda8263d331b
   stripe-react-native: 0f286f4ece981e221e58e0432c7d5f51f939be6f
