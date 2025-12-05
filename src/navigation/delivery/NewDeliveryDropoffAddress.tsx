@@ -23,6 +23,7 @@ import {
 import ClientListInput from './components/ClientListInput';
 import FormInput from './components/FormInput';
 import ModalFormWrapper from './ModalFormWrapper';
+import { NewDeliveryDropoffAddressFormValues } from '@/src/navigation/delivery/utils';
 
 function NewDeliveryDropoffAddress({ navigation, route }) {
   const [validAddress, setValidAddress] = useState(false);
@@ -126,7 +127,7 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
     return errors;
   }
 
-  const initialValues = {
+  const initialValues: NewDeliveryDropoffAddressFormValues = {
     telephone: '',
     contactName: '',
     businessName: '',
@@ -139,7 +140,7 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
     setFieldTouched('telephone', true);
   }
 
-  function submit(values) {
+  function submit(values: NewDeliveryDropoffAddressFormValues) {
     const dropoff = {
       telephone: parsePhoneNumberFromString(values.telephone, country).format(
         'E.164',

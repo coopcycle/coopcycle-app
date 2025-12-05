@@ -1,4 +1,12 @@
 import moment from 'moment';
+export type NewDeliveryDropoffAddressFormValues = {
+  address: string;
+  description: string;
+  contactName: string;
+  businessName: string;
+  telephone: string;
+}
+
 
 export function handleChangeWeight(value, setFieldValue, setFieldTouched) {
   let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
