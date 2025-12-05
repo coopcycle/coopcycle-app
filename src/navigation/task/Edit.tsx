@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SubmitButton } from './components/SubmitButton';
 import { SupplementSelector as EditSupplements } from './components/EditSupplements';
-import TimeSlotSelector from '../delivery/components/TimeSlotSelector';
+import TimeSlotPicker from '../delivery/components/TimeSlotPicker';
 import { Formik } from 'formik';
 import FormInput from '../delivery/components/FormInput';
 import { DateTimePicker } from '../delivery/components/DateTimePicker';
@@ -262,7 +262,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                   {/* Timeslot */}
                   <View style={styles.timeSlot}>
                     {hasTimeSlot ? (
-                      <TimeSlotSelector
+                      <TimeSlotPicker
                         errors={errors}
                         touched={touched}
                         setFieldValue={setFieldValue}
