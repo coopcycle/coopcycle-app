@@ -30,15 +30,19 @@ export function createTaskItemsTransform(now) {
   );
 }
 
-export function sortByName(list) {
+export function sortByName<T extends { name: string }>(list: T[]): T[] {
   return sortByString(list, 'name');
 }
 
-export function sortByString(list, key) {
-  return sortByKey(list, elem => elem[key].toLowerCase());
+export function sortByString<T>(list: T[], key: keyof T): T[] {
+  return sortByKey(list, elem => String(elem[key]).toLowerCase());
 }
 
-export function sortByKey(list, key, order = 'asc') {
+export function sortByKey<T>(
+  list: T[],
+  key: ((item: T) => unknown) | keyof T,
+  order: 'asc' | 'desc' = 'asc',
+): T[] {
   return _.orderBy(list, [key], [order]);
 }
 

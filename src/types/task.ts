@@ -1,6 +1,9 @@
+//FIXME: move into src/redux/api/types.ts
+
 // ====== TASK TYPES ======
 
 import { LucideIcon } from 'lucide-react-native';
+import { Uri } from '@/src/redux/api/types';
 
 /**
  * Task status enumeration
@@ -194,17 +197,28 @@ export interface Task {
 /**
  * Task creation payload interface
  */
-export interface CreateTaskPayload {
+export interface BaseCreateTaskPayload {
   address: Omit<TaskAddress, '@id' | '@type'>;
-  type: TaskType;
-  after: string;
-  before: string;
   comments?: string;
   packages?: Omit<TaskPackage, 'labels'>[];
   tags?: number[]; // Tag IDs
   metadata?: TaskMetadata;
   weight?: number;
   doorstep?: boolean;
+}
+
+export interface CreateTaskWithTimeSlotPayload extends BaseCreateTaskPayload {
+  timeSlotUrl: Uri;
+  timeSlot: string;
+}
+
+export interface CreateTaskWithDateTimePayload extends BaseCreateTaskPayload {
+  after?: string;
+  before: string;
+}
+
+export interface CreateTaskTypePayload extends BaseCreateTaskPayload {
+  type: TaskType;
 }
 
 /**

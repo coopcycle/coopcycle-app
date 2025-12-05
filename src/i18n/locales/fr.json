@@ -583,6 +583,11 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Déplacez la carte pour sélectionner votre emplacement",
     "START": "Commencer",
     "FIND_ON_MAP": "Me localiser sur la carte",
+    "TASK_DETAILS": "Détails de la tâche",
+    "INCIDENT_TYPE": "Type d'incident",
+    "SELECT_INCIDENT_TYPE": "Sélectionner le type d'incident",
+    "VALIDATE_TASK": "Valider la tâche",
+    "SUPPLEMENTS": "Suppléments",
     "CANCEL_TITLE": "Annuler {{entity}}",
     "CANCEL_MESSAGE": "Êtes-vous sûr de vouloir annuler {{entity}} {{name}} ?",
     "CANCEL_MESSAGE_PLURAL": "Êtes-vous sûr de vouloir annuler {{count}} {{entity}} ?",
@@ -591,6 +596,8 @@
     "CANCEL_ERROR_MESSAGE": "{{entity}} n’a pas pu être annulé.",
     "CANCEL_NO_TASKS_MESSAGE": "Cet {{entity}} n’a pas de tâches associées à annuler.",
     "PROCEED": "Continuer",
+    "ADD_SUPPLEMENT": "Ajouter des suppléments",
+    "ADDED_SUPPLEMENTS": "Suppléments ajoutés",
     "ASSIGN": "Assigner",
     "INCIDENT": "Incident" 
   }

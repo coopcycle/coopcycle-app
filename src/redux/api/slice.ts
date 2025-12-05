@@ -4,6 +4,7 @@ import { baseQueryWithReauth } from './baseQuery';
 import { sortByName, sortByString } from '../util';
 import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
+import { Store, TimeSlot, TimeSlotChoices } from './types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -143,9 +144,9 @@ export const apiSlice = createApi({
         return { data: sortByString(result.data, 'username') };
       },
     }),
-    getStores: builder.query({
+    getStores: builder.query<Store[], void>({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsUsingFetchWithBQ(
+        const result = await fetchAllRecordsUsingFetchWithBQ<Store>(
           fetchWithBQ,
           '/api/stores',
           100,
@@ -156,6 +157,30 @@ export const apiSlice = createApi({
         }
         return { data: sortByName(result.data) };
       },
+    }),
+    getTimeSlots: builder.query<TimeSlot[], void>({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ(
+          baseQuery,
+          'api/time_slots',
+          100,
+        );
+      },
+    }),
+    getTimeSlotChoices: builder.query<TimeSlotChoices, string>({
+      query: (uri: string) => `${uri}/choices`,
+    }),
+    getStorePackages: builder.query({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ(
+          baseQuery,
+          `${args}/packages`,
+          100,
+        );
+      },
+    }),
+    getPricingRuleSet: builder.query({
+      query: (uri: string) => uri,
     }),
     getRestaurants: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
@@ -203,7 +228,20 @@ export const apiSlice = createApi({
         body: patch,
       }),
     }),
-    recurrenceRulesGenerateOrders: builder.mutation ({
+    postIncident: builder.mutation({
+      query: ({ payload }) => {
+        return {
+          url: `/api/incidents`,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/ld+json',
+            Accept: 'application/ld+json',
+          },
+          body: JSON.stringify(payload),
+        };
+      },
+    }),
+    recurrenceRulesGenerateOrders: builder.mutation({
       query: (date: DateOnlyString) => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
@@ -211,7 +249,7 @@ export const apiSlice = createApi({
         },
       }),
     }),
-  })
+  }),
 });
 
 // Export the auto-generated hook for the query endpoints
@@ -221,6 +259,10 @@ export const {
   useGetTaskContextQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,
+  useGetTimeSlotsQuery,
+  useGetTimeSlotChoicesQuery,
+  useGetStorePackagesQuery,
+  useGetPricingRuleSetQuery,
   useGetTagsQuery,
   useGetRestaurantsQuery,
   useGetTaskListsQuery,
@@ -231,6 +273,7 @@ export const {
   useSetTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
+  usePostIncidentMutation,
   useRecurrenceRulesGenerateOrdersMutation,
 } = apiSlice;
 

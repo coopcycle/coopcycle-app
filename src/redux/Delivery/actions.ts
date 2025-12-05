@@ -4,6 +4,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { setLoading } from '../App/actions';
 import { selectTimeSlots } from './selectors';
 import { selectHttpClient } from '../App/selectors';
+import { Store, TimeSlotChoice, Uri } from '@/src/redux/api/types';
 
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
@@ -22,14 +23,14 @@ export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
 export const getPriceError = createAction(GET_PRICE_ERROR);
 export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
 export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
-export const loadTimeSlotChoicesSuccess = createAction(
+export const loadTimeSlotChoicesSuccess = createAction<TimeSlotChoice[]>(
   LOAD_TIME_SLOT_CHOICES_SUCCESS,
 );
 export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
-export const setStore = createAction(SET_STORE);
-export const setStores = createAction(SET_STORES);
+export const setStore = createAction<Store>(SET_STORE);
+export const setStores = createAction<Store[]>(SET_STORES);
 
 const loadAddressesSuccess = createAction(
   LOAD_ADDRESSES_SUCCESS,
@@ -158,14 +159,16 @@ export function loadTimeSlots(store) {
   };
 }
 
-export function loadTimeSlotChoices(timeSlot) {
+export function loadTimeSlotChoices(timeSlot: Uri) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
 
     dispatch(setLoading(true));
+    // Clear previous choices
+    dispatch(loadTimeSlotChoicesSuccess([]));
 
     return httpClient
-      .get(`${timeSlot['@id']}/choices`)
+      .get(`${timeSlot}/choices`)
       .then(res => {
         dispatch(loadTimeSlotChoicesSuccess(res.choices));
         dispatch(setLoading(false));
