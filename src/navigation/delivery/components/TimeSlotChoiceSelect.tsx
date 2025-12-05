@@ -43,7 +43,7 @@ export function TimeSlotChoiceSelect({
     // wait for choices to be loaded
     if (choices.length === 0) return;
 
-    //TODO: when there are no choices => fix later
+    //TODO: when there are no choices => fix later (check that the choices are not being loaded right now)
 
     // Preselect the first available time slot choice when
     // 1. initial render: none is selected yet
