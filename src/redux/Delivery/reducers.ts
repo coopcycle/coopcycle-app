@@ -8,13 +8,12 @@ import {
   LOAD_ADDRESSES_SUCCESS,
   LOAD_PACKAGES_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
-  LOAD_TIME_SLOT_CHOICES_SUCCESS,
   SET_STORE,
   SET_STORES,
 } from './actions';
 import { formatPrice } from '../../utils/formatting';
 import { LOGOUT_SUCCESS } from '../App/actions';
-import { Store, TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
+import { Store, TimeSlot } from '@/src/redux/api/types';
 
 type DeliveryState = {
   addresses;
@@ -24,7 +23,6 @@ type DeliveryState = {
   priceExcludingTax;
   store: Store | null;
   stores: Store[];
-  timeSlotChoices: TimeSlotChoice[];
   timeSlots: TimeSlot[];
 };
 
@@ -36,7 +34,6 @@ const initialState: DeliveryState = {
   priceExcludingTax: null,
   store: null,
   stores: [],
-  timeSlotChoices: [],
   timeSlots: [],
 };
 
@@ -87,12 +84,6 @@ const reducer: Reducer<DeliveryState, PayloadAction<unknown>> = (state = initial
       return {
         ...state,
         timeSlots: action.payload as TimeSlot[],
-      };
-
-    case LOAD_TIME_SLOT_CHOICES_SUCCESS:
-      return {
-        ...state,
-        timeSlotChoices: action.payload as TimeSlotChoice[],
       };
 
     case SET_STORE:

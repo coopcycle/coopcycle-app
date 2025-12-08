@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useFormikContext } from 'formik';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import { TimeSlot } from '@/src/redux/api/types';
 import { CreateTaskWithTimeSlotPayload } from '@/src/types/task';
-import { loadTimeSlotChoices } from '@/src/redux/Delivery/actions';
 import { TimeSlotChoiceSelect } from '@/src/navigation/delivery/components/TimeSlotChoiceSelect';
+import { useGetTimeSlotChoicesQuery } from '@/src/redux/api/slice';
 
 const styles = StyleSheet.create({
   label: {
@@ -45,12 +44,18 @@ export default function TimeSlotPicker({
   testID = 'time-slot-selector',
 }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
   const { values, touched, errors, setFieldValue, setFieldTouched } =
     useFormikContext<Partial<CreateTaskWithTimeSlotPayload>>();
+
+  const { data: timeSlotChoices } = useGetTimeSlotChoicesQuery(
+    values.timeSlotUrl,
+    {
+      skip: !values.timeSlotUrl,
+    },
+  );
 
   const onTimeSlotPress = (timeSlot: TimeSlot) => {
     setFieldValue('timeSlotUrl', timeSlot['@id']);
@@ -63,13 +68,6 @@ export default function TimeSlotPicker({
     setFieldValue('timeSlot', value);
     setFieldTouched('timeSlot');
   };
-
-  // (Re)Load time slot choices when timeSlotUrl changes
-  useEffect(() => {
-    if (!values.timeSlotUrl) return;
-
-    dispatch(loadTimeSlotChoices(values.timeSlotUrl));
-  }, [values.timeSlotUrl, dispatch]);
 
   return (
     <View style={[styles.formGroup]} testID={testID}>
@@ -110,11 +108,14 @@ export default function TimeSlotPicker({
           })}
       </View>
 
-      <TimeSlotChoiceSelect
-        selectedChoice={values.timeSlot}
-        onChoiceChange={onTimeSlotChoiceValueChange}
-        testID={testID}
-      />
+      {timeSlotChoices ? (
+        <TimeSlotChoiceSelect
+          choices={timeSlotChoices.choices}
+          selectedChoice={values.timeSlot}
+          onChoiceChange={onTimeSlotChoiceValueChange}
+          testID={testID}
+        />
+      ) : null}
 
       {errors.timeSlot && touched.timeSlot && (
         <Text note style={styles.errorText} testID={`${testID}-error`}>

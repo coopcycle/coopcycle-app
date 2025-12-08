@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
   Select,
@@ -15,23 +14,23 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { ChevronDownIcon } from '@/components/ui/icon';
-import { selectTimeSlotChoices } from '@/src/redux/Delivery/selectors';
 import { Spinner } from '@/components/ui/spinner';
+import { TimeSlotChoice } from '@/src/redux/api/types';
 
 type Props = {
+  choices: TimeSlotChoice[];
   selectedChoice?: string;
   onChoiceChange: (choice: string) => void;
   testID?: string;
 };
 
 export function TimeSlotChoiceSelect({
+  choices,
   selectedChoice,
   onChoiceChange,
   testID,
 }: Props) {
   const { t } = useTranslation();
-
-  const choices = useSelector(selectTimeSlotChoices);
 
   const selectedItem = selectedChoice
     ? choices.find(c => c.value === selectedChoice)

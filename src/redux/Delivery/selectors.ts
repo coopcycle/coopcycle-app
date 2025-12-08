@@ -11,6 +11,4 @@ export const selectPriceExcludingTax = (state: RootState) =>
   state.delivery.priceExcludingTax;
 export const selectStore = (state: RootState) => state.delivery.store;
 export const selectStores = (state: RootState) => state.delivery.stores;
-export const selectTimeSlotChoices = (state: RootState) =>
-  state.delivery.timeSlotChoices;
 export const selectTimeSlots = (state: RootState) => state.delivery.timeSlots;
