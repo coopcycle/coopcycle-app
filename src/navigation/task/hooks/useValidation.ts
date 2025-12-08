@@ -1,22 +1,26 @@
 import { useCallback } from 'react';
 import _ from 'lodash';
 import parsePhoneNumberFromString from 'libphonenumber-js';
-import { validateDeliveryForm } from '../../delivery/utils';
+import {
+  validateDeliveryForm,
+} from '../../delivery/utils';
 import i18n from '@/src/i18n';
+import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
+import { FormikErrors } from 'formik';
+import { Store } from '@/src/redux/api/types';
 
 export const useValidation = (
   validAddress: boolean,
   hasTimeSlot: boolean,
-  selectedChoice,
   packagesCount: [],
-  store,
+  store: Store,
   country: string
 ) => {
   const { t } = i18n;
 
   const validate = useCallback(
-    (values) => {
-      const errors = {};
+    (values: EditTaskFormValues) => {
+      const errors = {} as FormikErrors<EditTaskFormValues>;
 
       // Phone validation
       if (_.isEmpty(values.telephone)) {
@@ -40,7 +44,6 @@ export const useValidation = (
       const deliveryErrors = validateDeliveryForm(
         values,
         hasTimeSlot,
-        selectedChoice,
         packagesCount,
         store,
         t,
@@ -48,7 +51,7 @@ export const useValidation = (
 
       return { ...errors, ...deliveryErrors };
     },
-    [validAddress, hasTimeSlot, selectedChoice, packagesCount, store, country, t],
+    [validAddress, hasTimeSlot, packagesCount, store, country, t],
   );
 
   return validate;

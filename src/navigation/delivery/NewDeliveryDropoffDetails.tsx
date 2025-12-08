@@ -23,22 +23,21 @@ import { DateTimePicker } from './components/DateTimePicker';
 import { useDeliveryDataLoader } from './hooks/useDeliveryDataLoader';
 import { usePackagesCount } from './hooks/usePackagesCount';
 import {
-  FormValues,
   NewDeliveryDropoffAddressFormValues,
+  NewDeliveryDropoffFormValues,
   getInitialValues,
   handleChangeWeight,
   validateDeliveryForm,
 } from './utils.tsx';
 import { Uri } from '@/src/redux/api/types';
 import {
-  CreateTaskWithDateTimePayload,
-  CreateTaskWithTimeSlotPayload,
+  CreatePickupOrDropoffTaskPayload,
 } from '@/src/types/task';
 
 type PostDeliveryBody = {
   store: Uri,
-  pickup: CreateTaskWithDateTimePayload | CreateTaskWithTimeSlotPayload;
-  dropoff: CreateTaskWithDateTimePayload | CreateTaskWithTimeSlotPayload;
+  pickup: CreatePickupOrDropoffTaskPayload;
+  dropoff: CreatePickupOrDropoffTaskPayload;
 }
 
 function NewDeliveryDropoffDetails({ navigation, route }) {
@@ -55,7 +54,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
   const { packagesCount, incrementQuantity, decrementQuantity } =
     usePackagesCount(packages);
 
-  function submit(values: FormValues) {
+  function submit(values: NewDeliveryDropoffFormValues) {
     const delivery: PostDeliveryBody = {
       store: store['@id'],
       pickup: route.params?.pickup || undefined,
@@ -81,7 +80,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
     navigation.navigate('NewDeliveryPrice', { delivery });
   }
 
-  function validate(values: FormValues) {
+  function validate(values: NewDeliveryDropoffFormValues) {
     return validateDeliveryForm(
       values,
       hasTimeSlot,

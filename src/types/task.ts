@@ -197,29 +197,41 @@ export interface Task {
 /**
  * Task creation payload interface
  */
-export interface BaseCreateTaskPayload {
+type BaseTaskFields = {
   address: Omit<TaskAddress, '@id' | '@type'>;
   comments?: string;
   packages?: Omit<TaskPackage, 'labels'>[];
-  tags?: number[]; // Tag IDs
-  metadata?: TaskMetadata;
+  tags?: number[];
   weight?: number;
   doorstep?: boolean;
-}
+};
 
-export interface CreateTaskWithTimeSlotPayload extends BaseCreateTaskPayload {
+export type BaseTimeSlotFields = {
   timeSlotUrl: Uri;
   timeSlot: string;
-}
+  after?: never;
+  before?: never;
+};
 
-export interface CreateTaskWithDateTimePayload extends BaseCreateTaskPayload {
+export type BaseDateTimeFields = {
   after?: string;
   before: string;
-}
+  timeSlotUrl?: never;
+  timeSlot?: never;
+};
 
-export interface CreateTaskTypePayload extends BaseCreateTaskPayload {
+export type CreatePickupOrDropoffTaskPayload = BaseTaskFields & (
+  | BaseTimeSlotFields
+  | BaseDateTimeFields
+  );
+
+export type CreateAnyTaskPayload = CreatePickupOrDropoffTaskPayload & {
   type: TaskType;
-}
+};
+
+export type EditTaskFields = CreateAnyTaskPayload
+
+export type EditTaskPayload = Partial<CreateAnyTaskPayload>
 
 /**
  * Task update payload interface

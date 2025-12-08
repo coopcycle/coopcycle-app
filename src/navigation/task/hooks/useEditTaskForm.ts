@@ -7,16 +7,13 @@ import { useValidation } from '@/src/navigation/task/hooks/useValidation';
 import { useStore } from '@/src/navigation/task/hooks/useStore';
 import { useSupplements } from './useSupplements';
 import { useReportFormContext } from '../contexts/ReportFormContext';
-import { useTimeSlot, useTimeSlotChoices } from './useTimeslots';
+import { useTimeSlot } from './useTimeslots';
 import { usePackages } from './usePackages';
 import { getAutocompleteProps, getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
-import { TimeSlot, TimeSlotChoice } from '@/src/redux/api/types';
 
 export const useEditTaskForm = (task?: Partial<Task>) => {
   const { formState, updateFormField } = useReportFormContext();
 
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(formState.selectedTimeSlot);
-  const [selectedChoice, setSelectedChoice] = useState(formState.selectedChoice);
   const [validAddress, setValidAddress] = useState(!!formState.address);
   const [address, setAddress] = useState(formState.address);
   const [packages, setPackages] = useState(formState.packages);
@@ -26,7 +23,6 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
   const store = useStore(task);
   const timeSlots = useTimeSlot(store);
   const hasTimeSlot = Array.isArray(timeSlots) && timeSlots.length > 0;
-  const timeSlotChoices = useTimeSlotChoices(store);
   const { storePackages } = usePackages(task, store);
   const { supplements: availableSupplements } = useSupplements(store);
   const addresses = useSelector(selectAddresses);
@@ -46,18 +42,6 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
   }, [packages, formState, updateFormField]);
 
   useEffect(() => {
-    if (selectedTimeSlot !== formState.selectedTimeSlot) {
-      updateFormField('selectedTimeSlot', selectedTimeSlot);
-    }
-  }, [selectedTimeSlot, formState, updateFormField]);
-
-  useEffect(() => {
-    if (selectedChoice !== formState.selectedChoice) {
-      updateFormField('selectedChoice', selectedChoice);
-    }
-  }, [selectedChoice, formState, updateFormField]);
-
-  useEffect(() => {
     if (JSON.stringify(selectedSupplements) !== JSON.stringify(formState.selectedSupplements)) {
       updateFormField('selectedSupplements', selectedSupplements);
     }
@@ -70,15 +54,6 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
   }, [storePackages, packagesChanged]);
 
   // Handlers
-  const handleSelectTimeSlot = useCallback((timeSlot: TimeSlot) => {
-    setSelectedTimeSlot(timeSlot['@id']);
-    updateFormField('selectedTimeSlot', timeSlot['@id']);
-  }, [updateFormField]);
-
-  const handleSelectTimeSlotChoice = useCallback((choice: TimeSlotChoice) => {
-    setSelectedChoice(choice.value);
-    updateFormField('selectedChoice', choice.value);
-  }, [updateFormField]);
 
   const handleIncrement = useCallback((packageName: string) => {
     const updatedPkg = packages.map(pkg =>
@@ -114,52 +89,45 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
     };
   }, [updateFormField]);
 
-  const validate = useValidation(validAddress, hasTimeSlot, selectedChoice, packages, store, country);
-  
-  const autocompleteProps = useMemo(() => 
-    getAutocompleteProps(deliveryError), 
+  const validate = useValidation(validAddress, hasTimeSlot, packages, store, country);
+
+  const autocompleteProps = useMemo(() =>
+    getAutocompleteProps(deliveryError),
     [deliveryError]
   );
 
-  const initialValues = useMemo(() => 
-    getInitialFormValues(task, store), 
-    [task, store]
+  const initialValues = useMemo(() =>
+    getInitialFormValues(task),
+    [task]
   );
 
   return {
-    selectedTimeSlot,
-    selectedChoice,
     validAddress,
     address,
     packages,
     selectedSupplements,
-    setSelectedTimeSlot,
-    setSelectedChoice,
     setValidAddress,
     setAddress,
     setPackages,
     packagesChanged,
     setSelectedSupplements,
-    
+
     store,
     timeSlots,
     hasTimeSlot,
-    timeSlotChoices,
     availableSupplements,
     addresses,
     deliveryError,
     t,
     country,
 
-    handleSelectTimeSlot,
-    handleSelectTimeSlotChoice,
     handleIncrement,
     handleDecrement,
     handleSelectAddress,
     createHandleChange,
     handleChangeTelephone,
     setAddressData,
-    
+
     validate,
     autocompleteProps,
     initialValues

@@ -6,7 +6,9 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
 import { TimeSlot } from '@/src/redux/api/types';
-import { CreateTaskWithTimeSlotPayload } from '@/src/types/task';
+import {
+  BaseTimeSlotFields,
+} from '@/src/types/task';
 import { TimeSlotChoiceSelect } from '@/src/navigation/delivery/components/TimeSlotChoiceSelect';
 import { useGetTimeSlotChoicesQuery } from '@/src/redux/api/slice';
 
@@ -48,7 +50,7 @@ export default function TimeSlotPicker({
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
   const { values, touched, errors, setFieldValue, setFieldTouched } =
-    useFormikContext<Partial<CreateTaskWithTimeSlotPayload>>();
+    useFormikContext<BaseTimeSlotFields>();
 
   const { data: timeSlotChoices } = useGetTimeSlotChoicesQuery(
     values.timeSlotUrl,

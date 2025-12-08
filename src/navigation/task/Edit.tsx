@@ -15,8 +15,6 @@ import TimeSlotPicker from '../delivery/components/TimeSlotPicker';
 import { Formik } from 'formik';
 import FormInput from '../delivery/components/FormInput';
 import { DateTimePicker } from '../delivery/components/DateTimePicker';
-
-
 import { AddressSection } from './components/AddressSection';
 import { PackageItem } from './components/PackageItem';
 import { FormField } from './components/FormField';
@@ -32,10 +30,6 @@ interface TaskFormProps {
 
 export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     const {
-    selectedTimeSlot,
-    handleSelectTimeSlot,
-    selectedChoice,
-    handleSelectTimeSlotChoice,
     validAddress,
     setValidAddress,
     address,
@@ -45,7 +39,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
     timeSlots,
     hasTimeSlot,
-    timeSlotChoices,
     availableSupplements,
     addresses,
     t,
@@ -263,26 +256,10 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                   <View style={styles.timeSlot}>
                     {hasTimeSlot ? (
                       <TimeSlotPicker
-                        errors={errors}
-                        touched={touched}
-                        setFieldValue={setFieldValue}
-                        setFieldTouched={setFieldTouched}
                         timeSlots={timeSlots}
-                        choices={timeSlotChoices}
-                        selectedTimeSlot={selectedTimeSlot}
-                        setSelectedTimeSlot={handleSelectTimeSlot}
-                        selectedChoice={selectedChoice}
-                        setSelectedChoice={handleSelectTimeSlotChoice}
                       />
                     ) : (
-                      <DateTimePicker
-                        initialValues={initialValues}
-                        values={values}
-                        errors={errors}
-                        setFieldValue={setFieldValue}
-                        setFieldTouched={setFieldTouched}
-                        initialDate={task?.before}
-                      />
+                      <DateTimePicker />
                     )}
                   </View>
                   {/* Weight */}
@@ -336,14 +313,14 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                   )}
                   <View style={{ marginBottom: 44, marginHorizontal: -12 }}>
                     <SubmitButton
-                      onPress={formikSubmit}
                       task={task}
                       tasks={[]}
                       notes={''}
                       contactName={values.contactName}
                       success={false}
-                      formData={values}
                       currentTab={currentTab}
+                      formValues={values}
+                      onPress={formikSubmit}
                     />
                   </View>
                 </FormControl>

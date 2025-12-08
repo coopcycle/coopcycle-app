@@ -1,19 +1,36 @@
 import moment from 'moment';
-import {
-  CreateTaskWithDateTimePayload,
-  CreateTaskWithTimeSlotPayload,
-} from '@/src/types/task';
-import { Store } from '@/src/redux/api/types';
+import { Store, Uri } from '@/src/redux/api/types';
+import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
+import { FormikErrors } from 'formik';
 
 export type NewDeliveryDropoffAddressFormValues = {
   address: string;
-  description: string;
   contactName: string;
   businessName: string;
   telephone: string;
-}
+  description: string;
+};
 
-export type FormValues = Partial<CreateTaskWithDateTimePayload> | Partial<CreateTaskWithTimeSlotPayload>;
+type BaseTimeSlotFields = {
+  timeSlotUrl: Uri;
+  timeSlot: string;
+  after?: never;
+  before?: never;
+};
+
+type BaseDateTimeFields = {
+  after?: string;
+  before: string;
+  timeSlotUrl?: never;
+  timeSlot?: never;
+};
+
+export type NewDeliveryDropoffFormValues = NewDeliveryDropoffAddressFormValues &
+  (BaseTimeSlotFields | BaseDateTimeFields) & {
+    weight: number;
+    packages: string; //TODO
+    comments: string;
+  };
 
 export function handleChangeWeight(value, setFieldValue, setFieldTouched) {
   let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
@@ -65,14 +82,13 @@ export function createUpdatedTaskBody(
   };
 
 export function validateDeliveryForm(
-  values,
-  hasTimeSlot,
-  // selectedChoice,// replaced with values.timeSlot
+  values: NewDeliveryDropoffFormValues | EditTaskFormValues,
+  hasTimeSlot: boolean,
   packagesCount,
-  store,
-  t,
+  store: Store,
+  t: (key: string) => string
 ) {
-  const errors = {};
+  const errors = {} as FormikErrors<NewDeliveryDropoffFormValues | EditTaskFormValues>;
 
   if (hasTimeSlot && !values.timeSlot) {
     errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
@@ -89,7 +105,7 @@ export function validateDeliveryForm(
   return errors;
 }
 
-export function getInitialValues(dropoff: NewDeliveryDropoffAddressFormValues, store: Store) : FormValues {
+export function getInitialValues(dropoff: NewDeliveryDropoffAddressFormValues, store: Store) : NewDeliveryDropoffFormValues {
   let initialValues = {
     address: dropoff.address,
     description: dropoff.description || '',

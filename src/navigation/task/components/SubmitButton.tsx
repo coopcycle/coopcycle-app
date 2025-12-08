@@ -12,20 +12,26 @@ import Task from '@/src/types/task';
 import { useReportFormContext } from '../contexts/ReportFormContext';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import { usePostIncidentMutation } from '@/src/redux/api/slice';
-import { buildReportIncidentPayload } from '../utils/taskFormHelpers';
+import {
+  EditTaskFormValues,
+  buildReportIncidentPayload,
+} from '../utils/taskFormHelpers';
 import { showAlert } from '@/src/utils/alert';
 
 interface SubmitButtonProps {
+  //TaskComplete
   task: Task;
   tasks?: Task[];
   notes?: string;
+  //Report Incident - Complete
   contactName?: string;
   failureReason?: string;
   validateTaskAfterReport?: boolean;
   failureReasonMetadataToSend?: [];
   success: boolean;
+  //Report Incident - Edit
   currentTab?: string;
-  onSubmit?: (formData) => void;
+  formValues?: EditTaskFormValues;
   onPress?: () => void;
 }
 
@@ -34,9 +40,11 @@ export const SubmitButton = ({
   tasks,
   notes,
   contactName,
+  validateTaskAfterReport,
   success,
   currentTab = null,
-  validateTaskAfterReport,
+  formValues,
+  onPress,
 }: SubmitButtonProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -76,7 +84,7 @@ export const SubmitButton = ({
         dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
       }
     } else {
-      const payload = buildReportIncidentPayload(formStateToSend);
+      const payload = buildReportIncidentPayload(formStateToSend, formValues);
       postIncident({ payload })
         .unwrap()
         .then(r => {
@@ -92,6 +100,10 @@ export const SubmitButton = ({
           stopSubmitting();
           setIsDisabled(false);
         });
+    }
+
+    if (onPress) {
+      onPress();
     }
   };
 

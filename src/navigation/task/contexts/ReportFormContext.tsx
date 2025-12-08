@@ -11,6 +11,7 @@ import {
   buildUpdatedTaskFields,
   mapSupplements,
 } from '../utils/taskFormHelpers';
+import { Uri } from '@/src/redux/api/types';
 
 interface Package {
   id: number;
@@ -29,8 +30,6 @@ interface FormState {
   address: string | null;
   telephone?: string;
   packages: Package[];
-  selectedTimeSlot: string;
-  selectedChoice: string | null;
   selectedSupplements: Supplement[];
   // REPORT INCIDENT FIELDS
   failureReason?: string;
@@ -38,17 +37,20 @@ interface FormState {
   task: Task;
 }
 
+export interface FormStateToSend {
+  failureReason: string;
+  notes: string;
+  task: Task;
+  updatedTask: Record<string, unknown>;
+  taskID: Uri;
+}
+
 interface ReportFormContextType {
   formState: FormState;
   isSubmitting: boolean;
   startSubmitting: () => void;
   stopSubmitting: () => void;
-  formStateToSend: {
-    failureReason: string;
-    notes: string;
-    updatedTask: Record<string, unknown>;
-    taskID: string;
-  };
+  formStateToSend: FormStateToSend;
   updateFormState: (updates: Partial<FormState>) => void;
   updateFormField: <K extends keyof FormState>(
     field: K,
@@ -77,15 +79,14 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     task: initialTask || {},
     updatedTask: {},
     taskID: initialTask?.['@id'] || '',
-  });
+  } as FormStateToSend);
+
   const [formState, setFormState] = useState<FormState>({
     values: null,
     telephone: initialTask?.address?.telephone || '',
     weight: initialTask?.weight ? initialTask.weight.toString() : '0',
     address: initialTask?.address ?? null,
     packages: [],
-    selectedTimeSlot: initialTask?.timeSlot ?? '',
-    selectedChoice: null,
     selectedSupplements: [],
     // REPORT INCIDENT FIELDS
     failureReason: '',
@@ -122,18 +123,19 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     }));
 
     setFormStateToSend(prev => {
-      const updates = {};
+      const updates = {} as Partial<FormStateToSend>;
 
       let updatedTask = { ...prev.updatedTask };
 
       switch (field) {
         case 'failureReason':
-        updates.failureReasonCode = (value as string) ?? '';  
+        updates.failureReason = (value as string) ?? '';
           break;
         case 'notes':
           updates.notes = (value as string) ?? '';
           break;
         case 'selectedSupplements':
+          //FIXME: move supplements outside of task
           const supplementUpdates = {
             selectedSupplements: mapSupplements(value),
           };
@@ -144,7 +146,7 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
           updates.updatedTask = updatedTask;
           break;
         default:
-          const taskUpdates = { ...buildUpdatedTaskFields(field, value) }; 
+          const taskUpdates = { ...buildUpdatedTaskFields(field, value) };
           updatedTask = {
             ...updatedTask,
             ...taskUpdates
@@ -167,8 +169,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
       values: null,
       address: initialTask?.address ?? null,
       packages: initialTask?.packages ?? [],
-      selectedTimeSlot: initialTask?.timeSlot ?? '',
-      selectedChoice: null,
       selectedSupplements: [],
     });
   }, [initialTask]);

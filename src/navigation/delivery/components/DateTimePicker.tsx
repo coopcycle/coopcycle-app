@@ -8,12 +8,14 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { moment } from '@/src/shared';
 import { Button, ButtonText } from '@/components/ui/button';
-import { CreateTaskWithDateTimePayload } from '@/src/types/task';
+import {
+  BaseDateTimeFields,
+} from '@/src/types/task';
 
 export const DateTimePicker = () => {
   const { t } = useTranslation();
 
-  const { initialValues, values, setFieldValue, setFieldTouched } = useFormikContext<Partial<CreateTaskWithDateTimePayload>>();
+  const { initialValues, values, setFieldValue, setFieldTouched } = useFormikContext<BaseDateTimeFields>();
 
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
 

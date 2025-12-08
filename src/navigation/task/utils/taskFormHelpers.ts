@@ -1,5 +1,7 @@
 import _ from 'lodash';
-import { Task } from '@/src/types/task';
+import { EditTaskPayload, Task } from '@/src/types/task';
+import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
+import { Uri } from '@/src/redux/api/types';
 
 export const getAutocompleteProps = deliveryError => {
   const baseProps = {
@@ -23,7 +25,33 @@ export const getAutocompleteProps = deliveryError => {
     : baseProps;
 };
 
-export const getInitialFormValues = (task?: Partial<Task>, store?) => {
+
+type BaseTimeSlotFields = {
+  timeSlotUrl: Uri;
+  timeSlot: string;
+  after?: never;
+  before?: never;
+};
+
+type BaseDateTimeFields = {
+  after?: string;
+  before: string;
+  timeSlotUrl?: never;
+  timeSlot?: never;
+};
+
+export type EditTaskFormValues = {
+  address: string;
+  contactName: string;
+  businessName: string;
+  telephone: string;
+  description: string;
+  } & (BaseTimeSlotFields | BaseDateTimeFields) & {
+  weight: string;
+  // packages: string; //TODO
+}
+
+export const getInitialFormValues = (task?: Partial<Task>) => {
 
   return {
     telephone: task?.address?.telephone || '',
@@ -37,22 +65,35 @@ export const getInitialFormValues = (task?: Partial<Task>, store?) => {
     before: task?.before || '',
     after: task?.after || '',
     doorstep: task?.doorstep || false,
-  };
+  } as EditTaskFormValues;
 };
 
-const buildMetadataPayload = (task, id) => {
+const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: EditTaskFormValues) => {
   const order = {
     order: {
       manualSupplements: task.selectedSupplements,
     },
   };
 
+  //TODO: read all task-related fields from formValues/formik instead of task/ReportFormContext
+
+  const taskPayload = {
+    ...task
+  } as EditTaskPayload;
+
+  if (formValues?.timeSlotUrl) {
+    taskPayload.timeSlotUrl = formValues.timeSlotUrl;
+    taskPayload.timeSlot = formValues.timeSlot;
+  } else if (formValues?.before) {
+    taskPayload.before = formValues.before;
+  }
+
   const suggestion = {
     suggestion: {
       tasks: [
         {
           id: id,
-          ...task,
+          ...taskPayload
         },
       ],
     },
@@ -66,11 +107,12 @@ const buildMetadataPayload = (task, id) => {
   return metadata;
 };
 
-export const buildReportIncidentPayload = report => {
-  const metadata = buildMetadataPayload(report.updatedTask, report.task.id);
+export const buildReportIncidentPayload = (report: FormStateToSend, formValues?: EditTaskFormValues) => {
+
+  const metadata = buildMetadataPayload(report.updatedTask, report.task.id, formValues);
   const payload = {
     description: report.notes,
-    failureReasonCode: report.failureReasonCode,
+    failureReasonCode: report.failureReason,
     task: report.taskID,
   };
 
@@ -88,10 +130,6 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
       return { weight: Number(value) };
     case 'telephone':
       return { telephone: value };
-    case 'selectedTimeSlot':
-      return { timeSlotID: value };
-    case 'selectedChoice':
-      return { timeSlot: value };
       case 'contactName':
       return { contactName: value };
     case 'businessName':
