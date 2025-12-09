@@ -33,6 +33,18 @@ export type GeoCoordinates = {
   longitude: number;
 };
 
+export type Package = JsonLdEntity & {
+  id: number;
+  name: string;
+  volumeUnits: number;
+  packageSet?: PackageSet;
+};
+
+export type PackageSet = {
+  id: number;
+  name: string;
+};
+
 export type Address = JsonLdEntity & {
   id: number;
   streetAddress: string;

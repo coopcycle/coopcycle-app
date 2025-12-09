@@ -6,10 +6,11 @@ import { useFormUtils } from '@/src/navigation/task/hooks/useFormUtils';
 import { useValidation } from '@/src/navigation/task/hooks/useValidation';
 import { useSupplements } from './useSupplements';
 import { useReportFormContext } from '../contexts/ReportFormContext';
-import { useTimeSlot } from './useTimeslots';
 import { usePackages } from './usePackages';
 import { getAutocompleteProps, getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
-import { useGetStoreQuery } from '@/src/redux/api/slice';
+import {
+  useGetStoreQuery,
+} from '@/src/redux/api/slice';
 
 export const useEditTaskForm = (task: Task) => {
   const { formState, updateFormField } = useReportFormContext();
@@ -24,8 +25,6 @@ export const useEditTaskForm = (task: Task) => {
     skip: !task?.metadata?.store,
   });
 
-  const timeSlots = useTimeSlot(store);
-  const hasTimeSlot = Array.isArray(timeSlots) && timeSlots.length > 0;
   const { storePackages } = usePackages(task, store);
   const { supplements: availableSupplements } = useSupplements(store);
   const addresses = useSelector(selectAddresses);
@@ -116,8 +115,6 @@ export const useEditTaskForm = (task: Task) => {
     setSelectedSupplements,
 
     store,
-    timeSlots,
-    hasTimeSlot,
     availableSupplements,
     addresses,
     deliveryError,

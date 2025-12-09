@@ -5,10 +5,8 @@ import { useFormikContext } from 'formik';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
-import { TimeSlot } from '@/src/redux/api/types';
-import {
-  BaseTimeSlotFields,
-} from '@/src/types/task';
+import { StoreTimeSlot } from '@/src/redux/api/types';
+import { BaseTimeSlotFields } from '@/src/types/task';
 import { TimeSlotChoiceSelect } from '@/src/navigation/delivery/components/TimeSlotChoiceSelect';
 import { useGetTimeSlotChoicesQuery } from '@/src/redux/api/slice';
 
@@ -37,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  timeSlots: TimeSlot[];
+  timeSlots: StoreTimeSlot[];
   testID?: string;
 };
 
@@ -59,7 +57,7 @@ export default function TimeSlotPicker({
     },
   );
 
-  const onTimeSlotPress = (timeSlot: TimeSlot) => {
+  const onTimeSlotPress = (timeSlot: StoreTimeSlot) => {
     setFieldValue('timeSlotUrl', timeSlot['@id']);
     setFieldTouched('timeSlotUrl');
   };

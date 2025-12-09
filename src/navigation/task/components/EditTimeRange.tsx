@@ -11,14 +11,14 @@ import {
 import { CircleIcon } from '@/components/ui/icon';
 import { DateTimePicker } from '@/src/navigation/delivery/components/DateTimePicker';
 import TimeSlotPicker from '@/src/navigation/delivery/components/TimeSlotPicker';
-import { TimeSlot } from '@/src/redux/api/types';
+import { StoreTimeSlot } from '@/src/redux/api/types';
 import { VStack } from '@/components/ui/vstack';
 import { useFormikContext } from 'formik';
 import { BaseTimeSlotFields } from '@/src/types/task';
 
 type Props = {
   hasTimeSlot: boolean;
-  timeSlots: TimeSlot[];
+  timeSlots: StoreTimeSlot[];
 };
 
 export const EditTimeRange = ({ hasTimeSlot, timeSlots }: Props) => {

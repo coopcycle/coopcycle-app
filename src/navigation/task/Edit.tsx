@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Task } from '@/src/types/task';
 import { VStack } from '@/components/ui/vstack';
 import { FormControl } from '@/components/ui/form-control';
@@ -21,6 +21,9 @@ import { ClientSearchSection } from './components/ClientSearchSection';
 import { useReportFormContext } from './contexts/ReportFormContext';
 import { useEditTaskForm } from './hooks/useEditTaskForm';
 import { EditTimeRange } from '@/src/navigation/task/components/EditTimeRange';
+import {
+  useGetStoreTimeSlotsQuery,
+} from '@/src/redux/api/slice';
 
 interface TaskFormProps {
   task: Task;
@@ -28,7 +31,9 @@ interface TaskFormProps {
 }
 
 export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
-    const {
+  const {
+    store,
+
     validAddress,
     setValidAddress,
     address,
@@ -36,8 +41,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     setAddress,
     setSelectedSupplements,
 
-    timeSlots,
-    hasTimeSlot,
     availableSupplements,
     addresses,
     t,
@@ -52,6 +55,14 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     autocompleteProps,
     initialValues
   } = useEditTaskForm(task);
+
+  const { data: timeSlots } = useGetStoreTimeSlotsQuery(store?.['@id'], {
+    skip: !store?.['@id'],
+  });
+
+  const hasTimeSlot = useMemo(() => {
+    return timeSlots && timeSlots.length > 0;
+  }, [timeSlots]);
 
   const { updateFormField } = useReportFormContext();
 
