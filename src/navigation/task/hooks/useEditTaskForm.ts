@@ -89,7 +89,7 @@ export const useEditTaskForm = (task?: Partial<Task>) => {
     };
   }, [updateFormField]);
 
-  const validate = useValidation(validAddress, hasTimeSlot, packages, store, country);
+  const validate = useValidation(validAddress, packages, store, country);
 
   const autocompleteProps = useMemo(() =>
     getAutocompleteProps(deliveryError),

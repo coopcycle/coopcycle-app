@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { EditTaskPayload, Task } from '@/src/types/task';
 import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
 import { Uri } from '@/src/redux/api/types';
+import { FormikTouched } from 'formik';
 
 export const getAutocompleteProps = deliveryError => {
   const baseProps = {
@@ -60,15 +61,18 @@ export const getInitialFormValues = (task?: Partial<Task>) => {
     description: task?.address?.description || '',
     address: task?.address?.streetAddress || '',
     weight: task?.weight ? task.weight.toString() : '0',
-    timeSlot: task?.timeSlot || null,
-    timeSlotUrl: task?.timeSlotUrl || null,
+    //FIXME: pre-fill the time slot from the task (we don't store selected timeSlot on the task yet)
+    // timeSlotUrl: task?.timeSlotUrl || undefined,
+    timeSlotUrl: undefined,
+    // timeSlot: task?.timeSlot || undefined,
+    timeSlot: undefined,
     before: task?.before || '',
     after: task?.after || '',
     doorstep: task?.doorstep || false,
   } as EditTaskFormValues;
 };
 
-const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: EditTaskFormValues) => {
+const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: EditTaskFormValues, formTouchedFields?: FormikTouched<EditTaskFormValues>) => {
   const order = {
     order: {
       manualSupplements: task.selectedSupplements,
@@ -81,10 +85,14 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
     ...task
   } as EditTaskPayload;
 
-  if (formValues?.timeSlotUrl) {
+  if (formTouchedFields?.timeSlotUrl && formValues) {
     taskPayload.timeSlotUrl = formValues.timeSlotUrl;
     taskPayload.timeSlot = formValues.timeSlot;
-  } else if (formValues?.before) {
+  }
+  if (formTouchedFields?.after && formValues) {
+    taskPayload.after = formValues.after;
+  }
+  if (formTouchedFields?.before && formValues) {
     taskPayload.before = formValues.before;
   }
 
@@ -107,9 +115,9 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
   return metadata;
 };
 
-export const buildReportIncidentPayload = (report: FormStateToSend, formValues?: EditTaskFormValues) => {
+export const buildReportIncidentPayload = (report: FormStateToSend, formValues?: EditTaskFormValues, formTouchedFields?: FormikTouched<EditTaskFormValues>) => {
 
-  const metadata = buildMetadataPayload(report.updatedTask, report.task.id, formValues);
+  const metadata = buildMetadataPayload(report.updatedTask, report.task.id, formValues, formTouchedFields);
   const payload = {
     description: report.notes,
     failureReasonCode: report.failureReason,

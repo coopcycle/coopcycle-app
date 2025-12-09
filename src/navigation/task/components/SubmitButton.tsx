@@ -17,6 +17,7 @@ import {
   buildReportIncidentPayload,
 } from '../utils/taskFormHelpers';
 import { showAlert } from '@/src/utils/alert';
+import { FormikTouched } from 'formik';
 
 interface SubmitButtonProps {
   //TaskComplete
@@ -32,6 +33,7 @@ interface SubmitButtonProps {
   //Report Incident - Edit
   currentTab?: string;
   formValues?: EditTaskFormValues;
+  formTouchedFields?: FormikTouched<EditTaskFormValues>;
   onPress?: () => void;
 }
 
@@ -44,6 +46,7 @@ export const SubmitButton = ({
   success,
   currentTab = null,
   formValues,
+  formTouchedFields,
   onPress,
 }: SubmitButtonProps) => {
   const { t } = useTranslation();
@@ -84,7 +87,7 @@ export const SubmitButton = ({
         dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
       }
     } else {
-      const payload = buildReportIncidentPayload(formStateToSend, formValues);
+      const payload = buildReportIncidentPayload(formStateToSend, formValues, formTouchedFields);
       postIncident({ payload })
         .unwrap()
         .then(r => {

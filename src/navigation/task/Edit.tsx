@@ -11,10 +11,8 @@ import {
 } from 'react-native';
 import { SubmitButton } from './components/SubmitButton';
 import { SupplementSelector as EditSupplements } from './components/EditSupplements';
-import TimeSlotPicker from '../delivery/components/TimeSlotPicker';
 import { Formik } from 'formik';
 import FormInput from '../delivery/components/FormInput';
-import { DateTimePicker } from '../delivery/components/DateTimePicker';
 import { AddressSection } from './components/AddressSection';
 import { PackageItem } from './components/PackageItem';
 import { FormField } from './components/FormField';
@@ -22,6 +20,7 @@ import { Text } from '@/components/ui/text';
 import { ClientSearchSection } from './components/ClientSearchSection';
 import { useReportFormContext } from './contexts/ReportFormContext';
 import { useEditTaskForm } from './hooks/useEditTaskForm';
+import { EditTimeRange } from '@/src/navigation/task/components/EditTimeRange';
 
 interface TaskFormProps {
   task?: Partial<Task>;
@@ -90,7 +89,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
         return (
           <SafeAreaView style={styles.wrapper}>
             <ScrollView
-            testID='scrollView:edit'
+              testID="scrollView:edit"
               style={styles.container}
               contentContainerStyle={{ flexGrow: 1 }}>
               <VStack space={4} style={styles.content}>
@@ -245,22 +244,19 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       placeholder={t(
                         'STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION',
                       )}
-                       testID="edit-task-address-description-input"
+                      testID="edit-task-address-description-input"
                     />
                   </FormField>
                   {/* Packages and Timeslot Section */}
                   <Text style={styles.sectionTitle}>
                     {t('STORE_NEW_DELIVERY_PACKAGES_TITLE')}
                   </Text>
-                  {/* Timeslot */}
+                  {/* Time range (after/before or timeslot) */}
                   <View style={styles.timeSlot}>
-                    {hasTimeSlot ? (
-                      <TimeSlotPicker
-                        timeSlots={timeSlots}
-                      />
-                    ) : (
-                      <DateTimePicker />
-                    )}
+                    <EditTimeRange
+                      hasTimeSlot={hasTimeSlot}
+                      timeSlots={timeSlots}
+                    />
                   </View>
                   {/* Weight */}
                   <FormField
@@ -291,7 +287,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       error={errors.packages}>
                       <View style={styles.packagesContainer}>
                         {packages &&
-                          packages.map((item) =>
+                          packages.map(item =>
                             renderPackageItem(item, setFieldTouched),
                           )}
                       </View>
@@ -320,6 +316,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       success={false}
                       currentTab={currentTab}
                       formValues={values}
+                      formTouchedFields={touched}
                       onPress={formikSubmit}
                     />
                   </View>

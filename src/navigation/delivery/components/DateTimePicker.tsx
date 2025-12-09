@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useFormikContext } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -8,14 +8,13 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { moment } from '@/src/shared';
 import { Button, ButtonText } from '@/components/ui/button';
-import {
-  BaseDateTimeFields,
-} from '@/src/types/task';
+import { BaseDateTimeFields } from '@/src/types/task';
 
 export const DateTimePicker = () => {
   const { t } = useTranslation();
 
-  const { initialValues, values, setFieldValue, setFieldTouched } = useFormikContext<BaseDateTimeFields>();
+  const { initialValues, values, setFieldValue, setFieldTouched } =
+    useFormikContext<BaseDateTimeFields>();
 
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
 
@@ -26,6 +25,13 @@ export const DateTimePicker = () => {
   function hideDateTimePicker() {
     setIsDateTimePickerVisible(false);
   }
+
+  // Preselect the initial value when the component is mounted
+  useEffect(() => {
+    if (values.before) return;
+
+    setFieldValue('before', initialValues.before);
+  }, [values.before, initialValues.before, setFieldValue]);
 
   return (
     <View className="py-4">
