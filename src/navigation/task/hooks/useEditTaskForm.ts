@@ -4,12 +4,12 @@ import { Task } from '@/src/types/task';
 import { selectAddresses, selectAssertDeliveryError } from '@/src/redux/Delivery/selectors';
 import { useFormUtils } from '@/src/navigation/task/hooks/useFormUtils';
 import { useValidation } from '@/src/navigation/task/hooks/useValidation';
-import { useStore } from '@/src/navigation/task/hooks/useStore';
 import { useSupplements } from './useSupplements';
 import { useReportFormContext } from '../contexts/ReportFormContext';
 import { useTimeSlot } from './useTimeslots';
 import { usePackages } from './usePackages';
 import { getAutocompleteProps, getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
+import { useGetStoreQuery } from '@/src/redux/api/slice';
 
 export const useEditTaskForm = (task: Task) => {
   const { formState, updateFormField } = useReportFormContext();
@@ -20,7 +20,10 @@ export const useEditTaskForm = (task: Task) => {
   const [selectedSupplements, setSelectedSupplements] = useState(formState.selectedSupplements);
   const [packagesChanged, setPackagesChanged] = useState(false);
 
-  const store = useStore(task);
+  const { data: store } = useGetStoreQuery(task?.metadata?.store, {
+    skip: !task?.metadata?.store,
+  });
+
   const timeSlots = useTimeSlot(store);
   const hasTimeSlot = Array.isArray(timeSlots) && timeSlots.length > 0;
   const { storePackages } = usePackages(task, store);

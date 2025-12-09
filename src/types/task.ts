@@ -73,6 +73,7 @@ export interface TaskPackage {
  */
 export interface TaskMetadata {
   delivery_position?: number;
+  store?: Uri;
   order_number?: string;
   order_total?: number;
   zero_waste?: boolean;

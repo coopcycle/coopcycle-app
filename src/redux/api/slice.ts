@@ -4,7 +4,7 @@ import { baseQueryWithReauth } from './baseQuery';
 import { sortByName, sortByString } from '../util';
 import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
-import { Store, TimeSlot, TimeSlotChoices } from './types';
+import { Store, TimeSlot, TimeSlotChoices, Uri } from './types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -170,6 +170,9 @@ export const apiSlice = createApi({
     getTimeSlotChoices: builder.query<TimeSlotChoices, string>({
       query: (uri: string) => `${uri}/choices`,
     }),
+    getStore: builder.query<Store, Uri>({
+      query: (uri: Uri) => uri,
+    }),
     getStorePackages: builder.query({
       queryFn: async (args, queryApi, extraOptions, baseQuery) => {
         return await fetchAllRecordsUsingFetchWithBQ(
@@ -261,6 +264,7 @@ export const {
   useGetStoresQuery,
   useGetTimeSlotsQuery,
   useGetTimeSlotChoicesQuery,
+  useGetStoreQuery,
   useGetStorePackagesQuery,
   useGetPricingRuleSetQuery,
   useGetTagsQuery,
