@@ -23,7 +23,7 @@ import { useEditTaskForm } from './hooks/useEditTaskForm';
 import { EditTimeRange } from '@/src/navigation/task/components/EditTimeRange';
 
 interface TaskFormProps {
-  task?: Partial<Task>;
+  task: Task;
   currentTab: string;
 }
 

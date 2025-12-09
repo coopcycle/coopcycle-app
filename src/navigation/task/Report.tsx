@@ -11,6 +11,7 @@ import {
   ReportFormProvider,
   useReportFormContext,
 } from './contexts/ReportFormContext';
+import Task from '@/src/types/task';
 
 const Indicator = () => (
   <View
@@ -33,7 +34,7 @@ const Indicator = () => (
 export const ReportContent = () => {
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
   const { params } = useRoute();
-  const task = params?.task;
+  const task = params?.task as Task | undefined;
   const theme = useTheme();
 
   const handleTabChange = useCallback((tab: string) => {
@@ -73,7 +74,7 @@ export const ReportContent = () => {
 
 export const Report = () => {
   const { params } = useRoute();
-  const task = params?.task;
+  const task = params?.task as Task | undefined;
 
   return (
     <ReportFormProvider initialTask={task}>

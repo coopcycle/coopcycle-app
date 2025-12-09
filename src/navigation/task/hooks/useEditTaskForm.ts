@@ -11,7 +11,7 @@ import { useTimeSlot } from './useTimeslots';
 import { usePackages } from './usePackages';
 import { getAutocompleteProps, getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 
-export const useEditTaskForm = (task?: Partial<Task>) => {
+export const useEditTaskForm = (task: Task) => {
   const { formState, updateFormField } = useReportFormContext();
 
   const [validAddress, setValidAddress] = useState(!!formState.address);

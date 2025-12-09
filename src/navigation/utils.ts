@@ -1,3 +1,5 @@
+import Task from '@/src/types/task';
+
 let navigateAfter = null;
 
 export const navigateToOrder = (navigation, orderNumber: string, isFromCourier = false, status = 'TODO', extraData = {}) => {
@@ -10,7 +12,8 @@ export const navigateToOrder = (navigation, orderNumber: string, isFromCourier =
   navigation.navigate('Order', { screen: 'Order', params });
 };
 
-export const navigateToTask = (navigation, route, task, tasks = []) => {
+export const navigateToTask = (navigation, route, task: Task, tasks = []) => {
+
   if (route !== null && route.name !== 'TaskHome') {
     navigateAfter = route.name;
   }
@@ -64,9 +67,9 @@ export const navigateToReportTask = (
 
   navigation.navigate('ReportIncident', {
     screen: 'TaskComplete',
-    params: { 
+    params: {
       screen:'ReportIncidentHome',
-      params: {...params, success} 
+      params: {...params, success}
     },
   });
 };
