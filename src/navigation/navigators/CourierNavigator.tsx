@@ -30,7 +30,7 @@ const Tabs = () => (
       component={screens.CourierTaskMapPage}
       options={({ navigation }) => ({
         tabBarLabel: i18n.t('TASKS'),
-        tabBarTestID: 'messengerTabMap',
+        tabBarButtonTestID: 'messengerTabMap',
         tabBarIcon: ({ color }) => {
           return <Icon as={Map} size="xl" style={{ color }} />;
         },
@@ -41,7 +41,7 @@ const Tabs = () => (
       component={screens.CourierTaskListPage}
       options={({ navigation }) => ({
         tabBarLabel: i18n.t('TASK_LIST'),
-        tabBarTestID: 'messengerTabList',
+        tabBarButtonTestID: 'messengerTabList',
         tabBarIcon: ({ color }) => {
           return <Icon as={List} size="xl" style={{ color }} />;
         },

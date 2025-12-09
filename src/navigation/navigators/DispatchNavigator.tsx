@@ -116,7 +116,7 @@ function Tabs() {
           component={screens.DispatchAllTasks}
           options={() => ({
             title: false,
-            tabBarTestID: 'dispatchAllTasks',
+            tabBarButtonTestID: 'dispatchAllTasks',
           })}
         />
         <Tab.Screen
@@ -124,7 +124,7 @@ function Tabs() {
           component={screens.DispatchTasksMap}
           options={() => ({
             title: false,
-            tabBarTestID: 'dispatchTasksMap',
+            tabBarButtonTestID: 'dispatchTasksMap',
           })}
         />
       </Tab.Navigator>
@@ -233,7 +233,7 @@ export default function DispatchNavigator({ navigation }) {
             name="DispatchTasksSearchResults"
             component={screens.DispatchTasksSearchResults}
             options={() => ({
-              tabBarTestID: 'dispatchTasksSearchResults',
+              tabBarButtonTestID: 'dispatchTasksSearchResults',
               title: i18n.t('DISPATCH_SEARCH_RESULTS'),
             })}
           />
@@ -241,7 +241,7 @@ export default function DispatchNavigator({ navigation }) {
             name="DispatchTasksFilters"
             component={screens.DispatchTasksFilters}
             options={() => ({
-              tabBarTestID: 'dispatchTasksFilters',
+              tabBarButtonTestID: 'dispatchTasksFilters',
               title: i18n.t('DISPATCH_TASKS_FILTERS'),
             })}
           />
@@ -249,7 +249,7 @@ export default function DispatchNavigator({ navigation }) {
             name="DispatchKeywordsFilters"
             component={screens.DispatchKeywordsFilters}
             options={() => ({
-              tabBarTestID: 'dispatchKeywordsFilters',
+              tabBarButtonTestID: 'dispatchKeywordsFilters',
               title: i18n.t('DISPATCH_KEYWORDS_FILTERS'),
             })}
           />
