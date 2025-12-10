@@ -15,9 +15,14 @@ import {
 type Props = {
   packages?: StorePackage[];
   initialPackagesCount?: PackageWithQuantity[];
+  disabled?: boolean;
 };
 
-export const PackagesInput = ({ packages, initialPackagesCount }: Props) => {
+export const PackagesInput = ({
+  packages,
+  initialPackagesCount,
+  disabled,
+}: Props) => {
   const { t } = useTranslation();
   const backgroundColor = useBackgroundContainerColor();
 
@@ -51,6 +56,8 @@ export const PackagesInput = ({ packages, initialPackagesCount }: Props) => {
                   onPressIncrement={() => incrementQuantity(item.type)}
                   onPressDecrement={() => decrementQuantity(item.type)}
                   quantity={item.quantity}
+                  minimum={0}
+                  disabled={disabled}
                   testID={`package-${index}`}
                 />
                 <TouchableOpacity
@@ -67,11 +74,14 @@ export const PackagesInput = ({ packages, initialPackagesCount }: Props) => {
           <Text>{t('STORE_NEW_DELIVERY_NO_PACKAGES')}</Text>
         )}
       </View>
-      {errors.packages && (
+      {disabled ? (
+        <Text note>{t('STORE_EDIT_DELIVERY_CAN_NOT_EDIT_PACKAGES')}</Text>
+      ) : null}
+      {errors.packages ? (
         <Text note style={styles.errorText}>
           {errors.packages}
         </Text>
-      )}
+      ) : null}
     </View>
   );
 };

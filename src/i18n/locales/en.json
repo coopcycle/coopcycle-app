@@ -341,6 +341,7 @@
       "EMPTY_WEIGHT": "Please provide a weight",
       "EMPTY_PACKAGES": "Please select packages"
     },
+    "STORE_EDIT_DELIVERY_CAN_NOT_EDIT_PACKAGES": "Please update the package on the linked task",
     "STORE_DELIVERY": "Delivery #{{id}}",
     "DELIVERY_STATE": {
       "undefined": "Unknown",

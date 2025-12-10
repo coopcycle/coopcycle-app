@@ -9,6 +9,8 @@ export const usePackages = (task?: Task, store?: Store) => {
     PackageWithQuantity[] | undefined
   >(undefined);
 
+  const [canEditPackages, setCanEditPackages] = useState(true);
+
   const { data: storePackages } = useGetStorePackagesQuery(store?.['@id'], {
     skip: !store?.['@id'],
   });
@@ -21,11 +23,19 @@ export const usePackages = (task?: Task, store?: Store) => {
     const merged = mergePackages(initial, storePackages ?? []);
 
     setPackagesWithQuantity(merged);
-  }, [task?.packages, storePackages]);
+
+    if (task) {
+      //don't allow to edit packages if there is at least one package linked to another task
+      const canEditPackages =
+        initial.filter(item => !item.tasks?.includes(task['@id'])).length === 0;
+      setCanEditPackages(canEditPackages);
+    }
+  }, [task, storePackages]);
 
   return {
     storePackages,
     packagesWithQuantity,
+    canEditPackages,
   };
 };
 

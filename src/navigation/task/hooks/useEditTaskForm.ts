@@ -6,7 +6,6 @@ import { useFormUtils } from '@/src/navigation/task/hooks/useFormUtils';
 import { useValidation } from '@/src/navigation/task/hooks/useValidation';
 import { useSupplements } from './useSupplements';
 import { useReportFormContext } from '../contexts/ReportFormContext';
-import { usePackages } from './usePackages';
 import { getAutocompleteProps, getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import {
   useGetStoreQuery,
@@ -23,7 +22,6 @@ export const useEditTaskForm = (task: Task) => {
     skip: !task?.metadata?.store,
   });
 
-  const { storePackages, packagesWithQuantity } = usePackages(task, store);
   const { supplements: availableSupplements } = useSupplements(store);
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
@@ -74,8 +72,6 @@ export const useEditTaskForm = (task: Task) => {
   return {
     validAddress,
     address,
-    storePackages,
-    packagesWithQuantity,
 
     selectedSupplements,
     setValidAddress,

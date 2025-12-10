@@ -24,6 +24,7 @@ import {
   useGetStoreTimeSlotsQuery,
 } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
+import { usePackages } from '@/src/navigation/task/hooks/usePackages';
 
 interface TaskFormProps {
   task: Task;
@@ -37,8 +38,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     validAddress,
     setValidAddress,
     address,
-    storePackages,
-    packagesWithQuantity,
     setAddress,
     setSelectedSupplements,
 
@@ -62,6 +61,8 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
   const hasTimeSlot = useMemo(() => {
     return timeSlots && timeSlots.length > 0;
   }, [timeSlots]);
+
+  const { storePackages, packagesWithQuantity, canEditPackages } = usePackages(task, store);
 
   const { updateFormField } = useReportFormContext();
 
@@ -286,6 +287,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                         <PackagesInput
                           packages={storePackages}
                           initialPackagesCount={packagesWithQuantity}
+                          disabled={!canEditPackages}
                         />
                       </View>
                     </FormField>

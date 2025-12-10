@@ -60,12 +60,13 @@ export interface TaskBarcode {
  * Package interface
  */
 export interface TaskPackage {
-  labels: string[];
   name: string;
+  type: string;
   quantity: number;
   short_code: string;
-  type: string;
   volume_per_package: number;
+  labels: string[];
+  tasks: Uri[];
 }
 
 /**
