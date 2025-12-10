@@ -201,7 +201,7 @@ export interface Task {
 type BaseTaskFields = {
   address: Omit<TaskAddress, '@id' | '@type'>;
   comments?: string;
-  packages?: Omit<TaskPackage, 'labels'>[];
+  packages?: { type: string; quantity: number }[];
   tags?: number[];
   weight?: number;
   doorstep?: boolean;

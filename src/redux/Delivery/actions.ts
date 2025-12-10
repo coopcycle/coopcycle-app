@@ -10,7 +10,6 @@ export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
 export const GET_PRICE_SUCCESS = '@delivery/GET_PRICE_SUCCESS';
 export const LOAD_ADDRESSES_SUCCESS = '@delivery/LOAD_ADDRESSES_SUCCESS';
-export const LOAD_PACKAGES_SUCCESS = '@delivery/LOAD_PACKAGES_SUCCESS';
 export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
@@ -20,7 +19,6 @@ export const SET_STORES = '@delivery/SET_STORES';
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
 export const getPriceError = createAction(GET_PRICE_ERROR);
 export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
-export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
 export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
@@ -113,24 +111,6 @@ export function loadAddresses(store) {
       .catch(e => {
         dispatch(setLoading(false));
         dispatch(setRefreshing(false));
-      });
-  };
-}
-
-export function loadPackages(store) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(`${store['@id']}/packages`)
-      .then(res => {
-        dispatch(loadPackagesSuccess(res['hydra:member']));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
       });
   };
 }

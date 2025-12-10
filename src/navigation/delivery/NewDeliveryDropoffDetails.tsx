@@ -2,12 +2,11 @@ import { Formik } from 'formik';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { IconPackage } from '@tabler/icons-react-native';
 import {
   selectHasTimeSlot,
-  selectPackages,
   selectStore,
   selectTimeSlots,
 } from '../../redux/Delivery/selectors';
@@ -15,13 +14,11 @@ import {
   useBackgroundContainerColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import Range from '../checkout/ProductDetails/Range';
 import FormInput from './components/FormInput';
 import TimeSlotPicker from './components/TimeSlotPicker';
 import ModalFormWrapper from './ModalFormWrapper';
 import { DateTimePicker } from './components/DateTimePicker';
 import { useDeliveryDataLoader } from './hooks/useDeliveryDataLoader';
-import { usePackagesCount } from './hooks/usePackagesCount';
 import {
   NewDeliveryDropoffAddressFormValues,
   NewDeliveryDropoffFormValues,
@@ -33,6 +30,8 @@ import { Uri } from '@/src/redux/api/types';
 import {
   CreatePickupOrDropoffTaskPayload,
 } from '@/src/types/task';
+import { useGetStorePackagesQuery } from '@/src/redux/api/slice';
+import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
 
 type PostDeliveryBody = {
   store: Uri,
@@ -45,14 +44,15 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
   const primaryColor = usePrimaryColor();
   const { t } = useTranslation();
 
-  const packages = useSelector(selectPackages);
   const store = useSelector(selectStore);
   const timeSlots = useSelector(selectTimeSlots);
   const hasTimeSlot = useSelector(selectHasTimeSlot);
 
   useDeliveryDataLoader(store);
-  const { packagesCount, incrementQuantity, decrementQuantity } =
-    usePackagesCount(packages);
+
+  const { data: packages } = useGetStorePackagesQuery(store['@id'], {
+    skip: !store['@id']
+  });
 
   function submit(values: NewDeliveryDropoffFormValues) {
     const delivery: PostDeliveryBody = {
@@ -68,7 +68,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
         },
         comments: values.comments,
         weight: values.weight * 1000,
-        packages: packagesCount.filter(item => item.quantity > 0),
+        packages: values.packages?.filter(item => item.quantity > 0),
         ...(hasTimeSlot
           ? {
               timeSlotUrl: values.timeSlotUrl,
@@ -84,7 +84,6 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
     return validateDeliveryForm(
       values,
       hasTimeSlot,
-      packagesCount,
       store,
       t,
     );
@@ -163,56 +162,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
                 <Text style={styles.optional}>({t('OPTIONAL')})</Text>
               ) : null}
             </Text>
-            <View
-              style={{
-                gap: 16,
-                marginTop: 4,
-              }}>
-              {packages?.length ? (
-                packagesCount.map(item => {
-                  return (
-                    <View
-                      style={[
-                        {
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          width: '100%',
-                          gap: 16,
-                          backgroundColor,
-                        },
-                      ]}
-                      key={item.type}>
-                      <Range
-                        onPress={() => {}}
-                        onPressIncrement={() =>
-                          incrementQuantity(item.type, setFieldTouched)
-                        }
-                        onPressDecrement={() =>
-                          decrementQuantity(item.type, setFieldTouched)
-                        }
-                        quantity={item.quantity}
-                      />
-                      <TouchableOpacity
-                        style={{
-                          flex: 1,
-                        }}
-                        onPress={() =>
-                          incrementQuantity(item.type, setFieldTouched)
-                        }>
-                        <Text>{item.type}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                })
-              ) : (
-                <Text>{t('STORE_NEW_DELIVERY_NO_PACKAGES')}</Text>
-              )}
-            </View>
-            {errors.packages && (
-              <Text note style={styles.errorText}>
-                {errors.packages}
-              </Text>
-            )}
+            <PackagesInput packages={packages} />
           </View>
           <View style={[styles.formGroup]}>
             <Text style={styles.label}>

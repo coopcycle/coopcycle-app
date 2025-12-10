@@ -1,8 +1,11 @@
 import _ from 'lodash';
 import { EditTaskPayload, Task } from '@/src/types/task';
 import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
-import { Uri } from '@/src/redux/api/types';
 import { FormikTouched } from 'formik';
+import {
+  BaseDateTimeFields, BasePackagesFields,
+  BaseTimeSlotFields,
+} from '@/src/navigation/delivery/utils';
 
 export const getAutocompleteProps = deliveryError => {
   const baseProps = {
@@ -27,30 +30,16 @@ export const getAutocompleteProps = deliveryError => {
 };
 
 
-type BaseTimeSlotFields = {
-  timeSlotUrl: Uri;
-  timeSlot: string;
-  after?: never;
-  before?: never;
-};
-
-type BaseDateTimeFields = {
-  after?: string;
-  before: string;
-  timeSlotUrl?: never;
-  timeSlot?: never;
-};
-
 export type EditTaskFormValues = {
   address: string;
   contactName: string;
   businessName: string;
   telephone: string;
   description: string;
-  } & (BaseTimeSlotFields | BaseDateTimeFields) & {
-  weight: string;
-  // packages: string; //TODO
-}
+} & (BaseTimeSlotFields | BaseDateTimeFields) &
+  Partial<BasePackagesFields> & {
+    weight: string;
+  };
 
 export const getInitialFormValues = (task?: Partial<Task>) => {
 

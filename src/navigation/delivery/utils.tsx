@@ -11,24 +11,33 @@ export type NewDeliveryDropoffAddressFormValues = {
   description: string;
 };
 
-type BaseTimeSlotFields = {
+export type BaseTimeSlotFields = {
   timeSlotUrl: Uri;
   timeSlot: string;
   after?: never;
   before?: never;
 };
 
-type BaseDateTimeFields = {
+export type BaseDateTimeFields = {
   after?: string;
   before: string;
   timeSlotUrl?: never;
   timeSlot?: never;
 };
 
+export type PackageWithQuantity = {
+  type: string;
+  quantity: number;
+};
+
+export type BasePackagesFields = {
+  packages: PackageWithQuantity[];
+};
+
 export type NewDeliveryDropoffFormValues = NewDeliveryDropoffAddressFormValues &
-  (BaseTimeSlotFields | BaseDateTimeFields) & {
+  (BaseTimeSlotFields | BaseDateTimeFields) &
+  Partial<BasePackagesFields> & {
     weight: number;
-    packages: string; //TODO
     comments: string;
   };
 
@@ -84,7 +93,6 @@ export function createUpdatedTaskBody(
 export function validateDeliveryForm(
   values: NewDeliveryDropoffFormValues | EditTaskFormValues,
   hasTimeSlot: boolean,
-  packagesCount,
   store: Store,
   t: (key: string) => string
 ) {
@@ -98,7 +106,7 @@ export function validateDeliveryForm(
     errors.weight = t('STORE_NEW_DELIVERY_ERROR.EMPTY_WEIGHT');
   }
 
-  if (!packagesCount.some(item => item.quantity) && store.packagesRequired) {
+  if (!values.packages?.some(item => item.quantity) && store.packagesRequired) {
     errors.packages = t('STORE_NEW_DELIVERY_ERROR.EMPTY_PACKAGES');
   }
 

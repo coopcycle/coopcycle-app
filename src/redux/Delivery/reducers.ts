@@ -6,7 +6,6 @@ import {
   GET_PRICE_ERROR,
   GET_PRICE_SUCCESS,
   LOAD_ADDRESSES_SUCCESS,
-  LOAD_PACKAGES_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
   SET_STORE,
   SET_STORES,
@@ -18,7 +17,6 @@ import { Store, TimeSlot } from '@/src/redux/api/types';
 type DeliveryState = {
   addresses;
   assertDeliveryError;
-  packages;
   price;
   priceExcludingTax;
   store: Store | null;
@@ -29,7 +27,6 @@ type DeliveryState = {
 const initialState: DeliveryState = {
   addresses: [],
   assertDeliveryError: null,
-  packages: [],
   price: null,
   priceExcludingTax: null,
   store: null,
@@ -73,12 +70,6 @@ const reducer: Reducer<DeliveryState, PayloadAction<unknown>> = (state = initial
       }
 
       break;
-
-    case LOAD_PACKAGES_SUCCESS:
-      return {
-        ...state,
-        packages: action.payload,
-      };
 
     case LOAD_TIME_SLOTS_SUCCESS:
       return {

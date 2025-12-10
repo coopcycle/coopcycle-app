@@ -43,7 +43,6 @@ export const useValidation = (
       const deliveryErrors = validateDeliveryForm(
         values,
         false,
-        packagesCount,
         store,
         t,
       );
