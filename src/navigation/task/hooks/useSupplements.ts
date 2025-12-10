@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useGetPricingRuleSetQuery } from '@/src/redux/api/slice';
+import { PricingRule, Store } from '@/src/redux/api/types';
 
-export const useSupplements = (store) => {
-  const [supplements, setSupplements] = useState([]);
+type SupplementWithQuantity = {
+  id: number;
+  type: number;
+  name: string;
+  price: string;
+  quantity: number;
+  originalRule: PricingRule;
+};
+
+export const useSupplements = (store?: Store) => {
+  const [supplements, setSupplements] = useState<SupplementWithQuantity[]>([]);
   const {
     data: pricingRulesData,
     isLoading: isLoadingPricingRules,
@@ -16,7 +26,7 @@ export const useSupplements = (store) => {
       setSupplements([]);
       return;
     }
-    
+
     const deliverySupplements = pricingRulesData.rules
       .filter((rule) => rule.expression === 'false')
       .map((rule) => ({
@@ -26,10 +36,10 @@ export const useSupplements = (store) => {
         price: rule.price,
         quantity: 0,
         originalRule: rule
-      }));
-    
+      } as SupplementWithQuantity));
+
     setSupplements(deliverySupplements);
-    
+
   }, [pricingRulesData]);
 
   return {

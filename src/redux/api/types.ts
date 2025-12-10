@@ -96,3 +96,24 @@ export type Store = JsonLdEntity & {
   multiDropEnabled: boolean;
   multiPickupEnabled: boolean;
 };
+
+export type PricingRuleTarget = 'DELIVERY' | 'TASK' | 'LEGACY_TARGET_DYNAMIC';
+
+export type PricingRule = JsonLdEntity & {
+  id: number;
+  target: PricingRuleTarget;
+  position: number;
+  name?: string;
+  expression: string;
+  expressionAst: object;
+  price: string;
+  priceAst: object;
+};
+
+export type PricingRuleSet = JsonLdEntity & {
+  id: number;
+  name: string;
+  strategy: string;
+  // options: Record<string, any>
+  rules: PricingRule[];
+};

@@ -6,6 +6,7 @@ import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
 import {
   Address,
+  PricingRuleSet,
   Store,
   StorePackage,
   StoreTimeSlot,
@@ -208,7 +209,7 @@ export const apiSlice = createApi({
         );
       },
     }),
-    getPricingRuleSet: builder.query({
+    getPricingRuleSet: builder.query<PricingRuleSet, Uri>({
       query: (uri: string) => uri,
     }),
     getRestaurants: builder.query({
