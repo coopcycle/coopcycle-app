@@ -25,6 +25,10 @@ export type BaseDateTimeFields = {
   timeSlot?: never;
 };
 
+export type BaseWeightFields = {
+  weight: number;
+};
+
 export type PackageWithQuantity = {
   type: string;
   quantity: number;
@@ -36,12 +40,12 @@ export type BasePackagesFields = {
 
 export type NewDeliveryDropoffFormValues = NewDeliveryDropoffAddressFormValues &
   (BaseTimeSlotFields | BaseDateTimeFields) &
-  Partial<BasePackagesFields> & {
-    weight: number;
+  Partial<BasePackagesFields> &
+  BaseWeightFields & {
     comments: string;
   };
 
-export function handleChangeWeight(value, setFieldValue, setFieldTouched) {
+export function handleChangeWeight(value: string, setFieldValue, setFieldTouched) {
   let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
 
   const firstDecimalIndex = newValue.indexOf('.');

@@ -23,7 +23,6 @@ import {
   NewDeliveryDropoffAddressFormValues,
   NewDeliveryDropoffFormValues,
   getInitialValues,
-  handleChangeWeight,
   validateDeliveryForm,
 } from './utils.tsx';
 import { Uri } from '@/src/redux/api/types';
@@ -32,6 +31,7 @@ import {
 } from '@/src/types/task';
 import { useGetStorePackagesQuery } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
+import { WeightInput } from '@/src/navigation/delivery/components/WeightInput';
 
 type PostDeliveryBody = {
   store: Uri,
@@ -138,21 +138,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
                 <Text style={styles.optional}>({t('OPTIONAL')})</Text>
               ) : null}
             </Text>
-            <FormInput
-              keyboardType="numeric"
-              rightElement={<Text style={styles.weightUnit}>kg</Text>}
-              autoCorrect={false}
-              returnKeyType="done"
-              onChangeText={value =>
-                handleChangeWeight(value, setFieldValue, setFieldTouched)
-              }
-              onBlur={handleBlur('weight')}
-              value={values.weight}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
-            />
-            {errors.weight && touched.weight && (
-              <Text style={styles.errorText}>{errors.weight}</Text>
-            )}
+            <WeightInput />
           </View>
 
           <View style={[styles.formGroup]}>
@@ -203,9 +189,6 @@ const styles = StyleSheet.create({
   errorText: {
     paddingVertical: 5,
     color: '#FF4136',
-  },
-  weightUnit: {
-    paddingHorizontal: 10,
   },
   optional: {
     fontWeight: '400',
