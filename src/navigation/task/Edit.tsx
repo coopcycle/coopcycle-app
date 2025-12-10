@@ -20,9 +20,7 @@ import { ClientSearchSection } from './components/ClientSearchSection';
 import { useReportFormContext } from './contexts/ReportFormContext';
 import { useEditTaskForm } from './hooks/useEditTaskForm';
 import { EditTimeRange } from '@/src/navigation/task/components/EditTimeRange';
-import {
-  useGetStoreTimeSlotsQuery,
-} from '@/src/redux/api/slice';
+import { useGetStoreTimeSlotsQuery } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
 import { usePackages } from '@/src/navigation/task/hooks/usePackages';
 import { WeightInput } from '@/src/navigation/delivery/components/WeightInput';
@@ -52,7 +50,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
     validate,
     autocompleteProps,
-    initialValues
+    initialValues,
   } = useEditTaskForm(task);
 
   const { data: timeSlots } = useGetStoreTimeSlotsQuery(store?.['@id'], {
@@ -63,7 +61,10 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     return timeSlots && timeSlots.length > 0;
   }, [timeSlots]);
 
-  const { storePackages, packagesWithQuantity, canEditPackages } = usePackages(task, store);
+  const { storePackages, packagesWithQuantity, canEditPackages } = usePackages(
+    task,
+    store,
+  );
 
   const { updateFormField } = useReportFormContext();
 
@@ -71,7 +72,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     <Formik
       initialValues={initialValues}
       validate={validate}
-      onSubmit={()=>{}}
+      onSubmit={() => {}}
       validateOnBlur={false}
       validateOnChange={false}
       enableReinitialize>
@@ -252,10 +253,12 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                   </Text>
                   {/* Time range (after/before or timeslot) */}
                   <View style={styles.timeSlot}>
-                    <EditTimeRange
-                      hasTimeSlot={hasTimeSlot}
-                      timeSlots={timeSlots}
-                    />
+                    {timeSlots && hasTimeSlot ? (
+                      <EditTimeRange
+                        hasTimeSlot={hasTimeSlot}
+                        timeSlots={timeSlots}
+                      />
+                    ) : null}
                   </View>
                   {/* Weight */}
                   <FormField
@@ -265,7 +268,9 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                     <WeightInput />
                   </FormField>
                   {/* Packages */}
-                  {storePackages && storePackages.length > 0 && packagesWithQuantity ? (
+                  {storePackages &&
+                  storePackages.length > 0 &&
+                  packagesWithQuantity ? (
                     <FormField
                       label={t('STORE_NEW_DELIVERY_PACKAGES')}
                       error={errors.packages}>
