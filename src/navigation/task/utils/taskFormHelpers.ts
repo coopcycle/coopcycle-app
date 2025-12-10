@@ -85,6 +85,10 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
     taskPayload.before = formValues.before;
   }
 
+  if (formTouchedFields?.packages && formValues) {
+    taskPayload.packages = formValues.packages;
+  }
+
   const suggestion = {
     suggestion: {
       tasks: [
@@ -121,8 +125,6 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
   switch (field) {
     case 'address':
       return { address: value.streetAddress };
-    case 'packages':
-      return { packages: value}
     case 'weight':
       return { weight: Number(value) };
     case 'telephone':

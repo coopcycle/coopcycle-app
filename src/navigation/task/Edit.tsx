@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Task } from '@/src/types/task';
 import { VStack } from '@/components/ui/vstack';
 import { FormControl } from '@/components/ui/form-control';
@@ -14,7 +14,6 @@ import { SupplementSelector as EditSupplements } from './components/EditSuppleme
 import { Formik } from 'formik';
 import FormInput from '../delivery/components/FormInput';
 import { AddressSection } from './components/AddressSection';
-import { PackageItem } from './components/PackageItem';
 import { FormField } from './components/FormField';
 import { Text } from '@/components/ui/text';
 import { ClientSearchSection } from './components/ClientSearchSection';
@@ -24,6 +23,7 @@ import { EditTimeRange } from '@/src/navigation/task/components/EditTimeRange';
 import {
   useGetStoreTimeSlotsQuery,
 } from '@/src/redux/api/slice';
+import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
 
 interface TaskFormProps {
   task: Task;
@@ -37,7 +37,8 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     validAddress,
     setValidAddress,
     address,
-    packages,
+    storePackages,
+    packagesWithQuantity,
     setAddress,
     setSelectedSupplements,
 
@@ -45,8 +46,6 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     addresses,
     t,
 
-    handleIncrement,
-    handleDecrement,
     handleSelectAddress,
     createHandleChange,
     handleChangeTelephone,
@@ -66,26 +65,13 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
   const { updateFormField } = useReportFormContext();
 
-  const renderPackageItem = useCallback(
-    (item, index, setFieldTouched) => (
-      <PackageItem
-        task={task}
-        key={`${item.name}-${index}`}
-        item={item}
-        onIncrement={() => handleIncrement(item.name)}
-        onDecrement={() => handleDecrement(item.name)}
-      />
-    ),
-    [task, handleIncrement, handleDecrement],
-  );
-
   return (
     <Formik
       initialValues={initialValues}
       validate={validate}
       onSubmit={()=>{}}
-      validateOnBlur={true}
-      validateOnChange={true}
+      validateOnBlur={false}
+      validateOnChange={false}
       enableReinitialize>
       {({
         handleChange,
@@ -292,18 +278,18 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                     />
                   </FormField>
                   {/* Packages */}
-                  {packages.length > 0 && (
+                  {storePackages && storePackages.length > 0 && packagesWithQuantity ? (
                     <FormField
                       label={t('STORE_NEW_DELIVERY_PACKAGES')}
                       error={errors.packages}>
                       <View style={styles.packagesContainer}>
-                        {packages &&
-                          packages.map(item =>
-                            renderPackageItem(item, setFieldTouched),
-                          )}
+                        <PackagesInput
+                          packages={storePackages}
+                          initialPackagesCount={packagesWithQuantity}
+                        />
                       </View>
                     </FormField>
-                  )}
+                  ) : null}
                   {/* Supplements */}
                   {availableSupplements && availableSupplements.length > 0 && (
                     <>

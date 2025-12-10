@@ -11,7 +11,6 @@ import { Store } from '@/src/redux/api/types';
 
 export const useValidation = (
   validAddress: boolean,
-  packagesCount: [],
   store: Store,
   country: string
 ) => {
@@ -49,7 +48,7 @@ export const useValidation = (
 
       return { ...errors, ...deliveryErrors };
     },
-    [validAddress, packagesCount, store, country, t],
+    [validAddress, store, country, t],
   );
 
   return validate;

@@ -4,21 +4,25 @@ import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 import { Text } from '@/components/ui/text';
 import { usePackagesCount } from '@/src/navigation/delivery/hooks/usePackagesCount';
-import { Package } from '@/src/redux/api/types';
+import { StorePackage } from '@/src/redux/api/types';
 import Range from '@/src/navigation/checkout/ProductDetails/Range';
 import { useBackgroundContainerColor } from '@/src/styles/theme';
-import { BasePackagesFields } from '@/src/navigation/delivery/utils';
+import {
+  BasePackagesFields,
+  PackageWithQuantity,
+} from '@/src/navigation/delivery/utils';
 
 type Props = {
-  packages?: Package[];
+  packages?: StorePackage[];
+  initialPackagesCount?: PackageWithQuantity[];
 };
 
-export const PackagesInput = ({ packages }: Props) => {
+export const PackagesInput = ({ packages, initialPackagesCount }: Props) => {
   const { t } = useTranslation();
   const backgroundColor = useBackgroundContainerColor();
 
   const { packagesCount, incrementQuantity, decrementQuantity } =
-    usePackagesCount(packages);
+    usePackagesCount(packages, initialPackagesCount);
 
   const { errors } = useFormikContext<BasePackagesFields>();
 
@@ -30,7 +34,7 @@ export const PackagesInput = ({ packages }: Props) => {
           marginTop: 4,
         }}>
         {packages?.length ? (
-          packagesCount.map(item => {
+          packagesCount.map((item, index) => {
             return (
               <View
                 style={[
@@ -42,12 +46,12 @@ export const PackagesInput = ({ packages }: Props) => {
                     backgroundColor,
                   },
                 ]}
-                key={item.type}>
+                key={`${item.type}-${index}`}>
                 <Range
-                  onPress={() => {}}
                   onPressIncrement={() => incrementQuantity(item.type)}
                   onPressDecrement={() => decrementQuantity(item.type)}
                   quantity={item.quantity}
+                  testID={`package-${index}`}
                 />
                 <TouchableOpacity
                   style={{

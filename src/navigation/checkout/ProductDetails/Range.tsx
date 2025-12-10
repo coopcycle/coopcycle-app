@@ -36,7 +36,7 @@ function Range({ onPressDecrement, quantity, onPressIncrement, minimum = 0, test
   return (
     <View style={styles.rangeButtonWrapper}>
       <TouchableOpacity
-        testID="`range-decrement-button${testID ? '-' + testID : ''}`"
+        testID={`range-decrement-button${testID ? '-' + testID : ''}`}
         style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
         onPress={onPressDecrement}
         disabled={quantity <= minimum}>

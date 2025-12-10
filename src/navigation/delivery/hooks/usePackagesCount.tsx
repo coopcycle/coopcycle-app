@@ -1,22 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Package } from '@/src/redux/api/types';
+import { StorePackage } from '@/src/redux/api/types';
 import { useFormikContext } from 'formik';
 import {
   BasePackagesFields,
   PackageWithQuantity,
 } from '@/src/navigation/delivery/utils';
 
-export function usePackagesCount(packages?: Package[]) {
+export function usePackagesCount(
+  packages?: StorePackage[],
+  initialPackagesCount?: PackageWithQuantity[],
+) {
   const { setFieldTouched, setFieldValue } =
     useFormikContext<BasePackagesFields>();
 
   const [packagesCount, setPackagesCount] = useState(
-    [] as PackageWithQuantity[],
+    initialPackagesCount ?? [],
   );
 
   // set initial value
   useEffect(() => {
     if (!packages) return;
+
+    if (initialPackagesCount) return;
+
     setPackagesCount(
       packages.map(item => {
         return {
@@ -25,7 +31,7 @@ export function usePackagesCount(packages?: Package[]) {
         };
       }),
     );
-  }, [packages]);
+  }, [packages, initialPackagesCount]);
 
   // update value in the formik form
   useEffect(() => {

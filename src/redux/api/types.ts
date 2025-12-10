@@ -33,11 +33,8 @@ export type GeoCoordinates = {
   longitude: number;
 };
 
-export type Package = JsonLdEntity & {
-  id: number;
+export type StorePackage = JsonLdEntity & {
   name: string;
-  volumeUnits: number;
-  packageSet?: PackageSet;
 };
 
 export type PackageSet = {

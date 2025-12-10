@@ -6,8 +6,8 @@ import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
 import {
   Address,
-  Package,
   Store,
+  StorePackage,
   StoreTimeSlot,
   TimeSlot,
   TimeSlotChoices,
@@ -199,9 +199,9 @@ export const apiSlice = createApi({
         );
       },
     }),
-    getStorePackages: builder.query<Package[], string>({
+    getStorePackages: builder.query<StorePackage[], string>({
       queryFn: async (args, queryApi, extraOptions, baseQuery) => {
-        return await fetchAllRecordsUsingFetchWithBQ<Package>(
+        return await fetchAllRecordsUsingFetchWithBQ<StorePackage>(
           baseQuery,
           `${args}/packages`,
           100,

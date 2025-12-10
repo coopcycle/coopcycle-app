@@ -1,36 +1,45 @@
 import { useEffect, useState } from 'react';
-import { Task } from '@/src/types/task';
+import { Task, TaskPackage } from '@/src/types/task';
 import { useGetStorePackagesQuery } from '@/src/redux/api/slice';
+import { Store, StorePackage } from '@/src/redux/api/types';
+import { PackageWithQuantity } from '@/src/navigation/delivery/utils';
 
-export const usePackages = (task?: Partial<Task>, store?) => {
-  const [storePackages, setStorePackages] = useState<[]>([]);
+export const usePackages = (task?: Task, store?: Store) => {
+  const [packagesWithQuantity, setPackagesWithQuantity] = useState<
+    PackageWithQuantity[] | undefined
+  >(undefined);
 
-  const { data } = useGetStorePackagesQuery(store?.['@id'], {
-    skip: !store?.['@id']
+  const { data: storePackages } = useGetStorePackagesQuery(store?.['@id'], {
+    skip: !store?.['@id'],
   });
 
   useEffect(() => {
-    const initial = task?.packages || [];
-    const api = data || [];
+    // wait for storePackages to be loaded
+    if (!storePackages) return;
 
-    const merged = mergePackages(initial, api);
-    console.log(api)
-    setStorePackages(merged);
-  }, [task?.packages, data]);
+    const initial = task?.packages || [];
+    const merged = mergePackages(initial, storePackages ?? []);
+
+    setPackagesWithQuantity(merged);
+  }, [task?.packages, storePackages]);
 
   return {
     storePackages,
+    packagesWithQuantity,
   };
 };
 
-const mergePackages = (initialPackages: [] = [], packages: [] = []) => {
+const mergePackages = (
+  initialPackages: TaskPackage[] = [],
+  packages: StorePackage[] = [],
+): PackageWithQuantity[] => {
   if (!packages.length) {
     return initialPackages;
   }
   return packages.map(pkg => {
     const initialPkg = initialPackages?.find(p => p.name === pkg.name);
     return {
-      ...pkg,
+      type: pkg.name,
       quantity: initialPkg ? initialPkg.quantity : 0,
     };
   });

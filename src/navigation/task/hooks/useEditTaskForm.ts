@@ -17,15 +17,13 @@ export const useEditTaskForm = (task: Task) => {
 
   const [validAddress, setValidAddress] = useState(!!formState.address);
   const [address, setAddress] = useState(formState.address);
-  const [packages, setPackages] = useState(formState.packages);
   const [selectedSupplements, setSelectedSupplements] = useState(formState.selectedSupplements);
-  const [packagesChanged, setPackagesChanged] = useState(false);
 
   const { data: store } = useGetStoreQuery(task?.metadata?.store, {
     skip: !task?.metadata?.store,
   });
 
-  const { storePackages } = usePackages(task, store);
+  const { storePackages, packagesWithQuantity } = usePackages(task, store);
   const { supplements: availableSupplements } = useSupplements(store);
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
@@ -38,42 +36,12 @@ export const useEditTaskForm = (task: Task) => {
   }, [address, formState, updateFormField]);
 
   useEffect(() => {
-    if (JSON.stringify(packages) !== JSON.stringify(formState.packages)) {
-      updateFormField('packages', packages);
-    }
-  }, [packages, formState, updateFormField]);
-
-  useEffect(() => {
     if (JSON.stringify(selectedSupplements) !== JSON.stringify(formState.selectedSupplements)) {
       updateFormField('selectedSupplements', selectedSupplements);
     }
   }, [selectedSupplements, formState, updateFormField]);
 
-  useEffect(() => {
-    if (storePackages && storePackages.length > 0 && !packagesChanged) {
-      setPackages(storePackages);
-    }
-  }, [storePackages, packagesChanged]);
-
   // Handlers
-
-  const handleIncrement = useCallback((packageName: string) => {
-    const updatedPkg = packages.map(pkg =>
-      pkg.name === packageName ? { ...pkg, quantity: pkg.quantity + 1 } : pkg,
-    );
-    setPackages(updatedPkg);
-    setPackagesChanged(true);
-    updateFormField('packages', updatedPkg);
-  }, [packages, updateFormField]);
-
-  const handleDecrement = useCallback((packageName: string) => {
-    const updatedPkg = packages.map(pkg =>
-      pkg.name === packageName ? { ...pkg, quantity: pkg.quantity - 1 } : pkg,
-    );
-    setPackages(updatedPkg);
-    setPackagesChanged(true);
-    updateFormField('packages', updatedPkg);
-  }, [packages, updateFormField]);
 
   const handleSelectAddress = useCallback((addr, setFieldValue) => {
     if (addr['@id']) {
@@ -91,7 +59,7 @@ export const useEditTaskForm = (task: Task) => {
     };
   }, [updateFormField]);
 
-  const validate = useValidation(validAddress, packages, store, country);
+  const validate = useValidation(validAddress, store, country);
 
   const autocompleteProps = useMemo(() =>
     getAutocompleteProps(deliveryError),
@@ -106,12 +74,13 @@ export const useEditTaskForm = (task: Task) => {
   return {
     validAddress,
     address,
-    packages,
+    storePackages,
+    packagesWithQuantity,
+
     selectedSupplements,
     setValidAddress,
     setAddress,
-    setPackages,
-    packagesChanged,
+
     setSelectedSupplements,
 
     store,
@@ -121,8 +90,6 @@ export const useEditTaskForm = (task: Task) => {
     t,
     country,
 
-    handleIncrement,
-    handleDecrement,
     handleSelectAddress,
     createHandleChange,
     handleChangeTelephone,
