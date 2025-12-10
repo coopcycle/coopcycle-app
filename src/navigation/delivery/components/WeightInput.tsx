@@ -32,6 +32,7 @@ export const WeightInput = ({}: Props) => {
         returnKeyType="done"
         value={values.weight}
         placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
+        testID={'task-weight-input'}
         onChangeText={value =>
           handleChangeWeight(value, setFieldValue, setFieldTouched)
         }

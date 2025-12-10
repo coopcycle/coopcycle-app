@@ -26,7 +26,7 @@ export type BaseDateTimeFields = {
 };
 
 export type BaseWeightFields = {
-  weight: number;
+  weight: string;
 };
 
 export type PackageWithQuantity = {
@@ -40,8 +40,8 @@ export type BasePackagesFields = {
 
 export type NewDeliveryDropoffFormValues = NewDeliveryDropoffAddressFormValues &
   (BaseTimeSlotFields | BaseDateTimeFields) &
-  Partial<BasePackagesFields> &
-  BaseWeightFields & {
+  Partial<BaseWeightFields> &
+  Partial<BasePackagesFields> & {
     comments: string;
   };
 

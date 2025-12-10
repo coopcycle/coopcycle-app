@@ -67,7 +67,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
           description: values.description.trim() || null,
         },
         comments: values.comments,
-        weight: values.weight * 1000,
+        weight: values.weight ? Number(values.weight) * 1000 : undefined,
         packages: values.packages?.filter(item => item.quantity > 0),
         ...(hasTimeSlot
           ? {

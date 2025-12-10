@@ -25,6 +25,7 @@ import {
 } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
 import { usePackages } from '@/src/navigation/task/hooks/usePackages';
+import { WeightInput } from '@/src/navigation/delivery/components/WeightInput';
 
 interface TaskFormProps {
   task: Task;
@@ -261,22 +262,7 @@ export const EditTask: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                     label={t('STORE_NEW_DELIVERY_WEIGHT')}
                     error={errors.weight}
                     touched={touched.weight}>
-                    <FormInput
-                      keyboardType="numeric"
-                      rightElement={<Text style={styles.weightUnit}>kg</Text>}
-                      autoCorrect={false}
-                      returnKeyType="done"
-                      onChangeText={value => {
-                        const cleanedValue = value.replace(/[^0-9.]/g, '');
-                        updateFormField('weight', cleanedValue);
-                        setFieldValue('weight', cleanedValue);
-                        setFieldTouched('weight', true);
-                      }}
-                      onBlur={handleBlur('weight')}
-                      value={values.weight}
-                      placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
-                      testID={'task-weight-input'}
-                    />
+                    <WeightInput />
                   </FormField>
                   {/* Packages */}
                   {storePackages && storePackages.length > 0 && packagesWithQuantity ? (

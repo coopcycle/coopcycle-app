@@ -3,8 +3,10 @@ import { EditTaskPayload, Task } from '@/src/types/task';
 import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
 import { FormikTouched } from 'formik';
 import {
-  BaseDateTimeFields, BasePackagesFields,
+  BaseDateTimeFields,
+  BasePackagesFields,
   BaseTimeSlotFields,
+  BaseWeightFields,
 } from '@/src/navigation/delivery/utils';
 
 export const getAutocompleteProps = deliveryError => {
@@ -37,27 +39,25 @@ export type EditTaskFormValues = {
   telephone: string;
   description: string;
 } & (BaseTimeSlotFields | BaseDateTimeFields) &
-  Partial<BasePackagesFields> & {
-    weight: string;
-  };
+  Partial<BaseWeightFields> &
+  Partial<BasePackagesFields>;
 
-export const getInitialFormValues = (task?: Partial<Task>) => {
+export const getInitialFormValues = (task: Task) => {
 
   return {
-    telephone: task?.address?.telephone || '',
-    contactName: task?.address?.contactName || '',
-    businessName: task?.address?.name || '',
-    description: task?.address?.description || '',
-    address: task?.address?.streetAddress || '',
-    weight: task?.weight ? task.weight.toString() : '0',
+    telephone: task.address?.telephone || '',
+    contactName: task.address?.contactName || '',
+    businessName: task.address?.name || '',
+    description: task.address?.description || '',
+    address: task.address?.streetAddress || '',
+    weight: task.weight ? `${task.weight / 1000}` : '0',
     //FIXME: pre-fill the time slot from the task (we don't store selected timeSlot on the task yet)
     // timeSlotUrl: task?.timeSlotUrl || undefined,
     timeSlotUrl: undefined,
     // timeSlot: task?.timeSlot || undefined,
     timeSlot: undefined,
-    before: task?.before || '',
-    after: task?.after || '',
-    doorstep: task?.doorstep || false,
+    before: task.before || '',
+    after: task.after || '',
   } as EditTaskFormValues;
 };
 
@@ -83,6 +83,10 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
   }
   if (formTouchedFields?.before && formValues) {
     taskPayload.before = formValues.before;
+  }
+
+  if (formTouchedFields?.weight && formValues) {
+    taskPayload.weight = formValues.weight ? Number(formValues.weight) * 1000 : undefined;
   }
 
   if (formTouchedFields?.packages && formValues) {
@@ -125,8 +129,6 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
   switch (field) {
     case 'address':
       return { address: value.streetAddress };
-    case 'weight':
-      return { weight: Number(value) };
     case 'telephone':
       return { telephone: value };
       case 'contactName':
