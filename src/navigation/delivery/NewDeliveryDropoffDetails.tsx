@@ -103,11 +103,6 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
         handleChange,
         handleBlur,
         handleSubmit,
-        values,
-        errors,
-        touched,
-        setFieldValue,
-        setFieldTouched,
       }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
