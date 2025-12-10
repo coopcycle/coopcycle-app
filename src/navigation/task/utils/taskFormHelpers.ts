@@ -50,7 +50,6 @@ export const getInitialFormValues = (task: Task) => {
     businessName: task.address?.name || '',
     description: task.address?.description || '',
     address: task.address?.streetAddress || '',
-    weight: task.weight ? `${task.weight / 1000}` : '0',
     //FIXME: pre-fill the time slot from the task (we don't store selected timeSlot on the task yet)
     // timeSlotUrl: task?.timeSlotUrl || undefined,
     timeSlotUrl: undefined,
@@ -58,6 +57,8 @@ export const getInitialFormValues = (task: Task) => {
     timeSlot: undefined,
     before: task.before || '',
     after: task.after || '',
+    weight: task.weight ? `${task.weight / 1000}` : '0',
+    packages: undefined,
   } as EditTaskFormValues;
 };
 

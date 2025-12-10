@@ -12,12 +12,6 @@ import {
 } from '../utils/taskFormHelpers';
 import { Uri } from '@/src/redux/api/types';
 
-interface Package {
-  id: number;
-  weight?: number;
-  description?: string;
-}
-
 interface Supplement {
   id: number;
   name: string;
@@ -28,7 +22,6 @@ interface FormState {
   values: Record<string, unknown> | null;
   address: string | null;
   telephone?: string;
-  packages: Package[];
   selectedSupplements: Supplement[];
   // REPORT INCIDENT FIELDS
   failureReason?: string;
@@ -83,9 +76,7 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
   const [formState, setFormState] = useState<FormState>({
     values: null,
     telephone: initialTask?.address?.telephone || '',
-    weight: initialTask?.weight ? initialTask.weight.toString() : '0',
     address: initialTask?.address ?? null,
-    packages: [],
     selectedSupplements: [],
     // REPORT INCIDENT FIELDS
     failureReason: '',
@@ -167,7 +158,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     setFormState({
       values: null,
       address: initialTask?.address ?? null,
-      packages: initialTask?.packages ?? [],
       selectedSupplements: [],
     });
   }, [initialTask]);
