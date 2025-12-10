@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useGetPricingRuleSetQuery } from '@/src/redux/api/slice';
 import { PricingRule, Store } from '@/src/redux/api/types';
 
-type SupplementWithQuantity = {
+export type SupplementWithQuantity = {
   id: number;
-  type: number;
+  type: string;
   name: string;
   price: string;
   quantity: number;
@@ -31,7 +31,7 @@ export const useSupplements = (store?: Store) => {
       .filter((rule) => rule.expression === 'false')
       .map((rule) => ({
         id: rule.id,
-        type: rule.id,
+        type: `${rule.id}`,
         name: rule.name,
         price: rule.price,
         quantity: 0,

@@ -3,17 +3,11 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import Range from '../../checkout/ProductDetails/Range';
 import i18n from '@/src/i18n';
-
-interface Supplement {
-  id: string;
-  type: string;
-  name: string;
-  quantity: number;
-}
+import { SupplementWithQuantity } from '@/src/navigation/task/hooks/useSupplements';
 
 interface SupplementSelectorProps {
-  availableSupplements: Supplement[];
-  onSupplementsChange: (supplements: Supplement[]) => void;
+  availableSupplements: SupplementWithQuantity[];
+  onSupplementsChange: (supplements: SupplementWithQuantity[]) => void;
 }
 
 export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
@@ -22,19 +16,19 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
 }) => {
   const testID = "supplement-selector";
   const { t } = i18n;
-  const [selectedSupplements, setSelectedSupplements] = useState<Supplement[]>([]);
+  const [selectedSupplements, setSelectedSupplements] = useState<SupplementWithQuantity[]>([]);
   const [selectedValue, setSelectedValue] = useState<string>('');
 
   const handleSelectSupplement = (supplementType: string) => {
     if (!supplementType) return;
 
     const supplementToAdd = availableSupplements.find(sup => sup.type === supplementType);
-    
+
     if (supplementToAdd) {
       const existingSupplement = selectedSupplements.find(sup => sup.type === supplementType);
-      
-      let updatedSupplements: Supplement[];
-      
+
+      let updatedSupplements: SupplementWithQuantity[];
+
       if (existingSupplement) {
         updatedSupplements = selectedSupplements.map(sup =>
           sup.type === supplementType
@@ -42,16 +36,16 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
             : sup
         );
       } else {
-        const newSupplement: Supplement = {
+        const newSupplement: SupplementWithQuantity = {
           ...supplementToAdd,
           quantity: 1
         };
         updatedSupplements = [...selectedSupplements, newSupplement];
       }
-      
+
       setSelectedSupplements(updatedSupplements);
       onSupplementsChange(updatedSupplements);
-      
+
       setSelectedValue('');
     }
   };
@@ -62,7 +56,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
         ? { ...sup, quantity: sup.quantity + 1 }
         : sup
     );
-    
+
     setSelectedSupplements(updatedSupplements);
     onSupplementsChange(updatedSupplements);
   };
@@ -73,14 +67,14 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
         ? { ...sup, quantity: Math.max(0, sup.quantity - 1) }
         : sup
     ).filter(sup => sup.quantity > 0);
-    
+
     setSelectedSupplements(updatedSupplements);
     onSupplementsChange(updatedSupplements);
   };
 
-  const renderSupplementItem = (item: Supplement, index: number) => (
-    <View 
-      style={[styles.supplementItem]} 
+  const renderSupplementItem = (item: SupplementWithQuantity, index: number) => (
+    <View
+      style={[styles.supplementItem]}
       key={item.type}
       testID={`${testID}-selected-item-${index}`}
     >
@@ -95,7 +89,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
         onPress={() => handleIncrement(item.type)}
         testID={`${testID}-selected-item-${index}-label`}
       >
-        <Text 
+        <Text
           style={styles.supplementName}
           testID={`${testID}-selected-item-${index}-name`}
         >
@@ -108,11 +102,11 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
   return (
     <View style={styles.container} testID={testID}>
       {selectedSupplements.length > 0 && (
-        <View 
+        <View
           style={styles.selectedSupplements}
           testID={`${testID}-selected-section`}
         >
-          <Text 
+          <Text
             style={styles.sectionTitle}
             testID={`${testID}-selected-title`}
           >
@@ -123,15 +117,15 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
       )}
 
       <View testID={`${testID}-selector-section`}>
-        <Text 
+        <Text
           style={styles.selectorLabel}
           testID={`${testID}-selector-label`}
         >
           {t('ADD_SUPPLEMENT')}
         </Text>
-        
+
         {availableSupplements && (
-          <View 
+          <View
             style={styles.optionsContainer}
             testID={`${testID}-options-container`}
           >
@@ -142,7 +136,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
                 onPress={() => handleSelectSupplement(supplement.type)}
                 testID={`${testID}-option-${supplement.type}`}
               >
-                <Text 
+                <Text
                   style={styles.optionText}
                   testID={`${testID}-option-${supplement.type}-text`}
                 >
