@@ -27,15 +27,17 @@ export const SupplementSelector = ({ availableSupplements }: Props) => {
 
   const addedSupplements = useMemo<SupplementWithQuantity[]>(
     () =>
-      availableSupplements.map(supplement => {
-        const selected = selectedSupplements.find(
-          sup => sup.pricingRule === supplement['@id'],
-        );
-        return {
-          ...supplement,
-          quantity: selected ? selected.quantity : 0,
-        };
-      }),
+      availableSupplements
+        .map(supplement => {
+          const selected = selectedSupplements.find(
+            sup => sup.pricingRule === supplement['@id'],
+          );
+          return {
+            ...supplement,
+            quantity: selected ? selected.quantity : 0,
+          };
+        })
+        .filter(supplement => supplement.quantity > 0),
     [selectedSupplements, availableSupplements],
   );
 
@@ -44,47 +46,41 @@ export const SupplementSelector = ({ availableSupplements }: Props) => {
     setFieldTouched('manualSupplements');
   };
 
-  const handleSelectSupplement = (pricingRule: Uri) => {
-    if (!pricingRule) return;
+  const handleSelectSupplement = (supplementToAdd: SupplementWithQuantity) => {
+    const existingSupplement = selectedSupplements.find(sup => sup.pricingRule === supplementToAdd['@id']);
 
-    const supplementToAdd = availableSupplements.find(sup => sup['@id'] === pricingRule);
+    let updatedSupplements: ManualSupplementValues[];
 
-    if (supplementToAdd) {
-      const existingSupplement = selectedSupplements.find(sup => sup.pricingRule === pricingRule);
-
-      let updatedSupplements: ManualSupplementValues[];
-
-      if (existingSupplement) {
-        updatedSupplements = selectedSupplements.map(sup =>
-          sup.pricingRule === pricingRule
-            ? { ...sup, quantity: sup.quantity + 1 }
-            : sup
-        );
-      } else {
-        const newSupplement: ManualSupplementValues = {
-          pricingRule: supplementToAdd['@id'],
-          quantity: 1
-        };
-        updatedSupplements = [...selectedSupplements, newSupplement];
-      }
-
-      setSelectedSupplements(updatedSupplements);
+    if (existingSupplement) {
+      updatedSupplements = selectedSupplements.map(sup =>
+        sup.pricingRule === supplementToAdd['@id']
+          ? { ...sup, quantity: supplementToAdd.isRangeBased ? sup.quantity + 1 : 1 }
+          : sup
+      );
+    } else {
+      const newSupplement: ManualSupplementValues = {
+        pricingRule: supplementToAdd['@id'],
+        quantity: 1,
+      };
+      updatedSupplements = [...selectedSupplements, newSupplement];
     }
+
+    setSelectedSupplements(updatedSupplements);
   };
 
-  const handleIncrement = (pricingRule: Uri) => {
+  const handleIncrement = (supplement: SupplementWithQuantity) => {
     const updatedSupplements = selectedSupplements.map(sup =>
-      sup.pricingRule === pricingRule
-        ? { ...sup, quantity: sup.quantity + 1 }
+      sup.pricingRule === supplement['@id']
+        ? { ...sup, quantity: supplement.isRangeBased ? sup.quantity + 1 : 1 }
         : sup
     );
 
     setSelectedSupplements(updatedSupplements);
   };
 
-  const handleDecrement = (pricingRule: Uri) => {
+  const handleDecrement = (supplement: SupplementWithQuantity) => {
     const updatedSupplements = selectedSupplements.map(sup =>
-      sup.pricingRule === pricingRule
+      sup.pricingRule === supplement['@id']
         ? { ...sup, quantity: Math.max(0, sup.quantity - 1) }
         : sup
     ).filter(sup => sup.quantity > 0);
@@ -107,10 +103,11 @@ export const SupplementSelector = ({ availableSupplements }: Props) => {
           </Text>
           {addedSupplements.map((item, index) => (
             <ManualSupplement
+              key={index}
               item={item}
+              testID={testID}
               handleIncrement={handleIncrement}
               handleDecrement={handleDecrement}
-              key={index}
             />
           ))}
         </View>
@@ -133,7 +130,7 @@ export const SupplementSelector = ({ availableSupplements }: Props) => {
               <TouchableOpacity
                 key={supplement['@id']}
                 style={styles.optionButton}
-                onPress={() => handleSelectSupplement(supplement['@id'])}
+                onPress={() => handleSelectSupplement(supplement)}
                 testID={`${testID}-option-${index}`}
               >
                 <Text

@@ -3,8 +3,19 @@ import { useGetPricingRuleSetQuery } from '@/src/redux/api/slice';
 import { PricingRule, Store } from '@/src/redux/api/types';
 
 export type SupplementWithQuantity = PricingRule & {
+  isRangeBased: boolean;
   quantity: number;
 };
+
+function isRangeBased(item: PricingRule) {
+  // a simplified version of /coopcycle-web/js/app/delivery/pricing/pricing-rule-parser.js
+
+  const node = item.priceAst?.nodes;
+  return (
+    node?.attributes?.name === 'price_range' &&
+    node.nodes?.arguments?.nodes?.[0]?.attributes?.name === 'quantity'
+  );
+}
 
 export const useSupplements = (store?: Store) => {
   const [supplements, setSupplements] = useState<SupplementWithQuantity[]>([]);
@@ -28,6 +39,7 @@ export const useSupplements = (store?: Store) => {
         rule =>
           ({
             ...rule,
+            isRangeBased: isRangeBased(rule),
             quantity: 0,
           }) as SupplementWithQuantity,
       );
