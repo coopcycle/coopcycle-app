@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useGetPricingRuleSetQuery } from '@/src/redux/api/slice';
-import { PricingRule, Store, Uri } from '@/src/redux/api/types';
+import { PricingRule, Store } from '@/src/redux/api/types';
 
-export type SupplementWithQuantity = {
-  pricingRule: Uri
-  name: string;
-  price: string;
+export type SupplementWithQuantity = PricingRule & {
   quantity: number;
-  originalRule: PricingRule;
 };
 
 export const useSupplements = (store?: Store) => {
@@ -15,9 +11,9 @@ export const useSupplements = (store?: Store) => {
   const {
     data: pricingRulesData,
     isLoading: isLoadingPricingRules,
-    error: pricingRulesError
+    error: pricingRulesError,
   } = useGetPricingRuleSetQuery(store?.pricingRuleSet, {
-    skip: !store?.pricingRuleSet
+    skip: !store?.pricingRuleSet,
   });
 
   useEffect(() => {
@@ -27,23 +23,22 @@ export const useSupplements = (store?: Store) => {
     }
 
     const deliverySupplements = pricingRulesData.rules
-      .filter((rule) => rule.expression === 'false')
-      .map((rule) => ({
-        pricingRule: rule['@id'],
-        name: rule.name,
-        price: rule.price,
-        quantity: 0,
-        originalRule: rule
-      } as SupplementWithQuantity));
+      .filter(rule => rule.expression === 'false')
+      .map(
+        rule =>
+          ({
+            ...rule,
+            quantity: 0,
+          }) as SupplementWithQuantity,
+      );
 
     setSupplements(deliverySupplements);
-
   }, [pricingRulesData]);
 
   return {
     supplements,
     isLoading: isLoadingPricingRules,
     error: pricingRulesError,
-    pricingRules: pricingRulesData
+    pricingRules: pricingRulesData,
   };
 };
