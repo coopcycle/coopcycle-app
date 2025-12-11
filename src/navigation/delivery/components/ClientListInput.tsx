@@ -10,12 +10,19 @@ import {
   usePrimaryColor,
 } from '../../../styles/theme';
 import FormInput from './FormInput';
+import { Address } from '@/src/redux/api/types';
+
+type Props = {
+  addresses: Address[];
+  onSelectAddress: (address: Address) => void;
+  placeholder: string;
+};
 
 export default function ClientListInput({
   addresses,
   onSelectAddress,
   placeholder,
-}) {
+} : Props) {
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [value, setValue] = useState('');
   const backgroundColor = useBackgroundContainerColor();
@@ -48,7 +55,7 @@ export default function ClientListInput({
     );
   }
 
-  function selectAddress(address) {
+  function selectAddress(address: Address) {
     onSelectAddress(address);
     setHideSuggestions(true);
     setValue(address.contactName);
@@ -65,7 +72,7 @@ export default function ClientListInput({
     },
   });
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item } : { item: Address }) => (
     <TouchableOpacity
       onPress={() => selectAddress(item)}
       style={{

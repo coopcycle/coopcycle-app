@@ -30,7 +30,7 @@ import {
   useBaseTextColor,
   usePrimaryColor,
 } from '../styles/theme';
-import AddressUtils from '../utils/Address';
+import AddressUtils, { AutocompleteAddress } from '../utils/Address';
 import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
 import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
@@ -49,10 +49,16 @@ const fuseOptions = {
 };
 
 interface AddressAutocompleteProps {
+  // if value is a string, it's the streetAddress
+  value?: {
+    streetAddress?: string;
+    postalCode?: string;
+  } | string;
   minChars?: number;
   addresses?: unknown[];
   renderRight?(...args: unknown[]): unknown;
   onMapPickerPress?(...args: unknown[]): unknown;
+  onSelectAddress: (address: AutocompleteAddress) => void;
   mapPickerStyle?: "small" | "large";
 }
 

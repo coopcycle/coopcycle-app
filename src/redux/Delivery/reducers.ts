@@ -12,10 +12,10 @@ import {
 } from './actions';
 import { formatPrice } from '../../utils/formatting';
 import { LOGOUT_SUCCESS } from '../App/actions';
-import { Store, TimeSlot } from '@/src/redux/api/types';
+import { Address, Store, TimeSlot } from '@/src/redux/api/types';
 
 type DeliveryState = {
-  addresses;
+  addresses: Address[];
   assertDeliveryError;
   price;
   priceExcludingTax;
@@ -65,7 +65,7 @@ const reducer: Reducer<DeliveryState, PayloadAction<unknown>> = (state = initial
       if (action.payload.store['@id'] === state.store['@id']) {
         return {
           ...state,
-          addresses: _.uniqBy(action.payload.addresses, '@id'),
+          addresses: _.uniqBy(action.payload.addresses as Address[], '@id'),
         };
       }
 

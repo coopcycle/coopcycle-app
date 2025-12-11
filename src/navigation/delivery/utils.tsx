@@ -3,13 +3,26 @@ import { Store, Uri } from '@/src/redux/api/types';
 import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { FormikErrors } from 'formik';
 
-export type NewDeliveryDropoffAddressFormValues = {
-  address: string;
-  contactName: string;
-  businessName: string;
-  telephone: string;
-  description: string;
+export type PlaceFields = {
+  geo: { latitude: number; longitude: number };
+  streetAddress: string;
+  postalCode?: string;
+  addressLocality?: string;
+  addressCountry?: string;
+  addressRegion?: string;
 };
+
+export type BaseAddressFields = {
+  address: PlaceFields;
+  businessName: string;
+  description: string;
+  telephone: string;
+  contactName: string;
+  //FIXME: store in form's errors instead
+  isValidAddress: boolean;
+};
+
+export type NewDeliveryDropoffAddressFormValues = BaseAddressFields;
 
 export type BaseTimeSlotFields = {
   timeSlotUrl: Uri;
