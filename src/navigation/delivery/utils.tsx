@@ -22,6 +22,8 @@ export type BaseAddressFields = {
   isValidAddress: boolean;
 };
 
+export type NewDeliveryPickupAddressFormValues = BaseAddressFields;
+
 export type NewDeliveryDropoffAddressFormValues = BaseAddressFields;
 
 export type BaseTimeSlotFields = {

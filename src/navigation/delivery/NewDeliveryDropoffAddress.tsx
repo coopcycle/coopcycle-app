@@ -62,13 +62,13 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
 
   function submit(values: NewDeliveryDropoffAddressFormValues) {
     const dropoff = {
+      address: values.address,
+      description: values.description,
+      businessName: values.businessName,
       telephone: parsePhoneNumberFromString(values.telephone, country).format(
         'E.164',
       ),
       contactName: values.contactName,
-      description: values.description,
-      businessName: values.businessName,
-      address: values.address,
     };
 
     navigation.navigate('NewDeliveryDropoffDetails', {
