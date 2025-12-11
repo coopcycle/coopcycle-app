@@ -1,20 +1,22 @@
 import { useCallback } from 'react';
 import _ from 'lodash';
 import parsePhoneNumberFromString from 'libphonenumber-js';
+import { useTranslation } from 'react-i18next';
 import {
   validateDeliveryForm,
 } from '../../delivery/utils';
-import i18n from '@/src/i18n';
 import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { FormikErrors } from 'formik';
 import { Store } from '@/src/redux/api/types';
+import { useFormUtils } from '@/src/navigation/task/hooks/useFormUtils';
 
 export const useValidation = (
   validAddress: boolean,
   store: Store,
-  country: string
 ) => {
-  const { t } = i18n;
+  const { t } = useTranslation();
+
+  const { country } = useFormUtils(store);
 
   const validate = useCallback(
     (values: EditTaskFormValues) => {

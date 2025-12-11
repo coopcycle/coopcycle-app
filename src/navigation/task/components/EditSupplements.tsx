@@ -1,99 +1,116 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/components/ui/text';
 import Range from '../../checkout/ProductDetails/Range';
-import i18n from '@/src/i18n';
-import { SupplementWithQuantity } from '@/src/navigation/task/hooks/useSupplements';
+import {
+  SupplementWithQuantity,
+} from '@/src/navigation/task/hooks/useSupplements';
+import { Uri } from '@/src/redux/api/types';
+import { useFormikContext } from 'formik';
+import { EditFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
+import { ManualSupplementValues } from '@/src/types/task';
 
-interface SupplementSelectorProps {
+type Props = {
   availableSupplements: SupplementWithQuantity[];
-  onSupplementsChange: (supplements: SupplementWithQuantity[]) => void;
-}
+};
 
-export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
-  availableSupplements,
-  onSupplementsChange,
-}) => {
+export const SupplementSelector = ({ availableSupplements }: Props) => {
   const testID = "supplement-selector";
-  const { t } = i18n;
-  const [selectedSupplements, setSelectedSupplements] = useState<SupplementWithQuantity[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string>('');
+  const { t } = useTranslation();
 
-  const handleSelectSupplement = (supplementType: string) => {
-    if (!supplementType) return;
+  const { values, setFieldValue, setFieldTouched } = useFormikContext<EditFormValues>();
 
-    const supplementToAdd = availableSupplements.find(sup => sup.type === supplementType);
+  const selectedSupplements = useMemo(() => {
+    return values.manualSupplements
+  }, [values.manualSupplements]);
+
+  const addedSupplements = useMemo(() => {
+    return selectedSupplements.map(supplement => {
+       const s = availableSupplements.find(sup => sup.pricingRule === supplement.pricingRule);
+
+       return {
+        ...s,
+        quantity: supplement.quantity
+      };
+    });
+  }, [selectedSupplements, availableSupplements]);
+
+  const setSelectedSupplements = (value: ManualSupplementValues[]) => {
+    setFieldValue('manualSupplements', value);
+    setFieldTouched('manualSupplements');
+  };
+
+  const handleSelectSupplement = (pricingRule: Uri) => {
+    if (!pricingRule) return;
+
+    const supplementToAdd = availableSupplements.find(sup => sup.pricingRule === pricingRule);
 
     if (supplementToAdd) {
-      const existingSupplement = selectedSupplements.find(sup => sup.type === supplementType);
+      const existingSupplement = selectedSupplements.find(sup => sup.pricingRule === pricingRule);
 
-      let updatedSupplements: SupplementWithQuantity[];
+      let updatedSupplements: ManualSupplementValues[];
 
       if (existingSupplement) {
         updatedSupplements = selectedSupplements.map(sup =>
-          sup.type === supplementType
+          sup.pricingRule === pricingRule
             ? { ...sup, quantity: sup.quantity + 1 }
             : sup
         );
       } else {
-        const newSupplement: SupplementWithQuantity = {
-          ...supplementToAdd,
+        const newSupplement: ManualSupplementValues = {
+          pricingRule: supplementToAdd.pricingRule,
           quantity: 1
         };
         updatedSupplements = [...selectedSupplements, newSupplement];
       }
 
       setSelectedSupplements(updatedSupplements);
-      onSupplementsChange(updatedSupplements);
-
-      setSelectedValue('');
     }
   };
 
-  const handleIncrement = (supplementType: string) => {
+  const handleIncrement = (pricingRule: Uri) => {
     const updatedSupplements = selectedSupplements.map(sup =>
-      sup.type === supplementType
+      sup.pricingRule === pricingRule
         ? { ...sup, quantity: sup.quantity + 1 }
         : sup
     );
 
     setSelectedSupplements(updatedSupplements);
-    onSupplementsChange(updatedSupplements);
   };
 
-  const handleDecrement = (supplementType: string) => {
+  const handleDecrement = (pricingRule: Uri) => {
     const updatedSupplements = selectedSupplements.map(sup =>
-      sup.type === supplementType
+      sup.pricingRule === pricingRule
         ? { ...sup, quantity: Math.max(0, sup.quantity - 1) }
         : sup
     ).filter(sup => sup.quantity > 0);
 
     setSelectedSupplements(updatedSupplements);
-    onSupplementsChange(updatedSupplements);
   };
 
   const renderSupplementItem = (item: SupplementWithQuantity, index: number) => (
     <View
       style={[styles.supplementItem]}
-      key={item.type}
+      key={item.pricingRule}
       testID={`${testID}-selected-item-${index}`}
     >
       <Range
-        onPressIncrement={() => handleIncrement(item.type)}
-        onPressDecrement={() => handleDecrement(item.type)}
+        onPressIncrement={() => handleIncrement(item.pricingRule)}
+        onPressDecrement={() => handleDecrement(item.pricingRule)}
         quantity={item.quantity}
         testID={`supplement-${index}`}
       />
       <TouchableOpacity
         style={styles.supplementLabel}
-        onPress={() => handleIncrement(item.type)}
+        onPress={() => handleIncrement(item.pricingRule)}
         testID={`${testID}-selected-item-${index}-label`}
       >
         <Text
           style={styles.supplementName}
           testID={`${testID}-selected-item-${index}-name`}
         >
-          {item.name || item.type}
+          {item.name || 'Unknown'}
         </Text>
       </TouchableOpacity>
     </View>
@@ -101,7 +118,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
 
   return (
     <View style={styles.container} testID={testID}>
-      {selectedSupplements.length > 0 && (
+      {addedSupplements.length > 0 && (
         <View
           style={styles.selectedSupplements}
           testID={`${testID}-selected-section`}
@@ -112,7 +129,7 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
           >
             {t('ADDED_SUPPLEMENTS')}
           </Text>
-          {selectedSupplements.map((item, index) => renderSupplementItem(item, index))}
+          {addedSupplements.map((item, index) => renderSupplementItem(item, index))}
         </View>
       )}
 
@@ -131,16 +148,16 @@ export const SupplementSelector: React.FC<SupplementSelectorProps> = ({
           >
             {availableSupplements.map((supplement, index) => (
               <TouchableOpacity
-                key={supplement.type}
+                key={supplement.pricingRule}
                 style={styles.optionButton}
-                onPress={() => handleSelectSupplement(supplement.type)}
-                testID={`${testID}-option-${supplement.type}`}
+                onPress={() => handleSelectSupplement(supplement.pricingRule)}
+                testID={`${testID}-option-${index}`}
               >
                 <Text
                   style={styles.optionText}
-                  testID={`${testID}-option-${supplement.type}-text`}
+                  testID={`${testID}-option-${index}-text`}
                 >
-                  {supplement.name || supplement.type}
+                  {supplement.name || 'Unknown'}
                 </Text>
               </TouchableOpacity>
             ))}

@@ -14,6 +14,7 @@ import {
   TimeSlotChoices,
   Uri,
 } from './types';
+import { PutDeliveryBody } from '@/src/types/task';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -245,6 +246,9 @@ export const apiSlice = createApi({
     getTaskContext: builder.query({
       query: id => `api/tasks/${id}/context`,
     }),
+    getTaskDeliveryFormData: builder.query<PutDeliveryBody, number>({
+      query: id => `api/tasks/${id}/delivery_form_data`,
+    }),
     getOrderTiming: builder.query({
       query: nodeId => `${nodeId}/timing`,
     }),
@@ -287,6 +291,7 @@ export const {
   useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetTaskContextQuery,
+  useGetTaskDeliveryFormDataQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,
   useGetTimeSlotsQuery,

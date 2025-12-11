@@ -139,7 +139,7 @@ export interface TaskGroup {
  * Main Task interface
  */
 export interface Task {
-  '@id': string;
+  '@id': Uri;
   '@type': 'Task';
   id: number;
 
@@ -231,9 +231,32 @@ export type CreateAnyTaskPayload = CreatePickupOrDropoffTaskPayload & {
   type: TaskType;
 };
 
-export type EditTaskFields = CreateAnyTaskPayload
+export type ManualSupplementValues = {
+  pricingRule: Uri;
+  quantity: number;
+};
 
-export type EditTaskPayload = Partial<CreateAnyTaskPayload>
+export type OrderPayload = {
+  manualSupplements: ManualSupplementValues[];
+};
+
+export type PostDeliveryBody = {
+  store: Uri,
+  pickup: CreatePickupOrDropoffTaskPayload;
+  dropoff: CreatePickupOrDropoffTaskPayload;
+}
+
+export type EditTaskPayload = Partial<CreateAnyTaskPayload> & {
+  id: number;
+}
+
+export type PutDeliveryBody = {
+  store: Uri,
+  pickup?: EditTaskPayload;
+  dropoff?: EditTaskPayload;
+  tasks?: EditTaskPayload[];
+  order?: OrderPayload;
+}
 
 /**
  * Task update payload interface

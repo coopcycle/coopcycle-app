@@ -8,21 +8,14 @@ import React, {
 } from 'react';
 import {
   buildUpdatedTaskFields,
-  mapSupplements,
 } from '../utils/taskFormHelpers';
 import { Uri } from '@/src/redux/api/types';
-
-interface Supplement {
-  id: number;
-  name: string;
-}
 
 interface FormState {
   // EDIT TASK FIELDS
   values: Record<string, unknown> | null;
   address: string | null;
   telephone?: string;
-  selectedSupplements: Supplement[];
   // REPORT INCIDENT FIELDS
   failureReason?: string;
   notes: string;
@@ -77,7 +70,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     values: null,
     telephone: initialTask?.address?.telephone || '',
     address: initialTask?.address ?? null,
-    selectedSupplements: [],
     // REPORT INCIDENT FIELDS
     failureReason: '',
     failureReasonMetadata: {},
@@ -124,17 +116,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
         case 'notes':
           updates.notes = (value as string) ?? '';
           break;
-        case 'selectedSupplements':
-          //FIXME: move supplements outside of task
-          const supplementUpdates = {
-            selectedSupplements: mapSupplements(value),
-          };
-          updatedTask = {
-            ...updatedTask,
-            ...supplementUpdates
-          };
-          updates.updatedTask = updatedTask;
-          break;
         default:
           const taskUpdates = { ...buildUpdatedTaskFields(field, value) };
           updatedTask = {
@@ -158,7 +139,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     setFormState({
       values: null,
       address: initialTask?.address ?? null,
-      selectedSupplements: [],
     });
   }, [initialTask]);
 

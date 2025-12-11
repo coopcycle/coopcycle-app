@@ -25,19 +25,12 @@ import {
   getInitialValues,
   validateDeliveryForm,
 } from './utils.tsx';
-import { Uri } from '@/src/redux/api/types';
 import {
-  CreatePickupOrDropoffTaskPayload,
+  PostDeliveryBody,
 } from '@/src/types/task';
 import { useGetStorePackagesQuery } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
 import { WeightInput } from '@/src/navigation/delivery/components/WeightInput';
-
-type PostDeliveryBody = {
-  store: Uri,
-  pickup: CreatePickupOrDropoffTaskPayload;
-  dropoff: CreatePickupOrDropoffTaskPayload;
-}
 
 function NewDeliveryDropoffDetails({ navigation, route }) {
   const backgroundColor = useBackgroundContainerColor();

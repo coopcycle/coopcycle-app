@@ -1,5 +1,10 @@
 import _ from 'lodash';
-import { EditTaskPayload, Task } from '@/src/types/task';
+import {
+  EditTaskPayload,
+  OrderPayload,
+  PutDeliveryBody,
+  Task,
+} from '@/src/types/task';
 import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
 import { FormikTouched } from 'formik';
 import {
@@ -8,6 +13,7 @@ import {
   BaseTimeSlotFields,
   BaseWeightFields,
 } from '@/src/navigation/delivery/utils';
+import { Uri } from '@/src/redux/api/types';
 
 export const getAutocompleteProps = deliveryError => {
   const baseProps = {
@@ -42,9 +48,26 @@ export type EditTaskFormValues = {
   Partial<BaseWeightFields> &
   Partial<BasePackagesFields>;
 
-export const getInitialFormValues = (task: Task) => {
+export type ManualSupplementValues = {
+  pricingRule: Uri;
+  quantity: number;
+};
+
+type EditOrderFormValues = {
+  manualSupplements: ManualSupplementValues[];
+}
+
+export type EditFormValues = EditTaskFormValues & EditOrderFormValues;
+
+export const getInitialFormValues = (task: Task, initialDeliveryFormData: PutDeliveryBody) => {
+
+  const initialTaskData = initialDeliveryFormData.tasks?.find(t => t.id === task.id);
+
+  //FIXME: get more data from 'initialTaskData' instead of 'task' object
+  // for example, weight and packages must be coming from 'initialTaskData' as in 'task' we can get a sum of all packages/weight belonging to other tasks
 
   return {
+    // Task-level fields
     telephone: task.address?.telephone || '',
     contactName: task.address?.contactName || '',
     businessName: task.address?.name || '',
@@ -57,18 +80,14 @@ export const getInitialFormValues = (task: Task) => {
     timeSlot: undefined,
     before: task.before || '',
     after: task.after || '',
-    weight: task.weight ? `${task.weight / 1000}` : '0',
+    weight: initialTaskData?.weight ? `${initialTaskData.weight / 1000}` : '0',
     packages: undefined,
-  } as EditTaskFormValues;
+    // Order-level fields
+    manualSupplements: initialDeliveryFormData.order?.manualSupplements ?? [],
+  } as EditFormValues
 };
 
-const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: EditTaskFormValues, formTouchedFields?: FormikTouched<EditTaskFormValues>) => {
-  const order = {
-    order: {
-      manualSupplements: task.selectedSupplements,
-    },
-  };
-
+const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: EditFormValues, formTouchedFields?: FormikTouched<EditFormValues>) => {
   //TODO: read all task-related fields from formValues/formik instead of task/ReportFormContext
 
   const taskPayload = {
@@ -94,6 +113,13 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
     taskPayload.packages = formValues.packages;
   }
 
+  const orderPayload = {
+  } as OrderPayload
+
+  if (formTouchedFields?.manualSupplements && formValues) {
+    orderPayload.manualSupplements = formValues.manualSupplements;
+  }
+
   const suggestion = {
     suggestion: {
       tasks: [
@@ -102,13 +128,13 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
           ...taskPayload
         },
       ],
+      order: orderPayload,
     },
   };
 
   const metadata = [
-    task.selectedSupplements ? order : null,
-    task ? suggestion : null,
-  ].filter(item => item !== null);
+    suggestion,
+  ];
 
   return metadata;
 };
@@ -141,13 +167,4 @@ export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
     default:
       return {};
   }
-};
-
-export const mapSupplements = supplements => {
-  return supplements.map(supplement => {
-    return {
-      pricingRule: supplement?.originalRule?.['@id'] || '',
-      quantity: supplement?.quantity,
-    };
-  });
 };

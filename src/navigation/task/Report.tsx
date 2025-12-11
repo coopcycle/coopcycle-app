@@ -1,7 +1,7 @@
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import Complete from './Complete';
-import { EditTask } from './Edit';
+import { Edit } from './Edit';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
@@ -64,7 +64,7 @@ export const ReportContent = () => {
               styles.tabContent,
               currentTab === 'edit' ? styles.visible : styles.hidden,
             ]}>
-            <EditTask task={task} currentTab={currentTab}/>
+            <Edit task={task} currentTab={currentTab}/>
           </View>
         </View>
       </VStack>
