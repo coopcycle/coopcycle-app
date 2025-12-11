@@ -5,7 +5,6 @@ import { Text } from '@/components/ui/text';
 import {
   SupplementWithQuantity,
 } from '@/src/navigation/task/hooks/useSupplements';
-import { Uri } from '@/src/redux/api/types';
 import { useFormikContext } from 'formik';
 import { EditFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { ManualSupplementValues } from '@/src/types/task';
