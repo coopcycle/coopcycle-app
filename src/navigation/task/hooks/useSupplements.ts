@@ -42,7 +42,8 @@ export const useSupplements = (store?: Store) => {
             isRangeBased: isRangeBased(rule),
             quantity: 0,
           }) as SupplementWithQuantity,
-      );
+      )
+      .sort((a, b) => a.position - b.position);
 
     setSupplements(deliverySupplements);
   }, [pricingRulesData]);
