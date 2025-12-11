@@ -37,10 +37,11 @@ export const ManualSupplement = ({
         />
       ) : (
         <Checkbox
+          value={item['@id']}
           isChecked={item.quantity > 0}
           testID={`supplement-${item.position}`}
-          onChange={value => {
-            if (value) {
+          onChange={isSelected => {
+            if (isSelected) {
               handleIncrement(item);
             } else {
               handleDecrement(item);
