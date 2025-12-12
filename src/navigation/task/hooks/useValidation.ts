@@ -8,7 +8,8 @@ import {
 import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { FormikErrors } from 'formik';
 import { Store } from '@/src/redux/api/types';
-import { useFormUtils } from '@/src/navigation/task/hooks/useFormUtils';
+import { useSelector } from 'react-redux';
+import { selectCountry } from '@/src/redux/App/selectors';
 
 export const useValidation = (
   validAddress: boolean,
@@ -16,7 +17,7 @@ export const useValidation = (
 ) => {
   const { t } = useTranslation();
 
-  const { country } = useFormUtils(store);
+  const country = useSelector(selectCountry);
 
   const validate = useCallback(
     (values: EditTaskFormValues) => {

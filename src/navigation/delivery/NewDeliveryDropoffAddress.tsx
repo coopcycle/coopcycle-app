@@ -14,15 +14,14 @@ import {
 import ModalFormWrapper from './ModalFormWrapper';
 import { NewDeliveryDropoffAddressFormValues } from '@/src/navigation/delivery/utils';
 import { AddressFields } from '@/src/navigation/delivery/components/AddressFields';
+import { selectCountry } from '@/src/redux/App/selectors';
 
 function NewDeliveryDropoffAddress({ navigation, route }) {
 
   const backgroundColor = useBackgroundContainerColor();
   const primaryColor = usePrimaryColor();
 
-  const country = useSelector(state =>
-    state.app.settings.country.toUpperCase(),
-  );
+  const country = useSelector(selectCountry);
 
   const { t } = useTranslation();
 

@@ -24,6 +24,7 @@ import { AsYouType } from 'libphonenumber-js';
 import { Address } from '@/src/redux/api/types';
 import { AutocompleteAddress } from '@/src/utils/Address';
 import { FormField } from '@/src/navigation/task/components/FormField';
+import { selectCountry } from '@/src/redux/App/selectors';
 
 export const AddressFields = () => {
   const { t } = useTranslation();
@@ -32,13 +33,11 @@ export const AddressFields = () => {
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
+  const country = useSelector(selectCountry);
+
   const store = useSelector(selectStore);
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
-
-  const country = useSelector(state =>
-    state.app.settings.country.toUpperCase(),
-  );
 
   const dispatch = useDispatch();
 

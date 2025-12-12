@@ -24,6 +24,7 @@ import {
 import ModalFormWrapper from './ModalFormWrapper';
 import { AddressFields } from '@/src/navigation/delivery/components/AddressFields';
 import { NewDeliveryPickupAddressFormValues } from '@/src/navigation/delivery/utils';
+import { selectCountry } from '@/src/redux/App/selectors';
 
 function NewDeliveryPickupAddress({ navigation }) {
   const [customAddress, setCustomAddress] = useState(false);
@@ -31,9 +32,7 @@ function NewDeliveryPickupAddress({ navigation }) {
   const backgroundColor = useBackgroundContainerColor();
   const primaryColor = usePrimaryColor();
 
-  const country = useSelector(state =>
-    state.app.settings.country.toUpperCase(),
-  );
+  const country = useSelector(selectCountry);
   const store = useSelector(selectStore);
 
   const { t } = useTranslation();
