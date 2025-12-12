@@ -21,10 +21,12 @@ const Tab = createBottomTabNavigator();
 
 const Tabs = () => (
   <Tab.Navigator
-    screenOptions={{
-      headerShown: false,
+    screenOptions={({ navigation }) => useStackNavigatorScreenOptions({
       tabBarShowLabel: false,
-    }}>
+      headerTitle: i18n.t('COURIER'),
+      headerLeft: () => <HeaderLeftButton navigation={navigation} />,
+      headerRight: () => <HeaderRightBody navigation={navigation}/>,
+    })}>
     <Tab.Screen
       name="CourierTaskMap"
       component={screens.CourierTaskMapPage}
@@ -73,9 +75,7 @@ const MainNavigator = () => {
         name="CourierHome"
         component={Tabs}
         options={({ navigation }) => ({
-          headerTitle: i18n.t('COURIER'),
-          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
-          headerRight: () => <HeaderRightBody navigation={navigation}/>,
+          headerShown: false,
         })}
       />
       <MainStack.Screen
