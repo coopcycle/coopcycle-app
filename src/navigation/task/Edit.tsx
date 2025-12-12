@@ -60,7 +60,7 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
               contentContainerStyle={{ flexGrow: 1 }}>
               <VStack space={4} style={styles.content}>
                 <FormControl style={styles.formControl}>
-                  <EditTaskFields task={task} />
+                  <EditTaskFields store={store} task={task} />
                   {/* Supplements */}
                   {availableSupplements && availableSupplements.length > 0 && (
                     <>

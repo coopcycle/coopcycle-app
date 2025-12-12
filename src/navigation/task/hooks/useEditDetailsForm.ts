@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Task } from '@/src/types/task';
-import { selectAssertDeliveryError } from '@/src/redux/Delivery/selectors';
 import { useValidation } from '@/src/navigation/task/hooks/useValidation';
 import { getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import {
@@ -16,13 +14,10 @@ export const useEditDetailsForm = (task: Task) => {
     skip: !task?.metadata?.store,
   });
 
-  const deliveryError = useSelector(selectAssertDeliveryError);
-
   // Handlers
-
-  //TODO: fix validAddress
-  const validate = useValidation(undefined, store);
-  // const validate = useValidation(validAddress, store);
+  // don't validate address while reporting an incident, maybe we should
+  const validAddress = true;
+  const validate = useValidation(validAddress, store);
 
   const initialValues = useMemo(() => {
     if (!initialDeliveryFormData) {
@@ -34,9 +29,7 @@ export const useEditDetailsForm = (task: Task) => {
 
   return {
     store,
-    deliveryError,
-
+    initialValues,
     validate,
-    initialValues
   };
 };

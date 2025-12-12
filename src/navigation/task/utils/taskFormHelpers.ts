@@ -1,13 +1,14 @@
-import _ from 'lodash';
+import { FormikTouched } from 'formik';
 import {
   EditTaskPayload,
   OrderPayload,
   PutDeliveryBody,
   Task,
+  TaskAddress,
 } from '@/src/types/task';
 import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
-import { FormikTouched } from 'formik';
 import {
+  BaseAddressFields,
   BaseDateTimeFields,
   BasePackagesFields,
   BaseTimeSlotFields,
@@ -15,36 +16,8 @@ import {
 } from '@/src/navigation/delivery/utils';
 import { Uri } from '@/src/redux/api/types';
 
-export const getAutocompleteProps = deliveryError => {
-  const baseProps = {
-    inputContainerStyle: {
-      flex: 1,
-      borderWidth: 0,
-    },
-    textInputStyle: {
-      padding: 10,
-    },
-  };
-
-  return !_.isEmpty(deliveryError)
-    ? {
-        ...baseProps,
-        inputContainerStyle: {
-          ...baseProps.inputContainerStyle,
-          borderColor: '#FF4136',
-        },
-      }
-    : baseProps;
-};
-
-
-export type EditTaskFormValues = {
-  address: string;
-  contactName: string;
-  businessName: string;
-  telephone: string;
-  description: string;
-} & (BaseTimeSlotFields | BaseDateTimeFields) &
+export type EditTaskFormValues = BaseAddressFields &
+  (BaseTimeSlotFields | BaseDateTimeFields) &
   Partial<BaseWeightFields> &
   Partial<BasePackagesFields>;
 
@@ -68,11 +41,15 @@ export const getInitialFormValues = (task: Task, initialDeliveryFormData: PutDel
 
   return {
     // Task-level fields
-    telephone: task.address?.telephone || '',
-    contactName: task.address?.contactName || '',
+    address: {
+      streetAddress: task.address?.streetAddress || '',
+      geo: task.address?.geo || null,
+    },
     businessName: task.address?.name || '',
+    contactName: task.address?.contactName || '',
+    telephone: task.address?.telephone || '',
     description: task.address?.description || '',
-    address: task.address?.streetAddress || '',
+    isValidAddress: true,
     //FIXME: pre-fill the time slot from the task (we don't store selected timeSlot on the task yet)
     // timeSlotUrl: task?.timeSlotUrl || undefined,
     timeSlotUrl: undefined,
@@ -87,12 +64,40 @@ export const getInitialFormValues = (task: Task, initialDeliveryFormData: PutDel
   } as EditFormValues
 };
 
-const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: EditFormValues, formTouchedFields?: FormikTouched<EditFormValues>) => {
-  //TODO: read all task-related fields from formValues/formik instead of task/ReportFormContext
+const buildMetadataPayload = (
+  id: number,
+  formValues?: EditFormValues,
+  formTouchedFields?: FormikTouched<EditFormValues>,
+) => {
+  const taskPayload = {} as EditTaskPayload;
 
-  const taskPayload = {
-    ...task
-  } as EditTaskPayload;
+  const _address = {} as Partial<TaskAddress>;
+
+  if (formTouchedFields?.address && formValues) {
+    Object.assign(_address, {
+      ...formValues.address,
+    });
+  }
+
+  if (formTouchedFields?.businessName && formValues) {
+    _address.name = formValues.businessName;
+  }
+
+  if (formTouchedFields?.contactName && formValues) {
+    _address.contactName = formValues.contactName;
+  }
+
+  if (formTouchedFields?.telephone && formValues) {
+    _address.telephone = formValues.telephone;
+  }
+
+  if (formTouchedFields?.description && formValues) {
+    _address.description = formValues.description;
+  }
+
+  if (Object.keys(_address).length > 0) {
+    taskPayload.address = _address;
+  }
 
   if (formTouchedFields?.timeSlotUrl && formValues) {
     taskPayload.timeSlotUrl = formValues.timeSlotUrl;
@@ -106,15 +111,16 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
   }
 
   if (formTouchedFields?.weight && formValues) {
-    taskPayload.weight = formValues.weight ? Number(formValues.weight) * 1000 : undefined;
+    taskPayload.weight = formValues.weight
+      ? Number(formValues.weight) * 1000
+      : undefined;
   }
 
   if (formTouchedFields?.packages && formValues) {
     taskPayload.packages = formValues.packages;
   }
 
-  const orderPayload = {
-  } as OrderPayload
+  const orderPayload = {} as OrderPayload;
 
   if (formTouchedFields?.manualSupplements && formValues) {
     orderPayload.manualSupplements = formValues.manualSupplements;
@@ -125,23 +131,21 @@ const buildMetadataPayload = (task: Partial<Task>, id: number, formValues?: Edit
       tasks: [
         {
           id: id,
-          ...taskPayload
+          ...taskPayload,
         },
       ],
       order: orderPayload,
     },
   };
 
-  const metadata = [
-    suggestion,
-  ];
+  const metadata = [suggestion];
 
   return metadata;
 };
 
 export const buildReportIncidentPayload = (report: FormStateToSend, formValues?: EditTaskFormValues, formTouchedFields?: FormikTouched<EditTaskFormValues>) => {
 
-  const metadata = buildMetadataPayload(report.updatedTask, report.task.id, formValues, formTouchedFields);
+  const metadata = buildMetadataPayload(report.task.id, formValues, formTouchedFields);
   const payload = {
     description: report.notes,
     failureReasonCode: report.failureReason,
@@ -150,21 +154,4 @@ export const buildReportIncidentPayload = (report: FormStateToSend, formValues?:
 
   if (metadata.length > 0) payload.metadata = metadata;
   return payload;
-};
-
-export const buildUpdatedTaskFields = (field, value): Partial<Task> => {
-  switch (field) {
-    case 'address':
-      return { address: value.streetAddress };
-    case 'telephone':
-      return { telephone: value };
-      case 'contactName':
-      return { contactName: value };
-    case 'businessName':
-      return { businessName: value };
-      case 'description':
-      return { description: value };
-    default:
-      return {};
-  }
 };

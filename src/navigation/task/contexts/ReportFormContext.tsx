@@ -6,16 +6,11 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import {
-  buildUpdatedTaskFields,
-} from '../utils/taskFormHelpers';
 import { Uri } from '@/src/redux/api/types';
 
 interface FormState {
   // EDIT TASK FIELDS
   values: Record<string, unknown> | null;
-  address: string | null;
-  telephone?: string;
   // REPORT INCIDENT FIELDS
   failureReason?: string;
   notes: string;
@@ -26,7 +21,6 @@ export interface FormStateToSend {
   failureReason: string;
   notes: string;
   task: Task;
-  updatedTask: Record<string, unknown>;
   taskID: Uri;
 }
 
@@ -62,14 +56,11 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     failureReason: '',
     notes: '',
     task: initialTask || {},
-    updatedTask: {},
     taskID: initialTask?.['@id'] || '',
   } as FormStateToSend);
 
   const [formState, setFormState] = useState<FormState>({
     values: null,
-    telephone: initialTask?.address?.telephone || '',
-    address: initialTask?.address ?? null,
     // REPORT INCIDENT FIELDS
     failureReason: '',
     failureReasonMetadata: {},
@@ -107,8 +98,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     setFormStateToSend(prev => {
       const updates = {} as Partial<FormStateToSend>;
 
-      let updatedTask = { ...prev.updatedTask };
-
       switch (field) {
         case 'failureReason':
         updates.failureReason = (value as string) ?? '';
@@ -117,12 +106,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
           updates.notes = (value as string) ?? '';
           break;
         default:
-          const taskUpdates = { ...buildUpdatedTaskFields(field, value) };
-          updatedTask = {
-            ...updatedTask,
-            ...taskUpdates
-          };
-          updates.updatedTask = updatedTask;
           break;
       }
 
@@ -138,7 +121,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
   const resetForm = useCallback(() => {
     setFormState({
       values: null,
-      address: initialTask?.address ?? null,
     });
   }, [initialTask]);
 

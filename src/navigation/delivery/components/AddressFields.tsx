@@ -23,6 +23,7 @@ import { assertDelivery } from '@/src/redux/Delivery/actions';
 import { AsYouType } from 'libphonenumber-js';
 import { Address } from '@/src/redux/api/types';
 import { AutocompleteAddress } from '@/src/utils/Address';
+import { FormField } from '@/src/navigation/task/components/FormField';
 
 export const AddressFields = () => {
   const { t } = useTranslation();
@@ -77,19 +78,27 @@ export const AddressFields = () => {
   }
 
   function setAddressData(data: Address) {
-    const contactName = data.contactName || '';
-    const telephone = data.telephone || '';
-    const businessName = data.name || '';
-    const description = data.description || '';
-
-    setFieldValue('contactName', contactName);
-    setFieldValue('telephone', telephone);
-    setFieldValue('businessName', businessName);
-    setFieldValue('description', description);
     setFieldValue('address', {
       geo: data.geo,
       streetAddress: data.streetAddress,
     });
+    setFieldTouched('address');
+
+    const businessName = data.name || '';
+    setFieldValue('businessName', businessName);
+    setFieldTouched('businessName');
+
+    const contactName = data.contactName || '';
+    setFieldValue('contactName', contactName);
+    setFieldTouched('contactName');
+
+    const telephone = data.telephone || '';
+    setFieldValue('telephone', telephone);
+    setFieldTouched('telephone');
+
+    const description = data.description || '';
+    setFieldValue('description', description);
+    setFieldTouched('description');
   }
 
   function onSelectAddress(addr: AutocompleteAddress) {
@@ -97,6 +106,7 @@ export const AddressFields = () => {
       setAddressData(addr);
     } else {
       setFieldValue('address', addr);
+      setFieldTouched('address');
     }
 
     const delivery = {
@@ -121,22 +131,22 @@ export const AddressFields = () => {
 
   return (
     <>
+      {/* Client Search */}
       <View style={[styles.formGroup, { zIndex: 2 }]}>
-        <Text style={styles.label}>
-          {t('STORE_NEW_DELIVERY_SEARCH_CLIENT')}{' '}
-          <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-        </Text>
-        <View style={styles.autocompleteWrapper}>
-          <ClientListInput
-            onSelectAddress={a => {
-              setAddressData(a);
-              setFieldValue('isValidAddress', true);
-            }}
-            addresses={addresses}
-            placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
-          />
-        </View>
+        <FormField label={t('STORE_NEW_DELIVERY_SEARCH_CLIENT')} optional>
+          <View style={styles.autocompleteWrapper}>
+            <ClientListInput
+              addresses={addresses}
+              placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+              onSelectAddress={a => {
+                setAddressData(a);
+                setFieldValue('isValidAddress', true);
+              }}
+            />
+          </View>
+        </FormField>
       </View>
+      {/* Address Section */}
       <View style={[styles.formGroup, { zIndex: 1 }]}>
         <Text style={styles.label}>
           {t('STORE_NEW_DELIVERY_ADDRESS')}
@@ -176,11 +186,12 @@ export const AddressFields = () => {
           </Text>
         )}
       </View>
-      <View style={[styles.formGroup]}>
-        <Text style={styles.label}>
-          {t('STORE_NEW_DELIVERY_BUSINESS_NAME')}{' '}
-          <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-        </Text>
+      {/* Client Name / Address Name */}
+      <FormField
+        label={t('STORE_NEW_DELIVERY_BUSINESS_NAME')}
+        optional
+        error={errors.businessName}
+        touched={touched.businessName}>
         <FormInput
           autoCorrect={false}
           returnKeyType="done"
@@ -188,18 +199,15 @@ export const AddressFields = () => {
           onBlur={handleBlur('businessName')}
           value={values.businessName}
           placeholder={t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
+          testID="business-name-input"
         />
-        {errors.businessName && touched.businessName && (
-          <Text note style={styles.errorText}>
-            {errors.businessName}
-          </Text>
-        )}
-      </View>
-      <View style={[styles.formGroup]}>
-        <Text style={styles.label}>
-          {t('STORE_NEW_DELIVERY_CONTACT_NAME')}{' '}
-          <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-        </Text>
+      </FormField>
+      {/* Contact Name */}
+      <FormField
+        label={t('STORE_NEW_DELIVERY_CONTACT_NAME')}
+        optional
+        error={errors.contactName}
+        touched={touched.contactName}>
         <FormInput
           autoCorrect={false}
           returnKeyType="done"
@@ -207,16 +215,14 @@ export const AddressFields = () => {
           onBlur={handleBlur('contactName')}
           value={values.contactName}
           placeholder={t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
-          testID="delivery__dropoff__contact_name"
+          testID="contact-name-input"
         />
-        {errors.contactName && touched.contactName && (
-          <Text note style={styles.errorText}>
-            {errors.contactName}
-          </Text>
-        )}
-      </View>
-      <View style={[styles.formGroup]}>
-        <Text style={styles.label}>{t('STORE_NEW_DELIVERY_PHONE_NUMBER')}</Text>
+      </FormField>
+      {/* Telephone */}
+      <FormField
+        label={t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
+        error={errors.telephone}
+        touched={touched.telephone}>
         <FormInput
           autoCorrect={false}
           keyboardType="phone-pad"
@@ -225,19 +231,15 @@ export const AddressFields = () => {
           onBlur={handleBlur('telephone')}
           value={values.telephone}
           placeholder={t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
-          testID="delivery__dropoff__phone"
+          testID="telephone-input"
         />
-        {errors.telephone && touched.telephone && (
-          <Text note style={styles.errorText}>
-            {errors.telephone}
-          </Text>
-        )}
-      </View>
-      <View style={[styles.formGroup]}>
-        <Text style={styles.label}>
-          {t('STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION')}{' '}
-          <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-        </Text>
+      </FormField>
+      {/* Address Description */}
+      <FormField
+        label={t('STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION')}
+        optional
+        error={errors.description}
+        touched={touched.description}>
         <FormInput
           style={{
             height: 80,
@@ -248,8 +250,9 @@ export const AddressFields = () => {
           onBlur={handleBlur('description')}
           value={values.description}
           placeholder={t('STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION')}
+          testID="description-input"
         />
-      </View>
+      </FormField>
     </>
   );
 };
@@ -277,6 +280,9 @@ const styles = StyleSheet.create({
   errorInput: {
     borderColor: '#FF4136',
   },
+  formGroup: {
+    marginBottom: 10,
+  },
   label: {
     marginBottom: 8,
     fontWeight: '600',
@@ -285,9 +291,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     opacity: 0.7,
     fontSize: 12,
-  },
-  formGroup: {
-    marginBottom: 10,
   },
   errorText: {
     color: '#FF4136',
