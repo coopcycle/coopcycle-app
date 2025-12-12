@@ -67,11 +67,11 @@ function NewDeliveryPickupAddress({ navigation }) {
   }
 
   const initialValues: NewDeliveryPickupAddressFormValues = {
-    telephone: '',
-    contactName: '',
-    businessName: '',
-    description: '',
     address: undefined,
+    businessName: '',
+    contactName: '',
+    telephone: '',
+    description: '',
   };
 
   function submit(values: NewDeliveryPickupAddressFormValues) {
@@ -79,13 +79,13 @@ function NewDeliveryPickupAddress({ navigation }) {
       ? {
           address: {
             ...values.address,
-            description: values.description,
             name: values.businessName,
+            contactName: values.contactName,
             telephone: parsePhoneNumberFromString(
               values.telephone,
               country,
             ).format('E.164'),
-            contactName: values.contactName,
+            description: values.description,
           },
         }
       : undefined;
