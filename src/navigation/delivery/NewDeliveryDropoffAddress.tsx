@@ -53,22 +53,22 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
   }
 
   const initialValues: NewDeliveryDropoffAddressFormValues = {
-    telephone: '',
-    contactName: '',
-    businessName: '',
-    description: '',
     address: undefined,
+    businessName: '',
+    contactName: '',
+    telephone: '',
+    description: '',
   };
 
   function submit(values: NewDeliveryDropoffAddressFormValues) {
     const dropoff = {
       address: values.address,
-      description: values.description,
       businessName: values.businessName,
+      contactName: values.contactName,
       telephone: parsePhoneNumberFromString(values.telephone, country).format(
         'E.164',
       ),
-      contactName: values.contactName,
+      description: values.description,
     };
 
     navigation.navigate('NewDeliveryDropoffDetails', {
