@@ -83,32 +83,6 @@ export function handleChangeWeight(value: string, setFieldValue, setFieldTouched
   setFieldTouched('weight');
 }
 
-export function createUpdatedTaskBody(
-  values,
-  packagesCount,
-  selectedTimeSlot,
-  selectedChoice,
-  supplements,
-) {
-  return {
-    address: values.address,
-    telephone: values.telephone,
-    contactName: values.contactName,
-    name: values.businessName.trim() || null,
-    description: values.description.trim() || null,
-    comments: values.comments,
-    weight: values.weight * 1000,
-    supplements: supplements || [],
-    packages: packagesCount.filter(item => item.quantity > 0),
-    ...(selectedChoice
-      ? {
-          timeSlotUrl: selectedTimeSlot,
-          timeSlot: selectedChoice,
-        }
-      : { before: values.before }),
-    }
-  };
-
 export function validateDeliveryForm(
   values: NewDeliveryDropoffFormValues | EditTaskFormValues,
   hasTimeSlot: boolean,
