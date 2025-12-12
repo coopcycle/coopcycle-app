@@ -3,10 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 import { Text } from '@/components/ui/text';
-import {
-  BaseWeightFields,
-  handleChangeWeight,
-} from '@/src/navigation/delivery/utils';
+import { BaseWeightFields } from '@/src/navigation/delivery/utils';
 import FormInput from '@/src/navigation/delivery/components/FormInput';
 
 type Props = {};
@@ -22,6 +19,29 @@ export const WeightInput = ({}: Props) => {
     setFieldValue,
     setFieldTouched,
   } = useFormikContext<BaseWeightFields>();
+
+  function handleChangeWeight(value: string) {
+    let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
+
+    const firstDecimalIndex = newValue.indexOf('.');
+    if (firstDecimalIndex === 0) {
+      newValue = `0${newValue}`;
+    } else if (firstDecimalIndex !== -1) {
+      newValue =
+        newValue.substring(0, firstDecimalIndex + 1) +
+        newValue.substring(firstDecimalIndex + 1).replace(/\./g, '');
+    }
+
+    if (newValue.includes('.')) {
+      const decimalIndex = newValue.indexOf('.');
+      newValue =
+        newValue.substring(0, decimalIndex + 1) +
+        newValue.substring(decimalIndex + 1, decimalIndex + 4);
+    }
+
+    setFieldValue('weight', newValue);
+    setFieldTouched('weight');
+  }
 
   return (
     <View>

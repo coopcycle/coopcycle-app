@@ -60,29 +60,6 @@ export type NewDeliveryDropoffFormValues = NewDeliveryDropoffAddressFormValues &
     comments: string;
   };
 
-export function handleChangeWeight(value: string, setFieldValue, setFieldTouched) {
-  let newValue = value.replace(',', '.').replace(/[^0-9.]/g, '');
-
-  const firstDecimalIndex = newValue.indexOf('.');
-  if (firstDecimalIndex === 0) {
-    newValue = `0${newValue}`;
-  } else if (firstDecimalIndex !== -1) {
-    newValue =
-      newValue.substring(0, firstDecimalIndex + 1) +
-      newValue.substring(firstDecimalIndex + 1).replace(/\./g, '');
-  }
-
-  if (newValue.includes('.')) {
-    const decimalIndex = newValue.indexOf('.');
-    newValue =
-      newValue.substring(0, decimalIndex + 1) +
-      newValue.substring(decimalIndex + 1, decimalIndex + 4);
-  }
-
-  setFieldValue('weight', newValue);
-  setFieldTouched('weight');
-}
-
 export function validateDeliveryForm(
   values: NewDeliveryDropoffFormValues | EditTaskFormValues,
   hasTimeSlot: boolean,
