@@ -19,38 +19,44 @@ import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => (
-  <Tab.Navigator
-    screenOptions={({ navigation }) => useStackNavigatorScreenOptions({
-      tabBarShowLabel: false,
-      headerTitle: i18n.t('COURIER'),
-      headerLeft: () => <HeaderLeftButton navigation={navigation} />,
-      headerRight: () => <HeaderRightBody navigation={navigation}/>,
-    })}>
-    <Tab.Screen
-      name="CourierTaskMap"
-      component={screens.CourierTaskMapPage}
-      options={({ navigation }) => ({
-        tabBarLabel: i18n.t('TASKS'),
-        tabBarButtonTestID: 'messengerTabMap',
-        tabBarIcon: ({ color }) => {
-          return <Icon as={Map} size="xl" style={{ color }} />;
-        },
-      })}
-    />
-    <Tab.Screen
-      name="CourierTaskList"
-      component={screens.CourierTaskListPage}
-      options={({ navigation }) => ({
-        tabBarLabel: i18n.t('TASK_LIST'),
-        tabBarButtonTestID: 'messengerTabList',
-        tabBarIcon: ({ color }) => {
-          return <Icon as={List} size="xl" style={{ color }} />;
-        },
-      })}
-    />
-  </Tab.Navigator>
-);
+const Tabs = () => {
+
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <Tab.Navigator
+      screenOptions={({ navigation }) => ({
+        ...screenOptions,
+        tabBarShowLabel: false,
+        headerTitle: i18n.t('COURIER'),
+        headerLeft: () => <HeaderLeftButton navigation={navigation} />,
+        headerRight: () => <HeaderRightBody navigation={navigation}/>,
+      })}>
+      <Tab.Screen
+        name="CourierTaskMap"
+        component={screens.CourierTaskMapPage}
+        options={({ navigation }) => ({
+          tabBarLabel: i18n.t('TASKS'),
+          tabBarButtonTestID: 'messengerTabMap',
+          tabBarIcon: ({ color }) => {
+            return <Icon as={Map} size="xl" style={{ color }} />;
+          },
+        })}
+      />
+      <Tab.Screen
+        name="CourierTaskList"
+        component={screens.CourierTaskListPage}
+        options={({ navigation }) => ({
+          tabBarLabel: i18n.t('TASK_LIST'),
+          tabBarButtonTestID: 'messengerTabList',
+          tabBarIcon: ({ color }) => {
+            return <Icon as={List} size="xl" style={{ color }} />;
+          },
+        })}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const MainStack = createNativeStackNavigator();
 
