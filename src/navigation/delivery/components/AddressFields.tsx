@@ -156,7 +156,7 @@ export const AddressFields = ({
                 }}
               />
             ) : null}
-            {addresses && isLoadingAddresses ? <Spinner /> : null}
+            {isLoadingAddresses ? <Spinner /> : null}
           </View>
         </FormField>
       </View>
