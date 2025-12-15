@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
-  loadAddresses,
   setStore,
   setStores,
 } from '../../redux/Delivery/actions';
@@ -48,7 +47,6 @@ const NewDeliveryStore = props => {
 
   const onSelectStore = (store: Store) => {
     dispatch(setStore(store));
-    dispatch(loadAddresses(store));
     navigation.navigate('NewDeliveryPickupAddress');
   };
 

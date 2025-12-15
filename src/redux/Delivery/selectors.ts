@@ -1,6 +1,5 @@
 import { RootState } from '../store';
 
-export const selectAddresses = (state: RootState) => state.delivery.addresses;
 export const selectAssertDeliveryError = (state: RootState) =>
   state.delivery.assertDeliveryError;
 export const selectHasTimeSlot = (state: RootState) =>

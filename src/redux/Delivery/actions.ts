@@ -9,7 +9,6 @@ import { Store } from '@/src/redux/api/types';
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
 export const GET_PRICE_SUCCESS = '@delivery/GET_PRICE_SUCCESS';
-export const LOAD_ADDRESSES_SUCCESS = '@delivery/LOAD_ADDRESSES_SUCCESS';
 export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
@@ -24,16 +23,6 @@ export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
 export const setStore = createAction<Store>(SET_STORE);
 export const setStores = createAction<Store[]>(SET_STORES);
-
-const loadAddressesSuccess = createAction(
-  LOAD_ADDRESSES_SUCCESS,
-  (store, addresses) => ({
-    payload: {
-      store,
-      addresses,
-    },
-  }),
-);
 
 export function assertDelivery(delivery, onSuccess) {
   return (dispatch, getState) => {
@@ -93,24 +82,6 @@ export function createDelivery(delivery, onSuccess) {
       })
       .catch(e => {
         dispatch(setLoading(false));
-      });
-  };
-}
-
-export function loadAddresses(store) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-
-    return httpClient
-      .get(`${store['@id']}/addresses`)
-      .then(res => {
-        dispatch(loadAddressesSuccess(store, res['hydra:member']));
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
       });
   };
 }

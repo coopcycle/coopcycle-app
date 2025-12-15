@@ -12,7 +12,7 @@ import {
   loadDeliveries,
   loadMoreDeliveries,
 } from '../../redux/Store/actions';
-import { loadAddresses, setStore } from '../../redux/Delivery/actions';
+import { setStore } from '../../redux/Delivery/actions';
 import { RootState } from '@/src/redux/store';
 import { Store } from '@/src/redux/api/types';
 
@@ -78,7 +78,6 @@ function mapDispatchToProps(dispatch) {
     init: (store: Store) => {
       dispatch(init(store));
       dispatch(setStore(store));
-      dispatch(loadAddresses(store));
     },
     loadMoreDeliveries: () => dispatch(loadMoreDeliveries()),
   };

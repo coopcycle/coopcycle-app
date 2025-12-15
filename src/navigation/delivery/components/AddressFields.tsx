@@ -9,10 +9,7 @@ import { useFormikContext } from 'formik';
 import { BaseAddressFields } from '@/src/navigation/delivery/utils';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectAddresses,
-  selectAssertDeliveryError,
-} from '@/src/redux/Delivery/selectors';
+import { selectAssertDeliveryError } from '@/src/redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   useBackgroundHighlightColor,
@@ -24,25 +21,33 @@ import { Address, Store } from '@/src/redux/api/types';
 import { AutocompleteAddress } from '@/src/utils/Address';
 import { FormField } from '@/src/navigation/task/components/FormField';
 import { selectCountry } from '@/src/redux/App/selectors';
+import { useGetStoreAddressesQuery } from '@/src/redux/api/slice';
+import { Spinner } from '@/components/ui/spinner';
 
 type Props = {
   store: Store;
   shouldAssertDelivery?: boolean;
 };
 
-export const AddressFields = ({ shouldAssertDelivery = true }: Props) => {
+export const AddressFields = ({
+  store,
+  shouldAssertDelivery = true,
+}: Props) => {
   const { t } = useTranslation();
 
   const primaryColor = usePrimaryColor();
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
-  const country = useSelector(selectCountry);
+  const dispatch = useDispatch();
 
-  const addresses = useSelector(selectAddresses);
+  const country = useSelector(selectCountry);
   const deliveryError = useSelector(selectAssertDeliveryError);
 
-  const dispatch = useDispatch();
+  const { data: addresses, isLoading: isLoadingAddresses } =
+    useGetStoreAddressesQuery(store?.['@id'], {
+      skip: !store?.['@id'],
+    });
 
   const {
     values,
@@ -141,14 +146,17 @@ export const AddressFields = ({ shouldAssertDelivery = true }: Props) => {
       <View style={[styles.formGroup, { zIndex: 2 }]}>
         <FormField label={t('STORE_NEW_DELIVERY_SEARCH_CLIENT')} optional>
           <View style={styles.autocompleteWrapper}>
-            <ClientListInput
-              addresses={addresses}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
-              onSelectAddress={a => {
-                setAddressData(a);
-                setFieldValue('isValidAddress', true);
-              }}
-            />
+            {addresses ? (
+              <ClientListInput
+                addresses={addresses}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+                onSelectAddress={a => {
+                  setAddressData(a);
+                  setFieldValue('isValidAddress', true);
+                }}
+              />
+            ) : null}
+            {addresses && isLoadingAddresses ? <Spinner /> : null}
           </View>
         </FormField>
       </View>

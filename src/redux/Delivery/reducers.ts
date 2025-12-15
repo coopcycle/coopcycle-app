@@ -1,21 +1,18 @@
-import _ from 'lodash';
 import { PayloadAction, Reducer } from '@reduxjs/toolkit';
 
 import {
   ASSERT_DELIVERY_ERROR,
   GET_PRICE_ERROR,
   GET_PRICE_SUCCESS,
-  LOAD_ADDRESSES_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
   SET_STORE,
   SET_STORES,
 } from './actions';
 import { formatPrice } from '../../utils/formatting';
 import { LOGOUT_SUCCESS } from '../App/actions';
-import { Address, Store, TimeSlot } from '@/src/redux/api/types';
+import { Store, TimeSlot } from '@/src/redux/api/types';
 
 type DeliveryState = {
-  addresses: Address[];
   assertDeliveryError;
   price;
   priceExcludingTax;
@@ -25,7 +22,6 @@ type DeliveryState = {
 };
 
 const initialState: DeliveryState = {
-  addresses: [],
   assertDeliveryError: null,
   price: null,
   priceExcludingTax: null,
@@ -60,16 +56,6 @@ const reducer: Reducer<DeliveryState, PayloadAction<unknown>> = (state = initial
         price: null,
         priceExcludingTax: null,
       };
-
-    case LOAD_ADDRESSES_SUCCESS:
-      if (action.payload.store['@id'] === state.store['@id']) {
-        return {
-          ...state,
-          addresses: _.uniqBy(action.payload.addresses as Address[], '@id'),
-        };
-      }
-
-      break;
 
     case LOAD_TIME_SLOTS_SUCCESS:
       return {
