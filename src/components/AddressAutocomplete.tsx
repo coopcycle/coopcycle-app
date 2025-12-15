@@ -15,7 +15,7 @@ import qs from 'qs';
 import React, { useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import Autocomplete from 'react-native-autocomplete-input';
+import Autocomplete, { AutocompleteInputProps } from 'react-native-autocomplete-input';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -48,7 +48,13 @@ const fuseOptions = {
   keys: ['contactName', 'streetAddress'],
 };
 
-interface AddressAutocompleteProps {
+type Item = {
+  type: string;
+  // description: string;
+  // place_id?: string;
+};
+
+type AddressAutocompleteProps = AutocompleteInputProps<Item> & {
   // if value is a string, it's the streetAddress
   value?: {
     streetAddress?: string;
@@ -56,8 +62,8 @@ interface AddressAutocompleteProps {
   } | string;
   minChars?: number;
   addresses?: unknown[];
-  renderRight?(...args: unknown[]): unknown;
-  onMapPickerPress?(...args: unknown[]): unknown;
+  renderRight?: (...args: unknown[]) => unknown;
+  onMapPickerPress?: (...args: unknown[]) => unknown;
   onSelectAddress: (address: AutocompleteAddress) => void;
   mapPickerStyle?: "small" | "large";
 }
@@ -86,7 +92,7 @@ function AddressAutocomplete({
   const [query, setQuery] = useState(
     _.isObject(value) ? value.streetAddress || '' : value || '',
   );
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Item[]>([]);
   const [postcode, setPostcode] = useState(
     _.isObject(value) ? { postcode: value.postalCode } : null,
   );
@@ -568,8 +574,8 @@ function mapStateToProps(state) {
   };
 }
 
-function withHooks(ClassComponent) {
-  return function CompWithHook(props) {
+function withHooks(ClassComponent: React.ComponentType<AddressAutocompleteProps>) {
+  return function CompWithHook(props: AddressAutocompleteProps) {
     const baseTextColor = useBaseTextColor();
 
     const itemTextColor = useColorModeValue('#856404', baseTextColor);
