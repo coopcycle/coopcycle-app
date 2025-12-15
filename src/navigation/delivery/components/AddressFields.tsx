@@ -157,7 +157,7 @@ export const AddressFields = () => {
             addresses={[]}
             onChangeText={() => {
               if (values.isValidAddress) setFieldValue('isValidAddress', false);
-              handleChange('address');
+              setFieldTouched('address');
             }}
             onBlur={handleBlur('address')}
             value={values.address}
