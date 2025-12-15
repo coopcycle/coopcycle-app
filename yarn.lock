@@ -5489,13 +5489,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-picker/picker@npm:^2.11.2":
-  version: 2.11.2
-  resolution: "@react-native-picker/picker@npm:2.11.2"
+"@react-native-picker/picker@npm:^2.11.4":
+  version: 2.11.4
+  resolution: "@react-native-picker/picker@npm:2.11.4"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/f9a6449797311367d52c5a0ef692fd76784ff151696db3702b21e8e94ddbd209494c0362281a55f197c43d5da67d5337046f95c4e79fdb63a493ff3565cb689e
+  checksum: 10c0/3c9947c1a3022ffa35008cc479b718585b106ff70a5fb0f24c4117bf2eaaf5f60795cba20271af50a01d3a878d5dc06661ea1c1315664898524e291e7412a18f
   languageName: node
   linkType: hard
 
@@ -9217,7 +9217,7 @@ __metadata:
     "@react-native-firebase/messaging": "npm:^22.0.0"
     "@react-native-google-signin/google-signin": "npm:7.0.4"
     "@react-native-masked-view/masked-view": "npm:^0.3.2"
-    "@react-native-picker/picker": "npm:^2.11.2"
+    "@react-native-picker/picker": "npm:^2.11.4"
     "@react-native/babel-preset": "npm:0.81.5"
     "@react-native/eslint-config": "npm:0.81.5"
     "@react-native/metro-config": "npm:0.81.5"

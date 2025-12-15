@@ -34,7 +34,7 @@
     "@react-native-firebase/messaging": "^22.0.0",
     "@react-native-google-signin/google-signin": "7.0.4",
     "@react-native-masked-view/masked-view": "^0.3.2",
-    "@react-native-picker/picker": "^2.11.2",
+    "@react-native-picker/picker": "^2.11.4",
     "@react-navigation/bottom-tabs": "^7.8.5",
     "@react-navigation/drawer": "^7.7.3",
     "@react-navigation/elements": "^2.8.2",
