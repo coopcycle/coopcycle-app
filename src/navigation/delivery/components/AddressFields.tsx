@@ -26,7 +26,11 @@ import { AutocompleteAddress } from '@/src/utils/Address';
 import { FormField } from '@/src/navigation/task/components/FormField';
 import { selectCountry } from '@/src/redux/App/selectors';
 
-export const AddressFields = () => {
+type Props = {
+  shouldAssertDelivery?: boolean;
+};
+
+export const AddressFields = ({ shouldAssertDelivery = true }: Props) => {
   const { t } = useTranslation();
 
   const primaryColor = usePrimaryColor();
@@ -116,11 +120,15 @@ export const AddressFields = () => {
       },
     };
 
-    dispatch(
-      assertDelivery(delivery, () => {
-        setFieldValue('isValidAddress', true);
-      }),
-    );
+    if (shouldAssertDelivery) {
+      dispatch(
+        assertDelivery(delivery, () => {
+          setFieldValue('isValidAddress', true);
+        }),
+      );
+    } else {
+      setFieldValue('isValidAddress', true);
+    }
   }
 
   function handleChangeTelephone(value) {
