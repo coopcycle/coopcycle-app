@@ -36,6 +36,7 @@ import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
 import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
 import ItemSeparator from './ItemSeparator';
 import MapPickerScreen from './MapPickerModal';
+import { Address } from '@/src/redux/api/types';
 
 const fuseOptions = {
   shouldSort: true,
@@ -61,10 +62,10 @@ type AddressAutocompleteProps = AutocompleteInputProps<Item> & {
     postalCode?: string;
   } | string;
   minChars?: number;
-  addresses?: unknown[];
+  addresses?: Address[];
   renderRight?: (...args: unknown[]) => unknown;
   onMapPickerPress?: (...args: unknown[]) => unknown;
-  onSelectAddress: (address: AutocompleteAddress) => void;
+  onSelectAddress: (address: AutocompleteAddress|Address) => void;
   mapPickerStyle?: "small" | "large";
 }
 

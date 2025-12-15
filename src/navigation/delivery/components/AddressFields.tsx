@@ -103,7 +103,7 @@ export const AddressFields = ({ shouldAssertDelivery = true }: Props) => {
     setFieldTouched('description');
   }
 
-  function onSelectAddress(addr: AutocompleteAddress) {
+  function onSelectAddress(addr: AutocompleteAddress | Address) {
     if (addr['@id']) {
       setAddressData(addr);
     } else {
@@ -168,7 +168,9 @@ export const AddressFields = ({ shouldAssertDelivery = true }: Props) => {
             }}
             onBlur={handleBlur('address')}
             value={values.address}
-            onSelectAddress={(e: AutocompleteAddress) => onSelectAddress(e)}
+            onSelectAddress={(e: AutocompleteAddress | Address) =>
+              onSelectAddress(e)
+            }
             containerStyle={{
               flex: 1,
               justifyContent: 'center',
