@@ -6,9 +6,11 @@ import { Text } from '@/components/ui/text';
 import { BaseWeightFields } from '@/src/navigation/delivery/utils';
 import FormInput from '@/src/navigation/delivery/components/FormInput';
 
-type Props = {};
+type Props = {
+  disabled?: boolean;
+};
 
-export const WeightInput = ({}: Props) => {
+export const WeightInput = ({ disabled = false }: Props) => {
   const { t } = useTranslation();
 
   const {
@@ -46,16 +48,15 @@ export const WeightInput = ({}: Props) => {
   return (
     <View>
       <FormInput
+        testID={'task-weight-input'}
         keyboardType="numeric"
         rightElement={<Text style={styles.weightUnit}>kg</Text>}
         autoCorrect={false}
         returnKeyType="done"
         value={values.weight}
         placeholder={t('STORE_NEW_DELIVERY_ENTER_WEIGHT')}
-        testID={'task-weight-input'}
-        onChangeText={value =>
-          handleChangeWeight(value, setFieldValue, setFieldTouched)
-        }
+        isDisabled={disabled}
+        onChangeText={value => handleChangeWeight(value)}
         onBlur={handleBlur('weight')}
       />
       {errors.weight && touched.weight && (

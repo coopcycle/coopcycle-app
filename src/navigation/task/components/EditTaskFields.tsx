@@ -55,7 +55,8 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
         label={t('STORE_NEW_DELIVERY_WEIGHT')}
         error={errors.weight}
         touched={touched.weight}>
-        <WeightInput />
+        {/* if it's not a task where we can edit packages, we assume the weight is not editable as well */}
+        <WeightInput disabled={!canEditPackages} />
       </FormField>
       {/* Packages */}
       {storePackages && storePackages.length > 0 && packagesWithQuantity ? (
