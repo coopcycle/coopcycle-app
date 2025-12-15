@@ -15,9 +15,8 @@ export const useEditDetailsForm = (task: Task) => {
   });
 
   // Handlers
-  // don't validate address while reporting an incident, maybe we should
-  const validAddress = true;
-  const validate = useValidation(validAddress, store);
+
+  const validate = useValidation(store);
 
   const initialValues = useMemo(() => {
     if (!initialDeliveryFormData) {

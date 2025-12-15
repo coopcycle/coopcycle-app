@@ -2,9 +2,6 @@ import { useCallback } from 'react';
 import _ from 'lodash';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import { useTranslation } from 'react-i18next';
-import {
-  validateDeliveryForm,
-} from '../../delivery/utils';
 import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { FormikErrors } from 'formik';
 import { Store } from '@/src/redux/api/types';
@@ -12,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { selectCountry } from '@/src/redux/App/selectors';
 
 export const useValidation = (
-  validAddress: boolean,
   store: Store,
 ) => {
   const { t } = useTranslation();
@@ -22,6 +18,11 @@ export const useValidation = (
   const validate = useCallback(
     (values: EditTaskFormValues) => {
       const errors = {} as FormikErrors<EditTaskFormValues>;
+
+      // Address validation
+      if (!values.isValidAddress) {
+        errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
+      }
 
       // Phone validation
       if (_.isEmpty(values.telephone)) {
@@ -36,22 +37,9 @@ export const useValidation = (
         }
       }
 
-      // Address validation
-      if (!validAddress) {
-        errors.address = t('STORE_NEW_DELIVERY_ADDRESS_HELP');
-      }
-
-      // Delivery validation
-      const deliveryErrors = validateDeliveryForm(
-        values,
-        false,
-        store,
-        t,
-      );
-
-      return { ...errors, ...deliveryErrors };
+      return errors;
     },
-    [validAddress, store, country, t],
+    [country, t],
   );
 
   return validate;
