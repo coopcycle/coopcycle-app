@@ -56,6 +56,7 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
           <SafeAreaView style={styles.wrapper}>
             <ScrollView
               testID="scrollView:edit"
+              keyboardShouldPersistTaps="handled" // tap is handled by the children in the forms
               style={styles.container}
               contentContainerStyle={{ flexGrow: 1 }}>
               <VStack space={4} style={styles.content}>
