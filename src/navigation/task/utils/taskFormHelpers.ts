@@ -71,32 +71,21 @@ const buildMetadataPayload = (
 ) => {
   const taskPayload = {} as EditTaskPayload;
 
-  const _address = {} as Partial<TaskAddress>;
-
-  if (formTouchedFields?.address && formValues) {
-    Object.assign(_address, {
+  if (
+    (formTouchedFields?.address ||
+      formTouchedFields?.businessName ||
+      formTouchedFields?.contactName ||
+      formTouchedFields?.telephone ||
+      formTouchedFields?.description) &&
+    formValues
+  ) {
+    taskPayload.address = {
       ...formValues.address,
-    });
-  }
-
-  if (formTouchedFields?.businessName && formValues) {
-    _address.name = formValues.businessName;
-  }
-
-  if (formTouchedFields?.contactName && formValues) {
-    _address.contactName = formValues.contactName;
-  }
-
-  if (formTouchedFields?.telephone && formValues) {
-    _address.telephone = formValues.telephone;
-  }
-
-  if (formTouchedFields?.description && formValues) {
-    _address.description = formValues.description;
-  }
-
-  if (Object.keys(_address).length > 0) {
-    taskPayload.address = _address;
+      name: formValues.businessName,
+      contactName: formValues.contactName,
+      telephone: formValues.telephone,
+      description: formValues.description,
+    };
   }
 
   if (formTouchedFields?.timeSlotUrl && formValues) {

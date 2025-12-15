@@ -196,11 +196,20 @@ export interface Task {
   traveledDistanceMeter: number;
 }
 
+type BaseAddressFields = {
+  streetAddress: string;
+  geo: Omit<GeoCoordinates, '@type'>;
+  name: string;
+  contactName: string;
+  telephone: string;
+  description: string;
+}
+
 /**
  * Task creation payload interface
  */
 type BaseTaskFields = {
-  address: Omit<TaskAddress, '@id' | '@type'>;
+  address: BaseAddressFields;
   comments?: string;
   packages?: { type: string; quantity: number }[];
   tags?: number[];
