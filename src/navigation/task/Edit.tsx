@@ -17,6 +17,7 @@ import { EditTaskFields } from '@/src/navigation/task/components/EditTaskFields'
 import { useEditDetailsForm } from '@/src/navigation/task/hooks/useEditDetailsForm';
 import { useTranslation } from 'react-i18next';
 import { useSupplements } from '@/src/navigation/task/hooks/useSupplements';
+import { Spinner } from '@/components/ui/spinner';
 
 interface TaskFormProps {
   task: Task;
@@ -34,9 +35,8 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
   const { supplements: availableSupplements } = useSupplements(store);
 
-  //FIXME: display loading state
   if (!initialValues) {
-    return null;
+    return <Spinner />;
   }
 
   return (
