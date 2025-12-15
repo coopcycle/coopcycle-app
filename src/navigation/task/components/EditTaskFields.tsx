@@ -46,7 +46,7 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
       </Text>
       {/* Time range (after/before or timeslot) */}
       <View style={styles.timeSlot}>
-        {timeSlots && hasTimeSlot ? (
+        {timeSlots && hasTimeSlot !== undefined ? (
           <EditTimeRange hasTimeSlot={hasTimeSlot} timeSlots={timeSlots} />
         ) : null}
       </View>
