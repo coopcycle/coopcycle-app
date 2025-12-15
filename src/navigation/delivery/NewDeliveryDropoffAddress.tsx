@@ -15,6 +15,7 @@ import ModalFormWrapper from './ModalFormWrapper';
 import { NewDeliveryDropoffAddressFormValues } from '@/src/navigation/delivery/utils';
 import { AddressFields } from '@/src/navigation/delivery/components/AddressFields';
 import { selectCountry } from '@/src/redux/App/selectors';
+import store from '@/src/redux/store';
 
 function NewDeliveryDropoffAddress({ navigation, route }) {
 
@@ -101,7 +102,7 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
               {t('STORE_NEW_DELIVERY_DROPOFF_DESCRIPTION')}
             </Text>
           </View>
-          <AddressFields />
+          <AddressFields store={store} />
         </ModalFormWrapper>
       )}
     </Formik>

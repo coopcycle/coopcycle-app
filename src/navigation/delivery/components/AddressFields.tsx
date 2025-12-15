@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectAddresses,
   selectAssertDeliveryError,
-  selectStore,
 } from '@/src/redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
@@ -21,12 +20,13 @@ import {
 } from '@/src/styles/theme';
 import { assertDelivery } from '@/src/redux/Delivery/actions';
 import { AsYouType } from 'libphonenumber-js';
-import { Address } from '@/src/redux/api/types';
+import { Address, Store } from '@/src/redux/api/types';
 import { AutocompleteAddress } from '@/src/utils/Address';
 import { FormField } from '@/src/navigation/task/components/FormField';
 import { selectCountry } from '@/src/redux/App/selectors';
 
 type Props = {
+  store: Store;
   shouldAssertDelivery?: boolean;
 };
 
@@ -39,7 +39,6 @@ export const AddressFields = ({ shouldAssertDelivery = true }: Props) => {
 
   const country = useSelector(selectCountry);
 
-  const store = useSelector(selectStore);
   const addresses = useSelector(selectAddresses);
   const deliveryError = useSelector(selectAssertDeliveryError);
 

@@ -137,7 +137,7 @@ function NewDeliveryPickupAddress({ navigation }) {
             </Checkbox>
           </View>
           <View style={customAddress ? {} : styles.disabled}>
-            <AddressFields />
+            <AddressFields store={store} />
           </View>
         </ModalFormWrapper>
       )}

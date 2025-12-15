@@ -39,7 +39,7 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
 
   return (
     <>
-      <AddressFields shouldAssertDelivery={false} />
+      <AddressFields store={store} shouldAssertDelivery={false} />
       {/* Packages and Timeslot Section */}
       <Text style={styles.sectionTitle}>
         {t('STORE_NEW_DELIVERY_PACKAGES_TITLE')}
