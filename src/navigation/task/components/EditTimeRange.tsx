@@ -11,10 +11,9 @@ import {
 import { CircleIcon } from '@/components/ui/icon';
 import { DateTimePicker } from '@/src/navigation/delivery/components/DateTimePicker';
 import TimeSlotPicker from '@/src/navigation/delivery/components/TimeSlotPicker';
-import { StoreTimeSlot } from '@/src/redux/api/types';
+import { BaseTimeSlotFields, StoreTimeSlot } from '@/src/redux/api/types';
 import { VStack } from '@/components/ui/vstack';
 import { useFormikContext } from 'formik';
-import { BaseTimeSlotFields } from '@/src/types/task';
 
 type Props = {
   hasTimeSlot: boolean;

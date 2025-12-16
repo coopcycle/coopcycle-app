@@ -7,8 +7,8 @@ import {
 } from '@/src/navigation/task/hooks/useSupplements';
 import { useFormikContext } from 'formik';
 import { EditFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
-import { ManualSupplementValues } from '@/src/types/task';
 import { ManualSupplement } from '@/src/navigation/task/components/ManualSupplement';
+import { ManualSupplementValues } from '@/src/redux/api/types';
 
 type Props = {
   availableSupplements: SupplementWithQuantity[];

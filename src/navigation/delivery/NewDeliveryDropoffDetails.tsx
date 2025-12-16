@@ -25,12 +25,10 @@ import {
   getInitialValues,
   validateDeliveryForm,
 } from './utils.tsx';
-import {
-  PostDeliveryBody,
-} from '@/src/types/task';
 import { useGetStorePackagesQuery } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
 import { WeightInput } from '@/src/navigation/delivery/components/WeightInput';
+import { PostDeliveryBody } from '@/src/redux/api/types';
 
 function NewDeliveryDropoffDetails({ navigation, route }) {
   const backgroundColor = useBackgroundContainerColor();

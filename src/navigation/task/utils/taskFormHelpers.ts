@@ -1,10 +1,6 @@
 import { FormikTouched } from 'formik';
 import {
-  EditTaskPayload,
-  OrderPayload,
-  PutDeliveryBody,
   Task,
-  TaskAddress,
 } from '@/src/types/task';
 import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
 import {
@@ -14,7 +10,14 @@ import {
   BaseTimeSlotFields,
   BaseWeightFields,
 } from '@/src/navigation/delivery/utils';
-import { Uri } from '@/src/redux/api/types';
+import {
+  EditTaskPayload,
+  IncidentPayload,
+  OrderPayload,
+  PutDeliveryBody,
+  SuggestionPayload,
+  Uri,
+} from '@/src/redux/api/types';
 
 export type EditTaskFormValues = BaseAddressFields &
   (BaseTimeSlotFields | BaseDateTimeFields) &
@@ -115,7 +118,7 @@ const buildMetadataPayload = (
     orderPayload.manualSupplements = formValues.manualSupplements;
   }
 
-  const suggestion = {
+  const suggestion: SuggestionPayload = {
     suggestion: {
       tasks: [
         {
@@ -135,7 +138,7 @@ const buildMetadataPayload = (
 export const buildReportIncidentPayload = (report: FormStateToSend, formValues?: EditTaskFormValues, formTouchedFields?: FormikTouched<EditTaskFormValues>) => {
 
   const metadata = buildMetadataPayload(report.task.id, formValues, formTouchedFields);
-  const payload = {
+  const payload: IncidentPayload = {
     description: report.notes,
     failureReasonCode: report.failureReason,
     task: report.taskID,

@@ -3,17 +3,7 @@
 // ====== TASK TYPES ======
 
 import { LucideIcon } from 'lucide-react-native';
-import { Uri } from '@/src/redux/api/types';
-
-/**
- * Task status enumeration
- */
-export type TaskStatus = 'TODO' | 'DOING' | 'DONE' | 'FAILED' | 'CANCELLED';
-
-/**
- * Task type enumeration
- */
-export type TaskType = 'PICKUP' | 'DROPOFF';
+import { TaskStatus, TaskType, Uri } from '@/src/redux/api/types';
 
 /**
  * Geographic coordinates interface
@@ -194,123 +184,6 @@ export interface Task {
   // Metrics and tracking
   emittedCo2: number;
   traveledDistanceMeter: number;
-}
-
-type BaseAddressFields = {
-  streetAddress: string;
-  geo: Omit<GeoCoordinates, '@type'>;
-  name: string;
-  contactName: string;
-  telephone: string;
-  description: string;
-}
-
-/**
- * Task creation payload interface
- */
-type BaseTaskFields = {
-  address: BaseAddressFields;
-  comments?: string;
-  packages?: { type: string; quantity: number }[];
-  tags?: number[];
-  weight?: number;
-  doorstep?: boolean;
-};
-
-export type BaseTimeSlotFields = {
-  timeSlotUrl: Uri;
-  timeSlot: string;
-  after?: never;
-  before?: never;
-};
-
-export type BaseDateTimeFields = {
-  after?: string;
-  before: string;
-  timeSlotUrl?: never;
-  timeSlot?: never;
-};
-
-export type CreatePickupOrDropoffTaskPayload = BaseTaskFields & (
-  | BaseTimeSlotFields
-  | BaseDateTimeFields
-  );
-
-export type CreateAnyTaskPayload = CreatePickupOrDropoffTaskPayload & {
-  type: TaskType;
-};
-
-export type ManualSupplementValues = {
-  pricingRule: Uri;
-  quantity: number;
-};
-
-export type OrderPayload = {
-  manualSupplements: ManualSupplementValues[];
-};
-
-export type PostDeliveryBody = {
-  store: Uri,
-  pickup: CreatePickupOrDropoffTaskPayload;
-  dropoff: CreatePickupOrDropoffTaskPayload;
-}
-
-export type EditTaskPayload = Partial<CreateAnyTaskPayload> & {
-  id: number;
-}
-
-export type PutDeliveryBody = {
-  store: Uri,
-  pickup?: EditTaskPayload;
-  dropoff?: EditTaskPayload;
-  tasks?: EditTaskPayload[];
-  order?: OrderPayload;
-}
-
-/**
- * Task update payload interface
- */
-export interface UpdateTaskPayload {
-  address?: Partial<Omit<TaskAddress, '@id' | '@type'>>;
-  after?: string;
-  before?: string;
-  comments?: string;
-  status?: TaskStatus;
-  metadata?: Partial<TaskMetadata>;
-  weight?: number;
-  doorstep?: boolean;
-}
-
-/**
- * Task list response interface
- */
-export interface TaskListResponse {
-  '@context': string;
-  '@id': string;
-  '@type': 'hydra:Collection';
-  'hydra:member': Task[];
-  'hydra:totalItems': number;
-  'hydra:view'?: {
-    '@id': string;
-    '@type': 'hydra:PartialCollectionView';
-    'hydra:first'?: string;
-    'hydra:last'?: string;
-    'hydra:next'?: string;
-    'hydra:previous'?: string;
-  };
-}
-
-/**
- * Task filter options interface
- */
-export interface TaskFilterOptions {
-  status?: TaskStatus[];
-  type?: TaskType[];
-  assignedTo?: number[];
-  tags?: number[];
-  after?: string;
-  before?: string;
-  organization?: string;
 }
 
 export interface TaskListProps {

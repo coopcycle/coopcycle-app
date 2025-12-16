@@ -7,6 +7,7 @@ import { DateOnlyString } from '../../utils/date-types';
 import {
   Address,
   PricingRuleSet,
+  PutDeliveryBody,
   Store,
   StorePackage,
   StoreTimeSlot,
@@ -14,7 +15,6 @@ import {
   TimeSlotChoices,
   Uri,
 } from './types';
-import { PutDeliveryBody } from '@/src/types/task';
 
 // Define our single API slice object
 export const apiSlice = createApi({

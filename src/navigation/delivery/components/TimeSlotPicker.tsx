@@ -5,8 +5,7 @@ import { useFormikContext } from 'formik';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
-import { StoreTimeSlot } from '@/src/redux/api/types';
-import { BaseTimeSlotFields } from '@/src/types/task';
+import { BaseTimeSlotFields, StoreTimeSlot } from '@/src/redux/api/types';
 import { TimeSlotChoiceSelect } from '@/src/navigation/delivery/components/TimeSlotChoiceSelect';
 import { useGetTimeSlotChoicesQuery } from '@/src/redux/api/slice';
 

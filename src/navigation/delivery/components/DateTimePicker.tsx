@@ -8,7 +8,7 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { moment } from '@/src/shared';
 import { Button, ButtonText } from '@/components/ui/button';
-import { BaseDateTimeFields } from '@/src/types/task';
+import { BaseDateTimeFields } from '@/src/redux/api/types';
 
 export const DateTimePicker = () => {
   const { t } = useTranslation();
