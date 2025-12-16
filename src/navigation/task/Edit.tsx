@@ -18,6 +18,7 @@ import { useEditDetailsForm } from '@/src/navigation/task/hooks/useEditDetailsFo
 import { useTranslation } from 'react-i18next';
 import { useSupplements } from '@/src/navigation/task/hooks/useSupplements';
 import { Spinner } from '@/components/ui/spinner';
+import { canEditTask } from '@/src/navigation/task/utils/taskFormHelpers';
 
 interface TaskFormProps {
   task: Task;
@@ -35,11 +36,15 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
   const { supplements: availableSupplements } = useSupplements(store);
 
-  if (!task.metadata?.order_number) {
+  if (!canEditTask(task)) {
     return (
       <SafeAreaView className="flex-1 align-items-center justify-center">
         <Text className="text-center">
-          {t('TASK_DETAILS_NO_ORDER_CAN_NOT_EDIT')}
+          {t(
+            task.metadata?.order_number
+              ? 'TASK_DETAILS_CAN_NOT_EDIT'
+              : 'TASK_DETAILS_CAN_NOT_EDIT_NO_ORDER',
+          )}
         </Text>
       </SafeAreaView>
     );

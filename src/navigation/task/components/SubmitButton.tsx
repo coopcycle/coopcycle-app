@@ -12,7 +12,7 @@ import { useReportFormContext } from '../contexts/ReportFormContext';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import { usePostIncidentMutation } from '@/src/redux/api/slice';
 import {
-  EditTaskFormValues,
+  EditFormValues,
   buildReportIncidentPayload,
 } from '../utils/taskFormHelpers';
 import { showAlert } from '@/src/utils/alert';
@@ -33,8 +33,8 @@ interface SubmitButtonProps {
   success: boolean;
   //Report Incident - Edit
   currentTab?: string;
-  formValues?: EditTaskFormValues;
-  formTouchedFields?: FormikTouched<EditTaskFormValues>;
+  formValues?: EditFormValues;
+  formTouchedFields?: FormikTouched<EditFormValues>;
   onPress?: () => void;
 }
 

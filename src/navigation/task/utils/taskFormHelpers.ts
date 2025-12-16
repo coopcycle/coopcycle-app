@@ -1,7 +1,5 @@
 import { FormikTouched } from 'formik';
-import {
-  Task,
-} from '@/src/types/task';
+import { Task } from '@/src/types/task';
 import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
 import {
   BaseAddressFields,
@@ -31,9 +29,13 @@ export type ManualSupplementValues = {
 
 type EditOrderFormValues = {
   manualSupplements: ManualSupplementValues[];
-}
+};
 
 export type EditFormValues = EditTaskFormValues & EditOrderFormValues;
+
+export const canEditTask = (task: Task) => {
+  return Boolean(task.metadata?.order_number);
+};
 
 export const getInitialFormValues = (
   task: Task,
@@ -72,76 +74,89 @@ export const getInitialFormValues = (
 };
 
 const buildMetadataPayload = (
-  id: number,
+  report: FormStateToSend,
   formValues?: EditFormValues,
   formTouchedFields?: FormikTouched<EditFormValues>,
 ) => {
-  const taskPayload = {} as EditTaskPayload;
+  let suggestion: SuggestionPayload | undefined;
 
-  if (
-    (formTouchedFields?.address ||
-      formTouchedFields?.businessName ||
-      formTouchedFields?.contactName ||
-      formTouchedFields?.telephone ||
-      formTouchedFields?.description) &&
-    formValues
-  ) {
-    taskPayload.address = {
-      ...formValues.address,
-      name: formValues.businessName,
-      contactName: formValues.contactName,
-      telephone: formValues.telephone,
-      description: formValues.description,
+  if (canEditTask(report.task)) {
+    const id = report.task.id;
+
+    const taskPayload = {} as EditTaskPayload;
+
+    if (
+      (formTouchedFields?.address ||
+        formTouchedFields?.businessName ||
+        formTouchedFields?.contactName ||
+        formTouchedFields?.telephone ||
+        formTouchedFields?.description) &&
+      formValues
+    ) {
+      taskPayload.address = {
+        ...formValues.address,
+        name: formValues.businessName,
+        contactName: formValues.contactName,
+        telephone: formValues.telephone,
+        description: formValues.description,
+      };
+    }
+
+    if (formTouchedFields?.timeSlotUrl && formValues) {
+      taskPayload.timeSlotUrl = formValues.timeSlotUrl;
+      taskPayload.timeSlot = formValues.timeSlot;
+    }
+    if (formTouchedFields?.after && formValues) {
+      taskPayload.after = formValues.after;
+    }
+    if (formTouchedFields?.before && formValues) {
+      taskPayload.before = formValues.before;
+    }
+
+    if (formTouchedFields?.weight && formValues) {
+      taskPayload.weight = formValues.weight
+        ? Number(formValues.weight) * 1000
+        : undefined;
+    }
+
+    if (formTouchedFields?.packages && formValues) {
+      taskPayload.packages = formValues.packages;
+    }
+
+    const orderPayload = {} as OrderPayload;
+
+    if (formTouchedFields?.manualSupplements && formValues) {
+      orderPayload.manualSupplements = formValues.manualSupplements;
+    }
+
+    suggestion = {
+      suggestion: {
+        tasks: [
+          {
+            ...taskPayload,
+            id: id,
+          },
+        ],
+        order: orderPayload,
+      },
     };
   }
 
-  if (formTouchedFields?.timeSlotUrl && formValues) {
-    taskPayload.timeSlotUrl = formValues.timeSlotUrl;
-    taskPayload.timeSlot = formValues.timeSlot;
-  }
-  if (formTouchedFields?.after && formValues) {
-    taskPayload.after = formValues.after;
-  }
-  if (formTouchedFields?.before && formValues) {
-    taskPayload.before = formValues.before;
-  }
+  const metadata = [];
 
-  if (formTouchedFields?.weight && formValues) {
-    taskPayload.weight = formValues.weight
-      ? Number(formValues.weight) * 1000
-      : undefined;
+  if (suggestion) {
+    metadata.push(suggestion);
   }
-
-  if (formTouchedFields?.packages && formValues) {
-    taskPayload.packages = formValues.packages;
-  }
-
-  const orderPayload = {} as OrderPayload;
-
-  if (formTouchedFields?.manualSupplements && formValues) {
-    orderPayload.manualSupplements = formValues.manualSupplements;
-  }
-
-  const suggestion: SuggestionPayload = {
-    suggestion: {
-      tasks: [
-        {
-          id: id,
-          ...taskPayload,
-        },
-      ],
-      order: orderPayload,
-    },
-  };
-
-  const metadata = [suggestion];
 
   return metadata;
 };
 
-export const buildReportIncidentPayload = (report: FormStateToSend, formValues?: EditTaskFormValues, formTouchedFields?: FormikTouched<EditTaskFormValues>) => {
-
-  const metadata = buildMetadataPayload(report.task.id, formValues, formTouchedFields);
+export const buildReportIncidentPayload = (
+  report: FormStateToSend,
+  formValues?: EditFormValues,
+  formTouchedFields?: FormikTouched<EditFormValues>,
+) => {
+  const metadata = buildMetadataPayload(report, formValues, formTouchedFields);
   const payload: IncidentPayload = {
     description: report.notes,
     failureReasonCode: report.failureReason,
@@ -149,5 +164,6 @@ export const buildReportIncidentPayload = (report: FormStateToSend, formValues?:
   };
 
   if (metadata.length > 0) payload.metadata = metadata;
+
   return payload;
 };

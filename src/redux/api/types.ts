@@ -231,7 +231,7 @@ export type SuggestionPayload = {
 };
 
 export type IncidentMetadataSuggestion = {
-  id: number; // Delivery id
+  id?: number; // Delivery id
   // tasks: TaskPayload[];
   tasks: EditTaskPayload[];
   order: OrderPayload;
