@@ -205,7 +205,7 @@ class MoreInfos extends Component {
                 <Text>{this.props.t('CHECKOUT_MORE_INFOS_DISCLAIMER')}</Text>
               </HStack>
 
-              <VStack className="p-2" style={{ flex: 1 }}>
+              <VStack className="p-2" style={{ flex: 1 }} testID="moreInfosBg">
                 <ScrollView>
                   {!this.props.isAuthenticated && this._userIsGuest() && (
                     <FormControl className="mb-2" isInvalid={hasErrors(errors, touched, 'email')}>
