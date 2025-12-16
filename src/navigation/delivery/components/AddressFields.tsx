@@ -25,7 +25,7 @@ import { useGetStoreAddressesQuery } from '@/src/redux/api/slice';
 import { Spinner } from '@/components/ui/spinner';
 
 type Props = {
-  store: Store;
+  store?: Store;
   shouldAssertDelivery?: boolean;
 };
 
@@ -143,23 +143,25 @@ export const AddressFields = ({
   return (
     <>
       {/* Client Search */}
-      <View style={[styles.formGroup, { zIndex: 2 }]}>
-        <FormField label={t('STORE_NEW_DELIVERY_SEARCH_CLIENT')} optional>
-          <View style={styles.autocompleteWrapper}>
-            {addresses ? (
-              <ClientListInput
-                addresses={addresses}
-                placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
-                onSelectAddress={a => {
-                  setAddressData(a);
-                  setFieldValue('isValidAddress', true);
-                }}
-              />
-            ) : null}
-            {isLoadingAddresses ? <Spinner /> : null}
-          </View>
-        </FormField>
-      </View>
+      {store ? (
+        <View style={[styles.formGroup, { zIndex: 2 }]}>
+          <FormField label={t('STORE_NEW_DELIVERY_SEARCH_CLIENT')} optional>
+            <View style={styles.autocompleteWrapper}>
+              {addresses ? (
+                <ClientListInput
+                  addresses={addresses}
+                  placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
+                  onSelectAddress={a => {
+                    setAddressData(a);
+                    setFieldValue('isValidAddress', true);
+                  }}
+                />
+              ) : null}
+              {isLoadingAddresses ? <Spinner /> : null}
+            </View>
+          </FormField>
+        </View>
+      ) : null}
       {/* Address Section */}
       <View style={[styles.formGroup, { zIndex: 1 }]}>
         <Text style={styles.label}>

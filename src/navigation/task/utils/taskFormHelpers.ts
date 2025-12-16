@@ -35,9 +35,13 @@ type EditOrderFormValues = {
 
 export type EditFormValues = EditTaskFormValues & EditOrderFormValues;
 
-export const getInitialFormValues = (task: Task, initialDeliveryFormData: PutDeliveryBody) => {
-
-  const initialTaskData = initialDeliveryFormData.tasks?.find(t => t.id === task.id);
+export const getInitialFormValues = (
+  task: Task,
+  initialDeliveryFormData: PutDeliveryBody,
+) => {
+  const initialTaskData = initialDeliveryFormData.tasks?.find(
+    t => t.id === task.id,
+  );
 
   //FIXME: get more data from 'initialTaskData' instead of 'task' object
   // for example, weight and packages must be coming from 'initialTaskData' as in 'task' we can get a sum of all packages/weight belonging to other tasks
@@ -64,7 +68,7 @@ export const getInitialFormValues = (task: Task, initialDeliveryFormData: PutDel
     packages: undefined,
     // Order-level fields
     manualSupplements: initialDeliveryFormData.order?.manualSupplements ?? [],
-  } as EditFormValues
+  } as EditFormValues;
 };
 
 const buildMetadataPayload = (

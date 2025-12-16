@@ -8,7 +8,10 @@ import {
 } from '@/src/redux/api/slice';
 
 export const useEditDetailsForm = (task: Task) => {
-  const { data: initialDeliveryFormData } = useGetTaskDeliveryFormDataQuery(task.id, {skip: !task.id});
+  const {
+    data: initialDeliveryFormData,
+    isLoading: initialDeliveryFormDataIsLoading,
+  } = useGetTaskDeliveryFormDataQuery(task.id, { skip: !task.id });
 
   const { data: store } = useGetStoreQuery(task?.metadata?.store, {
     skip: !task?.metadata?.store,
@@ -19,12 +22,16 @@ export const useEditDetailsForm = (task: Task) => {
   const validate = useValidation(store);
 
   const initialValues = useMemo(() => {
+    if (initialDeliveryFormDataIsLoading) {
+      return undefined;
+    }
+
     if (!initialDeliveryFormData) {
       return undefined;
     }
 
     return getInitialFormValues(task, initialDeliveryFormData);
-  }, [task, initialDeliveryFormData]);
+  }, [task, initialDeliveryFormDataIsLoading, initialDeliveryFormData]);
 
   return {
     store,

@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { selectCountry } from '@/src/redux/App/selectors';
 
 export const useValidation = (
-  store: Store,
+  store?: Store,
 ) => {
   const { t } = useTranslation();
 

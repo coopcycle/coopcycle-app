@@ -15,7 +15,7 @@ import { AddressFields } from '@/src/navigation/delivery/components/AddressField
 import { Store } from '@/src/redux/api/types';
 
 interface TaskFormProps {
-  store: Store;
+  store?: Store;
   task: Task;
 }
 
@@ -29,8 +29,17 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
   });
 
   const hasTimeSlot = useMemo(() => {
+    if (!store) {
+      return false;
+    }
+
+    // wait for the time slots to be loaded
+    if (timeSlots === undefined) {
+      return undefined;
+    }
+
     return timeSlots && timeSlots.length > 0;
-  }, [timeSlots]);
+  }, [timeSlots, store]);
 
   const { storePackages, packagesWithQuantity, canEditPackages } = usePackages(
     task,
@@ -46,18 +55,23 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
       </Text>
       {/* Time range (after/before or timeslot) */}
       <View style={styles.timeSlot}>
-        {timeSlots && hasTimeSlot !== undefined ? (
-          <EditTimeRange hasTimeSlot={hasTimeSlot} timeSlots={timeSlots} />
+        {hasTimeSlot !== undefined ? (
+          <EditTimeRange
+            hasTimeSlot={hasTimeSlot}
+            timeSlots={timeSlots || []}
+          />
         ) : null}
       </View>
       {/* Weight */}
-      <FormField
-        label={t('STORE_NEW_DELIVERY_WEIGHT')}
-        error={errors.weight}
-        touched={touched.weight}>
-        {/* if it's not a task where we can edit packages, we assume the weight is not editable as well */}
-        <WeightInput disabled={!canEditPackages} />
-      </FormField>
+      {store ? (
+        <FormField
+          label={t('STORE_NEW_DELIVERY_WEIGHT')}
+          error={errors.weight}
+          touched={touched.weight}>
+          {/* if it's not a task where we can edit packages, we assume the weight is not editable as well */}
+          <WeightInput disabled={!canEditPackages} />
+        </FormField>
+      ) : null}
       {/* Packages */}
       {storePackages && storePackages.length > 0 && packagesWithQuantity ? (
         <FormField

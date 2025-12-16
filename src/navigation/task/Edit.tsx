@@ -35,6 +35,16 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
   const { supplements: availableSupplements } = useSupplements(store);
 
+  if (!task.metadata?.order_number) {
+    return (
+      <SafeAreaView className="flex-1 align-items-center justify-center">
+        <Text className="text-center">
+          {t('TASK_DETAILS_NO_ORDER_CAN_NOT_EDIT')}
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
   if (!initialValues) {
     return <Spinner />;
   }
