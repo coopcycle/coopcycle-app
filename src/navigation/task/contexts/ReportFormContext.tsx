@@ -9,8 +9,6 @@ import React, {
 import { Uri } from '@/src/redux/api/types';
 
 interface FormState {
-  // EDIT TASK FIELDS
-  values: Record<string, unknown> | null;
   // REPORT INCIDENT FIELDS
   failureReason?: string;
   notes: string;
@@ -36,7 +34,6 @@ interface ReportFormContextType {
     value: FormState[K],
   ) => void;
   getFormData: () => FormState;
-  resetForm: () => void;
 }
 
 const ReportFormContext = createContext<ReportFormContextType | undefined>(
@@ -60,7 +57,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
   } as FormStateToSend);
 
   const [formState, setFormState] = useState<FormState>({
-    values: null,
     // REPORT INCIDENT FIELDS
     failureReason: '',
     failureReasonMetadata: {},
@@ -118,12 +114,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
 
   const getFormData = useCallback(() => formState, [formState]);
 
-  const resetForm = useCallback(() => {
-    setFormState({
-      values: null,
-    });
-  }, [initialTask]);
-
   const value: ReportFormContextType = {
     formState,
     isSubmitting,
@@ -133,7 +123,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     updateFormState,
     updateFormField,
     getFormData,
-    resetForm,
   };
 
   return (
