@@ -2,7 +2,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
@@ -18,6 +17,8 @@ import {
 } from '../utils/taskFormHelpers';
 import { showAlert } from '@/src/utils/alert';
 import { FormikTouched } from 'formik';
+import { reportIncidentFlow } from '@/src/redux/Courier/taskActions';
+import { useAppDispatch } from '@/src/redux/store';
 
 interface SubmitButtonProps {
   //TaskComplete
@@ -52,7 +53,7 @@ export const SubmitButton = ({
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const formContext = useReportFormContext();
   const TaskListsContext = useTaskListsContext();
@@ -87,22 +88,32 @@ export const SubmitButton = ({
         dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
       }
     } else {
-      const payload = buildReportIncidentPayload(formStateToSend, formValues, formTouchedFields);
-      postIncident({ payload })
-        .unwrap()
-        .then(r => {
-          if (validateTaskAfterReport) {
-            dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
-          }
-          navigateOnSuccess();
-        })
-        .catch(e => {
-          showAlert(e)
-        })
-        .finally(() => {
-          stopSubmitting();
-          setIsDisabled(false);
-        });
+      const payload = buildReportIncidentPayload(
+        formStateToSend,
+        formValues,
+        formTouchedFields,
+      );
+      dispatch(
+        reportIncidentFlow(
+          task,
+          () => postIncident({ payload }).unwrap(),
+          () => {
+            if (validateTaskAfterReport) {
+              dispatch(
+                markTaskDone(task, notes, navigateOnSuccess, contactName),
+              );
+            }
+            navigateOnSuccess();
+
+            stopSubmitting();
+            setIsDisabled(false);
+          },
+          () => {
+            stopSubmitting();
+            setIsDisabled(false);
+          },
+        ),
+      );
     }
 
     if (onPress) {
