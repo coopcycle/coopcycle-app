@@ -1,4 +1,5 @@
-import * as FileSystem from 'expo-file-system';
+import 'react-native-get-random-values';
+import { File, Paths } from 'expo-file-system';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -41,19 +42,24 @@ class Signature extends Component {
   }
 
   handleOK(base64) {
-    const path = FileSystem.cacheDirectory + v4() + '.jpg';
-    base64 = base64.replace('data:image/jpeg;base64,', '');
-    FileSystem.writeAsStringAsync(path, base64, {
-      encoding: FileSystem.EncodingType.Base64,
-    }).then(() => {
-      const task = this.props.route.params?.task;
-      const tasks = this.props.route.params?.tasks;
-      this.props.addSignature(task, path);
-      this.props.navigation.navigate({
-        name: 'TaskCompleteHome',
-        params: { task, tasks },
+
+    const filename = v4() + '.jpg';
+    const file = new File(Paths.cache, filename);
+
+    file.write(
+      Uint8Array.from(atob(base64.replace('data:image/jpeg;base64,', '')), c => c.charCodeAt(0))
+    );
+
+    const task = this.props.route.params?.task;
+    const tasks = this.props.route.params?.tasks;
+    const navigateAfter = this.props.route.params?.navigateAfter;
+    this.props.addSignature(task, file.uri);
+    this.props.navigation.navigate({
+      name: 'TaskCompleteHome',
+      params: { task, tasks, navigateAfter },
+      options: {
         merge: true,
-      });
+      }
     });
   }
 

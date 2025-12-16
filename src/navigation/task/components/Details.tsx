@@ -8,6 +8,7 @@ import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import { MapPin, Clock, Phone, Recycle, Info, MessageCircle, Tag, Box, Weight } from 'lucide-react-native';
+import classNames from 'classnames';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
@@ -26,8 +27,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
     marginVertical: 10,
   },
-  // This one is used just for dev and e2e tests purposes
-  invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
 });
 
 const Details = ({ task, onTaskTitleClick, t }) => {
@@ -39,7 +38,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
   const renderTaskTitle = () => (
     <Text style={styles.titleText}>
       {task.orgName}
-      <Text style={styles.invisibleText}>{` (task #${task.id})`}</Text>
+      <Text className={ classNames({ 'hidden': !__DEV__ }) }>{` (task #${task.id})`}</Text>
     </Text>
   );
 

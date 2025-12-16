@@ -1,16 +1,23 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useSelector } from 'react-redux';
+
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import screens, { headerLeft } from '..';
 import OrderNumber from '../../components/OrderNumber';
 import i18n from '../../i18n';
 import SettingsNavigator from '../restaurant/SettingsNavigator';
 import HeaderRight from '../restaurant/components/HeaderRight';
+import { selectRestaurant } from '../../redux/Restaurant/selectors';
 import { useStackNavigatorScreenOptions } from '../styles';
 
-const MainStack = createStackNavigator();
+const MainStack = createNativeStackNavigator();
 
 const MainNavigator = () => {
+
+  const { t } = useTranslation();
+  const restaurant = useSelector(selectRestaurant)
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
@@ -19,10 +26,9 @@ const MainNavigator = () => {
         name="RestaurantHome"
         component={screens.RestaurantDashboard}
         options={({ navigation, route }) => {
-          const restaurant = route.params?.restaurant || { name: '' };
 
           return {
-            title: restaurant.name,
+            title: restaurant?.name || t('RESTAURANT'),
             headerRight: () => <HeaderRight navigation={navigation} />,
             headerLeft: headerLeft(navigation),
           };
@@ -39,7 +45,7 @@ const MainNavigator = () => {
   );
 };
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions({

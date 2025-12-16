@@ -23,7 +23,7 @@ export function useStackNavigatorScreenOptions(props = {}) {
       fontFamily: fontTitleName,
     },
     headerTitleAlign: 'center',
-    headerBackTitleVisible: false,
+    headerBackButtonDisplayMode: 'minimal',
     ...props,
   };
 }

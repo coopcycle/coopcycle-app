@@ -10,16 +10,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setSpinnerDelayEnabled,
   setBarcodeEnabled,
 } from '../../redux/App/actions';
 import {
   selectIsBarcodeEnabled,
-  selectIsSpinnerDelayEnabled,
 } from '../../redux/App/selectors';
 
 export default function FeatureFlags() {
-  const isSpinnerDelayEnabled = useSelector(selectIsSpinnerDelayEnabled);
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled);
 
   const { t } = useTranslation();
@@ -28,15 +25,6 @@ export default function FeatureFlags() {
 
   return (
     <Box className="p-2">
-      <Checkbox
-        value="spinner delay"
-        onChange={checked => dispatch(setSpinnerDelayEnabled(checked))}
-        defaultIsChecked={isSpinnerDelayEnabled}>
-        <CheckboxIndicator>
-          <CheckboxIcon as={CheckIcon} />
-        </CheckboxIndicator>
-        <CheckboxLabel>{t('FEATURE_FLAG_SPINNER_DELAY')}</CheckboxLabel>
-      </Checkbox>
       <Checkbox
         value="barcode"
         onChange={checked => dispatch(setBarcodeEnabled(checked))}

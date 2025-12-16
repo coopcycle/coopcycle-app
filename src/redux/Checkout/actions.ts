@@ -1024,7 +1024,7 @@ function handlePaymentSuccess(order) {
             state: {
               routes: [
                 {
-                  name: 'Main',
+                  name: 'CheckoutMain',
                   state: {
                     routes: [
                       { name: 'CheckoutHome' },

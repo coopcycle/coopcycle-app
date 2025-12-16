@@ -223,48 +223,38 @@ export function loadTasks(
   };
 }
 
-function uploadEntityImages(entity, url, state) {
-  const signatures = selectSignatures(state);
-  const pictures = selectPictures(state);
-  const httpClient = selectHttpClient(state);
-
-  const files = signatures.concat(pictures);
-
-  if (!files.length) {
-    return Promise.resolve();
-  }
-
-  const promises = files.map(file =>
-    httpClient.uploadFileAsync(url, file, {
-      headers: {
-        'X-Attach-To': entity['@id'],
-      },
-    }),
-  );
-
-  return Promise.all(promises);
+function uploadEntityImages(entity, url) {
+  return uploadEntitiesImages([ entity ], url);
 }
 
-function uploadEntitiesImages(entities, url, state) {
-  const signatures = selectSignatures(state);
-  const pictures = selectPictures(state);
-  const httpClient = selectHttpClient(state);
+function uploadEntitiesImages(entities, url) {
 
-  const files = signatures.concat(pictures);
+  return function (dispatch, getState) {
 
-  if (!files.length) {
-    return Promise.resolve();
-  }
+    const signatures = selectSignatures(getState());
+    const pictures = selectPictures(getState());
+    const httpClient = selectHttpClient(getState());
 
-  const promises = files.map(file =>
-    httpClient.uploadFileAsync(url, file, {
+    const files = signatures.concat(pictures);
+
+    console.log(`Got ${files.length} file(s) to upload`);
+
+    if (files.length === 0) {
+      return;
+    }
+
+    const promises = files.map(file => httpClient.uploadFileAsync(url, file, {
       headers: {
         'X-Attach-To': entities.map(entity => entity['@id']).join(';'),
       },
-    }),
-  );
+    }));
 
-  return Promise.all(promises);
+    Promise.all(promises).then(() => {
+      console.log('All files have been uploaded');
+      dispatch(clearFiles());
+    })
+
+  };
 }
 
 export function reportIncident(
@@ -289,12 +279,9 @@ export function reportIncident(
     return httpClient
       .post('/api/incidents', payload)
       .then(incident => {
-        uploadEntityImages(incident, '/api/incident_images', getState()).then(
-          uploadTasks => httpClient.execUploadTask(uploadTasks),
-        );
-        dispatch(clearFiles());
+        // Do not wait for upload to finish
+        dispatch(uploadEntityImages(incident, '/api/incident_images'));
         dispatch(reportIncidentSuccess(incident));
-        console.log(onSuccess);
         if (typeof onSuccess === 'function') {
           setTimeout(onSuccess, 100);
         }
@@ -334,18 +321,15 @@ export function markTaskFailed(
     }
 
     // Make sure to return a promise for testing
-    return uploadEntityImages(task, '/api/task_images', getState())
-      .then(uploadTasks => {
-        return httpClient
-          .put(task['@id'] + '/failed', payload)
-          .then(savedTask => {
-            httpClient.execUploadTask(uploadTasks);
-            dispatch(clearFiles());
-            dispatch(markTaskFailedSuccess(savedTask));
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100);
-            }
-          });
+    return httpClient
+      .put(task['@id'] + '/failed', payload)
+      .then(savedTask => {
+        // Do not wait for upload to finish
+        dispatch(uploadEntityImages(task, '/api/task_images'));
+        dispatch(markTaskFailedSuccess(savedTask));
+        if (typeof onSuccess === 'function') {
+          setTimeout(() => onSuccess(), 100);
+        }
       })
       .catch(e => {
         dispatch(markTaskFailedFailure(e));
@@ -371,18 +355,15 @@ export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
     }
 
     // Make sure to return a promise for testing
-    return uploadEntityImages(task, '/api/task_images', getState())
-      .then(uploadTasks => {
-        return httpClient
-          .put(task['@id'] + '/done', payload)
-          .then(savedTask => {
-            httpClient.execUploadTask(uploadTasks);
-            dispatch(clearFiles());
-            dispatch(markTaskDoneSuccess(savedTask));
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100);
-            }
-          });
+    return httpClient
+      .put(task['@id'] + '/done', payload)
+      .then(savedTask => {
+        // Do not wait for upload to finish
+        dispatch(uploadEntityImages(task, '/api/task_images'))
+        dispatch(markTaskDoneSuccess(savedTask));
+        if (typeof onSuccess === 'function') {
+          setTimeout(() => onSuccess(), 100);
+        }
       })
       .catch(e => {
         dispatch(markTaskDoneFailure(e));
@@ -408,24 +389,21 @@ export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
       };
     }
 
-    return uploadEntitiesImages(tasks, '/api/task_images', getState())
-      .then(uploadTasks => {
-        return httpClient.put('/api/tasks/done', payload).then(res => {
-          if (res.failed && Object.keys(res.failed).length) {
-            showAlertAfterBulk(Object.values(res.failed));
-            if (!res.success || !res.success.length) {
-              dispatch(markTasksDoneFailure());
-            }
+    return httpClient.put('/api/tasks/done', payload)
+      .then(res => {
+        dispatch(uploadEntitiesImages(tasks, '/api/task_images'));
+        if (res.failed && Object.keys(res.failed).length) {
+          showAlertAfterBulk(Object.values(res.failed));
+          if (!res.success || !res.success.length) {
+            dispatch(markTasksDoneFailure());
           }
-          if (res.success && res.success.length) {
-            httpClient.execUploadTask(uploadTasks);
-            dispatch(clearFiles());
-            dispatch(markTasksDoneSuccess(res.success));
-            if (typeof onSuccess === 'function') {
-              setTimeout(() => onSuccess(), 100);
-            }
+        }
+        if (res.success && res.success.length) {
+          dispatch(markTasksDoneSuccess(res.success));
+          if (typeof onSuccess === 'function') {
+            setTimeout(() => onSuccess(), 100);
           }
-        });
+        }
       })
       .catch(e => {
         dispatch(markTasksDoneFailure(e));

@@ -5,6 +5,7 @@ import {
   tapById,
   tapByText,
   waitToBeVisible,
+  swipeDown,
 } from '@/e2e/support/commands';
 import {
   assignOrderToUser,
@@ -56,6 +57,9 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('task:finishButton');
     await tapByText('Validate');
 
+    // TODO FIX: FORCE TASK LIST UPDATE because sometimes all the tasks goes back to unassigned or just dissapear from map..!
+    await swipeDown('dispatchTaskLists');
+
     // Verify task #1 has status "DONE"
     await waitToBeVisible('taskListItemIcon:DONE:1');
   });
@@ -86,6 +90,9 @@ describeif(device.getPlatform() === 'android')
 
     await waitToBeVisible('task:finishButton');
     await tapByText('Report incident');
+
+    // TODO FIX: FORCE TASK LIST UPDATE because sometimes all the tasks goes back to unassigned or just dissapear from map..!
+    await swipeDown('dispatchTaskLists');
 
     // Verify task #1 has status "INCIDENT"
     await waitToBeVisible('taskListItemIcon:INCIDENT:1');

@@ -32,12 +32,6 @@ class CustomServer extends Component {
     };
   }
 
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(_ =>
-      setTimeout(() => this.input.focus(), 500),
-    );
-  }
-
   handleForm() {
     this.props.selectServer(this.state.text.trim());
   }
@@ -55,10 +49,6 @@ class CustomServer extends Component {
           <FormControl {...itemProps}>
             <Input size="md">
               <InputField
-                _stack={{ style: {} }}
-                ref={ref => {
-                  this.input = ref;
-                }}
                 autoCapitalize={'none'}
                 autoCorrect={false}
                 placeholder={`${this.props.t('EXAMPLE')} : demo.coopcycle.org`}

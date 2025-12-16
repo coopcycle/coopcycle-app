@@ -42,7 +42,7 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/debug/app-official-debug.apk',
       build:
-        'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --warning-mode all && cd ..',
+        'cd android && ./gradlew assembleOfficialDebug assembleOfficialAndroidTest -DtestBuildType=debug --warning-mode all && cd ..',
       launchArgs: {},
     },
     'android.release': {
@@ -50,14 +50,16 @@ module.exports = {
       binaryPath:
         'android/app/build/outputs/apk/official/release/app-official-release.apk',
       build:
-        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no --no-daemon --warning-mode all && cd ..',
+        // Do not use assembleRelease & assembleAndroidTest as it will build both variants
+        // https://wix.github.io/Detox/docs/introduction/project-setup#product-flavors
+        'cd android && ./gradlew assembleOfficialRelease assembleOfficialAndroidTest -DtestBuildType=release -DuseDebugCertificate=yes -DminifyEnabled=no -DuploadCrashlyticsMappingFile=no -PreactNativeArchitectures=x86,x86_64 --warning-mode none && cd ..',
       launchArgs: {},
     },
   },
   devices: {
     iosSimulator: {
       type: 'ios.simulator',
-      device: { type: 'iPhone 15', os: 'iOS 17.5' },
+      device: { type: 'iPhone 16', os: 'iOS 18.5' },
     },
     androidEmulator: {
       type: 'android.emulator',

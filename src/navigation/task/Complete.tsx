@@ -45,7 +45,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect, useDispatch } from 'react-redux';
 import { useTaskListsContext } from '../courier/contexts/TaskListsContext';
 
@@ -313,6 +313,8 @@ const SubmitButton = ({
   validateTaskAfterReport,
   failureReasonMetadataToSend,
 }) => {
+
+  const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
@@ -333,10 +335,12 @@ const SubmitButton = ({
       // Make sure to use merge = true, so that it doesn't break
       // when navigating to DispatchTaskList
 
-      if (route.params?.navigateAfter !== null) {
+      if (route.params?.navigateAfter) {
         navigation.navigate({
-          name: route.params?.navigateAfter,
-          merge: true,
+          name: route.params.navigateAfter,
+          options: {
+            merge: true,
+          }
         });
       } else {
         navigation.goBack();
@@ -377,11 +381,11 @@ const SubmitButton = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={isDisabled}
-      style={{ alignItems: 'center', backgroundColor: footerBgColor }}
+      style={{ alignItems: 'center', backgroundColor: footerBgColor, paddingBottom: insets.bottom }}
       testID="task:finishButton">
       <HStack className="py-3 items-center">
-        <Icon as={CheckIcon} style={{ color: '#fff', marginRight: 10 }} />
-        <Text>{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
+        <Icon as={CheckIcon} className="mr-2 text-typography-white" />
+        <Text size="lg" className="text-typography-white">{success ? t('VALIDATE') : t('REPORT_INCIDENT')}</Text>
       </HStack>
     </TouchableOpacity>
   );
@@ -514,156 +518,153 @@ const CompleteTask = ({
 
   return (
     <React.Fragment>
-      <SafeAreaView
-        edges={['left', 'right', 'bottom']}
-        style={styles.screenContainer}>
-        <View style={styles.scrollWrapper}>
-          <ScrollView
-            contentContainerStyle={styles.scrollContainer}
-            contentInsetAdjustmentBehavior="always">
-            <VStack flex={1} className="w-full">
-              <MultipleTasksLabel tasks={tasks} />
-              <TouchableWithoutFeedback
-                // We need to disable TouchableWithoutFeedback when keyboard is not visible,
-                // otherwise the ScrollView for proofs of delivery is not scrollable
-                disabled={!isKeyboardVisible}
-                // This allows hiding the keyboard when touching anything on the screen
-                onPress={Keyboard.dismiss}>
-                <VStack>
-                  {isDropoff(task, tasks) && (
-                    <React.Fragment>
-                      <HStack className="justify-between items-center p-3">
-                        <HStack className="justify-between items-center">
-                          <Icon as={User} style={{ marginRight: 10 }} />
-                          <Text numberOfLines={1}>
-                            {resolveContactName(contactName, task, tasks)}
-                          </Text>
-                        </HStack>
-                        <TouchableOpacity
-                          onPress={() => setIsContactNameModalVisible(true)}>
-                          <Text>{t('EDIT')}</Text>
-                        </TouchableOpacity>
+      <View style={styles.scrollWrapper}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          contentInsetAdjustmentBehavior="always">
+          <VStack flex={1} className="w-full">
+            <MultipleTasksLabel tasks={tasks} />
+            <TouchableWithoutFeedback
+              // We need to disable TouchableWithoutFeedback when keyboard is not visible,
+              // otherwise the ScrollView for proofs of delivery is not scrollable
+              disabled={!isKeyboardVisible}
+              // This allows hiding the keyboard when touching anything on the screen
+              onPress={Keyboard.dismiss}>
+              <VStack>
+                {isDropoff(task, tasks) && (
+                  <React.Fragment>
+                    <HStack className="justify-between items-center p-3">
+                      <HStack className="justify-between items-center">
+                        <Icon as={User} style={{ marginRight: 10 }} />
+                        <Text numberOfLines={1}>
+                          {resolveContactName(contactName, task, tasks)}
+                        </Text>
                       </HStack>
-                      <Divider />
-                    </React.Fragment>
-                  )}
-                  {!success && (
-                    <FormControl className="p-3">
-                      <FormControlLabel>
-                        <FormControlLabelText>
-                          {t('FAILURE_REASON')}
-                        </FormControlLabelText>
-                      </FormControlLabel>
-                      <FailureReasonPicker
-                        task={task}
-                        httpClient={httpClient}
-                        onValueChange={(code, obj) => {
-                          if (obj && obj.metadata) {
-                            setFailureReasonMetadata(obj.metadata);
-                            setFailureReasonMetadataToSend(
-                              parseInitialData(obj.metadata),
-                            );
-                          } else {
-                            setFailureReasonMetadata([]);
-                            setFailureReasonMetadataToSend([]);
-                          }
-                          setFailureReason(code);
-                        }}
-                      />
-                      {Array.isArray(failureReasonMetadata) &&
-                      failureReasonMetadata.length > 0 ? (
-                        <FailureReasonForm
-                          data={failureReasonMetadata}
-                          onChange={metadata => {
-                            setFailureReasonMetadataToSend(metadata);
-                          }}
-                        />
-                      ) : null}
-                    </FormControl>
-                  )}
+                      <TouchableOpacity
+                        onPress={() => setIsContactNameModalVisible(true)}>
+                        <Text>{t('EDIT')}</Text>
+                      </TouchableOpacity>
+                    </HStack>
+                    <Divider />
+                  </React.Fragment>
+                )}
+                {!success && (
                   <FormControl className="p-3">
                     <FormControlLabel>
-                      <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
+                      <FormControlLabelText>
+                        {t('FAILURE_REASON')}
+                      </FormControlLabelText>
                     </FormControlLabel>
-                    <Textarea className="mb-3">
-                      <TextareaInput
-                        autoCorrect={false}
-                        totalLines={2}
-                        onChangeText={text => setNotes(text)}
-                      />
-                    </Textarea>
-                    {!success && (
-                      <Button
-                        onPress={() =>
-                          setValidateTaskAfterReport(!validateTaskAfterReport)
+                    <FailureReasonPicker
+                      task={task}
+                      httpClient={httpClient}
+                      onValueChange={(code, obj) => {
+                        if (obj && obj.metadata) {
+                          setFailureReasonMetadata(obj.metadata);
+                          setFailureReasonMetadataToSend(
+                            parseInitialData(obj.metadata),
+                          );
+                        } else {
+                          setFailureReasonMetadata([]);
+                          setFailureReasonMetadataToSend([]);
                         }
-                        variant={validateTaskAfterReport ? 'solid' : 'outline'}>
-                        <ButtonText>
-                          Validate the task after reporting
-                        </ButtonText>
-                        {validateTaskAfterReport && (
-                          <ButtonIcon as={CheckIcon} />
-                        )}
-                      </Button>
-                    )}
+                        setFailureReason(code);
+                      }}
+                    />
+                    {Array.isArray(failureReasonMetadata) &&
+                    failureReasonMetadata.length > 0 ? (
+                      <FailureReasonForm
+                        data={failureReasonMetadata}
+                        onChange={metadata => {
+                          setFailureReasonMetadataToSend(metadata);
+                        }}
+                      />
+                    ) : null}
                   </FormControl>
-                  <View>
-                    <ScrollView style={{ height: '50%' }}>
-                      <View style={styles.content}>
-                        <View style={styles.imagesContainer}>
-                          {signatures.map((base64, key) => (
-                            <AttachmentItem
-                              key={`signatures:${key}`}
-                              base64={base64}
-                              onPressDelete={() => deleteSignatureAt(key)}
-                            />
-                          ))}
-                          {pictures.map((base64, key) => (
-                            <AttachmentItem
-                              key={`pictures:${key}`}
-                              base64={base64}
-                              onPressDelete={() => deletePictureAt(key)}
-                            />
-                          ))}
-                        </View>
+                )}
+                <FormControl className="p-3">
+                  <FormControlLabel>
+                    <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
+                  </FormControlLabel>
+                  <Textarea className="mb-3">
+                    <TextareaInput
+                      autoCorrect={false}
+                      totalLines={2}
+                      onChangeText={text => setNotes(text)}
+                    />
+                  </Textarea>
+                  {!success && (
+                    <Button
+                      onPress={() =>
+                        setValidateTaskAfterReport(!validateTaskAfterReport)
+                      }
+                      variant={validateTaskAfterReport ? 'solid' : 'outline'}>
+                      <ButtonText>
+                        Validate the task after reporting
+                      </ButtonText>
+                      {validateTaskAfterReport && (
+                        <ButtonIcon as={CheckIcon} />
+                      )}
+                    </Button>
+                  )}
+                </FormControl>
+                <View>
+                  <ScrollView style={{ height: '50%' }}>
+                    <View style={styles.content}>
+                      <View style={styles.imagesContainer}>
+                        {signatures.map((base64, key) => (
+                          <AttachmentItem
+                            key={`signatures:${key}`}
+                            base64={base64}
+                            onPressDelete={() => deleteSignatureAt(key)}
+                          />
+                        ))}
+                        {pictures.map((base64, key) => (
+                          <AttachmentItem
+                            key={`pictures:${key}`}
+                            base64={base64}
+                            onPressDelete={() => deletePictureAt(key)}
+                          />
+                        ))}
                       </View>
-                    </ScrollView>
-                  </View>
-                </VStack>
-              </TouchableWithoutFeedback>
-            </VStack>
-          </ScrollView>
+                    </View>
+                  </ScrollView>
+                </View>
+              </VStack>
+            </TouchableWithoutFeedback>
+          </VStack>
+        </ScrollView>
+      </View>
+      <Animated.View
+        style={[buttonContainerAnimatedStyle, styles.ctaButtonWrapper]}>
+        <View style={styles.ctaButtonContainer}>
+          <VStack className="w-full">
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('TaskCompleteProofOfDelivery', {
+                  task,
+                  tasks,
+                  navigateAfter: route.params?.navigateAfter,
+                }, { merge: true})
+              }>
+              <HStack className="items-center justify-between p-3">
+                <Icon as={Signature} />
+                <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
+                <Icon as={Camera} />
+              </HStack>
+            </TouchableOpacity>
+            <SubmitButton
+              task={task}
+              tasks={tasks}
+              notes={notes}
+              contactName={contactName}
+              failureReason={failureReason}
+              validateTaskAfterReport={validateTaskAfterReport}
+              failureReasonMetadataToSend={failureReasonMetadataToSend}
+            />
+          </VStack>
         </View>
-        <Animated.View
-          style={[buttonContainerAnimatedStyle, styles.ctaButtonWrapper]}>
-          <View style={styles.ctaButtonContainer}>
-            <VStack className="w-full">
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('TaskCompleteProofOfDelivery', {
-                    task,
-                    tasks,
-                  })
-                }>
-                <HStack className="items-center justify-between p-3">
-                  <Icon as={Signature} />
-                  <Text>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
-                  <Icon as={Camera} />
-                </HStack>
-              </TouchableOpacity>
-              <SubmitButton
-                task={task}
-                tasks={tasks}
-                notes={notes}
-                contactName={contactName}
-                failureReason={failureReason}
-                validateTaskAfterReport={validateTaskAfterReport}
-                failureReasonMetadataToSend={failureReasonMetadataToSend}
-              />
-            </VStack>
-          </View>
-        </Animated.View>
-      </SafeAreaView>
+      </Animated.View>
       <ContactNameModal
         isVisible={isContactNameModalVisible}
         onSwipeComplete={() => setIsContactNameModalVisible(false)}

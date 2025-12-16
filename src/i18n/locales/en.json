@@ -626,6 +626,9 @@
     "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
     "PROCEED": "Proceed",
     "ASSIGN": "Assign",
-    "INCIDENT": "Incident"
+    "INCIDENT": "Incident",
+    "CHECKOUT_STOP": "Cancel checkout",
+    "CHECKOUT_STOP_CONFIRM": "Do you want to interrupt the order? You can still complete it later",
+    "CHECKOUT_CONTINUE": "Continue checkout"
 }
 }

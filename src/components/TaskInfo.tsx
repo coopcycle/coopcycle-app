@@ -5,6 +5,7 @@ import { VStack } from '@/components/ui/vstack';
 import React/*, { useEffect, useRef }*/ from 'react';
 import { /*Animated,*/ StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 import { Task } from '../types/task';
 import FAIcon from './Icon';
 
@@ -36,8 +37,6 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-  // This one is used just for dev and e2e tests purposes
-  invisibleText: __DEV__ ? { fontSize: 12 } : { color: 'transparent', fontSize: 0 },
   hasIncident: {
     borderColor: yellowColor,
   },
@@ -147,7 +146,7 @@ export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps)
             style={alignedTitleStyle}
             numberOfLines={1}>
             {task.orgName}
-            <Text style={styles.invisibleText}>{` (task #${task.id})`}</Text>
+            <Text className={ classNames({ 'hidden': !__DEV__ }) }>{` (task #${task.id})`}</Text>
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">
