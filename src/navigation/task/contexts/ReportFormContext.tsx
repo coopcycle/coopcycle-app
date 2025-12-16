@@ -28,7 +28,6 @@ interface ReportFormContextType {
   startSubmitting: () => void;
   stopSubmitting: () => void;
   formStateToSend: FormStateToSend;
-  updateFormState: (updates: Partial<FormState>) => void;
   updateFormField: <K extends keyof FormState>(
     field: K,
     value: FormState[K],
@@ -75,13 +74,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
   }, []);
 
 
-  const updateFormState = useCallback((updates: Partial<FormState>) => {
-    setFormState(prev => ({
-      ...prev,
-      ...updates,
-    }));
-  }, []);
-
   const updateFormField = useCallback(function <K extends keyof FormState>(
     field: K,
     value: FormState[K],
@@ -120,7 +112,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     startSubmitting,
     stopSubmitting,
     formStateToSend,
-    updateFormState,
     updateFormField,
     getFormData,
   };
