@@ -1,21 +1,14 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { DatadogLogger } from '../Datadog';
+import i18n from '@/src/i18n';
 
-const OrderTitle = ({ order }) => {
-  const { t } = useTranslation();
+export const getOrderTitle = (order: string) => {
+  const { t } = i18n;
 
   // fallback when task is not defined, not sure if it can happen
   if (!order) {
     DatadogLogger.warn('order props in orderTitle is not defined');
-    return <>{t('ORDER NUMBER')}</>;
+    return t('ORDER NUMBER');
   }
 
-  return (
-    <React.Fragment>
-      {order ? <>{t('ORDER_NUMBER', { number: order })}</> : <>{t('ORDER')}</>}
-    </React.Fragment>
-  );
+  return order ? t('ORDER_NUMBER', { number: order }) : t('ORDER');
 };
-
-export default OrderTitle;
