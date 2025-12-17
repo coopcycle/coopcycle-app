@@ -84,7 +84,7 @@
     "react-native": "0.81.5",
     "react-native-app-auth": "^8.0.3",
     "react-native-autocomplete-input": "^5.4.0",
-    "react-native-avoid-softinput": "^5.0.0",
+    "react-native-avoid-softinput": "^8.0.2",
     "react-native-background-fetch": "^4.2.8",
     "react-native-background-geolocation": "^4.19.0",
     "react-native-ble-manager": "^8.4.4",

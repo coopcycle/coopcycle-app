@@ -9294,7 +9294,7 @@ __metadata:
     react-native: "npm:0.81.5"
     react-native-app-auth: "npm:^8.0.3"
     react-native-autocomplete-input: "npm:^5.4.0"
-    react-native-avoid-softinput: "npm:^5.0.0"
+    react-native-avoid-softinput: "npm:^8.0.2"
     react-native-background-fetch: "npm:^4.2.8"
     react-native-background-geolocation: "npm:^4.19.0"
     react-native-ble-manager: "npm:^8.4.4"
@@ -18666,13 +18666,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-avoid-softinput@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "react-native-avoid-softinput@npm:5.0.0"
+"react-native-avoid-softinput@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "react-native-avoid-softinput@npm:8.0.2"
+  dependencies:
+    react-native-is-edge-to-edge: "npm:^1.1.6"
   peerDependencies:
-    react: ">=18.2.0"
-    react-native: ">=0.71.0"
-  checksum: 10c0/004f4dd7ee47c360502cc7d7c8daabe8e8ceb1452927fb4887fdc9ea14a612bc8875325ffa5848c508a99a722c6318427ccb36ef1319d11ebfe88af0ffd47440
+    react: ">=19.0.0"
+    react-native: ">=0.78.0"
+  checksum: 10c0/6b545639888eca16760267817cdf0b18c9f632d82d2e557c3ebe19f5fcd4f614b07338fd56e2991ded8e0ef9b8491e063c7f44695e34a1f67c9f4fd67b080447
   languageName: node
   linkType: hard
 
@@ -18894,7 +18896,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-is-edge-to-edge@npm:^1.2.1":
+"react-native-is-edge-to-edge@npm:^1.1.6, react-native-is-edge-to-edge@npm:^1.2.1":
   version: 1.2.1
   resolution: "react-native-is-edge-to-edge@npm:1.2.1"
   peerDependencies:

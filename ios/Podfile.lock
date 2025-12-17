@@ -2815,7 +2815,7 @@ PODS:
     - React-perflogger (= 0.81.5)
     - React-utils (= 0.81.5)
     - SocketRocket
-  - ReactNativeAvoidSoftinput (5.0.0):
+  - ReactNativeAvoidSoftinput (8.0.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -4097,7 +4097,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 1bcd3527ac0390a1c898c114f81ff954be35ed79
   ReactCodegen: 2e921a931c5a4dd1d8ab37ade085fdf58fcfe1dd
   ReactCommon: 6d0fa86a4510730da7c72560e0ced14258292ab9
-  ReactNativeAvoidSoftinput: 47451678d818f756e421164fa44e824fe9ec61b1
+  ReactNativeAvoidSoftinput: 06174eb6220da9c0c95faf9fb62aaeecf251b583
   ReactNativeKeyboardManager: 5abe57da962b386508945888c75abee4b93f382d
   RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
   RNBackgroundFetch: e44c9e85d7fb3122c37d8a806278f62c7682d7ea
