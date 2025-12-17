@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import { File, Paths } from 'expo-file-system';
+import { File, Directory, Paths } from 'expo-file-system';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -43,8 +43,8 @@ class Signature extends Component {
 
   handleOK(base64) {
 
-    const filename = v4() + '.jpg';
-    const file = new File(Paths.cache, filename);
+    const directory = new Directory(Paths.cache);
+    const file = directory.createFile(v4() + '.jpg', 'image/jpeg');
 
     file.write(
       Uint8Array.from(atob(base64.replace('data:image/jpeg;base64,', '')), c => c.charCodeAt(0))
