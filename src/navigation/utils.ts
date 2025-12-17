@@ -76,11 +76,9 @@ export const navigateToReportTask = (
 export const navigateToProofOfDeliveryFromReportIncident = (
   navigation, route, task, tasks
 ) => {
-  const params = {
-    task, tasks, navigateAfter: route.name
-  }
-  navigation.navigate('TaskComplete', {
-      screen: 'TaskCompleteProofOfDelivery',
-      params: {...params}
-    });
+  navigation.navigate('TaskCompleteProofOfDelivery', {
+    task,
+    tasks,
+    navigateAfter: route.params?.navigateAfter,
+  }, { merge: true})
 };
