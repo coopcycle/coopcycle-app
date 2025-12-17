@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DatadogLogger } from '../Datadog';
+import i18n from '../i18n';
 
 const TaskTitle = ({ task }) => {
   const { t } = useTranslation();
@@ -32,3 +33,19 @@ const TaskTitle = ({ task }) => {
 };
 
 export default TaskTitle;
+export const getTaskTitle = (task) => {
+
+  if (!task) {
+    return i18n.t('TASK');
+  }
+
+  if (task.metadata?.order_number) {
+    if (task.metadata?.delivery_position) {
+      return `${i18n.t('ORDER_NUMBER', { number: task.metadata.order_number })}-${task.metadata.delivery_position}`;
+    }
+
+    return i18n.t('ORDER_NUMBER', { number: task.metadata.order_number });
+  }
+
+  return i18n.t('TASK_WITH_ID', { id: task.id });
+}

@@ -21,9 +21,12 @@ jobs:
           # all of these default to true, but feel free to set to
           # "false" if necessary for your workflow
           # https://github.com/jlumbroso/free-disk-space?tab=readme-ov-file#example
-          tool-cache: true
+          tool-cache: false
           android: false
-          swap-storage: false
+          # swap-storage: false
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - uses: actions/setup-node@v4
         with:
@@ -32,9 +35,9 @@ jobs:
 
       - uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: '17'
-          cache: 'gradle'
+          # cache: 'gradle'
 
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
@@ -44,14 +47,14 @@ jobs:
           encodedString: ${{ secrets.SENTRY_PROPERTIES_BASE64 }}
 
       - name: Install dependencies (yarn)
-        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
+        run: yarn install
 
       - run: cp google-services.json.dist android/app/google-services.json
 
       - name: Enable clear text traffic in release builds
         run: |
           sudo apt install xmlstarlet
-          xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
+          xmlstarlet ed --inplace --ps --update "/manifest/application/@android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
 
       - name: Configure .env variables
         run: |
@@ -61,8 +64,8 @@ jobs:
           sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
           sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
-      - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v3
+      # - name: Gradle cache
+      #   uses: gradle/actions/setup-gradle@v3
 
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c android.emu.release
@@ -134,6 +137,9 @@ jobs:
           name: app-official-release-androidTest.apk
           path: coopcycle-app-repo/android/app/build/outputs/apk/androidTest/official/release
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -147,12 +153,7 @@ jobs:
           cache: 'gradle'
 
       - name: Install dependencies (yarn)
-        run: yarn install --no-progress --network-timeout 100000 --network-concurrency 1
-
-      - name: Enable clear text traffic in release builds
-        run: |
-          sudo apt install xmlstarlet
-          xmlstarlet ed --inplace --ps --insert "/manifest/application" --type attr -n "android:usesCleartextTraffic" -v "true" android/app/src/main/AndroidManifest.xml
+        run: yarn install
 
       - name: Enable KVM (reactivecircus)
         run: |
@@ -160,11 +161,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-
       - run: sudo apt-get install libpulse0
-
-      - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v3
 
 # disable AVD caching for now; trying to solve 'No space left on device.' issue
 #      - name: AVD cache
@@ -207,6 +204,7 @@ jobs:
           disable-animations: true
           working-directory: coopcycle-app-repo
           script: |
+            avdmanager list device
             node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel info
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots all
 #            node node_modules/.bin/detox test -c android.att.release --device-name="test" --take-screenshots manual -o e2e/screenshots.config.json

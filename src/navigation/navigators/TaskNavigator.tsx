@@ -1,5 +1,6 @@
 import { HeaderBackButton } from '@react-navigation/elements';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
 import screens from '..';
@@ -7,14 +8,14 @@ import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
 
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator';
-import TaskTitle from '../../components/TaskTitle';
+import { getTaskTitle } from '../../components/TaskTitle';
 
-const CompleteStack = createStackNavigator();
+const CompleteStack = createNativeStackNavigator();
 
 const completeTitle = routeParams => {
   if (routeParams) {
     if (routeParams.task) {
-      return <TaskTitle task={routeParams.task} />;
+      return getTaskTitle(routeParams.task);
     }
     if (routeParams.tasks) {
       return i18n.t('COMPLETE_TASKS');
@@ -58,11 +59,17 @@ const CompleteNavigator = () => {
   );
 };
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 export default () => {
+
+  const navigation = useNavigation();
+
   const screenOptions = useStackNavigatorScreenOptions({
-    presentation: 'modal',
+    // Do *NOT* use presentation = modal,
+    // to avoid conflicting with gestures to close the modal when signing proofs of delivery.
+    // gestureEnabled should be used for this, but it doesn't work as expected.
+    presentation: 'card',
   });
 
   return (
@@ -71,7 +78,8 @@ export default () => {
         name="TaskHome"
         component={screens.TaskHome}
         options={({ route }) => ({
-          title: <TaskTitle task={route.params?.task} />,
+          headerTitle: getTaskTitle(route.params?.task),
+          headerLeft: (props) => <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
         })}
       />
       <RootStack.Screen

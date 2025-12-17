@@ -146,7 +146,7 @@ export default props => {
     const restaurant = props.route.params?.restaurant;
 
     dispatch(addItemV2(product, quantity, restaurant, selectedOptions));
-    props.navigation.navigate('CheckoutRestaurant', { restaurant });
+    props.navigation.popTo('CheckoutMain', { restaurant });
   };
 
   return (

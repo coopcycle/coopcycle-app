@@ -13,7 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
+import { File } from 'expo-file-system';
 
 import { addPicture } from '../../redux/Courier';
 
@@ -59,13 +59,16 @@ class Photo extends Component {
   _saveImage() {
     const task = this.props.route.params?.task;
     const tasks = this.props.route.params?.tasks;
+    const navigateAfter = this.props.route.params?.navigateAfter;
     const { image } = this.state;
     if (image) {
       this.props.addPicture(task, image.uri);
       this.props.navigation.navigate({
         name: 'TaskCompleteHome',
-        params: { task, tasks },
-        merge: true,
+        params: { task, tasks, navigateAfter },
+        options: {
+          merge: true,
+        }
       });
     }
   }
@@ -99,18 +102,24 @@ class Photo extends Component {
       });
 
       if (!result.canceled) {
-        const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding: 'base64' })
 
-        const task = this.props.route.params?.task;
-        const tasks = this.props.route.params?.tasks;
+        const file = new File(result.assets[0].uri);
 
-        this.props.addPicture(task, base64);
+        if (file.exists) {
+          const task = this.props.route.params?.task;
+          const tasks = this.props.route.params?.tasks;
+          const navigateAfter = this.props.route.params?.navigateAfter;
 
-        this.props.navigation.navigate({
-          name: 'TaskCompleteHome',
-          params: { task, tasks },
-          merge: true,
-        });
+          this.props.addPicture(task, file.uri);
+
+          this.props.navigation.navigate({
+            name: 'TaskCompleteHome',
+            params: { task, tasks, navigateAfter },
+            options: {
+              merge: true,
+            }
+          });
+        }
       }
     };
 

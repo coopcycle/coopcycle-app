@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>CADisableMinimumFrameDurationOnPhone</key>
+    <true/>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
@@ -17,7 +19,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>2.37.4</string>
+    <string>3.0.1</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleURLTypes</key>
@@ -38,7 +40,7 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>157</string>
+    <string>159</string>
     <key>FacebookAppID</key>
     <string>1303550106471840</string>
     <key>FacebookClientToken</key>
@@ -126,6 +128,8 @@
     <string>App requires access to photo library</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>App requires access to photo library</string>
+    <key>RCTNewArchEnabled</key>
+    <true/>
     <key>UIAppFonts</key>
     <array>
       <string>Entypo.ttf</string>

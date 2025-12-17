@@ -638,6 +638,9 @@
     "ADD_SUPPLEMENT": "Add supplements",
     "ADDED_SUPPLEMENTS": "Added supplements",
     "ASSIGN": "Assign",
-    "INCIDENT": "Incident"
+    "INCIDENT": "Incident",
+    "CHECKOUT_STOP": "Cancel checkout",
+    "CHECKOUT_STOP_CONFIRM": "Do you want to interrupt the order? You can still complete it later",
+    "CHECKOUT_CONTINUE": "Continue checkout"
 }
 }

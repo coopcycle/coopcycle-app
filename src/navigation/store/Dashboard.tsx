@@ -18,8 +18,6 @@ import { Store } from '@/src/redux/api/types';
 
 class StoreDashboard extends Component {
   componentDidMount() {
-    // This is needed to display the title
-    this.props.navigation.setParams({ store: this.props.store });
     this.props.init(this.props.store);
   }
 

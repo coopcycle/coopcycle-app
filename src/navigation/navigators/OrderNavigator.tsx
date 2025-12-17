@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import { selectTasksByOrder as selectTasksByOrderLogistics } from '@/src/redux/l
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '@/src/redux/Courier/taskSelectors';
 import useSetTaskListItems from '@/src/shared/src/logistics/redux/hooks/useSetTaskListItems';
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
   const dispatch = useDispatch();

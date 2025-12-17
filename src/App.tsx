@@ -141,8 +141,12 @@ const config = {
     },
     CheckoutNav: {
       screens: {
-        CheckoutPaygreenReturn: 'paygreen/return',
-        CheckoutPaygreenCancel: 'paygreen/cancel',
+        CheckoutSubmitOrder: {
+          screens: {
+            CheckoutPaygreenReturn: 'paygreen/return',
+            CheckoutPaygreenCancel: 'paygreen/cancel',
+          }
+        }
       },
     },
   },
@@ -181,15 +185,16 @@ const App = () => {
                 <I18nextProvider i18n={i18n}>
                   <QueryClientProvider client={queryClient}>
                     <SafeAreaProvider>
-                      <Spinner />
                       <NavigationContainer
                         ref={navigationRef}
                         linking={linking}
                         onReady={onReady}
                         onStateChange={onNavigationStateChange}
-                        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                        navigationInChildEnabled>
                         <Root />
                       </NavigationContainer>
+                      <Spinner />
                       <DropdownAlert
                         ref={ref => {
                           DropdownHolder.setDropdown(ref);

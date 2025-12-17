@@ -508,6 +508,9 @@
     "ADD_SUPPLEMENT": "Agregar suplementos",
     "ADDED_SUPPLEMENTS": "Suplementos agregados",
     "ASSIGN": "Asignar",
-    "INCIDENT": "Incidente"
+    "INCIDENT": "Incidente",
+    "CHECKOUT_STOP": "Cancelar la compra",
+    "CHECKOUT_STOP_CONFIRM": "¿Deseas interrumpir el pedido? Puedes completarlo más tarde",
+    "CHECKOUT_CONTINUE": "Continuar con la compra"
   }
 }

@@ -1,10 +1,10 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
 import screens from '..';
 import { useStackNavigatorScreenOptions } from '../styles';
 
-const NewDeliveryStack = createStackNavigator();
+const NewDeliveryStack = createNativeStackNavigator();
 
 export const NewDeliveryNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions({

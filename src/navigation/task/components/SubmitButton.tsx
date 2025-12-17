@@ -19,6 +19,7 @@ import { showAlert } from '@/src/utils/alert';
 import { FormikTouched } from 'formik';
 import { reportIncidentFlow } from '@/src/redux/Courier/taskActions';
 import { useAppDispatch } from '@/src/redux/store';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface SubmitButtonProps {
   //TaskComplete
@@ -54,6 +55,7 @@ export const SubmitButton = ({
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useAppDispatch();
+  const insets = useSafeAreaInsets();
 
   const formContext = useReportFormContext();
   const TaskListsContext = useTaskListsContext();
@@ -138,6 +140,7 @@ export const SubmitButton = ({
         justifyContent: 'center',
         backgroundColor: footerBgColor,
         marginTop: 16,
+        paddingBottom: insets.bottom,
         opacity: isDisabled ? 0.6 : 1,
       }}
       testID={`task:finishButton${currentTab ? '-' + currentTab : ''}`}>

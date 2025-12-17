@@ -15,7 +15,6 @@ import Config from 'react-native-config';
 import Modal from 'react-native-modal';
 import {
   selectHttpClient,
-  selectIsSpinnerDelayEnabled,
 } from '../redux/App/selectors';
 import Server from './account/components/Server';
 import DrawerNavigator from './navigators/DrawerNavigator';
@@ -31,7 +30,6 @@ class Loading extends Component {
     this.state = {
       ready: false,
       error: false,
-      modal: props.modal,
     };
   }
 
@@ -70,24 +68,9 @@ class Loading extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.modal !== this.props.modal) {
-      // HIDDEN -> VISIBLE
-      if (!prevProps.modal.show && this.props.modal.show) {
-        // FIXME; use `useIsModalVisible` when possible
-        // 100ms see https://github.com/ladjs/react-native-loading-spinner-overlay?tab=readme-ov-file#recommended-implementation
-        // plus add an extra delay to compensate for a delay added in the Spinner.js:
-        const delay = this.props.isSpinnerDelayEnabled ? 500 : 100;
-        setTimeout(() => this.setState({ modal: this.props.modal }), delay);
-      } else {
-        this.setState({ modal: this.props.modal });
-      }
-    }
-  }
-
   render() {
-    const close = () => this.state.modal.skippable && this.props.closeModal();
-    const swipeDirection = this.state.modal.skippable
+    const close = () => this.props.modal.skippable && this.props.closeModal();
+    const swipeDirection = this.props.modal.skippable
       ? ['down', 'up', 'left', 'right']
       : [];
 
@@ -95,7 +78,7 @@ class Loading extends Component {
       <>
         {this.bodyRender()}
         <Modal
-          isVisible={this.state.modal.show}
+          isVisible={this.props.modal.show}
           onSwipeComplete={close}
           swipeDirection={swipeDirection}
           onBackdropPress={close}>
@@ -103,10 +86,10 @@ class Loading extends Component {
             testID="globalModal"
             style={{
               ...styles.content,
-              ...styles[`${this.state.modal.type}Modal`],
+              ...styles[`${this.props.modal.type}Modal`],
             }}>
-            <Text style={styles[`${this.state.modal.type}Modal`]}>
-              {this.state.modal.content}
+            <Text style={styles[`${this.props.modal.type}Modal`]}>
+              {this.props.modal.content}
             </Text>
           </View>
         </Modal>
@@ -178,7 +161,6 @@ function mapStateToProps(state) {
     modal: state.app.modal,
     customBuild: selectCustomBuild(state),
     firstRun: state.app.firstRun,
-    isSpinnerDelayEnabled: selectIsSpinnerDelayEnabled(state),
   };
 }
 

@@ -4,7 +4,6 @@ import { VStack } from '@/components/ui/vstack';
 import { FormControl } from '@/components/ui/form-control';
 import {
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
@@ -38,7 +37,7 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
   if (!canEditTask(task)) {
     return (
-      <SafeAreaView className="flex-1 align-items-center justify-center">
+      <View className="flex-1 align-items-center justify-center">
         <Text className="text-center">
           {t(
             task.metadata?.order_number
@@ -46,7 +45,7 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
               : 'TASK_DETAILS_CAN_NOT_EDIT_NO_ORDER',
           )}
         </Text>
-      </SafeAreaView>
+      </View>
     );
   }
 
@@ -68,7 +67,7 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
         touched,
       }) => {
         return (
-          <SafeAreaView style={styles.wrapper}>
+          <View style={styles.wrapper}>
             <ScrollView
               testID="scrollView:edit"
               keyboardShouldPersistTaps="handled" // tap is handled by the children in the forms
@@ -88,23 +87,23 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
                       />
                     </>
                   )}
-                  <View style={{ marginBottom: 44, marginHorizontal: -12 }}>
-                    <SubmitButton
-                      task={task}
-                      tasks={[]}
-                      notes={''}
-                      contactName={values.contactName}
-                      success={false}
-                      currentTab={currentTab}
-                      formValues={values}
-                      formTouchedFields={touched}
-                      onPress={formikSubmit}
-                    />
-                  </View>
                 </FormControl>
               </VStack>
             </ScrollView>
-          </SafeAreaView>
+            <View>
+              <SubmitButton
+                task={task}
+                tasks={[]}
+                notes={''}
+                contactName={values.contactName}
+                success={false}
+                currentTab={currentTab}
+                formValues={values}
+                formTouchedFields={touched}
+                onPress={formikSubmit}
+              />
+            </View>
+          </View>
         );
       }}
     </Formik>
