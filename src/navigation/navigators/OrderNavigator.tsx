@@ -3,7 +3,6 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useStackNavigatorScreenOptions } from '../styles';
-import OrderTitle from '../../components/OrderTitle';
 import screens from '..';
 import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 import { clearSelectedTasks } from '@/src/redux/Dispatch/updateSelectedTasksSlice';
@@ -12,6 +11,7 @@ import { selectTaskLists, selectTasksEntities } from '@/src/shared/logistics/red
 import { selectTasksByOrder as selectTasksByOrderLogistics } from '@/src/redux/logistics/selectors';
 import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '@/src/redux/Courier/taskSelectors';
 import useSetTaskListItems from '@/src/shared/src/logistics/redux/hooks/useSetTaskListItems';
+import { getOrderTitle } from '@/src/components/OrderTitle';
 
 const RootStack = createNativeStackNavigator();
 
@@ -85,7 +85,7 @@ export default function OrderNavigator() {
           const { orderNumber, isFromCourier, status } = route.params ?? {};
 
           return {
-            title: <OrderTitle order={orderNumber} />,
+            title: getOrderTitle(orderNumber),
             headerShown: true,
             headerRight: () => (
               <OrderMenuHeader
