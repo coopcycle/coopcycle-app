@@ -295,13 +295,6 @@ export default function DispatchNavigator({ navigation }) {
               headerShown: false,
             }}
           />
-          <RootStack.Screen
-            name="ReportIncident"
-            component={TaskNavigator}
-            options={{
-              headerShown: false,
-            }}
-          />
         </RootStack.Navigator>
       </TaskListsProvider>
     </DeliveryCallbackProvider>

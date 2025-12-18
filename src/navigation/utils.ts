@@ -64,7 +64,7 @@ export const navigateToReportTask = (
     navigateAfter: route.name,
   };
 
-  navigation.navigate('ReportIncident', {
+  navigation.navigate('Task', {
     screen: 'TaskComplete',
     params: {
       screen:'ReportIncidentHome',
