@@ -59,7 +59,8 @@ export function TimeSlotChoiceSelect({
       selectedValue={selectedItem.value}
       initialLabel={selectedItem.label}
       onValueChange={onChoiceChange}
-      testID={`${testID}-dropdown`}>
+      testID={`${testID}-dropdown`}
+    >
       <SelectTrigger variant="outline" size="md" testID={`${testID}-trigger`}>
         <SelectInput
           placeholder={t('STORE_NEW_DELIVERY_SELECT_TIME_SLOT')}
@@ -78,13 +79,15 @@ export function TimeSlotChoiceSelect({
         />
         <SelectContent testID={`${testID}-content`}>
           <SelectDragIndicatorWrapper
-            testID={`${testID}-drag-indicator-wrapper`}>
+            testID={`${testID}-drag-indicator-wrapper`}
+          >
             <SelectDragIndicator testID={`${testID}-drag-indicator`} />
           </SelectDragIndicatorWrapper>
           <ScrollView
             style={{ maxHeight: 350 }}
             showsVerticalScrollIndicator={true}
-            testID={`${testID}-options-scrollview`}>
+            testID={`${testID}-options-scrollview`}
+          >
             {choices &&
               choices.map((choice, index) => (
                 <SelectItem
