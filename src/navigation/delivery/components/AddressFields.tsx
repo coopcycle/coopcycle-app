@@ -24,6 +24,7 @@ import { selectCountry } from '@/src/redux/App/selectors';
 import { useGetStoreAddressesQuery } from '@/src/redux/api/slice';
 import { Spinner } from '@/components/ui/spinner';
 import { useAppDispatch } from '@/src/redux/store';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
 
 type Props = {
   store?: Store;
@@ -263,15 +264,16 @@ export const AddressFields = ({
         error={errors.description}
         touched={touched.description}
       >
-        <FormInput
-          autoCorrect={false}
-          multiline={true}
-          onChangeText={handleChange('description')}
-          onBlur={handleBlur('description')}
-          value={values.description}
-          placeholder={t('STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION')}
-          testID="description-input"
-        />
+        <Textarea>
+          <TextareaInput
+            autoCorrect={false}
+            onChangeText={handleChange('description')}
+            onBlur={handleBlur('description')}
+            value={values.description}
+            placeholder={t('STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION')}
+            testID="description-input"
+          />
+        </Textarea>
       </FormField>
     </>
   );
