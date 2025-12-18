@@ -21,7 +21,7 @@ import { reportIncidentFlow } from '@/src/redux/Courier/taskActions';
 import { useAppDispatch } from '@/src/redux/store';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface SubmitButtonProps {
+type Props = {
   //TaskComplete
   task: Task;
   tasks?: Task[];
@@ -50,7 +50,7 @@ export const SubmitButton = ({
   formValues,
   formTouchedFields,
   onPress,
-}: SubmitButtonProps) => {
+}: Props) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
