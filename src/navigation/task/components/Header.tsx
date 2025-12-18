@@ -9,7 +9,7 @@ import { useBaseTextColor } from '@/src/styles/theme';
 import { getTaskTitleForOrder } from '../../order/utils';
 
 export const Header = ({ task }) => {
-  const t = useTranslation().t;
+  const { t } = useTranslation();
   const headerText = useBaseTextColor();
   const taskTitle = getTaskTitleForOrder(task);
   const address = task.address.streetAddress;
