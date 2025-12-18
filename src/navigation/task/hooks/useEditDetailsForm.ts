@@ -18,8 +18,6 @@ export const useEditDetailsForm = (task: Task) => {
     skip: !task?.metadata?.store,
   });
 
-  // Handlers
-
   const validate = useValidation(store);
 
   const initialValues = useMemo(() => {
