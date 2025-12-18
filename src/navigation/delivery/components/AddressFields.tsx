@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 import { BaseAddressFields } from '@/src/navigation/delivery/utils';
 import _ from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectAssertDeliveryError } from '@/src/redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
@@ -23,6 +23,7 @@ import { FormField } from '@/src/navigation/task/components/FormField';
 import { selectCountry } from '@/src/redux/App/selectors';
 import { useGetStoreAddressesQuery } from '@/src/redux/api/slice';
 import { Spinner } from '@/components/ui/spinner';
+import { useAppDispatch } from '@/src/redux/store';
 
 type Props = {
   store?: Store;
@@ -39,7 +40,7 @@ export const AddressFields = ({
   const backgroundColor = useBackgroundContainerColor();
   const backgroundHighlightColor = useBackgroundHighlightColor();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const country = useSelector(selectCountry);
   const deliveryError = useSelector(selectAssertDeliveryError);
