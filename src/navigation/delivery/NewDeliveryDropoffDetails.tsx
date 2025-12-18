@@ -14,7 +14,6 @@ import {
   useBackgroundContainerColor,
   usePrimaryColor,
 } from '../../styles/theme';
-import FormInput from './components/FormInput';
 import TimeSlotPicker from './components/TimeSlotPicker';
 import ModalFormWrapper from './ModalFormWrapper';
 import { DateTimePicker } from './components/DateTimePicker';
@@ -29,6 +28,8 @@ import { useGetStorePackagesQuery } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
 import { WeightInput } from '@/src/navigation/delivery/components/WeightInput';
 import { PostDeliveryBody } from '@/src/redux/api/types';
+import { FormField } from '@/src/navigation/task/components/FormField';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
 
 function NewDeliveryDropoffDetails({ navigation, route }) {
   const backgroundColor = useBackgroundContainerColor();
@@ -91,6 +92,8 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
       validateOnBlur={false}
       validateOnChange={false}>
       {({
+        errors,
+        touched,
         handleChange,
         handleBlur,
         handleSubmit,
@@ -136,22 +139,21 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
             </Text>
             <PackagesInput packages={packages} />
           </View>
-          <View style={[styles.formGroup]}>
-            <Text style={styles.label}>
-              {t('STORE_NEW_DELIVERY_COMMENTS')}{' '}
-              <Text style={styles.optional}>({t('OPTIONAL')})</Text>
-            </Text>
-            <FormInput
-              style={{
-                height: 80,
-              }}
-              autoCorrect={false}
-              multiline={true}
-              onChangeText={handleChange('comments')}
-              onBlur={handleBlur('comments')}
-              placeholder={t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
-            />
-          </View>
+          <FormField
+            label={t('STORE_NEW_DELIVERY_COMMENTS')}
+            optional
+            error={errors.comments}
+            touched={touched.comments}
+          >
+            <Textarea>
+              <TextareaInput
+                autoCorrect={false}
+                onChangeText={handleChange('comments')}
+                onBlur={handleBlur('comments')}
+                placeholder={t('STORE_NEW_DELIVERY_ENTER_COMMENTS')}
+              />
+            </Textarea>
+          </FormField>
         </ModalFormWrapper>
       )}
     </Formik>
