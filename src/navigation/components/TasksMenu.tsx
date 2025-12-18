@@ -26,6 +26,7 @@ export default function TasksMenu({
       selectionMode="none"
       offset={0}
       className="p-1.5"
+      useRNModal={true}
     >
       {options.map((opt) => {
         return( !opt.isDisabled &&
