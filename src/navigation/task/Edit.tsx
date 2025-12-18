@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useSupplements } from '@/src/navigation/task/hooks/useSupplements';
 import { Spinner } from '@/components/ui/spinner';
 import { canEditTask } from '@/src/navigation/task/utils/taskFormHelpers';
+import { ErrorText } from '@/src/components/ErrorText';
 
 interface TaskFormProps {
   task: Task;
@@ -30,6 +31,8 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     store,
 
     initialValues,
+    initialValuesLoading,
+    initialValuesError,
     validate,
   } = useEditDetailsForm(task);
 
@@ -49,8 +52,16 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     );
   }
 
-  if (!initialValues) {
+  if (initialValuesLoading) {
     return <Spinner />;
+  }
+
+  if (initialValuesError || !initialValues) {
+    return (
+      <View style={{padding: 16}}>
+        <ErrorText message={t('AN_ERROR_OCCURRED')} />
+      </View>
+    );
   }
 
   return (

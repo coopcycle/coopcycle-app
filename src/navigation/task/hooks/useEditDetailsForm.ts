@@ -11,6 +11,7 @@ export const useEditDetailsForm = (task: Task) => {
   const {
     data: initialDeliveryFormData,
     isLoading: initialDeliveryFormDataIsLoading,
+    isError: initialDeliveryFormDataIsError,
   } = useGetTaskDeliveryFormDataQuery(task.id, { skip: !task.id });
 
   const { data: store } = useGetStoreQuery(task?.metadata?.store, {
@@ -22,20 +23,18 @@ export const useEditDetailsForm = (task: Task) => {
   const validate = useValidation(store);
 
   const initialValues = useMemo(() => {
-    if (initialDeliveryFormDataIsLoading) {
-      return undefined;
-    }
-
     if (!initialDeliveryFormData) {
       return undefined;
     }
 
     return getInitialFormValues(task, initialDeliveryFormData);
-  }, [task, initialDeliveryFormDataIsLoading, initialDeliveryFormData]);
+  }, [task, initialDeliveryFormData]);
 
   return {
     store,
     initialValues,
+    initialValuesLoading: initialDeliveryFormDataIsLoading,
+    initialValuesError: initialDeliveryFormDataIsError,
     validate,
   };
 };
