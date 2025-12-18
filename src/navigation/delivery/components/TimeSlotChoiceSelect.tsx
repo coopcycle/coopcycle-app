@@ -71,7 +71,7 @@ export function TimeSlotChoiceSelect({
           testID={`${testID}-icon`}
         />
       </SelectTrigger>
-      <SelectPortal>
+      <SelectPortal useRNModal>
         <SelectBackdrop
           style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           testID={`${testID}-backdrop`}
