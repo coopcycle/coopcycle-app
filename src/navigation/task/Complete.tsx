@@ -180,7 +180,7 @@ const CompleteTask = ({
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           contentInsetAdjustmentBehavior="always">
-          <VStack style={{ flex: 1 }} className="w-full">
+          <VStack className="w-full flex-1">
             <MultipleTasksLabel tasks={tasks} />
             <TouchableWithoutFeedback
               // We need to disable TouchableWithoutFeedback when keyboard is not visible,
