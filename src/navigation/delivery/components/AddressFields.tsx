@@ -210,7 +210,8 @@ export const AddressFields = ({
         label={t('STORE_NEW_DELIVERY_BUSINESS_NAME')}
         optional
         error={errors.businessName}
-        touched={touched.businessName}>
+        touched={touched.businessName}
+      >
         <FormInput
           autoCorrect={false}
           returnKeyType="done"
@@ -226,7 +227,8 @@ export const AddressFields = ({
         label={t('STORE_NEW_DELIVERY_CONTACT_NAME')}
         optional
         error={errors.contactName}
-        touched={touched.contactName}>
+        touched={touched.contactName}
+      >
         <FormInput
           autoCorrect={false}
           returnKeyType="done"
@@ -241,7 +243,8 @@ export const AddressFields = ({
       <FormField
         label={t('STORE_NEW_DELIVERY_PHONE_NUMBER')}
         error={errors.telephone}
-        touched={touched.telephone}>
+        touched={touched.telephone}
+      >
         <FormInput
           autoCorrect={false}
           keyboardType="phone-pad"
@@ -258,7 +261,8 @@ export const AddressFields = ({
         label={t('STORE_NEW_DELIVERY_ADDRESS_DESCRIPTION')}
         optional
         error={errors.description}
-        touched={touched.description}>
+        touched={touched.description}
+      >
         <FormInput
           autoCorrect={false}
           multiline={true}
