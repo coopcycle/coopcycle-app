@@ -101,9 +101,6 @@ const styles = StyleSheet.create({
   timeSlot: {
     marginBottom: 16,
   },
-  textArea: {
-    height: 80,
-  },
   packagesContainer: {
     gap: 16,
     marginTop: 4,
