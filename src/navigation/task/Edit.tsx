@@ -19,6 +19,8 @@ import { useSupplements } from '@/src/navigation/task/hooks/useSupplements';
 import { Spinner } from '@/components/ui/spinner';
 import { canEditTask } from '@/src/navigation/task/utils/taskFormHelpers';
 import { ErrorText } from '@/src/components/ErrorText';
+import { SectionTitleText } from '@/src/navigation/task/components/SectionTitleText';
+import { SectionTitle } from '@/src/navigation/task/components/SectionTitle';
 
 interface TaskFormProps {
   task: Task;
@@ -83,16 +85,17 @@ export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
               testID="scrollView:edit"
               keyboardShouldPersistTaps="handled" // tap is handled by the children in the forms
               style={styles.container}
-              contentContainerStyle={{ flexGrow: 1 }}>
+              contentContainerStyle={{ flexGrow: 1 }}
+            >
               <VStack space={4} style={styles.content}>
                 <FormControl style={styles.formControl}>
                   <EditTaskFields store={store} task={task} />
                   {/* Supplements */}
                   {availableSupplements && availableSupplements.length > 0 && (
                     <>
-                      <Text style={styles.sectionTitle}>
-                        {t('SUPPLEMENTS')}
-                      </Text>
+                      <SectionTitle>
+                        <SectionTitleText text={t('SUPPLEMENTS')} />
+                      </SectionTitle>
                       <EditSupplements
                         availableSupplements={availableSupplements}
                       />
@@ -135,13 +138,6 @@ const styles = StyleSheet.create({
   formControl: {
     width: '100%',
     paddingHorizontal: 8,
-  },
-  sectionTitle: {
-    marginTop: 12,
-    marginBottom: 4,
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: '#262627',
   },
   autocompleteWrapper: {
     height: 24,

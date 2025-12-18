@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { Task } from '@/src/types/task';
 import { StyleSheet, View } from 'react-native';
 import { useFormikContext } from 'formik';
-import { Text } from '@/components/ui/text';
 import { EditTimeRange } from '@/src/navigation/task/components/EditTimeRange';
 import { useGetStoreTimeSlotsQuery } from '@/src/redux/api/slice';
 import { PackagesInput } from '@/src/navigation/delivery/components/PackagesInput';
@@ -13,6 +12,8 @@ import { FormField } from '@/src/navigation/task/components/FormField';
 import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { AddressFields } from '@/src/navigation/delivery/components/AddressFields';
 import { Store } from '@/src/redux/api/types';
+import { SectionTitleText } from '@/src/navigation/task/components/SectionTitleText';
+import { SectionTitle } from '@/src/navigation/task/components/SectionTitle';
 
 interface TaskFormProps {
   store?: Store;
@@ -50,9 +51,9 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
     <>
       <AddressFields store={store} shouldAssertDelivery={false} />
       {/* Packages and Timeslot Section */}
-      <Text style={styles.sectionTitle}>
-        {t('STORE_NEW_DELIVERY_PACKAGES_TITLE')}
-      </Text>
+      <SectionTitle>
+        <SectionTitleText text={t('STORE_NEW_DELIVERY_PACKAGES_TITLE')} />
+      </SectionTitle>
       {/* Time range (after/before or timeslot) */}
       <View style={styles.timeSlot}>
         {hasTimeSlot !== undefined ? (
@@ -67,7 +68,8 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
         <FormField
           label={t('STORE_NEW_DELIVERY_WEIGHT')}
           error={errors.weight}
-          touched={touched.weight}>
+          touched={touched.weight}
+        >
           {/* if it's not a task where we can edit packages, we assume the weight is not editable as well */}
           <WeightInput disabled={!canEditPackages} />
         </FormField>
@@ -76,7 +78,8 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
       {storePackages && storePackages.length > 0 && packagesWithQuantity ? (
         <FormField
           label={t('STORE_NEW_DELIVERY_PACKAGES')}
-          error={errors.packages}>
+          error={errors.packages}
+        >
           <View style={styles.packagesContainer}>
             <PackagesInput
               packages={storePackages}
@@ -91,13 +94,6 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
 };
 
 const styles = StyleSheet.create({
-  sectionTitle: {
-    marginTop: 12,
-    marginBottom: 4,
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: '#262627',
-  },
   timeSlot: {
     marginBottom: 16,
   },
