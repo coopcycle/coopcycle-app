@@ -260,9 +260,6 @@ export const AddressFields = ({
         error={errors.description}
         touched={touched.description}>
         <FormInput
-          style={{
-            height: 80,
-          }}
           autoCorrect={false}
           multiline={true}
           onChangeText={handleChange('description')}
