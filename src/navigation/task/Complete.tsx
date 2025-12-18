@@ -249,7 +249,6 @@ const CompleteTask = ({
                     <TextareaInput
                       testID='ReportTextareaInput'
                       autoCorrect={false}
-                      totalLines={2}
                       onChangeText={text => formContext.updateFormField('notes', text)}
                     />
                   </Textarea>
