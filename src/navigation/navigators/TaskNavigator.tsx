@@ -43,9 +43,7 @@ const CompleteNavigator = () => {
         component={screens.TaskComplete}
         options={({ navigation, route }) => ({
           title: completeTitle(route.params),
-          headerLeft: props => (
-            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
-          ),
+          headerLeft: props => <HeaderBackButton {...props} displayMode="minimal" onPress={() => navigation.goBack()} />,
         })}
       />
       <CompleteStack.Screen
@@ -79,7 +77,7 @@ export default () => {
         component={screens.TaskHome}
         options={({ route }) => ({
           headerTitle: getTaskTitle(route.params?.task),
-          headerLeft: (props) => <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
+          headerLeft: props => <HeaderBackButton {...props} displayMode="minimal" onPress={() => navigation.goBack()} />
         })}
       />
       <RootStack.Screen
