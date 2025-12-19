@@ -94,28 +94,27 @@ export const SupplementSelector = ({ availableSupplements }: Props) => {
   };
 
   return (
-    <View style={styles.container} testID={testID}>
+    <View className="my-3" testID={testID}>
       {addedSupplements.length > 0 && (
-        <View
-          style={styles.selectedSupplements}
-          testID={`${testID}-selected-section`}
-        >
+        <View testID={`${testID}-selected-section`}>
           <Text style={styles.sectionTitle} testID={`${testID}-selected-title`}>
             {t('ADDED_SUPPLEMENTS')}
           </Text>
-          {addedSupplements.map((item, index) => (
-            <ManualSupplement
-              key={index}
-              item={item}
-              testID={testID}
-              handleIncrement={handleIncrement}
-              handleDecrement={handleDecrement}
-            />
-          ))}
+          <View className="gap-2">
+            {addedSupplements.map((item, index) => (
+              <ManualSupplement
+                key={index}
+                item={item}
+                testID={testID}
+                handleIncrement={handleIncrement}
+                handleDecrement={handleDecrement}
+              />
+            ))}
+          </View>
         </View>
       )}
 
-      <View testID={`${testID}-selector-section`}>
+      <View className="mt-4" testID={`${testID}-selector-section`}>
         <Text style={styles.selectorLabel} testID={`${testID}-selector-label`}>
           {t('ADD_SUPPLEMENT')}
         </Text>
@@ -148,12 +147,6 @@ export const SupplementSelector = ({ availableSupplements }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 16,
-  },
-  selectedSupplements: {
-    marginBottom: 20,
-  },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
