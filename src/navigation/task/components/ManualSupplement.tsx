@@ -27,7 +27,8 @@ export const ManualSupplement = ({
     <View
       style={[styles.supplementItem]}
       key={item['@id']}
-      testID={`${testID}-selected-item-${item.position}`}>
+      testID={`${testID}-selected-item-${item.position}`}
+    >
       {item.isRangeBased ? (
         <Range
           quantity={item.quantity}
@@ -46,7 +47,8 @@ export const ManualSupplement = ({
             } else {
               handleDecrement(item);
             }
-          }}>
+          }}
+        >
           <CheckboxIndicator>
             <CheckboxIcon as={CheckIcon} />
           </CheckboxIndicator>
@@ -55,10 +57,12 @@ export const ManualSupplement = ({
       <TouchableOpacity
         style={styles.supplementLabel}
         onPress={() => handleIncrement(item)}
-        testID={`${testID}-selected-item-${item.position}-label`}>
+        testID={`${testID}-selected-item-${item.position}-label`}
+      >
         <Text
           style={styles.supplementName}
-          testID={`${testID}-selected-item-${item.position}-name`}>
+          testID={`${testID}-selected-item-${item.position}-name`}
+        >
           {item.name || 'Unknown'}
         </Text>
       </TouchableOpacity>
