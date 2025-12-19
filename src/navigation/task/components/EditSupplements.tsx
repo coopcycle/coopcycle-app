@@ -165,24 +165,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 8,
   },
-  selectWrapper: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  selectButton: {
-    padding: 12,
-    backgroundColor: '#fff',
-  },
-  selectText: {
-    fontSize: 14,
-    color: '#333',
-  },
-  placeholderText: {
-    fontSize: 14,
-    color: '#6c757d',
-  },
   optionsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
