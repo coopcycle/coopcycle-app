@@ -45,7 +45,8 @@ export const ReportContent = () => {
 
   return (
     <>
-      {isSubmitting && <Indicator />}
+      {/*FIXME: display loading indicator when submitting; requires getting rid of the global loading indicator to avoid multiple loading indicators */}
+      {/*{isSubmitting && <Indicator />}*/}
       <VStack style={{ flex: 1 }}>
         <HStack style={[styles.tabBar, { backgroundColor: theme.dark ? '#111111' : '#D9D9D9' }]}>
           <TabBar onPress={handleTabChange} />
