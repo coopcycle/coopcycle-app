@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 12,
-    color: '#333',
   },
   selectorLabel: {
     fontSize: 14,

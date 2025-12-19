@@ -83,6 +83,5 @@ const styles = StyleSheet.create({
   },
   supplementName: {
     fontSize: 14,
-    color: '#333',
   },
 });
