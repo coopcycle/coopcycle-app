@@ -129,17 +129,22 @@ const buildMetadataPayload = (
       orderPayload.manualSupplements = formValues.manualSupplements;
     }
 
-    suggestion = {
-      suggestion: {
-        tasks: [
-          {
-            ...taskPayload,
-            id: id,
-          },
-        ],
-        order: orderPayload,
-      },
-    };
+    if (
+      Object.keys(taskPayload).length > 0 ||
+      Object.keys(orderPayload).length > 0
+    ) {
+      suggestion = {
+        suggestion: {
+          tasks: [
+            {
+              ...taskPayload,
+              id: id,
+            },
+          ],
+          order: orderPayload,
+        },
+      };
+    }
   }
 
   const metadata = [];
