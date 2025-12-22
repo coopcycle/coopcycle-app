@@ -16,6 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { File } from 'expo-file-system';
 
 import { addPicture } from '../../redux/Courier';
+import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 
 class Photo extends Component {
   constructor(props) {
@@ -58,18 +59,10 @@ class Photo extends Component {
 
   _saveImage() {
     const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-    const navigateAfter = this.props.route.params?.navigateAfter;
     const { image } = this.state;
     if (image) {
       this.props.addPicture(task, image.uri);
-      this.props.navigation.navigate({
-        name: 'TaskCompleteHome',
-        params: { task, tasks, navigateAfter },
-        options: {
-          merge: true,
-        }
-      });
+      navigateBackToCompleteTask(this.props.navigation, this.props.route);
     }
   }
 
@@ -107,18 +100,10 @@ class Photo extends Component {
 
         if (file.exists) {
           const task = this.props.route.params?.task;
-          const tasks = this.props.route.params?.tasks;
-          const navigateAfter = this.props.route.params?.navigateAfter;
 
           this.props.addPicture(task, file.uri);
 
-          this.props.navigation.navigate({
-            name: 'TaskCompleteHome',
-            params: { task, tasks, navigateAfter },
-            options: {
-              merge: true,
-            }
-          });
+          navigateBackToCompleteTask(this.props.navigation, this.props.route);
         }
       }
     };

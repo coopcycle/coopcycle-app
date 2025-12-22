@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { navigateToProofOfDeliveryFromReportIncident } from '../../utils';
 import { useTranslation } from 'react-i18next';
 
-export const PoDButton = ({ task, tasks }) => {
+export const PoDButton = ({ task, tasks, success }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const { t } = useTranslation();
@@ -13,8 +13,8 @@ export const PoDButton = ({ task, tasks }) => {
     <Button
         style={{ backgroundColor: '#BB4711' }}
       onPress={() =>
-        navigateToProofOfDeliveryFromReportIncident(navigation, route, task, tasks)
-        
+        navigateToProofOfDeliveryFromReportIncident(navigation, route, task, tasks, success)
+
       }>
       <Text style={{ color:'white' }}>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
     </Button>

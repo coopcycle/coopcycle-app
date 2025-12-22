@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { v4 } from 'uuid';
 
 import { addSignature } from '../../redux/Courier';
+import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 
 // Hide footer
 // https://github.com/YanYuanFE/react-native-signature-canvas#basic-parameters
@@ -51,16 +52,8 @@ class Signature extends Component {
     );
 
     const task = this.props.route.params?.task;
-    const tasks = this.props.route.params?.tasks;
-    const navigateAfter = this.props.route.params?.navigateAfter;
     this.props.addSignature(task, file.uri);
-    this.props.navigation.navigate({
-      name: 'TaskCompleteHome',
-      params: { task, tasks, navigateAfter },
-      options: {
-        merge: true,
-      }
-    });
+    navigateBackToCompleteTask(this.props.navigation, this.props.route);
   }
 
   _clearCanvas() {

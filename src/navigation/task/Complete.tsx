@@ -262,7 +262,7 @@ const CompleteTask = ({
                       <CheckboxLabel>{t('VALIDATE_TASK')}</CheckboxLabel>
                     </Checkbox>
                   )}
-                  <PoDButton task={task} tasks={tasks} />
+                  <PoDButton task={task} tasks={tasks} success={success} />
                 </FormControl>
                 <View>
                   <ScrollView style={{ height: '50%' }}>
