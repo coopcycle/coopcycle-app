@@ -92,15 +92,16 @@ const CompleteTask = ({
   const task = route.params?.task;
   const tasks = route.params?.tasks;
 
+  const success = isSuccessRoute(route);
+
+  const reportFormContext = useReportFormContext();
   const {
     formState: incidentFormState,
     updateFormField: updateIncidentFormField = () => {},
-  } = useReportFormContext();
+  } = success ? {} : reportFormContext;
 
   const { notes, failureReason, failureReasonMetadata } = incidentFormState ||
     {};
-
-  const success = isSuccessRoute(route);
 
   const [isContactNameModalVisible, setIsContactNameModalVisible] =
     useState(false);
