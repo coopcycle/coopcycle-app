@@ -1,12 +1,23 @@
-import { ChevronDownIcon } from "@/components/ui/icon";
-import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Text } from "@/components/ui/text";
-import _ from "lodash";
-import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { ScrollView } from "react-native";
-import { useGetTaskFailureReasonsQuery } from "@/src/redux/api/slice";
+import { ChevronDownIcon } from '@/components/ui/icon';
+import {
+  Select,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectIcon,
+  SelectInput,
+  SelectItem,
+  SelectPortal,
+  SelectTrigger,
+} from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Text } from '@/components/ui/text';
+import _ from 'lodash';
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView } from 'react-native';
+import { useGetTaskFailureReasonsQuery } from '@/src/redux/api/slice';
 import Task from '@/src/types/task';
 import { FailureReason } from '@/src/redux/api/types';
 
@@ -15,20 +26,24 @@ type Props = {
   onValueChange: (code: string, obj?: FailureReason) => void;
 };
 
-export const FailureReasonPicker = ({ task, onValueChange } : Props) => {
-  const [selectedFailureReason, setFailureReason] = useState<string | null>(null);
+export const FailureReasonPicker = ({ task, onValueChange }: Props) => {
+  const [selectedFailureReason, setFailureReason] = useState<string | null>(
+    null,
+  );
   const { t } = useTranslation();
 
-  const { data, isSuccess, isError } = useGetTaskFailureReasonsQuery(task['@id']);
+  const { data, isSuccess, isError } = useGetTaskFailureReasonsQuery(
+    task['@id'],
+  );
 
   const values = useMemo(() => {
     if (!isSuccess) {
       return null;
     }
     return data['hydra:member'].map((value, index) => (
-      <SelectItem 
-        key={index} 
-        value={value.code} 
+      <SelectItem
+        key={index}
+        value={value.code}
         label={value.description}
         testID={`failure-reason-option-${index}`}
       />
@@ -56,10 +71,11 @@ export const FailureReasonPicker = ({ task, onValueChange } : Props) => {
       <Select
         testID="failure-reason-select"
         selectedValue={selectedFailureReason}
-        onValueChange={v => onChange(v)}>
-        <SelectTrigger 
-          variant="outline" 
-          size="md" 
+        onValueChange={v => onChange(v)}
+      >
+        <SelectTrigger
+          variant="outline"
+          size="md"
           className="justify-between"
           testID="failure-reason-select-trigger"
         >
@@ -77,8 +93,8 @@ export const FailureReasonPicker = ({ task, onValueChange } : Props) => {
           <SelectIcon className="mr-3" as={ChevronDownIcon} />
         </SelectTrigger>
         <SelectPortal>
-          <SelectBackdrop 
-            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} 
+          <SelectBackdrop
+            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
             testID="failure-reason-select-backdrop"
           />
           <SelectContent testID="failure-reason-select-content">
