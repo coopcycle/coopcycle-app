@@ -6,18 +6,20 @@ import _ from "lodash";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
-import { useQuery } from "react-query";
+import { useGetTaskFailureReasonsQuery } from "@/src/redux/api/slice";
+import Task from '@/src/types/task';
+import { FailureReason } from '@/src/redux/api/types';
 
-export const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
-  const [selectedFailureReason, setFailureReason] = useState(null);
+type Props = {
+  task: Task;
+  onValueChange: (code: string, obj?: FailureReason) => void;
+};
+
+export const FailureReasonPicker = ({ task, onValueChange } : Props) => {
+  const [selectedFailureReason, setFailureReason] = useState<string | null>(null);
   const { t } = useTranslation();
 
-  const { data, isSuccess, isError } = useQuery(
-    ['task', 'failure_reasons', task['@id']],
-    async () => {
-      return await httpClient.get(`${task['@id']}/failure_reasons`);
-    },
-  );
+  const { data, isSuccess, isError } = useGetTaskFailureReasonsQuery(task['@id']);
 
   const values = useMemo(() => {
     if (!isSuccess) {
@@ -33,7 +35,7 @@ export const FailureReasonPicker = ({ task, httpClient, onValueChange }) => {
     ));
   }, [data, isSuccess]);
 
-  const onChange = selectedFailureReason => {
+  const onChange = (selectedFailureReason: string) => {
     if (!isSuccess) {
       return;
     }

@@ -6,6 +6,8 @@ import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
 import {
   Address,
+  FailureReason,
+  HydraCollection,
   PricingRuleSet,
   PutDeliveryBody,
   Store,
@@ -246,6 +248,9 @@ export const apiSlice = createApi({
     getTaskContext: builder.query({
       query: id => `api/tasks/${id}/context`,
     }),
+    getTaskFailureReasons: builder.query<HydraCollection<FailureReason>, Uri>({
+      query: (taskUri: Uri) => `${taskUri}/failure_reasons`,
+    }),
     getTaskDeliveryFormData: builder.query<PutDeliveryBody, number>({
       query: id => `api/tasks/${id}/delivery_form_data`,
     }),
@@ -291,6 +296,7 @@ export const {
   useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetTaskContextQuery,
+  useGetTaskFailureReasonsQuery,
   useGetTaskDeliveryFormDataQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,

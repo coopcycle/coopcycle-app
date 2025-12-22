@@ -196,6 +196,12 @@ export type ManualSupplementValues = {
   quantity: number;
 };
 
+export type FailureReason = {
+  code: string;
+  description: string;
+  metadata?: Record<string, unknown>;
+};
+
 export type Incident = JsonLdEntity & {
   id: number;
   title?: string;

@@ -34,7 +34,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { connect } from 'react-redux';
 
-import { selectHttpClient } from '../../redux/App/selectors';
 import {
   deletePictureAt,
   deleteSignatureAt,
@@ -83,7 +82,6 @@ const parseInitialData = data => {
 };
 
 const CompleteTask = ({
-  httpClient,
   signatures,
   pictures,
   deleteSignatureAt,
@@ -215,7 +213,6 @@ const CompleteTask = ({
                     </FormControlLabel>
                     <FailureReasonPicker
                       task={task}
-                      httpClient={httpClient}
                       onValueChange={(code, obj) => {
                         if (obj && obj.metadata) {
                           formContext.updateFormField('failureReasonMetadata', obj.metadata);
@@ -367,7 +364,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    httpClient: selectHttpClient(state),
     signatures: selectSignatures(state),
     pictures: selectPictures(state),
   };
