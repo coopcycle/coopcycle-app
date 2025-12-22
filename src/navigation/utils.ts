@@ -1,3 +1,6 @@
+import { ParamListBase, RouteProp } from '@react-navigation/core';
+import { NavigationProp } from '@react-navigation/native';
+
 let navigateAfter = null;
 
 export const navigateToOrder = (navigation, orderNumber: string, isFromCourier = false, status = 'TODO', extraData = {}) => {
@@ -47,4 +50,16 @@ export const navigateToCompleteTask = (
       params: { ...params, success },
     },
   });
+};
+
+export const navigateBackToCompleteTask = (
+  navigation: NavigationProp<ParamListBase>,
+  route: RouteProp<ParamListBase>,
+) => {
+  const task = route.params?.task;
+  const tasks = route.params?.tasks;
+  const navigateAfter = route.params?.navigateAfter;
+  const success = route.params?.success;
+
+  navigation.popTo('TaskCompleteHome', { task, tasks, navigateAfter, success });
 };

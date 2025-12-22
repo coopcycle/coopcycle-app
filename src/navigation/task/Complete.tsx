@@ -645,6 +645,7 @@ const CompleteTask = ({
                   task,
                   tasks,
                   navigateAfter: route.params?.navigateAfter,
+                  success,
                 }, { merge: true})
               }>
               <HStack className="items-center justify-between p-3">
