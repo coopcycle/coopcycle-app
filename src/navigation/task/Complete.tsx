@@ -94,17 +94,13 @@ const CompleteTask = ({
 
   const formContext = useReportFormContext();
 
-  const formState = formContext?.formState || {
-    notes,
+  const { notes,
     failureReason,
     failureReasonMetadata,
-    task,
-  };
+  } = formContext?.formState || {};
 
   const success = isSuccessRoute(route);
 
-  const [notes, setNotes] = useState(formState.notes);
-  const [failureReason, setFailureReason] = useState(formState.failureReason);
   const [isContactNameModalVisible, setIsContactNameModalVisible] =
     useState(false);
   const [contactName, setContactName] = useState('');
@@ -113,7 +109,6 @@ const CompleteTask = ({
     task?.status === 'DONE'
   );
 
-  const [failureReasonMetadata, setFailureReasonMetadata] = useState(formState.failureReasonMetadata);
   const [failureReasonMetadataToSend, setFailureReasonMetadataToSend] =
     useState([]);
 
