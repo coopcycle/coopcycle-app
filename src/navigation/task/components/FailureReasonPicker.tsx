@@ -93,7 +93,7 @@ export const FailureReasonPicker = ({
           />
           <SelectIcon className="mr-3" as={ChevronDownIcon} />
         </SelectTrigger>
-        <SelectPortal>
+        <SelectPortal useRNModal>
           <SelectBackdrop
             style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
             testID="failure-reason-select-backdrop"
