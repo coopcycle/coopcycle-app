@@ -1,3 +1,7 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView } from 'react-native';
+import _ from 'lodash';
 import { ChevronDownIcon } from '@/components/ui/icon';
 import {
   Select,
@@ -13,23 +17,21 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from '@/components/ui/text';
-import _ from 'lodash';
-import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ScrollView } from 'react-native';
 import { useGetTaskFailureReasonsQuery } from '@/src/redux/api/slice';
 import Task from '@/src/types/task';
 import { FailureReason } from '@/src/redux/api/types';
 
 type Props = {
   task: Task;
+  selectedFailureReason?: string;
   onValueChange: (code: string, obj?: FailureReason) => void;
 };
 
-export const FailureReasonPicker = ({ task, onValueChange }: Props) => {
-  const [selectedFailureReason, setFailureReason] = useState<string | null>(
-    null,
-  );
+export const FailureReasonPicker = ({
+  task,
+  selectedFailureReason,
+  onValueChange,
+}: Props) => {
   const { t } = useTranslation();
 
   const { data, isSuccess, isError } = useGetTaskFailureReasonsQuery(
@@ -59,7 +61,6 @@ export const FailureReasonPicker = ({ task, onValueChange }: Props) => {
       r => r.code === selectedFailureReason,
     );
     onValueChange(selectedFailureReason, failureReasonObj);
-    setFailureReason(selectedFailureReason);
   };
 
   if (isError) {

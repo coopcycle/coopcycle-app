@@ -208,6 +208,7 @@ const CompleteTask = ({
                     </FormControlLabel>
                     <FailureReasonPicker
                       task={task}
+                      selectedFailureReason={failureReason}
                       onValueChange={(code, obj) => {
                         if (obj && obj.metadata) {
                           formContext.updateFormField('failureReasonMetadata', obj.metadata);
