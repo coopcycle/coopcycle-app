@@ -11,8 +11,9 @@ import { Uri } from '@/src/redux/api/types';
 interface FormState {
   // REPORT INCIDENT FIELDS
   failureReason?: string;
+  failureReasonMetadata: Record<string, unknown>;
   notes: string;
-  task: Task;
+  task: Task | undefined;
 }
 
 export interface FormStateToSend {
