@@ -92,12 +92,13 @@ const CompleteTask = ({
   const task = route.params?.task;
   const tasks = route.params?.tasks;
 
-  const formContext = useReportFormContext();
+  const {
+    formState: incidentFormState,
+    updateFormField: updateIncidentFormField = () => {},
+  } = useReportFormContext();
 
-  const { notes,
-    failureReason,
-    failureReasonMetadata,
-  } = formContext?.formState || {};
+  const { notes, failureReason, failureReasonMetadata } = incidentFormState ||
+    {};
 
   const success = isSuccessRoute(route);
 
@@ -211,15 +212,15 @@ const CompleteTask = ({
                       selectedFailureReason={failureReason}
                       onValueChange={(code, obj) => {
                         if (obj && obj.metadata) {
-                          formContext.updateFormField('failureReasonMetadata', obj.metadata);
+                          updateIncidentFormField('failureReasonMetadata', obj.metadata);
                           setFailureReasonMetadataToSend(
                             parseInitialData(obj.metadata),
                           );
                         } else {
-                          formContext.updateFormField('failureReasonMetadata', []);
+                          updateIncidentFormField('failureReasonMetadata', []);
                           setFailureReasonMetadataToSend([]);
                         }
-                        formContext.updateFormField('failureReason', code);
+                        updateIncidentFormField('failureReason', code);
                       }}
                     />
                     {Array.isArray(failureReasonMetadata) &&
@@ -227,7 +228,7 @@ const CompleteTask = ({
                       <FailureReasonForm
                         data={failureReasonMetadata}
                         onChange={metadata => {
-                          formContext.updateFormField('failureReasonMetadata', metadata);
+                          updateIncidentFormField('failureReasonMetadata', metadata);
                         }}
                         parseInitialData={parseInitialData}
                       />
@@ -242,7 +243,7 @@ const CompleteTask = ({
                     <TextareaInput
                       testID='ReportTextareaInput'
                       autoCorrect={false}
-                      onChangeText={text => formContext.updateFormField('notes', text)}
+                      onChangeText={text => updateIncidentFormField('notes', text)}
                     />
                   </Textarea>
                   {!success && (
