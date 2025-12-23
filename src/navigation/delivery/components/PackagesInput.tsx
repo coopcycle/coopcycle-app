@@ -64,6 +64,7 @@ export const PackagesInput = ({
                   style={{
                     flex: 1,
                   }}
+                  disabled={disabled}
                   onPress={() => incrementQuantity(item.type)}>
                   <Text>{item.type}</Text>
                 </TouchableOpacity>
