@@ -26,7 +26,8 @@ const Indicator = () => (
       alignItems: 'center',
       backgroundColor: 'rgba(102, 102, 102, 0.2)',
       zIndex: 999,
-    }}>
+    }}
+  >
     <ActivityIndicator animating={true} size="large" />
   </View>
 );
@@ -48,7 +49,12 @@ export const ReportContent = () => {
       {/*FIXME: display loading indicator when submitting; requires getting rid of the global loading indicator to avoid multiple loading indicators */}
       {/*{isSubmitting && <Indicator />}*/}
       <VStack style={{ flex: 1 }}>
-        <HStack style={[styles.tabBar, { backgroundColor: theme.dark ? '#111111' : '#D9D9D9' }]}>
+        <HStack
+          style={[
+            styles.tabBar,
+            { backgroundColor: theme.dark ? '#111111' : '#D9D9D9' },
+          ]}
+        >
           <TabBar onPress={handleTabChange} />
         </HStack>
         <Header task={task} />
@@ -57,15 +63,17 @@ export const ReportContent = () => {
             style={[
               styles.tabContent,
               currentTab === 'report' ? styles.visible : styles.hidden,
-            ]}>
+            ]}
+          >
             <Complete />
           </View>
           <View
             style={[
               styles.tabContent,
               currentTab === 'edit' ? styles.visible : styles.hidden,
-            ]}>
-            <Edit task={task} currentTab={currentTab}/>
+            ]}
+          >
+            <Edit task={task} currentTab={currentTab} />
           </View>
         </View>
       </VStack>
