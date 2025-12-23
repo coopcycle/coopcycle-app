@@ -574,11 +574,14 @@ export function changeStatus(restaurant, state) {
   };
 }
 
-export function loadProducts(client, restaurant) {
-  return function (dispatch) {
+export function loadProducts(restaurant) {
+  return function (dispatch, getState) {
+
+    const httpClient = selectHttpClient(getState());
+
     dispatch(loadProductsRequest());
 
-    return client
+    return httpClient
       .get(`${restaurant['@id']}/products`)
       .then(res => {
         if (res.hasOwnProperty('hydra:view')) {
@@ -630,11 +633,14 @@ export function loadMoreProducts() {
   };
 }
 
-export function changeProductEnabled(client, product, enabled) {
-  return function (dispatch) {
+export function changeProductEnabled(product, enabled) {
+  return function (dispatch, getState) {
+
+    const httpClient = selectHttpClient(getState());
+
     dispatch(changeProductEnabledRequest(product, enabled));
 
-    return client
+    return httpClient
       .put(product['@id'], { enabled })
       .then(res => dispatch(changeProductEnabledSuccess(res)))
       .catch(e => dispatch(changeProductEnabledFailure(e, product, !enabled)));
