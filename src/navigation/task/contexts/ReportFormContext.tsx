@@ -1,17 +1,8 @@
 import Task from '@/src/types/task';
-import React, {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useState,
-} from 'react';
+import React, { ReactNode, createContext, useContext } from 'react';
 
 interface ReportFormContextType {
   task: Task;
-  isSubmitting: boolean;
-  startSubmitting: () => void;
-  stopSubmitting: () => void;
 }
 
 const ReportFormContext = createContext<ReportFormContextType | undefined>(
@@ -27,21 +18,8 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
   children,
   initialTask,
 }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const startSubmitting = useCallback(() => {
-    setIsSubmitting(true);
-  }, []);
-
-  const stopSubmitting = useCallback(() => {
-    setIsSubmitting(false);
-  }, []);
-
   const value: ReportFormContextType = {
     task: initialTask,
-    isSubmitting,
-    startSubmitting,
-    stopSubmitting,
   };
 
   return (

@@ -221,7 +221,7 @@ const CompleteTask = ({
                           setFailureReasonMetadataSetup([]);
                         }
                         setFieldValue('failureReason', code);
-                        setFieldTouched('failureReason', true);
+                        setFieldTouched('failureReason');
                       }}
                     />
                     {failureReasonMetadataSetup.length > 0 ? (
@@ -229,7 +229,7 @@ const CompleteTask = ({
                         data={failureReasonMetadataSetup}
                         onChange={metadata => {
                           setFieldValue('failureReasonMetadata', metadata);
-                          setFieldTouched('failureReasonMetadata', true);
+                          setFieldTouched('failureReasonMetadata');
                         }}
                         parseInitialData={parseInitialData}
                       />
@@ -246,7 +246,7 @@ const CompleteTask = ({
                       autoCorrect={false}
                       onChangeText={text => {
                         setFieldValue('notes', text);
-                        setFieldTouched('notes', true);
+                        setFieldTouched('notes');
                       }}
                     />
                   </Textarea>
