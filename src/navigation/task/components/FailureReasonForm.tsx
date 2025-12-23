@@ -1,9 +1,28 @@
-import { FormControl, FormControlLabel, FormControlLabelText } from "@/components/ui/form-control";
-import { Input, InputField } from "@/components/ui/input";
-import { Formik } from "formik";
-import { FlatList } from "react-native";
+import React from 'react';
+import { Formik } from 'formik';
+import { FlatList } from 'react-native';
+import _ from 'lodash';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Input, InputField } from '@/components/ui/input';
+import { FailureReasonMetadata } from '@/src/redux/api/types';
 
-export const FailureReasonForm = ({ data, onChange, parseInitialData }) => {
+type Props = {
+  data: FailureReasonMetadata[];
+  onChange: (values: { [key: string]: unknown }) => void;
+  parseInitialData: (data: FailureReasonMetadata[]) => {
+    [key: string]: unknown;
+  };
+};
+
+export const FailureReasonForm = ({
+  data,
+  onChange,
+  parseInitialData,
+}: Props) => {
   return (
     <Formik
       initialValues={parseInitialData(data)}
@@ -12,7 +31,8 @@ export const FailureReasonForm = ({ data, onChange, parseInitialData }) => {
         onChange(values);
       }}
       validateOnBlur={true}
-      validateOnChange={true}>
+      validateOnChange={true}
+    >
       {({ handleChange, handleBlur, values, errors, setFieldValue }) => (
         <FlatList
           data={_.filter(data, item => item.type !== 'hidden')}

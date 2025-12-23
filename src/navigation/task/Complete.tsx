@@ -54,6 +54,7 @@ import {
 } from '@/components/ui/checkbox';
 import { PoDButton } from './components/PoDButton';
 import { useReportFormContext } from './contexts/ReportFormContext';
+import { FailureReasonMetadata } from '@/src/redux/api/types';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -76,7 +77,9 @@ function isSuccessRoute(route) {
     : true;
 }
 
-const parseInitialData = data => {
+const parseInitialData = (
+  data: FailureReasonMetadata[],
+): { [key: string]: unknown } => {
   const asQueryString = data.map(v => `${v.name}=${v.value}`).join('&');
   return qs.parse(asQueryString);
 };
@@ -100,7 +103,7 @@ const CompleteTask = ({
     updateFormField: updateIncidentFormField = () => {},
   } = success ? {} : reportFormContext;
 
-  const { notes, failureReason, failureReasonMetadata } = incidentFormState ||
+  const { notes, failureReason, initialFailureReasonMetadata } = incidentFormState ||
     {};
 
   const [isContactNameModalVisible, setIsContactNameModalVisible] =
@@ -110,9 +113,6 @@ const CompleteTask = ({
   const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(
     task?.status === 'DONE'
   );
-
-  const [failureReasonMetadataToSend, setFailureReasonMetadataToSend] =
-    useState([]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -166,7 +166,6 @@ const CompleteTask = ({
    */
   useSoftInputHeightChanged(({ softInputHeight }) => {
     buttonContainerPaddingValue.value = withTiming(softInputHeight);
-    failureReasonMetadataToSend;
   });
 
   return (
@@ -213,23 +212,28 @@ const CompleteTask = ({
                       selectedFailureReason={failureReason}
                       onValueChange={(code, obj) => {
                         if (obj && obj.metadata) {
-                          updateIncidentFormField('failureReasonMetadata', obj.metadata);
-                          setFailureReasonMetadataToSend(
-                            parseInitialData(obj.metadata),
+                          updateIncidentFormField(
+                            'initialFailureReasonMetadata',
+                            obj.metadata,
                           );
                         } else {
-                          updateIncidentFormField('failureReasonMetadata', []);
-                          setFailureReasonMetadataToSend([]);
+                          updateIncidentFormField(
+                            'initialFailureReasonMetadata',
+                            [],
+                          );
                         }
                         updateIncidentFormField('failureReason', code);
                       }}
                     />
-                    {Array.isArray(failureReasonMetadata) &&
-                    failureReasonMetadata.length > 0 ? (
+                    {Array.isArray(initialFailureReasonMetadata) &&
+                    initialFailureReasonMetadata.length > 0 ? (
                       <FailureReasonForm
-                        data={failureReasonMetadata}
+                        data={initialFailureReasonMetadata}
                         onChange={metadata => {
-                          updateIncidentFormField('failureReasonMetadata', metadata);
+                          updateIncidentFormField(
+                            'failureReasonMetadataToSend',
+                            metadata,
+                          );
                         }}
                         parseInitialData={parseInitialData}
                       />
@@ -303,7 +307,6 @@ const CompleteTask = ({
               contactName={contactName}
               failureReason={failureReason}
               validateTaskAfterReport={validateTaskAfterReport}
-              failureReasonMetadataToSend={failureReasonMetadataToSend}
               success={isSuccessRoute(route)}
             />
           </VStack>

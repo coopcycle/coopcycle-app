@@ -6,18 +6,13 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import { Uri } from '@/src/redux/api/types';
+import { FailureReasonMetadata, Uri } from '@/src/redux/api/types';
 
-interface FormState {
+export interface FormState {
   // REPORT INCIDENT FIELDS
-  failureReason?: string;
-  failureReasonMetadata: Record<string, unknown>;
-  notes: string;
-  task: Task | undefined;
-}
-
-export interface FormStateToSend {
   failureReason: string;
+  initialFailureReasonMetadata: FailureReasonMetadata[];
+  failureReasonMetadataToSend: { [key: string]: unknown };
   notes: string;
   task: Task;
   taskID: Uri;
@@ -28,7 +23,6 @@ interface ReportFormContextType {
   isSubmitting: boolean;
   startSubmitting: () => void;
   stopSubmitting: () => void;
-  formStateToSend: FormStateToSend;
   updateFormField: <K extends keyof FormState>(
     field: K,
     value: FormState[K],
@@ -49,19 +43,14 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
   children,
   initialTask,
 }) => {
-  const [formStateToSend, setFormStateToSend] = useState({
-    failureReason: '',
-    notes: '',
-    task: initialTask || {},
-    taskID: initialTask?.['@id'] || '',
-  } as FormStateToSend);
-
   const [formState, setFormState] = useState<FormState>({
     // REPORT INCIDENT FIELDS
     failureReason: '',
-    failureReasonMetadata: {},
+    initialFailureReasonMetadata: [],
+    failureReasonMetadataToSend: {},
     notes: '',
     task: initialTask,
+    taskID: initialTask?.['@id'] || '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,26 +72,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
       ...prev,
       [field]: value,
     }));
-
-    setFormStateToSend(prev => {
-      const updates = {} as Partial<FormStateToSend>;
-
-      switch (field) {
-        case 'failureReason':
-        updates.failureReason = (value as string) ?? '';
-          break;
-        case 'notes':
-          updates.notes = (value as string) ?? '';
-          break;
-        default:
-          break;
-      }
-
-      return {
-        ...prev,
-        ...updates,
-      };
-    });
   }, []);
 
   const getFormData = useCallback(() => formState, [formState]);
@@ -112,7 +81,6 @@ export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({
     isSubmitting,
     startSubmitting,
     stopSubmitting,
-    formStateToSend,
     updateFormField,
     getFormData,
   };

@@ -1,6 +1,6 @@
 import { FormikTouched } from 'formik';
 import { Task } from '@/src/types/task';
-import { FormStateToSend } from '@/src/navigation/task/contexts/ReportFormContext';
+import { FormState } from '@/src/navigation/task/contexts/ReportFormContext';
 import {
   BaseAddressFields,
   BaseDateTimeFields,
@@ -74,7 +74,7 @@ export const getInitialFormValues = (
 };
 
 const buildMetadataPayload = (
-  report: FormStateToSend,
+  report: FormState,
   formValues?: EditFormValues,
   formTouchedFields?: FormikTouched<EditFormValues>,
 ) => {
@@ -149,6 +149,14 @@ const buildMetadataPayload = (
 
   const metadata = [];
 
+  if (Object.keys(report.failureReasonMetadataToSend).length > 0) {
+    for (const key in report.failureReasonMetadataToSend) {
+      metadata.push({
+        [key]: report.failureReasonMetadataToSend[key],
+      });
+    }
+  }
+
   if (suggestion) {
     metadata.push(suggestion);
   }
@@ -157,7 +165,7 @@ const buildMetadataPayload = (
 };
 
 export const buildReportIncidentPayload = (
-  report: FormStateToSend,
+  report: FormState,
   formValues?: EditFormValues,
   formTouchedFields?: FormikTouched<EditFormValues>,
 ) => {

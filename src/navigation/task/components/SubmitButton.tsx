@@ -26,18 +26,16 @@ type Props = {
   task: Task;
   tasks?: Task[];
   notes?: string;
-  //Report Incident - Complete
   contactName?: string;
-  failureReason?: string;
+  //Report Incident - Complete
   validateTaskAfterReport?: boolean;
-  failureReasonMetadataToSend?: [];
   success: boolean;
   //Report Incident - Edit
   currentTab?: string;
   formValues?: EditFormValues;
   formTouchedFields?: FormikTouched<EditFormValues>;
   onPress?: () => void;
-}
+};
 
 export const SubmitButton = ({
   task,
@@ -59,7 +57,7 @@ export const SubmitButton = ({
 
   const formContext = useReportFormContext();
   const TaskListsContext = useTaskListsContext();
-  const { formStateToSend, startSubmitting, stopSubmitting } =
+  const { formState, startSubmitting, stopSubmitting } =
     formContext || {};
   const hasFormContext = !!formContext;
 
@@ -91,7 +89,7 @@ export const SubmitButton = ({
       }
     } else {
       const payload = buildReportIncidentPayload(
-        formStateToSend,
+        formState,
         formValues,
         formTouchedFields,
       );
