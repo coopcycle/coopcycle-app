@@ -13,15 +13,14 @@ import {
   loadMoreProducts,
   loadProducts,
 } from '../../redux/Restaurant/actions';
-import { selectHttpClient } from '../../redux/App/selectors';
 
 class ProductsScreen extends Component {
   componentDidMount() {
-    this.props.loadProducts(this.props.httpClient, this.props.restaurant);
+    this.props.loadProducts(this.props.restaurant);
   }
 
   _toggleProductEnabled(product, value) {
-    this.props.changeProductEnabled(this.props.httpClient, product, value);
+    this.props.changeProductEnabled(product, value);
   }
 
   renderItem(item) {
@@ -86,7 +85,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    httpClient: selectHttpClient(state),
     restaurant: state.restaurant.restaurant,
     products: state.restaurant.products.sort((a, b) =>
       a.name < b.name ? -1 : 1,
@@ -97,11 +95,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadProducts: (httpClient, restaurant) =>
-      dispatch(loadProducts(httpClient, restaurant)),
+    loadProducts: (restaurant) => dispatch(loadProducts(restaurant)),
     loadMoreProducts: () => dispatch(loadMoreProducts()),
-    changeProductEnabled: (httpClient, product, enabled) =>
-      dispatch(changeProductEnabled(httpClient, product, enabled)),
+    changeProductEnabled: (product, enabled) => dispatch(changeProductEnabled(product, enabled)),
   };
 }
 
