@@ -41,13 +41,29 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
   const { supplements: availableSupplements } = useSupplements(store);
 
   // set initial values for the Edit page when they are loaded
+  // FIXME: enable after upgrading to react 19.2
+  // const setInitialValues = useEffectEvent(
+  //   (initialFormValues: EditFormValues) => {
+  //     setValues({
+  //       ...values,
+  //       ...initialFormValues,
+  //     });
+  //   },
+  // );
+
   useEffect(() => {
     if (!initialValues) {
       return;
     }
 
-    setValues(initialValues);
-  }, [initialValues, setValues]);
+    // setInitialValues(initialValues);
+    setValues({
+      ...values,
+      ...initialValues,
+    });
+    // don't include values in the dependency array;
+    // use EffectEvent instead (see above)
+  }, [initialValues]);
 
   if (!canEditTask(task)) {
     return (
