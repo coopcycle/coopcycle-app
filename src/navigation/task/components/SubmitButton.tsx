@@ -7,7 +7,6 @@ import { Text } from '@/components/ui/text';
 import { greenColor, yellowColor } from '@/src/styles/common';
 import { markTaskDone } from '@/src/redux/Courier';
 import Task from '@/src/types/task';
-import { useReportFormContext } from '../contexts/ReportFormContext';
 import { usePostIncidentMutation } from '@/src/redux/api/slice';
 import {
   CompleteTaskFormValues,
@@ -37,7 +36,7 @@ export const SubmitButton = ({
   tasks,
   validateTaskAfterReport,
   success,
-  currentTab = null,
+  currentTab = undefined,
 }: Props) => {
   const { t } = useTranslation();
 

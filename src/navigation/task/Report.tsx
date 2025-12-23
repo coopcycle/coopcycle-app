@@ -6,7 +6,6 @@ import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
 import { Header } from './components/Header';
 import { useRoute, useTheme } from '@react-navigation/native';
-import { ReportFormProvider } from './contexts/ReportFormContext';
 import Task from '@/src/types/task';
 import { Formik } from 'formik';
 import { ReportIncidentFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
@@ -55,7 +54,10 @@ const initialValues = {
   notes: '',
 } as ReportIncidentFormValues;
 
-const ReportContent = ({ task }: { task: Task }) => {
+export const Report = () => {
+  const { params } = useRoute();
+  const task = params?.task as Task | undefined;
+
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
   const theme = useTheme();
 
@@ -64,6 +66,10 @@ const ReportContent = ({ task }: { task: Task }) => {
   }, []);
 
   const validate = useValidation();
+
+  if (!task) {
+    return null;
+  }
 
   return (
     <Formik
@@ -112,21 +118,6 @@ const ReportContent = ({ task }: { task: Task }) => {
         );
       }}
     </Formik>
-  );
-};
-
-export const Report = () => {
-  const { params } = useRoute();
-  const task = params?.task as Task | undefined;
-
-  if (!task) {
-    return null;
-  }
-
-  return (
-    <ReportFormProvider initialTask={task}>
-      <ReportContent task={task} />
-    </ReportFormProvider>
   );
 };
 
