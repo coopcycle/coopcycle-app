@@ -12,6 +12,9 @@ import {
   useReportFormContext,
 } from './contexts/ReportFormContext';
 import Task from '@/src/types/task';
+import { Formik } from 'formik';
+import { ReportIncidentFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
+import { useValidation } from '@/src/navigation/task/hooks/useValidation';
 
 const Indicator = () => (
   <View
@@ -32,10 +35,8 @@ const Indicator = () => (
   </View>
 );
 
-export const ReportContent = () => {
+const ReportContent = ({ task }: { task?: Task }) => {
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
-  const { params } = useRoute();
-  const task = params?.task as Task | undefined;
   const theme = useTheme();
 
   const handleTabChange = useCallback((tab: string) => {
@@ -44,40 +45,78 @@ export const ReportContent = () => {
 
   const { isSubmitting } = useReportFormContext();
 
+  const initialValues = {
+    // Task-level fields
+    address: {
+      streetAddress: '',
+      geo: { latitude: 0, longitude: 0 },
+    },
+    businessName: '',
+    contactName: '',
+    telephone: '',
+    description: '',
+    isValidAddress: false,
+    before: '',
+    after: '',
+    weight: '0',
+    packages: undefined,
+    // Order-level fields
+    manualSupplements: [],
+    // Report incident-level fields
+    failureReason: '',
+    failureReasonMetadata: {},
+    notes: '',
+  } as ReportIncidentFormValues;
+
+  const validate = useValidation();
+
   return (
-    <>
-      {/*FIXME: display loading indicator when submitting; requires getting rid of the global loading indicator to avoid multiple loading indicators */}
-      {/*{isSubmitting && <Indicator />}*/}
-      <VStack style={{ flex: 1 }}>
-        <HStack
-          style={[
-            styles.tabBar,
-            { backgroundColor: theme.dark ? '#111111' : '#D9D9D9' },
-          ]}
-        >
-          <TabBar onPress={handleTabChange} />
-        </HStack>
-        <Header task={task} />
-        <View style={{ flex: 1, position: 'relative' }}>
-          <View
-            style={[
-              styles.tabContent,
-              currentTab === 'report' ? styles.visible : styles.hidden,
-            ]}
-          >
-            <Complete />
-          </View>
-          <View
-            style={[
-              styles.tabContent,
-              currentTab === 'edit' ? styles.visible : styles.hidden,
-            ]}
-          >
-            <Edit task={task} currentTab={currentTab} />
-          </View>
-        </View>
-      </VStack>
-    </>
+    <Formik
+      initialValues={initialValues}
+      validate={validate}
+      onSubmit={() => {}}
+      validateOnBlur={false}
+      validateOnChange={false}
+      enableReinitialize
+    >
+      {() => {
+        return (
+          <>
+            {/*FIXME: display loading indicator when submitting; requires getting rid of the global loading indicator to avoid multiple loading indicators */}
+            {/*{isSubmitting && <Indicator />}*/}
+            <VStack style={{ flex: 1 }}>
+              <HStack
+                style={[
+                  styles.tabBar,
+                  { backgroundColor: theme.dark ? '#111111' : '#D9D9D9' },
+                ]}
+              >
+                <TabBar onPress={handleTabChange} />
+              </HStack>
+              <Header task={task} />
+              <View style={{ flex: 1, position: 'relative' }}>
+                <View
+                  style={[
+                    styles.tabContent,
+                    currentTab === 'report' ? styles.visible : styles.hidden,
+                  ]}
+                >
+                  <Complete />
+                </View>
+                <View
+                  style={[
+                    styles.tabContent,
+                    currentTab === 'edit' ? styles.visible : styles.hidden,
+                  ]}
+                >
+                  <Edit task={task} currentTab={currentTab} />
+                </View>
+              </View>
+            </VStack>
+          </>
+        );
+      }}
+    </Formik>
   );
 };
 
@@ -87,7 +126,7 @@ export const Report = () => {
 
   return (
     <ReportFormProvider initialTask={task}>
-      <ReportContent />
+      <ReportContent task={task} />
     </ReportFormProvider>
   );
 };

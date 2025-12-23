@@ -12,11 +12,12 @@ import { useReportFormContext } from '../contexts/ReportFormContext';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import { usePostIncidentMutation } from '@/src/redux/api/slice';
 import {
-  EditFormValues,
+  CompleteTaskFormValues,
+  ReportIncidentFormValues,
   buildReportIncidentPayload,
 } from '../utils/taskFormHelpers';
 import { showAlert } from '@/src/utils/alert';
-import { FormikTouched } from 'formik';
+import { useFormikContext } from 'formik';
 import { reportIncidentFlow } from '@/src/redux/Courier/taskActions';
 import { useAppDispatch } from '@/src/redux/store';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -32,9 +33,6 @@ type Props = {
   success: boolean;
   //Report Incident - Edit
   currentTab?: string;
-  formValues?: EditFormValues;
-  formTouchedFields?: FormikTouched<EditFormValues>;
-  onPress?: () => void;
 };
 
 export const SubmitButton = ({
@@ -45,9 +43,6 @@ export const SubmitButton = ({
   validateTaskAfterReport,
   success,
   currentTab = null,
-  formValues,
-  formTouchedFields,
-  onPress,
 }: Props) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -55,10 +50,15 @@ export const SubmitButton = ({
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
 
+  const {
+    values: formValues,
+    touched: formTouchedFields,
+    handleSubmit: formikSubmit,
+  } = useFormikContext<CompleteTaskFormValues | ReportIncidentFormValues>();
+
   const formContext = useReportFormContext();
   const TaskListsContext = useTaskListsContext();
-  const { formState, startSubmitting, stopSubmitting } =
-    formContext || {};
+  const { formState, startSubmitting, stopSubmitting } = formContext || {};
   const hasFormContext = !!formContext;
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -116,8 +116,8 @@ export const SubmitButton = ({
       );
     }
 
-    if (onPress) {
-      onPress();
+    if (formikSubmit) {
+      formikSubmit();
     }
   };
 
@@ -141,7 +141,8 @@ export const SubmitButton = ({
         paddingBottom: insets.bottom,
         opacity: isDisabled ? 0.6 : 1,
       }}
-      testID={`task:finishButton${currentTab ? '-' + currentTab : ''}`}>
+      testID={`task:finishButton${currentTab ? '-' + currentTab : ''}`}
+    >
       <HStack className="py-3 items-center">
         <Text style={{ fontWeight: 'bold', color: '#000' }}>
           {success ? t('VALIDATE') : t('REPORT_INCIDENT')}

@@ -4,13 +4,10 @@ import parsePhoneNumberFromString from 'libphonenumber-js';
 import { useTranslation } from 'react-i18next';
 import { EditTaskFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { FormikErrors } from 'formik';
-import { Store } from '@/src/redux/api/types';
 import { useSelector } from 'react-redux';
 import { selectCountry } from '@/src/redux/App/selectors';
 
-export const useValidation = (
-  store?: Store,
-) => {
+export const useValidation = () => {
   const { t } = useTranslation();
 
   const country = useSelector(selectCountry);

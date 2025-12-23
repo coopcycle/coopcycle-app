@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { Task } from '@/src/types/task';
-import { useValidation } from '@/src/navigation/task/hooks/useValidation';
-import { getInitialFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
+import { EditFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import {
   useGetStoreQuery,
   useGetTaskDeliveryFormDataQuery,
@@ -18,14 +17,43 @@ export const useEditDetailsForm = (task: Task) => {
     skip: !task?.metadata?.store,
   });
 
-  const validate = useValidation(store);
-
   const initialValues = useMemo(() => {
     if (!initialDeliveryFormData) {
       return undefined;
     }
 
-    return getInitialFormValues(task, initialDeliveryFormData);
+    const initialTaskData = initialDeliveryFormData.tasks?.find(
+      t => t.id === task.id,
+    );
+
+    //FIXME: get more data from 'initialTaskData' instead of 'task' object
+    // for example, weight and packages must be coming from 'initialTaskData' as in 'task' we can get a sum of all packages/weight belonging to other tasks
+
+    return {
+      // Task-level fields
+      address: {
+        streetAddress: task.address?.streetAddress || '',
+        geo: task.address?.geo || null,
+      },
+      businessName: task.address?.name || '',
+      contactName: task.address?.contactName || '',
+      telephone: task.address?.telephone || '',
+      description: task.address?.description || '',
+      isValidAddress: true,
+      //FIXME: pre-fill the time slot from the task (we don't store selected timeSlot on the task yet)
+      // timeSlotUrl: task?.timeSlotUrl || undefined,
+      timeSlotUrl: undefined,
+      // timeSlot: task?.timeSlot || undefined,
+      timeSlot: undefined,
+      before: task.before || '',
+      after: task.after || '',
+      weight: initialTaskData?.weight
+        ? `${initialTaskData.weight / 1000}`
+        : '0',
+      packages: undefined,
+      // Order-level fields
+      manualSupplements: initialDeliveryFormData.order?.manualSupplements ?? [],
+    } as EditFormValues;
   }, [task, initialDeliveryFormData]);
 
   return {
@@ -33,6 +61,5 @@ export const useEditDetailsForm = (task: Task) => {
     initialValues,
     initialValuesLoading: initialDeliveryFormDataIsLoading,
     initialValuesError: initialDeliveryFormDataIsError,
-    validate,
   };
 };
