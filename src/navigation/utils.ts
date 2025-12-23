@@ -36,19 +36,19 @@ export const navigateToCompleteTask = (
   route,
   task,
   tasks = [],
-  success = true,
 ) => {
   const params = {
     task,
     tasks,
     navigateAfter: route?.name || null,
+    success: true,
   };
 
   navigation.navigate('Task', {
     screen: 'TaskComplete',
     params: {
       screen: 'TaskCompleteHome',
-      params: { ...params, success },
+      params: params,
     },
   });
 };
@@ -57,20 +57,19 @@ export const navigateToReportTask = (
   navigation,
   route,
   task,
-  tasks = [],
-  success = false,
 ) => {
   const params = {
     task,
-    tasks,
+    tasks: [],
     navigateAfter: route.name,
+    success: false,
   };
 
   navigation.navigate('Task', {
     screen: 'TaskComplete',
     params: {
       screen:'ReportIncidentHome',
-      params: {...params, success}
+      params: params
     },
   });
 };

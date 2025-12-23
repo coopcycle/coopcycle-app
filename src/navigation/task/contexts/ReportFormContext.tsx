@@ -11,7 +11,7 @@ const ReportFormContext = createContext<ReportFormContextType | undefined>(
 
 interface ReportFormProviderProps {
   children: ReactNode;
-  initialTask?: Task;
+  initialTask: Task;
 }
 
 export const ReportFormProvider: React.FC<ReportFormProviderProps> = ({

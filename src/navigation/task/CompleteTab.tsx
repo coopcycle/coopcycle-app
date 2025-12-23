@@ -32,7 +32,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   deletePictureAt,
@@ -59,6 +59,8 @@ import {
   CompleteTaskFormValues,
   ReportIncidentFormValues,
 } from '@/src/navigation/task/utils/taskFormHelpers';
+import { useAppDispatch } from '@/src/redux/store';
+import Task from '@/src/types/task';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -88,16 +90,19 @@ const parseInitialData = (
   return qs.parse(asQueryString);
 };
 
-const CompleteTask = ({
-  signatures,
-  pictures,
-  deleteSignatureAt,
-  deletePictureAt,
-}) => {
+type Props = {
+  task: Task;
+  tasks?: Task[];
+};
+
+const CompleteTask = ({ task, tasks = [] }: Props) => {
   const { t } = useTranslation();
   const route = useRoute();
-  const task = route.params?.task;
-  const tasks = route.params?.tasks;
+
+  const dispatch = useAppDispatch();
+
+  const signatures = useSelector(selectSignatures);
+  const pictures = useSelector(selectPictures);
 
   const success = isSuccessRoute(route);
 
@@ -277,14 +282,16 @@ const CompleteTask = ({
                           <AttachmentItem
                             key={`signatures:${key}`}
                             base64={base64}
-                            onPressDelete={() => deleteSignatureAt(key)}
+                            onPressDelete={() =>
+                              dispatch(deleteSignatureAt(key))
+                            }
                           />
                         ))}
                         {pictures.map((base64, key) => (
                           <AttachmentItem
                             key={`pictures:${key}`}
                             base64={base64}
-                            onPressDelete={() => deletePictureAt(key)}
+                            onPressDelete={() => dispatch(deletePictureAt(key))}
                           />
                         ))}
                       </View>
@@ -362,18 +369,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  return {
-    signatures: selectSignatures(state),
-    pictures: selectPictures(state),
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    deleteSignatureAt: index => dispatch(deleteSignatureAt(index)),
-    deletePictureAt: index => dispatch(deletePictureAt(index)),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CompleteTask);
+export default CompleteTask;

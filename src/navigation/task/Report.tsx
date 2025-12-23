@@ -55,7 +55,7 @@ const initialValues = {
   notes: '',
 } as ReportIncidentFormValues;
 
-const ReportContent = ({ task }: { task?: Task }) => {
+const ReportContent = ({ task }: { task: Task }) => {
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
   const theme = useTheme();
 
@@ -96,7 +96,7 @@ const ReportContent = ({ task }: { task?: Task }) => {
                     currentTab === 'report' ? styles.visible : styles.hidden,
                   ]}
                 >
-                  <CompleteTab />
+                  <CompleteTab task={task} />
                 </View>
                 <View
                   style={[
@@ -118,6 +118,10 @@ const ReportContent = ({ task }: { task?: Task }) => {
 export const Report = () => {
   const { params } = useRoute();
   const task = params?.task as Task | undefined;
+
+  if (!task) {
+    return null;
+  }
 
   return (
     <ReportFormProvider initialTask={task}>

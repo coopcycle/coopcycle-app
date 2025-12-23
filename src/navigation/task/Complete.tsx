@@ -49,7 +49,7 @@ export default function Complete() {
       validateOnChange={false}
       enableReinitialize
     >
-      <CompleteTab />
+      <CompleteTab task={task} tasks={tasks} />
     </Formik>
   );
 }

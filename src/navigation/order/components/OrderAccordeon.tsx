@@ -164,7 +164,7 @@ function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
 
   // Function to handle report incident
   const handleReportIncident = () => {
-    navigateToReportTask(navigation, route, task, [], false);
+    navigateToReportTask(navigation, route, task);
   };
 
   return (
