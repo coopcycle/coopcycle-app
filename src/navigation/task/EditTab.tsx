@@ -64,6 +64,7 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     });
     // don't include values in the dependency array;
     // use EffectEvent instead (see above)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValues]);
 
   if (!canEditTask(task)) {
