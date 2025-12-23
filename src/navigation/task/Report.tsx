@@ -1,7 +1,6 @@
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
-import Complete from './Complete';
-import { Edit } from './Edit';
+import { EditTab } from './EditTab';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
@@ -15,6 +14,7 @@ import Task from '@/src/types/task';
 import { Formik } from 'formik';
 import { ReportIncidentFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
 import { useValidation } from '@/src/navigation/task/hooks/useValidation';
+import CompleteTab from '@/src/navigation/task/CompleteTab';
 
 const Indicator = () => (
   <View
@@ -35,6 +35,29 @@ const Indicator = () => (
   </View>
 );
 
+const initialValues = {
+  // Task-level fields
+  address: {
+    streetAddress: '',
+    geo: { latitude: 0, longitude: 0 },
+  },
+  businessName: '',
+  contactName: '',
+  telephone: '',
+  description: '',
+  isValidAddress: false,
+  before: '',
+  after: '',
+  weight: '0',
+  packages: undefined,
+  // Order-level fields
+  manualSupplements: [],
+  // Report incident-level fields
+  failureReason: '',
+  failureReasonMetadata: {},
+  notes: '',
+} as ReportIncidentFormValues;
+
 const ReportContent = ({ task }: { task?: Task }) => {
   const [currentTab, setCurrentTab] = useState<'edit' | 'report'>('report');
   const theme = useTheme();
@@ -44,29 +67,6 @@ const ReportContent = ({ task }: { task?: Task }) => {
   }, []);
 
   const { isSubmitting } = useReportFormContext();
-
-  const initialValues = {
-    // Task-level fields
-    address: {
-      streetAddress: '',
-      geo: { latitude: 0, longitude: 0 },
-    },
-    businessName: '',
-    contactName: '',
-    telephone: '',
-    description: '',
-    isValidAddress: false,
-    before: '',
-    after: '',
-    weight: '0',
-    packages: undefined,
-    // Order-level fields
-    manualSupplements: [],
-    // Report incident-level fields
-    failureReason: '',
-    failureReasonMetadata: {},
-    notes: '',
-  } as ReportIncidentFormValues;
 
   const validate = useValidation();
 
@@ -101,7 +101,7 @@ const ReportContent = ({ task }: { task?: Task }) => {
                     currentTab === 'report' ? styles.visible : styles.hidden,
                   ]}
                 >
-                  <Complete />
+                  <CompleteTab />
                 </View>
                 <View
                   style={[
@@ -109,7 +109,7 @@ const ReportContent = ({ task }: { task?: Task }) => {
                     currentTab === 'edit' ? styles.visible : styles.hidden,
                   ]}
                 >
-                  <Edit task={task} currentTab={currentTab} />
+                  <EditTab task={task} currentTab={currentTab} />
                 </View>
               </View>
             </VStack>

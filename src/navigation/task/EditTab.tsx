@@ -25,7 +25,7 @@ interface TaskFormProps {
   currentTab: string;
 }
 
-export const Edit: React.FC<TaskFormProps> = ({ task, currentTab }) => {
+export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
   const { t } = useTranslation();
 
   const { values, setValues } = useFormikContext<EditFormValues>();
