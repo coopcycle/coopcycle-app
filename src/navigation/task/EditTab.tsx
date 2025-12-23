@@ -34,7 +34,8 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     store,
 
     initialValues,
-    initialValuesLoading,
+    initialValuesIsLoading,
+    initialValuesIsError,
     initialValuesError,
   } = useEditDetailsForm(task);
 
@@ -79,14 +80,21 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     );
   }
 
-  if (initialValuesLoading) {
+  if (initialValuesIsLoading) {
     return <Spinner />;
   }
 
-  if (initialValuesError || !initialValues) {
+  if (initialValuesIsError || !initialValues) {
     return (
       <View style={{ padding: 16 }}>
-        <ErrorText message={t('AN_ERROR_OCCURRED')} />
+        <ErrorText
+          // 404 happens when the APIs required to report task details are not deployed on the instance yet
+          message={
+            initialValuesError?.originalStatus === 404
+              ? t('TASK_DETAILS_CAN_NOT_EDIT_NOT_RELEASED')
+              : t('AN_ERROR_OCCURRED')
+          }
+        />
       </View>
     );
   }

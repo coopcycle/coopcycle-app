@@ -9,8 +9,9 @@ import {
 export const useEditDetailsForm = (task: Task) => {
   const {
     data: initialDeliveryFormData,
-    isLoading: initialDeliveryFormDataIsLoading,
-    isError: initialDeliveryFormDataIsError,
+    isLoading,
+    isError,
+    error,
   } = useGetTaskDeliveryFormDataQuery(task.id, { skip: !task.id });
 
   const { data: store } = useGetStoreQuery(task?.metadata?.store, {
@@ -59,7 +60,8 @@ export const useEditDetailsForm = (task: Task) => {
   return {
     store,
     initialValues,
-    initialValuesLoading: initialDeliveryFormDataIsLoading,
-    initialValuesError: initialDeliveryFormDataIsError,
+    initialValuesIsLoading: isLoading,
+    initialValuesIsError: isError,
+    initialValuesError: error,
   };
 };
