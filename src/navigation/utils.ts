@@ -41,7 +41,6 @@ export const navigateToCompleteTask = (
     task,
     tasks,
     navigateAfter: route?.name || null,
-    success: true,
   };
 
   navigation.navigate('Task', {
@@ -62,7 +61,6 @@ export const navigateToReportTask = (
     task,
     tasks: [],
     navigateAfter: route.name,
-    success: false,
   };
 
   navigation.navigate('Task', {
@@ -98,6 +96,5 @@ export const navigateBackToCompleteTask = (
     task,
     tasks,
     navigateAfter,
-    success,
   });
 };

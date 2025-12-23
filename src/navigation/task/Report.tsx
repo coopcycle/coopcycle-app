@@ -96,7 +96,7 @@ const ReportContent = ({ task }: { task: Task }) => {
                     currentTab === 'report' ? styles.visible : styles.hidden,
                   ]}
                 >
-                  <CompleteTab task={task} />
+                  <CompleteTab task={task} success={false} />
                 </View>
                 <View
                   style={[

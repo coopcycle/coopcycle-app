@@ -77,12 +77,6 @@ function resolveContactName(contactName, task, tasks) {
   return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
 }
 
-function isSuccessRoute(route) {
-  return Object.prototype.hasOwnProperty.call(route.params || {}, 'success')
-    ? route.params?.success
-    : true;
-}
-
 const parseInitialData = (
   data: FailureReasonMetadata[],
 ): { [key: string]: unknown } => {
@@ -93,18 +87,16 @@ const parseInitialData = (
 type Props = {
   task: Task;
   tasks?: Task[];
+  success: boolean;
 };
 
-const CompleteTask = ({ task, tasks = [] }: Props) => {
+const CompleteTask = ({ task, tasks = [], success }: Props) => {
   const { t } = useTranslation();
-  const route = useRoute();
 
   const dispatch = useAppDispatch();
 
   const signatures = useSelector(selectSignatures);
   const pictures = useSelector(selectPictures);
-
-  const success = isSuccessRoute(route);
 
   const { values, setFieldValue, setFieldTouched } = useFormikContext<
     CompleteTaskFormValues | ReportIncidentFormValues
@@ -312,7 +304,7 @@ const CompleteTask = ({ task, tasks = [] }: Props) => {
               task={task}
               tasks={tasks}
               validateTaskAfterReport={validateTaskAfterReport}
-              success={isSuccessRoute(route)}
+              success={success}
             />
           </VStack>
         </View>
