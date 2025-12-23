@@ -1,7 +1,12 @@
-import { Text } from "@/components/ui/text";
-import { useTranslation } from "react-i18next";
+import { Text } from '@/components/ui/text';
+import { useTranslation } from 'react-i18next';
+import Task from '@/src/types/task';
 
-export const MultipleTasksLabel = ({ tasks }) => {
+type Props = {
+  tasks: Task[];
+};
+
+export const MultipleTasksLabel = ({ tasks }: Props) => {
   const { t } = useTranslation();
 
   if (!tasks || tasks.length === 0) {
@@ -9,7 +14,7 @@ export const MultipleTasksLabel = ({ tasks }) => {
   }
 
   return (
-    <Text mt={2} ml={3}>
+    <Text className="my-4 ml-3">
       {tasks.reduce(
         (label, task, idx) => {
           const taskIdentifier = task?.metadata?.order_number
