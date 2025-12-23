@@ -102,8 +102,6 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
         <SubmitButton
           task={task}
           tasks={[]}
-          notes={''}
-          contactName={values.contactName}
           success={false}
           currentTab={currentTab}
         />

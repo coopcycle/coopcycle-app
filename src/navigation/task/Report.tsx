@@ -6,10 +6,7 @@ import { useCallback, useState } from 'react';
 import { TabBar } from './components/TabBar';
 import { Header } from './components/Header';
 import { useRoute, useTheme } from '@react-navigation/native';
-import {
-  ReportFormProvider,
-  useReportFormContext,
-} from './contexts/ReportFormContext';
+import { ReportFormProvider } from './contexts/ReportFormContext';
 import Task from '@/src/types/task';
 import { Formik } from 'formik';
 import { ReportIncidentFormValues } from '@/src/navigation/task/utils/taskFormHelpers';
@@ -66,8 +63,6 @@ const ReportContent = ({ task }: { task?: Task }) => {
     setCurrentTab(tab as 'edit' | 'report');
   }, []);
 
-  const { isSubmitting } = useReportFormContext();
-
   const validate = useValidation();
 
   return (
@@ -79,7 +74,7 @@ const ReportContent = ({ task }: { task?: Task }) => {
       validateOnChange={false}
       enableReinitialize
     >
-      {() => {
+      {({ isSubmitting }) => {
         return (
           <>
             {/*FIXME: display loading indicator when submitting; requires getting rid of the global loading indicator to avoid multiple loading indicators */}

@@ -1,6 +1,5 @@
 import { FormikTouched } from 'formik';
 import { Task } from '@/src/types/task';
-import { FormState } from '@/src/navigation/task/contexts/ReportFormContext';
 import {
   BaseAddressFields,
   BaseDateTimeFields,
@@ -33,28 +32,29 @@ type EditOrderFormValues = {
 export type EditFormValues = EditTaskFormValues & EditOrderFormValues;
 
 export type CompleteTaskFormValues = {
-  notes?: string;
+  notes: string;
   contactName?: string;
 };
 
-export type ReportIncidentFormValues = EditFormValues & CompleteTaskFormValues & {
-  failureReason: string;
-  failureReasonMetadata: { [key: string]: unknown };
-};
+export type ReportIncidentFormValues = EditFormValues &
+  CompleteTaskFormValues & {
+    failureReason: string;
+    failureReasonMetadata: { [key: string]: unknown };
+  };
 
 export const canEditTask = (task: Task) => {
   return Boolean(task.metadata?.order_number);
 };
 
 const buildMetadataPayload = (
-  report: FormState,
-  formValues?: EditFormValues,
-  formTouchedFields?: FormikTouched<EditFormValues>,
+  task: Task,
+  formValues: ReportIncidentFormValues,
+  formTouchedFields: FormikTouched<ReportIncidentFormValues>,
 ) => {
   let suggestion: SuggestionPayload | undefined;
 
-  if (canEditTask(report.task)) {
-    const id = report.task.id;
+  if (canEditTask(task)) {
+    const id = task.id;
 
     const taskPayload = {} as EditTaskPayload;
 
@@ -122,10 +122,10 @@ const buildMetadataPayload = (
 
   const metadata = [];
 
-  if (Object.keys(report.failureReasonMetadataToSend).length > 0) {
-    for (const key in report.failureReasonMetadataToSend) {
+  if (Object.keys(formValues.failureReasonMetadata).length > 0) {
+    for (const key in formValues.failureReasonMetadata) {
       metadata.push({
-        [key]: report.failureReasonMetadataToSend[key],
+        [key]: formValues.failureReasonMetadata[key],
       });
     }
   }
@@ -138,15 +138,15 @@ const buildMetadataPayload = (
 };
 
 export const buildReportIncidentPayload = (
-  report: FormState,
-  formValues?: EditFormValues,
-  formTouchedFields?: FormikTouched<EditFormValues>,
+  task: Task,
+  formValues: ReportIncidentFormValues,
+  formTouchedFields: FormikTouched<ReportIncidentFormValues>,
 ) => {
-  const metadata = buildMetadataPayload(report, formValues, formTouchedFields);
+  const metadata = buildMetadataPayload(task, formValues, formTouchedFields);
   const payload: IncidentPayload = {
-    description: report.notes,
-    failureReasonCode: report.failureReason,
-    task: report.taskID,
+    description: formValues.notes,
+    failureReasonCode: formValues.failureReason,
+    task: task['@id'],
   };
 
   if (metadata.length > 0) payload.metadata = metadata;

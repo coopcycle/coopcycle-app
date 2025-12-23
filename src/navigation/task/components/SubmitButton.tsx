@@ -26,8 +26,6 @@ type Props = {
   //TaskComplete
   task: Task;
   tasks?: Task[];
-  notes?: string;
-  contactName?: string;
   //Report Incident - Complete
   validateTaskAfterReport?: boolean;
   success: boolean;
@@ -38,8 +36,6 @@ type Props = {
 export const SubmitButton = ({
   task,
   tasks,
-  notes,
-  contactName,
   validateTaskAfterReport,
   success,
   currentTab = null,
@@ -58,7 +54,7 @@ export const SubmitButton = ({
 
   const formContext = useReportFormContext();
   const TaskListsContext = useTaskListsContext();
-  const { formState, startSubmitting, stopSubmitting } = formContext || {};
+  const { startSubmitting, stopSubmitting } = formContext || {};
   const hasFormContext = !!formContext;
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -83,13 +79,27 @@ export const SubmitButton = ({
 
     if (success) {
       if (tasks && tasks.length) {
-        dispatch(markTasksDone(tasks, notes, navigateOnSuccess, contactName));
+        dispatch(
+          markTasksDone(
+            tasks,
+            formValues.notes,
+            navigateOnSuccess,
+            formValues.contactName,
+          ),
+        );
       } else {
-        dispatch(markTaskDone(task, notes, navigateOnSuccess, contactName));
+        dispatch(
+          markTaskDone(
+            task,
+            formValues.notes,
+            navigateOnSuccess,
+            formValues.contactName,
+          ),
+        );
       }
     } else {
       const payload = buildReportIncidentPayload(
-        formState,
+        task,
         formValues,
         formTouchedFields,
       );
@@ -100,7 +110,12 @@ export const SubmitButton = ({
           () => {
             if (validateTaskAfterReport) {
               dispatch(
-                markTaskDone(task, notes, navigateOnSuccess, contactName),
+                markTaskDone(
+                  task,
+                  formValues.notes,
+                  navigateOnSuccess,
+                  formValues.contactName,
+                ),
               );
             }
             navigateOnSuccess();

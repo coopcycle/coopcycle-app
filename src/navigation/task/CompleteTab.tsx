@@ -53,8 +53,12 @@ import {
   CheckboxLabel,
 } from '@/components/ui/checkbox';
 import { PoDButton } from './components/PoDButton';
-import { useReportFormContext } from './contexts/ReportFormContext';
 import { FailureReasonMetadata } from '@/src/redux/api/types';
+import { useFormikContext } from 'formik';
+import {
+  CompleteTaskFormValues,
+  ReportIncidentFormValues,
+} from '@/src/navigation/task/utils/taskFormHelpers';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -97,18 +101,16 @@ const CompleteTask = ({
 
   const success = isSuccessRoute(route);
 
-  const reportFormContext = useReportFormContext();
-  const {
-    formState: incidentFormState,
-    updateFormField: updateIncidentFormField = () => {},
-  } = success ? {} : reportFormContext;
+  const { values, setFieldValue, setFieldTouched } = useFormikContext<
+    CompleteTaskFormValues | ReportIncidentFormValues
+  >();
 
-  const { notes, failureReason, initialFailureReasonMetadata } =
-    incidentFormState || {};
-
+  const [failureReasonMetadataSetup, setFailureReasonMetadataSetup] = useState<
+    FailureReasonMetadata[]
+  >([]);
   const [isContactNameModalVisible, setIsContactNameModalVisible] =
     useState(false);
-  const [contactName, setContactName] = useState('');
+
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(
     task?.status === 'DONE',
@@ -129,7 +131,7 @@ const CompleteTask = ({
   }, []);
 
   const initialValues = {
-    contactName: resolveContactName(contactName, task, tasks),
+    contactName: resolveContactName(values.contactName, task, tasks),
   };
 
   /* https://mateusz1913.github.io/react-native-avoid-softinput/docs/recipes/recipes-sticky-footer */
@@ -190,7 +192,7 @@ const CompleteTask = ({
                       <HStack className="justify-between items-center">
                         <Icon as={User} style={{ marginRight: 10 }} />
                         <Text numberOfLines={1}>
-                          {resolveContactName(contactName, task, tasks)}
+                          {resolveContactName(values.contactName, task, tasks)}
                         </Text>
                       </HStack>
                       <TouchableOpacity
@@ -211,31 +213,23 @@ const CompleteTask = ({
                     </FormControlLabel>
                     <FailureReasonPicker
                       task={task}
-                      selectedFailureReason={failureReason}
+                      selectedFailureReason={values.failureReason}
                       onValueChange={(code, obj) => {
                         if (obj && obj.metadata) {
-                          updateIncidentFormField(
-                            'initialFailureReasonMetadata',
-                            obj.metadata,
-                          );
+                          setFailureReasonMetadataSetup(obj.metadata);
                         } else {
-                          updateIncidentFormField(
-                            'initialFailureReasonMetadata',
-                            [],
-                          );
+                          setFailureReasonMetadataSetup([]);
                         }
-                        updateIncidentFormField('failureReason', code);
+                        setFieldValue('failureReason', code);
+                        setFieldTouched('failureReason', true);
                       }}
                     />
-                    {Array.isArray(initialFailureReasonMetadata) &&
-                    initialFailureReasonMetadata.length > 0 ? (
+                    {failureReasonMetadataSetup.length > 0 ? (
                       <FailureReasonForm
-                        data={initialFailureReasonMetadata}
+                        data={failureReasonMetadataSetup}
                         onChange={metadata => {
-                          updateIncidentFormField(
-                            'failureReasonMetadataToSend',
-                            metadata,
-                          );
+                          setFieldValue('failureReasonMetadata', metadata);
+                          setFieldTouched('failureReasonMetadata', true);
                         }}
                         parseInitialData={parseInitialData}
                       />
@@ -250,9 +244,10 @@ const CompleteTask = ({
                     <TextareaInput
                       testID="ReportTextareaInput"
                       autoCorrect={false}
-                      onChangeText={text =>
-                        updateIncidentFormField('notes', text)
-                      }
+                      onChangeText={text => {
+                        setFieldValue('notes', text);
+                        setFieldTouched('notes', true);
+                      }}
                     />
                   </Textarea>
                   {!success && (
@@ -309,9 +304,6 @@ const CompleteTask = ({
             <SubmitButton
               task={task}
               tasks={tasks}
-              notes={notes}
-              contactName={contactName}
-              failureReason={failureReason}
               validateTaskAfterReport={validateTaskAfterReport}
               success={isSuccessRoute(route)}
             />
@@ -323,7 +315,8 @@ const CompleteTask = ({
         onSwipeComplete={() => setIsContactNameModalVisible(false)}
         initialValues={initialValues}
         onSubmit={values => {
-          setContactName(values.contactName);
+          setFieldValue('contactName', values.contactName);
+          setFieldTouched('contactName');
           setIsContactNameModalVisible(false);
         }}
       />
