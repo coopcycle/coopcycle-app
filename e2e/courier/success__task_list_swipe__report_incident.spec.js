@@ -11,50 +11,47 @@ import { swipeLeftTaskAndTap } from './utils';
 
 const USER_JANE = 'jane';
 
-describeif(device.getPlatform() === 'android')(
-  'Courier - Select and tap an action for selected tasks',
-  () => {
-    beforeEach(async () => {
-      await loadFixturesAndConnect('courier.yml', true);
-      await authenticateWithCredentials(USER_JANE, '12345678');
+describeif(device.getPlatform() === 'android')('Courier - Task List', () => {
+  beforeEach(async () => {
+    await loadFixturesAndConnect('courier.yml', true);
+    await authenticateWithCredentials(USER_JANE, '12345678');
 
-      try {
-        // dismiss BACKGROUND_PERMISSION_DISCLOSURE alert
-        await tapByText('I accept');
-      } catch {}
+    try {
+      // dismiss BACKGROUND_PERMISSION_DISCLOSURE alert
+      await tapByText('I accept');
+    } catch {}
 
-      try {
-        // dismiss HMS Core alert
-        await tapByText('OK');
-      } catch {}
+    try {
+      // dismiss HMS Core alert
+      await tapByText('OK');
+    } catch {}
 
-      await waitToBeVisible('messengerTabMap');
-      await waitToBeVisible('messengerTabList');
+    await waitToBeVisible('messengerTabMap');
+    await waitToBeVisible('messengerTabList');
 
-      await tapById('messengerTabList');
-    });
+    await tapById('messengerTabList');
+  });
 
-    it('should mark a task as INCIDENT ', async () => {
-      // Tap Report incident button
-      await swipeLeftTaskAndTap(0);
+  it('should mark a task as INCIDENT', async () => {
+    // Tap Report incident button
+    await swipeLeftTaskAndTap(0);
 
-      // To open select
-      await tapById('failure-reason-select-trigger');
+    // To open select
+    await tapById('failure-reason-select-trigger');
 
-      // To select any option
-      await tapById('failure-reason-option-1');
+    // To select any option
+    await tapById('failure-reason-option-1');
 
-      // Fills description input
-      await typeTextQuick(
-        'ReportTextareaInput',
-        'Some text to describe any incident',
-      );
+    // Fills description input
+    await typeTextQuick(
+      'ReportTextareaInput',
+      'Some text to describe any incident',
+    );
 
-      await waitToBeVisible('task:finishButton');
-      await tapById('task:finishButton');
+    await waitToBeVisible('task:finishButton');
+    await tapById('task:finishButton');
 
-      // Verify task #2 has status "INCIDENT"
-      await waitToBeVisible('taskListItemIcon:INCIDENT:2');
-    });
-  },
-);
+    // Verify task #2 has status "INCIDENT"
+    await waitToBeVisible('taskListItemIcon:INCIDENT:2');
+  });
+});
