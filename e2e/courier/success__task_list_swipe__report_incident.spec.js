@@ -48,7 +48,6 @@ describeif(device.getPlatform() === 'android')('Courier - Task List', () => {
       'Some text to describe any incident',
     );
 
-    await waitToBeVisible('task:finishButton');
     await tapById('task:finishButton');
 
     // Verify task #2 has status "INCIDENT"
