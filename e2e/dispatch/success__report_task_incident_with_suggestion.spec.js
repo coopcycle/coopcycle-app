@@ -1,7 +1,6 @@
 import {
   describeif,
   longPressById,
-  scrollToElement,
   tapById,
   waitToBeVisible,
 } from '@/e2e/support/commands';
@@ -52,9 +51,6 @@ describeif(device.getPlatform() === 'none')(
       await tapById('editTabButton');
 
       //TODO: add some suggestion
-
-      // Scroll to submit button
-      await scrollToElement('scrollView:edit', 'task:finishButton-edit');
 
       // Tap Submit Button
       await tapById('task:finishButton-edit');
