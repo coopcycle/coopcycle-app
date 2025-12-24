@@ -137,9 +137,9 @@ export const AddressFields = ({
     }
   }
 
-  function handleChangeTelephone(value) {
+  function handleChangeTelephone(value: string) {
     setFieldValue('telephone', new AsYouType(country).input(value));
-    setFieldTouched('telephone', true);
+    setFieldTouched('telephone');
   }
 
   return (
