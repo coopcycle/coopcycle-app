@@ -12,6 +12,7 @@ import {
   toggleSectionUnassigned,
   toggleSectionUser,
 } from '@/e2e/dispatch/utils';
+import { swipeDown } from '../support/commands';
 
 const USER_JANE = 'jane';
 
@@ -57,6 +58,9 @@ describeif(device.getPlatform() === 'none')(
 
       // Tap Submit Button
       await tapById('task:finishButton-edit');
+
+      // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to auto-refresh..!
+      await swipeDown('dispatchTaskLists');
 
       // Verify task #1 has status "INCIDENT"
       await waitToBeVisible('taskListItemIcon:INCIDENT:1');

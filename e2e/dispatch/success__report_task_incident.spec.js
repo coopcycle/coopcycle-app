@@ -12,6 +12,7 @@ import {
   toggleSectionUnassigned,
   toggleSectionUser,
 } from '@/e2e/dispatch/utils';
+import { swipeDown } from '../support/commands';
 
 const USER_JANE = 'jane';
 
@@ -52,16 +53,16 @@ describeif(device.getPlatform() === 'android')(
       await tapById('failure-reason-option-1');
 
       // Fills description input
-      await typeTextQuick(
-        'notes-input',
-        'Some text to describe any incident',
-      );
+      await typeTextQuick('notes-input', 'Some text to describe any incident');
 
       // Check validateTaskAfterReport
       await tapById('ValidateTaskCheckbox');
 
       // Tap Report Incident Button
       await tapById('task:finishButton');
+
+      // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to auto-refresh..!
+      await swipeDown('dispatchTaskLists');
 
       // Verify task #1 has status "INCIDENT"
       await waitToBeVisible('taskListItemIcon:INCIDENT:1');
