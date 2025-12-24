@@ -85,10 +85,18 @@ describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
     );
     await typeTextQuick('address-description-input', 'Second floor\n');
 
-    //TODO: add more suggestions
+    // Scroll till the end
+    await scrollToElement('scrollView:edit', 'supplement-selector');
 
-    // Scroll to submit button
-    await scrollToElement('scrollView:edit', 'task:finishButton-edit');
+    //TODO: figure out how to match as 'contains' instead of the exact match
+    // await expect(element(by.id('task-before'))).toHaveText('7:30 PM');
+
+    await expect(element(by.id('task-weight-input'))).toHaveText('1');
+    await typeTextQuick('task-weight-input', '2.5\n');
+
+    //TODO: set packages
+
+    //TODO: set supplements
 
     // Tap Submit Button
     await tapById('task:finishButton-edit');

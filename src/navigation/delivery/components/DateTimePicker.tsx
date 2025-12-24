@@ -40,7 +40,9 @@ export const DateTimePicker = () => {
           <Text style={styles.label}>
             {t('STORE_NEW_DELIVERY_DROPOFF_BEFORE')}
           </Text>
-          <Text>{moment(values.before).format('LLL')}</Text>
+          <Text testID="task-before">
+            {moment(values.before).format('LLL')}
+          </Text>
         </VStack>
         <Button onPress={showDateTimePicker}>
           <ButtonText>{t('EDIT')}</ButtonText>
