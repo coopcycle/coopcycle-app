@@ -239,7 +239,7 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
                   </FormControlLabel>
                   <Textarea className="mb-6">
                     <TextareaInput
-                      testID="ReportTextareaInput"
+                      testID="notes-input"
                       autoCorrect={false}
                       onChangeText={text => {
                         setFieldValue('notes', text);

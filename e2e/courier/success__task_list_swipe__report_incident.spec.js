@@ -44,7 +44,7 @@ describeif(device.getPlatform() === 'android')('Courier - Task List', () => {
 
     // Fills description input
     await typeTextQuick(
-      'ReportTextareaInput',
+      'notes-input',
       'Some text to describe any incident',
     );
 

@@ -52,7 +52,7 @@ describeif(device.getPlatform() === 'android')(
 
       // Fills description input
       await typeTextQuick(
-        'ReportTextareaInput',
+        'notes-input',
         'Some text to describe any incident',
       );
 
