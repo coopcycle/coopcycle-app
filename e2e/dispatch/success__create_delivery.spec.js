@@ -39,15 +39,15 @@ describeif(device.getPlatform() === 'android')
     await tapById('delivery__next_button');
 
     // Dropoff address
-    await selectAutocompleteAddress('delivery__dropoff__address');
+    await selectAutocompleteAddress('address-input');
 
     // Append "\n" to make sure virtual keyboard is hidden after entry
     // https://github.com/wix/detox/issues/209
-    await waitToBeVisible('delivery__dropoff__contact_name');
-    await typeTextQuick('delivery__dropoff__contact_name', `${CONTACT_NAME}\n`);
+    await waitToBeVisible('address-contact-name-input');
+    await typeTextQuick('address-contact-name-input', `${CONTACT_NAME}\n`);
 
-    await waitToBeVisible('delivery__dropoff__phone');
-    await typeTextQuick('delivery__dropoff__phone', '0612345678\n');
+    await waitToBeVisible('address-telephone-input');
+    await typeTextQuick('address-telephone-input', '0612345678\n');
 
     await tapById('delivery__next_button');
 

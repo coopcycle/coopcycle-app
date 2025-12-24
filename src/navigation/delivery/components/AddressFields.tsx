@@ -197,7 +197,7 @@ export const AddressFields = ({
             {...autocompleteProps}
             placeholder={t('ENTER_ADDRESS')}
             _focus={{ borderColor: primaryColor }}
-            testID="delivery__dropoff__address"
+            testID="address-input"
           />
         </View>
         {errors.address && !values.isValidAddress && touched.address && (
@@ -220,7 +220,7 @@ export const AddressFields = ({
           onBlur={handleBlur('businessName')}
           value={values.businessName}
           placeholder={t('STORE_NEW_DELIVERY_ENTER_BUSINESS_NAME')}
-          testID="business-name-input"
+          testID="address-business-name-input"
         />
       </FormField>
       {/* Contact Name */}
@@ -237,7 +237,7 @@ export const AddressFields = ({
           onBlur={handleBlur('contactName')}
           value={values.contactName}
           placeholder={t('STORE_NEW_DELIVERY_ENTER_CONTACT_NAME')}
-          testID="contact-name-input"
+          testID="address-contact-name-input"
         />
       </FormField>
       {/* Telephone */}
@@ -254,7 +254,7 @@ export const AddressFields = ({
           onBlur={handleBlur('telephone')}
           value={values.telephone}
           placeholder={t('STORE_NEW_DELIVERY_ENTER_PHONE_NUMBER')}
-          testID="telephone-input"
+          testID="address-telephone-input"
         />
       </FormField>
       {/* Address Description */}
@@ -271,7 +271,7 @@ export const AddressFields = ({
             onBlur={handleBlur('description')}
             value={values.description}
             placeholder={t('STORE_NEW_DELIVERY_ENTER_ADDRESS_DESCRIPTION')}
-            testID="description-input"
+            testID="address-description-input"
           />
         </Textarea>
       </FormField>
