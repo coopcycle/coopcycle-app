@@ -97,7 +97,8 @@ describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
     // Add one more package
     await tapById('task-package-0:range-increment-button');
 
-    //TODO: set supplements
+    // Add a manual supplement
+    await tapById('supplement-selector-option-0');
 
     // Tap Submit Button
     await tapById('task:finishButton-edit');
