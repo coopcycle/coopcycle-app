@@ -1,5 +1,9 @@
 import { swipeLeft, swipeRight, tapById } from '../support/commands';
 
+export async function tapTask(index = 0) {
+  await tapById(`courierTaskList:task:${index}`);
+}
+
 export async function swipeLeftTask(index = 0) {
   await swipeLeft(`courierTaskList:task:${index}`);
 }
