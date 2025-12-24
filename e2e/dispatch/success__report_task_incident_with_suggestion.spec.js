@@ -48,6 +48,8 @@ describeif(device.getPlatform() === 'android')(
       // Tap Edit Tab
       await tapById('editTabButton');
 
+      //TODO: add some suggestion
+
       // Scroll to submit button
       await scrollToElement('scrollView:edit', 'task:finishButton-edit');
 
