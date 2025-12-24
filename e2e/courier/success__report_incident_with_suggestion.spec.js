@@ -60,14 +60,32 @@ describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
     // Tap Edit Tab
     await tapById('editTabButton');
 
-    //TODO: add some suggestion
-
+    await expect(element(by.id('address-input'))).toHaveText(
+      '72, Rue Saint-Maur, 75011 Paris, France',
+    );
     await selectAutocompleteAddress('address-input');
 
+    await expect(element(by.id('address-business-name-input'))).toHaveText(
+      'Office',
+    );
     await typeTextQuick('address-business-name-input', 'Acme\n');
+
+    await expect(element(by.id('address-contact-name-input'))).toHaveText(
+      'Jane smith',
+    );
     await typeTextQuick('address-contact-name-input', 'Alice\n');
+
+    await expect(element(by.id('address-telephone-input'))).toHaveText(
+      '+33112121414',
+    );
     await typeTextQuick('address-telephone-input', '0612345678\n');
+
+    await expect(element(by.id('address-description-input'))).toHaveText(
+      'Leave at the reception',
+    );
     await typeTextQuick('address-description-input', 'Second floor\n');
+
+    //TODO: add more suggestions
 
     // Scroll to submit button
     await scrollToElement('scrollView:edit', 'task:finishButton-edit');
