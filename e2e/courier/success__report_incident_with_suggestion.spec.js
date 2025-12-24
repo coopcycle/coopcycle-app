@@ -6,7 +6,11 @@ import {
   tapByText,
   waitToBeVisible,
 } from '@/e2e/support/commands';
-import { scrollToElement, typeTextQuick } from '../support/commands';
+import {
+  scrollToElement,
+  selectAutocompleteAddress,
+  typeTextQuick,
+} from '../support/commands';
 import { swipeLeftTaskAndTap } from './utils';
 
 const USER_JANE = 'jane';
@@ -16,7 +20,12 @@ const USER_JANE = 'jane';
 describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
   // describeif(device.getPlatform() === 'android')('Courier - Task List', () => {
   beforeEach(async () => {
-    await loadFixturesAndConnect('courier.yml', true);
+    await loadFixturesAndConnect([
+      'setup_default.yml',
+      'user_dispatcher.yml',
+      'store_advanced.yml',
+      'package_delivery_order_assigned.yml',
+    ]);
     await authenticateWithCredentials(USER_JANE, '12345678');
 
     try {
@@ -37,7 +46,7 @@ describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
 
   it('should report an incident with suggested changes', async () => {
     // Tap Report incident button
-    await swipeLeftTaskAndTap(0);
+    await swipeLeftTaskAndTap(1);
 
     // To open select
     await tapById('failure-reason-select-trigger');
@@ -53,13 +62,20 @@ describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
 
     //TODO: add some suggestion
 
+    await selectAutocompleteAddress('address-input');
+
+    await typeTextQuick('address-business-name-input', 'Acme\n');
+    await typeTextQuick('address-contact-name-input', 'Alice\n');
+    await typeTextQuick('address-telephone-input', '0612345678\n');
+    await typeTextQuick('address-description-input', 'Second floor\n');
+
     // Scroll to submit button
     await scrollToElement('scrollView:edit', 'task:finishButton-edit');
 
     // Tap Submit Button
     await tapById('task:finishButton-edit');
 
-    // Verify task #2 has status "INCIDENT"
-    await waitToBeVisible('taskListItemIcon:INCIDENT:2');
+    // Verify dropoff task has status "INCIDENT"
+    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
   });
 });

@@ -288,6 +288,8 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
   const elem = () => isElemId ? element(by.id(elemIdOrObj)) : elemIdOrObj;
   console.log(`Typing text "${text}" into element${isElemId ? ` with testID "${elemIdOrObj}"` : ''}..`);
 
+  await waitElementToBeVisible(elem());
+
   // Let's tap the element first (prevents possible weird behaviors when entering the text)
   await elem().tap();
 
@@ -352,7 +354,14 @@ export const swipeDown = async (testID, timeout = 0) => {
 
 export const waitToBeVisible = (testID, timeout = 5000) => {
   console.log(`Waiting for element with testID "${testID}" to be visible${timeout ? ` for ${timeout}ms` : ''}..`);
-  const elem = waitFor(element(by.id(testID))).toBeVisible();
+  return waitElementToBeVisible(element(by.id(testID)), timeout);
+};
+
+export const waitElementToBeVisible = (element, timeout = 5000) => {
+  console.log(
+    `Waiting for element to be visible${timeout ? ` for ${timeout}ms` : ''}..`,
+  );
+  const elem = waitFor(element).toBeVisible();
   return timeout ? elem.withTimeout(timeout) : elem;
 };
 
