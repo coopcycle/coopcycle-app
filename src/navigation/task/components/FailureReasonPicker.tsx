@@ -81,7 +81,7 @@ export const FailureReasonPicker = ({
           testID="failure-reason-select-trigger"
         >
           <SelectInput
-            placeholder={t('SELECT_INCIDENT_TYPE')}
+            placeholder={t('SELECT_FAILURE_REASON')}
             value={
               selectedFailureReason
                 ? data['hydra:member'].find(

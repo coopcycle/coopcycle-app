@@ -205,7 +205,7 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
                   <FormControl className="p-3">
                     <FormControlLabel>
                       <FormControlLabelText>
-                        {t('INCIDENT_TYPE')}
+                        {t('FAILURE_REASON')}
                       </FormControlLabelText>
                     </FormControlLabel>
                     <FailureReasonPicker

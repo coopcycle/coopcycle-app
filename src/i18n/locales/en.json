@@ -624,8 +624,6 @@
     "TASK_DETAILS_CAN_NOT_EDIT": "This task cannot be edited.",
     "TASK_DETAILS_CAN_NOT_EDIT_NOT_RELEASED": "The tasks cannot be edited from the app yet. Please check back later.",
     "TASK_DETAILS_CAN_NOT_EDIT_NO_ORDER": "This task cannot be edited because it's not attached to an order.",
-    "INCIDENT_TYPE": "Incident type",
-    "SELECT_INCIDENT_TYPE": "Select an incident type",
     "VALIDATE_TASK": "Validate task after reporting incident",
     "SUPPLEMENTS": "Supplements",
     "CANCEL_TITLE": "Cancel {{entity}}",
