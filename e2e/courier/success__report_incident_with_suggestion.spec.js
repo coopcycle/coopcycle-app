@@ -94,7 +94,8 @@ describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
     await expect(element(by.id('task-weight-input'))).toHaveText('1');
     await typeTextQuick('task-weight-input', '2.5\n');
 
-    //TODO: set packages
+    // Add one more package
+    await tapById('task-package-0:range-increment-button');
 
     //TODO: set supplements
 

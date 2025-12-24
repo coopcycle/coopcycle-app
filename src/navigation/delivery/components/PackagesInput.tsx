@@ -58,7 +58,7 @@ export const PackagesInput = ({
                   quantity={item.quantity}
                   minimum={0}
                   disabled={disabled}
-                  testID={`package-${index}`}
+                  testID={`task-package-${index}`}
                 />
                 <TouchableOpacity
                   style={{
