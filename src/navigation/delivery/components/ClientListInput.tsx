@@ -18,11 +18,53 @@ type Props = {
   placeholder: string;
 };
 
+const Item = ({
+  item,
+  selectAddress,
+}: {
+  item: Address;
+  selectAddress: (address: Address) => void;
+}) => (
+  <TouchableOpacity
+    onPress={() => selectAddress(item)}
+    style={{
+      padding: 12,
+    }}
+  >
+    <Text
+      style={{
+        fontSize: 14,
+        flex: 1,
+        margin: 0,
+        padding: 0,
+        borderWidth: 0,
+      }}
+      numberOfLines={1}
+      ellipsizeMode="tail"
+    >
+      {`${item.name ?? ''} - ${item.contactName ?? ''}`}
+    </Text>
+    <Text
+      style={{
+        fontSize: 14,
+        flex: 1,
+        margin: 0,
+        padding: 0,
+        borderWidth: 0,
+      }}
+      numberOfLines={1}
+      ellipsizeMode="tail"
+    >
+      {`${item.streetAddress}`}
+    </Text>
+  </TouchableOpacity>
+);
+
 export default function ClientListInput({
   addresses,
   onSelectAddress,
   placeholder,
-} : Props) {
+}: Props) {
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [value, setValue] = useState('');
   const backgroundColor = useBackgroundContainerColor();
@@ -36,29 +78,15 @@ export default function ClientListInput({
     setHideSuggestions(true);
   }
 
-  function handleChangeText(text) {
+  function handleChangeText(text: string) {
     if (hideSuggestions) setHideSuggestions(false);
     setValue(text);
-  }
-
-  function RenderedInput() {
-    return (
-      <FormInput
-        autoCorrect={false}
-        returnKeyType="done"
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        value={value}
-        onChangeText={handleChangeText}
-        placeholder={placeholder}
-      />
-    );
   }
 
   function selectAddress(address: Address) {
     onSelectAddress(address);
     setHideSuggestions(true);
-    setValue(address.contactName);
+    setValue(address.contactName ?? '');
   }
 
   const styles = StyleSheet.create({
@@ -71,39 +99,6 @@ export default function ClientListInput({
       zIndex: 1,
     },
   });
-
-  const renderItem = ({ item } : { item: Address }) => (
-    <TouchableOpacity
-      onPress={() => selectAddress(item)}
-      style={{
-        padding: 12,
-      }}>
-      <Text
-        style={{
-          fontSize: 14,
-          flex: 1,
-          margin: 0,
-          padding: 0,
-          borderWidth: 0,
-        }}
-        numberOfLines={1}
-        ellipsizeMode="tail">
-        {`${item.name ?? ''} - ${item.contactName ?? ''}`}
-      </Text>
-      <Text
-        style={{
-          fontSize: 14,
-          flex: 1,
-          margin: 0,
-          padding: 0,
-          borderWidth: 0,
-        }}
-        numberOfLines={1}
-        ellipsizeMode="tail">
-        {`${item.streetAddress}`}
-      </Text>
-    </TouchableOpacity>
-  );
 
   return (
     <View style={styles.autocompleteContainer}>
@@ -118,7 +113,17 @@ export default function ClientListInput({
               )
             : addresses
         }
-        renderTextInput={RenderedInput}
+        renderTextInput={() => (
+          <FormInput
+            autoCorrect={false}
+            returnKeyType="done"
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            value={value}
+            onChangeText={handleChangeText}
+            placeholder={placeholder}
+          />
+        )}
         onChangeText={handleChangeText}
         clearButtonMode="while-editing"
         inputContainerStyle={{
@@ -142,10 +147,13 @@ export default function ClientListInput({
                 backgroundColor,
                 borderColor: primaryColor,
               },
-            ]}>
-            {data.map((item, index) => (
+            ]}
+          >
+            {(data as Address[]).map((item, index) => (
               <View key={index}>
-                <Pressable>{renderItem({ item })}</Pressable>
+                <Pressable>
+                  <Item item={item} selectAddress={selectAddress} />
+                </Pressable>
                 <ItemSeparator />
               </View>
             ))}
