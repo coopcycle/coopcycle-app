@@ -1,8 +1,8 @@
 import {
   describeif,
   longPressById,
+  scrollToElement,
   tapById,
-  typeTextQuick,
   waitToBeVisible,
 } from '@/e2e/support/commands';
 import {
@@ -44,24 +44,15 @@ describeif(device.getPlatform() === 'android')(
       await tapById('ReportIncidenceButton');
     });
 
-    it('should report an incident', async () => {
-      // To open select
-      await tapById('failure-reason-select-trigger');
+    it('should report an incident with suggested changes', async () => {
+      // Tap Edit Tab
+      await tapById('editTabButton');
 
-      // To select any option
-      await tapById('failure-reason-option-1');
+      // Scroll to submit button
+      await scrollToElement('scrollView:edit', 'task:finishButton-edit');
 
-      // Fills description input
-      await typeTextQuick(
-        'ReportTextareaInput',
-        'Some text to describe any incident',
-      );
-
-      // Check validateTaskAfterReport
-      await tapById('ValidateTaskCheckbox');
-
-      // Tap Report Incident Button
-      await tapById('task:finishButton');
+      // Tap Submit Button
+      await tapById('task:finishButton-edit');
 
       // Verify task #1 has status "INCIDENT"
       await waitToBeVisible('taskListItemIcon:INCIDENT:1');
