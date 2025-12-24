@@ -3,7 +3,6 @@ import {
   describeif,
   loadFixturesAndConnect,
   longPressById,
-  swipeDown,
   tapById,
   tapByText,
   waitToBeVisible,
