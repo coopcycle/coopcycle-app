@@ -51,6 +51,7 @@ export const useEditDetailsForm = (task: Task) => {
       weight: initialTaskData?.weight
         ? `${initialTaskData.weight / 1000}`
         : '0',
+      // packages are set inside hooks/usePackages
       packages: undefined,
       // Order-level fields
       manualSupplements: initialDeliveryFormData.order?.manualSupplements ?? [],
