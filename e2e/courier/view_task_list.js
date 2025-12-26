@@ -5,7 +5,7 @@ import {
   tapById,
   tapByText,
   waitToBeVisible,
-} from './support/commands';
+} from '../support/commands';
 
 //FIXME: run these tests for iOS too (requires a local coopcycle-web instance)
 describeif(device.getPlatform() === 'android')

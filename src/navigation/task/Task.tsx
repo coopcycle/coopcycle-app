@@ -13,6 +13,7 @@ import TaskDetails from './components/Details';
 import TaskMiniMap from './components/MiniMap';
 import TaskNav from './components/Nav';
 import { getAspectRatio } from './components/mapUtils';
+import TaskType from '@/src/types/task';
 
 const OfflineNotice = ({ message }) => (
   <View>
@@ -45,10 +46,14 @@ class Task extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const task = this.props.route.params?.task;
+    const task = this.props.route.params?.task as TaskType | undefined;
 
-    let previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']);
-    let currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id']);
+    if (!task || !task['@id']) {
+      return;
+    }
+
+    const previousTask = _.find(prevProps.tasks, t => t['@id'] === task['@id']);
+    const currentTask = _.find(this.props.tasks, t => t['@id'] === task['@id']);
 
     // Task status has been updated
     if (
@@ -66,8 +71,7 @@ class Task extends Component {
   }
 
   _complete(success = true, force = false) {
-    const task = this.props.route.params?.task;
-
+    const task = this.props.route.params?.task as TaskType;
     if (success && task.status === 'TODO' && !force) {
       Alert.alert(
         this.props.t('TASK_COMPLETE_ALERT_TITLE'),
@@ -94,6 +98,20 @@ class Task extends Component {
       return;
     }
 
+    if (!success) {
+      this.props.navigation.navigate('TaskComplete', {
+        screen: 'ReportIncidentHome',
+        params: {
+          task,
+          navigateAfter: this.props.route.params?.navigateAfter,
+          success,
+        },
+      });
+
+      setTimeout(() => this.swipeRow.current?.closeRow(), 250);
+      return;
+    }
+
     this.props.navigation.navigate('TaskComplete', {
       screen: 'TaskCompleteHome',
       params: {
@@ -105,7 +123,7 @@ class Task extends Component {
     setTimeout(() => this.swipeRow.current.closeRow(), 250);
   }
 
-  normalizeTask(task) {
+  normalizeTask(task: TaskType | undefined) {
     if (!task || !task.address) return task;
 
     if (task.address.geo) return task;
@@ -132,7 +150,7 @@ class Task extends Component {
       return <View style={[styles.map, { backgroundColor: '#eeeeee' }]} />;
     }
 
-    const taskParam = this.props.route.params?.task;
+    const taskParam = this.props.route.params?.task as TaskType | undefined;
     // const tasksParam = this.props.route.params?.tasks || [];
 
     const task = this.normalizeTask(taskParam);
@@ -153,7 +171,7 @@ class Task extends Component {
   }
 
   render() {
-    const task = this.props.route.params?.task;
+    const task = this.props.route.params?.task as TaskType | undefined;
     const tasks = this.props.route.params?.tasks || [];
 
     return (

@@ -1,32 +1,36 @@
-import _ from 'lodash';
+import { PayloadAction, Reducer } from '@reduxjs/toolkit';
 
 import {
   ASSERT_DELIVERY_ERROR,
   GET_PRICE_ERROR,
   GET_PRICE_SUCCESS,
-  LOAD_ADDRESSES_SUCCESS,
-  LOAD_PACKAGES_SUCCESS,
   LOAD_TIME_SLOTS_SUCCESS,
-  LOAD_TIME_SLOT_CHOICES_SUCCESS,
   SET_STORE,
   SET_STORES,
 } from './actions';
 import { formatPrice } from '../../utils/formatting';
 import { LOGOUT_SUCCESS } from '../App/actions';
+import { Store, TimeSlot } from '@/src/redux/api/types';
 
-const initialState = {
-  addresses: [],
+type DeliveryState = {
+  assertDeliveryError;
+  price;
+  priceExcludingTax;
+  store: Store | null;
+  stores: Store[];
+  timeSlots: TimeSlot[];
+};
+
+const initialState: DeliveryState = {
   assertDeliveryError: null,
-  packages: [],
   price: null,
   priceExcludingTax: null,
   store: null,
   stores: [],
-  timeSlotChoices: [],
   timeSlots: [],
 };
 
-export default (state = initialState, action = {}) => {
+const reducer: Reducer<DeliveryState, PayloadAction<unknown>> = (state = initialState, action = {}) => {
   switch (action.type) {
     case LOGOUT_SUCCESS:
       return initialState;
@@ -53,46 +57,26 @@ export default (state = initialState, action = {}) => {
         priceExcludingTax: null,
       };
 
-    case LOAD_ADDRESSES_SUCCESS:
-      if (action.payload.store['@id'] === state.store['@id']) {
-        return {
-          ...state,
-          addresses: _.uniqBy(action.payload.addresses, '@id'),
-        };
-      }
-
-      break;
-
-    case LOAD_PACKAGES_SUCCESS:
-      return {
-        ...state,
-        packages: action.payload,
-      };
-
     case LOAD_TIME_SLOTS_SUCCESS:
       return {
         ...state,
-        timeSlots: action.payload,
-      };
-
-    case LOAD_TIME_SLOT_CHOICES_SUCCESS:
-      return {
-        ...state,
-        timeSlotChoices: action.payload,
+        timeSlots: action.payload as TimeSlot[],
       };
 
     case SET_STORE:
       return {
         ...state,
-        store: action.payload,
+        store: action.payload as Store,
       };
 
     case SET_STORES:
       return {
         ...state,
-        stores: action.payload,
+        stores: action.payload as Store[],
       };
   }
 
   return state;
 };
+
+export default reducer;

@@ -4,14 +4,11 @@ import { createAction } from '@reduxjs/toolkit';
 import { setLoading } from '../App/actions';
 import { selectTimeSlots } from './selectors';
 import { selectHttpClient } from '../App/selectors';
+import { Store } from '@/src/redux/api/types';
 
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
 export const GET_PRICE_SUCCESS = '@delivery/GET_PRICE_SUCCESS';
-export const LOAD_ADDRESSES_SUCCESS = '@delivery/LOAD_ADDRESSES_SUCCESS';
-export const LOAD_PACKAGES_SUCCESS = '@delivery/LOAD_PACKAGES_SUCCESS';
-export const LOAD_TIME_SLOT_CHOICES_SUCCESS =
-  '@delivery/LOAD_TIME_SLOT_CHOICES_SUCCESS';
 export const LOAD_TIME_SLOT_SUCCESS = '@delivery/LOAD_TIME_SLOT_SUCCESS';
 export const LOAD_TIME_SLOTS_SUCCESS = '@delivery/LOAD_TIME_SLOTS_SUCCESS';
 export const SET_REFRESHING = '@delivery/SET_REFRESHING';
@@ -21,25 +18,11 @@ export const SET_STORES = '@delivery/SET_STORES';
 export const assertDeliveryError = createAction(ASSERT_DELIVERY_ERROR);
 export const getPriceError = createAction(GET_PRICE_ERROR);
 export const getPriceSuccess = createAction(GET_PRICE_SUCCESS);
-export const loadPackagesSuccess = createAction(LOAD_PACKAGES_SUCCESS);
-export const loadTimeSlotChoicesSuccess = createAction(
-  LOAD_TIME_SLOT_CHOICES_SUCCESS,
-);
 export const loadTimeSlotsSuccess = createAction(LOAD_TIME_SLOTS_SUCCESS);
 export const loadTimeSlotSuccess = createAction(LOAD_TIME_SLOT_SUCCESS);
 export const setRefreshing = createAction(SET_REFRESHING);
-export const setStore = createAction(SET_STORE);
-export const setStores = createAction(SET_STORES);
-
-const loadAddressesSuccess = createAction(
-  LOAD_ADDRESSES_SUCCESS,
-  (store, addresses) => ({
-    payload: {
-      store,
-      addresses,
-    },
-  }),
-);
+export const setStore = createAction<Store>(SET_STORE);
+export const setStores = createAction<Store[]>(SET_STORES);
 
 export function assertDelivery(delivery, onSuccess) {
   return (dispatch, getState) => {
@@ -103,42 +86,6 @@ export function createDelivery(delivery, onSuccess) {
   };
 }
 
-export function loadAddresses(store) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-
-    return httpClient
-      .get(`${store['@id']}/addresses`)
-      .then(res => {
-        dispatch(loadAddressesSuccess(store, res['hydra:member']));
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-        dispatch(setRefreshing(false));
-      });
-  };
-}
-
-export function loadPackages(store) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(`${store['@id']}/packages`)
-      .then(res => {
-        dispatch(loadPackagesSuccess(res['hydra:member']));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
-
 export function loadTimeSlots(store) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
@@ -151,24 +98,6 @@ export function loadTimeSlots(store) {
         dispatch(loadTimeSlotsSuccess(res['hydra:member']));
         dispatch(setLoading(false));
         // dispatch(loadTimeSlotChoices(res['hydra:member'][0]));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-      });
-  };
-}
-
-export function loadTimeSlotChoices(timeSlot) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-
-    dispatch(setLoading(true));
-
-    return httpClient
-      .get(`${timeSlot['@id']}/choices`)
-      .then(res => {
-        dispatch(loadTimeSlotChoicesSuccess(res.choices));
-        dispatch(setLoading(false));
       })
       .catch(e => {
         dispatch(setLoading(false));
