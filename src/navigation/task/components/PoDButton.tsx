@@ -11,12 +11,18 @@ export const PoDButton = ({ task, tasks, success }) => {
 
   return (
     <Button
-        style={{ backgroundColor: '#BB4711' }}
+      style={{ backgroundColor: '#BB4711' }}
       onPress={() =>
-        navigateToProofOfDeliveryFromReportIncident(navigation, route, task, tasks, success)
-
-      }>
-      <Text style={{ color:'white' }}>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
+        navigateToProofOfDeliveryFromReportIncident(
+          navigation,
+          route,
+          task,
+          tasks,
+          success,
+        )
+      }
+    >
+      <Text style={{ color: 'white' }}>{t('TASK_ADD_PROOF_OF_DELIVERY')}</Text>
     </Button>
   );
 };

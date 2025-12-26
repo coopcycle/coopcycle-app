@@ -93,13 +93,15 @@ export default function TimeSlotPicker({
                   },
                 ]}
                 key={index}
-                testID={`${testID}-button-${index}`}>
+                testID={`${testID}-button-${index}`}
+              >
                 <ButtonText
                   numberOfLines={1}
                   style={{
                     color: isSelected ? backgroundHighlightColor : '#878787',
                   }}
-                  testID={`${testID}-button-text-${index}`}>
+                  testID={`${testID}-button-text-${index}`}
+                >
                   {timeSlot.name}
                 </ButtonText>
               </Button>

@@ -18,7 +18,6 @@ import { selectCountry } from '@/src/redux/App/selectors';
 import { selectStore } from '@/src/redux/Delivery/selectors';
 
 function NewDeliveryDropoffAddress({ navigation, route }) {
-
   const backgroundColor = useBackgroundContainerColor();
   const primaryColor = usePrimaryColor();
 
@@ -84,10 +83,9 @@ function NewDeliveryDropoffAddress({ navigation, route }) {
       validate={validate}
       onSubmit={submit}
       validateOnBlur={true}
-      validateOnChange={true}>
-      {({
-        handleSubmit,
-      }) => (
+      validateOnChange={true}
+    >
+      {({ handleSubmit }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
             <View style={[styles.header, styles.label]}>

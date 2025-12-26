@@ -64,9 +64,11 @@ export function validateDeliveryForm(
   values: NewDeliveryDropoffFormValues | EditTaskFormValues,
   hasTimeSlot: boolean,
   store: Store,
-  t: (key: string) => string
+  t: (key: string) => string,
 ) {
-  const errors = {} as FormikErrors<NewDeliveryDropoffFormValues | EditTaskFormValues>;
+  const errors = {} as FormikErrors<
+    NewDeliveryDropoffFormValues | EditTaskFormValues
+  >;
 
   if (hasTimeSlot && !values.timeSlot) {
     errors.timeSlot = t('STORE_NEW_DELIVERY_ERROR.EMPTY_TIME_SLOT');
@@ -83,7 +85,10 @@ export function validateDeliveryForm(
   return errors;
 }
 
-export function getInitialValues(dropoff: NewDeliveryDropoffAddressFormValues, store: Store) : NewDeliveryDropoffFormValues {
+export function getInitialValues(
+  dropoff: NewDeliveryDropoffAddressFormValues,
+  store: Store,
+): NewDeliveryDropoffFormValues {
   let initialValues = {
     address: dropoff.address,
     description: dropoff.description || '',

@@ -43,7 +43,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
   useDeliveryDataLoader(store);
 
   const { data: packages } = useGetStorePackagesQuery(store['@id'], {
-    skip: !store['@id']
+    skip: !store['@id'],
   });
 
   function submit(values: NewDeliveryDropoffFormValues) {
@@ -73,12 +73,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
   }
 
   function validate(values: NewDeliveryDropoffFormValues) {
-    return validateDeliveryForm(
-      values,
-      hasTimeSlot,
-      store,
-      t,
-    );
+    return validateDeliveryForm(values, hasTimeSlot, store, t);
   }
 
   const dropoff = route.params?.dropoff as NewDeliveryDropoffAddressFormValues;
@@ -90,14 +85,9 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
       validate={validate}
       onSubmit={submit}
       validateOnBlur={false}
-      validateOnChange={false}>
-      {({
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-      }) => (
+      validateOnChange={false}
+    >
+      {({ errors, touched, handleChange, handleBlur, handleSubmit }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
             <View style={[styles.header, styles.label]}>
@@ -112,12 +102,10 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
               {t('STORE_NEW_DELIVERY_PACKAGES_DESCRIPTION')}
             </Text>
           </View>
-          {(hasTimeSlot) ? (
-            <TimeSlotPicker
-              timeSlots={timeSlots}
-            />
+          {hasTimeSlot ? (
+            <TimeSlotPicker timeSlots={timeSlots} />
           ) : (
-            <DateTimePicker/>
+            <DateTimePicker />
           )}
 
           <View style={[styles.formGroup]}>

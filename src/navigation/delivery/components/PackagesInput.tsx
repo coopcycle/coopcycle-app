@@ -37,7 +37,8 @@ export const PackagesInput = ({
         style={{
           gap: 16,
           marginTop: 4,
-        }}>
+        }}
+      >
         {packages?.length ? (
           packagesCount.map((item, index) => {
             return (
@@ -51,7 +52,8 @@ export const PackagesInput = ({
                     backgroundColor,
                   },
                 ]}
-                key={`${item.type}-${index}`}>
+                key={`${item.type}-${index}`}
+              >
                 <Range
                   onPressIncrement={() => incrementQuantity(item.type)}
                   onPressDecrement={() => decrementQuantity(item.type)}
@@ -65,7 +67,8 @@ export const PackagesInput = ({
                     flex: 1,
                   }}
                   disabled={disabled}
-                  onPress={() => incrementQuantity(item.type)}>
+                  onPress={() => incrementQuantity(item.type)}
+                >
                   <Text>{item.type}</Text>
                 </TouchableOpacity>
               </View>

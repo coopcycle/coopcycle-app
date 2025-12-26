@@ -1,13 +1,16 @@
-import { Icon } from "@/components/ui/icon";
-import { Image } from "@/components/ui/image";
-import { CircleX } from "lucide-react-native";
-import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Icon } from '@/components/ui/icon';
+import { Image } from '@/components/ui/image';
+import { CircleX } from 'lucide-react-native';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 interface IAttachmentItemProps {
   base64: string;
   onPressDelete: () => void;
 }
-export const AttachmentItem = ({ base64, onPressDelete }: IAttachmentItemProps) => {
+export const AttachmentItem = ({
+  base64,
+  onPressDelete,
+}: IAttachmentItemProps) => {
   const { width } = Dimensions.get('window');
 
   const imageSize = (width - 64) / 2;
@@ -32,23 +35,23 @@ export const AttachmentItem = ({ base64, onPressDelete }: IAttachmentItemProps) 
   );
 };
 
-const styles = StyleSheet.create({  
-    image: {
-        borderWidth: 1,
-        borderColor: '#ddd',
-        marginBottom: 20,
-    },
-   imageDelBtn: {
-        position: 'absolute',
-        backgroundColor: '#ffffff',
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: '#ffffff',
-        top: -16,
-        right: -16,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+const styles = StyleSheet.create({
+  image: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginBottom: 20,
+  },
+  imageDelBtn: {
+    position: 'absolute',
+    backgroundColor: '#ffffff',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    top: -16,
+    right: -16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

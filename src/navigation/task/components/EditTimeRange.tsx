@@ -53,7 +53,8 @@ export const EditTimeRange = ({ hasTimeSlot, timeSlots }: Props) => {
               value="datetime"
               size="md"
               isInvalid={false}
-              isDisabled={false}>
+              isDisabled={false}
+            >
               <RadioIndicator>
                 <RadioIcon as={CircleIcon} />
               </RadioIndicator>
@@ -66,7 +67,8 @@ export const EditTimeRange = ({ hasTimeSlot, timeSlots }: Props) => {
               value="timeslot"
               size="md"
               isInvalid={false}
-              isDisabled={false}>
+              isDisabled={false}
+            >
               <RadioIndicator>
                 <RadioIcon as={CircleIcon} />
               </RadioIndicator>

@@ -1,12 +1,16 @@
-import { Formik } from "formik";
-import { View } from "react-native";
-import Modal from "react-native-modal";
-import { useTranslation } from "react-i18next";
-import { Box } from "@/components/ui/box";
-import { Button, ButtonText } from "@/components/ui/button";
-import { FormControl, FormControlLabel, FormControlLabelText } from "@/components/ui/form-control";
-import { Input, InputField } from "@/components/ui/input";
-import ModalContent from "@/src/components/ModalContent";
+import { Formik } from 'formik';
+import { View } from 'react-native';
+import Modal from 'react-native-modal';
+import { useTranslation } from 'react-i18next';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Input, InputField } from '@/components/ui/input';
+import ModalContent from '@/src/components/ModalContent';
 import _ from 'lodash';
 
 export const ContactNameModal = ({
@@ -21,7 +25,8 @@ export const ContactNameModal = ({
     <Modal
       isVisible={isVisible}
       onSwipeComplete={onSwipeComplete}
-      swipeDirection={['up', 'down']}>
+      swipeDirection={['up', 'down']}
+    >
       <ModalContent>
         <Box className="p-3">
           <Formik
@@ -37,7 +42,8 @@ export const ContactNameModal = ({
             }}
             onSubmit={onSubmit}
             validateOnBlur={false}
-            validateOnChange={false}>
+            validateOnChange={false}
+          >
             {({
               handleChange,
               handleBlur,
@@ -49,7 +55,8 @@ export const ContactNameModal = ({
               <View>
                 <FormControl
                   error={touched.contactName && errors.contactName}
-                  style={{ marginBottom: 15 }}>
+                  style={{ marginBottom: 15 }}
+                >
                   <FormControlLabel>
                     <FormControlLabelText>
                       {t('DELIVERY_DETAILS_RECIPIENT')}

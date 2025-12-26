@@ -14,9 +14,7 @@ import {
 } from '@/components/ui/checkbox';
 import { CheckIcon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import {
-  selectStore,
-} from '../../redux/Delivery/selectors';
+import { selectStore } from '../../redux/Delivery/selectors';
 import {
   useBackgroundContainerColor,
   usePrimaryColor,
@@ -98,10 +96,9 @@ function NewDeliveryPickupAddress({ navigation }) {
       validate={validate}
       onSubmit={values => submit(values)}
       validateOnBlur={true}
-      validateOnChange={true}>
-      {({
-        handleSubmit,
-      }) => (
+      validateOnChange={true}
+    >
+      {({ handleSubmit }) => (
         <ModalFormWrapper handleSubmit={handleSubmit} t={t}>
           <View style={[styles.formGroup, { zIndex: 2 }]}>
             <View style={[styles.header, styles.label]}>
@@ -129,11 +126,14 @@ function NewDeliveryPickupAddress({ navigation }) {
             <Checkbox
               value="customAddress"
               isChecked={customAddress}
-              onChange={() => setCustomAddress(!customAddress)}>
+              onChange={() => setCustomAddress(!customAddress)}
+            >
               <CheckboxIndicator>
                 <CheckboxIcon as={CheckIcon} />
               </CheckboxIndicator>
-              <CheckboxLabel>{t('STORE_NEW_DELIVERY_PICKUP_USE_CUSTOM_ADDRESS')}</CheckboxLabel>
+              <CheckboxLabel>
+                {t('STORE_NEW_DELIVERY_PICKUP_USE_CUSTOM_ADDRESS')}
+              </CheckboxLabel>
             </Checkbox>
           </View>
           <View style={customAddress ? {} : styles.disabled}>

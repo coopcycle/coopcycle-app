@@ -16,7 +16,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   optional = false,
   error,
   touched,
-  children
+  children,
 }) => (
   <View style={styles.formGroup}>
     <Text style={styles.label}>
