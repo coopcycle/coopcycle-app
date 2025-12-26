@@ -11,23 +11,30 @@ import {
 import { CircleIcon } from '@/components/ui/icon';
 import { DateTimePicker } from '@/src/navigation/delivery/components/DateTimePicker';
 import TimeSlotPicker from '@/src/navigation/delivery/components/TimeSlotPicker';
-import { BaseTimeSlotFields, StoreTimeSlot } from '@/src/redux/api/types';
+import { StoreTimeSlot } from '@/src/redux/api/types';
 import { VStack } from '@/components/ui/vstack';
 import { useFormikContext } from 'formik';
+import { BaseTimeRangeFields } from '@/src/navigation/delivery/utils';
 
 type Props = {
   hasTimeSlot: boolean;
   timeSlots: StoreTimeSlot[];
+  initialValues: BaseTimeRangeFields;
 };
 
-export const EditTimeRange = ({ hasTimeSlot, timeSlots }: Props) => {
+export const EditTimeRange = ({
+  hasTimeSlot,
+  timeSlots,
+  initialValues,
+}: Props) => {
   const { t } = useTranslation();
 
   const [timeRangeMode, setTimeRangeMode] = useState(
     'datetime' as 'datetime' | 'timeslot',
   );
 
-  const { setFieldValue } = useFormikContext<BaseTimeSlotFields>();
+  const { setFieldValue, setFieldTouched } =
+    useFormikContext<BaseTimeRangeFields>();
 
   const onTimeRangeModeChange = (mode: 'datetime' | 'timeslot') => {
     setTimeRangeMode(mode);
@@ -35,11 +42,19 @@ export const EditTimeRange = ({ hasTimeSlot, timeSlots }: Props) => {
     switch (mode) {
       case 'datetime':
         setFieldValue('timeSlotUrl', null);
+        setFieldTouched('timeSlotUrl');
+
         setFieldValue('timeSlot', null);
+        setFieldTouched('timeSlot');
+
         break;
       case 'timeslot':
         setFieldValue('after', null);
+        setFieldTouched('after');
+
         setFieldValue('before', null);
+        setFieldTouched('before');
+
         break;
     }
   };
@@ -62,7 +77,9 @@ export const EditTimeRange = ({ hasTimeSlot, timeSlots }: Props) => {
                 {t('STORE_NEW_DELIVERY_TIME_SLOT_CUSTOM')}
               </RadioLabel>
             </Radio>
-            {timeRangeMode === 'datetime' ? <DateTimePicker /> : null}
+            {timeRangeMode === 'datetime' ? (
+              <DateTimePicker initialValues={initialValues} />
+            ) : null}
             <Radio
               value="timeslot"
               size="md"
@@ -82,7 +99,7 @@ export const EditTimeRange = ({ hasTimeSlot, timeSlots }: Props) => {
           </VStack>
         </RadioGroup>
       ) : (
-        <DateTimePicker />
+        <DateTimePicker initialValues={initialValues} />
       )}
     </View>
   );

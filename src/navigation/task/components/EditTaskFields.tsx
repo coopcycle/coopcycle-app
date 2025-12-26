@@ -18,9 +18,14 @@ import { SectionTitle } from '@/src/navigation/task/components/SectionTitle';
 interface TaskFormProps {
   store?: Store;
   task: Task;
+  initialValues: EditTaskFormValues;
 }
 
-export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
+export const EditTaskFields: React.FC<TaskFormProps> = ({
+  store,
+  task,
+  initialValues,
+}) => {
   const { t } = useTranslation();
 
   const { errors, touched } = useFormikContext<EditTaskFormValues>();
@@ -60,6 +65,7 @@ export const EditTaskFields: React.FC<TaskFormProps> = ({ store, task }) => {
           <EditTimeRange
             hasTimeSlot={hasTimeSlot}
             timeSlots={timeSlots || []}
+            initialValues={initialValues}
           />
         ) : null}
       </View>

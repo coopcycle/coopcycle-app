@@ -40,6 +40,8 @@ export type BaseDateTimeFields = {
   timeSlot?: never;
 };
 
+export type BaseTimeRangeFields = BaseTimeSlotFields | BaseDateTimeFields;
+
 export type BaseWeightFields = {
   weight: string;
 };

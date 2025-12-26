@@ -8,12 +8,18 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { moment } from '@/src/shared';
 import { Button, ButtonText } from '@/components/ui/button';
-import { BaseDateTimeFields } from '@/src/redux/api/types';
+import { BaseDateTimeFields } from '@/src/navigation/delivery/utils';
 
-export const DateTimePicker = () => {
+type Props = {
+  // We can't use Formik's 'initialValues' because when used on task edit page
+  // the value are loaded after the Formik's initialValues are set
+  initialValues: BaseDateTimeFields;
+};
+
+export const DateTimePicker = ({ initialValues }: Props) => {
   const { t } = useTranslation();
 
-  const { initialValues, values, setFieldValue, setFieldTouched } =
+  const { values, setFieldValue, setFieldTouched } =
     useFormikContext<BaseDateTimeFields>();
 
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);

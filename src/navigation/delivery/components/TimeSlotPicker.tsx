@@ -5,9 +5,11 @@ import { useFormikContext } from 'formik';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { useBackgroundHighlightColor } from '../../../styles/theme';
-import { BaseTimeSlotFields, StoreTimeSlot } from '@/src/redux/api/types';
+import { StoreTimeSlot } from '@/src/redux/api/types';
 import { TimeSlotChoiceSelect } from '@/src/navigation/delivery/components/TimeSlotChoiceSelect';
 import { useGetTimeSlotChoicesQuery } from '@/src/redux/api/slice';
+import { BaseTimeSlotFields } from '@/src/navigation/delivery/utils';
+import { Spinner } from '@/components/ui/spinner';
 
 const styles = StyleSheet.create({
   label: {
@@ -49,12 +51,10 @@ export default function TimeSlotPicker({
   const { values, touched, errors, setFieldValue, setFieldTouched } =
     useFormikContext<BaseTimeSlotFields>();
 
-  const { data: timeSlotChoices } = useGetTimeSlotChoicesQuery(
-    values.timeSlotUrl,
-    {
+  const { data: timeSlotChoices, isFetching: isFetchingTimeSlotChoices } =
+    useGetTimeSlotChoicesQuery(values.timeSlotUrl, {
       skip: !values.timeSlotUrl,
-    },
-  );
+    });
 
   const onTimeSlotPress = (timeSlot: StoreTimeSlot) => {
     setFieldValue('timeSlotUrl', timeSlot['@id']);
@@ -108,6 +108,8 @@ export default function TimeSlotPicker({
             );
           })}
       </View>
+
+      {!timeSlotChoices && isFetchingTimeSlotChoices ? <Spinner /> : null}
 
       {timeSlotChoices ? (
         <TimeSlotChoiceSelect

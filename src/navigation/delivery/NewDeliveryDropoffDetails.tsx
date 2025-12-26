@@ -105,7 +105,7 @@ function NewDeliveryDropoffDetails({ navigation, route }) {
           {hasTimeSlot ? (
             <TimeSlotPicker timeSlots={timeSlots} />
           ) : (
-            <DateTimePicker />
+            <DateTimePicker initialValues={initialValues} />
           )}
 
           <View style={[styles.formGroup]}>

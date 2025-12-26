@@ -58,10 +58,13 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
     }
 
     // setInitialValues(initialValues);
-    setValues({
+
+    const mergedValues = {
       ...values,
       ...initialValues,
-    });
+    } as EditFormValues;
+
+    setValues(mergedValues);
     // don't include values in the dependency array;
     // use EffectEvent instead (see above)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,7 +113,11 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
       >
         <VStack space={4} style={styles.content}>
           <FormControl style={styles.formControl}>
-            <EditTaskFields store={store} task={task} />
+            <EditTaskFields
+              store={store}
+              task={task}
+              initialValues={initialValues}
+            />
             {/* Supplements */}
             {availableSupplements && availableSupplements.length > 0 && (
               <>

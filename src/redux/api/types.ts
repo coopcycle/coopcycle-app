@@ -152,14 +152,14 @@ type BaseTaskFields = {
   doorstep?: boolean;
 };
 
-export type BaseTimeSlotFields = {
+type BaseTimeSlotFields = {
   timeSlotUrl: Uri;
   timeSlot: string;
   after?: never;
   before?: never;
 };
 
-export type BaseDateTimeFields = {
+type BaseDateTimeFields = {
   after?: string;
   before: string;
   timeSlotUrl?: never;
