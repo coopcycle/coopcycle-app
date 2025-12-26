@@ -181,7 +181,7 @@ make e2e-ios
 Run a single test, set the `TESTFILE` env var when running `make e2e-android-only` or `make e2e-ios-only`:
 
 ```sh
-make e2e-android-only TESTFILE=dispatch/success__start_task.spec.js
+make e2e-android-only TESTFILE=courier/success__task__complete.spec.js
 ```
 (note that it omits the `e2e/` part of the path)
 
