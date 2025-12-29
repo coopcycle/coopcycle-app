@@ -15,10 +15,8 @@ import { swipeDown } from '../support/commands';
 
 const USER_JANE = 'jane';
 
-//FIXME: Re-enable this test after https://github.com/coopcycle/coopcycle-web/pull/5153 is merged
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-describeif(device.getPlatform() === 'none')(
-  // describeif(device.getPlatform() === 'android')(
+describeif(device.getPlatform() === 'android')(
   'Dispatch - Select and report an incident for selected task',
   () => {
     beforeEach(async () => {

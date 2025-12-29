@@ -15,10 +15,8 @@ import { swipeLeftTaskAndTap } from './utils';
 
 const USER_JANE = 'jane';
 
-//FIXME: Re-enable this test after https://github.com/coopcycle/coopcycle-web/pull/5153 is merged
 //FIXME: Run these tests for iOS too (see https://github.com/coopcycle/coopcycle-ops/issues/97)
-describeif(device.getPlatform() === 'none')('Courier - Task List', () => {
-  // describeif(device.getPlatform() === 'android')('Courier - Task List', () => {
+describeif(device.getPlatform() === 'android')('Courier - Task List', () => {
   beforeEach(async () => {
     await loadFixturesAndConnect([
       'setup_default.yml',
