@@ -153,9 +153,14 @@ export default function NewDeliveryPrice({ route }) {
               </View>
             </>
           ) : null}
-          {!allowManualPrice &&
-          (price === null || priceExcludingTax === null) ? (
-            <Text>{t('PRICE_CALCULATION_FAILED_DISCLAIMER')}</Text>
+          {price === null || priceExcludingTax === null ? (
+            <Text>
+              {t(
+                allowManualPrice
+                  ? 'PRICE_CALCULATION_FAILED_DISCLAIMER_ADMIN'
+                  : 'PRICE_CALCULATION_FAILED_DISCLAIMER',
+              )}
+            </Text>
           ) : null}
           {allowManualPrice ? (
             <Button
