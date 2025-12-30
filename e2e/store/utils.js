@@ -1,10 +1,14 @@
 import {
   authenticateWithCredentials,
   loadFixturesAndConnect,
-} from "../support/commands";
+} from '../support/commands';
 
 export async function loadStoreFixture() {
-  await loadFixturesAndConnect('store_basic.yml', true);
+  await loadFixturesAndConnect([
+    'setup_default.yml',
+    'user_dispatcher.yml',
+    'store_basic.yml',
+  ]);
 }
 
 export async function loginStoreUser() {

@@ -15,7 +15,11 @@ describeif(device.getPlatform() === 'android')(
   'Store - Create delivery',
   () => {
     beforeEach(async () => {
-      await loadFixturesAndConnect('store_with_invalid_pricing.yml', true);
+      await loadFixturesAndConnect([
+        'setup_default.yml',
+        'user_dispatcher.yml',
+        'store_with_invalid_pricing.yml',
+      ]);
       await loginStoreUser();
     });
 
