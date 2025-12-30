@@ -56,7 +56,9 @@ export const AddressFields = ({
     errors,
     touched,
     setFieldValue,
+    setValues,
     setFieldTouched,
+    setTouched,
     handleChange,
     handleBlur,
   } = useFormikContext<BaseAddressFields>();
@@ -91,27 +93,27 @@ export const AddressFields = ({
   };
 
   function setAddressData(data: Address) {
-    setFieldValue('address', {
-      geo: data.geo,
-      streetAddress: data.streetAddress,
+    const currentValues = values;
+
+    setValues({
+      ...currentValues,
+      address: {
+        geo: data.geo,
+        streetAddress: data.streetAddress,
+      },
+      businessName: data.name || '',
+      contactName: data.contactName || '',
+      telephone: formatTelephone(data.telephone || ''),
+      description: data.description || '',
     });
-    setFieldTouched('address');
 
-    const businessName = data.name || '';
-    setFieldValue('businessName', businessName);
-    setFieldTouched('businessName');
-
-    const contactName = data.contactName || '';
-    setFieldValue('contactName', contactName);
-    setFieldTouched('contactName');
-
-    const telephone = data.telephone || '';
-    setFieldValue('telephone', formatTelephone(telephone));
-    setFieldTouched('telephone');
-
-    const description = data.description || '';
-    setFieldValue('description', description);
-    setFieldTouched('description');
+    setTouched({
+      address: true,
+      businessName: true,
+      contactName: true,
+      telephone: true,
+      description: true,
+    });
   }
 
   function onSelectAddress(addr: AutocompleteAddress | Address) {
