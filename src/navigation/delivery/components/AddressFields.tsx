@@ -92,10 +92,10 @@ export const AddressFields = ({
     return new AsYouType(country).input(value);
   };
 
-  function setAddressData(data: Address) {
+  function setAddressData(data: Address, isValidAddress?: boolean) {
     const currentValues = values;
 
-    setValues({
+    const newValues = {
       ...currentValues,
       address: {
         geo: data.geo,
@@ -105,15 +105,25 @@ export const AddressFields = ({
       contactName: data.contactName || '',
       telephone: formatTelephone(data.telephone || ''),
       description: data.description || '',
-    });
+    };
 
-    setTouched({
-      address: true,
-      businessName: true,
-      contactName: true,
-      telephone: true,
-      description: true,
-    });
+    if (isValidAddress !== undefined) {
+      newValues.isValidAddress = isValidAddress;
+    }
+
+    setValues(newValues);
+
+    setTouched(
+      {
+        address: true,
+        businessName: true,
+        contactName: true,
+        telephone: true,
+        description: true,
+      },
+      // disable the second validation here, as it will be validated by setValues call
+      false,
+    );
   }
 
   function onSelectAddress(addr: AutocompleteAddress | Address) {
@@ -160,8 +170,7 @@ export const AddressFields = ({
                   addresses={addresses}
                   placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
                   onSelectAddress={a => {
-                    setAddressData(a);
-                    setFieldValue('isValidAddress', true);
+                    setAddressData(a, true);
                   }}
                 />
               ) : null}
