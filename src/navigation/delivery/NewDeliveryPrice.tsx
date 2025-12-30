@@ -97,9 +97,6 @@ export default function NewDeliveryPrice({ route }) {
   };
 
   const submit = (values: NewDeliveryPriceFormValues) => {
-    if ((price === null || priceExcludingTax === null) && !isManualPriceEnabled)
-      return;
-
     const data = Object.assign({}, delivery);
 
     const orderPayload: OrderPayload = {};
@@ -142,7 +139,6 @@ export default function NewDeliveryPrice({ route }) {
           handleSubmit={handleSubmit}
           t={t}
           isSubmit
-          disabled={price === null || priceExcludingTax === null}
           disabledMessage={t('PRICE_CALCULATION_FAILED')}
         >
           {!isManualPriceEnabled ? (
@@ -157,8 +153,19 @@ export default function NewDeliveryPrice({ route }) {
               </View>
             </>
           ) : null}
-          {price === null || priceExcludingTax === null ? (
+          {!allowManualPrice &&
+          (price === null || priceExcludingTax === null) ? (
             <Text>{t('PRICE_CALCULATION_FAILED_DISCLAIMER')}</Text>
+          ) : null}
+          {allowManualPrice ? (
+            <Button onPress={onPressManualPriceToggle(setFieldValue)}>
+              <ButtonText>
+                {t(
+                  'MANUAL_PRICE_TOGGLE_' +
+                    (isManualPriceEnabled ? 'OFF' : 'ON'),
+                )}
+              </ButtonText>
+            </Button>
           ) : null}
           {isManualPriceEnabled ? (
             <>
@@ -196,16 +203,6 @@ export default function NewDeliveryPrice({ route }) {
                 )}
               </View>
             </>
-          ) : null}
-          {allowManualPrice ? (
-            <Button onPress={onPressManualPriceToggle(setFieldValue)}>
-              <ButtonText>
-                {t(
-                  'MANUAL_PRICE_TOGGLE_' +
-                    (isManualPriceEnabled ? 'OFF' : 'ON'),
-                )}
-              </ButtonText>
-            </Button>
           ) : null}
           {isCashOnDeliveryAvailable ? (
             <>
