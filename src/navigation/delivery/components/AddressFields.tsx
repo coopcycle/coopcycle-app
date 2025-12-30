@@ -86,6 +86,10 @@ export const AddressFields = ({
     };
   }
 
+  const formatTelephone = (value: string) => {
+    return new AsYouType(country).input(value);
+  };
+
   function setAddressData(data: Address) {
     setFieldValue('address', {
       geo: data.geo,
@@ -102,7 +106,7 @@ export const AddressFields = ({
     setFieldTouched('contactName');
 
     const telephone = data.telephone || '';
-    setFieldValue('telephone', telephone);
+    setFieldValue('telephone', formatTelephone(telephone));
     setFieldTouched('telephone');
 
     const description = data.description || '';
@@ -138,7 +142,7 @@ export const AddressFields = ({
   }
 
   function handleChangeTelephone(value: string) {
-    setFieldValue('telephone', new AsYouType(country).input(value));
+    setFieldValue('telephone', formatTelephone(value));
     setFieldTouched('telephone');
   }
 
