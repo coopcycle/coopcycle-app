@@ -1,6 +1,6 @@
 import { actionMatchCreator } from '../util';
 import { changeDate, loadTasksSuccess } from '../Dispatch/actions';
-import { SET_USER } from '../App/actions';
+import { LOGOUT_SUCCESS } from '../App/actions';
 import {
   assignTaskSuccess,
   assignTasksSuccess,
@@ -23,7 +23,7 @@ import {
 const initialState = taskAdapter.getInitialState();
 
 export default (state = initialState, action) => {
-  if (changeDate.match(action) || action.type === SET_USER) {
+  if (changeDate.match(action) || action.type === LOGOUT_SUCCESS) {
     return initialState;
   }
 
