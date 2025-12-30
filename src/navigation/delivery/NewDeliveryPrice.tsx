@@ -63,11 +63,19 @@ export default function NewDeliveryPrice({ route }) {
     dispatch(getPrice(delivery));
   }, [delivery, dispatch]);
 
-  const onPressManualPriceToggle = setFieldValue => () => {
-    setIsManualPriceEnabled(!isManualPriceEnabled);
-    setFieldValue('manualPriceVariantName', '');
-    setFieldValue('manualPriceVariantTotal', '');
-  };
+  const onPressManualPriceToggle =
+    (
+      setFieldValue: (
+        field: string,
+        value: unknown,
+        shouldValidate?: boolean,
+      ) => Promise<void | FormikErrors<NewDeliveryPriceFormValues>>,
+    ) =>
+    () => {
+      setIsManualPriceEnabled(!isManualPriceEnabled);
+      setFieldValue('manualPriceVariantName', '');
+      setFieldValue('manualPriceVariantTotal', '');
+    };
 
   const parsePrice = (value?: string) => {
     if (!value) {
