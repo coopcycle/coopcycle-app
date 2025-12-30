@@ -158,7 +158,10 @@ export default function NewDeliveryPrice({ route }) {
             <Text>{t('PRICE_CALCULATION_FAILED_DISCLAIMER')}</Text>
           ) : null}
           {allowManualPrice ? (
-            <Button onPress={onPressManualPriceToggle(setFieldValue)}>
+            <Button
+              testID="arbitrary-price:toggle"
+              onPress={onPressManualPriceToggle(setFieldValue)}
+            >
               <ButtonText>
                 {t(
                   'MANUAL_PRICE_TOGGLE_' +
@@ -180,7 +183,7 @@ export default function NewDeliveryPrice({ route }) {
                   onChangeText={handleChange('manualPriceVariantName')}
                   onBlur={handleBlur('manualPriceVariantName')}
                   value={values.manualPriceVariantName}
-                  testID="delivery__order__manual_price_variant_name"
+                  testID="arbitrary-price:variant-name"
                 />
               </View>
               <View style={[styles.formGroup]}>
@@ -194,7 +197,7 @@ export default function NewDeliveryPrice({ route }) {
                   onBlur={handleBlur('manualPriceVariantTotal')}
                   value={values.manualPriceVariantTotal}
                   placeholder={price}
-                  testID="delivery__order__manual_price_variant_total"
+                  testID="arbitrary-price:variant-price"
                 />
                 {errors.manualPriceVariantTotal && (
                   <Text note style={styles.errorText}>
