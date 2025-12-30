@@ -31,18 +31,18 @@ export default function NewDeliveryPrice({ route }) {
     dispatch(getPrice(delivery));
   }, [delivery, dispatch]);
 
-  const onPressManualPriceToggle = (setFieldValue) => () => {
+  const onPressManualPriceToggle = setFieldValue => () => {
     setIsManualPriceEnabled(!isManualPriceEnabled);
     setFieldValue('manualPriceVariantName', '');
     setFieldValue('manualPriceVariantTotal', '');
   };
 
-  const parsePrice = (value) => {
+  const parsePrice = value => {
     const parsed = parseFloat(value);
     return isNaN(parsed) ? null : parseInt(parsed * 100, 10);
   };
 
-  const validate = (values) => {
+  const validate = values => {
     const errors = {};
 
     if (isManualPriceEnabled && !parsePrice(values.manualPriceVariantTotal)) {
@@ -50,9 +50,9 @@ export default function NewDeliveryPrice({ route }) {
     }
 
     return errors;
-  }
+  };
 
-  const submit = (values) => {
+  const submit = values => {
     if ((price === null || priceExcludingTax === null) && !isManualPriceEnabled)
       return;
 
@@ -69,7 +69,8 @@ export default function NewDeliveryPrice({ route }) {
       onSubmit={submit}
       validate={validate}
       validateOnBlur={false}
-      validateOnChange={false}>
+      validateOnChange={false}
+    >
       {({
         handleChange,
         handleBlur,
@@ -83,56 +84,68 @@ export default function NewDeliveryPrice({ route }) {
           t={t}
           isSubmit
           disabled={price === null || priceExcludingTax === null}
-          disabledMessage={t('PRICE_CALCULATION_FAILED')}>
-          {!isManualPriceEnabled ? (<>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>{t('PRICE_EXCLUDING_TAX')}</Text>
-            <FormInput value={priceExcludingTax} editable={false} />
-          </View>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>{t('PRICE_TOTAL')}</Text>
-            <FormInput value={price} editable={false} />
-          </View>
-          </>) : null}
+          disabledMessage={t('PRICE_CALCULATION_FAILED')}
+        >
+          {!isManualPriceEnabled ? (
+            <>
+              <View style={styles.formGroup}>
+                <Text style={styles.label}>{t('PRICE_EXCLUDING_TAX')}</Text>
+                <FormInput value={priceExcludingTax} editable={false} />
+              </View>
+              <View style={styles.formGroup}>
+                <Text style={styles.label}>{t('PRICE_TOTAL')}</Text>
+                <FormInput value={price} editable={false} />
+              </View>
+            </>
+          ) : null}
           {price === null || priceExcludingTax === null ? (
             <Text>{t('PRICE_CALCULATION_FAILED_DISCLAIMER')}</Text>
           ) : null}
-          {isManualPriceEnabled ? (<>
-            <View style={[styles.formGroup]}>
-              <Text style={styles.label}>
-                {t('MANUAL_PRICE_VARIANT_NAME')}
-                <Text style={styles.optional}> ({t('OPTIONAL')})</Text>
-              </Text>
-              <FormInput
-                autoCorrect={false}
-                returnKeyType="done"
-                onChangeText={handleChange('manualPriceVariantName')}
-                onBlur={handleBlur('manualPriceVariantName')}
-                value={values.manualPriceVariantName}
-                testID="delivery__order__manual_price_variant_name"
-              />
-            </View>
-            <View style={[styles.formGroup]}>
-              <Text style={styles.label}>{t('MANUAL_PRICE_VARIANT_TOTAL')}</Text>
-              <FormInput
-                keyboardType="numeric"
-                returnKeyType="done"
-                onChangeText={handleChange('manualPriceVariantTotal')}
-                onBlur={handleBlur('manualPriceVariantTotal')}
-                value={values.manualPriceVariantTotal}
-                placeholder={price}
-                testID="delivery__order__manual_price_variant_total"
-              />
-              {errors.manualPriceVariantTotal && (
-                <Text note style={styles.errorText}>
-                  {errors.manualPriceVariantTotal}
+          {isManualPriceEnabled ? (
+            <>
+              <View style={[styles.formGroup]}>
+                <Text style={styles.label}>
+                  {t('MANUAL_PRICE_VARIANT_NAME')}
+                  <Text style={styles.optional}> ({t('OPTIONAL')})</Text>
                 </Text>
-              )}
-            </View>
-          </>) : null}
+                <FormInput
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  onChangeText={handleChange('manualPriceVariantName')}
+                  onBlur={handleBlur('manualPriceVariantName')}
+                  value={values.manualPriceVariantName}
+                  testID="delivery__order__manual_price_variant_name"
+                />
+              </View>
+              <View style={[styles.formGroup]}>
+                <Text style={styles.label}>
+                  {t('MANUAL_PRICE_VARIANT_TOTAL')}
+                </Text>
+                <FormInput
+                  keyboardType="numeric"
+                  returnKeyType="done"
+                  onChangeText={handleChange('manualPriceVariantTotal')}
+                  onBlur={handleBlur('manualPriceVariantTotal')}
+                  value={values.manualPriceVariantTotal}
+                  placeholder={price}
+                  testID="delivery__order__manual_price_variant_total"
+                />
+                {errors.manualPriceVariantTotal && (
+                  <Text note style={styles.errorText}>
+                    {errors.manualPriceVariantTotal}
+                  </Text>
+                )}
+              </View>
+            </>
+          ) : null}
           {allowManualPrice ? (
             <Button onPress={onPressManualPriceToggle(setFieldValue)}>
-              <ButtonText>{t('MANUAL_PRICE_TOGGLE_' + (isManualPriceEnabled ? 'OFF' : 'ON'))}</ButtonText>
+              <ButtonText>
+                {t(
+                  'MANUAL_PRICE_TOGGLE_' +
+                    (isManualPriceEnabled ? 'OFF' : 'ON'),
+                )}
+              </ButtonText>
             </Button>
           ) : null}
         </ModalFormWrapper>
