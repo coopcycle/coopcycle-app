@@ -450,6 +450,8 @@
       "google_pay": "Google Pay"
     },
     "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
+    "PM_CASH": "Cash",
+    "PAYMENT_FORM_TITLE": "Your payment information",
     "STORES": "Stores",
     "FILTER_BY_TAGS": "Filter by tags",
     "CONNECT_WITH_FACEBOOK": "Sign in with Facebook",
