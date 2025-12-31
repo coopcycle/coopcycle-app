@@ -28,7 +28,7 @@ describeif(device.getPlatform() === 'android')(
       await loginDispatcherUser();
     });
 
-    it('should create a delivery for a store', async () => {
+    it('should create a delivery with cash payment', async () => {
       await tapById('dispatchNewDelivery');
 
       // Select store

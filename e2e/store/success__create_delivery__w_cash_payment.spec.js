@@ -23,7 +23,7 @@ describeif(device.getPlatform() === 'android')(
       await loginStoreUser();
     });
 
-    it('should create a delivery for a store', async () => {
+    it('should create a delivery with cash payment', async () => {
       await tapById('navigate_to_delivery');
 
       // Pickup address

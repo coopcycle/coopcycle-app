@@ -23,7 +23,7 @@ describeif(device.getPlatform() === 'android')(
       await loginStoreUser();
     });
 
-    it('should create a delivery for a store', async () => {
+    it('should create a delivery for a store with invalid pricing', async () => {
       await tapById('navigate_to_delivery');
 
       // Pickup address
