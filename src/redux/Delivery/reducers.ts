@@ -14,8 +14,8 @@ import { Store, TimeSlot } from '@/src/redux/api/types';
 
 type DeliveryState = {
   assertDeliveryError;
-  price;
-  priceExcludingTax;
+  price: string | null;
+  priceExcludingTax: string | null;
   store: Store | null;
   stores: Store[];
   timeSlots: TimeSlot[];

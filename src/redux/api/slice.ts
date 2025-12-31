@@ -8,6 +8,7 @@ import {
   Address,
   FailureReason,
   HydraCollection,
+  PaymentMethodsOutput,
   PricingRuleSet,
   PutDeliveryBody,
   Store,
@@ -212,6 +213,9 @@ export const apiSlice = createApi({
         );
       },
     }),
+    getStorePaymentMethods: builder.query<PaymentMethodsOutput, Uri>({
+      query: (uri: Uri) => `${uri}/payment_methods`,
+    }),
     getPricingRuleSet: builder.query<PricingRuleSet, Uri>({
       query: (uri: string) => uri,
     }),
@@ -306,6 +310,7 @@ export const {
   useGetStoreAddressesQuery,
   useGetStoreTimeSlotsQuery,
   useGetStorePackagesQuery,
+  useGetStorePaymentMethodsQuery,
   useGetPricingRuleSetQuery,
   useGetTagsQuery,
   useGetRestaurantsQuery,

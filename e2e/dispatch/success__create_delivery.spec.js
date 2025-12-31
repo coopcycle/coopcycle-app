@@ -47,9 +47,7 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('address-contact-name-input', `${CONTACT_NAME}\n`);
 
     await waitToBeVisible('address-telephone-input');
-
-    //TODO: for some reason typeTextQuick behaves strange on CI here,
-    // while it works fine in e2e/store/success__create_delivery.spec.js
+    //FIXME: for some reason typeTextQuick behaves strange on CI,
     // await typeTextQuick('address-telephone-input', '0612345678\n');
     await element(by.id('address-telephone-input')).typeText('0612345678\n');
 

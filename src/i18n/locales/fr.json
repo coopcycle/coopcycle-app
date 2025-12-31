@@ -423,6 +423,9 @@
       "positiveAction": "Changer pour « {backgroundPermissionOptionLabel} »"
     },
     "RESTAURANT_SETTINGS_MANAGE_PRODUCT_OPTIONS": "Gérer les options des produits",
+    "CASH_ON_DELIVERY_DISCLAIMER": "Vous allez payer en contre-remboursement. Veuillez préparer le montant exact en espèces et assurez-vous d'être joignable.",
+    "PM_CASH": "Espèces",
+    "PAYMENT_FORM_TITLE": "Vos informations de paiement",
     "STORES": "Magasins",
     "FILTER_BY_TAGS": "Filtrer par tags",
     "CONNECT_WITH_FACEBOOK": "Se connecter avec Facebook",
@@ -531,6 +534,7 @@
     "PRICE_TOTAL": "Prix total",
     "PRICE_CALCULATION_FAILED": "Impossible de calculer le prix",
     "PRICE_CALCULATION_FAILED_DISCLAIMER": "Le prix n’a pas pu être calculé, veuillez nous contacter pour résoudre le problème.",
+    "PRICE_CALCULATION_FAILED_DISCLAIMER_ADMIN": "Le prix n'a pas pu être calculé. Vous pouvez créer la livraison, mais n'oubliez pas de corriger la règle de tarification associée au magasin.",
     "MANUAL_PRICE_TOGGLE_ON": "Utiliser un prix manuel",
     "MANUAL_PRICE_TOGGLE_OFF": "Utiliser le prix calculé",
     "MANUAL_PRICE_VARIANT_NAME": "Nom du produit",

@@ -97,6 +97,14 @@ export type Store = JsonLdEntity & {
   multiPickupEnabled: boolean;
 };
 
+export type PaymentMethod = {
+  type: string;
+};
+
+export type PaymentMethodsOutput = {
+  methods: PaymentMethod[];
+};
+
 export type PricingRuleTarget = 'DELIVERY' | 'TASK' | 'LEGACY_TARGET_DYNAMIC';
 
 export type PricingRule = JsonLdEntity & {
@@ -129,10 +137,11 @@ export type TaskStatus = 'TODO' | 'DOING' | 'DONE' | 'FAILED' | 'CANCELLED';
 export type TaskType = 'PICKUP' | 'DROPOFF';
 
 export type PostDeliveryBody = {
-  store: Uri,
+  store: Uri;
   pickup: CreatePickupOrDropoffTaskPayload;
   dropoff: CreatePickupOrDropoffTaskPayload;
-}
+  order?: OrderPayload;
+};
 
 type BaseAddressFields = {
   streetAddress: string;
@@ -188,7 +197,12 @@ export type EditTaskPayload = Partial<CreateAnyTaskPayload> & {
 }
 
 export type OrderPayload = {
-  manualSupplements: ManualSupplementValues[];
+  manualSupplements?: ManualSupplementValues[];
+  paymentMethod?: string;
+  arbitraryPrice?: {
+    variantName: string;
+    variantPrice: number;
+  };
 };
 
 export type ManualSupplementValues = {

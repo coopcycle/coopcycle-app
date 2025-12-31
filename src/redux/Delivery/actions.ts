@@ -4,7 +4,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { setLoading } from '../App/actions';
 import { selectTimeSlots } from './selectors';
 import { selectHttpClient } from '../App/selectors';
-import { Store } from '@/src/redux/api/types';
+import { PostDeliveryBody, Store } from '@/src/redux/api/types';
 
 export const ASSERT_DELIVERY_ERROR = '@delivery/ASSERT_DELIVERY_ERROR';
 export const GET_PRICE_ERROR = '@delivery/GET_PRICE_ERROR';
@@ -44,7 +44,7 @@ export function assertDelivery(delivery, onSuccess) {
   };
 }
 
-export function createDelivery(delivery, onSuccess) {
+export function createDelivery(delivery: PostDeliveryBody, onSuccess) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
 
@@ -57,20 +57,6 @@ export function createDelivery(delivery, onSuccess) {
         },
       };
     }
-
-    if (delivery.manualPriceVariantTotal) {
-      delivery = {
-        ...delivery,
-        order: {
-          arbitraryPrice: {
-            variantName: delivery.manualPriceVariantName,
-            variantPrice: delivery.manualPriceVariantTotal,
-          },
-        },
-      };
-    }
-    delete delivery.manualPriceVariantName;
-    delete delivery.manualPriceVariantTotal;
 
     dispatch(setLoading(true));
 

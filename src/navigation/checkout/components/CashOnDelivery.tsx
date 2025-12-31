@@ -1,12 +1,8 @@
-import { Icon } from '@/components/ui/icon';
-import { BanknoteArrowUp } from 'lucide-react-native';
 import { Center } from '@/components/ui/center';
 import { Text } from '@/components/ui/text';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import Foundation from 'react-native-vector-icons/Foundation';
-
 import FooterButton from './FooterButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,15 +14,11 @@ import {
   selectCart,
   selectCheckoutError,
 } from '../../../redux/Checkout/selectors';
+import {
+  CashOnDeliveryDisclaimer
+} from '@/src/navigation/checkout/components/CashOnDeliveryDisclaimer';
 
 const styles = StyleSheet.create({
-  alert: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#000000',
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-    marginHorizontal: 10,
-  },
   errorsContainer: {
     alignItems: 'center',
     paddingVertical: 15,
@@ -60,12 +52,9 @@ const CashOnDelivery = () => {
   };
 
   return (
-    <Center flex={1}>
-      <View style={styles.alert}>
-        <Center className="mb-3">
-          <Icon as={BanknoteArrowUp} size="xl" />
-        </Center>
-        <Text>{t('CASH_ON_DELIVERY_DISCLAIMER')}</Text>
+    <Center className="flex-1">
+      <View className="mx-3">
+        <CashOnDeliveryDisclaimer />
       </View>
       {errors.length > 0 ? (
         <View style={styles.errorsContainer}>

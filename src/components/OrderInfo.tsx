@@ -29,7 +29,8 @@ export const OrderInfo = ({ task, color, width, onPress }: IOrderInfoProps) => {
 
   const shouldDisplayPrice = (task: Task): boolean => {
     return isFromCourier
-      ? task.metadata?.order_total && task.metadata.payment_method === 'CASH'
+      ? task.metadata?.order_total &&
+          task.metadata.payment_method === 'CASH_ON_DELIVERY'
       : task.metadata?.order_total;
   };
 
