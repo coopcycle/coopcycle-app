@@ -1,3 +1,5 @@
+//FIXME: move into src/redux/api/types.ts
+
 // ====== TASKS COLLECTION TYPES ======
 
 import { Task } from './task';

@@ -4,6 +4,19 @@ import { baseQueryWithReauth } from './baseQuery';
 import { sortByName, sortByString } from '../util';
 import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
+import {
+  Address,
+  FailureReason,
+  HydraCollection,
+  PricingRuleSet,
+  PutDeliveryBody,
+  Store,
+  StorePackage,
+  StoreTimeSlot,
+  TimeSlot,
+  TimeSlotChoices,
+  Uri,
+} from './types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -143,9 +156,9 @@ export const apiSlice = createApi({
         return { data: sortByString(result.data, 'username') };
       },
     }),
-    getStores: builder.query({
+    getStores: builder.query<Store[], void>({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        const result = await fetchAllRecordsUsingFetchWithBQ(
+        const result = await fetchAllRecordsUsingFetchWithBQ<Store>(
           fetchWithBQ,
           '/api/stores',
           100,
@@ -156,6 +169,51 @@ export const apiSlice = createApi({
         }
         return { data: sortByName(result.data) };
       },
+    }),
+    getTimeSlots: builder.query<TimeSlot[], void>({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ(
+          baseQuery,
+          'api/time_slots',
+          100,
+        );
+      },
+    }),
+    getTimeSlotChoices: builder.query<TimeSlotChoices, string>({
+      query: (uri: string) => `${uri}/choices`,
+    }),
+    getStore: builder.query<Store, Uri>({
+      query: (uri: Uri) => uri,
+    }),
+    getStoreAddresses: builder.query<Address[], string>({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ<Address>(
+          baseQuery,
+          `${args}/addresses`,
+          100,
+        );
+      },
+    }),
+    getStoreTimeSlots: builder.query<StoreTimeSlot[], string>({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ<StoreTimeSlot>(
+          baseQuery,
+          `${args}/time_slots`,
+          100,
+        );
+      },
+    }),
+    getStorePackages: builder.query<StorePackage[], string>({
+      queryFn: async (args, queryApi, extraOptions, baseQuery) => {
+        return await fetchAllRecordsUsingFetchWithBQ<StorePackage>(
+          baseQuery,
+          `${args}/packages`,
+          100,
+        );
+      },
+    }),
+    getPricingRuleSet: builder.query<PricingRuleSet, Uri>({
+      query: (uri: string) => uri,
     }),
     getRestaurants: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
@@ -190,6 +248,12 @@ export const apiSlice = createApi({
     getTaskContext: builder.query({
       query: id => `api/tasks/${id}/context`,
     }),
+    getTaskFailureReasons: builder.query<HydraCollection<FailureReason>, Uri>({
+      query: (taskUri: Uri) => `${taskUri}/failure_reasons`,
+    }),
+    getTaskDeliveryFormData: builder.query<PutDeliveryBody, number>({
+      query: id => `api/tasks/${id}/delivery_form_data`,
+    }),
     getOrderTiming: builder.query({
       query: nodeId => `${nodeId}/timing`,
     }),
@@ -203,7 +267,20 @@ export const apiSlice = createApi({
         body: patch,
       }),
     }),
-    recurrenceRulesGenerateOrders: builder.mutation ({
+    postIncident: builder.mutation({
+      query: ({ payload }) => {
+        return {
+          url: `/api/incidents`,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/ld+json',
+            Accept: 'application/ld+json',
+          },
+          body: JSON.stringify(payload),
+        };
+      },
+    }),
+    recurrenceRulesGenerateOrders: builder.mutation({
       query: (date: DateOnlyString) => ({
         url: 'api/recurrence_rules/generate_orders',
         params: {
@@ -211,7 +288,7 @@ export const apiSlice = createApi({
         },
       }),
     }),
-  })
+  }),
 });
 
 // Export the auto-generated hook for the query endpoints
@@ -219,8 +296,17 @@ export const {
   useGetCourierUsersQuery,
   useGetMyTasksQuery,
   useGetTaskContextQuery,
+  useGetTaskFailureReasonsQuery,
+  useGetTaskDeliveryFormDataQuery,
   useGetOrderTimingQuery,
   useGetStoresQuery,
+  useGetTimeSlotsQuery,
+  useGetTimeSlotChoicesQuery,
+  useGetStoreQuery,
+  useGetStoreAddressesQuery,
+  useGetStoreTimeSlotsQuery,
+  useGetStorePackagesQuery,
+  useGetPricingRuleSetQuery,
   useGetTagsQuery,
   useGetRestaurantsQuery,
   useGetTaskListsQuery,
@@ -231,6 +317,7 @@ export const {
   useSetTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
+  usePostIncidentMutation,
   useRecurrenceRulesGenerateOrdersMutation,
 } = apiSlice;
 

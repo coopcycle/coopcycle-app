@@ -7,6 +7,7 @@ import { blueColor, greenColor, yellowColor } from '../../styles/common';
 import {
   navigateToCompleteTask,
   navigateToOrder,
+  navigateToReportTask,
   navigateToTask,
 } from '../../navigation/utils';
 import {
@@ -76,23 +77,23 @@ export default function TaskListPage({ navigation, route }) {
 
   const swipeLeftConfiguration = {
     onPressLeft: task =>
-      navigateToCompleteTask(navigation, route, task, [], true),
+      navigateToCompleteTask(navigation, route, task),
     swipeOutLeftBackgroundColor: greenColor,
     swipeOutLeftIcon: DoneIcon,
   };
 
   const swipeRightConfiguration = {
     onPressRight: task =>
-      navigateToCompleteTask(navigation, route, task, [], false),
+      navigateToReportTask(navigation, route, task),
     swipeOutRightBackgroundColor: yellowColor,
     swipeOutRightIcon: IncidentIcon,
   };
 
   const completeSelectedTasks = selectedTasks => {
     if (selectedTasks.length > 1) {
-      navigateToCompleteTask(navigation, route, null, selectedTasks, true);
+      navigateToCompleteTask(navigation, route, null, selectedTasks);
     } else if (selectedTasks.length === 1) {
-      navigateToCompleteTask(navigation, route, selectedTasks[0], [], true);
+      navigateToCompleteTask(navigation, route, selectedTasks[0]);
     }
   };
 

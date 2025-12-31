@@ -1,5 +1,6 @@
 import { ParamListBase, RouteProp } from '@react-navigation/core';
 import { NavigationProp } from '@react-navigation/native';
+import Task from '@/src/types/task';
 
 let navigateAfter = null;
 
@@ -13,7 +14,7 @@ export const navigateToOrder = (navigation, orderNumber: string, isFromCourier =
   navigation.navigate('Order', { screen: 'Order', params });
 };
 
-export const navigateToTask = (navigation, route, task, tasks = []) => {
+export const navigateToTask = (navigation, route, task: Task, tasks = []) => {
   if (route?.name !== 'TaskHome') {
     navigateAfter = route.name;
   }
@@ -35,7 +36,6 @@ export const navigateToCompleteTask = (
   route,
   task,
   tasks = [],
-  success = true,
 ) => {
   const params = {
     task,
@@ -47,9 +47,40 @@ export const navigateToCompleteTask = (
     screen: 'TaskComplete',
     params: {
       screen: 'TaskCompleteHome',
-      params: { ...params, success },
+      params: params,
     },
   });
+};
+
+export const navigateToReportTask = (
+  navigation,
+  route,
+  task,
+) => {
+  const params = {
+    task,
+    tasks: [],
+    navigateAfter: route.name,
+  };
+
+  navigation.navigate('Task', {
+    screen: 'TaskComplete',
+    params: {
+      screen:'ReportIncidentHome',
+      params: params
+    },
+  });
+};
+
+export const navigateToProofOfDeliveryFromReportIncident = (
+  navigation, route, task, tasks, success
+) => {
+  navigation.navigate('TaskCompleteProofOfDelivery', {
+    task,
+    tasks,
+    navigateAfter: route.params?.navigateAfter,
+    success,
+  }, { merge: true})
 };
 
 export const navigateBackToCompleteTask = (
@@ -61,5 +92,9 @@ export const navigateBackToCompleteTask = (
   const navigateAfter = route.params?.navigateAfter;
   const success = route.params?.success;
 
-  navigation.popTo('TaskCompleteHome', { task, tasks, navigateAfter, success });
+  navigation.popTo(success ? 'TaskCompleteHome' : 'ReportIncidentHome', {
+    task,
+    tasks,
+    navigateAfter,
+  });
 };
