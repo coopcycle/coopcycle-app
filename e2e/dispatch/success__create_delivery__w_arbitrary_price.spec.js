@@ -63,7 +63,7 @@ describeif(device.getPlatform() === 'android')(
 
       await tapById('arbitrary-price:toggle');
       await typeTextQuick('arbitrary-price:variant-name', 'Test product');
-      await typeTextQuick('arbitrary-price:variant-price', '72');
+      await typeTextQuick('arbitrary-price:variant-price', '72\n');
 
       await tapById('delivery__next_button');
 
