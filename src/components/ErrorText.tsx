@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import { Text } from '@/components/ui/text';
 
 type Props = {
@@ -6,11 +5,5 @@ type Props = {
 };
 
 export function ErrorText({ message }: Props) {
-  return <Text style={styles.error}>{message}</Text>;
+  return <Text className="text-error-400">{message}</Text>;
 }
-
-const styles = StyleSheet.create({
-  error: {
-    color: '#FF4136',
-  },
-});
