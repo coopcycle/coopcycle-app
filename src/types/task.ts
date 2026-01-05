@@ -1,16 +1,9 @@
+//FIXME: move into src/redux/api/types.ts
+
 // ====== TASK TYPES ======
 
 import { LucideIcon } from 'lucide-react-native';
-
-/**
- * Task status enumeration
- */
-export type TaskStatus = 'TODO' | 'DOING' | 'DONE' | 'FAILED' | 'CANCELLED';
-
-/**
- * Task type enumeration
- */
-export type TaskType = 'PICKUP' | 'DROPOFF';
+import { TaskStatus, TaskType, Uri } from '@/src/redux/api/types';
 
 /**
  * Geographic coordinates interface
@@ -57,12 +50,13 @@ export interface TaskBarcode {
  * Package interface
  */
 export interface TaskPackage {
-  labels: string[];
   name: string;
+  type: string;
   quantity: number;
   short_code: string;
-  type: string;
   volume_per_package: number;
+  labels: string[];
+  tasks: Uri[];
 }
 
 /**
@@ -70,6 +64,7 @@ export interface TaskPackage {
  */
 export interface TaskMetadata {
   delivery_position?: number;
+  store?: Uri;
   order_number?: string;
   order_total?: number;
   zero_waste?: boolean;
@@ -134,7 +129,7 @@ export interface TaskGroup {
  * Main Task interface
  */
 export interface Task {
-  '@id': string;
+  '@id': Uri;
   '@type': 'Task';
   id: number;
 
@@ -189,68 +184,6 @@ export interface Task {
   // Metrics and tracking
   emittedCo2: number;
   traveledDistanceMeter: number;
-}
-
-/**
- * Task creation payload interface
- */
-export interface CreateTaskPayload {
-  address: Omit<TaskAddress, '@id' | '@type'>;
-  type: TaskType;
-  after: string;
-  before: string;
-  comments?: string;
-  packages?: Omit<TaskPackage, 'labels'>[];
-  tags?: number[]; // Tag IDs
-  metadata?: TaskMetadata;
-  weight?: number;
-  doorstep?: boolean;
-}
-
-/**
- * Task update payload interface
- */
-export interface UpdateTaskPayload {
-  address?: Partial<Omit<TaskAddress, '@id' | '@type'>>;
-  after?: string;
-  before?: string;
-  comments?: string;
-  status?: TaskStatus;
-  metadata?: Partial<TaskMetadata>;
-  weight?: number;
-  doorstep?: boolean;
-}
-
-/**
- * Task list response interface
- */
-export interface TaskListResponse {
-  '@context': string;
-  '@id': string;
-  '@type': 'hydra:Collection';
-  'hydra:member': Task[];
-  'hydra:totalItems': number;
-  'hydra:view'?: {
-    '@id': string;
-    '@type': 'hydra:PartialCollectionView';
-    'hydra:first'?: string;
-    'hydra:last'?: string;
-    'hydra:next'?: string;
-    'hydra:previous'?: string;
-  };
-}
-
-/**
- * Task filter options interface
- */
-export interface TaskFilterOptions {
-  status?: TaskStatus[];
-  type?: TaskType[];
-  assignedTo?: number[];
-  tags?: number[];
-  after?: string;
-  before?: string;
-  organization?: string;
 }
 
 export interface TaskListProps {

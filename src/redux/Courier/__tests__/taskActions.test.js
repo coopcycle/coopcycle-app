@@ -317,7 +317,7 @@ describe('Redux | Tasks | Actions', () => {
       const actions = getActions();
 
       expect(actions).toContainEqual(markTaskDoneRequest(task));
-      expect(actions).toContainEqual(markTaskDoneFailure(rejectValue));
+      expect(actions).toContainEqual(markTaskDoneFailure());
 
       expect(client.put).toHaveBeenCalledTimes(1);
       expect(client.put).not.toHaveBeenCalledWith(task['@id'], { images: [] });

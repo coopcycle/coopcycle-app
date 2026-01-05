@@ -27,7 +27,7 @@ import { getStatusBackgroundColor, getTaskTitleForOrder } from '../utils';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import FAIcon from '@/src/components/Icon';
-import { navigateToCompleteTask } from '../../utils';
+import { navigateToReportTask } from '../../utils';
 
 interface PackageSummary {
   text: string;
@@ -164,7 +164,7 @@ function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
 
   // Function to handle report incident
   const handleReportIncident = () => {
-    navigateToCompleteTask(navigation, route, task, [], false);
+    navigateToReportTask(navigation, route, task);
   };
 
   return (
@@ -259,7 +259,7 @@ function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
   );
 }
 
-function getTaskTimeFrame(task: Task, separator: string) {
+export function getTaskTimeFrame(task: Task, separator: string) {
   return (
     addDayIfNotToday(task.doneAfter, separator) +
     getTimeFrame(task)

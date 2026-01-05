@@ -332,6 +332,8 @@
     "STORE_NEW_DELIVERY_DROPOFF_BEFORE": "Dropoff before",
     "STORE_NEW_DELIVERY_TIME_SLOT": "Time slot",
     "STORE_NEW_DELIVERY_SELECT_TIME_SLOT": "Select a time slot",
+    "STORE_NEW_DELIVERY_TIME_SLOT_PREDEFINED": "Predefined time slot",
+    "STORE_NEW_DELIVERY_TIME_SLOT_CUSTOM": "Custom time slot",
     "STORE_NEW_DELIVERY_ERROR": {
       "EMPTY_TIME_SLOT": "Please select a time slot",
       "EMPTY_CONTACT_NAME": "Please provide a name for the recipient",
@@ -339,6 +341,7 @@
       "EMPTY_WEIGHT": "Please provide a weight",
       "EMPTY_PACKAGES": "Please select packages"
     },
+    "STORE_EDIT_DELIVERY_CAN_NOT_EDIT_PACKAGES": "Please update the package on the linked task",
     "STORE_DELIVERY": "Delivery #{{id}}",
     "DELIVERY_STATE": {
       "undefined": "Unknown",
@@ -617,6 +620,12 @@
     "MOVE_MAP_TO_SELECT_LOCATION": "Move the map to select location",
     "START": "Start",
     "FIND_ON_MAP": "Or find myself on the map",
+    "TASK_DETAILS": "Task details",
+    "TASK_DETAILS_CAN_NOT_EDIT": "This task cannot be edited.",
+    "TASK_DETAILS_CAN_NOT_EDIT_NOT_RELEASED": "The tasks cannot be edited from the app yet. Please check back later.",
+    "TASK_DETAILS_CAN_NOT_EDIT_NO_ORDER": "This task cannot be edited because it's not attached to an order.",
+    "VALIDATE_TASK": "Validate task after reporting incident",
+    "SUPPLEMENTS": "Supplements",
     "CANCEL_TITLE": "Cancel {{entity}}",
     "CANCEL_MESSAGE": "Are you sure you want to cancel {{entity}} {{name}}?",
     "CANCEL_MESSAGE_PLURAL": "Are you sure you want to cancel {{count}} {{entity}}?",
@@ -625,6 +634,8 @@
     "CANCEL_ERROR_MESSAGE": "The {{entity}} could not be canceled.",
     "CANCEL_NO_TASKS_MESSAGE": "This {{entity}} has no associated tasks to cancel.",
     "PROCEED": "Proceed",
+    "ADD_SUPPLEMENT": "Add supplements",
+    "ADDED_SUPPLEMENTS": "Added supplements",
     "ASSIGN": "Assign",
     "INCIDENT": "Incident",
     "CHECKOUT_STOP": "Cancel checkout",

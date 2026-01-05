@@ -1,13 +1,20 @@
+import { ComponentPropsWithoutRef } from 'react';
+import { StyleProp, TextStyle } from 'react-native';
 import { Input, InputField } from '@/components/ui/input';
 
-export default function FormInput({ style, ...props }) {
+type Props = ComponentPropsWithoutRef<typeof InputField> & {
+  style?: StyleProp<TextStyle>;
+  isDisabled?: boolean;
+};
 
+export default function FormInput({
+  style,
+  isDisabled = false,
+  ...props
+}: Props) {
   return (
-    <Input>
-      <InputField
-        {...props}
-        style={ style }
-      />
+    <Input isDisabled={isDisabled}>
+      <InputField {...props} style={style} />
     </Input>
   );
 }

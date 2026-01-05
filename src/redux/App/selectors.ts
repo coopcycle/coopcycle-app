@@ -238,3 +238,10 @@ export const selectStripePublishableKey = state =>
   state.app.settings.stripe_publishable_key;
 export const selectShouldNotificationBeDisplayed = state =>
   state.app.shouldNotificationBeDisplayed;
+
+const _selectCountry = state => state.app.settings.country;
+
+export const selectCountry = createSelector(
+  _selectCountry,
+  country => country.toUpperCase(),
+);

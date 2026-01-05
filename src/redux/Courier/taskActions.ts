@@ -26,6 +26,8 @@ import {
 } from '../../shared/logistics/redux';
 import { DateISOString } from '../../utils/date-types';
 import Task from '@/src/types/task';
+import { Incident } from '@/src/redux/api/types';
+import { AppDispatch, RootState } from '@/src/redux/store';
 
 /*
  * Action Types
@@ -265,7 +267,6 @@ export function reportIncident(
   onSuccess,
 ) {
   return function (dispatch, getState) {
-    dispatch(reportIncidentRequest(task));
     const httpClient = selectHttpClient(getState());
 
     const payload = {
@@ -276,19 +277,40 @@ export function reportIncident(
     };
 
     // Make sure to return a promise for testing
-    return httpClient
-      .post('/api/incidents', payload)
+    return dispatch(reportIncidentFlow(task, () => {
+      return httpClient.post('/api/incidents', payload);
+    }, onSuccess));
+  };
+}
+
+export function reportIncidentFlow(
+  task: Task,
+  postIncident: () => Promise<Incident>,
+  onSuccess?: () => void,
+  onFailure?: () => void,
+) {
+  return function (dispatch: AppDispatch, getState: () => RootState) {
+    dispatch(reportIncidentRequest(task));
+
+    // Make sure to return a promise for testing
+    return postIncident()
       .then(incident => {
         // Do not wait for upload to finish
         dispatch(uploadEntityImages(incident, '/api/incident_images'));
         dispatch(reportIncidentSuccess(incident));
+
         if (typeof onSuccess === 'function') {
           setTimeout(onSuccess, 100);
         }
       })
       .catch(e => {
         dispatch(reportIncidentFailure(e));
-        setTimeout(() => showAlert(e), 100);
+        setTimeout(() => {
+          showAlert(e);
+          if (typeof onFailure === 'function') {
+            onFailure();
+          }
+        }, 100);
       });
   };
 }
@@ -366,7 +388,7 @@ export function markTaskDone(task, notes = '', onSuccess, contactName = '') {
         }
       })
       .catch(e => {
-        dispatch(markTaskDoneFailure(e));
+        dispatch(markTaskDoneFailure());
         setTimeout(() => showAlert(e), 100);
       });
   };
@@ -433,7 +455,7 @@ export function startTask(task, cb) {
 export function cancelTask(task: Task, cb) {
   return function(dispatch, getState) {
     dispatch(createTaskRequest())
-    
+
     const httpClient = selectHttpClient(getState());
 
     httpClient

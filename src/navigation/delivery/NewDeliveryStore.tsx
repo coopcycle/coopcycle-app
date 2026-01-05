@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
-  loadAddresses,
   setStore,
   setStores,
 } from '../../redux/Delivery/actions';
@@ -17,6 +16,7 @@ import FormInput from './components/FormInput';
 import KeyboardAdjustView from '../../components/KeyboardAdjustView';
 import StoreListSelect from './components/StoreListSelect';
 import { useGetStoresQuery } from '../../redux/api/slice';
+import { Store } from '@/src/redux/api/types';
 
 const NewDeliveryStore = props => {
   const { navigation } = props;
@@ -24,7 +24,7 @@ const NewDeliveryStore = props => {
   const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [storeList, setStoreList] = useState([]);
+  const [storeList, setStoreList] = useState([] as Store[]);
   const [isLoading, setIsLoading] = useState(false);
   const stores = useSelector(selectStores);
 
@@ -45,9 +45,8 @@ const NewDeliveryStore = props => {
     setIsLoading(isLoadingBackendStores && (!stores || stores.length === 0));
   }, [isLoadingBackendStores, stores]);
 
-  const onSelectStore = store => {
+  const onSelectStore = (store: Store) => {
     dispatch(setStore(store));
-    dispatch(loadAddresses(store));
     navigation.navigate('NewDeliveryPickupAddress');
   };
 
@@ -63,7 +62,7 @@ const NewDeliveryStore = props => {
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
 
-  const filterStores = useCallback((query, _stores) => {
+  const filterStores = useCallback((query: string, _stores: Store[]) => {
     const normalizedQuery = normalizeString(query);
     const filtered = _stores.filter(store =>
       normalizeString(store.name).includes(normalizedQuery),

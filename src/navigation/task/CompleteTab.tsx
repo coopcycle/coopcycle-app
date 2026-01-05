@@ -1,0 +1,364 @@
+import { Divider } from '@/components/ui/divider';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { HStack } from '@/components/ui/hstack';
+import { CheckIcon, Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import { Textarea, TextareaInput } from '@/components/ui/textarea';
+import { VStack } from '@/components/ui/vstack';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
+import _ from 'lodash';
+import { User } from 'lucide-react-native';
+import qs from 'qs';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import {
+  AvoidSoftInput,
+  useSoftInputHeightChanged,
+} from 'react-native-avoid-softinput';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
+
+import {
+  deletePictureAt,
+  deleteSignatureAt,
+  selectPictures,
+  selectSignatures,
+} from '../../redux/Courier';
+import { isDropoff } from './components/utils';
+import { SubmitButton } from './components/SubmitButton';
+import { ContactNameModal } from './components/ContactNameModal';
+import { FailureReasonForm } from './components/FailureReasonForm';
+import { MultipleTasksLabel } from './components/MultipleTasksLabel';
+import { FailureReasonPicker } from './components/FailureReasonPicker';
+import { AttachmentItem } from './components/AttachmentItem';
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from '@/components/ui/checkbox';
+import { PoDButton } from './components/PoDButton';
+import { FailureReasonMetadata } from '@/src/redux/api/types';
+import { useFormikContext } from 'formik';
+import {
+  CompleteTaskFormValues,
+  ReportIncidentFormValues,
+} from '@/src/navigation/task/utils/taskFormHelpers';
+import { useAppDispatch } from '@/src/redux/store';
+import Task from '@/src/types/task';
+
+const DELETE_ICON_SIZE = 32;
+const CONTENT_PADDING = 20;
+
+function resolveContactName(contactName, task, tasks) {
+  if (!_.isEmpty(contactName)) {
+    return contactName;
+  }
+
+  if (!task && tasks && tasks.length > 0) {
+    task = tasks[0];
+  }
+
+  return !_.isEmpty(task.address.contactName) ? task.address.contactName : '';
+}
+
+const parseInitialData = (
+  data: FailureReasonMetadata[],
+): { [key: string]: unknown } => {
+  const asQueryString = data.map(v => `${v.name}=${v.value}`).join('&');
+  return qs.parse(asQueryString);
+};
+
+type Props = {
+  task: Task;
+  tasks?: Task[];
+  success: boolean;
+};
+
+const CompleteTask = ({ task, tasks = [], success }: Props) => {
+  const { t } = useTranslation();
+
+  const dispatch = useAppDispatch();
+
+  const signatures = useSelector(selectSignatures);
+  const pictures = useSelector(selectPictures);
+
+  const { values, setFieldValue, setFieldTouched } = useFormikContext<
+    CompleteTaskFormValues | ReportIncidentFormValues
+  >();
+
+  const [failureReasonMetadataSetup, setFailureReasonMetadataSetup] = useState<
+    FailureReasonMetadata[]
+  >([]);
+  const [isContactNameModalVisible, setIsContactNameModalVisible] =
+    useState(false);
+
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [validateTaskAfterReport, setValidateTaskAfterReport] = useState(
+    task?.status === 'DONE',
+  );
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
+  const initialValues = {
+    contactName: resolveContactName(values.contactName, task, tasks),
+  };
+
+  /* https://mateusz1913.github.io/react-native-avoid-softinput/docs/recipes/recipes-sticky-footer */
+
+  const buttonContainerPaddingValue = useSharedValue(0);
+
+  const buttonContainerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      paddingBottom: buttonContainerPaddingValue.value,
+    };
+  });
+
+  const onFocusEffect = React.useCallback(() => {
+    AvoidSoftInput.setShouldMimicIOSBehavior(true);
+
+    return () => {
+      AvoidSoftInput.setShouldMimicIOSBehavior(false);
+    };
+  }, []);
+
+  useFocusEffect(onFocusEffect);
+
+  /**
+   * You can also use `useSoftInputShown` & `useSoftInputHidden`
+   *
+   * useSoftInputShown(({ softInputHeight }) => {
+   *   buttonContainerPaddingValue.value = withTiming(softInputHeight);
+   * });
+   *
+   * useSoftInputHidden(() => {
+   *   buttonContainerPaddingValue.value = withTiming(0);
+   * });
+   */
+  useSoftInputHeightChanged(({ softInputHeight }) => {
+    buttonContainerPaddingValue.value = withTiming(softInputHeight);
+  });
+
+  return (
+    <React.Fragment>
+      <View style={styles.scrollWrapper}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          contentInsetAdjustmentBehavior="always"
+        >
+          <VStack className="w-full flex-1">
+            <MultipleTasksLabel tasks={tasks} />
+            <TouchableWithoutFeedback
+              // We need to disable TouchableWithoutFeedback when keyboard is not visible,
+              // otherwise the ScrollView for proofs of delivery is not scrollable
+              disabled={!isKeyboardVisible}
+              // This allows hiding the keyboard when touching anything on the screen
+              onPress={Keyboard.dismiss}
+            >
+              <VStack>
+                {isDropoff(task, tasks) && (
+                  <React.Fragment>
+                    <HStack className="justify-between items-center p-3">
+                      <HStack className="justify-between items-center">
+                        <Icon as={User} style={{ marginRight: 10 }} />
+                        <Text numberOfLines={1}>
+                          {resolveContactName(values.contactName, task, tasks)}
+                        </Text>
+                      </HStack>
+                      <TouchableOpacity
+                        onPress={() => setIsContactNameModalVisible(true)}
+                      >
+                        <Text>{t('EDIT')}</Text>
+                      </TouchableOpacity>
+                    </HStack>
+                    <Divider />
+                  </React.Fragment>
+                )}
+                {!success && (
+                  <FormControl className="p-3">
+                    <FormControlLabel>
+                      <FormControlLabelText>
+                        {t('FAILURE_REASON')}
+                      </FormControlLabelText>
+                    </FormControlLabel>
+                    <FailureReasonPicker
+                      task={task}
+                      selectedFailureReason={values.failureReason}
+                      onValueChange={(code, obj) => {
+                        if (obj && obj.metadata) {
+                          setFailureReasonMetadataSetup(obj.metadata);
+                        } else {
+                          setFailureReasonMetadataSetup([]);
+                        }
+                        setFieldValue('failureReason', code);
+                        setFieldTouched('failureReason');
+                      }}
+                    />
+                    {failureReasonMetadataSetup.length > 0 ? (
+                      <FailureReasonForm
+                        data={failureReasonMetadataSetup}
+                        onChange={metadata => {
+                          setFieldValue('failureReasonMetadata', metadata);
+                          setFieldTouched('failureReasonMetadata');
+                        }}
+                        parseInitialData={parseInitialData}
+                      />
+                    ) : null}
+                  </FormControl>
+                )}
+                <FormControl className="p-3">
+                  <FormControlLabel>
+                    <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
+                  </FormControlLabel>
+                  <Textarea className="mb-6">
+                    <TextareaInput
+                      testID="notes-input"
+                      autoCorrect={false}
+                      onChangeText={text => {
+                        setFieldValue('notes', text);
+                        setFieldTouched('notes');
+                      }}
+                    />
+                  </Textarea>
+                  {!success && (
+                    <Checkbox
+                      isDisabled={task.status === 'DONE'}
+                      testID="ValidateTaskCheckbox"
+                      className="mb-6"
+                      value={'validate_task'}
+                      defaultIsChecked={validateTaskAfterReport}
+                      onChange={() => {
+                        setValidateTaskAfterReport(!validateTaskAfterReport);
+                      }}
+                    >
+                      <CheckboxIndicator>
+                        {validateTaskAfterReport && <CheckIcon />}
+                      </CheckboxIndicator>
+                      <CheckboxLabel>{t('VALIDATE_TASK')}</CheckboxLabel>
+                    </Checkbox>
+                  )}
+                  <PoDButton task={task} tasks={tasks} success={success} />
+                </FormControl>
+                <View>
+                  <ScrollView style={{ height: '50%' }}>
+                    <View style={styles.content}>
+                      <View style={styles.imagesContainer}>
+                        {signatures.map((base64, key) => (
+                          <AttachmentItem
+                            key={`signatures:${key}`}
+                            base64={base64}
+                            onPressDelete={() =>
+                              dispatch(deleteSignatureAt(key))
+                            }
+                          />
+                        ))}
+                        {pictures.map((base64, key) => (
+                          <AttachmentItem
+                            key={`pictures:${key}`}
+                            base64={base64}
+                            onPressDelete={() => dispatch(deletePictureAt(key))}
+                          />
+                        ))}
+                      </View>
+                    </View>
+                  </ScrollView>
+                </View>
+              </VStack>
+            </TouchableWithoutFeedback>
+          </VStack>
+        </ScrollView>
+      </View>
+      <Animated.View
+        style={[buttonContainerAnimatedStyle, styles.ctaButtonWrapper]}
+      >
+        <View style={styles.ctaButtonContainer}>
+          <VStack className="w-full">
+            <SubmitButton
+              task={task}
+              tasks={tasks}
+              validateTaskAfterReport={validateTaskAfterReport}
+              success={success}
+            />
+          </VStack>
+        </View>
+      </Animated.View>
+      <ContactNameModal
+        isVisible={isContactNameModalVisible}
+        onSwipeComplete={() => setIsContactNameModalVisible(false)}
+        initialValues={initialValues}
+        onSubmit={values => {
+          setFieldValue('contactName', values.contactName);
+          setFieldTouched('contactName');
+          setIsContactNameModalVisible(false);
+        }}
+      />
+    </React.Fragment>
+  );
+};
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    paddingTop: CONTENT_PADDING + (CONTENT_PADDING - DELETE_ICON_SIZE / 2),
+    paddingRight: CONTENT_PADDING + (CONTENT_PADDING - DELETE_ICON_SIZE / 2),
+    paddingBottom: CONTENT_PADDING,
+    paddingLeft: CONTENT_PADDING,
+  },
+  imagesContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  image: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginBottom: 20,
+  },
+  ctaButtonContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+  ctaButtonWrapper: {
+    alignSelf: 'stretch',
+  },
+  scrollContainer: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  scrollWrapper: {
+    alignSelf: 'stretch',
+    flex: 1,
+  },
+});
+
+export default CompleteTask;

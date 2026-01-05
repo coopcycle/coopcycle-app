@@ -45,7 +45,7 @@ e2e-android:
 # You can set the `TESTFILE` env var when running the target, like:
 #    make e2e-android-only TESTFILE=foodtech/checkout/customer__role_user__logged_in/success__payment__cash_on_delivery.spec.js
 # Or just change here the `TESTFILE` env var to run the desired test
-e2e-android-only: TESTFILE?=02_courier.spec.js
+e2e-android-only: TESTFILE?=dispatch/success__report_task_incident.spec.js
 e2e-android-only: ANDROID_SDK_ROOT?=~/Android/Sdk
 e2e-android-only:
 	@clear && ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT} APP_ENV=test detox test ./e2e/${TESTFILE} -c android.emu.debug --retries 0

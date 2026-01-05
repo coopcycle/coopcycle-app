@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native';
 import React from 'react';
-import { HeaderButtons, HeaderButton } from '../components/HeaderButton';
+import { HeaderButton, HeaderButtons } from '../components/HeaderButton';
 
 import DispatchAllTasks from './dispatch/AllTasks';
 import DispatchDate from './dispatch/Date';
@@ -83,6 +83,7 @@ import RestaurantSearch from './restaurant/Search';
 import RestaurantSettings from './restaurant/Settings';
 
 import Delivery from './delivery/Delivery';
+import { Report } from './task/Report';
 
 export default {
   RestaurantsPage,
@@ -139,6 +140,7 @@ export default {
   DispatchTasksMap,
   DispatchTasksSearchResults,
   Order,
+  Report,
   NewDeliveryStore,
   NewDeliveryPickupAddress,
   NewDeliveryDropoffAddress,

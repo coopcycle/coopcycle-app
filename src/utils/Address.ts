@@ -5,8 +5,19 @@ import { Linking, Platform } from 'react-native';
 import BackgroundGeolocation from 'react-native-background-geolocation';
 import Config from 'react-native-config';
 
+export type AutocompleteAddress = {
+  geo: { latitude: number; longitude: number };
+  streetAddress: string;
+  postalCode: string;
+  addressLocality: string;
+  addressCountry?: string;
+  addressRegion?: string;
+  isPrecise: boolean;
+  isManuallyPinned?: boolean;
+}
+
 class AddressUtils {
-  static createAddressFromGoogleDetails(details) {
+  static createAddressFromGoogleDetails(details): AutocompleteAddress {
     let postalCode = _.find(details.addressComponents, component =>
       _.includes(component.types, 'postal_code'),
     );
@@ -31,7 +42,7 @@ class AddressUtils {
     };
   }
 
-  static createAddressFromPostcode(postcode, streetAddress) {
+  static createAddressFromPostcode(postcode, streetAddress): AutocompleteAddress {
     return {
       streetAddress: streetAddress,
       postalCode: postcode.postcode,
@@ -52,7 +63,7 @@ class AddressUtils {
    * @param {Object} geocodingResult - Result from Google Geocoding API
    * @returns {Object} Formatted address
    */
-  static createAddressFromGoogleGeocoding(geocodingResult) {
+  static createAddressFromGoogleGeocoding(geocodingResult): AutocompleteAddress {
     if (!geocodingResult || !geocodingResult.address_components) {
       return {};
     }
@@ -92,7 +103,7 @@ class AddressUtils {
    * @param {Object} coordinates - {latitude, longitude}
    * @returns {Object} Basic address with coordinates
    */
-  static createManualAddressFromCoordinates(coordinates) {
+  static createManualAddressFromCoordinates(coordinates): AutocompleteAddress {
     const { latitude, longitude } = coordinates;
 
     return {

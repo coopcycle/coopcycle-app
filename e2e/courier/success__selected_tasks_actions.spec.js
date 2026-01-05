@@ -3,7 +3,6 @@ import {
   describeif,
   loadFixturesAndConnect,
   longPressById,
-  swipeDown,
   tapById,
   tapByText,
   waitToBeVisible,
@@ -55,19 +54,5 @@ describeif(device.getPlatform() === 'android')
 
     // Verify task #2 has status "DONE"
     await waitToBeVisible('taskListItemIcon:DONE:2');
-  });
-
-  it('should mark a task as INCIDENT ', async () => {
-    // Tap Report incident button
-    await tapById('ReportIncidenceButton');
-
-    await waitToBeVisible('task:finishButton');
-    await tapById('task:finishButton');
-
-    // TODO FIX: FORCE TASK LIST UPDATE because somehow it fails to auto-refresh..!
-    await swipeDown('courierTaskListSwipeListView');
-
-    // Verify task #2 has status "INCIDENT"
-    await waitToBeVisible('taskListItemIcon:INCIDENT:2');
   });
 });
