@@ -7,12 +7,12 @@ import {
   updateTourSuccess,
 } from '../../shared/logistics/redux';
 import { actionMatchCreator } from '../util';
-import { SET_USER } from '../App/actions';
+import { LOGOUT_SUCCESS } from '../App/actions';
 
 const initialState = tourAdapter.getInitialState();
 
 export default (state = initialState, action) => {
-  if (changeDate.match(action) || action.type === SET_USER) {
+  if (changeDate.match(action) || action.type === LOGOUT_SUCCESS) {
     return initialState;
   }
 
