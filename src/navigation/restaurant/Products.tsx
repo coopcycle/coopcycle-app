@@ -1,8 +1,10 @@
 import { HStack } from '@/components/ui/hstack';
 import { Switch } from '@/components/ui/switch';
 import { Text } from '@/components/ui/text';
+import { Button, ButtonText } from '@/components/ui/button';
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -13,15 +15,14 @@ import {
   loadMoreProducts,
   loadProducts,
 } from '../../redux/Restaurant/actions';
-import { selectHttpClient } from '../../redux/App/selectors';
 
 class ProductsScreen extends Component {
   componentDidMount() {
-    this.props.loadProducts(this.props.httpClient, this.props.restaurant);
+    this.props.loadProducts(this.props.restaurant);
   }
 
   _toggleProductEnabled(product, value) {
-    this.props.changeProductEnabled(this.props.httpClient, product, value);
+    this.props.changeProductEnabled(product, value);
   }
 
   renderItem(item) {
@@ -44,7 +45,7 @@ class ProductsScreen extends Component {
     const { products, hasMoreProducts } = this.props;
 
     return (
-      <View style={{ flex: 1 }}>
+      <SafeAreaView>
         <FlatList
           data={products}
           keyExtractor={this._keyExtractor}
@@ -54,39 +55,27 @@ class ProductsScreen extends Component {
           ListFooterComponent={() => {
             if (products.length > 0 && hasMoreProducts) {
               return (
-                <TouchableOpacity
-                  onPress={() => this.props.loadMoreProducts()}
-                  style={styles.btn}>
-                  <Text style={styles.btnText}>
+                <Button
+                  variant="link"
+                  className="m-4"
+                  onPress={() => this.props.loadMoreProducts()}>
+                  <ButtonText>
                     {this.props.t('LOAD_MORE')}
-                  </Text>
-                </TouchableOpacity>
+                  </ButtonText>
+                </Button>
               );
             }
 
-            return <View />;
+            return null;
           }}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  btn: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  btnText: {
-    color: '#0074D9',
-  },
-});
-
 function mapStateToProps(state) {
   return {
-    httpClient: selectHttpClient(state),
     restaurant: state.restaurant.restaurant,
     products: state.restaurant.products.sort((a, b) =>
       a.name < b.name ? -1 : 1,
@@ -97,11 +86,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadProducts: (httpClient, restaurant) =>
-      dispatch(loadProducts(httpClient, restaurant)),
+    loadProducts: (restaurant) => dispatch(loadProducts(restaurant)),
     loadMoreProducts: () => dispatch(loadMoreProducts()),
-    changeProductEnabled: (httpClient, product, enabled) =>
-      dispatch(changeProductEnabled(httpClient, product, enabled)),
+    changeProductEnabled: (product, enabled) => dispatch(changeProductEnabled(product, enabled)),
   };
 }
 
