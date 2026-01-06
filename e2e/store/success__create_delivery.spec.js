@@ -38,7 +38,9 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('address-contact-name-input', `${CONTACT_NAME}\n`);
 
     await waitToBeVisible('address-telephone-input');
-    await typeTextQuick('address-telephone-input', '0612345678\n');
+    //FIXME: for some reason typeTextQuick behaves strange on CI,
+    // await typeTextQuick('address-telephone-input', '0612345678\n');
+    await element(by.id('address-telephone-input')).typeText('0612345678\n');
 
     await tapById('delivery__next_button');
 
@@ -53,6 +55,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('delivery__next_button');
 
     // Return to Store screen and validate new delivery is accessible
+    await expect(element(by.text('#1'))).toBeVisible();
     await expect(element(by.text(CONTACT_NAME))).toBeVisible();
   });
 });

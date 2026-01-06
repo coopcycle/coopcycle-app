@@ -56,7 +56,9 @@ export const AddressFields = ({
     errors,
     touched,
     setFieldValue,
+    setValues,
     setFieldTouched,
+    setTouched,
     handleChange,
     handleBlur,
   } = useFormikContext<BaseAddressFields>();
@@ -86,28 +88,42 @@ export const AddressFields = ({
     };
   }
 
-  function setAddressData(data: Address) {
-    setFieldValue('address', {
-      geo: data.geo,
-      streetAddress: data.streetAddress,
-    });
-    setFieldTouched('address');
+  const formatTelephone = (value: string) => {
+    return new AsYouType(country).input(value);
+  };
 
-    const businessName = data.name || '';
-    setFieldValue('businessName', businessName);
-    setFieldTouched('businessName');
+  function setAddressData(data: Address, isValidAddress?: boolean) {
+    const currentValues = values;
 
-    const contactName = data.contactName || '';
-    setFieldValue('contactName', contactName);
-    setFieldTouched('contactName');
+    const newValues = {
+      ...currentValues,
+      address: {
+        geo: data.geo,
+        streetAddress: data.streetAddress,
+      },
+      businessName: data.name || '',
+      contactName: data.contactName || '',
+      telephone: formatTelephone(data.telephone || ''),
+      description: data.description || '',
+    };
 
-    const telephone = data.telephone || '';
-    setFieldValue('telephone', telephone);
-    setFieldTouched('telephone');
+    if (isValidAddress !== undefined) {
+      newValues.isValidAddress = isValidAddress;
+    }
 
-    const description = data.description || '';
-    setFieldValue('description', description);
-    setFieldTouched('description');
+    setValues(newValues);
+
+    setTouched(
+      {
+        address: true,
+        businessName: true,
+        contactName: true,
+        telephone: true,
+        description: true,
+      },
+      // disable the second validation here, as it will be validated by setValues call
+      false,
+    );
   }
 
   function onSelectAddress(addr: AutocompleteAddress | Address) {
@@ -138,7 +154,7 @@ export const AddressFields = ({
   }
 
   function handleChangeTelephone(value: string) {
-    setFieldValue('telephone', new AsYouType(country).input(value));
+    setFieldValue('telephone', formatTelephone(value));
     setFieldTouched('telephone');
   }
 
@@ -154,8 +170,7 @@ export const AddressFields = ({
                   addresses={addresses}
                   placeholder={t('STORE_NEW_DELIVERY_ENTER_SEARCH_CLIENT')}
                   onSelectAddress={a => {
-                    setAddressData(a);
-                    setFieldValue('isValidAddress', true);
+                    setAddressData(a, true);
                   }}
                 />
               ) : null}

@@ -450,6 +450,8 @@
       "google_pay": "Google Pay"
     },
     "CASH_ON_DELIVERY_DISCLAIMER": "You are going to pay by cash on delivery. Please prepare the exact amount and make sure to be reachable.",
+    "PM_CASH": "Cash",
+    "PAYMENT_FORM_TITLE": "Your payment information",
     "STORES": "Stores",
     "FILTER_BY_TAGS": "Filter by tags",
     "CONNECT_WITH_FACEBOOK": "Sign in with Facebook",
@@ -564,6 +566,7 @@
     "PRICE_TOTAL": "Total price",
     "PRICE_CALCULATION_FAILED": "Price calculation failed",
     "PRICE_CALCULATION_FAILED_DISCLAIMER": "The price could not be calculated; please contact us to resolve the issue.",
+    "PRICE_CALCULATION_FAILED_DISCLAIMER_ADMIN": "Price could not be calculated. You can create the delivery, but don't forget to fix the pricing rule attached to the store.",
     "MANUAL_PRICE_TOGGLE_ON": "Enter manual price",
     "MANUAL_PRICE_TOGGLE_OFF": "Use calculated price",
     "MANUAL_PRICE_VARIANT_NAME": "Product name",

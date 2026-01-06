@@ -365,6 +365,7 @@
     "PRICE_TOTAL": "Precio total",
     "PRICE_CALCULATION_FAILED": "Cálculo de precio fallido",
     "PRICE_CALCULATION_FAILED_DISCLAIMER": "No se pudo calcular el precio; por favor contáctenos para resolver el problema.",
+    "PRICE_CALCULATION_FAILED_DISCLAIMER_ADMIN": "No se pudo calcular el precio. Puede crear la entrega, pero no olvide corregir la regla de precios asociada a la tienda.",
     "MANUAL_PRICE_TOGGLE_ON": "Ingresar precio manual",
     "MANUAL_PRICE_TOGGLE_OFF": "Utilizar precio calculado",
     "MANUAL_PRICE_VARIANT_NAME": "Nombre del producto",
@@ -427,6 +428,8 @@
       "cash_on_delivery": "Pago en efectivo"
     },
     "CASH_ON_DELIVERY_DISCLAIMER": "El pago se realizará contra reembolso. Por favor, prepare la cantidad exacta y asegúrese de tenerla a mano.",
+    "PM_CASH": "Efectivo",
+    "PAYMENT_FORM_TITLE": "Su información de pago",
     "STORES": "Establecimientos",
     "CONNECT_WITH_FACEBOOK": "Conéctate con Facebook",
     "FILTER_BY_TAGS": "Filtrar por etiquetas",
