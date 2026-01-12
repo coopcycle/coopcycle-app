@@ -989,3 +989,17 @@ export function updateLoopeatFormats(order, loopeatFormats, cb) {
       });
   };
 }
+
+export function disableProductUntilTomorrow(product) {
+  return function (dispatch, getState) {
+
+    const httpClient = selectHttpClient(getState());
+
+    dispatch(changeProductEnabledRequest(product, false));
+
+    return httpClient
+      .put(product['@id'] + '/disable', { until: 'tomorrow 00:00' })
+      .then(res => dispatch(changeProductEnabledSuccess(res)))
+      .catch(e => dispatch(changeProductEnabledFailure(e, product, true)));
+  };
+}

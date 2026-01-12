@@ -643,6 +643,9 @@
     "INCIDENT": "Incident",
     "CHECKOUT_STOP": "Cancel checkout",
     "CHECKOUT_STOP_CONFIRM": "Do you want to interrupt the order? You can still complete it later",
-    "CHECKOUT_CONTINUE": "Continue checkout"
+    "CHECKOUT_CONTINUE": "Continue checkout",
+    "RESTAURANT_PRODUCT_DISABLE_ENABLE_TOMORROW": "Do you want to re-enable automatically the product tomorrow?",
+    "NO_THANKS": "No, thanks",
+    "YES": "Yes"
 }
 }
