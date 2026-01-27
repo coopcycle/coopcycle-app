@@ -87,6 +87,14 @@ Build a new version for the AppStore
 
 Build and upload to TestFlight
 
+### ios update_metadata
+
+```sh
+[bundle exec] fastlane ios update_metadata
+```
+
+Update AppStore metadata
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

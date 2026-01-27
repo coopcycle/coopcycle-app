@@ -287,4 +287,53 @@ platform :ios do
     upload_release
   end
 
+  # https://nrlnishan.hashnode.dev/manage-ios-apps-metadata-using-fastlane
+  desc "Update AppStore metadata"
+  lane :update_metadata do
+
+    load_asc_api_key
+
+    # FIXME This requires login each time (?)
+    # # https://docs.fastlane.tools/uploading-app-privacy-details/
+    # deliver_config = FastlaneCore::Configuration.create(Deliver::Options.available_options, {})
+    # upload_app_privacy_details_to_app_store(
+    #   # username: "",
+    #   # team_name: "",
+    #   app_identifier: deliver_config[:app_identifier],
+    #   json_path: "fastlane/app_privacy_details.json"
+    # )
+
+    deliver(
+      api_key: lane_context[SharedValues::APP_STORE_CONNECT_API_KEY],
+      submit_for_review: false,
+      reset_ratings: false,
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_app_version_update: true,
+      # Fix Spaceship::ConnectAPI::Models.parse: [!] No data
+      # https://github.com/fastlane/fastlane/issues/20538
+      app_review_information: {
+        first_name: ENV['APP_REVIEW_FIRST_NAME'],
+        last_name: ENV['APP_REVIEW_LAST_NAME'],
+        phone_number: ENV['APP_REVIEW_PHONE_NUMBER'],
+        email_address: "dev@coopcycle.org"
+      },
+      # https://github.com/fastlane/fastlane/issues/21820
+      # price_tier: 0,
+      copyright: "#{Time.now.year} CoopCycle",
+      # FIXME Doesn't work
+      submission_information: {
+        content_rights_contains_third_party_content: false,
+      },
+      app_rating_config_path: "fastlane/rating_config.json",
+      force: true, # skips verification of HTML preview file (since this will be run from a CI machine)
+      # Precheck cannot check In-app purchases with the App Store Connect API Key (yet).
+      # Exclude In-app purchases from precheck, disable the precheck step in your build step, or use Apple ID login
+      precheck_include_in_app_purchases: false
+    )
+
+    puts
+
+  end
+
 end
