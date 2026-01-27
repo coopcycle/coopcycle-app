@@ -1,64 +1,53 @@
+// https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
+// https://github.com/fastlane/fastlane/blob/3225bb6acf8936a756e26dca17d3d7ef5ab04dcd/frameit/lib/frameit/device_types.rb
+
+// https://github.com/fastlane/fastlane/issues/29653
+// https://github.com/JorgeFrias/Automated-AppStore-Screenshots_How-To
+
+// https://github.com/Patrick-Kladek/ScreenshotFramer
+// https://www.nutrient.io/blog/creating-an-efficient-app-store-screenshot-workflow/
+
+// https://yuzu-hub.github.io/appscreen/
+
+import {
+  connectToCity,
+  selectAutocompleteAddress,
+  waitToBeVisible,
+  waitToExist,
+} from './support/commands';
+
 const VARIANTS = [
-  { locale: 'fr-FR', city: 'Poitiers' },
-  { locale: 'fr-FR', city: 'Montpellier' },
-  { locale: 'fr-FR', city: 'Nantes - Naofood' },
-  { locale: 'fr-FR', city: 'Grenoble' },
-  { locale: 'es-ES', city: 'Barcelona' },
-  { locale: 'es-ES', city: 'Madrid' },
-  { locale: 'es-ES', city: 'Zaragoza' },
-  { locale: 'en-US', city: 'Berlin' },
+  {
+    locale: 'fr-FR',
+    city: 'Grenoble',
+    address: {
+      text: '30 Av. Marcelin Berthelot, 38100 Grenoble, France',
+      placeId: 'EjEzMCBBdi4gTWFyY2VsaW4gQmVydGhlbG90LCAzODEwMCBHcmVub2JsZSwgRnJhbmNlIjASLgoUChIJ-Yr9gur0ikcR0L7yDvuxXlYQHioUChIJL1Oqg-r0ikcR_QnOhrirHLs'
+    },
+  }
 ];
 
 VARIANTS.forEach(variant => {
-  describe.skip('Screenshots', () => {
-    const { locale, city } = variant;
+  describe('Screenshots', () => {
 
-    beforeEach(async () => {
-      await device.relaunchApp({
-        newInstance: true,
-        permissions: {
-          notifications: 'YES',
-        },
-        delete: true,
-        languageAndLocale: {
-          language: locale,
-          locale,
-        },
-      });
-      await device.reloadReactNative();
-    });
+    const { locale, city, address } = variant;
 
     it(`takes screenshots for ${city} in ${locale}`, async () => {
-      await expect(element(by.id('chooseCityBtn'))).toBeVisible();
 
-      await device.takeScreenshot(`Home-${locale}`);
+      await connectToCity(city);
 
-      await element(by.id('chooseCityBtn')).tap();
-
-      await device.takeScreenshot(`Cities-${locale}`);
-
-      await waitFor(element(by.id(city)))
-        .toBeVisible()
-        .whileElement(by.id('cityList'))
-        .scroll(120, 'down');
-
-      await element(by.id(city)).tap();
+      await selectAutocompleteAddress('askAddressAutocomplete', address.text, address.placeId);
 
       // The server may be under maintenance
       try {
-        await expect(element(by.id('restaurantList'))).toBeVisible();
-        await waitFor(element(by.id('restaurants:2'))).toBeVisible();
+        await waitToBeVisible('restaurantList');
 
         await device.takeScreenshot(`Restaurants-${city}-${locale}`);
 
-        await element(by.id('restaurants:2')).tap();
+        await element(by.id('restaurants:0')).tap();
 
-        await waitFor(element(by.id('menu')))
-          .toExist()
-          .withTimeout(5000);
-        await waitFor(element(by.id('menuItem:0:0')))
-          .toExist()
-          .withTimeout(5000);
+        await waitToExist('restaurantData');
+        await waitToExist('menuItem:0:0');
 
         await device.takeScreenshot(`Restaurant-${city}-${locale}`);
       } catch (e) {}

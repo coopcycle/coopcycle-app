@@ -74,6 +74,18 @@ const connectToInstance = async (url) => {
   } catch (e) {}
 };
 
+export const connectToCity = async (city) => {
+  console.log(`Connecting to instance in city "${city}"`);
+  await tapById('chooseCityBtn');
+
+  await waitFor(element(by.id(city)))
+    .toBeVisible()
+    .whileElement(by.id('cityList'))
+    .scroll(120, 'down');
+
+  await tapById(city);
+};
+
 const getLocalInstanceUrl = () => `http://${getLocalIpAddress()}`;
 const getLocalTestInstanceUrl = () => `${getLocalInstanceUrl()}:9080`;
 
