@@ -176,13 +176,12 @@ jobs:
         run: applesimutils --list
 
       # See screenshot specifications
-      # https://help.apple.com/app-store-connect/#/devd274dd925
-#      - name: Take App Store screenshots
-#        if: github.ref == 'refs/heads/master'
-#        run: |
-#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 11" --artifacts-location ./artifacts/6.5-inch
-#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPhone 8 Plus" --artifacts-location ./artifacts/5.5-inch
-#          node node_modules/.bin/detox test -c ios.sim.release -o e2e/screenshots.config.json --take-screenshots manual --cleanup --device-name="iPad Pro (12.9-inch) (4th generation)" --artifacts-location ./artifacts/12.9-inch
+      # https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
+     - name: Take AppStore screenshots
+       if: github.ref == 'refs/heads/master'
+       run: |
+        node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name "iPhone 16 Pro Max" --artifacts-location ./artifacts/6.9-inch e2e/screenshots.spec.js
+        node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name "iPad Pro 13-inch (M4)" --artifacts-location ./artifacts/13-inch e2e/screenshots.spec.js
 
       - name: Upload screenshots artifacts
 #        if: github.ref == 'refs/heads/master'
