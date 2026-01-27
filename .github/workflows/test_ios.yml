@@ -162,20 +162,6 @@ jobs:
           brew tap wix/brew
           brew install applesimutils
 
-      - name: Install CocoaPods plugins
-        run: gem install cocoapods-user-defined-build-types
-
-      - name: Cache Pods
-        uses: actions/cache@v4
-        id: cache-pods
-        with:
-          path: coopcycle-app-repo/ios/Pods
-          key: pods-${{ hashFiles('**/Podfile.lock') }}
-
-      - name: Install Pods
-        working-directory: ./coopcycle-app-repo/ios/
-        run: USE_FRAMEWORKS=static NO_FLIPPER=1 bundle exec pod install
-
       # Run 'applesimutils --list' to list your supported devices.
       # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
       - name: List supported devices
