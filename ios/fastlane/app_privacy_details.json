@@ -1,0 +1,101 @@
+[
+  {
+    "category": "COARSE_LOCATION",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "CRASH_DATA",
+    "purposes": [
+      "ANALYTICS"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "EMAIL_ADDRESS",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "NAME",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "PERFORMANCE_DATA",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "PHONE_NUMBER",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "PHOTOS_OR_VIDEOS",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_NOT_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "PHYSICAL_ADDRESS",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "PRECISE_LOCATION",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "PRODUCT_INTERACTION",
+    "purposes": [
+      "ANALYTICS"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  },
+  {
+    "category": "USER_ID",
+    "purposes": [
+      "APP_FUNCTIONALITY"
+    ],
+    "data_protections": [
+      "DATA_LINKED_TO_YOU"
+    ]
+  }
+]
