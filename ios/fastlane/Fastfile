@@ -105,6 +105,11 @@ platform :ios do
     update_info_plist(
       plist_path: "CoopCycle/Info.plist",
       display_name: app_name,
+    )
+
+    update_info_plist(
+      plist_path: "CoopCycle/Info.plist",
+      # block parameter cannot be specified with app_identifier or display_name
       block: proc do |plist|
         # Remove fetch & location from UIBackgroundModes
         # so that Apple doesn't ask why we need them
