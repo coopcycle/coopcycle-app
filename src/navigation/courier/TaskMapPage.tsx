@@ -6,10 +6,11 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { Component, useMemo, useCallback } from 'react';
+import { Component, useMemo, useCallback, useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import RNPinScreen from 'react-native-pin-screen';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { blueColor } from '../../styles/common';
 import { connectCentrifugo } from '../../redux/middlewares/CentrifugoMiddleware/actions';
@@ -49,14 +50,35 @@ const styles = StyleSheet.create({
   },
 });
 
-function TaskMapPage({ navigation, route }) {
+function enableKeepAwake() {
+  if (Platform.OS === 'ios') {
+    activateKeepAwakeAsync();
+  } else {
+    RNPinScreen.pin();
+  }
+}
+
+function disableKeepAwake() {
+  if (Platform.OS === 'ios') {
+    deactivateKeepAwake();
+  } else {
+    RNPinScreen.unpin();
+  }
+}
+
+function TaskMapPage({
+  navigation,
+  route,
+  isCentrifugoConnected,
+  keepAwake,
+  connectCent
+}) {
 
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const latlng = useSelector(selectSettingsLatLng);
 
   const courierTaskLists = useMemo(() => {
-
     const taskList = createCurrentTaskList(tasks);
     // Override color for courier
     taskList.color = blueColor;
@@ -84,6 +106,26 @@ function TaskMapPage({ navigation, route }) {
     navigateToTask(navigation, route, task, courierTaskLists[0].items)
   }, [courierTaskLists[0].items]);
 
+  useEffect(() => {
+    if (!isCentrifugoConnected) {
+      connectCent()
+    }
+  }, [isCentrifugoConnected, connectCent]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (keepAwake) {
+        enableKeepAwake();
+      } else {
+        disableKeepAwake();
+      }
+      // Cleanup when the screen is focused
+      return () => {
+        disableKeepAwake()
+      };
+    }, [enableKeepAwake, disableKeepAwake, keepAwake])
+  );
+
   return (
     <View style={styles.container}>
       <DateSelectHeader navigate={navigation.navigate} />
@@ -109,80 +151,6 @@ function TaskMapPage({ navigation, route }) {
   );
 }
 
-// @TODO Convert to functional component (move into the 'TaskMapPage' one above)
-class TaskMapPageContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFocused: false,
-    };
-  }
-
-  enableKeepAwake() {
-    if (Platform.OS === 'ios') {
-      activateKeepAwakeAsync();
-    } else {
-      RNPinScreen.pin();
-    }
-  }
-
-  disableKeepAwake() {
-    if (Platform.OS === 'ios') {
-      deactivateKeepAwake();
-    } else {
-      RNPinScreen.unpin();
-    }
-  }
-
-  componentDidMount() {
-    this._bootstrap();
-
-    if (this.props.keepAwake && this.props.isFocused) {
-      this.enableKeepAwake();
-    }
-
-    this.unsubscribeFromFocusListener = this.props.navigation.addListener(
-      'focus',
-      () => this.setState({ isFocused: true }),
-    );
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.isFocused !== this.state.isFocused ||
-      prevProps.keepAwake !== this.props.keepAwake
-    ) {
-      if (this.props.keepAwake && this.state.isFocused) {
-        this.enableKeepAwake();
-      } else {
-        this.disableKeepAwake();
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromFocusListener();
-  }
-
-  _bootstrap() {
-    InteractionManager.runAfterInteractions(() => {
-      if (!this.props.isCentrifugoConnected) {
-        this.props.connectCent();
-      }
-    });
-  }
-
-  render() {
-    return (
-      <TaskMapPage
-        navigation={this.props.navigation}
-        route={this.props.route}
-      />
-    );
-  }
-}
-
 function mapStateToProps(state) {
   return {
     keepAwake: selectKeepAwake(state),
@@ -199,4 +167,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(TaskMapPageContainer));
+)(withTranslation()(TaskMapPage));
