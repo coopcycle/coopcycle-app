@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { Component, useMemo } from 'react';
+import { Component, useMemo, useCallback } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import RNPinScreen from 'react-native-pin-screen';
@@ -79,10 +79,10 @@ function TaskMapPage({ navigation, route }) {
     },
   );
 
-  const navigateToSelectedTask = task => {
-      // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
-      navigateToTask(navigation, route, task, courierTaskList.items)
-    };
+  const navigateToSelectedTask = useCallback((task) => {
+    // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
+    navigateToTask(navigation, route, task, courierTaskLists[0].items)
+  }, [courierTaskLists[0].items]);
 
   return (
     <View style={styles.container}>
