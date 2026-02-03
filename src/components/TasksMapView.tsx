@@ -68,7 +68,8 @@ function TasksMapView(props) {
       if (isHideUnassignedFromMap && taskList.isUnassignedTaskList)
         return [];
       const tasks = getTaskListTasks(taskList, tasksEntities);
-      const filtered = uiFilters ? filterTasks(tasks, uiFilters) : tasks;
+      const filtered = !_.isEmpty(uiFilters) ? filterTasks(tasks, uiFilters) : tasks;
+
       return filtered.map((task) => ({
         ...task,
         location: task.address.geo,
@@ -83,7 +84,6 @@ function TasksMapView(props) {
       return `${latitude.toFixed(5)}_${longitude.toFixed(5)}`;
     });
   }, [data]);
-
 
   //markers render
   const renderMarkers = useMemo(() => {
