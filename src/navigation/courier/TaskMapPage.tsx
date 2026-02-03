@@ -50,11 +50,13 @@ const styles = StyleSheet.create({
 });
 
 function TaskMapPage({ navigation, route }) {
+
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const latlng = useSelector(selectSettingsLatLng);
 
-  const courierTaskList = useMemo(() => {
+  const courierTaskLists = useMemo(() => {
+
     const taskList = createCurrentTaskList(tasks);
     // Override color for courier
     taskList.color = blueColor;
@@ -63,7 +65,7 @@ function TaskMapPage({ navigation, route }) {
       color: blueColor,
     }));
 
-    return taskList;
+    return [taskList];
   }, [tasks]);
 
   const mapCenter = useMemo(() => {
@@ -89,7 +91,7 @@ function TaskMapPage({ navigation, route }) {
         <BottomSheet>
           <TasksMapView
             mapCenter={mapCenter}
-            taskLists={[courierTaskList]}
+            taskLists={courierTaskLists}
             onListedTaskPress={navigateToSelectedTask}
           />
         </BottomSheet>
