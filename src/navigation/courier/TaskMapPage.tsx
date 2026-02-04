@@ -103,10 +103,12 @@ function TaskMapPage({
     },
   );
 
+  const taskListItems = courierTaskLists[0].items;
+
   const navigateToSelectedTask = useCallback((task) => {
     // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
-    navigateToTask(navigation, route, task, courierTaskLists[0].items)
-  }, [courierTaskLists[0].items]);
+    navigateToTask(navigation, route, task, taskListItems)
+  }, [navigation, route, taskListItems]);
 
   useEffect(() => {
     if (!isCentrifugoConnected) {
@@ -125,7 +127,7 @@ function TaskMapPage({
       return () => {
         disableKeepAwake()
       };
-    }, [enableKeepAwake, disableKeepAwake, keepAwake])
+    }, [keepAwake])
   );
 
   return (
