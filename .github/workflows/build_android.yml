@@ -179,6 +179,20 @@ jobs:
                   keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
                   google_services_json: 'GOOGLE_SERVICES_JSON_WEKU_BASE64'
                 }
+              },
+              {
+                id: 'les3v',
+                dispayName: 'Les 3V',
+                params: {
+                  instance: 'venividivichy',
+                  instance_url: 'https://les3v.coopcycle.org',
+                  app_name: 'Les 3V',
+                  primary_color: '#F6EDDA',
+                  package_name: 'fr.coopcycle.les3v',
+                  keystore_key_alias: 'instance',
+                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
+                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
+                }
               }
             ];
 
