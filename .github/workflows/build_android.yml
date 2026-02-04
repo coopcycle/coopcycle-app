@@ -168,7 +168,7 @@ jobs:
               },
               {
                 id: 'weku',
-                dispayName: 'WEKU',
+                displayName: 'WEKU',
                 params: {
                   instance: 'weku',
                   instance_url: 'https://wekuyummy.coopcycle.org',
@@ -182,7 +182,7 @@ jobs:
               },
               {
                 id: 'les3v',
-                dispayName: 'Les 3V',
+                displayName: 'Les 3V',
                 params: {
                   instance: 'venividivichy',
                   instance_url: 'https://les3v.coopcycle.org',
