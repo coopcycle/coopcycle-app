@@ -20,6 +20,7 @@ import {
   selectFilteredTasks,
   selectKeepAwake,
   selectTaskSelectedDate,
+  selectTaskFilters,
 } from '../../redux/Courier';
 import {
   selectIsCentrifugoConnected,
@@ -77,6 +78,7 @@ function TaskMapPage({
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
   const latlng = useSelector(selectSettingsLatLng);
+  const uiFilters = useSelector(selectTaskFilters);
 
   const courierTaskLists = useMemo(() => {
     const taskList = createCurrentTaskList(tasks);
@@ -135,6 +137,7 @@ function TaskMapPage({
             mapCenter={mapCenter}
             taskLists={courierTaskLists}
             onListedTaskPress={navigateToSelectedTask}
+            uiFilters={uiFilters}
           />
         </BottomSheet>
         {isFetching ? (

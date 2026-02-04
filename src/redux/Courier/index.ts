@@ -60,6 +60,7 @@ import {
   selectTasks,
   selectTasksChangedAlertSound,
   selectTasksWithColor,
+  selectTaskFilters,
 } from './taskSelectors';
 import { tasksUiReducer } from './taskUiReducer';
 
@@ -104,6 +105,7 @@ export {
   selectSignatures,
   selectTagNames,
   selectTags,
+  selectTaskFilters,
   selectTaskSelectedDate,
   selectTasks,
   selectTasksChangedAlertSound,

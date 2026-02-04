@@ -6,15 +6,18 @@ import React, {
   useState,
 } from 'react';
 import { View, useColorScheme } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import { connect } from 'react-redux';
+import MapView, { Marker, Region } from 'react-native-maps';
+import { connect, useSelector } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
+import objectHash from 'object-hash';
+
 import TaskMarker from './TaskMarker';
 import { filterTasks } from '../redux/logistics/utils';
 import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
 import {
   selectIsHideUnassignedFromMap,
+  selectIsPolylineOn,
 } from '../redux/Courier';
 import { selectTasksEntities } from '../shared/logistics/redux';
 
@@ -40,6 +43,9 @@ function TasksMapView(props) {
   const [marginBottom, setMarginBottom] = useState(1);
   const mapRef = useRef(null);
   const [mapHeight, setMapHeight] = useState(0);
+  const [mapRegion, setMapRegion] = useState<Region>();
+
+  const showPolylines = useSelector(selectIsPolylineOn)
 
   //bottomsheet opening
   const { handleOpen } = useContext(BottomSheetContext || {});
@@ -61,6 +67,10 @@ function TasksMapView(props) {
     },
     [handleOpen]
   );
+
+  const onRegionChangeComplete = useCallback((region: Region) => {
+    setMapRegion(region);
+  }, []);
 
   // filtered data
   const data = useMemo(() => {
@@ -111,6 +121,13 @@ function TasksMapView(props) {
   }, [groupedByCoord, onMarkerPress]);
   ;
 
+  const mapKey = useMemo(() => {
+    return objectHash({
+      ...uiFilters,
+      showPolylines
+    })
+  }, [uiFilters, showPolylines]);
+
   // render bottomsheet
   const renderBottomSheet = useCallback(() => {
     if (!modalMarkers || modalMarkers.length === 0) return null;
@@ -132,10 +149,16 @@ function TasksMapView(props) {
       >
         {mapHeight > 0 && (
           <MapView
+            // https://github.com/react-native-maps/react-native-maps/issues/5840
+            // https://github.com/react-native-maps/react-native-maps/issues/5669
+            // https://github.com/react-native-maps/react-native-maps/issues/5798
+            // We use a key prop to force the map to re-render, and cleanup markers/polylines.
+            key={mapKey}
+            onRegionChangeComplete={onRegionChangeComplete}
             customMapStyle={mapStyle}
             ref={mapRef}
             style={{ flex: 1, marginBottom }}
-            initialRegion={{
+            initialRegion={mapRegion || {
               latitude: mapCenter[0],
               longitude: mapCenter[1],
               latitudeDelta: 0.1,

@@ -8652,6 +8652,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/object-hash@npm:^3":
+  version: 3.0.6
+  resolution: "@types/object-hash@npm:3.0.6"
+  checksum: 10c0/a5450cafdbc33c840be2c36fb1ace96cce7aa580177cf68dbdbda80f18938207692d74c76403321c99f43460ac31981c4af7fe8b49eca1570f8e9a4c01eaf33d
+  languageName: node
+  linkType: hard
+
 "@types/react-test-renderer@npm:^19.1.0":
   version: 19.1.0
   resolution: "@types/react-test-renderer@npm:19.1.0"
@@ -9237,6 +9244,7 @@ __metadata:
     "@turf/turf": "npm:^6.5.0"
     "@types/jest": "npm:^29.5.13"
     "@types/lodash": "npm:^4.17.20"
+    "@types/object-hash": "npm:^3"
     "@types/react": "npm:^19.1.0"
     "@types/react-test-renderer": "npm:^19.1.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.37.0"
@@ -9283,6 +9291,7 @@ __metadata:
     moment-range: "npm:^4.0.2"
     nativewind: "npm:^4.1.23"
     numbro: "npm:^2.5.0"
+    object-hash: "npm:^3.0.0"
     prettier: "npm:^3.5.3"
     promise.allsettled: "npm:^1.0.6"
     prop-types: "npm:^15.8.1"
