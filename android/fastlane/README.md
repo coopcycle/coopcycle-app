@@ -79,14 +79,6 @@ Generate icons
 
 Rename app
 
-### android deployNaofoodInternal
-
-```sh
-[bundle exec] fastlane android deployNaofoodInternal
-```
-
-Deploy a new version of Naofood to the Google Play Internal test
-
 ### android upload_metadata
 
 ```sh
