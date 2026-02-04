@@ -184,7 +184,7 @@ jobs:
                 id: 'les3v',
                 displayName: 'Les 3V',
                 params: {
-                  instance: 'venividivichy',
+                  instance: 'les3v',
                   instance_url: 'https://les3v.coopcycle.org',
                   app_name: 'Les 3V',
                   primary_color: '#F6EDDA',
