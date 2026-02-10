@@ -3,7 +3,7 @@ import { Switch } from '@/components/ui/switch';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
 import React, { Component } from 'react';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { withTranslation } from 'react-i18next';
@@ -14,6 +14,8 @@ import {
   changeProductEnabled,
   loadMoreProducts,
   loadProducts,
+  changeProductEnabledRequest,
+  disableProductUntilTomorrow,
 } from '../../redux/Restaurant/actions';
 
 class ProductsScreen extends Component {
@@ -22,7 +24,34 @@ class ProductsScreen extends Component {
   }
 
   _toggleProductEnabled(product, value) {
-    this.props.changeProductEnabled(product, value);
+
+    if (value === false) {
+
+      this.props.changeProductEnabledRequest(product, value);
+
+      Alert.alert(
+        this.props.t('RESTAURANT_PRODUCT_DISABLE_ENABLE_TOMORROW'),
+        '',
+        [
+          {
+            text: this.props.t('NO_THANKS'),
+            onPress: () => {
+              this.props.changeProductEnabled(product, value);
+            },
+          },
+          {
+            text: this.props.t('YES'),
+            onPress: () => {
+              this.props.disableProductUntilTomorrow(product);
+            }
+          },
+        ],
+      );
+
+    } else {
+      this.props.changeProductEnabled(product, value);
+    }
+
   }
 
   renderItem(item) {
@@ -89,6 +118,8 @@ function mapDispatchToProps(dispatch) {
     loadProducts: (restaurant) => dispatch(loadProducts(restaurant)),
     loadMoreProducts: () => dispatch(loadMoreProducts()),
     changeProductEnabled: (product, enabled) => dispatch(changeProductEnabled(product, enabled)),
+    changeProductEnabledRequest: (product, enabled) => dispatch(changeProductEnabledRequest(product, enabled)),
+    disableProductUntilTomorrow: (product) => dispatch(disableProductUntilTomorrow(product)),
   };
 }
 
