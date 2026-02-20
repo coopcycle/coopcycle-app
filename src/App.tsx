@@ -27,6 +27,7 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
@@ -185,15 +186,22 @@ const App = () => {
                 <I18nextProvider i18n={i18n}>
                   <QueryClientProvider client={queryClient}>
                     <SafeAreaProvider>
-                      <NavigationContainer
-                        ref={navigationRef}
-                        linking={linking}
-                        onReady={onReady}
-                        onStateChange={onNavigationStateChange}
-                        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-                        navigationInChildEnabled>
-                        <Root />
-                      </NavigationContainer>
+                      {/*
+                      We have to use statusBarTranslucent = true on Android,
+                      or it will add an extra top padding
+                      https://kirillzyusko.github.io/react-native-keyboard-controller/docs/api/keyboard-provider
+                      */}
+                      <KeyboardProvider enabled={false} statusBarTranslucent={true}>
+                        <NavigationContainer
+                          ref={navigationRef}
+                          linking={linking}
+                          onReady={onReady}
+                          onStateChange={onNavigationStateChange}
+                          theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                          navigationInChildEnabled>
+                          <Root />
+                        </NavigationContainer>
+                      </KeyboardProvider>
                       <Spinner />
                       <DropdownAlert
                         ref={ref => {

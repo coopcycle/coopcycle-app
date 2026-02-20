@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { KeyboardAwareScrollView, KeyboardToolbar, useKeyboardController } from 'react-native-keyboard-controller'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-/**
- * A hackish usage of a ScrollView to automatically hide the keyboard
- * when the user taps outside of the input field.
- * https://stackoverflow.com/questions/41426862/blur-textinput-when-tapped-outside-of-it/41429871#comment83416458_41429871
- * Could be generalised later on and used on other screens too.
- */
+// https://docs.expo.dev/guides/keyboard-handling/
+// https://kirillzyusko.github.io/react-native-keyboard-controller/docs/api/components/keyboard-aware-scroll-view
 export default ({ children }) => {
+
+  const { enabled, setEnabled } = useKeyboardController();
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    setEnabled(true);
+  }, [setEnabled])
+
   return (
-    <ScrollView
-      keyboardShouldPersistTaps="handled"
-      scrollEnabled={false}
-      contentContainerStyle={styles.contentContainer}>
-      {children}
-    </ScrollView>
+    <>
+      <KeyboardAwareScrollView contentContainerStyle={ [ styles.contentContainer, { paddingBottom: insets.bottom } ]}>
+        {children}
+      </KeyboardAwareScrollView>
+      <KeyboardToolbar />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    alignItems: 'center',
   },
 });

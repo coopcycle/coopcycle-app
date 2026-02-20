@@ -9318,6 +9318,7 @@ __metadata:
     react-native-get-random-values: "npm:^1.11.0"
     react-native-inappbrowser-reborn: "npm:^3.7.0"
     react-native-input-spinner: "npm:^1.8.1"
+    react-native-keyboard-controller: "npm:^1.20.7"
     react-native-keyboard-manager: "npm:^6.5.16-0"
     react-native-loading-spinner-overlay: "npm:^3.0.1"
     react-native-localize: "npm:^3.5.2"
@@ -18912,6 +18913,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/87d20b900aded7d44c90afb946a7aa03c23a94ca3dd547bdddc2303b85357e4aab22567a57b19f1558d6c8be7058e3dcf34faa1e15182d1604f90974266d9a1d
+  languageName: node
+  linkType: hard
+
+"react-native-keyboard-controller@npm:^1.20.7":
+  version: 1.20.7
+  resolution: "react-native-keyboard-controller@npm:1.20.7"
+  dependencies:
+    react-native-is-edge-to-edge: "npm:^1.2.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: ">=3.0.0"
+  checksum: 10c0/f3a1682552ed90f086f4442ba2eebfb2080451e4c9d686345ba92b8fbeca3498172e6b302a413406fabe9ab06cc19c67dbec22a7703b72342f89d39fce136db3
   languageName: node
   linkType: hard
 
