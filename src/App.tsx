@@ -187,11 +187,12 @@ const App = () => {
                   <QueryClientProvider client={queryClient}>
                     <SafeAreaProvider>
                       {/*
-                      We have to use statusBarTranslucent = true on Android,
+                      We have to use statusBarTranslucent = true on Android >= 35,
                       or it will add an extra top padding
                       https://kirillzyusko.github.io/react-native-keyboard-controller/docs/api/keyboard-provider
+                      https://medium.com/@thakor.sunil/android-14-api-35-how-to-fix-status-bar-navigation-bar-color-issues-5cd307273344
                       */}
-                      <KeyboardProvider enabled={false} statusBarTranslucent={true}>
+                      <KeyboardProvider enabled={false} statusBarTranslucent={Platform.OS === 'android' && Platform.Version >= 35}>
                         <NavigationContainer
                           ref={navigationRef}
                           linking={linking}
