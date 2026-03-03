@@ -1,5 +1,6 @@
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
+import { Box } from '@/components/ui/box';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
@@ -52,29 +53,23 @@ class LoginRegister extends Component {
         <AuthenticateContainer>
           {!isKeyboardVisible && guestCheckoutEnabled && (
             <>
-              <View
-                style={{
-                  paddingTop: 20,
-                  paddingHorizontal: 40,
-                  width: '100%',
-                }}>
+              <Box className="p-4">
                 <Button
                   testID="guestCheckoutButton"
                   action="success"
                   onPress={() => this.props.guestModeOn()}>
                   <ButtonText>{this.props.t('CHECKOUT_AS_GUEST')}</ButtonText>
                 </Button>
-              </View>
-
-              <Text mt="4">{this.props.t('OR')}</Text>
+              </Box>
+              <Text className="text-center">{this.props.t('OR')}</Text>
             </>
           )}
           {!isKeyboardVisible && (
-            <View style={{ padding: 20 }}>
-              <Text style={{ textAlign: 'center' }} note>
+            <Box className="p-4">
+              <Text className="text-center">
                 {this.props.t('CHECKOUT_LOGIN_DISCLAIMER')}
               </Text>
-            </View>
+            </Box>
           )}
           <AuthenticateForm
             onLogin={(email, password) =>
