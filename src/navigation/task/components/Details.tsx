@@ -1,14 +1,16 @@
 import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
 import { ArrowRightIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import classNames from 'classnames';
-import { Box, Clock, Info, MapPin, MessageCircle, Phone, Recycle, Tag, Weight } from 'lucide-react-native';
+import { Box, Clock, File, Info, MapPin, MessageCircle, Phone, Recycle, Tag, Weight } from 'lucide-react-native';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
@@ -20,6 +22,8 @@ import { formatPrice } from '../../../utils/formatting';
 import { getAddress, getName, getPackagesSummary, getTimeFrame } from './utils';
 import Detail from '../../../components/Detail';
 
+const basename = (str: string) => str.substr(str.lastIndexOf('/') + 1)
+
 export const styles = StyleSheet.create({
   titleText: {
     fontWeight: 'bold',
@@ -28,6 +32,10 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
+
+const inAppBrowserOptions = {
+  dismissButtonStyle: 'cancel',
+};
 
 const Details = ({ task, onTaskTitleClick, t }) => {
   const timeframe = getTimeFrame(task);
@@ -143,6 +151,29 @@ const Details = ({ task, onTaskTitleClick, t }) => {
       icon: Weight,
       text: `${(Number(task.weight) / 1000).toFixed(2)} kg`,
     });
+  }
+
+  console.log('Task', task.metadata.documents)
+
+  if (Array.isArray(task.metadata?.documents) && task.metadata?.documents.length > 0) {
+    task.metadata?.documents.forEach((url: string) => {
+      items.push({
+        icon: File,
+        text: basename(url),
+        onPress: async () => {
+          try {
+            if (await InAppBrowser.isAvailable()) {
+              await InAppBrowser.close();
+              await InAppBrowser.open(url, inAppBrowserOptions);
+            } else {
+              Linking.openURL(url);
+            }
+          } catch (e) {
+            Linking.openURL(url);
+          }
+        }
+      });
+    })
   }
 
   return (
