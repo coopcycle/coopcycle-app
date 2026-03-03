@@ -611,7 +611,7 @@
     "CHECKOUT_STOP": "Arrêter la commande",
     "CHECKOUT_STOP_CONFIRM": "Voulez-vous interrompre la commande ? Vous pourrez la terminer plus tard",
     "CHECKOUT_CONTINUE": "Continuer la commande",
-    "RESTAURANT_PRODUCT_DISABLE_ENABLE_TOMORROW": "Voulez-vous réactiver automatiquement ce produit demain ?",
+    "RESTAURANT_PRODUCT_DISABLE_ENABLE_TOMORROW": "Voulez-vous réactiver ce produit demain ?",
     "NO_THANKS": "Non, merci",
     "YES": "Oui"
   }
