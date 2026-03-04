@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { View, useColorScheme } from 'react-native';
+import { View } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import { connect, useSelector } from 'react-redux';
 import { withTranslation } from 'react-i18next';
@@ -25,7 +25,6 @@ import {
   BottomSheetContext,
 } from '@/components/ui/bottomsheet';
 import TasksBottomSheetContent from './TasksBottomSheetContent';
-import { darkMapStyle, lightMapStyle } from "../styles/mapStyles"
 import TaskListPolylines from './TaskListPolylines';
 
 function TasksMapView(props) {
@@ -37,7 +36,6 @@ function TasksMapView(props) {
     uiFilters,
     tasksEntities,
     isHideUnassignedFromMap,
-    mode = 'system',
   } = props;
 
   const [marginBottom, setMarginBottom] = useState(1);
@@ -50,15 +48,6 @@ function TasksMapView(props) {
   //bottomsheet opening
   const { handleOpen } = useContext(BottomSheetContext || {});
   const [modalMarkers, setModalMarkers] = useState([]);
-
-
-  const colorScheme = useColorScheme();
-
-  const activeMode = mode === 'system' ? colorScheme : mode;
-
-  const mapStyle = useMemo(() => {
-    return activeMode === 'dark' ? darkMapStyle : lightMapStyle;
-  }, [activeMode]);
 
   const onMarkerPress = useCallback(
     (tasksAtLocation) => {
@@ -155,7 +144,6 @@ function TasksMapView(props) {
             // We use a key prop to force the map to re-render, and cleanup markers/polylines.
             key={mapKey}
             onRegionChangeComplete={onRegionChangeComplete}
-            customMapStyle={mapStyle}
             ref={mapRef}
             style={{ flex: 1, marginBottom }}
             initialRegion={mapRegion || {

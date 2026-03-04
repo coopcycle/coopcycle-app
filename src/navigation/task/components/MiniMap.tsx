@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
-import { LayoutChangeEvent, StyleSheet, useColorScheme } from 'react-native';
+import React from 'react';
+import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import TaskMarker from '../../../components/TaskMarker';
 import { getCoordinates, getRegionForTasks } from './mapUtils';
 import Task from '../../../types/task';
 import Tasks from '../../../types/tasks';
-import { darkMapStyle, lightMapStyle } from "../../../styles/mapStyles"
 
 const zoomLevel = 15;
 
@@ -21,20 +20,9 @@ const MiniMap: React.FC<MiniMapProps> = ({
   tasks,
   onLayout,
   aspectRatio,
-  mode = 'system',
 }) => {
+
   // @see https://stackoverflow.com/questions/46568465/convert-a-region-latitudedelta-longitudedelta-into-an-approximate-zoomlevel/
-  const systemScheme = useColorScheme();
-
-  const activeMode = useMemo(() => {
-    if (mode === 'system') return systemScheme ?? 'light';
-    return mode;
-  }, [mode, systemScheme]);
-
-  const mapStyle = useMemo(() => {
-    return activeMode === 'dark' ? darkMapStyle : lightMapStyle;
-  }, [activeMode]);
-
   const region = getRegionForTasks(
     task ? [task] : tasks,
     zoomLevel,
@@ -64,7 +52,6 @@ const MiniMap: React.FC<MiniMapProps> = ({
 
   return (
     <MapView
-      customMapStyle={mapStyle}
       style={styles.map}
       zoomEnabled
       showsUserLocation
