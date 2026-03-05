@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, useColorScheme, Platform } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Circle, Path } from 'react-native-svg';
 import FAIcon from './Icon';
 import { Task } from '../types/task';
+import { MessageCircle } from 'lucide-react-native';
 import { PLATFORM } from '@/native-base-theme/variables/commonColor';
 
 // @TODO Is this function really needed? If yes, move it to a more generic util file
@@ -34,6 +35,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  badge: {
+    position: 'absolute',
+    top: 8,
+    right: 6,
+  },
+  absoluteCenter: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 interface TaskMarkerProps {
@@ -41,6 +56,45 @@ interface TaskMarkerProps {
   count?: number;
   size?: number;
   testID?: string;
+}
+
+function getWarnings(task) {
+
+  const warnings = [];
+
+  if (task.address?.description) {
+    warnings.push({
+      icon: MessageCircle,
+    });
+  }
+
+  /*
+  if (
+    task.metadata?.payment_method &&
+    isDisplayPaymentMethodInList(task.metadata?.payment_method)
+  ) {
+    warnings.push({
+      icon: getIcon(task.metadata.payment_method),
+    });
+  }
+  */
+
+  return warnings;
+}
+
+const TaskMarkerBadge = ({ count }) => {
+
+  return (
+    <View style={[ styles.badge, { width: 15, height: 15 } ]}>
+      {/* https://commons.wikimedia.org/wiki/File:Simple_red_circle.svg */}
+      <Svg width={15} height={15} viewBox="0 0 20 20">
+        <Circle cx={9.85} cy={10} r={9} fill="#df2c2c" />
+      </Svg>
+      <View style={styles.absoluteCenter}>
+        <Text style={{ color: 'white', fontSize: 9 }}>{count}</Text>
+      </View>
+    </View>
+  )
 }
 
 const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
@@ -70,6 +124,8 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
     }
   }
 
+  const warnings = getWarnings(task);
+
   const getContainerTransform = () => {
   if (Platform.OS === PLATFORM.IOS) {
     return [{ translateY: -17 }, { translateX: 1 }];
@@ -98,6 +154,7 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
           )}
         </Text>
       </View>
+      {warnings.length > 0 ? <TaskMarkerBadge count={warnings.length} /> : null}
     </View>
   );
 };
