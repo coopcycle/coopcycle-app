@@ -4,6 +4,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import FAIcon from './Icon';
 import { Task } from '../types/task';
 import { MessageCircle } from 'lucide-react-native';
+import { cssInterop } from 'nativewind';
 
 // @TODO Is this function really needed? If yes, move it to a more generic util file
 const lightenColor = (hex: string, amount: number = 80) => {
@@ -101,6 +102,15 @@ const getTaskOpacity = (task: Task): number => {
   return ['DONE', 'FAILED'].includes(task.status) ? 0.6 : 1;
 };
 
+// Use NativeWind to style SVG
+// https://www.nativewind.dev/docs/tailwind/svg/fill
+cssInterop(Path, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { fill: true }
+  },
+});
+
 const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
 
   const colorScheme = useColorScheme();
@@ -146,11 +156,13 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
       <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
         <Path
           d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
-          fill={borderColor}
+          // Border color of marker
+          className="fill-outline-400"
         />
         <Path
           d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
-          fill={baseColor}
+          // Background color of marker
+          className="fill-background-0"
         />
       </Svg>
       <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
