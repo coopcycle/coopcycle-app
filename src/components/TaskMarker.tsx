@@ -4,7 +4,6 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import FAIcon from './Icon';
 import { Task } from '../types/task';
 import { MessageCircle } from 'lucide-react-native';
-import { PLATFORM } from '@/native-base-theme/variables/commonColor';
 
 // @TODO Is this function really needed? If yes, move it to a more generic util file
 const lightenColor = (hex: string, amount: number = 80) => {
@@ -52,13 +51,13 @@ const styles = StyleSheet.create({
 });
 
 interface TaskMarkerProps {
-  task?: Task;
+  task: Task;
   count?: number;
   size?: number;
   testID?: string;
 }
 
-function getWarnings(task) {
+function getWarnings(task: Task) {
 
   const warnings = [];
 
@@ -82,6 +81,7 @@ function getWarnings(task) {
   return warnings;
 }
 
+
 const TaskMarkerBadge = ({ count }) => {
 
   return (
@@ -97,7 +97,12 @@ const TaskMarkerBadge = ({ count }) => {
   )
 }
 
+const getTaskOpacity = (task: Task): number => {
+  return ['DONE', 'FAILED'].includes(task.status) ? 0.6 : 1;
+};
+
 const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
+
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
   const isUnassigned = !task?.assignedTo;
@@ -107,6 +112,8 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
   let baseColor = '#FFFFFF';
   let borderColor = '#000000';
   let iconColor = '#000000';
+  let warnings = []
+  let opacity = 1;
 
   if (count > 1) { // Cluster marker
     baseColor = '#1E88E5';
@@ -122,19 +129,20 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
       iconColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
       borderColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
     }
+
+    warnings = getWarnings(task);
+    opacity = getTaskOpacity(task);
   }
 
-  const warnings = getWarnings(task);
-
   const getContainerTransform = () => {
-  if (Platform.OS === PLATFORM.IOS) {
+  if (Platform.OS === 'ios') {
     return [{ translateY: -17 }, { translateX: 1 }];
   }
   return [{ translateY: 12 }];
 };
 
   return (
-   <View style={[styles.container, { transform: getContainerTransform() }]} testID={testID}>
+   <View style={[ styles.container, { transform: getContainerTransform(), opacity }]} testID={testID}>
       <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
         <Path
           d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
