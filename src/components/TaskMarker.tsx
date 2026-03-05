@@ -76,6 +76,7 @@ function getWarnings(task: Task, count: number = 1): object[] {
     });
   }
 
+  // TODO Restore payment method warnings
   /*
   if (
     task.metadata?.payment_method &&
@@ -157,19 +158,22 @@ const getMarkerIconProps = (task: Task, count: number = 1) => {
       iconProps = {
         color: inverseColor
       }
-    }
-
-    /*
-    if (isDarkMode) {
-      // @TODO Is this really needed? Dark mode styles are handled diferently now (without requiring to manually define colors here)
-      baseColor = isUnassigned ? '#414141' : '#000000';
-      iconColor = tagColor || (isUnassigned ? '#9C9C9C' : '#FFFFFF');
-      borderColor = lightenColor(iconColor, 80);
     } else {
-      iconColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
-      borderColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
+      // Allow to distinguish visually unassigned tasks
+      if (isUnassigned) {
+        backgroundProps = {
+          className: 'fill-background-50',
+          style: {}
+        }
+        borderProps = {
+          className: 'fill-outline-200',
+          style: {}
+        }
+        iconProps = {
+          className: 'text-primary-600'
+        };
+      }
     }
-    */
   }
 
   return [backgroundProps, borderProps, iconProps];
