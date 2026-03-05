@@ -1,24 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, useColorScheme, Platform } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import FAIcon from './Icon';
 import { Task } from '../types/task';
 import { MessageCircle } from 'lucide-react-native';
 import { cssInterop } from 'nativewind';
-
-// @TODO Is this function really needed? If yes, move it to a more generic util file
-const lightenColor = (hex: string, amount: number = 80) => {
-  try {
-    let c = hex.startsWith('#') ? hex.slice(1) : hex;
-    let b = (num & 0x0000ff) + amount;
-    r = Math.min(255, r);
-    g = Math.min(255, g);
-    b = Math.min(255, b);
-    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-  } catch {
-    return hex;
-  }
-};
+import chroma from 'chroma-js';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,9 +45,30 @@ interface TaskMarkerProps {
   testID?: string;
 }
 
-function getWarnings(task: Task) {
+// Use NativeWind for styling
 
-  const warnings = [];
+// https://www.nativewind.dev/docs/tailwind/svg/fill
+cssInterop(Path, {
+  className: {
+    target: "style",
+    nativeStyleToProp: { fill: true }
+  },
+});
+
+cssInterop(FAIcon, {
+  className: {
+    target: false,
+    nativeStyleToProp: { color: true }
+  },
+});
+
+function getWarnings(task: Task, count: number = 1): object[] {
+
+  const warnings: object[] = [];
+
+  if (count > 1) {
+    return warnings;
+  }
 
   if (task.address?.description) {
     warnings.push({
@@ -82,6 +90,9 @@ function getWarnings(task: Task) {
   return warnings;
 }
 
+const getOpacity = (task: Task, count: number = 1): number => {
+  return count == 1 ? (['DONE', 'FAILED'].includes(task.status) ? 0.6 : 1) : 1;
+};
 
 const TaskMarkerBadge = ({ count }) => {
 
@@ -98,38 +109,57 @@ const TaskMarkerBadge = ({ count }) => {
   )
 }
 
-const getTaskOpacity = (task: Task): number => {
-  return ['DONE', 'FAILED'].includes(task.status) ? 0.6 : 1;
-};
+const getMarkerIconProps = (task: Task, count: number = 1) => {
 
-// Use NativeWind to style SVG
-// https://www.nativewind.dev/docs/tailwind/svg/fill
-cssInterop(Path, {
-  className: {
-    target: "style",
-    nativeStyleToProp: { fill: true }
-  },
-});
-
-const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
-
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === 'dark';
   const isUnassigned = !task?.assignedTo;
-  const iconName = task?.type === 'PICKUP' ? 'cube' : 'arrow-down';
-  testID = testID || `taskmarker-${task?.id}`
 
-  let baseColor = '#FFFFFF';
-  let borderColor = '#000000';
-  let iconColor = '#000000';
-  let warnings = []
-  let opacity = 1;
+  let backgroundProps = {
+    className: 'fill-background-0',
+    style: {}
+  }
+  let borderProps = {
+    className: 'fill-outline-400',
+    style: {}
+  }
+  let iconProps = {
+    className: 'text-primary-800'
+  };
 
   if (count > 1) { // Cluster marker
-    baseColor = '#1E88E5';
-    borderColor = lightenColor(baseColor, 70);
+
+    backgroundProps = {
+      ...backgroundProps,
+      className: 'fill-info-200'
+    }
+    borderProps = {
+      ...borderProps,
+      className: 'fill-info-800'
+    }
+
   } else { // Single marker
+
     const tagColor = task?.tags?.[0]?.color;
+
+    if (tagColor) {
+
+      // https://github.com/gka/chroma.js/issues/181
+      const isTagColorDark = chroma(tagColor).get('lab.l') < 70
+      const inverseColor = isTagColorDark ?
+        chroma(tagColor).brighten(3).hex('rgb') : chroma(tagColor).darken(3).hex('rgb')
+
+      // We can't use NativeWind for this,
+      // as it won't be able to parse the dynamic className
+      backgroundProps = {
+        className: '',
+        style: { fill: tagColor }
+      }
+      // Border color stays the same for all markers
+      iconProps = {
+        color: inverseColor
+      }
+    }
+
+    /*
     if (isDarkMode) {
       // @TODO Is this really needed? Dark mode styles are handled diferently now (without requiring to manually define colors here)
       baseColor = isUnassigned ? '#414141' : '#000000';
@@ -139,17 +169,28 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
       iconColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
       borderColor = tagColor || (isUnassigned ? '#A0A0A0' : '#000000');
     }
-
-    warnings = getWarnings(task);
-    opacity = getTaskOpacity(task);
+    */
   }
+
+  return [backgroundProps, borderProps, iconProps];
+}
+
+const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => {
+
+  const iconName = task?.type === 'PICKUP' ? 'cube' : 'arrow-down';
+  testID = testID || `taskmarker-${task?.id}`
+
+  const warnings = getWarnings(task, count)
+  const opacity = getOpacity(task, count);
+
+  const [backgroundProps, borderProps, iconProps] = getMarkerIconProps(task, count);
 
   const getContainerTransform = () => {
-  if (Platform.OS === 'ios') {
-    return [{ translateY: -17 }, { translateX: 1 }];
-  }
-  return [{ translateY: 12 }];
-};
+    if (Platform.OS === 'ios') {
+      return [{ translateY: -17 }, { translateX: 1 }];
+    }
+    return [{ translateY: 12 }];
+  };
 
   return (
    <View style={[ styles.container, { transform: getContainerTransform(), opacity }]} testID={testID}>
@@ -157,22 +198,20 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
         <Path
           d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"
           // Border color of marker
-          className="fill-outline-400"
+          {...borderProps}
         />
         <Path
           d="M320 84C226 84 148 160 148 252C148 361 256 490 298 536C309 548 331 548 342 536C384 490 492 361 492 252C492 160 414 84 320 84z"
           // Background color of marker
-          className="fill-background-0"
+          {...backgroundProps}
         />
       </Svg>
       <View style={[styles.centered, { width: size, height: size * 1.4 }]}>
-        <Text style={[styles.count, { fontSize: size * 0.35 }]}>
-          {count > 1 ? ( // Cluster marker
-            count
-          ) : ( // Single marker
-            <FAIcon name={iconName} color={iconColor} size={size * 0.3} />
-          )}
-        </Text>
+        {count > 1 ? ( // Cluster marker
+          <Text className="text-info-800" style={{ fontSize: size * 0.3 }}>{count}</Text>
+        ) : ( // Single marker
+          <FAIcon name={iconName} size={size * 0.3} {...iconProps} />
+        )}
       </View>
       {warnings.length > 0 ? <TaskMarkerBadge count={warnings.length} /> : null}
     </View>
