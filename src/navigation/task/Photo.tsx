@@ -30,7 +30,7 @@ function Photo({ navigation, route, addPicture }) {
   useEffect(() => {
     requestPermission();
     requestLocationPermission();
-  }, []);
+  }, [requestPermission, requestLocationPermission]);
 
   useEffect(() => {
     const unsubFocus = navigation.addListener('focus', () => setCanMountCamera(true));
