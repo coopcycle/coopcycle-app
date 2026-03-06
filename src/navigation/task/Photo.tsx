@@ -54,7 +54,8 @@ function Photo({ navigation, route, addPicture }) {
       const photo = await camera.current.takePhoto({
         flash: flash ? 'on' : 'off',
       });
-      setImage(`file://${photo.path}`);
+      const uri = photo.path.startsWith('file://') ? photo.path : `file://${photo.path}`;
+      setImage(uri);
     }
   };
 
