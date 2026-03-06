@@ -16,7 +16,8 @@ import { Camera, useCameraDevice, useCameraPermission, useLocationPermission } f
 import { addPicture } from '../../redux/Courier';
 import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 
-function Photo({ navigation, route, addPicture, t }) {
+function Photo({ navigation, route, addPicture }) {
+  const { t } = useTranslation();
   const [image, setImage] = useState(null);
   const [canMountCamera, setCanMountCamera] = useState(false);
   const [flash, setFlash] = useState(false);
@@ -191,12 +192,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function PhotoWithTranslation(props) {
-  const { t } = useTranslation();
-  return <Photo {...props} t={t} />;
-}
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(PhotoWithTranslation);
+)(Photo);
