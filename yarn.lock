@@ -9353,6 +9353,7 @@ __metadata:
     react-native-tab-view: "npm:^4.2.0"
     react-native-vector-icons: "npm:^10.0.3"
     react-native-version-number: "npm:^0.3.6"
+    react-native-vision-camera: "npm:^4.7.3"
     react-native-webview: "npm:^13.16.0"
     react-native-worklets: "npm:^0.6.1"
     react-navigation-header-buttons: "npm:^13"
@@ -19253,6 +19254,26 @@ __metadata:
   version: 0.3.6
   resolution: "react-native-version-number@npm:0.3.6"
   checksum: 10c0/df12532d68e1b1b88850cba68419fcab2fdc9fcc571de74a6a72a0765361c6ccecd4a0d7e7165025d244572969379f1b2151009f84c711569b1034d0bcdcfe5a
+  languageName: node
+  linkType: hard
+
+"react-native-vision-camera@npm:^4.7.3":
+  version: 4.7.3
+  resolution: "react-native-vision-camera@npm:4.7.3"
+  peerDependencies:
+    "@shopify/react-native-skia": "*"
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: "*"
+    react-native-worklets-core: "*"
+  peerDependenciesMeta:
+    "@shopify/react-native-skia":
+      optional: true
+    react-native-reanimated:
+      optional: true
+    react-native-worklets-core:
+      optional: true
+  checksum: 10c0/46001037f4f9a85e75c023e5082b137c179fd520741e088009d217f0a6eaf3a819b9784ae68aced95fa70c3345346c79dd2ee70bc04cfd811c7eefeda675cab2
   languageName: node
   linkType: hard
 
