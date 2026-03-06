@@ -1,5 +1,5 @@
 import { HeaderBackButton } from '@react-navigation/elements';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
@@ -10,7 +10,7 @@ import { useStackNavigatorScreenOptions } from '../styles';
 import ProofOfDeliveryTabs from './TaskAttachmentsNavigator';
 import { getTaskTitle } from '../../components/TaskTitle';
 
-const CompleteStack = createNativeStackNavigator();
+const CompleteStack = createStackNavigator();
 
 const completeTitle = routeParams => {
   if (routeParams) {
@@ -57,7 +57,7 @@ const CompleteNavigator = () => {
   );
 };
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createStackNavigator();
 
 export default () => {
 
@@ -66,8 +66,9 @@ export default () => {
   const screenOptions = useStackNavigatorScreenOptions({
     // Do *NOT* use presentation = modal,
     // to avoid conflicting with gestures to close the modal when signing proofs of delivery.
-    // gestureEnabled should be used for this, but it doesn't work as expected.
     presentation: 'card',
+    gestureEnabled: false,
+    fullScreenGestureEnabled: false,
   });
 
   return (
