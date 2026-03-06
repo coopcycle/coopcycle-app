@@ -3582,6 +3582,12 @@ PODS:
     - StripeUICore (= 24.25.0)
   - StripeUICore (24.25.0):
     - StripeCore (= 24.25.0)
+  - VisionCamera (4.7.3):
+    - VisionCamera/Core (= 4.7.3)
+    - VisionCamera/React (= 4.7.3)
+  - VisionCamera/Core (4.7.3)
+  - VisionCamera/React (4.7.3):
+    - React-Core
   - Yoga (0.0.0)
   - ZXingObjC/Core (3.6.9)
   - ZXingObjC/OneD (3.6.9):
@@ -3716,6 +3722,7 @@ DEPENDENCIES:
   - RNWorklets (from `../node_modules/react-native-worklets`)
   - SocketRocket (~> 0.7.1)
   - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
+  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -4016,6 +4023,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-worklets"
   stripe-react-native:
     :path: "../node_modules/@stripe/stripe-react-native"
+  VisionCamera:
+    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -4193,6 +4202,7 @@ SPEC CHECKSUMS:
   StripePaymentSheet: 048eff784e164a79c2e5f3e13e5b1dbe2130a812
   StripePaymentsUI: c15edfc7d7a8ac6d8547af5a990517aa9ccfdbb0
   StripeUICore: 55ebd4a7a2c12600645526bfdd6e5bd8ea1c5335
+  VisionCamera: 7187b3dac1ff3071234ead959ce311875748e14f
   Yoga: cc4a6600d61e4e9276e860d4d68eebb834a050ba
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 

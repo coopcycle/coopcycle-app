@@ -1,4 +1,3 @@
-import { Camera, CameraView } from 'expo-camera';
 import { Button, ButtonText, ButtonIcon} from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -6,184 +5,154 @@ import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import { Icon } from '@/components/ui/icon';
 import { Image as ImageIcon, Zap, ZapOff, Camera as CameraIcon, FolderSearch } from 'lucide-react-native';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { useRef, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import { File } from 'expo-file-system';
+import { Camera, useCameraDevice, useCameraPermission, useLocationPermission } from 'react-native-vision-camera';
 
 import { addPicture } from '../../redux/Courier';
 import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 
-class Photo extends Component {
-  constructor(props) {
-    super(props);
+function Photo({ navigation, route, addPicture }) {
+  const { t } = useTranslation();
+  const [image, setImage] = useState(null);
+  const [canMountCamera, setCanMountCamera] = useState(false);
+  const [flash, setFlash] = useState(false);
 
-    this.state = {
-      image: null,
-      canStartCamera: false,
-      canMountCamera: false,
-      flash: false,
+  const camera = useRef(null);
+  const { hasPermission, requestPermission } = useCameraPermission();
+  const { hasPermission: hasLocationPermission, requestPermission: requestLocationPermission } = useLocationPermission();
+  const device = useCameraDevice('back');
+
+  useEffect(() => {
+    requestPermission();
+    requestLocationPermission();
+  }, [requestPermission, requestLocationPermission]);
+
+  useEffect(() => {
+    const unsubFocus = navigation.addListener('focus', () => setCanMountCamera(true));
+    const unsubBlur = navigation.addListener('blur', () => setCanMountCamera(false));
+    return () => {
+      unsubFocus();
+      unsubBlur();
     };
+  }, [navigation]);
 
-    this.camera = React.createRef();
-  }
-
-  componentDidMount() {
-    this.unsubscribeFromFocusListener = this.props.navigation.addListener(
-      'focus',
-      () => {
-        this.setState({ canMountCamera: true });
-      },
-    );
-    this.unsubscribeFromBlurListener = this.props.navigation.addListener(
-      'blur',
-      () => {
-        this.setState({ canMountCamera: false });
-      },
-    );
-    Camera.requestCameraPermissionsAsync().then(permissionResponse => {
-      if (permissionResponse.granted) {
-        this.setState({ canStartCamera: true });
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromFocusListener();
-    this.unsubscribeFromBlurListener();
-  }
-
-  _saveImage() {
-    const task = this.props.route.params?.task;
-    const { image } = this.state;
+  const saveImage = () => {
+    const task = route.params?.task;
     if (image) {
-      this.props.addPicture(task, image.uri);
-      navigateBackToCompleteTask(this.props.navigation, this.props.route);
+      addPicture(task, image);
+      navigateBackToCompleteTask(navigation, route);
     }
-  }
+  };
 
-  _takePicture() {
-    if (this.camera.current) {
-      const options = { quality: 0.5, base64: false, imageType: 'jpg' };
-      this.camera.current.takePictureAsync(options).then(data => {
-        this.setState({ image: data });
+  const takePicture = async () => {
+    if (camera.current) {
+      const photo = await camera.current.takePhoto({
+        flash: flash ? 'on' : 'off',
       });
+      const uri = photo.path.startsWith('file://') ? photo.path : `file://${photo.path}`;
+      setImage(uri);
     }
-  }
+  };
 
-  toggleFlash() {
-    this.setState({ flash: !this.state.flash });
-  }
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-  render() {
-    const { width } = Dimensions.get('window');
-    const previewSize = width / 3 - 15;
-    const { image } = this.state;
+    if (!result.canceled) {
+      const file = new File(result.assets[0].uri);
 
-    const pickImage = async () => {
-
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      if (!result.canceled) {
-
-        const file = new File(result.assets[0].uri);
-
-        if (file.exists) {
-          const task = this.props.route.params?.task;
-
-          this.props.addPicture(task, file.uri);
-
-          navigateBackToCompleteTask(this.props.navigation, this.props.route);
-        }
+      if (file.exists) {
+        const task = route.params?.task;
+        addPicture(task, file.uri);
+        navigateBackToCompleteTask(navigation, route);
       }
-    };
+    }
+  };
 
-    return (
-      <VStack flex={1}>
-        <VStack flex={1} className="p-3">
-          <HStack className="justify-between items-center mb-5 pt-3">
-            <Text className="text-md">
-              {this.props.t('PHOTO_DISCLAIMER')}
-            </Text>
-            <Button
-              onPress={pickImage}
-              size={36}
-              variant="link"
-            >
-              <ButtonIcon as={FolderSearch} />
-            </Button>
-          </HStack>
-          <Box className="border-2 border-outline-600 flex-1 items-center">
-            {/*
-            // Only one Camera preview can be active at any given time.
-            // If you have multiple screens in your app, you should unmount Camera components whenever a screen is unfocused.
-            */}
-            {this.state.canMountCamera && this.state.canStartCamera ? (
-              <CameraView
-                ref={this.camera}
-                style={styles.camera}
-                flashMode={this.state.flash ? 'on' : 'off'}>
-              </CameraView>
-            ) : null}
-            <Button
-              onPress={this.toggleFlash.bind(this)}
-              variant="solid"
-              colorScheme="yellow"
-              style={styles.flash}
-            >
-              <ButtonIcon as={this.state.flash ? Zap : ZapOff} />
-            </Button>
-            <Button
-              onPress={this._takePicture.bind(this)}
-              size="lg"
-              variant="solid"
-              style={styles.cameraButton}
-            >
-              <ButtonIcon size={32} as={CameraIcon} />
-            </Button>
-            <View
-              style={[
-                styles.preview,
-                { width: previewSize, height: previewSize },
-              ]}>
-              {!image && <Icon as={ImageIcon} size="xl" className="text-color-light" />}
-              {image && (
-                <Image
-                  style={{ width: previewSize, height: previewSize }}
-                  source={{ uri: image.uri }}
-                />
-              )}
-            </View>
-          </Box>
-        </VStack>
-        <VStack className="p-2">
-          <Button size="lg" onPress={this._saveImage.bind(this)}>
-            <ButtonText>{this.props.t('PHOTO_ADD')}</ButtonText>
+  const { width } = Dimensions.get('window');
+  const previewSize = width / 3 - 15;
+  const canShowCamera = canMountCamera && hasPermission && device != null;
+
+  return (
+    <VStack flex={1}>
+      <VStack flex={1} className="p-3">
+        <HStack className="justify-between items-center mb-5 pt-3">
+          <Text className="text-md">
+            {t('PHOTO_DISCLAIMER')}
+          </Text>
+          <Button
+            onPress={pickImage}
+            size={36}
+            variant="link"
+          >
+            <ButtonIcon as={FolderSearch} />
           </Button>
-        </VStack>
+        </HStack>
+        <Box className="border-2 border-outline-600 flex-1 items-center">
+          {/*
+          // Only one Camera preview can be active at any given time.
+          // If you have multiple screens in your app, you should unmount Camera components whenever a screen is unfocused.
+          */}
+          {canShowCamera ? (
+            <Camera
+              ref={camera}
+              style={styles.camera}
+              device={device}
+              isActive={true}
+              photo={true}
+              enableLocation={true}
+            />
+          ) : null}
+          <Button
+            onPress={() => setFlash(f => !f)}
+            variant="solid"
+            colorScheme="yellow"
+            style={styles.flash}
+          >
+            <ButtonIcon as={flash ? Zap : ZapOff} />
+          </Button>
+          <Button
+            onPress={takePicture}
+            size="lg"
+            variant="solid"
+            style={styles.cameraButton}
+          >
+            <ButtonIcon size={32} as={CameraIcon} />
+          </Button>
+          <View
+            style={[
+              styles.preview,
+              { width: previewSize, height: previewSize },
+            ]}>
+            {!image && <Icon as={ImageIcon} size="xl" className="text-color-light" />}
+            {image && (
+              <Image
+                style={{ width: previewSize, height: previewSize }}
+                source={{ uri: image }}
+              />
+            )}
+          </View>
+        </Box>
       </VStack>
-    );
-  }
+      <VStack className="p-2">
+        <Button size="lg" onPress={saveImage}>
+          <ButtonText>{t('PHOTO_ADD')}</ButtonText>
+        </Button>
+      </VStack>
+    </VStack>
+  );
 }
 
 const styles = StyleSheet.create({
-  canvasContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    borderWidth: 1,
-    overflow: 'hidden',
-    marginBottom: 20,
-  },
   camera: {
     flex: 1,
     width: "100%",
@@ -220,11 +189,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addPicture: (task, base64) => dispatch(addPicture(task, base64)),
+    addPicture: (task, uri) => dispatch(addPicture(task, uri)),
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation()(Photo));
+)(Photo);
