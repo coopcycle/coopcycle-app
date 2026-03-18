@@ -99,7 +99,8 @@ export const Option = ({
 
         return (
           <Radio key={`option-${index}-value-${valueIndex}`}
-            value={optionValue} size="lg" isInvalid={false} isDisabled={isDisabled}>
+            value={optionValue} size="lg" isInvalid={false} isDisabled={isDisabled}
+            testID={`productOptions:${index}:${valueIndex}`}>
             <RadioIndicator>
               <RadioIcon as={CircleIcon} />
             </RadioIndicator>
