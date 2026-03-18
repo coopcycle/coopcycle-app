@@ -38,7 +38,7 @@ export default props => {
   const {
     selected: selectedOptions,
     isValid: optionsAreValid,
-    contains,
+    containsIds,
     getQuantity,
     add,
     increment,
@@ -154,6 +154,7 @@ export default props => {
                 add={addOptionValue}
                 increment={increment}
                 decrement={decrement}
+                containsIds={containsIds}
                 />
             </Box>
           )

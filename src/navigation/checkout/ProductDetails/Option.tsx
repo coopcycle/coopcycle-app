@@ -66,6 +66,7 @@ export const Option = ({
   add,
   increment,
   decrement,
+  containsIds,
 }) => {
 
   if (isAdditionalOption(option)) {
@@ -89,15 +90,23 @@ export const Option = ({
 
   return (
     <RadioGroup onChange={(optionValue) => add(optionValue)}>
-      {option.hasMenuItem.map((optionValue, valueIndex) => (
-        <Radio key={`option-${index}-value-${valueIndex}`}
-          value={optionValue} size="lg" isInvalid={false} isDisabled={false}>
-          <RadioIndicator>
-            <RadioIcon as={CircleIcon} />
-          </RadioIndicator>
-          <RadioLabel>{ optionValueLabel(optionValue, getPriceForOptionValue(optionValue)) }</RadioLabel>
-        </Radio>
-      ))}
+      {option.hasMenuItem.map((optionValue, valueIndex) => {
+
+        let isDisabled = false;
+        if (Array.isArray(optionValue.dependsOn) && optionValue.dependsOn.length > 0) {
+          isDisabled = !containsIds(optionValue.dependsOn)
+        }
+
+        return (
+          <Radio key={`option-${index}-value-${valueIndex}`}
+            value={optionValue} size="lg" isInvalid={false} isDisabled={isDisabled}>
+            <RadioIndicator>
+              <RadioIcon as={CircleIcon} />
+            </RadioIndicator>
+            <RadioLabel>{optionValueLabel(optionValue, getPriceForOptionValue(optionValue))}</RadioLabel>
+          </Radio>
+        )
+      })}
     </RadioGroup>
   );
 

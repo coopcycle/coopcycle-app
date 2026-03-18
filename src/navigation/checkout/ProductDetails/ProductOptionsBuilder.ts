@@ -103,6 +103,20 @@ export default function useProductOptionsBuilder(options) {
     return index !== -1;
   };
 
+  const containsIds = (optionValueIds: array) => {
+    const allOptionValues = options.reduce((result, opt) => result.concat(opt.hasMenuItem), []);
+    const selectedAsOptionValueIds = selected.map((v) => {
+      const index = _.findIndex(allOptionValues, (optVal) => optVal.identifier === v.code);
+      if (index !== -1) {
+        return allOptionValues[index]['@id']
+      }
+    })
+
+    console.log('selectedAsOptionValueIds', selectedAsOptionValueIds)
+
+    return _.intersection(selectedAsOptionValueIds, optionValueIds).length > 0;
+  }
+
   const add = optionValue => {
     increment(optionValue);
   };
@@ -187,5 +201,6 @@ export default function useProductOptionsBuilder(options) {
     add,
     increment,
     decrement,
+    containsIds,
   };
 }
