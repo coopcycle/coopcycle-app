@@ -1,36 +1,28 @@
 import _ from 'lodash';
 import React, { useMemo, useRef, useState } from 'react';
-import { SectionList, View } from 'react-native';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import ItemSeparator from '../../../components/ItemSeparator';
 import { addItemV2 } from '../../../redux/Checkout/actions';
-import { useBackgroundContainerColor } from '../../../styles/theme';
 import { formatPrice } from '../../../utils/formatting';
-import { isAdditionalOption } from '../../../utils/product';
 import FooterButton from '../components/FooterButton';
 import { OptionHeader } from './OptionHeader';
-import { OptionValue } from './OptionValue';
+import { Option } from './Option';
 import { OptionsSectionHeader } from './OptionsSectionHeader';
 import { ProductImage } from './ProductImage';
 import { ProductInfo } from './ProductInfo';
 import useProductOptionsBuilder from './ProductOptionsBuilder';
 import { ProductQuantity } from './ProductQuantity';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const LIST_SECTION_QUANTITY = 'quantity';
-const LIST_SECTION_OPTIONS_HEADER = 'options-header';
-const LIST_SECTION_OPTION = 'option';
-
-const PADDING = 24;
+import { FlashList } from "@shopify/flash-list";
+import { Box } from '@/components/ui/box';
 
 function ListHeaderComponent({ product }) {
-  const backgroundColor = useBackgroundContainerColor();
 
   return (
     <>
       <ProductImage product={product} />
-      <View style={{ padding: PADDING, paddingBottom: 0, backgroundColor }}>
+      <View>
         <ProductInfo product={product} />
       </View>
     </>
@@ -52,68 +44,41 @@ export default props => {
     increment,
     decrement,
   } = useProductOptionsBuilder(productOptions);
-  const backgroundColor = useBackgroundContainerColor();
 
-  const list = useRef();
-
+  const list = useRef(null);
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
+
+  // https://shopify.github.io/flash-list/docs/guides/section-list/
+  const data = productOptions.reduce((result, productOption) => {
+    // Section header
+    result.push({ type: 'sectionHeader', data: productOption });
+    // Option group
+    result.push({ type: 'optionValues', data: productOption });
+    return result;
+  }, []);
 
   const shouldRenderOptions = productOptions.length > 0;
 
-  const menuSections = productOptions.map(menuSection => ({
-    ...menuSection,
-    type: LIST_SECTION_OPTION,
-    data: menuSection.hasMenuItem,
-  }));
-
-  // render static elements as section items (not as section headers)
-  // to avoid this issue: https://github.com/facebook/react-native/issues/38248
-  const data = [{ type: LIST_SECTION_QUANTITY, data: ['static-item'] }]
-    .concat(
-      shouldRenderOptions
-        ? [
-            { type: LIST_SECTION_OPTIONS_HEADER, data: ['static-item'] },
-            ...menuSections,
-          ]
-        : [],
-    )
-    .map((section, index) => ({
-      ...section,
-      index,
-    }));
-
-  const findSectionByOptionValue = optionValue => {
-    return _.find(data, section => {
-      if (section.hasMenuItem) {
-        return (
-          _.findIndex(
-            section.hasMenuItem,
-            el => el.identifier === optionValue.identifier,
-          ) !== -1
-        );
-      } else {
-        return false;
-      }
+  const findSectionHeaderIndexByOptionValue = optionValue => {
+    const sectionHeaders = _.filter(data, (item) => item.type === 'sectionHeader');
+    return _.findIndex(sectionHeaders, (sh) => {
+      return _.findIndex(sh.data.hasMenuItem, optVal => optVal.identifier === optionValue.identifier) !== -1;
     });
   };
 
   const addOptionValue = optionValue => {
+
     add(optionValue);
 
-    const option = findSectionByOptionValue(optionValue);
+    const sectionHeaderIndex = findSectionHeaderIndexByOptionValue(optionValue);
+    const nextIndex = sectionHeaderIndex + 2;
 
-    if (option && !isAdditionalOption(option)) {
-      // if it's a single choice option scroll to the next one
-      const nextIndex = option.index + 1;
-
-      if (list.current && nextIndex < data.length) {
-        list.current.scrollToLocation({
-          sectionIndex: nextIndex,
-          itemIndex: 1, // for some reason it scrolls to the top if itemIndex is 0, same issue: https://stackoverflow.com/questions/76311750/scrolltolocation-always-scrolling-to-top-in-sectionlist-in-react-native
-        });
-      }
+    if (list.current && nextIndex < data.length) {
+      list.current.scrollToIndex({
+        index: nextIndex,
+        animate: true,
+      });
     }
   };
 
@@ -149,69 +114,51 @@ export default props => {
     props.navigation.popTo('CheckoutMain', { restaurant });
   };
 
+  const stickyHeaderIndices = data
+    .reduce((result, item, index) => {
+      if (item.type === 'sectionHeader') {
+        result.push(index)
+      }
+      return result;
+    }, [])
+
   return (
     <SafeAreaView
       testID="productDetails"
       style={{ flex: 1 }}
       edges={['bottom']}>
-      <SectionList
-        style={{ flex: 1 }}
+      <Box className="bg-background-100 p-4 gap-2">
+        <ListHeaderComponent product={product} />
+        <ProductQuantity
+          quantity={quantity}
+          setQuantity={setQuantity}
+        />
+        <OptionsSectionHeader options={productOptions} />
+      </Box>
+      <FlashList
         ref={list}
-        sections={data}
-        keyExtractor={(item, index) => index}
-        stickySectionHeadersEnabled={true}
-        renderSectionFooter={() => (
-          <View style={{ paddingTop: PADDING, backgroundColor }}>
-            <ItemSeparator />
-          </View>
-        )}
-        ListHeaderComponent={<ListHeaderComponent product={product} />}
-        renderSectionHeader={({ section }) => {
-          if (section.type === LIST_SECTION_OPTION) {
-            return <OptionHeader option={section} />;
-          } else {
-            return null;
+        data={data}
+        stickyHeaderIndices={stickyHeaderIndices}
+        renderItem={({ item, index }) => {
+
+          if (item.type === 'sectionHeader') {
+            return <OptionHeader option={item.data} />
           }
-        }}
-        renderItem={({ item, section, index }) => {
-          const style = {
-            padding: PADDING,
-            backgroundColor,
-          };
-          if (section.type === LIST_SECTION_QUANTITY) {
-            return (
-              <View style={[style, { paddingBottom: 0 }]}>
-                <ProductQuantity
-                  quantity={quantity}
-                  setQuantity={setQuantity}
+
+          return (
+            <Box className="p-4">
+              <Option
+                option={item.data}
+                index={index}
+                getQuantity={getQuantity}
+                add={addOptionValue}
+                increment={increment}
+                decrement={decrement}
                 />
-              </View>
-            );
-          } else if (section.type === LIST_SECTION_OPTIONS_HEADER) {
-            return (
-              <View style={[style, { paddingBottom: 0 }]}>
-                <OptionsSectionHeader options={productOptions} />
-              </View>
-            );
-          } else if (section.type === LIST_SECTION_OPTION) {
-            return (
-              <View style={[style, { paddingVertical: 8 }]}>
-                <OptionValue
-                  option={section}
-                  optionValue={item}
-                  index={index}
-                  contains={contains}
-                  getQuantity={getQuantity}
-                  add={addOptionValue}
-                  increment={increment}
-                  decrement={decrement}
-                />
-              </View>
-            );
-          } else {
-            return null;
-          }
+            </Box>
+          )
         }}
+        getItemType={(item) => item.type}
       />
       {totalPrice !== null ? (
         <FooterButton
