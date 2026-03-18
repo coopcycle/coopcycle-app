@@ -112,8 +112,6 @@ export default function useProductOptionsBuilder(options) {
       }
     })
 
-    console.log('selectedAsOptionValueIds', selectedAsOptionValueIds)
-
     return _.intersection(selectedAsOptionValueIds, optionValueIds).length > 0;
   }
 
