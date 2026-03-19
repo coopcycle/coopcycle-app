@@ -38,6 +38,7 @@ platform :android do
 
     default_package_name = CredentialsManager::AppfileConfig.try_fetch_value(:package_name)
     package_name = supply_config[:package_name]
+    track = supply_config[:track]
 
     gradle_task = "bundleOfficialRelease"
     artifact_filepath = "officialRelease/app-official-release"
@@ -51,7 +52,7 @@ platform :android do
 
     begin
       previous_build_number = google_play_track_version_codes(
-        track: "internal",
+        track: track,
       )[0]
       current_build_number = previous_build_number + 1
       increment_version_code(
