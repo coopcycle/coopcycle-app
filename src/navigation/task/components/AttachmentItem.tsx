@@ -1,8 +1,7 @@
 import { Icon } from '@/components/ui/icon';
-import { Image } from '@/components/ui/image';
 import { CircleX } from 'lucide-react-native';
 import React from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 const { width } = Dimensions.get('window');
 const imageSize = (width - 64) / 2;
@@ -28,6 +27,7 @@ export const AttachmentItem = React.memo(({
       <Image
         source={{ uri: base64 }}
         style={{ width: imageSize - 2, height: imageSize - 2 }}
+        resizeMode="contain"
       />
       <TouchableOpacity style={styles.imageDelBtn} onPress={onPressDelete}>
         <Icon as={CircleX} size={40} style={{ color: 'black' }} />
