@@ -79,14 +79,17 @@ export const SubmitButton = ({
                 markTaskDone(
                   task,
                   formValues.notes,
-                  navigateOnSuccess,
+                  () => {
+                    setSubmitting(false);
+                    navigateOnSuccess();
+                  },
                   formValues.contactName,
                 ),
               );
+            } else {
+              setSubmitting(false);
+              navigateOnSuccess();
             }
-            navigateOnSuccess();
-
-            setSubmitting(false);
           },
           () => {
             setSubmitting(false);

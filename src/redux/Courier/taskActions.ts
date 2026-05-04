@@ -251,10 +251,14 @@ function uploadEntitiesImages(entities, url) {
       },
     }));
 
-    Promise.all(promises).then(() => {
-      console.log('All files have been uploaded');
-      dispatch(clearFiles());
-    })
+    Promise.all(promises)
+      .then(() => {
+        console.log('All files have been uploaded');
+        dispatch(clearFiles());
+      })
+      .catch(e => {
+        console.warn('File upload failed', e);
+      });
 
   };
 }

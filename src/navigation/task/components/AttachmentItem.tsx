@@ -1,19 +1,20 @@
 import { Icon } from '@/components/ui/icon';
 import { Image } from '@/components/ui/image';
 import { CircleX } from 'lucide-react-native';
+import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+
+const { width } = Dimensions.get('window');
+const imageSize = (width - 64) / 2;
 
 interface IAttachmentItemProps {
   base64: string;
   onPressDelete: () => void;
 }
-export const AttachmentItem = ({
+export const AttachmentItem = React.memo(({
   base64,
   onPressDelete,
 }: IAttachmentItemProps) => {
-  const { width } = Dimensions.get('window');
-
-  const imageSize = (width - 64) / 2;
 
   if (
     !base64.startsWith('file://') &&
@@ -33,7 +34,7 @@ export const AttachmentItem = ({
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   image: {
