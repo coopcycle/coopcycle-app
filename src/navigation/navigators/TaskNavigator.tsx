@@ -51,6 +51,8 @@ const CompleteNavigator = () => {
         component={ProofOfDeliveryTabs}
         options={({ route }) => ({
           title: completeTitle(route.params),
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
         })}
       />
     </CompleteStack.Navigator>
