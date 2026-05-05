@@ -35,7 +35,7 @@ module.exports = {
       binaryPath:
         'ios/build/Build/Products/Release-iphonesimulator/CoopCycle.app',
       build:
-        'xcodebuild ONLY_ACTIVE_ARCH=YES -arch x86_64 -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet',
+        'xcodebuild ONLY_ACTIVE_ARCH=YES -workspace ios/CoopCycle.xcworkspace -scheme CoopCycle -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet',
     },
     'android.debug': {
       type: 'android.apk',
@@ -59,7 +59,7 @@ module.exports = {
   devices: {
     iosSimulator: {
       type: 'ios.simulator',
-      device: { type: 'iPhone 16', os: 'iOS 18.5' },
+      device: { type: 'iPhone 16' },
     },
     androidEmulator: {
       type: 'android.emulator',
