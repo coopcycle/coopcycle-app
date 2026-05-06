@@ -36,6 +36,7 @@ VARIANTS.forEach(variant => {
 
       await connectToCity(city);
 
+      await waitToBeVisible('askAddressAutocomplete', 30000);
       await selectAutocompleteAddress('askAddressAutocomplete', address.text, address.placeId);
 
       // The server may be under maintenance
