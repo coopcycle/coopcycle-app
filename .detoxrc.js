@@ -88,6 +88,15 @@ module.exports = {
     'android.emu.release': {
       device: 'androidEmulator',
       app: 'android.release',
+      testRunner: {
+        args: {
+          config: 'e2e/jest.android.config.js',
+        },
+      },
+    },
+    'android.emu.release.screenshots': {
+      device: 'androidEmulator',
+      app: 'android.release',
     },
     'android.att.release': {
       device: 'attached',

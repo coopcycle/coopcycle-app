@@ -205,9 +205,9 @@ jobs:
           working-directory: coopcycle-app-repo
           script: |
             avdmanager list device
-            node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel info --testPathIgnorePatterns="e2e/screenshots.spec.js"
+            node node_modules/.bin/detox test -c android.emu.release --headless --device-name="test" --loglevel info
             if [ "$GITHUB_REF" = "refs/heads/master" ]; then
-              node node_modules/.bin/detox test -c android.emu.release --take-screenshots manual --headless --device-name="test" --artifacts-location ./artifacts/phone e2e/screenshots.spec.js
+              node node_modules/.bin/detox test -c android.emu.release.screenshots --take-screenshots manual --headless --device-name="test" --artifacts-location ./artifacts/phone e2e/screenshots.spec.js
             fi
 
 #      - name: List emulators
