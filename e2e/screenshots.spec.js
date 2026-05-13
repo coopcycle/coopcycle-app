@@ -36,11 +36,11 @@ VARIANTS.forEach(variant => {
 
       await connectToCity(city);
 
-      await waitToBeVisible('askAddressAutocomplete', 30000);
-      await selectAutocompleteAddress('askAddressAutocomplete', address.text, address.placeId);
-
-      // The server may be under maintenance
+      // The server may be under maintenance or slow to respond
       try {
+        await waitToBeVisible('askAddressAutocomplete', 30000);
+        await selectAutocompleteAddress('askAddressAutocomplete', address.text, address.placeId);
+
         await waitToBeVisible('restaurantList');
 
         await device.takeScreenshot(`Restaurants-${city}-${locale}`);
