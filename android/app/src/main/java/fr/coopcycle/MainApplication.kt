@@ -21,6 +21,8 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.gms.security.ProviderInstaller.ProviderInstallListener
+import com.transistorsoft.locationmanager.adapter.BackgroundFetch
+import com.transistorsoft.rnbackgroundfetch.HeadlessTask
 
 import androidx.multidex.MultiDexApplication
 
@@ -52,6 +54,7 @@ class MainApplication : MultiDexApplication(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    BackgroundFetch.registerHeadlessTask(this, HeadlessTask::class.java)
     upgradeSecurityProvider()
     try {
       DefaultNewArchitectureEntryPoint.releaseLevel = ReleaseLevel.valueOf(BuildConfig.REACT_NATIVE_RELEASE_LEVEL.uppercase())
