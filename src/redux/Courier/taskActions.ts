@@ -258,6 +258,12 @@ function uploadEntitiesImages(entities, url) {
       })
       .catch(e => {
         console.warn('File upload failed', e);
+        Alert.alert(
+          i18n.t('FAILED_TASK_COMPLETE'),
+          i18n.t('AN_ERROR_OCCURRED'),
+          [{ text: 'OK' }],
+          { cancelable: false },
+        );
       });
 
   };
