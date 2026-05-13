@@ -10,7 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
-import { File } from 'expo-file-system';
+import { File, Directory, Paths } from 'expo-file-system';
+import { v4 as uuid } from 'uuid';
 import { Camera, useCameraDevice, useCameraPermission, useLocationPermission } from 'react-native-vision-camera';
 
 import { addPicture } from '../../redux/Courier';
@@ -44,7 +45,11 @@ function Photo({ navigation, route, addPicture }) {
   const saveImage = () => {
     const task = route.params?.task;
     if (image) {
-      addPicture(task, image);
+      const pendingUploadsDir = new Directory(Paths.document, 'pending_uploads');
+      if (!pendingUploadsDir.exists) pendingUploadsDir.create();
+      const destFile = new File(pendingUploadsDir, uuid() + '.jpg');
+      new File(image).copy(destFile);
+      addPicture(task, destFile.uri);
       navigateBackToCompleteTask(navigation, route);
     }
   };
