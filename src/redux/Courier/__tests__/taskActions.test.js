@@ -236,7 +236,7 @@ describe('Redux | Tasks | Actions', () => {
     });
   });
 
-  test('markTaskDone with PoDs | Successful request', () => {
+  test('markTaskDone with PoDs | Successful request', async () => {
     const task = { '@id': '/api/tasks/1' };
     const notes = 'notes';
     const resolveValue = { ...task };
@@ -250,7 +250,7 @@ describe('Redux | Tasks | Actions', () => {
     };
     client.put.mockResolvedValue(resolveValue);
     client.put.mockResolvedValue(resolveValue);
-    client.uploadFileAsync.mockResolvedValue();
+    client.uploadFileAsync.mockResolvedValue({ status: 200 });
     httpClientService.setTestClient(client);
 
     const { actionTracker, getActions } = actionTrackerMiddleware();
@@ -268,22 +268,28 @@ describe('Redux | Tasks | Actions', () => {
       },
     });
 
-    // Make sure to return the promise
-    return store.dispatch(markTaskDone(task, notes)).then(() => {
-      const actions = getActions();
+    await store.dispatch(markTaskDone(task, notes));
 
-      expect(actions).toContainEqual(markTaskDoneRequest(task));
-      expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue));
+    // uploadFileAsync is now called asynchronously via the UploadQueue:
+    // enqueue (AsyncStorage.getItem → setItem) → processUploadQueue (AsyncStorage.getItem) → uploadFileAsync
+    // Each AsyncStorage operation resolves in one microtask tick, so we flush several times.
+    for (let i = 0; i < 5; i++) {
+      await Promise.resolve();
+    }
 
-      expect(client.put).toHaveBeenCalledTimes(1);
-      expect(client.uploadFileAsync).toHaveBeenCalledTimes(1);
-      expect(client.uploadFileAsync).toHaveBeenCalledWith(
-        '/api/task_images',
-        '123456',
-        { headers: { 'X-Attach-To': '/api/tasks/1' } },
-      );
-      expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes });
-    });
+    const actions = getActions();
+
+    expect(actions).toContainEqual(markTaskDoneRequest(task));
+    expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue));
+
+    expect(client.put).toHaveBeenCalledTimes(1);
+    expect(client.uploadFileAsync).toHaveBeenCalledTimes(1);
+    expect(client.uploadFileAsync).toHaveBeenCalledWith(
+      '/api/task_images',
+      '123456',
+      { headers: { 'X-Attach-To': '/api/tasks/1' } },
+    );
+    expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes });
   });
 
   test('markTaskDone | Failed request', () => {
