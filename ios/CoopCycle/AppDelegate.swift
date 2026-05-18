@@ -34,7 +34,7 @@ public class AppDelegate: ExpoAppDelegate {
 #endif
 
     FirebaseApp.configure()
-    TSBackgroundFetch.sharedInstance().didFinishLaunching(withOptions: launchOptions)
+    TSBackgroundFetch.sharedInstance().didFinishLaunching()
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
