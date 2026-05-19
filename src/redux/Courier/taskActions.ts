@@ -4,12 +4,15 @@ import moment from 'moment';
 import { Alert } from 'react-native';
 import { createAction } from 'redux-actions';
 
+import { File } from 'expo-file-system';
+
 import NavigationHolder from '../../NavigationHolder';
 import analyticsEvent from '../../analytics/Event';
 import tracker from '../../analytics/Tracker';
 import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
 import { selectCurrentRoute, selectHttpClient } from '../App/selectors';
+import UploadQueue from '../../services/UploadQueue';
 import {
   cancelTaskFailure,
   cancelTaskSuccess,
@@ -226,16 +229,13 @@ export function loadTasks(
 }
 
 function uploadEntityImages(entity, url) {
-  return uploadEntitiesImages([ entity ], url);
+  return uploadEntitiesImages([entity], url);
 }
 
 function uploadEntitiesImages(entities, url) {
-
   return function (dispatch, getState) {
-
     const signatures = selectSignatures(getState());
     const pictures = selectPictures(getState());
-    const httpClient = selectHttpClient(getState());
 
     const files = signatures.concat(pictures);
 
@@ -245,27 +245,54 @@ function uploadEntitiesImages(entities, url) {
       return;
     }
 
-    const promises = files.map(file => httpClient.uploadFileAsync(url, file, {
-      headers: {
-        'X-Attach-To': entities.map(entity => entity['@id']).join(';'),
-      },
-    }));
+    const attachTo = entities.map(entity => entity['@id']);
+    const jobs = files.map(fileUri => ({ fileUri, uploadUrl: url, attachTo }));
 
-    Promise.all(promises)
-      .then(() => {
-        console.log('All files have been uploaded');
-        dispatch(clearFiles());
-      })
-      .catch(e => {
-        console.warn('File upload failed', e);
+    UploadQueue.enqueue(jobs).then(() => {
+      dispatch(clearFiles());
+      dispatch(processUploadQueue());
+    });
+  };
+}
+
+export function processUploadQueue() {
+  return async function (dispatch, getState) {
+    const httpClient = selectHttpClient(getState());
+    if (!httpClient) {
+      return;
+    }
+
+    const jobs = await UploadQueue.getPending();
+    if (jobs.length === 0) {
+      return;
+    }
+
+    console.log(`Processing ${jobs.length} pending upload job(s)`);
+
+    for (const job of jobs) {
+      const response = await httpClient.uploadFileAsync(
+        job.uploadUrl,
+        job.fileUri,
+        { headers: { 'X-Attach-To': job.attachTo.join(';') } },
+      );
+
+      if (response && response.status >= 200 && response.status < 300) {
+        await UploadQueue.markDone(job.id);
+        try {
+          new File(job.fileUri).delete();
+        } catch (e) {
+          console.warn('Could not delete uploaded file', e);
+        }
+      } else {
+        console.warn('Upload failed with status', response?.status);
         Alert.alert(
           i18n.t('FAILED_TASK_COMPLETE'),
           i18n.t('AN_ERROR_OCCURRED'),
           [{ text: 'OK' }],
           { cancelable: false },
         );
-      });
-
+      }
+    }
   };
 }
 

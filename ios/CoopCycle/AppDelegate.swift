@@ -2,6 +2,7 @@ import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
+import TSBackgroundFetch
 
 // https://github.com/expo/expo/blob/sdk-53/templates/expo-template-bare-minimum/ios/HelloWorld/AppDelegate.swift
 
@@ -33,6 +34,7 @@ public class AppDelegate: ExpoAppDelegate {
 #endif
 
     FirebaseApp.configure()
+    TSBackgroundFetch.sharedInstance().didFinishLaunching()
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

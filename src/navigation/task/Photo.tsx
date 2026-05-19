@@ -10,7 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
-import { File } from 'expo-file-system';
+import * as LegacyFS from 'expo-file-system/legacy';
+import { v4 as uuid } from 'uuid';
 import { Camera, useCameraDevice, useCameraPermission, useLocationPermission } from 'react-native-vision-camera';
 
 import { addPicture } from '../../redux/Courier';
@@ -41,10 +42,14 @@ function Photo({ navigation, route, addPicture }) {
     };
   }, [navigation]);
 
-  const saveImage = () => {
+  const saveImage = async () => {
     const task = route.params?.task;
     if (image) {
-      addPicture(task, image);
+      const destDir = `${LegacyFS.documentDirectory}pending_uploads/`;
+      await LegacyFS.makeDirectoryAsync(destDir, { intermediates: true });
+      const destUri = `${destDir}${uuid()}.jpg`;
+      await LegacyFS.copyAsync({ from: image, to: destUri });
+      addPicture(task, destUri);
       navigateBackToCompleteTask(navigation, route);
     }
   };
@@ -68,13 +73,9 @@ function Photo({ navigation, route, addPicture }) {
     });
 
     if (!result.canceled) {
-      const file = new File(result.assets[0].uri);
-
-      if (file.exists) {
-        const task = route.params?.task;
-        addPicture(task, file.uri);
-        navigateBackToCompleteTask(navigation, route);
-      }
+      const task = route.params?.task;
+      addPicture(task, result.assets[0].uri);
+      navigateBackToCompleteTask(navigation, route);
     }
   };
 

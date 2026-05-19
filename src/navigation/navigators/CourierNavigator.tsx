@@ -89,6 +89,8 @@ const MainNavigator = () => {
         component={TaskNavigator}
         options={{
           headerShown: false,
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
         }}
       />
       <MainStack.Screen

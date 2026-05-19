@@ -45,6 +45,8 @@ import NotificationHandler from './components/NotificationHandler';
 import Spinner from './components/Spinner';
 import { setCurrentRoute } from './redux/App/actions';
 import store, { persistor } from './redux/store';
+import BackgroundFetch from 'react-native-background-fetch';
+import { processUploadQueue } from './redux/Courier/taskActions';
 
 import DropdownAlert from 'react-native-dropdownalert';
 import DropdownHolder from './DropdownHolder';
@@ -170,6 +172,23 @@ const App = () => {
     // These methods should only be called once during the app's lifecycle and should be done as early as possible.
     // Your main App component's componentDidMountmethod may be a good place.
     tracker.init();
+
+    // Drain any uploads that were queued but not completed in a previous session.
+    store.dispatch(processUploadQueue());
+
+    // Register OS-level background task to retry pending uploads when the app
+    // is backgrounded or killed. stopOnTerminate: false + startOnBoot: true
+    // ensures Android reschedules the job even after the app is force-killed.
+    BackgroundFetch.configure(
+      { minimumFetchInterval: 15, stopOnTerminate: false, startOnBoot: true },
+      async taskId => {
+        await store.dispatch(processUploadQueue());
+        BackgroundFetch.finish(taskId);
+      },
+      taskId => {
+        BackgroundFetch.finish(taskId);
+      },
+    );
   }, []);
 
   return (

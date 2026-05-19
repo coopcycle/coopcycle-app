@@ -44,7 +44,8 @@ class Signature extends Component {
 
   handleOK(base64) {
 
-    const directory = new Directory(Paths.cache);
+    const directory = new Directory(Paths.document, 'pending_uploads');
+    if (!directory.exists) directory.create();
     const file = directory.createFile(v4() + '.jpg', 'image/jpeg');
 
     file.write(
