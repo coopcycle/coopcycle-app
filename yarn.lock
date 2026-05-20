@@ -6813,6 +6813,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shopify/flash-list@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@shopify/flash-list@npm:2.3.0"
+  peerDependencies:
+    "@babel/runtime": "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/549fbecd447f3b34a07e37387891105a6b087b673d008c04611b91693d8e37db802a40a1cf7029a8b28d9cf97cefd3676901deab90c38cbf3efa8debc2422cd6
+  languageName: node
+  linkType: hard
+
 "@sideway/address@npm:^4.1.5":
   version: 4.1.5
   resolution: "@sideway/address@npm:4.1.5"
@@ -9245,6 +9256,7 @@ __metadata:
     "@react-navigation/stack": "npm:^7.6.4"
     "@reduxjs/toolkit": "npm:^2.9.0"
     "@sentry/react-native": "npm:~7.2.0"
+    "@shopify/flash-list": "npm:^2.3.0"
     "@stripe/stripe-react-native": "npm:^0.56.0"
     "@tabler/icons-react-native": "npm:^3.34.1"
     "@testing-library/react-native": "npm:^12.5.1"

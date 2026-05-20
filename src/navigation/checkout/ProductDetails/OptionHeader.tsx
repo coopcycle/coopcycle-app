@@ -2,51 +2,33 @@ import { Heading } from '@/components/ui/heading';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
-import { useBackgroundContainerColor } from '../../../styles/theme';
 import {
   isMandatoryOption,
   parseOptionValuesRange,
 } from '../../../utils/product';
-
-const styles = StyleSheet.create({
-  header: {
-    paddingHorizontal: 24,
-    paddingVertical: 6,
-  },
-  title: {
-    fontSize: 16,
-    flexDirection: 'row',
-    marginTop: 8,
-    lineHeight: 24,
-  },
-  mandatory: {
-    fontWeight: 'normal',
-    fontSize: 10,
-  },
-  range: {
-    fontSize: 12,
-  },
-});
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
 
 export const OptionHeader = ({ option }) => {
-  const backgroundColor = useBackgroundContainerColor();
   const { t } = useTranslation();
 
   return (
-    <View style={[styles.header, { backgroundColor }]}>
-      <Heading style={styles.title}>
-        {option.name}{' '}
+    <Box className="bg-background-200 px-4 py-2">
+      <HStack className="items-center" space="sm">
+        <Heading>
+          {option.name}
+        </Heading>
         {isMandatoryOption(option) && (
-          <Text style={styles.mandatory} ml={1}>
-            ({t('OPTION_REQUIRED')})
-          </Text>
+        <Text size="xs">
+          {t('OPTION_REQUIRED')}
+        </Text>
         )}
-      </Heading>
-      {option.valuesRange ? (
-        <ValuesRange valuesRange={option.valuesRange} />
-      ) : null}
-    </View>
+        {option.valuesRange ? (
+          <ValuesRange valuesRange={option.valuesRange} />
+        ) : null}
+      </HStack>
+
+    </Box>
   );
 };
 
@@ -55,7 +37,7 @@ const ValuesRange = ({ valuesRange }) => {
   const [min, max] = parseOptionValuesRange(valuesRange);
 
   return (
-    <Text style={styles.range}>
+    <Text size="xs">
       {t('CHECKOUT_PRODUCT_OPTIONS_CHOICES_BETWEEN', { min, max })}
     </Text>
   );
