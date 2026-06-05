@@ -87,6 +87,14 @@ Build a new version for the AppStore
 
 Build and upload to TestFlight
 
+### ios frameit_screenshots
+
+```sh
+[bundle exec] fastlane ios frameit_screenshots
+```
+
+Frame screenshots with FrameIt
+
 ### ios update_metadata
 
 ```sh

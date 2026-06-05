@@ -292,6 +292,14 @@ platform :ios do
     upload_release
   end
 
+  desc "Frame screenshots with FrameIt"
+  lane :frameit_screenshots do |options|
+    # __FILE__ = "fastlane/Fastfile" (relative to ios/); 3 levels up = project root
+    project_root = File.expand_path("../../..", __FILE__)
+    screenshots_path = options[:path] || File.join(project_root, "screenshots")
+    frameit(path: screenshots_path)
+  end
+
   # https://nrlnishan.hashnode.dev/manage-ios-apps-metadata-using-fastlane
   desc "Update AppStore metadata"
   lane :update_metadata do

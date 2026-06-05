@@ -1,12 +1,9 @@
-# https://github.com/natario1/CameraView/blob/master/.github/workflows/build.yml
-# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
-# https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
-# https://github.com/wix/Detox/issues/2617
-name: E2E tests, iOS
-on: [push]
+# https://docs.fastlane.tools/actions/frameit/
+name: AppStore Screenshots, iOS
+on:
+  workflow_dispatch:
 jobs:
   build:
-    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
     if: github.actor != 'dependabot[bot]'
     name: Build App bundle
     runs-on: macOS-15
@@ -76,9 +73,6 @@ jobs:
           sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
           sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
-      # https://vojtastavik.com/2018/09/02/what-is-inside-derived-data-xcode/
-      # https://discuss.circleci.com/t/sharing-xcode-derived-data-folder-across-jobs-workflows/31363/5
-      # https://medium.com/@bitrise/60-faster-builds-force-xcode-to-use-caching-on-bitrise-af8979ca39a6
       - name: Cache XCode derived data
         uses: actions/cache@v4
         id: cache-xcode-derived-data
@@ -96,34 +90,23 @@ jobs:
           name: CoopCycle.app
           path: ios/build/Build/Products/Release-iphonesimulator/CoopCycle.app
 
-  test:
-    # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
+  screenshots:
     if: github.actor != 'dependabot[bot]'
-    name: Run Tests on iOS Simulator
+    name: Take and Frame Screenshots
     needs: build
     runs-on: macOS-15
     defaults:
       run:
         working-directory: ./coopcycle-app-repo
-    #FIXME; setup  local coopcycle-web instance
-#    env:
-#      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
-#      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-#      STRIPE_CONNECT_CLIENT_ID: ${{ secrets.STRIPE_CONNECT_CLIENT_ID }}
     steps:
       - name: Set timezone
         uses: szenius/set-timezone@v2.0
         with:
           timezoneMacos: "Europe/Paris"
+
       - uses: actions/checkout@v3
         with:
           path: coopcycle-app-repo
-      #FIXME; setup local coopcycle-web instance
-#      - name: Setup Docker on macOS
-#        uses: douglascamata/setup-docker-macos-action@v1-alpha.13
-#
-#      - name: Run CoopCycle Web
-#        uses: ./coopcycle-app-repo/.github/actions/run-coopcycle-web
 
       - name: Download App bundle
         uses: actions/download-artifact@v4
@@ -162,18 +145,34 @@ jobs:
           brew tap wix/brew
           brew install applesimutils
 
-      # Run 'applesimutils --list' to list your supported devices.
-      # It is advised only to specify a device type, e.g., "iPhone Xʀ" and avoid explicit search by OS version.
-      - name: List supported devices
-        run: applesimutils --list
+      - name: Cache FrameIt device frames
+        uses: actions/cache@v4
+        with:
+          path: ~/.fastlane/frameit
+          key: frameit-frames-v2
 
-      - name: Run Detox tests
-        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info
+      # See screenshot specifications
+      # https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
+      - name: Take screenshots — iPhone 16 Pro Max (6.9-inch)
+        run: node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name "iPhone 16 Pro Max" --artifacts-location ./artifacts/6.9-inch e2e/screenshots.spec.js
 
-      - name: Upload screenshots artifacts
-#        if: github.ref == 'refs/heads/master'
+      - name: Take screenshots — iPad Pro 13-inch (M4)
+        run: node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name "iPad Pro 13-inch (M4)" --artifacts-location ./artifacts/13-inch e2e/screenshots.spec.js
+
+      - name: Organise screenshots for FrameIt
+        run: |
+          mkdir -p screenshots/fr-FR
+          find artifacts/6.9-inch artifacts/13-inch -name "*.png" | while IFS= read -r f; do
+            cp "$f" "screenshots/fr-FR/$(basename "$f")"
+          done
+
+      - name: Frame screenshots with FrameIt
+        working-directory: ./coopcycle-app-repo/ios
+        run: bundle exec fastlane ios frameit_screenshots
+
+      - name: Upload framed screenshots
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: detox-screenshots-ios
-          path: coopcycle-app-repo/artifacts
+          name: detox-screenshots-ios-framed
+          path: coopcycle-app-repo/screenshots
