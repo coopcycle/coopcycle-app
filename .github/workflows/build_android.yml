@@ -97,20 +97,6 @@ jobs:
                 }
               },
               {
-                id: 'robinfood',
-                displayName: 'RobinFood',
-                params: {
-                  instance: 'robinfood',
-                  instance_url: 'https://robinfood.coopcycle.org',
-                  app_name: 'Robin Food',
-                  primary_color: '#ff0000',
-                  package_name: 'fr.coopcycle.robinfood',
-                  keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
-                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
-                }
-              },
-              {
                 id: 'coursiers_rennais',
                 displayName: 'Les Coursiers Rennais',
                 params: {
@@ -178,20 +164,6 @@ jobs:
                   keystore_key_alias: 'instance',
                   keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
                   google_services_json: 'GOOGLE_SERVICES_JSON_WEKU_BASE64'
-                }
-              },
-              {
-                id: 'les3v',
-                displayName: 'Les 3V',
-                params: {
-                  instance: 'les3v',
-                  instance_url: 'https://les3v.coopcycle.org',
-                  app_name: 'Les 3V',
-                  primary_color: '#F6EDDA',
-                  package_name: 'fr.coopcycle.les3v',
-                  keystore_key_alias: 'instance',
-                  keystore_key_password_secret: 'SIGNING_KEY_PASSWORD_INSTANCE',
-                  google_services_json: 'GOOGLE_SERVICES_JSON_BASE64'
                 }
               }
             ];

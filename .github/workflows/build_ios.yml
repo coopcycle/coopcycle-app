@@ -77,18 +77,6 @@ jobs:
                 }
               },
               {
-                id: 'robinfood',
-                displayName: 'RobinFood',
-                params: {
-                  instance: 'robinfood',
-                  instance_url: 'https://robinfood.coopcycle.org',
-                  app_name: 'Robin Food',
-                  app_id: 'org.coopcycle.RobinFood',
-                  primary_color: '#ff0000',
-                  google_service_info_plist_base64: 'GOOGLE_SERVICE_INFO_PLIST_BASE64_ROBINFOOD'
-                }
-              },
-              {
                 id: 'lcr',
                 displayName: 'Les Coursiers Rennais',
                 params: {
@@ -172,4 +160,3 @@ jobs:
       primary_color: ${{ matrix.app.params.primary_color }}
       google_service_info_plist_base64: ${{ matrix.app.params.google_service_info_plist_base64 }}
     secrets: inherit
-
