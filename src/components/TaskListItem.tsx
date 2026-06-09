@@ -9,10 +9,9 @@ import {
   Dimensions,
   Pressable,
   StyleSheet,
-  TouchableOpacity,
-  TouchableOpacityProps,
   View,
 } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 
@@ -81,13 +80,14 @@ export const styles = StyleSheet.create({
   },
 });
 
-interface ISwipeButtonContainerProps
-  extends Omit<TouchableOpacityProps, 'style'> {
+interface ISwipeButtonContainerProps {
   backgroundColor?: string;
   children: React.ReactNode;
   left?: boolean;
   right?: boolean;
   width: number;
+  onPress?: () => void;
+  testID?: string;
 }
 const SwipeButtonContainer = ({
   backgroundColor,
@@ -95,27 +95,34 @@ const SwipeButtonContainer = ({
   left,
   right,
   width,
-  ...otherProps
+  onPress,
+  testID,
 }: ISwipeButtonContainerProps) => {
   const alignItems = left ? 'flex-start' : 'flex-end';
   const borderRadiusLeft = left ? cardBorderRadius : 0;
   const borderRadiusRight = right ? cardBorderRadius : 0;
 
+  const tap = Gesture.Tap()
+    .runOnJS(true)
+    .onStart(() => onPress?.());
+
   return (
-    <TouchableOpacity
-      style={{
-        alignItems,
-        backgroundColor,
-        justifyContent: 'center',
-        width,
-        borderTopLeftRadius: borderRadiusLeft,
-        borderBottomLeftRadius: borderRadiusLeft,
-        borderTopRightRadius: borderRadiusRight,
-        borderBottomRightRadius: borderRadiusRight,
-      }}
-      {...otherProps}>
-      {children}
-    </TouchableOpacity>
+    <GestureDetector gesture={tap}>
+      <View
+        testID={testID}
+        style={{
+          alignItems,
+          backgroundColor,
+          justifyContent: 'center',
+          width,
+          borderTopLeftRadius: borderRadiusLeft,
+          borderBottomLeftRadius: borderRadiusLeft,
+          borderTopRightRadius: borderRadiusRight,
+          borderBottomRightRadius: borderRadiusRight,
+        }}>
+        {children}
+      </View>
+    </GestureDetector>
   );
 };
 
