@@ -9,7 +9,7 @@ export const useNavigateOnSuccess = () => {
 
   const navigateOnSuccess = () => {
     TaskListsContext?.clearSelectedTasks();
-    if (route.params?.navigateAfter !== null) {
+    if (route.params?.navigateAfter != null) {
       navigation.navigate({
         name: route.params?.navigateAfter,
         merge: true,
