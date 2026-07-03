@@ -7,7 +7,10 @@ import { Text } from '@/components/ui/text';
 import { greenColor, yellowColor } from '@/src/styles/common';
 import { markTaskDone } from '@/src/redux/Courier';
 import Task from '@/src/types/task';
-import { usePostIncidentMutation } from '@/src/redux/api/slice';
+import {
+  useGetTaskFailureReasonsQuery,
+  usePostIncidentMutation,
+} from '@/src/redux/api/slice';
 import {
   CompleteTaskFormValues,
   ReportIncidentFormValues,
@@ -53,6 +56,10 @@ export const SubmitButton = ({
 
   const footerBgColor = success ? greenColor : yellowColor;
   const [postIncident, { isLoading, error }] = usePostIncidentMutation();
+  const { isSuccess: isFailureReasonsLoaded } = useGetTaskFailureReasonsQuery(
+    task?.['@id'],
+    { skip: success },
+  );
 
   const navigateOnSuccess = useNavigateOnSuccess();
   const pendingSubmitRef = useRef(false);
@@ -103,7 +110,8 @@ export const SubmitButton = ({
     }
   };
 
-  const isButtonDisabled = isSubmitting || isLoading;
+  const isButtonDisabled =
+    isSubmitting || isLoading || (!success && !isFailureReasonsLoaded);
 
   useEffect(() => {
     if (error) {
@@ -121,7 +129,7 @@ export const SubmitButton = ({
         backgroundColor: footerBgColor,
         marginTop: 16,
         paddingBottom: insets.bottom,
-        opacity: isSubmitting ? 0.6 : 1,
+        opacity: isButtonDisabled ? 0.6 : 1,
       }}
       testID={`task:finishButton${currentTab ? '-' + currentTab : ''}`}
     >
