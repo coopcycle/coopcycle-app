@@ -10,6 +10,7 @@ import Task from '@/src/types/task';
 import { usePostIncidentMutation } from '@/src/redux/api/slice';
 import {
   CompleteTaskFormValues,
+  FAILURE_REASONS_REQUIRING_NOTES,
   ReportIncidentFormValues,
   buildReportIncidentPayload,
 } from '../utils/taskFormHelpers';
@@ -105,8 +106,22 @@ export const SubmitButton = ({
     }
   };
 
+  const incidentValues = !success
+    ? (formValues as ReportIncidentFormValues)
+    : null;
+
+  const isNotesRequired =
+    incidentValues !== null &&
+    FAILURE_REASONS_REQUIRING_NOTES.includes(
+      incidentValues.failureReason as (typeof FAILURE_REASONS_REQUIRING_NOTES)[number],
+    );
+
   const isButtonDisabled =
-    isSubmitting || isLoading || (!success && !isFailureReasonsLoaded);
+    isSubmitting ||
+    isLoading ||
+    (!success && !isFailureReasonsLoaded) ||
+    (!success && !incidentValues?.failureReason) ||
+    (isNotesRequired && !incidentValues?.notes);
 
   useEffect(() => {
     if (error) {

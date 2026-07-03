@@ -596,6 +596,8 @@
     "TASK_DETAILS_CAN_NOT_EDIT_NOT_RELEASED": "Les tâches ne peuvent pas encore être modifiées depuis l'application. Veuillez réessayer plus tard.",
     "TASK_DETAILS_CAN_NOT_EDIT_NO_ORDER": "Cette tâche ne peut pas être modifiée car elle n'est pas attachée à une commande.",
     "VALIDATE_TASK": "Valider la tâche",
+    "INCIDENT_NOTES_REQUIRED": "Les notes sont obligatoires pour ce type d'incident",
+    "INCIDENT_NOTES_HELP": "Veuillez décrire le problème en détail. Ces informations sont nécessaires pour traiter un remboursement au client.",
     "SUPPLEMENTS": "Suppléments",
     "CANCEL_TITLE": "Annuler {{entity}}",
     "CANCEL_MESSAGE": "Êtes-vous sûr de vouloir annuler {{entity}} {{name}} ?",

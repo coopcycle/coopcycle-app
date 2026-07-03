@@ -1,6 +1,10 @@
 import { Divider } from '@/components/ui/divider';
 import {
   FormControl,
+  FormControlError,
+  FormControlErrorText,
+  FormControlHelper,
+  FormControlHelperText,
   FormControlLabel,
   FormControlLabelText,
 } from '@/components/ui/form-control';
@@ -57,6 +61,7 @@ import { FailureReasonMetadata } from '@/src/redux/api/types';
 import { useFormikContext } from 'formik';
 import {
   CompleteTaskFormValues,
+  FAILURE_REASONS_REQUIRING_NOTES,
   ReportIncidentFormValues,
 } from '@/src/navigation/task/utils/taskFormHelpers';
 import { useAppDispatch } from '@/src/redux/store';
@@ -132,6 +137,13 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
       hideSubscription.remove();
     };
   }, []);
+
+  const isNotesRequired =
+    !success &&
+    FAILURE_REASONS_REQUIRING_NOTES.includes(
+      (values as ReportIncidentFormValues).failureReason as (typeof FAILURE_REASONS_REQUIRING_NOTES)[number],
+    );
+  const showNotesError = isNotesRequired && !values.notes;
 
   const initialValues = {
     contactName: resolveContactName(values.contactName, task, tasks),
@@ -239,11 +251,11 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
                     ) : null}
                   </FormControl>
                 )}
-                <FormControl className="p-3">
+                <FormControl className="p-3" isInvalid={showNotesError}>
                   <FormControlLabel>
                     <FormControlLabelText>{t('NOTES')}</FormControlLabelText>
                   </FormControlLabel>
-                  <Textarea className="mb-6">
+                  <Textarea className="mb-2">
                     <TextareaInput
                       testID="notes-input"
                       autoCorrect={false}
@@ -253,6 +265,20 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
                       }}
                     />
                   </Textarea>
+                  {isNotesRequired && (
+                    <FormControlHelper className="mb-2">
+                      <FormControlHelperText>
+                        {t('INCIDENT_NOTES_HELP')}
+                      </FormControlHelperText>
+                    </FormControlHelper>
+                  )}
+                  {showNotesError && (
+                    <FormControlError className="mb-2">
+                      <FormControlErrorText>
+                        {t('INCIDENT_NOTES_REQUIRED')}
+                      </FormControlErrorText>
+                    </FormControlError>
+                  )}
                   {!success && (
                     <Checkbox
                       isDisabled={task.status === 'DONE'}

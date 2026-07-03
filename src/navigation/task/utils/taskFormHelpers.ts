@@ -42,6 +42,12 @@ export type ReportIncidentFormValues = EditFormValues &
     failureReasonMetadata: { [key: string]: unknown };
   };
 
+export const FAILURE_REASONS_REQUIRING_NOTES = [
+  'DAMAGED',
+  'ITEM_MISSING',
+  'INCORRECT_ITEM',
+] as const;
+
 export const canEditTask = (task: Task) => {
   return Boolean(task.metadata?.order_number);
 };

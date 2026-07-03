@@ -629,6 +629,8 @@
     "TASK_DETAILS_CAN_NOT_EDIT_NOT_RELEASED": "The tasks cannot be edited from the app yet. Please check back later.",
     "TASK_DETAILS_CAN_NOT_EDIT_NO_ORDER": "This task cannot be edited because it's not attached to an order.",
     "VALIDATE_TASK": "Validate task after reporting incident",
+    "INCIDENT_NOTES_REQUIRED": "Notes are required for this type of incident",
+    "INCIDENT_NOTES_HELP": "Please describe the issue in detail. This information is required to process a refund to the customer.",
     "SUPPLEMENTS": "Supplements",
     "CANCEL_TITLE": "Cancel {{entity}}",
     "CANCEL_MESSAGE": "Are you sure you want to cancel {{entity}} {{name}}?",
