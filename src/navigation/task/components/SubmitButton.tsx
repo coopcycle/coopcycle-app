@@ -7,10 +7,7 @@ import { Text } from '@/components/ui/text';
 import { greenColor, yellowColor } from '@/src/styles/common';
 import { markTaskDone } from '@/src/redux/Courier';
 import Task from '@/src/types/task';
-import {
-  useGetTaskFailureReasonsQuery,
-  usePostIncidentMutation,
-} from '@/src/redux/api/slice';
+import { usePostIncidentMutation } from '@/src/redux/api/slice';
 import {
   CompleteTaskFormValues,
   ReportIncidentFormValues,
@@ -30,6 +27,7 @@ type Props = {
   //Report Incident - Complete
   validateTaskAfterReport?: boolean;
   success: boolean;
+  isFailureReasonsLoaded?: boolean;
   //Report Incident - Edit
   currentTab?: string;
 };
@@ -39,6 +37,7 @@ export const SubmitButton = ({
   tasks,
   validateTaskAfterReport,
   success,
+  isFailureReasonsLoaded,
   currentTab = undefined,
 }: Props) => {
   const { t } = useTranslation();
@@ -56,10 +55,6 @@ export const SubmitButton = ({
 
   const footerBgColor = success ? greenColor : yellowColor;
   const [postIncident, { isLoading, error }] = usePostIncidentMutation();
-  const { isSuccess: isFailureReasonsLoaded } = useGetTaskFailureReasonsQuery(
-    task?.['@id'],
-    { skip: success },
-  );
 
   const navigateOnSuccess = useNavigateOnSuccess();
   const pendingSubmitRef = useRef(false);

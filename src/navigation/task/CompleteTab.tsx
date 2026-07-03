@@ -61,6 +61,7 @@ import {
 } from '@/src/navigation/task/utils/taskFormHelpers';
 import { useAppDispatch } from '@/src/redux/store';
 import Task from '@/src/types/task';
+import { useGetTaskFailureReasonsQuery } from '@/src/redux/api/slice';
 
 const DELETE_ICON_SIZE = 32;
 const CONTENT_PADDING = 20;
@@ -94,6 +95,11 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
   const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
+
+  const { isSuccess: isFailureReasonsLoaded } = useGetTaskFailureReasonsQuery(
+    task?.['@id'],
+    { skip: success },
+  );
 
   const signatures = useSelector(selectSignatures);
   const pictures = useSelector(selectPictures);
@@ -305,6 +311,7 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
               tasks={tasks}
               validateTaskAfterReport={validateTaskAfterReport}
               success={success}
+              isFailureReasonsLoaded={isFailureReasonsLoaded}
             />
           </VStack>
         </View>
