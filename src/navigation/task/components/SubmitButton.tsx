@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 
@@ -55,13 +55,15 @@ export const SubmitButton = ({
   const [postIncident, { isLoading, error }] = usePostIncidentMutation();
 
   const navigateOnSuccess = useNavigateOnSuccess();
+  const pendingSubmitRef = useRef(false);
 
   const handlePress = () => {
+    if (pendingSubmitRef.current || isSubmitting || isLoading) return;
+    pendingSubmitRef.current = true;
+
     if (success) {
       handleSubmit();
     } else {
-      // handle form submission manually
-
       setSubmitting(true);
 
       const payload = buildReportIncidentPayload(
@@ -74,6 +76,7 @@ export const SubmitButton = ({
           task,
           () => postIncident({ payload }).unwrap(),
           () => {
+            pendingSubmitRef.current = false;
             if (validateTaskAfterReport) {
               dispatch(
                 markTaskDone(
@@ -92,6 +95,7 @@ export const SubmitButton = ({
             }
           },
           () => {
+            pendingSubmitRef.current = false;
             setSubmitting(false);
           },
         ),
