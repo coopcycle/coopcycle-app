@@ -17,7 +17,7 @@ import { useFocusEffect, useRoute } from '@react-navigation/native';
 import _ from 'lodash';
 import { User } from 'lucide-react-native';
 import qs from 'qs';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Keyboard,
@@ -50,7 +50,7 @@ import { ContactNameModal } from './components/ContactNameModal';
 import { FailureReasonForm } from './components/FailureReasonForm';
 import { MultipleTasksLabel } from './components/MultipleTasksLabel';
 import { FailureReasonPicker } from './components/FailureReasonPicker';
-import { AttachmentItem } from './components/AttachmentItem';
+import { Attachments } from './components/Attachments';
 import {
   Checkbox,
   CheckboxIndicator,
@@ -67,9 +67,6 @@ import {
 import { useAppDispatch } from '@/src/redux/store';
 import Task from '@/src/types/task';
 import { useGetTaskFailureReasonsQuery } from '@/src/redux/api/slice';
-
-const DELETE_ICON_SIZE = 32;
-const CONTENT_PADDING = 20;
 
 function resolveContactName(contactName, task, tasks) {
   if (!_.isEmpty(contactName)) {
@@ -108,6 +105,17 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
 
   const signatures = useSelector(selectSignatures);
   const pictures = useSelector(selectPictures);
+
+  // Stable so the memoized <Attachments> grid isn't invalidated on every
+  // parent re-render (e.g. notes keystrokes).
+  const onDeleteSignature = useCallback(
+    (index: number) => dispatch(deleteSignatureAt(index)),
+    [dispatch],
+  );
+  const onDeletePicture = useCallback(
+    (index: number) => dispatch(deletePictureAt(index)),
+    [dispatch],
+  );
 
   const { values, setFieldValue, setFieldTouched } = useFormikContext<
     CompleteTaskFormValues | ReportIncidentFormValues
@@ -298,24 +306,12 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
                   )}
                   <PoDButton task={task} tasks={tasks} success={success} />
                 </FormControl>
-                <View style={styles.content}>
-                  <View style={styles.imagesContainer}>
-                    {signatures.map((base64, key) => (
-                      <AttachmentItem
-                        key={`signatures:${key}`}
-                        base64={base64}
-                        onPressDelete={() => dispatch(deleteSignatureAt(key))}
-                      />
-                    ))}
-                    {pictures.map((base64, key) => (
-                      <AttachmentItem
-                        key={`pictures:${key}`}
-                        base64={base64}
-                        onPressDelete={() => dispatch(deletePictureAt(key))}
-                      />
-                    ))}
-                  </View>
-                </View>
+                <Attachments
+                  signatures={signatures}
+                  pictures={pictures}
+                  onDeleteSignature={onDeleteSignature}
+                  onDeletePicture={onDeletePicture}
+                />
               </VStack>
             </TouchableWithoutFeedback>
           </VStack>
@@ -351,24 +347,6 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    paddingTop: CONTENT_PADDING + (CONTENT_PADDING - DELETE_ICON_SIZE / 2),
-    paddingRight: CONTENT_PADDING + (CONTENT_PADDING - DELETE_ICON_SIZE / 2),
-    paddingBottom: CONTENT_PADDING,
-    paddingLeft: CONTENT_PADDING,
-  },
-  imagesContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
-  image: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    marginBottom: 20,
-  },
   ctaButtonContainer: {
     alignItems: 'center',
     alignSelf: 'stretch',

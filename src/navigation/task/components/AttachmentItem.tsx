@@ -28,6 +28,9 @@ export const AttachmentItem = React.memo(({
         source={{ uri: base64 }}
         style={{ width: imageSize - 2, height: imageSize - 2 }}
         resizeMode="contain"
+        // Decode the (up-to-1920px) image at thumbnail size on Android instead
+        // of loading it full-res just to shrink it — cuts memory and decode cost.
+        resizeMethod="resize"
       />
       <TouchableOpacity style={styles.imageDelBtn} onPress={onPressDelete}>
         <Icon as={CircleX} size={40} style={{ color: 'black' }} />
