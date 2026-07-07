@@ -175,7 +175,7 @@ class Task extends Component {
     const tasks = this.props.route.params?.tasks || [];
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
         <View style={{ flex: 1 }}>
           <View style={{ height: '35%' }}>{this.renderMap()}</View>
           <View style={{ height: '55%' }}>
