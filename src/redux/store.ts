@@ -1,7 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import ReduxAsyncQueue from 'redux-async-queue';
-import { persistStore } from 'redux-persist';
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistStore,
+} from 'redux-persist';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import Config from 'react-native-config';
@@ -67,7 +75,14 @@ const enhancersProxy = enhancersList => {
 const store = configureStore({
   reducer: reducers,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(middlewaresProxy(middlewares)),
+    getDefaultMiddleware({
+      serializableCheck: {
+        // redux-persist dispatches actions carrying non-serializable function
+        // payloads (register/rehydrate). Whitelist them so the dev-only
+        // serializableCheck doesn't flag redux-persist's own machinery.
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(middlewaresProxy(middlewares)),
   enhancers: getDefaultEnhancers =>
     getDefaultEnhancers().concat(enhancersProxy([])),
 });
