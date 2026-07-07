@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import { Directory, EncodingType, Paths } from 'expo-file-system';
+import { Directory, Paths } from 'expo-file-system';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -90,7 +90,7 @@ function Signature({ navigation, route, addSignature }) {
       const directory = new Directory(Paths.document, 'pending_uploads');
       if (!directory.exists) directory.create();
       const file = directory.createFile(`${v4()}.png`, 'image/png');
-      file.write(base64, { encoding: EncodingType.Base64 });
+      file.write(base64, { encoding: 'base64' });
       const compressed = await compressImage(file.uri);
       const task = route.params?.task;
       addSignature(task, compressed);
