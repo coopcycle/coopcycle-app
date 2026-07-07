@@ -1,12 +1,13 @@
 import 'react-native-get-random-values';
-import { File, Directory, Paths } from 'expo-file-system';
+import { Directory, EncodingType, Paths } from 'expo-file-system';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { Component } from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import SignatureScreen from 'react-native-signature-canvas';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Svg, { Path, Rect } from 'react-native-svg';
 import { connect } from 'react-redux';
 import { v4 } from 'uuid';
 
@@ -14,118 +15,136 @@ import { addSignature } from '../../redux/Courier';
 import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 import { compressImage } from '../../utils/imageCompression';
 
-// Hide footer
-// https://github.com/YanYuanFE/react-native-signature-canvas#basic-parameters
-const signatureStyle = `
-body,html {
-  height: 100%;
-}
-.m-signature-pad {
-  box-shadow: none;
-  border: none;
-}
-.m-signature-pad--body {
-  border: none;
-}
-.m-signature-pad--footer {
-  display: none;
-  margin: 0px;
-}
-`;
+function Signature({ navigation, route, addSignature }) {
+  const { t } = useTranslation();
+  const [completedPaths, setCompletedPaths] = useState<string[]>([]);
+  const [activePath, setActivePath] = useState('');
+  const activePathRef = useRef('');
+  const svgRef = useRef<any>(null);
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
-class Signature extends Component {
-  constructor(props) {
-    super(props);
-    this.signatureRef = React.createRef();
-  }
+  const onCanvasLayout = useCallback((e: any) => {
+    const { width, height } = e.nativeEvent.layout;
+    setCanvasSize({ width, height });
+  }, []);
 
-  _saveImage() {
-    this.signatureRef.current?.readSignature();
-  }
+  const panGesture = useMemo(() =>
+    Gesture.Pan()
+      .runOnJS(true)
+      .minDistance(0)
+      .onBegin(e => {
+        const path = `M${e.x} ${e.y}`;
+        activePathRef.current = path;
+        setActivePath(path);
+      })
+      .onUpdate(e => {
+        const path = `${activePathRef.current} L${e.x} ${e.y}`;
+        activePathRef.current = path;
+        setActivePath(path);
+      })
+      .onFinalize(() => {
+        if (activePathRef.current) {
+          setCompletedPaths(prev => [...prev, activePathRef.current]);
+          activePathRef.current = '';
+          setActivePath('');
+        }
+      }),
+  []);
 
-  async handleOK(base64) {
+  const clearSignature = () => {
+    setCompletedPaths([]);
+    setActivePath('');
+    activePathRef.current = '';
+  };
+
+  const saveSignature = async () => {
+    if (completedPaths.length === 0 && !activePath) return;
     try {
-      const rawBase64 = base64.replace(/^data:image\/[^;]+;base64,/, '');
-      if (!rawBase64) {
-        return;
-      }
-
+      const base64 = await new Promise<string>(resolve =>
+        svgRef.current.toDataURL(resolve),
+      );
       const directory = new Directory(Paths.document, 'pending_uploads');
       if (!directory.exists) directory.create();
-      const file = directory.createFile(v4() + '.jpg', 'image/jpeg');
-
-      file.write(
-        Uint8Array.from(atob(rawBase64), c => c.charCodeAt(0))
-      );
-
+      const file = directory.createFile(`${v4()}.png`, 'image/png');
+      file.write(base64, { encoding: EncodingType.Base64 });
       const compressed = await compressImage(file.uri);
-
-      const task = this.props.route.params?.task;
-      this.props.addSignature(task, compressed);
-      navigateBackToCompleteTask(this.props.navigation, this.props.route);
+      const task = route.params?.task;
+      addSignature(task, compressed);
+      navigateBackToCompleteTask(navigation, route);
     } catch (e) {
-      console.error('handleOK failed:', e);
+      console.error('saveSignature failed:', e);
     }
-  }
+  };
 
-  _clearCanvas() {
-    this.signatureRef.current?.clearSignature();
-  }
-
-  render() {
-    return (
-      <VStack flex={1}>
-        <VStack flex={1} className="p-2">
-          <Text className="text-center mb-4">
-            {this.props.t('SIGNATURE_DISCLAIMER')}
-          </Text>
-          <View style={styles.canvasContainer}>
-            <SignatureScreen
-              ref={this.signatureRef}
-              imageType="image/jpeg"
-              backgroundColor="rgba(255, 255, 255)"
-              onOK={this.handleOK.bind(this)}
-              webStyle={signatureStyle}
-            />
+  return (
+    <VStack flex={1}>
+      <VStack flex={1} className="p-2">
+        <Text className="text-center mb-4">
+          {t('SIGNATURE_DISCLAIMER')}
+        </Text>
+        <GestureDetector gesture={panGesture}>
+          <View style={styles.canvasContainer} onLayout={onCanvasLayout}>
+            <Svg
+              ref={svgRef}
+              width={canvasSize.width}
+              height={canvasSize.height}
+              style={StyleSheet.absoluteFill}>
+              <Rect
+                width={canvasSize.width}
+                height={canvasSize.height}
+                fill="white"
+              />
+              {completedPaths.map((d, i) => (
+                <Path
+                  key={i}
+                  d={d}
+                  stroke="#000000"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              ))}
+              {activePath ? (
+                <Path
+                  d={activePath}
+                  stroke="#000000"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              ) : null}
+            </Svg>
           </View>
-          <Button
-            variant="outline"
-            size="sm"
-            onPress={this._clearCanvas.bind(this)}>
-            <ButtonText>{this.props.t('SIGNATURE_CLEAR')}</ButtonText>
-          </Button>
-        </VStack>
-        <VStack className="p-2">
-          <Button size="lg" onPress={this._saveImage.bind(this)}>
-            <ButtonText>{this.props.t('SIGNATURE_ADD')}</ButtonText>
-          </Button>
-        </VStack>
+        </GestureDetector>
+        <Button variant="outline" size="sm" onPress={clearSignature}>
+          <ButtonText>{t('SIGNATURE_CLEAR')}</ButtonText>
+        </Button>
       </VStack>
-    );
-  }
+      <VStack className="p-2">
+        <Button size="lg" onPress={saveSignature}>
+          <ButtonText>{t('SIGNATURE_ADD')}</ButtonText>
+        </Button>
+      </VStack>
+    </VStack>
+  );
 }
 
 const styles = StyleSheet.create({
   canvasContainer: {
     flex: 1,
-    flexDirection: 'row',
     marginBottom: 20,
     borderColor: '#000000',
     borderWidth: 1,
+    backgroundColor: 'white',
   },
 });
 
-function mapStateToProps(state) {
-  return {};
-}
-
 function mapDispatchToProps(dispatch) {
   return {
-    addSignature: (task, base64) => dispatch(addSignature(task, base64)),
+    addSignature: (task, uri) => dispatch(addSignature(task, uri)),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(Signature));
+export default connect(null, mapDispatchToProps)(Signature);
