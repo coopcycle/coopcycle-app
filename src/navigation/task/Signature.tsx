@@ -1,6 +1,6 @@
 import 'react-native-get-random-values';
 import { Directory, Paths } from 'expo-file-system';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonSpinner, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -30,6 +30,7 @@ function Signature({ navigation, route, addSignature }) {
   const canvasRef = useCanvasRef();
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [hasSignature, setHasSignature] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Both paths live on the UI thread. `currentPath` is the in-progress
   // stroke; `committedPath` accumulates all finished strokes. Drawing the
@@ -73,10 +74,14 @@ function Signature({ navigation, route, addSignature }) {
   }, [currentPath, committedPath]);
 
   const saveSignature = async () => {
-    if (!hasSignature) return;
+    if (!hasSignature || isSaving) return;
+    setIsSaving(true);
     try {
       const image = canvasRef.current?.makeImageSnapshot();
-      if (!image) return;
+      if (!image) {
+        setIsSaving(false);
+        return;
+      }
       const base64 = image.encodeToBase64(ImageFormat.PNG, 100);
       const directory = new Directory(Paths.document, 'pending_uploads');
       if (!directory.exists) directory.create();
@@ -88,6 +93,7 @@ function Signature({ navigation, route, addSignature }) {
       navigateBackToCompleteTask(navigation, route);
     } catch (e) {
       console.error('saveSignature failed:', e);
+      setIsSaving(false);
     }
   };
 
@@ -136,7 +142,8 @@ function Signature({ navigation, route, addSignature }) {
         </Button>
       </VStack>
       <VStack className="p-2">
-        <Button size="lg" onPress={saveSignature}>
+        <Button size="lg" onPress={saveSignature} isDisabled={isSaving}>
+          {isSaving && <ButtonSpinner className="mr-2" />}
           <ButtonText>{t('SIGNATURE_ADD')}</ButtonText>
         </Button>
       </VStack>

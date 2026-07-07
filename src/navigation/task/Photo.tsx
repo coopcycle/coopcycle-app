@@ -1,4 +1,4 @@
-import { Button, ButtonText, ButtonIcon} from '@/components/ui/button';
+import { Button, ButtonText, ButtonIcon, ButtonSpinner } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
@@ -23,6 +23,7 @@ function Photo({ navigation, route, addPicture }) {
   const [image, setImage] = useState(null);
   const [canMountCamera, setCanMountCamera] = useState(false);
   const [flash, setFlash] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const camera = useRef(null);
   const { hasPermission, requestPermission } = useCameraPermission();
@@ -45,18 +46,21 @@ function Photo({ navigation, route, addPicture }) {
 
   const saveImage = async () => {
     const task = route.params?.task;
-    if (image) {
-      try {
-        const compressed = await compressImage(image);
-        const destDir = `${LegacyFS.documentDirectory}pending_uploads/`;
-        await LegacyFS.makeDirectoryAsync(destDir, { intermediates: true });
-        const destUri = `${destDir}${uuid()}.jpg`;
-        await LegacyFS.copyAsync({ from: compressed, to: destUri });
-        addPicture(task, destUri);
-        navigateBackToCompleteTask(navigation, route);
-      } catch (e) {
-        console.error('saveImage failed:', e);
-      }
+    if (!image || isSaving) {
+      return;
+    }
+    setIsSaving(true);
+    try {
+      const compressed = await compressImage(image);
+      const destDir = `${LegacyFS.documentDirectory}pending_uploads/`;
+      await LegacyFS.makeDirectoryAsync(destDir, { intermediates: true });
+      const destUri = `${destDir}${uuid()}.jpg`;
+      await LegacyFS.copyAsync({ from: compressed, to: destUri });
+      addPicture(task, destUri);
+      navigateBackToCompleteTask(navigation, route);
+    } catch (e) {
+      console.error('saveImage failed:', e);
+      setIsSaving(false);
     }
   };
 
@@ -161,7 +165,8 @@ function Photo({ navigation, route, addPicture }) {
         </Box>
       </VStack>
       <VStack className="p-2">
-        <Button size="lg" onPress={saveImage}>
+        <Button size="lg" onPress={saveImage} isDisabled={isSaving}>
+          {isSaving && <ButtonSpinner className="mr-2" />}
           <ButtonText>{t('PHOTO_ADD')}</ButtonText>
         </Button>
       </VStack>
