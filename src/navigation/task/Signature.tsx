@@ -44,20 +44,28 @@ class Signature extends Component {
   }
 
   async handleOK(base64) {
+    try {
+      const rawBase64 = base64.replace(/^data:image\/[^;]+;base64,/, '');
+      if (!rawBase64) {
+        return;
+      }
 
-    const directory = new Directory(Paths.document, 'pending_uploads');
-    if (!directory.exists) directory.create();
-    const file = directory.createFile(v4() + '.jpg', 'image/jpeg');
+      const directory = new Directory(Paths.document, 'pending_uploads');
+      if (!directory.exists) directory.create();
+      const file = directory.createFile(v4() + '.jpg', 'image/jpeg');
 
-    file.write(
-      Uint8Array.from(atob(base64.replace('data:image/jpeg;base64,', '')), c => c.charCodeAt(0))
-    );
+      file.write(
+        Uint8Array.from(atob(rawBase64), c => c.charCodeAt(0))
+      );
 
-    const compressed = await compressImage(file.uri);
+      const compressed = await compressImage(file.uri);
 
-    const task = this.props.route.params?.task;
-    this.props.addSignature(task, compressed);
-    navigateBackToCompleteTask(this.props.navigation, this.props.route);
+      const task = this.props.route.params?.task;
+      this.props.addSignature(task, compressed);
+      navigateBackToCompleteTask(this.props.navigation, this.props.route);
+    } catch (e) {
+      console.error('handleOK failed:', e);
+    }
   }
 
   _clearCanvas() {

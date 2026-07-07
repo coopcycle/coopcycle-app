@@ -46,39 +46,51 @@ function Photo({ navigation, route, addPicture }) {
   const saveImage = async () => {
     const task = route.params?.task;
     if (image) {
-      const compressed = await compressImage(image);
-      const destDir = `${LegacyFS.documentDirectory}pending_uploads/`;
-      await LegacyFS.makeDirectoryAsync(destDir, { intermediates: true });
-      const destUri = `${destDir}${uuid()}.jpg`;
-      await LegacyFS.copyAsync({ from: compressed, to: destUri });
-      addPicture(task, destUri);
-      navigateBackToCompleteTask(navigation, route);
+      try {
+        const compressed = await compressImage(image);
+        const destDir = `${LegacyFS.documentDirectory}pending_uploads/`;
+        await LegacyFS.makeDirectoryAsync(destDir, { intermediates: true });
+        const destUri = `${destDir}${uuid()}.jpg`;
+        await LegacyFS.copyAsync({ from: compressed, to: destUri });
+        addPicture(task, destUri);
+        navigateBackToCompleteTask(navigation, route);
+      } catch (e) {
+        console.error('saveImage failed:', e);
+      }
     }
   };
 
   const takePicture = async () => {
     if (camera.current) {
-      const photo = await camera.current.takePhoto({
-        flash: flash ? 'on' : 'off',
-      });
-      const uri = photo.path.startsWith('file://') ? photo.path : `file://${photo.path}`;
-      setImage(uri);
+      try {
+        const photo = await camera.current.takePhoto({
+          flash: flash ? 'on' : 'off',
+        });
+        const uri = photo.path.startsWith('file://') ? photo.path : `file://${photo.path}`;
+        setImage(uri);
+      } catch (e) {
+        console.error('takePicture failed:', e);
+      }
     }
   };
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    if (!result.canceled) {
-      const task = route.params?.task;
-      const compressed = await compressImage(result.assets[0].uri);
-      addPicture(task, compressed);
-      navigateBackToCompleteTask(navigation, route);
+      if (!result.canceled) {
+        const task = route.params?.task;
+        const compressed = await compressImage(result.assets[0].uri);
+        addPicture(task, compressed);
+        navigateBackToCompleteTask(navigation, route);
+      }
+    } catch (e) {
+      console.error('pickImage failed:', e);
     }
   };
 
