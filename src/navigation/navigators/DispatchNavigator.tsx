@@ -58,8 +58,8 @@ function CustomTabBar({ navigation }) {
 
   return (
     <HStack
-      className="items-center justify-between p-4 bg-background-50"
-      style={{ paddingBottom: insets.bottom }}>
+      className="items-center justify-between bg-background-50"
+      style={{ paddingTop: 16, paddingHorizontal: 16, paddingBottom: 16 + insets.bottom }}>
       <TouchableOpacity
         style={customTabBarStyles.tabButton}
         onPress={showMapButton ? goToTasksMap : goToTasksList}
