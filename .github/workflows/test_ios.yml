@@ -160,6 +160,9 @@ jobs:
       - name: Install applesimutils
         run: |
           brew tap wix/brew
+          # Recent Homebrew refuses to load formulae from third-party taps
+          # until the tap is explicitly trusted.
+          brew trust wix/brew
           brew install applesimutils
 
       # Run 'applesimutils --list' to list your supported devices.
