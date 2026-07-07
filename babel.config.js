@@ -12,5 +12,6 @@ module.exports = {
       },
     ],
     'react-native-worklets/plugin',
+    '@babel/plugin-transform-class-static-block',
   ],
 };

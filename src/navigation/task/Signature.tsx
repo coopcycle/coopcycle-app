@@ -6,8 +6,16 @@ import { VStack } from '@/components/ui/vstack';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+import {
+  Canvas,
+  Path as SkiaPath,
+  Rect,
+  Skia,
+  useCanvasRef,
+  ImageFormat,
+} from '@shopify/react-native-skia';
+import type { SkPath } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Svg, { Path, Rect } from 'react-native-svg';
 import { connect } from 'react-redux';
 import { v4 } from 'uuid';
 
@@ -17,52 +25,47 @@ import { compressImage } from '../../utils/imageCompression';
 
 function Signature({ navigation, route, addSignature }) {
   const { t } = useTranslation();
-  const [completedPaths, setCompletedPaths] = useState<string[]>([]);
-  const [activePath, setActivePath] = useState('');
-  const activePathRef = useRef('');
-  const svgRef = useRef<any>(null);
+  const canvasRef = useCanvasRef();
+  const [completedPaths, setCompletedPaths] = useState<SkPath[]>([]);
+  // renderTick forces a re-render so the Canvas redraws the mutated activePathRef
+  const [renderTick, setRenderTick] = useState(0);
+  const activePathRef = useRef<SkPath | null>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-
-  const onCanvasLayout = useCallback((e: any) => {
-    const { width, height } = e.nativeEvent.layout;
-    setCanvasSize({ width, height });
-  }, []);
 
   const panGesture = useMemo(() =>
     Gesture.Pan()
       .runOnJS(true)
       .minDistance(0)
       .onBegin(e => {
-        const path = `M${e.x} ${e.y}`;
+        const path = Skia.Path.Make();
+        path.moveTo(e.x, e.y);
         activePathRef.current = path;
-        setActivePath(path);
+        setRenderTick(n => n + 1);
       })
       .onUpdate(e => {
-        const path = `${activePathRef.current} L${e.x} ${e.y}`;
-        activePathRef.current = path;
-        setActivePath(path);
+        activePathRef.current?.lineTo(e.x, e.y);
+        setRenderTick(n => n + 1);
       })
-      .onFinalize(() => {
+      .onEnd(() => {
         if (activePathRef.current) {
-          setCompletedPaths(prev => [...prev, activePathRef.current]);
-          activePathRef.current = '';
-          setActivePath('');
+          setCompletedPaths(prev => [...prev, activePathRef.current!]);
+          activePathRef.current = null;
         }
       }),
   []);
 
-  const clearSignature = () => {
+  const clearSignature = useCallback(() => {
     setCompletedPaths([]);
-    setActivePath('');
-    activePathRef.current = '';
-  };
+    activePathRef.current = null;
+    setRenderTick(n => n + 1);
+  }, []);
 
   const saveSignature = async () => {
-    if (completedPaths.length === 0 && !activePath) return;
+    if (completedPaths.length === 0 && !activePathRef.current) return;
     try {
-      const base64 = await new Promise<string>(resolve =>
-        svgRef.current.toDataURL(resolve),
-      );
+      const image = canvasRef.current?.makeImageSnapshot();
+      if (!image) return;
+      const base64 = image.encodeToBase64(ImageFormat.PNG, 100);
       const directory = new Directory(Paths.document, 'pending_uploads');
       if (!directory.exists) directory.create();
       const file = directory.createFile(`${v4()}.png`, 'image/png');
@@ -83,39 +86,42 @@ function Signature({ navigation, route, addSignature }) {
           {t('SIGNATURE_DISCLAIMER')}
         </Text>
         <GestureDetector gesture={panGesture}>
-          <View style={styles.canvasContainer} onLayout={onCanvasLayout}>
-            <Svg
-              ref={svgRef}
-              width={canvasSize.width}
-              height={canvasSize.height}
-              style={StyleSheet.absoluteFill}>
+          <View
+            style={styles.canvasContainer}
+            onLayout={e => {
+              const { width, height } = e.nativeEvent.layout;
+              setCanvasSize({ width, height });
+            }}>
+            <Canvas ref={canvasRef} style={StyleSheet.absoluteFill}>
               <Rect
+                x={0}
+                y={0}
                 width={canvasSize.width}
                 height={canvasSize.height}
-                fill="white"
+                color="white"
               />
-              {completedPaths.map((d, i) => (
-                <Path
+              {completedPaths.map((path, i) => (
+                <SkiaPath
                   key={i}
-                  d={d}
-                  stroke="#000000"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
+                  path={path}
+                  color="black"
+                  style="stroke"
+                  strokeWidth={3}
+                  strokeCap="round"
+                  strokeJoin="round"
                 />
               ))}
-              {activePath ? (
-                <Path
-                  d={activePath}
-                  stroke="#000000"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
+              {activePathRef.current ? (
+                <SkiaPath
+                  path={activePathRef.current}
+                  color="black"
+                  style="stroke"
+                  strokeWidth={3}
+                  strokeCap="round"
+                  strokeJoin="round"
                 />
               ) : null}
-            </Svg>
+            </Canvas>
           </View>
         </GestureDetector>
         <Button variant="outline" size="sm" onPress={clearSignature}>
