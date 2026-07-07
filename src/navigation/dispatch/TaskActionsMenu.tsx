@@ -140,6 +140,15 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
     });
   }
 
+  // Clear selection option
+  if (onClearSelection) {
+    options.push({
+      key: 'ClearSelection',
+      text: t('CLEAR_SELECTION'),
+      action: onClearSelection,
+    });
+  }
+
   // Report Incident option
   if (enabledActions.reportIncident) {
     options.push({
