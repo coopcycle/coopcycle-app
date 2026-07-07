@@ -7,12 +7,12 @@ import { TouchableOpacity } from 'react-native';
 import screens from '..';
 import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
-import { useIconColor } from '@/src/styles/theme';
+import { usePrimaryContentColor } from '@/src/styles/theme';
 import ProductOptions from './ProductOptions';
 
 function CloseButton() {
   const navigation = useNavigation();
-  const iconColor = useIconColor();
+  const iconColor = usePrimaryContentColor();
   return (
     <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
       <X color={iconColor} size={22} />

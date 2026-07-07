@@ -7,7 +7,7 @@ import { cancelTask } from '@/src/redux/Courier/taskActions';
 import { navigateToCompleteTask, navigateToReportTask } from '../utils';
 import { startTask } from '@/src/redux/Courier';
 import TasksMenu from '../components/TasksMenu';
-import { useIconColor } from '@/src/styles/theme';
+import { usePrimaryContentColor } from '@/src/styles/theme';
 import { Tasks } from '@/src/types/tasks';
 
 export interface TaskActionsMenuProps {
@@ -44,7 +44,7 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
   entityName
 }) => {
   const { t } = useTranslation();
-  const iconColor = useIconColor();
+  const iconColor = usePrimaryContentColor();
   const dispatch = useDispatch();
   const route = useRoute();
 

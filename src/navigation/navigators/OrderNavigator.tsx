@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { X } from 'lucide-react-native';
 import { useStackNavigatorScreenOptions } from '../styles';
-import { useIconColor } from '@/src/styles/theme';
+import { usePrimaryContentColor } from '@/src/styles/theme';
 import screens from '..';
 import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 import { clearSelectedTasks } from '@/src/redux/Dispatch/updateSelectedTasksSlice';
@@ -76,7 +76,7 @@ const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
 
 function CloseButton() {
   const navigation = useNavigation();
-  const iconColor = useIconColor();
+  const iconColor = usePrimaryContentColor();
   return (
     <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
       <X color={iconColor} size={22} />

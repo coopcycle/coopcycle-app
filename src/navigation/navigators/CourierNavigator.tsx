@@ -9,7 +9,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import screens, { headerLeft } from '..';
 import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
-import { useIconColor } from '@/src/styles/theme';
+import { usePrimaryContentColor } from '@/src/styles/theme';
 import OrderNavigator from './OrderNavigator';
 import TaskNavigator from './TaskNavigator';
 import { useSelector } from 'react-redux';
@@ -137,7 +137,7 @@ const BarcodeNavigator = () => {
 
 function CloseButton() {
   const navigation = useNavigation();
-  const iconColor = useIconColor();
+  const iconColor = usePrimaryContentColor();
   return (
     <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
       <X color={iconColor} size={22} />
