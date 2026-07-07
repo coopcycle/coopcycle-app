@@ -79,6 +79,9 @@ function Photo({ navigation, route, addPicture }) {
   };
 
   const pickImage = async () => {
+    if (isSaving) {
+      return;
+    }
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
@@ -88,6 +91,9 @@ function Photo({ navigation, route, addPicture }) {
       });
 
       if (!result.canceled) {
+        // Only show the busy state once we start processing the picked image,
+        // not while the OS picker is open.
+        setIsSaving(true);
         const task = route.params?.task;
         const compressed = await compressImage(result.assets[0].uri);
         addPicture(task, compressed);
@@ -95,6 +101,7 @@ function Photo({ navigation, route, addPicture }) {
       }
     } catch (e) {
       console.error('pickImage failed:', e);
+      setIsSaving(false);
     }
   };
 
