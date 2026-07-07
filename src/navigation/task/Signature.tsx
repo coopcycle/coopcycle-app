@@ -23,13 +23,26 @@ import { addSignature } from '../../redux/Courier';
 import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 import { compressImage } from '../../utils/imageCompression';
 
+type Point = { x: number; y: number };
+
+function buildPath(pts: Point[]): SkPath {
+  const path = Skia.Path.Make();
+  if (pts.length === 0) return path;
+  path.moveTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) {
+    path.lineTo(pts[i].x, pts[i].y);
+  }
+  return path;
+}
+
 function Signature({ navigation, route, addSignature }) {
   const { t } = useTranslation();
   const canvasRef = useCanvasRef();
   const [completedPaths, setCompletedPaths] = useState<SkPath[]>([]);
-  // renderTick forces a re-render so the Canvas redraws the mutated activePathRef
-  const [renderTick, setRenderTick] = useState(0);
+  const [activePath, setActivePath] = useState<SkPath | null>(null);
+  // activePathRef mirrors activePath so saveSignature can check it without closure issues
   const activePathRef = useRef<SkPath | null>(null);
+  const activePointsRef = useRef<Point[]>([]);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
   const panGesture = useMemo(() =>
@@ -37,19 +50,26 @@ function Signature({ navigation, route, addSignature }) {
       .runOnJS(true)
       .minDistance(0)
       .onBegin(e => {
-        const path = Skia.Path.Make();
-        path.moveTo(e.x, e.y);
+        const pts: Point[] = [{ x: e.x, y: e.y }];
+        activePointsRef.current = pts;
+        const path = buildPath(pts);
         activePathRef.current = path;
-        setRenderTick(n => n + 1);
+        setActivePath(path);
       })
       .onUpdate(e => {
-        activePathRef.current?.lineTo(e.x, e.y);
-        setRenderTick(n => n + 1);
+        activePointsRef.current.push({ x: e.x, y: e.y });
+        // Build a fresh SkPath — never mutate a path already passed to Skia
+        const path = buildPath(activePointsRef.current);
+        activePathRef.current = path;
+        setActivePath(path);
       })
       .onEnd(() => {
-        if (activePathRef.current) {
-          setCompletedPaths(prev => [...prev, activePathRef.current!]);
+        const path = activePathRef.current;
+        if (path) {
+          setCompletedPaths(prev => [...prev, path]);
           activePathRef.current = null;
+          activePointsRef.current = [];
+          setActivePath(null);
         }
       }),
   []);
@@ -57,7 +77,8 @@ function Signature({ navigation, route, addSignature }) {
   const clearSignature = useCallback(() => {
     setCompletedPaths([]);
     activePathRef.current = null;
-    setRenderTick(n => n + 1);
+    activePointsRef.current = [];
+    setActivePath(null);
   }, []);
 
   const saveSignature = async () => {
@@ -111,9 +132,9 @@ function Signature({ navigation, route, addSignature }) {
                   strokeJoin="round"
                 />
               ))}
-              {activePathRef.current ? (
+              {activePath ? (
                 <SkiaPath
-                  path={activePathRef.current}
+                  path={activePath}
                   color="black"
                   style="stroke"
                   strokeWidth={3}
