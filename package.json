@@ -191,6 +191,11 @@
     "reactotron-redux": "^3.2.1",
     "typescript": "^5.8.3"
   },
+  "dependenciesMeta": {
+    "canvas": {
+      "built": false
+    }
+  },
   "engines": {
     "node": ">=20"
   },

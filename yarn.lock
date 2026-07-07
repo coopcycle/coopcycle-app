@@ -7572,6 +7572,9 @@ __metadata:
     uuid: "npm:^9.0.1"
     validate.js: "npm:^0.13.1"
     web-streams-polyfill: "npm:^4.2.0"
+  dependenciesMeta:
+    canvas:
+      built: false
   languageName: unknown
   linkType: soft
 
