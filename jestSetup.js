@@ -49,6 +49,24 @@ jest.mock('@stripe/stripe-react-native', () => ({}));
 
 jest.mock('react-native-share', () => ({}));
 
+// esc-pos-encoder@2 pulls in the native `canvas` module, whose prebuilt
+// binary isn't available in the test env. It's only used for thermal-printer
+// encoding, so stub it with a chainable no-op encoder.
+jest.mock('esc-pos-encoder', () => {
+  const makeEncoder = () =>
+    new Proxy(
+      {},
+      {
+        get: (_target, prop) =>
+          prop === 'encode'
+            ? () => new Uint8Array()
+            : () => makeEncoder(),
+      },
+    );
+  const EscPosEncoder = jest.fn().mockImplementation(() => makeEncoder());
+  return { __esModule: true, default: EscPosEncoder };
+});
+
 jest.mock('uuid', () => ({
   v4: jest.fn(),
 }));
