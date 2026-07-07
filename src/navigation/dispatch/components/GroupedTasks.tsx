@@ -261,7 +261,10 @@ export default function GroupedTasks({
         if (!tasksByList[key]) tasksByList[key] = [];
         tasksByList[key].push(task);
       }
-      const selectedTasks = { orders: {}, tasks: tasksByList };
+      // Bucket the long-tap selection into the `orders` slot so linked tasks
+      // are assigned/unassigned together — matching the left-swipe behavior
+      // (getTasksListsToEdit only expands linked tasks for the `orders` bucket).
+      const selectedTasks = { orders: tasksByList, tasks: {} };
       const showUnassignButton = Object.keys(tasksByList).some(
         id => id !== UNASSIGNED_TASKS_LIST_ID,
       );
