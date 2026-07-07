@@ -269,8 +269,8 @@ export default function TaskListItem({
     onPress();
   }
 
-  const allowSwipeLeft = task.status !== 'DONE';
-  const allowSwipeRight = task.status !== 'DONE';
+  const allowSwipeLeft = task.status !== 'DONE' && !context?.isEditMode;
+  const allowSwipeRight = task.status !== 'DONE' && !context?.isEditMode;
 
   const renderLeftActions = useCallback(() => (
     <SwipeButtonContainer

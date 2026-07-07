@@ -1,23 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FlashList } from '@shopify/flash-list';
 
-import {
-  addOrder,
-  addTask,
-  clearSelectedTasks,
-  removeTasksAndOrders,
-} from '../../../redux/Dispatch/updateSelectedTasksSlice';
 import { AssignOrderIcon, AssignTaskIcon } from '../../task/styles/common';
 import {
   createTempTaskList,
   createUnassignedTaskLists,
-  getLinkedTasks,
+  getTaskListByTask,
   getTaskListTasks,
-  getTasksListIdsToEdit,
   getUserTaskList,
 } from '../../../shared/src/logistics/redux/taskListUtils';
 import {
@@ -34,7 +27,7 @@ import {
 } from '../../../shared/logistics/redux';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
-import TaskListItemBase, { TaskListItemMethods } from '../../../components/TaskListItem';
+import TaskListItemBase from '../../../components/TaskListItem';
 
 const TaskListItem = memo(TaskListItemBase);
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
@@ -102,16 +95,6 @@ export default function GroupedTasks({
     allTaskLists,
     tasksEntities,
   });
-
-  // Direct ref map for linked-task swipe coordination
-  const taskItemRefsMap = useRef<Map<string, TaskListItemMethods>>(new Map());
-  const registerTaskRef = useCallback((taskUri: string, ref: TaskListItemMethods | null) => {
-    if (ref) taskItemRefsMap.current.set(taskUri, ref);
-    else taskItemRefsMap.current.delete(taskUri);
-  }, []);
-  // Tracks task URIs that are being opened programmatically to break the
-  // openRight() → onSwipeableOpen → handleOnSwipeToRight → openRight() loop.
-  const programmaticSwipeInProgress = useRef<Set<string>>(new Set());
 
   // Section expansion — local UI state, default all expanded
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
@@ -271,89 +254,37 @@ export default function GroupedTasks({
     ],
   );
 
-  const handleOnSwipeToLeft = useCallback(
-    (taskListId, task) => {
-      if (programmaticSwipeInProgress.current.has(task['@id'])) {
-        programmaticSwipeInProgress.current.delete(task['@id']);
-        return;
-      }
-      const allTasks = Object.values(tasksEntities);
-      const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
-      // Open linked tasks BEFORE dispatching (so renderLeftActions is still mounted)
-      Object.values(tasksByTaskList).flat().forEach(t => {
-        if (t['@id'] !== task['@id']) {
-          programmaticSwipeInProgress.current.add(t['@id']);
-          taskItemRefsMap.current.get(t['@id'])?.openLeft();
-        }
-      });
-      dispatch(addOrder(tasksByTaskList));
-    },
-    [allTaskLists, dispatch, tasksEntities],
-  );
-
-  const handleOnSwipeToRight = useCallback(
-    (taskListId, task) => {
-      if (programmaticSwipeInProgress.current.has(task['@id'])) {
-        programmaticSwipeInProgress.current.delete(task['@id']);
-        return;
-      }
-      const allTasks = Object.values(tasksEntities);
-      const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
-      // Open linked tasks BEFORE dispatching (so renderRightActions is still mounted)
-      Object.entries(tasksByTaskList).forEach(([tListId, linkedTasks]) => {
-        linkedTasks.forEach(t => {
-          if (t['@id'] !== task['@id']) {
-            programmaticSwipeInProgress.current.add(t['@id']);
-            taskItemRefsMap.current.get(t['@id'])?.openRight();
-          }
-        });
-      });
-      Object.entries(tasksByTaskList).forEach(([tListId, linkedTasks]) => {
-        linkedTasks.forEach(t => dispatch(addTask({ task: t, taskListId: tListId })));
-      });
-    },
-    [allTaskLists, dispatch, tasksEntities],
-  );
-
-  const handleOnSwipeClose = useCallback(
-    (section, task) => {
-      const taskListId = section.taskListId;
-      const allTasks = Object.values(tasksEntities);
-      const tasksByTaskList = getLinkedTasks(task, taskListId, allTasks, allTaskLists);
-      dispatch(removeTasksAndOrders(tasksByTaskList));
-      Object.values(tasksByTaskList).flat().forEach(t => {
-        if (t['@id'] !== task['@id']) {
-          taskItemRefsMap.current.get(t['@id'])?.close();
-        }
-      });
-    },
-    [allTaskLists, dispatch, tasksEntities],
-  );
-
   const handleBulkAssignButtonPress = useCallback(
-    selectedTasks => {
-      const tasksListIdsToEdit = getTasksListIdsToEdit(selectedTasks);
-      const showUnassignButton =
-        tasksListIdsToEdit.length > 0 &&
-        tasksListIdsToEdit.some(id => id !== UNASSIGNED_TASKS_LIST_ID);
+    (tasks: Task[]) => {
+      const tasksByList: Record<string, Task[]> = {};
+      for (const task of tasks) {
+        const taskList = getTaskListByTask(task, allTaskLists);
+        const key = taskList ? taskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
+        if (!tasksByList[key]) tasksByList[key] = [];
+        tasksByList[key].push(task);
+      }
+      const selectedTasks = { orders: {}, tasks: tasksByList };
+      const showUnassignButton = Object.keys(tasksByList).some(
+        id => id !== UNASSIGNED_TASKS_LIST_ID,
+      );
 
       navigation.navigate('DispatchPickUser', {
         onItemPress: user => {
           onSelectNewAssignation(async () => {
             await bulkEditTasks(selectedTasks, user);
-            dispatch(clearSelectedTasks());
+            context?.clearSelectedTasks();
           });
         },
         showUnassignButton,
         onUnassignButtonPress: () => {
           onSelectNewAssignation(async () => {
             await bulkEditTasks(selectedTasks);
-            dispatch(clearSelectedTasks());
+            context?.clearSelectedTasks();
           });
         },
       });
     },
-    [onSelectNewAssignation, bulkEditTasks, dispatch, navigation],
+    [onSelectNewAssignation, bulkEditTasks, context, allTaskLists, navigation],
   );
 
   const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
@@ -387,22 +318,19 @@ export default function GroupedTasks({
   const swipeLeftConfiguration = useCallback(
     (section, task) => ({
       onPressLeft: () => assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList, task),
-      onSwipedToLeft: () => handleOnSwipeToLeft(section.taskListId, task),
       swipeOutLeftBackgroundColor: darkRedColor,
       swipeOutLeftIcon: AssignOrderIcon,
     }),
-    [assignTaskWithRelatedTasksHandler, handleOnSwipeToLeft],
+    [assignTaskWithRelatedTasksHandler],
   );
 
   const swipeRightConfiguration = useCallback(
     (section, task) => ({
       onPressRight: () => assignTaskHandler(section.isUnassignedTaskList, task),
-      onSwipedToRight: () => handleOnSwipeToRight(section.taskListId, task),
-      onSwipeClosed: () => handleOnSwipeClose(section, task),
       swipeOutRightBackgroundColor: darkRedColor,
       swipeOutRightIcon: AssignTaskIcon,
     }),
-    [assignTaskHandler, handleOnSwipeToRight, handleOnSwipeClose],
+    [assignTaskHandler],
   );
 
   const longPressHandler = useTaskLongPress();
@@ -436,7 +364,6 @@ export default function GroupedTasks({
           onSortBefore={() => handleSortBefore(tasks)}
           onSort={() => handleSort(tasks, index)}
           onOrderPress={() => onOrderClick(task)}
-          onRegisterRef={registerTaskRef}
           {...(swipeLeftConfiguration(section, task))}
           {...(swipeRightConfiguration(section, task))}
         />
@@ -452,7 +379,6 @@ export default function GroupedTasks({
       handleSortBefore,
       swipeLeftConfiguration,
       swipeRightConfiguration,
-      registerTaskRef,
     ],
   );
 
