@@ -113,8 +113,6 @@ export default function GroupedTasks({
 
   // Section metadata (always includes full task data; expansion controlled separately)
   const sections = useMemo<SectionData[]>(() => {
-    if (isFetching) return [];
-
     const unassignedTaskList = createTempTaskList(UNASSIGNED_TASKS_LIST_ID, unassignedTasks);
 
     const sectionsList: SectionData[] = [
@@ -148,7 +146,7 @@ export default function GroupedTasks({
     ];
 
     return sectionsList.filter(section => !hideEmptyTaskLists || section.tasksCount > 0);
-  }, [t, tasksEntities, taskLists, unassignedTaskLists.length, unassignedTasks, hideEmptyTaskLists, isFetching]);
+  }, [t, tasksEntities, taskLists, unassignedTaskLists.length, unassignedTasks, hideEmptyTaskLists]);
 
   // Flat data for FlashList
   const flatData = useMemo<FlatItem[]>(() => {
