@@ -1655,7 +1655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@datadog/mobile-react-native@npm:^2.13.0":
+"@datadog/mobile-react-native@npm:^2.14.9":
   version: 2.14.9
   resolution: "@datadog/mobile-react-native@npm:2.14.9"
   dependencies:
@@ -1667,7 +1667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@datadog/mobile-react-navigation@npm:^2.13.0":
+"@datadog/mobile-react-navigation@npm:^2.14.9":
   version: 2.14.9
   resolution: "@datadog/mobile-react-navigation@npm:2.14.9"
   peerDependencies:
@@ -2926,7 +2926,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@invertase/react-native-apple-authentication@npm:^2.2.2":
+"@invertase/react-native-apple-authentication@npm:^2.5.1":
   version: 2.5.1
   resolution: "@invertase/react-native-apple-authentication@npm:2.5.1"
   checksum: 10c0/04cc3e6fde99caea6cdb16bb50786afce141e5014939e9d51bfe29a21c0241d73eac529954ac4826851ce603f4d3e9f1b68cc54225e2df532ecd8021b7be4804
@@ -3317,7 +3317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mitsuharu/react-native-sunmi-printer-library@npm:^2.3.0":
+"@mitsuharu/react-native-sunmi-printer-library@npm:^2.4.0":
   version: 2.4.0
   resolution: "@mitsuharu/react-native-sunmi-printer-library@npm:2.4.0"
   peerDependencies:
@@ -3855,7 +3855,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/netinfo@npm:^11.4.1":
+"@react-native-community/netinfo@npm:^11.5.2":
   version: 11.5.2
   resolution: "@react-native-community/netinfo@npm:11.5.2"
   peerDependencies:
@@ -4189,7 +4189,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/bottom-tabs@npm:^7.8.5":
+"@react-navigation/bottom-tabs@npm:^7.18.7":
   version: 7.18.7
   resolution: "@react-navigation/bottom-tabs@npm:7.18.7"
   dependencies:
@@ -4224,7 +4224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/drawer@npm:^7.7.3":
+"@react-navigation/drawer@npm:^7.12.7":
   version: 7.12.7
   resolution: "@react-navigation/drawer@npm:7.12.7"
   dependencies:
@@ -4244,7 +4244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.8.2, @react-navigation/elements@npm:^2.9.29":
+"@react-navigation/elements@npm:^2.9.29":
   version: 2.9.29
   resolution: "@react-navigation/elements@npm:2.9.29"
   dependencies:
@@ -4264,7 +4264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/material-top-tabs@npm:^7.4.3":
+"@react-navigation/material-top-tabs@npm:^7.6.6":
   version: 7.6.6
   resolution: "@react-navigation/material-top-tabs@npm:7.6.6"
   dependencies:
@@ -4281,7 +4281,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native-stack@npm:^7.6.3":
+"@react-navigation/native-stack@npm:^7.17.9":
   version: 7.17.9
   resolution: "@react-navigation/native-stack@npm:7.17.9"
   dependencies:
@@ -4299,7 +4299,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^7.1.20":
+"@react-navigation/native@npm:^7.3.7":
   version: 7.3.7
   resolution: "@react-navigation/native@npm:7.3.7"
   dependencies:
@@ -4325,7 +4325,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/stack@npm:^7.6.4":
+"@react-navigation/stack@npm:^7.10.10":
   version: 7.10.10
   resolution: "@react-navigation/stack@npm:7.10.10"
   dependencies:
@@ -7402,22 +7402,22 @@ __metadata:
     "@babel/helper-get-function-arity": "npm:^7.16.7"
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
-    "@datadog/mobile-react-native": "npm:^2.13.0"
-    "@datadog/mobile-react-navigation": "npm:^2.13.0"
+    "@datadog/mobile-react-native": "npm:^2.14.9"
+    "@datadog/mobile-react-navigation": "npm:^2.14.9"
     "@expo/html-elements": "npm:0.13.7"
     "@gluestack-ui/core": "npm:^3.0.10"
     "@gluestack-ui/utils": "npm:^3.0.7"
     "@gorhom/bottom-sheet": "npm:^5.2.14"
-    "@invertase/react-native-apple-authentication": "npm:^2.2.2"
+    "@invertase/react-native-apple-authentication": "npm:^2.5.1"
     "@legendapp/motion": "npm:^2.4.0"
     "@mapbox/polyline": "npm:^1.2.1"
-    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.3.0"
+    "@mitsuharu/react-native-sunmi-printer-library": "npm:^2.4.0"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
     "@react-native-community/cli": "npm:20.0.0"
     "@react-native-community/cli-platform-android": "npm:20.0.0"
     "@react-native-community/cli-platform-ios": "npm:20.0.0"
     "@react-native-community/datetimepicker": "npm:8.5.1"
-    "@react-native-community/netinfo": "npm:^11.4.1"
+    "@react-native-community/netinfo": "npm:^11.5.2"
     "@react-native-firebase/analytics": "npm:^22.0.0"
     "@react-native-firebase/app": "npm:^22.0.0"
     "@react-native-firebase/crashlytics": "npm:^22.0.0"
@@ -7429,13 +7429,13 @@ __metadata:
     "@react-native/eslint-config": "npm:0.81.5"
     "@react-native/metro-config": "npm:0.81.5"
     "@react-native/typescript-config": "npm:0.81.5"
-    "@react-navigation/bottom-tabs": "npm:^7.8.5"
-    "@react-navigation/drawer": "npm:^7.7.3"
-    "@react-navigation/elements": "npm:^2.8.2"
-    "@react-navigation/material-top-tabs": "npm:^7.4.3"
-    "@react-navigation/native": "npm:^7.1.20"
-    "@react-navigation/native-stack": "npm:^7.6.3"
-    "@react-navigation/stack": "npm:^7.6.4"
+    "@react-navigation/bottom-tabs": "npm:^7.18.7"
+    "@react-navigation/drawer": "npm:^7.12.7"
+    "@react-navigation/elements": "npm:^2.9.29"
+    "@react-navigation/material-top-tabs": "npm:^7.6.6"
+    "@react-navigation/native": "npm:^7.3.7"
+    "@react-navigation/native-stack": "npm:^7.17.9"
+    "@react-navigation/stack": "npm:^7.10.10"
     "@reduxjs/toolkit": "npm:^2.9.0"
     "@sentry/react-native": "npm:~7.2.0"
     "@shopify/flash-list": "npm:^2.3.1"
@@ -7474,7 +7474,7 @@ __metadata:
     eslint: "npm:^8.19.0"
     eslint-plugin-jest: "npm:^29.0.1"
     eslint-plugin-react-compiler: "npm:^19.0.0-beta-63e3235-20250105"
-    expo: "npm:^54.0.27"
+    expo: "npm:^54.0.35"
     expo-camera: "npm:17.0.10"
     expo-image-manipulator: "npm:~14.0.8"
     expo-image-picker: "npm:17.0.9"
@@ -7506,31 +7506,31 @@ __metadata:
     react-dom: "npm:19.1.0"
     react-i18next: "npm:^12.3.1"
     react-native: "npm:0.81.5"
-    react-native-app-auth: "npm:^8.0.3"
+    react-native-app-auth: "npm:^8.4.1"
     react-native-autocomplete-input: "npm:^5.4.0"
     react-native-avoid-softinput: "npm:^8.0.2"
-    react-native-background-fetch: "npm:^4.2.8"
-    react-native-background-geolocation: "npm:^4.19.0"
+    react-native-background-fetch: "npm:^4.4.2"
+    react-native-background-geolocation: "npm:^4.19.4"
     react-native-ble-manager: "npm:^8.4.4"
     react-native-calendars: "npm:^1.1313.0"
     react-native-clean-project: "npm:^4.0.3"
     react-native-communications: "npm:^2.2.1"
-    react-native-config: "npm:^1.5.10"
+    react-native-config: "npm:^1.6.1"
     react-native-dropdownalert: "npm:^4.5.1"
     react-native-email-link: "npm:^1.16.1"
-    react-native-fbsdk-next: "npm:^13.4.1"
-    react-native-gesture-handler: "npm:^2.29.0"
+    react-native-fbsdk-next: "npm:^13.4.3"
+    react-native-gesture-handler: "npm:^2.32.0"
     react-native-get-random-values: "npm:^1.11.0"
-    react-native-inappbrowser-reborn: "npm:^3.7.0"
+    react-native-inappbrowser-reborn: "npm:^3.7.1"
     react-native-input-spinner: "npm:^1.8.1"
-    react-native-keyboard-controller: "npm:^1.20.7"
+    react-native-keyboard-controller: "npm:^1.21.14"
     react-native-keyboard-manager: "npm:^6.5.16-0"
     react-native-loading-spinner-overlay: "npm:^3.0.1"
-    react-native-localize: "npm:^3.5.2"
+    react-native-localize: "npm:^3.7.0"
     react-native-map-link: "npm:^2.11.4"
     react-native-maps: "npm:^1.29.0"
     react-native-markdown-display: "npm:^7.0.2"
-    react-native-modal: "npm:^13.0.1"
+    react-native-modal: "npm:13.0.2"
     react-native-modal-datetime-picker: "npm:^18.0.0"
     react-native-modal-selector: "npm:^2.1.2"
     react-native-pager-view: "npm:^6.9.1"
@@ -7538,18 +7538,18 @@ __metadata:
     react-native-picker-select: "npm:^9.3.1"
     react-native-pin-screen: "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.3"
     react-native-reanimated: "npm:4.1.5"
-    react-native-safe-area-context: "npm:^5.6.2"
-    react-native-screens: "npm:^4.18.0"
-    react-native-share: "npm:^7.9.1"
+    react-native-safe-area-context: "npm:^5.8.0"
+    react-native-screens: "npm:^4.25.2"
+    react-native-share: "npm:12.3.1"
     react-native-sound: "npm:^0.12.0"
     react-native-svg: "npm:15.12.1"
     react-native-svg-transformer: "npm:^1.5.1"
     react-native-swipe-list-view: "npm:^3.2.9"
     react-native-tab-view: "npm:^4.2.0"
-    react-native-vector-icons: "npm:^10.0.3"
+    react-native-vector-icons: "npm:^10.3.0"
     react-native-version-number: "npm:^0.3.6"
     react-native-vision-camera: "npm:^4.7.3"
-    react-native-webview: "npm:^13.16.0"
+    react-native-webview: "npm:^13.17.0"
     react-native-worklets: "npm:^0.6.1"
     react-navigation-header-buttons: "npm:^13"
     react-query: "npm:^3.39.3"
@@ -11080,7 +11080,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:^54.0.27":
+"expo@npm:^54.0.35":
   version: 54.0.35
   resolution: "expo@npm:54.0.35"
   dependencies:
@@ -16575,7 +16575,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-app-auth@npm:^8.0.3":
+"react-native-animatable@npm:1.4.0":
+  version: 1.4.0
+  resolution: "react-native-animatable@npm:1.4.0"
+  dependencies:
+    prop-types: "npm:^15.8.1"
+  checksum: 10c0/658f15aa3744c3d6a22a44ab4609afc4335ff06d0a200a1fba513e470ebb4bd561ab709204b3777ee53cad526f695e2b4290e057a50fcd461aca337e407fe2b1
+  languageName: node
+  linkType: hard
+
+"react-native-app-auth@npm:^8.4.1":
   version: 8.4.1
   resolution: "react-native-app-auth@npm:8.4.1"
   dependencies:
@@ -16606,7 +16615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-background-fetch@npm:^4.2.8":
+"react-native-background-fetch@npm:^4.4.2":
   version: 4.4.2
   resolution: "react-native-background-fetch@npm:4.4.2"
   dependencies:
@@ -16627,7 +16636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-background-geolocation@npm:^4.19.0":
+"react-native-background-geolocation@npm:^4.19.4":
   version: 4.19.4
   resolution: "react-native-background-geolocation@npm:4.19.4"
   dependencies:
@@ -16685,7 +16694,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-config@npm:^1.5.10":
+"react-native-config@npm:^1.6.1":
   version: 1.6.1
   resolution: "react-native-config@npm:1.6.1"
   peerDependencies:
@@ -16757,7 +16766,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-fbsdk-next@npm:^13.4.1":
+"react-native-fbsdk-next@npm:^13.4.3":
   version: 13.4.3
   resolution: "react-native-fbsdk-next@npm:13.4.3"
   peerDependencies:
@@ -16779,7 +16788,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.29.0":
+"react-native-gesture-handler@npm:^2.32.0":
   version: 2.32.0
   resolution: "react-native-gesture-handler@npm:2.32.0"
   dependencies:
@@ -16805,7 +16814,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-inappbrowser-reborn@npm:^3.7.0":
+"react-native-inappbrowser-reborn@npm:^3.7.1":
   version: 3.7.1
   resolution: "react-native-inappbrowser-reborn@npm:3.7.1"
   dependencies:
@@ -16841,7 +16850,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-keyboard-controller@npm:^1.20.7":
+"react-native-keyboard-controller@npm:^1.21.14":
   version: 1.21.14
   resolution: "react-native-keyboard-controller@npm:1.21.14"
   dependencies:
@@ -16873,7 +16882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-localize@npm:^3.5.2":
+"react-native-localize@npm:^3.7.0":
   version: 3.7.0
   resolution: "react-native-localize@npm:3.7.0"
   peerDependencies:
@@ -16955,6 +16964,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-modal@npm:13.0.2":
+  version: 13.0.2
+  resolution: "react-native-modal@npm:13.0.2"
+  dependencies:
+    react-native-animatable: "npm:1.4.0"
+  peerDependencies:
+    react: "*"
+    react-native: ">=0.70.0"
+  checksum: 10c0/12bedf7a5caafddf85422e928a99bf4465c050547c75dd15cfe668cc0895375aa39a0447a848c85bc75124c3652c4a81fe70b79f3c5df25ff8ccbb513a169d45
+  languageName: node
+  linkType: hard
+
 "react-native-modal@npm:^13.0.1":
   version: 13.0.1
   resolution: "react-native-modal@npm:13.0.1"
@@ -17025,7 +17046,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^5.6.2":
+"react-native-safe-area-context@npm:^5.8.0":
   version: 5.8.0
   resolution: "react-native-safe-area-context@npm:5.8.0"
   peerDependencies:
@@ -17035,7 +17056,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^4.18.0":
+"react-native-screens@npm:^4.25.2":
   version: 4.25.2
   resolution: "react-native-screens@npm:4.25.2"
   dependencies:
@@ -17048,10 +17069,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-share@npm:^7.9.1":
-  version: 7.9.1
-  resolution: "react-native-share@npm:7.9.1"
-  checksum: 10c0/d8623eef3998a41b34ec63e01bf1dc3a73b47f9c093d4a4fe5cb27fa3c485bec2a8e0cc0bb5e74f00fc8d7d20b99bce73f7689bbd3b4b06f51c1cad92beb037a
+"react-native-share@npm:12.3.1":
+  version: 12.3.1
+  resolution: "react-native-share@npm:12.3.1"
+  checksum: 10c0/4ee8a64e5a992ecf16bcf59a4d1384b3310d590d5fb0e7b07f60073635cc9de8fd3adf31bcbd93500252690bdf59a45ca6d01f3a834b32842768e1a02e5e5524
   languageName: node
   linkType: hard
 
@@ -17153,7 +17174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-vector-icons@npm:^10.0.3":
+"react-native-vector-icons@npm:^10.3.0":
   version: 10.3.0
   resolution: "react-native-vector-icons@npm:10.3.0"
   dependencies:
@@ -17195,7 +17216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-webview@npm:^13.16.0":
+"react-native-webview@npm:^13.17.0":
   version: 13.17.0
   resolution: "react-native-webview@npm:13.17.0"
   dependencies:
