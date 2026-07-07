@@ -1,4 +1,3 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 
@@ -46,7 +45,7 @@ const MainNavigator = () => {
   );
 };
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions({

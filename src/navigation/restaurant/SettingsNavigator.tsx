@@ -1,12 +1,26 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { X } from 'lucide-react-native';
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 
 import screens from '..';
 import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
+import { useIconColor } from '@/src/styles/theme';
 import ProductOptions from './ProductOptions';
 
-const RootStack = createNativeStackNavigator();
+function CloseButton() {
+  const navigation = useNavigation();
+  const iconColor = useIconColor();
+  return (
+    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+      <X color={iconColor} size={22} />
+    </TouchableOpacity>
+  );
+}
+
+const RootStack = createStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -18,6 +32,7 @@ export default () => {
         component={screens.RestaurantSettings}
         options={{
           title: i18n.t('SETTINGS'),
+          headerLeft: () => <CloseButton />,
         }}
       />
       <RootStack.Screen

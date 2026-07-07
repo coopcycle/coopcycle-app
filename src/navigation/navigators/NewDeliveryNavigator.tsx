@@ -1,10 +1,10 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import screens from '..';
 import { useStackNavigatorScreenOptions } from '../styles';
 
-const NewDeliveryStack = createNativeStackNavigator();
+const NewDeliveryStack = createStackNavigator();
 
 export const NewDeliveryNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions({
@@ -18,7 +18,6 @@ export const NewDeliveryNavigator = () => {
         component={screens.NewDeliveryStore}
         options={{
           headerShown: false,
-          headerBackTitleVisible: false,
         }}
       />
       <NewDeliveryStack.Screen

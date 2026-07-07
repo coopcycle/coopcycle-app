@@ -1,13 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@/components/ui/icon';
-import { List, Map, ScanBarcode, Settings } from 'lucide-react-native'
+import { List, Map, ScanBarcode, Settings, X } from 'lucide-react-native'
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import screens, { headerLeft } from '..';
 import i18n from '../../i18n';
 import { useStackNavigatorScreenOptions } from '../styles';
+import { useIconColor } from '@/src/styles/theme';
 import OrderNavigator from './OrderNavigator';
 import TaskNavigator from './TaskNavigator';
 import { useSelector } from 'react-redux';
@@ -57,7 +59,7 @@ const Tabs = () => {
   );
 };
 
-const MainStack = createNativeStackNavigator();
+const MainStack = createStackNavigator();
 
 function HeaderCourierButtons({ navigation }) {
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled);
@@ -89,7 +91,6 @@ const MainNavigator = () => {
         options={{
           headerShown: false,
           gestureEnabled: false,
-          fullScreenGestureEnabled: false,
         }}
       />
       <MainStack.Screen
@@ -104,7 +105,7 @@ const MainNavigator = () => {
   );
 };
 
-const BarcodeStack = createNativeStackNavigator();
+const BarcodeStack = createStackNavigator();
 const BarcodeNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
@@ -134,7 +135,17 @@ const BarcodeNavigator = () => {
   );
 };
 
-const SettingsStack = createNativeStackNavigator();
+function CloseButton() {
+  const navigation = useNavigation();
+  const iconColor = useIconColor();
+  return (
+    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+      <X color={iconColor} size={22} />
+    </TouchableOpacity>
+  );
+}
+
+const SettingsStack = createStackNavigator();
 
 const SettingsNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
@@ -146,6 +157,7 @@ const SettingsNavigator = () => {
         component={screens.CourierSettings}
         options={{
           title: i18n.t('SETTINGS'),
+          headerLeft: () => <CloseButton />,
         }}
       />
       <SettingsStack.Screen
@@ -205,7 +217,7 @@ const HeaderRightBody = ({ navigation }) => {
   );
 };
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createStackNavigator();
 
 export default () => {
   const screenOptions = useStackNavigatorScreenOptions({

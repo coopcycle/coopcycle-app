@@ -1,8 +1,11 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import React, { useCallback } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { X } from 'lucide-react-native';
 import { useStackNavigatorScreenOptions } from '../styles';
+import { useIconColor } from '@/src/styles/theme';
 import screens from '..';
 import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 import { clearSelectedTasks } from '@/src/redux/Dispatch/updateSelectedTasksSlice';
@@ -13,7 +16,7 @@ import { selectFilteredTasksByOrder as selectTasksByOrderCourier } from '@/src/r
 import useSetTaskListItems from '@/src/shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderTitle } from '@/src/components/OrderTitle';
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createStackNavigator();
 
 const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
   const dispatch = useDispatch();
@@ -71,6 +74,16 @@ const OrderMenuHeader = ({ orderNumber, isFromCourier, status }) => {
   );
 };
 
+function CloseButton() {
+  const navigation = useNavigation();
+  const iconColor = useIconColor();
+  return (
+    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+      <X color={iconColor} size={22} />
+    </TouchableOpacity>
+  );
+}
+
 export default function OrderNavigator() {
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
@@ -87,6 +100,7 @@ export default function OrderNavigator() {
           return {
             title: getOrderTitle(orderNumber),
             headerShown: true,
+            headerLeft: () => <CloseButton />,
             headerRight: () => (
               <OrderMenuHeader
                 orderNumber={orderNumber}
