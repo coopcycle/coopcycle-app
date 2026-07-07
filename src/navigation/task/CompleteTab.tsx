@@ -298,29 +298,23 @@ const CompleteTask = ({ task, tasks = [], success }: Props) => {
                   )}
                   <PoDButton task={task} tasks={tasks} success={success} />
                 </FormControl>
-                <View>
-                  <ScrollView style={{ height: '50%' }}>
-                    <View style={styles.content}>
-                      <View style={styles.imagesContainer}>
-                        {signatures.map((base64, key) => (
-                          <AttachmentItem
-                            key={`signatures:${key}`}
-                            base64={base64}
-                            onPressDelete={() =>
-                              dispatch(deleteSignatureAt(key))
-                            }
-                          />
-                        ))}
-                        {pictures.map((base64, key) => (
-                          <AttachmentItem
-                            key={`pictures:${key}`}
-                            base64={base64}
-                            onPressDelete={() => dispatch(deletePictureAt(key))}
-                          />
-                        ))}
-                      </View>
-                    </View>
-                  </ScrollView>
+                <View style={styles.content}>
+                  <View style={styles.imagesContainer}>
+                    {signatures.map((base64, key) => (
+                      <AttachmentItem
+                        key={`signatures:${key}`}
+                        base64={base64}
+                        onPressDelete={() => dispatch(deleteSignatureAt(key))}
+                      />
+                    ))}
+                    {pictures.map((base64, key) => (
+                      <AttachmentItem
+                        key={`pictures:${key}`}
+                        base64={base64}
+                        onPressDelete={() => dispatch(deletePictureAt(key))}
+                      />
+                    ))}
+                  </View>
                 </View>
               </VStack>
             </TouchableWithoutFeedback>
