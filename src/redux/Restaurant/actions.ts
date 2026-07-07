@@ -371,6 +371,10 @@ export function loadOrder(order, cb) {
     const { restaurant } = getState();
     const httpClient = selectHttpClient(getState());
 
+    if (!httpClient) {
+      return;
+    }
+
     const sameOrder = _.find(restaurant.orders, o => o['@id'] === order);
 
     // Optimization: don't reload the order if already loaded
@@ -405,6 +409,10 @@ export function loadOrderAndNavigate(order, cb) {
   return function (dispatch, getState) {
     const { restaurant } = getState();
     const httpClient = selectHttpClient(getState());
+
+    if (!httpClient) {
+      return;
+    }
 
     const sameOrder = _.find(restaurant.orders, o => o['@id'] === order);
 

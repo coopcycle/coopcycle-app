@@ -201,6 +201,10 @@ export function loadTasks(
   return function (dispatch, getState) {
     const httpClient = selectHttpClient(getState());
 
+    if (!httpClient) {
+      return;
+    }
+
     dispatch(loadTasksRequest(selectedDate.toISOString(), refresh));
 
     return httpClient
