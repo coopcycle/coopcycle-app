@@ -5,6 +5,7 @@ import { Text } from '@/components/ui/text';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SwipeRow } from 'react-native-swipe-list-view';
 
 import { greenColor, redColor, yellowColor } from '../../../styles/common';
@@ -26,12 +27,13 @@ const RightButton = ({ width }) => (
 
 const CompleteButton = React.forwardRef((props, ref) => {
   const { task, onPressSuccess, onPressFailure, t } = props;
+  const { bottom: bottomInset } = useSafeAreaInsets();
 
   const { width } = Dimensions.get('window');
 
   if (task.status === 'DONE') {
     return (
-      <View style={[styles.buttonContainer, { backgroundColor: greenColor }]}>
+      <View style={[styles.buttonContainer, { backgroundColor: greenColor, paddingBottom: bottomInset }]}>
         <View style={styles.buttonTextContainer}>
           <Icon
             as={DoneIcon}
@@ -46,7 +48,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
 
   if (task.status === 'FAILED') {
     return (
-      <View style={[styles.buttonContainer, { backgroundColor: redColor }]}>
+      <View style={[styles.buttonContainer, { backgroundColor: redColor, paddingBottom: bottomInset }]}>
         <View style={styles.buttonTextContainer}>
           <Icon
             as={FailedIcon}
@@ -102,7 +104,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
         </View>
         <Box
           className="bg-secondary-600"
-          style={{ padding: 28, width }}
+          style={{ paddingTop: 28, paddingHorizontal: 28, paddingBottom: 28 + bottomInset, width }}
           testID="task:completeButton">
           <Text style={{ fontSize: 20, textAlign: 'center', color: '#fff' }}>
             {t('COMPLETE_TASK')}

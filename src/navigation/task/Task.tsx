@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Alert, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { selectAllTasks as selectAllDispatchTasks } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectTasks, startTask } from '../../redux/Courier';
@@ -175,7 +174,7 @@ class Task extends Component {
     const tasks = this.props.route.params?.tasks || [];
 
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+      <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <View style={{ height: '35%' }}>{this.renderMap()}</View>
           <View style={{ height: '55%' }}>
@@ -196,7 +195,7 @@ class Task extends Component {
         {!this.props.isInternetReachable && (
           <OfflineNotice message={this.props.t('OFFLINE')} />
         )}
-      </SafeAreaView>
+      </View>
     );
   }
 }
