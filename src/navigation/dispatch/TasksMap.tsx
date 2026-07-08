@@ -3,6 +3,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 
 import {
   createUnassignedTaskLists,
@@ -56,6 +57,12 @@ export default function TasksMap({ navigation, route }) {
 
   const { isFetching } = useAllTasks(selectedDate);
 
+  // Unmount the native map (and its continuous GPS / rendering) whenever this
+  // screen isn't focused — i.e. when the task/PoD stack is pushed on top or the
+  // list tab is active — so it doesn't churn in the background. Scoped to this
+  // screen; no global screen freezing (which caused a thaw-flicker elsewhere).
+  const isFocused = useIsFocused();
+
   const mapCenter = useMemo(() => {
     return defaultCoordinates.split(',').map(parseFloat);
   }, [defaultCoordinates]);
@@ -88,12 +95,14 @@ export default function TasksMap({ navigation, route }) {
       </Box>
       <View style={styles.mapContainer}>
         <BottomSheet>
-          <TasksMapView
-            mapCenter={mapCenter}
-            taskLists={mergedTaskListsWithUnassigned}
-            uiFilters={uiFilters}
-            onListedTaskPress={navigateToSelectedTask}
-          />
+          {isFocused ? (
+            <TasksMapView
+              mapCenter={mapCenter}
+              taskLists={mergedTaskListsWithUnassigned}
+              uiFilters={uiFilters}
+              onListedTaskPress={navigateToSelectedTask}
+            />
+          ) : null}
         </BottomSheet>
         {isFetching ? (
           <View style={styles.activityContainer}>
