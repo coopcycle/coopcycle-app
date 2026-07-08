@@ -71,7 +71,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
-      - uses: mfinelli/setup-imagemagick@v5
+      - uses: mfinelli/setup-imagemagick@v8
       - name: Find Metro cache
         id: metro-cache-dir-path
         uses: actions/github-script@v4
@@ -263,4 +263,3 @@ jobs:
         with:
           name: maestro-error-rapport
           path: ~/.maestro/tests/
-
