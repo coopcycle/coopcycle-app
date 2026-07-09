@@ -1,21 +1,7 @@
-import { CommonActions } from '@react-navigation/native';
 import { createAction } from '@reduxjs/toolkit';
 
 import { connectCentrifugo } from '../middlewares/CentrifugoMiddleware/actions';
-import {
-  DEP_CHANGE_DATE,
-  createTaskFailure,
-  createTaskListFailure,
-  createTaskListRequest,
-  createTaskListSuccess,
-  createTaskRequest,
-  createTaskSuccess,
-  selectSelectedDate,
-} from '../../coopcycle-frontend-js/logistics/redux';
-import { isSameDayTask } from '../../shared/src/utils';
-import { showAlert } from '../../utils/alert';
-import NavigationHolder from '../../NavigationHolder';
-import { selectHttpClient } from '../App/selectors';
+import { DEP_CHANGE_DATE } from '../../coopcycle-frontend-js/logistics/redux';
 
 /*
  * Action Creators
@@ -55,46 +41,3 @@ export function initialize() {
   };
 }
 
-export function createTaskList(date, user) {
-  return function (dispatch, getState) {
-    const httpClient = selectHttpClient(getState());
-
-    dispatch(createTaskListRequest());
-
-    return httpClient
-      .post('/api/task_lists', {
-        date: date.format('YYYY-MM-DD'),
-        courier: user['@id'],
-      })
-      .then(res => dispatch(createTaskListSuccess(res)))
-      .catch(e => dispatch(createTaskListFailure(e)));
-  };
-}
-
-export function createTask(task) {
-  return function (dispatch, getState) {
-    const httpClient = selectHttpClient(getState());
-
-    dispatch(createTaskRequest());
-
-    return httpClient
-      .post('/api/tasks', task)
-      .then(t => {
-        let date = selectSelectedDate(getState());
-
-        if (isSameDayTask(t, date)) {
-          dispatch(createTaskSuccess(t));
-        }
-
-        const resetAction = CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'Main' }],
-        });
-        NavigationHolder.dispatch(resetAction);
-      })
-      .catch(e => {
-        dispatch(createTaskFailure(e));
-        setTimeout(() => showAlert(e), 100);
-      });
-  };
-}
