@@ -41,6 +41,7 @@ export default props => {
     product && Array.isArray(product.menuAddOn) ? product.menuAddOn : [];
 
   const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
   const {
     selected: selectedOptions,
     isValid: optionsAreValid,
@@ -138,11 +139,22 @@ export default props => {
     shouldRenderOptions,
   ]);
 
-  const _onPressAddToCart = () => {
+  const _onPressAddToCart = async () => {
+    if (isAdding) {
+      return;
+    }
     const restaurant = props.route.params?.restaurant;
 
-    dispatch(addItemV2(product, quantity, restaurant, selectedOptions));
-    props.navigation.popTo('CheckoutMain', { restaurant });
+    // Await the add before navigating back. On the first add this includes
+    // creating the cart (a ~1-2s request); navigating immediately used to
+    // reveal the restaurant screen mid-flight, causing a brief empty screen.
+    setIsAdding(true);
+    try {
+      await dispatch(addItemV2(product, quantity, restaurant, selectedOptions));
+      props.navigation.popTo('CheckoutMain', { restaurant });
+    } catch (e) {
+      setIsAdding(false);
+    }
   };
 
   return (
@@ -209,6 +221,7 @@ export default props => {
         <FooterButton
           testID="addProduct"
           text={`${t('ADD_TO_CART')} ${formatPrice(totalPrice)}`}
+          loading={isAdding}
           onPress={() => _onPressAddToCart()}
         />
       ) : null}
