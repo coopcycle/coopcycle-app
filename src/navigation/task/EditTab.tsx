@@ -72,7 +72,7 @@ export const EditTab: React.FC<TaskFormProps> = ({ task, currentTab }) => {
 
   if (!canEditTask(task)) {
     return (
-      <View className="flex-1 align-items-center justify-center">
+      <View className="flex-1 items-center justify-center">
         <Text className="text-center">
           {t(
             task.metadata?.order_number
