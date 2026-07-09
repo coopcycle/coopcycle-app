@@ -20,8 +20,6 @@ import {
 } from '../../styles/theme';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
-import Privacy from '../home/Privacy';
-import Terms from '../home/Terms';
 import { useStackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
@@ -392,20 +390,6 @@ const DefaultNav = () => {
           headerShown: false,
         }}
       />
-      {/* Terms & Privacy presented as modals so opening them from the
-          registration form never unmounts / navigates away from the form. */}
-      <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-        <RootStack.Screen
-          name="TermsModal"
-          component={Terms}
-          options={{ title: i18n.t('TERMS_OF_SERVICE') }}
-        />
-        <RootStack.Screen
-          name="PrivacyModal"
-          component={Privacy}
-          options={{ title: i18n.t('PRIVACY') }}
-        />
-      </RootStack.Group>
     </RootStack.Navigator>
   );
 };

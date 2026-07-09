@@ -47,48 +47,6 @@ const AboutNavigator = () => {
   );
 };
 
-const TermsStack = createStackNavigator();
-
-const TermsNavigator = () => {
-  const screenOptions = useStackNavigatorScreenOptions();
-
-  return (
-    <TermsStack.Navigator screenOptions={screenOptions}>
-      <TermsStack.Screen
-        name="TermsHome"
-        component={Terms}
-        options={({ navigation }) => ({
-          title: i18n.t('TERMS_OF_SERVICE'),
-          headerLeft: props => (
-            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
-          ),
-        })}
-      />
-    </TermsStack.Navigator>
-  );
-};
-
-const PrivacyStack = createStackNavigator();
-
-const PrivacyNavigator = () => {
-  const screenOptions = useStackNavigatorScreenOptions();
-
-  return (
-    <PrivacyStack.Navigator screenOptions={screenOptions}>
-      <PrivacyStack.Screen
-        name="PrivacyHome"
-        component={Privacy}
-        options={({ navigation }) => ({
-          title: i18n.t('PRIVACY'),
-          headerLeft: props => (
-            <HeaderBackButton {...props} onPress={() => navigation.goBack()} />
-          ),
-        })}
-      />
-    </PrivacyStack.Navigator>
-  );
-};
-
 const FeatureFlagsStack = createStackNavigator();
 
 const FeatureFlagsNavigator = () => {
@@ -140,8 +98,6 @@ const DrawerNav = ({
       <Drawer.Screen name="DeliveryNav" component={DeliveryNavigator} />
       <Drawer.Screen name="AccountNav" component={AccountNavigator} />
       <Drawer.Screen name="AboutNav" component={AboutNavigator} />
-      <Drawer.Screen name="TermsNav" component={TermsNavigator} />
-      <Drawer.Screen name="PrivacyNav" component={PrivacyNavigator} />
       <Drawer.Screen name="FeatureFlagsNav" component={FeatureFlagsNavigator} />
 
       {isAuthenticated && user.hasRole('ROLE_COURIER') && (
@@ -161,4 +117,38 @@ const DrawerNav = ({
   );
 };
 
-export default connect(mapStateToProps)(DrawerNav);
+const ConnectedDrawerNav = connect(mapStateToProps)(DrawerNav);
+
+const RootStack = createStackNavigator();
+
+// The drawer sits inside a root stack so Terms & Privacy can be presented as
+// modals over *any* screen (the registration forms and the drawer menu)
+// without switching the drawer's active screen — which previously lost the
+// user's place / half-filled form when navigating "back".
+const RootNavigator = () => {
+  const screenOptions = useStackNavigatorScreenOptions();
+
+  return (
+    <RootStack.Navigator screenOptions={screenOptions}>
+      <RootStack.Screen
+        name="Main"
+        component={ConnectedDrawerNav}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+        <RootStack.Screen
+          name="TermsModal"
+          component={Terms}
+          options={{ title: i18n.t('TERMS_OF_SERVICE') }}
+        />
+        <RootStack.Screen
+          name="PrivacyModal"
+          component={Privacy}
+          options={{ title: i18n.t('PRIVACY') }}
+        />
+      </RootStack.Group>
+    </RootStack.Navigator>
+  );
+};
+
+export default RootNavigator;

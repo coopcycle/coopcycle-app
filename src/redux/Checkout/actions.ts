@@ -1018,19 +1018,28 @@ function handlePaymentSuccess(order) {
     // the user goes to CheckoutHome
     NavigationHolder.dispatch(
       CommonActions.reset({
+        // Nested under the root stack's "Main" (the drawer) now that the drawer
+        // is no longer the root navigator.
         routes: [
           {
-            name: 'CheckoutNav',
+            name: 'Main',
             state: {
               routes: [
                 {
-                  name: 'CheckoutMain',
+                  name: 'CheckoutNav',
                   state: {
                     routes: [
-                      { name: 'CheckoutHome' },
                       {
-                        name: 'OrderTracking',
-                        params: { order: order.number },
+                        name: 'CheckoutMain',
+                        state: {
+                          routes: [
+                            { name: 'CheckoutHome' },
+                            {
+                              name: 'OrderTracking',
+                              params: { order: order.number },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },

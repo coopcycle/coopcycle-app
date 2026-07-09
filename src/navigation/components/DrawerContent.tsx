@@ -129,15 +129,13 @@ class DrawerContent extends Component {
       this.props.navigation.navigate('AccountNav');
 
     const navigateToTerms = () =>
-      this.props.navigation.navigate('TermsNav', {
-        screen: 'TermsHome',
-        params: { showConfirmationButtons: false },
+      this.props.navigation.navigate('TermsModal', {
+        showConfirmationButtons: false,
       });
 
     const navigateToPricacy = () =>
-      this.props.navigation.navigate('PrivacyNav', {
-        screen: 'PrivacyHome',
-        params: { showConfirmationButtons: false },
+      this.props.navigation.navigate('PrivacyModal', {
+        showConfirmationButtons: false,
       });
 
     let phoneNumberText = this.props.phoneNumber;

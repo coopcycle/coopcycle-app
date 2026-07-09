@@ -631,29 +631,39 @@ function resumeCheckout(vendorId) {
 
     NavigationHolder.dispatch(
       CommonActions.reset({
+        // Nested under the root stack's "Main" (the drawer) so this keeps
+        // resetting the drawer's CheckoutNav branch now that the drawer is no
+        // longer the root navigator.
         routes: [
           {
-            name: 'CheckoutNav',
+            name: 'Main',
             state: {
               routes: [
                 {
-                  name: 'Main',
+                  name: 'CheckoutNav',
                   state: {
                     routes: [
-                      { name: 'CheckoutHome' },
                       {
-                        name: 'CheckoutRestaurant',
+                        name: 'Main',
+                        state: {
+                          routes: [
+                            { name: 'CheckoutHome' },
+                            {
+                              name: 'CheckoutRestaurant',
+                            },
+                            {
+                              name: 'CheckoutSummary',
+                            },
+                          ],
+                        },
                       },
                       {
-                        name: 'CheckoutSummary',
+                        name: 'CheckoutSubmitOrder',
+                        state: {
+                          routes: [{ name: 'CheckoutMoreInfos' }],
+                        },
                       },
                     ],
-                  },
-                },
-                {
-                  name: 'CheckoutSubmitOrder',
-                  state: {
-                    routes: [{ name: 'CheckoutMoreInfos' }],
                   },
                 },
               ],
