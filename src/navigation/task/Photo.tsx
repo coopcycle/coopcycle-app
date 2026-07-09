@@ -132,7 +132,10 @@ function Photo({ navigation, route, addPicture }) {
           {canShowCamera ? (
             <Camera
               ref={camera}
-              style={styles.camera}
+              // absoluteFill (not flex) so the native preview always fills the
+              // container — with flex it sometimes mounts before the frame is
+              // measured and renders anchored top-left.
+              style={StyleSheet.absoluteFill}
               device={device}
               isActive={true}
               photo={true}
@@ -182,10 +185,6 @@ function Photo({ navigation, route, addPicture }) {
 }
 
 const styles = StyleSheet.create({
-  camera: {
-    flex: 1,
-    width: "100%",
-  },
   preview: {
     flex: 1,
     alignItems: 'center',
