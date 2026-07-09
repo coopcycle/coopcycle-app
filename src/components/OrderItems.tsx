@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 const CartLine = props => {
   return (
-    <HStack p="2" justifyContent="space-between">
+    <HStack className="justify-between p-2">
       <Text bold>{props.label}</Text>
       <Text bold>{props.value}</Text>
     </HStack>

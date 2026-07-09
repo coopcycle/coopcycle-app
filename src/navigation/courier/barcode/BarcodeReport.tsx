@@ -9,7 +9,7 @@ function BarcodeReport({ route, t, navigation }) {
   const { entity } = route.params;
   return (
     <VStack space="md" className="p-4">
-      <Text fontSize="lg" className="pb-2">
+      <Text className="text-lg pb-2">
         {t('TASK')} #{entity?.id}
       </Text>
       <Button

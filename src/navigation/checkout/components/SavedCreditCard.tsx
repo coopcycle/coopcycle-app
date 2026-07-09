@@ -16,7 +16,7 @@ const SavedCreditCard = ({ card }) => {
   const { t } = useTranslation();
 
   return (
-    <Radio value={card.id} size="md" my="1" key={card.id}>
+    <Radio value={card.id} size="md" className="my-1" key={card.id}>
       <HStack className="items-center">
         <RadioIndicator>
           <RadioIcon as={CircleIcon} />

@@ -101,7 +101,7 @@ class SearchForm extends Component {
             sections={this._parseResultsToSectionListData(searchResults)}
             initialNumToRender={15}
             ListEmptyComponent={
-              <Text textAlign={'center'} mx={4}>
+              <Text className="text-center mx-4">
                 {t('SEARCH_WITHOUT_RESULTS')}
               </Text>
             }
@@ -113,7 +113,7 @@ class SearchForm extends Component {
               />
             )}
             renderSectionHeader={({ section: { type } }) => (
-              <Text ml={2} bold>
+              <Text className="ml-2 font-bold">
                 {t(TITLES[type])}
               </Text>
             )}

@@ -14,7 +14,7 @@ const Detail = ({ item }) => {
 
   const body = (
     <Box flex={1} className="p-2">
-      {text ? <Text fontSize="xs">{text}</Text> : null}
+      {text ? <Text className="text-xs">{text}</Text> : null}
       {component && component}
     </Box>
   );

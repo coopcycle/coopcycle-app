@@ -40,7 +40,7 @@ export const FailureReasonForm = ({
           scrollEnabled={false}
           renderItem={({ item }) => {
             return (
-              <FormControl mb="2" key={item.name}>
+              <FormControl className="mb-2" key={item.name}>
                 <FormControlLabel>
                   <FormControlLabelText>{item.label}</FormControlLabelText>
                 </FormControlLabel>

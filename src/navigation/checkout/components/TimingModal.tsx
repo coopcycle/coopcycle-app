@@ -58,9 +58,9 @@ const TimingModal = ({
           <Divider />
           {fulfillmentMethods.length > 1 && (
             <ButtonGroup
-              flexDirection="row">
+              className="flex-row">
               <Button
-                flex={1}
+                className="flex-1"
                 onPress={() =>
                   onFulfillmentMethodChange('delivery')
                 }
@@ -72,7 +72,7 @@ const TimingModal = ({
                 <ButtonText>{t('FULFILLMENT_METHOD.delivery')}</ButtonText>
               </Button>
               <Button
-                flex={1}
+                className="flex-1"
                 onPress={() =>
                   onFulfillmentMethodChange('collection')
                 }

@@ -11,6 +11,7 @@ import {
   FormControlHelperText,
   FormControlLabelText,
 } from '@/components/ui/form-control';
+import { Box } from '@/components/ui/box';
 import { SkeletonText } from '@/components/ui/skeleton';
 import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
@@ -148,10 +149,10 @@ function BarcodeIncident({
             </FormControl>
             <View style={{ flexDirection:"row", flexWrap: "wrap", justifyContent: "space-around" }}>
               {pictures.map((picture, index) => (
-                <View
+                <Box
                   key={index}
                   style={{ width: width * 0.4, height: width * 0.4 }}
-                  py="2">
+                  className="py-2">
                   <Image
                     style={{ flex: 1, borderRadius: 5 }}
                     source={{ uri: picture }}
@@ -162,12 +163,12 @@ function BarcodeIncident({
                     }>
                     <Icon as={CircleX} size={ 40 } />
                   </TouchableOpacity>
-                </View>
+                </Box>
               ))}
             </View>
           </VStack>
         </ScrollView>
-        <View p="4">
+        <Box className="p-4">
           <Button
             onPress={() => {
               pictures.forEach(picture => addPicture(picture));
@@ -177,7 +178,7 @@ function BarcodeIncident({
             }}>
             <ButtonText>{t('SUBMIT')}</ButtonText>
           </Button>
-        </View>
+        </Box>
       </>
     );
   }

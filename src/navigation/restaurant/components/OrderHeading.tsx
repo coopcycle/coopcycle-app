@@ -47,11 +47,7 @@ const OrderHeading = ({
       }}>
       <HStack
         className="justify-between items-center p-2 mb-1"
-        justifyContent="space-between"
-        alignItems="center"
-        style={styles.fulfillment}
-        p="2"
-        mb="1">
+        style={styles.fulfillment}>
         <OrderFulfillmentMethodIcon order={order} />
         <Text style={{ fontWeight: '700' }}>
           {moment(pickupExpectedAt).calendar(null, {

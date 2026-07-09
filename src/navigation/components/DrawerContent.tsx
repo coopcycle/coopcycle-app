@@ -77,11 +77,11 @@ const About = ({ brandName, motto, navigate }) => {
     <Box className="mb-4">
       <TouchableOpacity {...props}>
         <VStack>
-          <Heading size="sm" textAlign="center" mb="2">
+          <Heading size="sm" className="text-center mb-2">
             {brandName}
           </Heading>
           {motto ? (
-            <Text textAlign="center" fontSize="xs">
+            <Text className="text-center text-xs">
               {motto}
             </Text>
           ) : null}
@@ -235,8 +235,7 @@ class DrawerContent extends Component {
                   )}
                   {this.props.phoneNumber && (
                     <TouchableOpacity
-                      ml="10"
-                      mr="10"
+                      style={{ marginHorizontal: 40 }}
                       onPress={() => phonecall(this.props.phoneNumber, true)}>
                       <Icon as={Phone} size="sm" />
                     </TouchableOpacity>

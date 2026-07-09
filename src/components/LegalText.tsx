@@ -46,12 +46,11 @@ class LegalText extends Component {
         <ScrollView
           ref={this.scrollRef}
           contentInsetAdjustmentBehavior="automatic"
-          style={{ height: '100%' }}
-          px="4">
+          style={{ height: '100%' }}>
           <Box className="p-4">
             <Markdown>{this.props.text}</Markdown>
             {this.props.showConfirmationButtons && (
-              <ButtonGroup flexDirection="row" className="py-4">
+              <ButtonGroup className="flex-row py-4">
                 <Button
                   variant="outline"
                   className="w-1/2"

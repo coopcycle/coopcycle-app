@@ -265,7 +265,7 @@ function CollectionDisclaimerModal({ isVisible, onSwipeComplete, restaurant }) {
             paddingHorizontal: 20,
             paddingVertical: 30,
           }}>
-          <Text fontSize="sm">
+          <Text className="text-sm">
             {t('CART_COLLECTION_DISCLAIMER', {
               telephone: restaurant.telephone,
             })}
@@ -485,7 +485,7 @@ class Summary extends Component {
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ flex: 2 }}
-                  fontSize="sm">
+                  className="text-sm">
                   {this.props.cart.shippingAddress.streetAddress}
                 </Text>
                 <Text style={{ flex: 1, textAlign: 'right' }}>
@@ -516,9 +516,7 @@ class Summary extends Component {
           </HStack>
           {reusablePackagingAction && (
             <HStack
-              className="p-3"
-              justifyContent="space-between"
-              alignItems="center"
+              className="p-3 justify-between items-center"
               style={styles.btnGrey}>
               <Checkbox
                 testID="reusablePackagingCheckbox"

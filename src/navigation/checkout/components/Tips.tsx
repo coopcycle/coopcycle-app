@@ -44,7 +44,7 @@ function Tips({
   return (
     <Box className="p-2">
       <Heading size="sm" className="mb-2 text-center">{t('TIP')}</Heading>
-      <ButtonGroup flexDirection="row" className="justify-between pb-5">
+      <ButtonGroup className="flex-row justify-between pb-5">
         {!advancedView && defaultView()}
 
         {advancedView && (

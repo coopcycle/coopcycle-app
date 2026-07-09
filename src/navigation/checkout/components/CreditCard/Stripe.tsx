@@ -199,7 +199,7 @@ class CreditCardClassComponent extends Component {
               {this.shouldRenderStripePaymentMethods() &&
               !this.state.addNewCard ? (
                 <Center flex={1}>
-                  <Text mb={2} bold>
+                  <Text className="mb-2 font-bold">
                     {this.props.t('PAY_WITH_SAVED_CREDIT_CARD')}
                   </Text>
                   <RadioGroup
@@ -221,7 +221,7 @@ class CreditCardClassComponent extends Component {
                     <ButtonText>{this.props.t('ADD_NEW_CREDIT_CARD')}</ButtonText>
                   </Button>
                   {errors.selectCard && (
-                    <Text m={4} textAlign="center" color="#ed2f2f">
+                    <Text className="m-4 text-center text-[#ed2f2f]">
                       {errors.selectCard}
                     </Text>
                   )}
@@ -254,7 +254,7 @@ class CreditCardClassComponent extends Component {
                       </Input>
                       {errors.cardholderName && (
                         <FormControlError>
-                          <FormControlErrorText mt={2} color="#ed2f2f">
+                          <FormControlErrorText className="mt-2 text-[#ed2f2f]">
                             {errors.cardholderName}
                           </FormControlErrorText>
                         </FormControlError>
@@ -273,7 +273,7 @@ class CreditCardClassComponent extends Component {
                         }}
                       />
                       {errors.card && (
-                        <Text mt={2} color="#ed2f2f">
+                        <Text className="mt-2 text-[#ed2f2f]">
                           {errors.card}
                         </Text>
                       )}

@@ -1,3 +1,4 @@
+import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
@@ -55,10 +56,9 @@ class AuthenticateForm extends Component {
     const btnLabel = formToDisplay === 'login' ? 'OR_REGISTER' : 'OR_LOGIN';
 
     return (
-      <View
-        flex={1}
-        style={{ width: '100%', paddingHorizontal: 20 }}
-        justifyContent="center">
+      <Box
+        className="flex-1 justify-center"
+        style={{ width: '100%', paddingHorizontal: 20 }}>
         {this.renderMessage()}
         {this.renderForm()}
         <View style={{ marginTop: 10 }}>
@@ -74,7 +74,7 @@ class AuthenticateForm extends Component {
         </View>
         {/* This empty view is for increasing the page height so the button appears above the menu bar */}
         <View style={styles.spacer} />
-      </View>
+      </Box>
     );
   }
 }

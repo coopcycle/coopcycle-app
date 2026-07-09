@@ -17,7 +17,7 @@ const OpeningHours = props => {
     (acc, day, index) => {
       const hours = day.ranges.reduce((acc2, range, _index) => {
         acc2.push(
-          <Text textAlign={'center'} key={`r${_index}`} paddingX={3}>
+          <Text className="text-center px-3" key={`r${_index}`}>
             {range.join(' - ')}
           </Text>,
         );
@@ -32,7 +32,10 @@ const OpeningHours = props => {
             {[`bg-${background}`]: !day.today}
           )}
         >
-          <Text textAlign={'center'} minW={'3em'} key={index} bold={day.today}>
+          <Text
+            className={classNames('text-center', { 'font-bold': day.today })}
+            minW={'3em'}
+            key={index}>
             {day.label}
           </Text>
           {hours}

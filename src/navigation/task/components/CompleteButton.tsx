@@ -66,7 +66,7 @@ const CompleteButton = React.forwardRef((props, ref) => {
   return (
     <View>
       <HStack className="px-3 py-2">
-        <Text fontSize="xs" color="muted.500">
+        <Text className="text-xs text-typography-500">
           {t('SWIPE_TO_END')}
         </Text>
       </HStack>
