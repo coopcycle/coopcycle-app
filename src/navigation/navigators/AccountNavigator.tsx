@@ -5,6 +5,8 @@ import screens, { headerLeft } from '..';
 import i18n from '../../i18n';
 import AccountRegisterConfirm from '../account/RegisterConfirm';
 import AccountResetPasswordNewPassword from '../account/ResetPasswordNewPassword';
+import Privacy from '../home/Privacy';
+import Terms from '../home/Terms';
 import { useStackNavigatorScreenOptions } from '../styles';
 
 const Stack = createStackNavigator();
@@ -109,6 +111,20 @@ export default () => {
           ...TransitionPresets.ModalTransition,
         })}
       />
+      {/* Terms & Privacy presented as modals so opening them from the
+          registration form never unmounts / navigates away from the form. */}
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen
+          name="TermsModal"
+          component={Terms}
+          options={{ title: i18n.t('TERMS_OF_SERVICE') }}
+        />
+        <Stack.Screen
+          name="PrivacyModal"
+          component={Privacy}
+          options={{ title: i18n.t('PRIVACY') }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };

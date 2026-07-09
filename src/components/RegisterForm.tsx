@@ -195,9 +195,8 @@ class RegisterForm extends React.Component {
   _onTermsAndConditionsChanged = checked => {
     if (checked) {
       this.setState({ openTermsAndConditions: true });
-      return NavigationHolder.navigate('TermsNav', {
-        screen: 'TermsHome',
-        params: { showConfirmationButtons: true },
+      return NavigationHolder.navigate('TermsModal', {
+        showConfirmationButtons: true,
       });
     } else {
       this.props.acceptTermsAndConditions(false);
@@ -207,9 +206,8 @@ class RegisterForm extends React.Component {
   _onPrivacyPolicyChanged = checked => {
     if (checked) {
       this.setState({ openPrivacyPolicy: true });
-      return NavigationHolder.navigate('PrivacyNav', {
-        screen: 'PrivacyHome',
-        params: { showConfirmationButtons: true },
+      return NavigationHolder.navigate('PrivacyModal', {
+        showConfirmationButtons: true,
       });
     } else {
       this.props.acceptPrivacyPolicy(false);
@@ -303,9 +301,8 @@ class RegisterForm extends React.Component {
     };
 
     const _handleNavPress = buttonNav => {
-      return NavigationHolder.navigate(`${buttonNav}Nav`, {
-        screen: `${buttonNav}Home`,
-        params: { showConfirmationButtons: false },
+      return NavigationHolder.navigate(`${buttonNav}Modal`, {
+        showConfirmationButtons: false,
       });
     };
 
