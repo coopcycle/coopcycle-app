@@ -96,15 +96,13 @@ jobs:
           sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
           sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
 
-      # https://vojtastavik.com/2018/09/02/what-is-inside-derived-data-xcode/
-      # https://discuss.circleci.com/t/sharing-xcode-derived-data-folder-across-jobs-workflows/31363/5
-      # https://medium.com/@bitrise/60-faster-builds-force-xcode-to-use-caching-on-bitrise-af8979ca39a6
-      - name: Cache XCode derived data
-        uses: actions/cache@v4
-        id: cache-xcode-derived-data
-        with:
-          path: ios/build
-          key: xcode-derived-data-${{ hashFiles('**/Podfile.lock') }}
+      # No derived data cache on purpose. It restored fine (3.5 GB, ~2 min) but
+      # xcodebuild rebuilt everything anyway: Xcode decides staleness from file
+      # mtimes, and both 'yarn install' and 'pod install' rewrite their trees on
+      # every run, so every input looks newer than the cached outputs. It was
+      # consuming a third of the repo's 10 GB cache quota for no gain, and
+      # evicting caches that do work. Content-hash caching (ccache) is the fix
+      # here, since it does not depend on timestamps.
 
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c ios.sim.release
