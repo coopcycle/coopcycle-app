@@ -27,6 +27,8 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import FAIcon from '@/src/components/Icon';
 import { navigateToReportTask } from '../../utils';
+import { useSelector } from 'react-redux';
+import { selectTimezone } from '@/src/utils/timezone';
 
 interface PackageSummary {
   text: string;
@@ -137,6 +139,7 @@ interface OrderAccordeonProps {
 
 function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
   const { t } = useTranslation();
+  const timezone = useSelector(selectTimezone);
   const taskTitle = getTaskTitleForOrder(task);
   const address = task.address.streetAddress;
   const packageType = getPackagesSummary(task);
@@ -213,7 +216,7 @@ function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
                     </HStack>
                     <HStack space="md" style={{ alignItems: 'center' }}>
                       <Text bold className="text-typography-950">
-                        {getTaskTimeFrame(task, "\n")}
+                        {getTaskTimeFrame(task, "\n", timezone)}
                       </Text>
                       <Divider orientation="vertical" className="h-8" />
                       <Text bold className="text-typography-950" style={{ flexShrink: 1 }}>
@@ -237,7 +240,7 @@ function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
           </Box>
 
           <ContentText
-            timeframe={getTaskTimeFrame(task, " ")}
+            timeframe={getTaskTimeFrame(task, " ", timezone)}
             packageType={packageType}
             tags={task.tags}
             streetAddress={address}
@@ -256,10 +259,10 @@ function OrderAccordeon({ task, navigation, route }: OrderAccordeonProps) {
   );
 }
 
-export function getTaskTimeFrame(task: Task, separator: string) {
+export function getTaskTimeFrame(task: Task, separator: string, timezone?: string) {
   return (
-    addDayIfNotToday(task.doneAfter, separator) +
-    getTimeFrame(task)
+    addDayIfNotToday(task.doneAfter, separator, timezone) +
+    getTimeFrame(task, timezone)
   );
 }
 

@@ -1,15 +1,18 @@
-import moment from 'moment';
+import { isSameDayInTimezone } from '../../utils/timezone';
 
-export function isSameDayTask(task, date) {
-  return moment(task.doneBefore).isSame(date, 'day');
+// `timezone` comes from the server settings (see selectTimezone). It must be
+// passed explicitly: relying on the device timezone puts a task in the wrong
+// day whenever the user is not in the same timezone as the store.
+export function isSameDayTask(task, date, timezone) {
+  return isSameDayInTimezone(task.doneBefore, date, timezone);
 }
 
-export function isSameDayTaskList(taskList, date) {
-  return moment(taskList.date).isSame(date, 'day');
+export function isSameDayTaskList(taskList, date, timezone) {
+  return isSameDayInTimezone(taskList.date, date, timezone);
 }
 
-export function isSameDayTour(tour, date) {
-  return moment(tour.date).isSame(date, 'day');
+export function isSameDayTour(tour, date, timezone) {
+  return isSameDayInTimezone(tour.date, date, timezone);
 }
 
 export function getDropoffPosition(task, tasks) {

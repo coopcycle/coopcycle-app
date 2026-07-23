@@ -6,9 +6,12 @@ import TaskTypeIcon from '@/src/components/TaskTypeIcon';
 import { getTaskTimeFrame } from '../../order/components/OrderAccordeon';
 import { useTranslation } from 'react-i18next';
 import { getTaskTitleForOrder } from '../../order/utils';
+import { useSelector } from 'react-redux';
+import { selectTimezone } from '@/src/utils/timezone';
 
 export const Header = ({ task }) => {
   const { t } = useTranslation();
+  const timezone = useSelector(selectTimezone);
   const taskTitle = getTaskTitleForOrder(task);
   const address = task.address.streetAddress;
 
@@ -39,7 +42,7 @@ export const Header = ({ task }) => {
         }}
       >
         <Text bold className="text-typography-950">
-          {getTaskTimeFrame(task, '\n')}
+          {getTaskTimeFrame(task, '\n', timezone)}
         </Text>
         <Divider orientation="vertical" className="h-8" />
         <Text bold className="text-typography-950" style={{ flexShrink: 1 }}>

@@ -7494,6 +7494,7 @@ __metadata:
     moment: "npm:^2.30.1"
     moment-business-days: "npm:^1.2.0"
     moment-range: "npm:^4.0.2"
+    moment-timezone: "npm:^0.6.3"
     nativewind: "npm:^4.1.23"
     numbro: "npm:^2.5.0"
     object-hash: "npm:^3.0.0"
@@ -15072,6 +15073,15 @@ __metadata:
   peerDependencies:
     moment: ">= 2"
   checksum: 10c0/9a847b81d44f14f26f607c3320a59e825ac7757be900951654c02db8aedb748e1e0c2b23aa5c896dbea94e0c696959cca0c16f02d68ec56a7b57e2378dac6bfa
+  languageName: node
+  linkType: hard
+
+"moment-timezone@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "moment-timezone@npm:0.6.3"
+  dependencies:
+    moment: "npm:^2.29.4"
+  checksum: 10c0/004965d8932ef7e164fe2f98b10b52bd266932468a281b862dd5c484e63e9502307c99ce5df3eb304da83002dc8077ad5f285d3c6d52c24e2dbfc69721026bda
   languageName: node
   linkType: hard
 

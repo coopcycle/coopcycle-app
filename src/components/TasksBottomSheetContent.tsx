@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/bottomsheet';
 import FAIcon from './Icon';
 import { getName, getTimeFrame } from '../navigation/task/components/utils';
+import { useSelector } from 'react-redux';
+import { selectTimezone } from '../utils/timezone';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getOrderNumberWithPosition } from '../utils/tasks';
 import { getOrderTitle } from '../navigation/order/utils';
@@ -48,6 +50,7 @@ const addressName = task => {
 export default function TasksBottomSheetContent({ modalMarkers = [], onListedTaskPress }) {
   const navigation = useNavigation();
   const route = useRoute();
+  const timezone = useSelector(selectTimezone);
 
   const bsContext = useContext(BottomSheetContext);
   const colorScheme = useColorScheme();
@@ -152,7 +155,7 @@ export default function TasksBottomSheetContent({ modalMarkers = [], onListedTas
                         { color: colors.textSecondary },
                       ]}
                     >
-                      {getTimeFrame(item)}
+                      {getTimeFrame(item, timezone)}
                     </Text>
                   </View>
 

@@ -10,6 +10,8 @@ import TaskTagsList from '../../../components/TaskTagsList';
 import { Tasks } from '../../../types/tasks';
 import { formatPrice } from '../../../utils/formatting';
 import { getOrderTimeFrame } from '../../task/components/utils';
+import { useSelector } from 'react-redux';
+import { selectTimezone } from '@/src/utils/timezone';
 import {
   commentsInOrder,
   formatDistance,
@@ -24,6 +26,7 @@ import {
 
 const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
   const { t } = useTranslation();
+  const timezone = useSelector(selectTimezone);
 
   if (tasks.length === 0) {
     return null;
@@ -31,7 +34,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
 
   const orderTitle = getOrderTitle(tasks);
   const packagesInOrder = packagesInOrderSummary(tasks);
-  const orderTimeframe = getOrderTimeFrame(tasks);
+  const orderTimeframe = getOrderTimeFrame(tasks, timezone);
   const orderPaymentMethod = orderInfoInMetadata(tasks, 'payment_method');
   const orderDistance = formatDistance(orderInfoInMetadata(tasks, 'order_distance'));
   const orderDuration = formatDuration(orderInfoInMetadata(tasks, 'order_duration'));

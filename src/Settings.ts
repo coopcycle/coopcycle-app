@@ -9,6 +9,10 @@ const defaultSettings = {
   country: 'fr',
   latlng: '48.872178,2.331797',
   currency_code: 'eur',
+  // Canonical timezone of the server, provided by GET /api/settings.
+  // Left empty on purpose: consumers fall back to the device timezone rather
+  // than to a hardcoded one, which would be wrong for non-European instances.
+  timezone: null,
 };
 
 class Settings {

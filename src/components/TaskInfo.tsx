@@ -24,6 +24,7 @@ import { selectIncomingTasksReordered } from '../redux/logistics/selectors';
 import { getOrderNumber } from '../utils/tasks';
 import { getTaskTitleForOrder } from '../navigation/order/utils';
 import { getTimeFrame } from '../navigation/task/components/utils';
+import { selectTimezone } from '../utils/timezone';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
 const cardBorderRadius = 2.5;
@@ -76,6 +77,7 @@ export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps)
   ? selectTasksByOrderCourier
   : selectIncomingTasksReordered;
   const orderTasks = useSelector(selectSelector(getOrderNumber(task)));
+  const timezone = useSelector(selectTimezone);
   const taskTitle = getTaskTitleForOrder(task);
   const alignedTextStyle = isPickup
     ? [styles.text, { textAlign: 'right' as const }]
@@ -140,11 +142,11 @@ export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps)
                   <Divider orientation="vertical" />
                 </>
               )}
-              <Text className="text-right">{getTimeFrame(task)}</Text>
+              <Text className="text-right">{getTimeFrame(task, timezone)}</Text>
             </>
           ) : (
             <>
-              <Text>{getTimeFrame(task)}</Text>
+              <Text>{getTimeFrame(task, timezone)}</Text>
               {packagesText && (
                 <>
                   <Divider orientation="vertical" />

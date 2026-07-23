@@ -20,6 +20,8 @@ import {
 } from '../../../components/PaymentMethodInfo';
 import { formatPrice } from '../../../utils/formatting';
 import { getAddress, getName, getPackagesSummary, getTimeFrame } from './utils';
+import { useSelector } from 'react-redux';
+import { selectTimezone } from '@/src/utils/timezone';
 import Detail from '../../../components/Detail';
 
 const basename = (str: string) => str.substr(str.lastIndexOf('/') + 1)
@@ -38,7 +40,8 @@ const inAppBrowserOptions = {
 };
 
 const Details = ({ task, onTaskTitleClick, t }) => {
-  const timeframe = getTimeFrame(task);
+  const timezone = useSelector(selectTimezone);
+  const timeframe = getTimeFrame(task, timezone);
   let address = getAddress(task);
   const name = getName(task);
   address = name ? [name, address].join(' - ') : address;

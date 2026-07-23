@@ -1,28 +1,33 @@
 import Task from '@/src/types/task';
 import moment from 'moment';
+import { timezoneMoment } from '@/src/utils/timezone';
 
-export const addDayIfNotToday = (date, separator=' ') => {
-  return moment(date).format('YYYYMMDD') === moment().format('YYYYMMDD') ? '' : `(${moment(date).format('MMM Do')})${separator}`;
+// Task time frames are wall-clock times in the server's timezone; rendering
+// them with the device timezone shows the wrong hour to anyone working from
+// another timezone. Pass the timezone from `selectTimezone`.
+export const addDayIfNotToday = (date, separator=' ', timezone?: string) => {
+  const day = timezoneMoment(date, timezone);
+  return day.format('YYYYMMDD') === timezoneMoment(moment(), timezone).format('YYYYMMDD') ? '' : `(${day.format('MMM Do')})${separator}`;
 }
 
-export const formatTime = (date) => {
-  return moment(date).format('HH:mm');
+export const formatTime = (date, timezone?: string) => {
+  return timezoneMoment(date, timezone).format('HH:mm');
 }
 
-export const getOrderTimeFrame = tasks => {
+export const getOrderTimeFrame = (tasks, timezone?: string) => {
   return (
-    addDayIfNotToday(tasks[0].doneAfter) +
-    formatTime(tasks[0].doneAfter) +
+    addDayIfNotToday(tasks[0].doneAfter, ' ', timezone) +
+    formatTime(tasks[0].doneAfter, timezone) +
     ' - ' +
-    formatTime(tasks[tasks.length - 1].doneBefore)
+    formatTime(tasks[tasks.length - 1].doneBefore, timezone)
   );
 };
 
-export const getTimeFrame = task => {
+export const getTimeFrame = (task, timezone?: string) => {
   return (
-    formatTime(task.doneAfter) +
+    formatTime(task.doneAfter, timezone) +
     ' - ' +
-    formatTime(task.doneBefore)
+    formatTime(task.doneBefore, timezone)
   );
 };
 

@@ -2,6 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { selectSelectedDate } from './selectors';
 import { isSameDayTask, isSameDayTaskList, isSameDayTour } from '../../utils';
+import { selectTimezone } from '../../../../utils/timezone';
 
 /*
  * Action Types
@@ -102,6 +103,7 @@ export function updateTask(action, task) {
   return function (dispatch, getState) {
     const prevState = getState();
     const date = selectSelectedDate(prevState);
+    const timezone = selectTimezone(prevState);
 
     if (
       prevState.logistics.ui.disabledCentrifugoUpdatesForTasksIds.length > 0 &&
@@ -122,7 +124,7 @@ export function updateTask(action, task) {
       return;
     }
 
-    if (isSameDayTask(task, date)) {
+    if (isSameDayTask(task, date, timezone)) {
       switch (action) {
         case 'task:created':
           dispatch(createTaskSuccess(task));
@@ -158,6 +160,7 @@ export function updateTaskList(action, taskList) {
   return function (dispatch, getState) {
     const prevState = getState();
     const date = selectSelectedDate(prevState);
+    const timezone = selectTimezone(prevState);
 
     if (
       prevState.logistics.ui.disabledCentrifugoUpdatesForUsers.length > 0 &&
@@ -168,7 +171,7 @@ export function updateTaskList(action, taskList) {
       return;
     }
 
-    if (isSameDayTaskList(taskList, date)) {
+    if (isSameDayTaskList(taskList, date, timezone)) {
       switch (action) {
         case 'v2:task_list:updated':
           dispatch(updateTaskListsSuccess(taskList));
@@ -180,9 +183,11 @@ export function updateTaskList(action, taskList) {
 
 export function updateTour(action, tour) {
   return function (dispatch, getState) {
-    const date = selectSelectedDate(getState());
+    const state = getState();
+    const date = selectSelectedDate(state);
+    const timezone = selectTimezone(state);
 
-    if (isSameDayTour(tour, date)) {
+    if (isSameDayTour(tour, date, timezone)) {
       switch (action) {
         case 'tour:created':
           dispatch(createTourSuccess(tour));
