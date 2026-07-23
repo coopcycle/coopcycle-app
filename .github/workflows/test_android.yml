@@ -5,10 +5,17 @@
 # https://spin.atomicobject.com/detox-tests-github-actions-2/
 # https://remarkablemark.org/blog/2023/02/18/how-to-run-react-native-detox-tests-on-github-actions/#android
 name: E2E tests, Android
-on: [push]
+on:
+  push:
+  # Nightly run on master, to keep the Gradle cache warm. GitHub evicts
+  # caches after 7 days of no access, which is shorter than the usual gap
+  # between pushes. Only the build job runs; see 'test' below.
+  schedule:
+    - cron: '30 3 * * *'
+  workflow_dispatch:
 
 # Only keep the latest run per branch. Runs on master are never cancelled,
-# so the screenshots produced there are not lost.
+# so the nightly cache warm-up is not killed by a concurrent push.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
@@ -102,7 +109,9 @@ jobs:
 
   test:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
-    if: github.actor != 'dependabot[bot]'
+    # The nightly run only exists to warm the Gradle cache, so it stops after
+    # the build job.
+    if: github.actor != 'dependabot[bot]' && github.event_name != 'schedule'
     name: Run Tests on Android Emulator
     needs: build
     runs-on: ubuntu-latest

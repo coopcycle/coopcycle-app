@@ -3,10 +3,22 @@
 # https://dev.to/edvinasbartkus/running-react-native-detox-tests-for-ios-and-android-on-github-actions-2ekn
 # https://github.com/wix/Detox/issues/2617
 name: E2E tests, iOS
-on: [push]
+on:
+  push:
+  # Nightly run on master, to keep the Pods / derived data caches warm.
+  # GitHub evicts caches after 7 days of no access, which is shorter than
+  # the usual gap between pushes. Only the build job runs; see 'test' below.
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      take_screenshots:
+        description: 'Generate App Store screenshots (adds ~30 min)'
+        type: boolean
+        default: false
 
 # Only keep the latest run per branch. Runs on master are never cancelled,
-# so the App Store screenshots produced there are not lost.
+# so the nightly cache warm-up is not killed by a concurrent push.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
@@ -105,7 +117,9 @@ jobs:
 
   test:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
-    if: github.actor != 'dependabot[bot]'
+    # The nightly run only exists to warm the build caches, so it stops after
+    # the build job.
+    if: github.actor != 'dependabot[bot]' && github.event_name != 'schedule'
     name: Run Tests on iOS Simulator
     needs: build
     runs-on: macOS-15
@@ -182,8 +196,11 @@ jobs:
 
       # See screenshot specifications
       # https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
+      # Not run on every master push: this costs 9-34 min and the screenshots
+      # are only needed at release time. Trigger this workflow manually with
+      # 'take_screenshots' enabled to regenerate them.
       - name: Take AppStore screenshots
-        if: github.ref == 'refs/heads/master'
+        if: inputs.take_screenshots
         run: |
           node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name "iPhone 16 Pro Max" --artifacts-location ./artifacts/6.9-inch e2e/screenshots.spec.js
           node node_modules/.bin/detox test -c ios.sim.release --take-screenshots manual --cleanup --device-name "iPad Pro 13-inch (M4)" --artifacts-location ./artifacts/13-inch e2e/screenshots.spec.js
