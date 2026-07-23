@@ -51,7 +51,12 @@ export async function bulkUnassign() {
 }
 
 export async function toggleSection(sectionId) {
-  await tapById(`${sectionId}:toggler`);
+  // FlashList renders a stuck section header as an overlay copy of the list
+  // item, running the same renderItem — so while a header is sticky its
+  // toggler testID matches two identical views (see GroupedTasks
+  // stickyHeaderIndices). Both are the real header and either one toggles the
+  // same section, so target the first.
+  await tapById(`${sectionId}:toggler`, 0, 0);
 }
 
 export async function toggleSectionUnassigned() {

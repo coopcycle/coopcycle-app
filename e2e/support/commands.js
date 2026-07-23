@@ -315,11 +315,21 @@ export const typeTextQuick = async (elemIdOrObj, text) => {
   return elem();
 };
 
-export const tapById = async (testID, timeout = 0) => {
+// Resolves a testID to a single element.
+//
+// Pass `index` only when a testID legitimately matches several views and any
+// of them is an acceptable target. Espresso/Detox throw on ambiguous matchers,
+// so without it a duplicate testID fails the test. Leaving `index` unset keeps
+// that strictness, which is what we want by default: a duplicate testID is
+// usually a bug worth surfacing rather than papering over.
+export const elementById = (testID, index = null) =>
+  index === null ? element(by.id(testID)) : element(by.id(testID)).atIndex(index);
+
+export const tapById = async (testID, timeout = 0, index = null) => {
   console.log(`Tapping element with testID "${testID}"`);
-  await waitToBeVisible(testID, timeout);
-  await element(by.id(testID)).tap();
-  return element(by.id(testID));
+  await waitToBeVisible(testID, timeout, index);
+  await elementById(testID, index).tap();
+  return elementById(testID, index);
 };
 
 export const tapByText = async (text) => {
@@ -364,9 +374,9 @@ export const swipeDown = async (testID, timeout = 0) => {
   return element(by.id(testID));
 };
 
-export const waitToBeVisible = (testID, timeout = 5000) => {
+export const waitToBeVisible = (testID, timeout = 5000, index = null) => {
   console.log(`Waiting for element with testID "${testID}" to be visible${timeout ? ` for ${timeout}ms` : ''}..`);
-  return waitElementToBeVisible(element(by.id(testID)), timeout);
+  return waitElementToBeVisible(elementById(testID, index), timeout);
 };
 
 export const waitElementToBeVisible = (element, timeout = 5000) => {
