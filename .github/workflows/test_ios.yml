@@ -4,6 +4,13 @@
 # https://github.com/wix/Detox/issues/2617
 name: E2E tests, iOS
 on: [push]
+
+# Only keep the latest run per branch. Runs on master are never cancelled,
+# so the App Store screenshots produced there are not lost.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 jobs:
   build:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486

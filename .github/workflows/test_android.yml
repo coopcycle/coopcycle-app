@@ -6,6 +6,13 @@
 # https://remarkablemark.org/blog/2023/02/18/how-to-run-react-native-detox-tests-on-github-actions/#android
 name: E2E tests, Android
 on: [push]
+
+# Only keep the latest run per branch. Runs on master are never cancelled,
+# so the screenshots produced there are not lost.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 jobs:
   build:
     # https://github.community/t/how-to-stop-github-actions-workflow-to-trigger-when-the-pull-request-is-from-dependabot-preview/116486
@@ -37,7 +44,18 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
+          # Gradle caching is handled by gradle/actions/setup-gradle below
           # cache: 'gradle'
+
+      # Caches ~/.gradle (dependencies, wrapper) and feeds the local build
+      # cache, so unchanged tasks are not re-executed on every run.
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          build-root-directory: android
+          # The build job runs on every push; let non-master branches read
+          # master's cache but only master write it, to avoid thrashing.
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
 
       - name: Decode sentry.properties file
         uses: timheuer/base64-to-file@v1.2
@@ -63,9 +81,6 @@ jobs:
           sed -i -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
           sed -i -e 's/FACEBOOK_APP_ID=/FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}/' .env
           sed -i -e 's/FACEBOOK_CLIENT_TOKEN=/FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN }}/' .env
-
-      # - name: Gradle cache
-      #   uses: gradle/actions/setup-gradle@v3
 
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c android.emu.release
