@@ -14,11 +14,12 @@ on:
     - cron: '30 3 * * *'
   workflow_dispatch:
 
-# Only keep the latest run per branch. Runs on master are never cancelled,
-# so the nightly cache warm-up is not killed by a concurrent push.
+# Only keep the latest run per branch, master included. The nightly cache
+# warm-up is exempt, so a concurrent push cannot kill it half way through and
+# leave the cache unwritten.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  cancel-in-progress: ${{ github.event_name != 'schedule' }}
 
 jobs:
   build:
