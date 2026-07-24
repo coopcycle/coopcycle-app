@@ -191,7 +191,9 @@ jobs:
         run: applesimutils --list
 
       - name: Run Detox tests
-        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info
+        # --workers 2: Detox clones the simulator and runs suites in parallel.
+        # The macOS runner has enough cores/RAM for two; raise cautiously.
+        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info --workers 2
 
       # See screenshot specifications
       # https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
