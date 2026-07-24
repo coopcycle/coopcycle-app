@@ -77,8 +77,7 @@ export async function swipeRightTask(sectionId, index = 0) {
 
 export function expectTaskTitleToHaveText(sectionId, index, text) {
   const elemId = `${sectionId}:task:${index}:title`;
-  // The title is uppercased via textTransform. The task id it contains is
-  // rendered at fontSize:0 in release (invisible but present in the text) so
-  // this match can tell tasks apart. See TaskInfo.
+  // The title text is "<orgName> (#<id>)", uppercased via textTransform.
+  // Callers pass the original-case string, e.g. "Acme (#1)". See TaskInfo.
   return expect(element(by.id(elemId))).toHaveText(text.toUpperCase());
 }

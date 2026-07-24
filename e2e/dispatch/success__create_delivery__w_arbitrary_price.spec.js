@@ -78,7 +78,7 @@ describeif(device.getPlatform() === 'android')(
       await expectTaskTitleToHaveText(
         UNASSIGNED_TASKS_LIST_ID,
         0,
-        'Acme (task #1)',
+        'Acme (#1)',
       );
     });
   },

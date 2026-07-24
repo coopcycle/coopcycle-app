@@ -70,7 +70,7 @@ describeif(device.getPlatform() === 'android')
     await tapByText('Proceed');
     // Verify task #1 has the "CANCELLED" background
     await waitToBeVisible(`${USER_JANE}TasksList:task:0:cancelledBg`);
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
 
     // Open the filters screen and enable "Hide unassigned tasks from map"
     await tapById('showTasksFiltersButton');
@@ -81,7 +81,7 @@ describeif(device.getPlatform() === 'android')
 
     // Verify task #1 has gone from the list
     await expectToNotExist(`${USER_JANE}TasksList:task:0:cancelledBg`);
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#2)");
   });
 
   it('should mark a task as INCIDENT', async () => {

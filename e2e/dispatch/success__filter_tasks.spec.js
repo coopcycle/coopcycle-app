@@ -49,12 +49,12 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUser(USER_ZAK);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #2)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#3)");
     // Verify tasks #5+#4 are on USER_ZAK's task list
-    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (task #5)");
-    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 1, "Acme (task #4)");
+    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (#5)");
+    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 1, "Acme (#4)");
 
     //////////////
     // Hide done tasks
@@ -86,10 +86,10 @@ describeif(device.getPlatform() === 'android')
     await device.pressBack();
 
     // Verify task #1 is not on USER_JANE's task list
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #2)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#3)");
     // Verify task #5 is not on USER_ZAK's task list
-    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (task #4)");
+    await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (#4)");
 
     //////////////
     // Hide incidents
@@ -111,7 +111,7 @@ describeif(device.getPlatform() === 'android')
     await device.pressBack();
 
     // Verify task #2 is not on USER_JANE's task list
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#3)");
 
     //////////////
     // Hide unassigned tasks from map
@@ -201,8 +201,8 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUnassigned();
 
     // Verify tasks were found
-    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #11)");
-    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #10)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#11)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (#10)");
 
     // Open the filters screen and enter another keyword
     await tapById('showTasksFiltersButton');
@@ -216,7 +216,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('keywordsFilterGoToAllTasksButton');
 
     // Verify only one task was found
-    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #10)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#10)");
 
     // Open the filters screen and remove all keywords
     await tapById('showTasksFiltersButton');
@@ -230,9 +230,9 @@ describeif(device.getPlatform() === 'android')
     await tapById('keywordsFilterGoToAllTasksButton');
 
     // Verify all previous tasks are back again..!
-    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #7)");
-    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (task #9)");
-    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 2, "Acme (task #11)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#7)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (#9)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 2, "Acme (#11)");
   });
 
 });

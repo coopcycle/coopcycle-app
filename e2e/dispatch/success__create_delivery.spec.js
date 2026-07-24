@@ -68,7 +68,7 @@ describeif(device.getPlatform() === 'android')
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
     // Check the new tasks were created
-    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (task #12)");
+    await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#12)");
   });
 
 });

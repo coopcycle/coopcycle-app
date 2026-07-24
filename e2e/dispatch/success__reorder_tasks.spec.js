@@ -36,9 +36,9 @@ describeif(device.getPlatform() === 'android')
     await toggleSectionUser(USER_JANE);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #2)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#3)");
   });
 
   it('should reorder task in all the different situations', async () => {
@@ -52,9 +52,9 @@ describeif(device.getPlatform() === 'android')
     await tapById(`${USER_JANE}TasksList:task:1:sort`);
 
     // Verify the order has changed - task #1 should be at position 2
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #2)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #1)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#3)");
 
     console.log("//////////////////// REORDER TASK :: 1st to 3rd ////////////////////");
 
@@ -65,9 +65,9 @@ describeif(device.getPlatform() === 'android')
     await tapById(`${USER_JANE}TasksList:task:2:sort`);
 
     // Verify the order has changed - task #2 should be at position 3
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #3)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#2)");
 
     console.log("//////////////////// REORDER TASK :: 2nd to 1st ////////////////////");
 
@@ -78,9 +78,9 @@ describeif(device.getPlatform() === 'android')
     await tapById(`${USER_JANE}TasksList:task:0:sort:previous`);
 
     // Verify the order has changed - task #2 should be at position 3
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #3)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #1)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#2)");
 
     console.log("//////////////////// REORDER TASK :: 2nd to 3rd ////////////////////");
 
@@ -91,9 +91,9 @@ describeif(device.getPlatform() === 'android')
     await tapById(`${USER_JANE}TasksList:task:2:sort`);
 
     // Verify the order has changed - task #2 should be at position 3
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #3)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #2)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#1)");
 
     console.log("//////////////////// REORDER TASK :: 3rd to 1st ////////////////////");
 
@@ -104,9 +104,9 @@ describeif(device.getPlatform() === 'android')
     await tapById(`${USER_JANE}TasksList:task:0:sort:previous`);
 
     // Verify the order has changed - task #1 should be at position 1
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #3)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#2)");
 
     console.log("//////////////////// REORDER TASK :: 3rd to 2nd ////////////////////");
 
@@ -117,9 +117,9 @@ describeif(device.getPlatform() === 'android')
     await tapById(`${USER_JANE}TasksList:task:0:sort`);
 
     // Verify the order has changed - task #2 should be at position 2
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (task #1)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (task #2)");
-    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (task #3)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 1, "Acme (#2)");
+    await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 2, "Acme (#3)");
 
     console.log("//////////////////// should NOT show sort buttons checks ////////////////////");
 
