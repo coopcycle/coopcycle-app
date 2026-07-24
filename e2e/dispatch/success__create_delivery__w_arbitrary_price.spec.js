@@ -9,7 +9,6 @@ import {
 import {
   expectTaskTitleToHaveText,
   loginDispatcherUser,
-  toggleSectionUnassigned,
 } from './utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
@@ -67,8 +66,6 @@ describeif(device.getPlatform() === 'android')(
 
       await tapById('delivery__next_button');
 
-      // Show unassigned tasks section
-      await toggleSectionUnassigned();
 
       // Search by contact name
       await typeTextQuick('searchTextInput', `${CONTACT_NAME}\n`);

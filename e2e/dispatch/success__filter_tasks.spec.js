@@ -18,7 +18,6 @@ import {
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
-  toggleSectionUser,
 } from './utils';
 
 const USER_JANE = 'jane';
@@ -34,8 +33,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should correctly apply filters to tasks on different tasklists', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // Assign the 1st order in the list with tasks #1+#2+#3
     await assignOrderToUser(USER_JANE);
@@ -44,9 +41,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's and USER_ZAK's tasks section
-    await toggleSectionUser(USER_JANE);
-    await toggleSectionUser(USER_ZAK);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
@@ -197,8 +191,6 @@ describeif(device.getPlatform() === 'android')
     // Go back
     await tapById('keywordsFilterGoToAllTasksButton');
 
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // Verify tasks were found
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#11)");

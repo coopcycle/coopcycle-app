@@ -31,8 +31,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should assign a single task to a courier and then unassign it', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // All 3 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#1)");
@@ -48,8 +46,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's tasks section
-    await toggleSectionUser(USER_JANE);
 
     // Verify task #2 is on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#2)");
@@ -67,8 +63,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should assign a single order (with 3 tasks) to a courier and then unassign it', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // All 4 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#1)");
@@ -84,8 +78,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's tasks section
-    await toggleSectionUser(USER_JANE);
 
     // Verify all the 3 tasks are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
@@ -106,8 +98,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should bulk assign two tasks to a courier and then unassign them', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // All 3 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#1)");
@@ -125,8 +115,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's tasks section
-    await toggleSectionUser(USER_JANE);
 
     // Verify the 2 tasks are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
@@ -147,8 +135,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should bulk assign a task and an order to a courier and then unassign them', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // All 4 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#1)");
@@ -166,8 +152,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's tasks section
-    await toggleSectionUser(USER_JANE);
 
     // Verify all the 4 tasks are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
@@ -191,8 +175,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should bulk assign a task and an order to a courier and then reassign them to another courier and then unassign them all again', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // All 5 tasks are unassigned
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#1)");
@@ -216,8 +198,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's tasks section
-    await toggleSectionUser(USER_JANE);
 
     // Verify all the 4 tasks are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
@@ -239,8 +219,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide USER_JANE's tasks section
     await toggleSectionUser(USER_JANE);
-    // Show USER_ZAK's tasks section
-    await toggleSectionUser(USER_ZAK);
 
     // Verify all the 5 tasks are on USER_ZAK's task list
     await expectTaskTitleToHaveText(`${USER_ZAK}TasksList`, 0, "Acme (#7)");

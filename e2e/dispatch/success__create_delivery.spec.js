@@ -9,7 +9,6 @@ import {
   expectTaskTitleToHaveText,
   loadDispatchFixture,
   loginDispatcherUser,
-  toggleSectionUnassigned,
 } from './utils';
 import { UNASSIGNED_TASKS_LIST_ID } from '../../src/shared/src/constants';
 
@@ -25,8 +24,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should create a delivery for a store', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     await tapById('dispatchNewDelivery');
 

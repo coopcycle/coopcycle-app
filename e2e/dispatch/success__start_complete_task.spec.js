@@ -11,7 +11,6 @@ import {
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
-  toggleSectionUser,
 } from './utils';
 
 const USER_JANE = 'jane';
@@ -24,16 +23,12 @@ describeif(device.getPlatform() === 'android')
     await loadDispatchFixture();
     await loginDispatcherUser();
 
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // Assign task #1
     await assignTaskToUser(USER_JANE);
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's tasks section
-    await toggleSectionUser(USER_JANE);
 
     // Open assigned task #1
     await tapById(`${USER_JANE}TasksList:task:0`);

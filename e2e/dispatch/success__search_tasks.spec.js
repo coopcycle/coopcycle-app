@@ -10,7 +10,6 @@ import {
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
-  toggleSectionUser,
 } from './utils';
 
 const USER_JANE = 'jane';
@@ -26,8 +25,6 @@ describeif(device.getPlatform() === 'android')
   });
 
   it('should correctly find tasks on different tasklists', async () => {
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // Assign the 1st order in the list with tasks #1+#2+#3
     await assignOrderToUser(USER_JANE);
@@ -36,9 +33,6 @@ describeif(device.getPlatform() === 'android')
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's and USER_ZAK's tasks section
-    await toggleSectionUser(USER_JANE);
-    await toggleSectionUser(USER_ZAK);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
@@ -64,8 +58,6 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', 'Acme\n');
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
-    // Show unassigned tasks section on search results
-    await toggleSectionUnassigned();
     // Verify tasks were found on different task lists
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#7)");
     // Hide unassigned tasks section on search results
@@ -80,8 +72,6 @@ describeif(device.getPlatform() === 'android')
     await typeTextQuick('searchTextInput', '#1\n');
     await waitToBeVisible('dispatchTasksSearchResults', 10000);
 
-    // Show unassigned tasks section on search results
-    await toggleSectionUnassigned();
     // Verify tasks were found on different task lists
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 0, "Acme (#11)");
     await expectTaskTitleToHaveText(UNASSIGNED_TASKS_LIST_ID, 1, "Acme (#10)");

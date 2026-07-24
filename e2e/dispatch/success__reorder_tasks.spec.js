@@ -11,7 +11,6 @@ import {
   loadDispatchFixture,
   loginDispatcherUser,
   toggleSectionUnassigned,
-  toggleSectionUser,
 } from '@/e2e/dispatch/utils';
 
 const USER_JANE = 'jane';
@@ -24,16 +23,12 @@ describeif(device.getPlatform() === 'android')
     await loadDispatchFixture();
     await loginDispatcherUser();
 
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
 
     // Assign the 1st order in the list with tasks #1+#2+#3
     await assignOrderToUser(USER_JANE);
 
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_JANE's tasks section
-    await toggleSectionUser(USER_JANE);
 
     // Verify tasks #1+#2+#3 are on USER_JANE's task list
     await expectTaskTitleToHaveText(`${USER_JANE}TasksList`, 0, "Acme (#1)");
@@ -140,14 +135,10 @@ describeif(device.getPlatform() === 'android')
 
     // Select another task from unassigned tasks (different courier)
 
-    // Show unassigned tasks section
-    await toggleSectionUnassigned();
     // Assign an order to Zak
     await assignOrderToUser(USER_ZAK, 0);
     // Hide unassigned tasks section
     await toggleSectionUnassigned();
-    // Show USER_ZAK's tasks section
-    await toggleSectionUser(USER_ZAK);
 
     // Select a task from Zak's list
     await longPressById(`${USER_ZAK}TasksList:task:0`);
