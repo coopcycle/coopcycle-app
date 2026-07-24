@@ -105,15 +105,17 @@ export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps)
         <HStack className="justify-between items-center">
           <Text
             testID={`${taskTestId}:title`}
-            // Exposes the task identity to E2E tests independently of what is
-            // shown on screen. The visible task id below is dev-only (and the
-            // title is uppercased), so tests cannot rely on the rendered text
-            // to tell one task from another — they match this label instead.
-            accessibilityLabel={`${task.orgName} (task #${task.id})`}
             style={alignedTitleStyle}
             numberOfLines={1}>
             {task.orgName}
-            <Text className={ classNames({ 'hidden': !__DEV__ }) }>{` (task #${task.id})`}</Text>
+            {/* The task id must stay inside the title's text so E2E tests can
+                tell tasks apart: on Android Detox matches TextView text, not
+                accessibilityLabel (RN never sets the raw contentDescription).
+                fontSize:0 keeps the id in the text but invisible in release;
+                in dev it renders normally as a debugging aid. Do not switch
+                this to display:none / a 'hidden' class — that removes it from
+                the text and breaks the dispatch suite. */}
+            <Text style={__DEV__ ? undefined : { fontSize: 0 }}>{` (task #${task.id})`}</Text>
           </Text>
           {/* status and incidents icons */}
           <HStack space="xs" className="items-center">
