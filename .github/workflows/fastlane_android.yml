@@ -66,11 +66,18 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
+          # Gemfile lives at the repo root (the later steps reach it from
+          # android/ via Bundler's upward search); cache the gems from there.
+          bundler-cache: true
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: 'gradle'
+      # Persists ~/.gradle (dependencies, transforms, build cache) across runs.
+      # Shares the dependency/transform entries the nightly master build keeps
+      # warm, so a cold release build still restores them.
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v4
       - uses: mfinelli/setup-imagemagick@v8
       - name: Find Metro cache
         id: metro-cache-dir-path
