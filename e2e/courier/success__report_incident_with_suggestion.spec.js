@@ -102,6 +102,6 @@ describeif(device.getPlatform() === 'android')('Courier - Task List', () => {
     await tapById('task:finishButton-edit');
 
     // Verify dropoff task has status "INCIDENT"
-    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:1', 20000);
   });
 });

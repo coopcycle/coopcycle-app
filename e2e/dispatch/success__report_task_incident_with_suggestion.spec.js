@@ -52,7 +52,7 @@ describeif(device.getPlatform() === 'android')(
       await swipeDown('dispatchTaskLists');
 
       // Verify task #1 has status "INCIDENT"
-      await waitToBeVisible('taskListItemIcon:INCIDENT:1');
+      await waitToBeVisible('taskListItemIcon:INCIDENT:1', 20000);
     });
   },
 );

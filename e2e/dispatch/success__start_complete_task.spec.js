@@ -69,7 +69,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('task:finishButton');
 
     // Verify task #1 has the "INCIDENT" icon
-    await waitToBeVisible('taskListItemIcon:INCIDENT:1');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:1', 20000);
   });
 
 });

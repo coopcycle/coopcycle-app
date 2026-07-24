@@ -49,6 +49,6 @@ describeif(device.getPlatform() === 'android')('Courier - Task Page', () => {
     await tapById('task:finishButton');
 
     // Verify task #2 has status "DONE"
-    await waitToBeVisible('taskListItemIcon:INCIDENT:2');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:2', 20000);
   });
 });

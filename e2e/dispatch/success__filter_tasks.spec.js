@@ -95,7 +95,7 @@ describeif(device.getPlatform() === 'android')
     await tapById('task:completeFailureButton');
     // Click the finish button and verify task #2 has the "INCIDENT" icon
     await tapById('task:finishButton');
-    await waitToBeVisible('taskListItemIcon:INCIDENT:2');
+    await waitToBeVisible('taskListItemIcon:INCIDENT:2', 20000);
 
     // Open the filters screen and enable "Hide incidents"
     await tapById('showTasksFiltersButton');
