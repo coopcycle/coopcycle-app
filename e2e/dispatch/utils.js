@@ -76,8 +76,11 @@ export async function swipeRightTask(sectionId, index = 0) {
 }
 
 export function expectTaskTitleToHaveText(sectionId, index, text) {
-  const elemId = `${sectionId}:task:${index}:title`;
-  // The title text is "<orgName> (#<id>)", uppercased via textTransform.
-  // Callers pass the original-case string, e.g. "Acme (#1)". See TaskInfo.
-  return expect(element(by.id(elemId))).toHaveText(text.toUpperCase());
+  // Detox can't read the title's text on the new architecture (getText() is
+  // null), so the task id is encoded in the title testID and we assert the
+  // element for that id exists at this position. `text` still carries the human
+  // string, e.g. "Acme (#1)"; we match on the "#<id>" it contains. See TaskInfo.
+  const id = String(text).match(/#(\d+)/)?.[1];
+  const elemId = `${sectionId}:task:${index}:title:#${id}`;
+  return expect(element(by.id(elemId))).toExist();
 }

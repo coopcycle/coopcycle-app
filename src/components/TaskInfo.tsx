@@ -104,13 +104,13 @@ export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps)
         }}>
         <HStack className="justify-between items-center">
           <Text
-            testID={`${taskTestId}:title`}
+            // The task id is encoded in the testID (not just the text) because
+            // Detox cannot read this Text's content on the new architecture —
+            // getText() returns null — so E2E tests match the id via the testID
+            // instead. See expectTaskTitleToHaveText.
+            testID={`${taskTestId}:title:#${task.id}`}
             style={alignedTitleStyle}
             numberOfLines={1}>
-            {/* The task id is part of the title on purpose: it is shown to
-                users and it lets the E2E tests tell tasks apart (on Android
-                Detox matches the TextView text). Keep it in the text — do not
-                hide it. */}
             {`${task.orgName} (#${task.id})`}
           </Text>
           {/* status and incidents icons */}
