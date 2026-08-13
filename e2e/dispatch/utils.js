@@ -1,6 +1,7 @@
 import {
   authenticateWithCredentials,
   loadFixturesAndConnect,
+  longPressById,
   swipeLeft,
   swipeRight,
   tapById,
@@ -38,6 +39,20 @@ export async function unassignOrderFromUser(username, index = 0) {
   await swipeRightTask(`${username}TasksList`, index);
   await tapById(`${username}TasksList:task:${index}:left`);
   await tapById('unassignTask');
+}
+
+// Multi-select for a bulk action. Selecting is done by long-tapping the first
+// task (which enters edit mode) then tapping the others to toggle them in.
+// NOTE: the bulk action always operates on WHOLE ORDERS — selecting any task of
+// an order pulls in its linked tasks (see GroupedTasks handleBulkAssignButtonPress,
+// commit ac89dd726). To assign/unassign a single task of a multi-task order,
+// use the single-task swipe helpers below instead.
+export async function selectTasksForBulk(refs) {
+  const [first, ...rest] = refs;
+  await longPressById(`${first.section}:task:${first.index}`);
+  for (const r of rest) {
+    await tapById(`${r.section}:task:${r.index}`);
+  }
 }
 
 export async function bulkAssignToUser(username) {
