@@ -31,7 +31,7 @@ import {
 import AddressUtils, { AutocompleteAddress } from '../utils/Address';
 import PostCodeButton from './AddressAutocomplete/components/PostCodeButton';
 import PoweredByGoogle from './AddressAutocomplete/powered/PoweredByGoogle';
-import { PoweredByIdealPostcodes } from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
+import PoweredByIdealPostcodes from './AddressAutocomplete/powered/PoweredByIdealPostcodes';
 import ItemSeparator from './ItemSeparator';
 import MapPickerScreen from './MapPickerModal';
 import { Address } from '@/src/redux/api/types';
