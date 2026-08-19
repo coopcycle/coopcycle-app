@@ -400,16 +400,18 @@ function AddressAutocomplete({
         </Button>
       )}
       <View style={styles.textInput}>
-        <Input className="flex-1">
+        <Input className="flex-1 h-12">
           <InputField
             {...inputProps}
             style={[
               inputProps.style,
               {
                 backgroundColor: props.backgroundColor,
-                fontSize: 14,
-                height: 40,
-                paddingLeft: 8,
+                fontSize: 16,
+                height: 48,
+                paddingLeft: 12,
+                // leave room for the postcode tag
+                paddingRight: props.country === 'gb' && postcode ? 110 : 8,
               },
             ]}
             placeholderTextColor={props.placeholderTextColor}
