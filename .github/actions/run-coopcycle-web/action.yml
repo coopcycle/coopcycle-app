@@ -23,10 +23,11 @@ runs:
   - name: Prepare OSRM data
     shell: bash
     run: |
-      docker compose run -T --rm osrm wget --no-check-certificate https://coopcycle-assets.sfo2.digitaloceanspaces.com/osm/paris-france.osm.pbf -O /data/data.osm.pbf
+      curl --create-dirs -o var/osrm/data.osm.pbf https://coopcycle-assets.sfo2.digitaloceanspaces.com/osm/paris-france.osm.pbf
       docker compose run -T --rm osrm osrm-extract -p /opt/bicycle.lua /data/data.osm.pbf
       docker compose run -T --rm osrm osrm-partition /data/data.osrm
       docker compose run -T --rm osrm osrm-customize /data/data.osrm
+      docker compose run -T --rm osrm rm -f /data/data.osm.pbf
     working-directory: coopcycle-web
   # Cypress GitHub Action uses npm ci, and it causes a "permission denied" error,
   # because it tries to remove the node_modules/ folder, which is mounted with root:root
