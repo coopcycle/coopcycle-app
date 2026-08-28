@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FlashList } from '@shopify/flash-list';
@@ -27,9 +27,7 @@ import {
 } from '../../../shared/logistics/redux';
 import { withLinkedTasks } from '../../../shared/src/logistics/redux/taskUtils';
 import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
-import TaskListItemBase from '../../../components/TaskListItem';
-
-const TaskListItem = memo(TaskListItemBase);
+import TaskListItem from '../../../components/TaskListItem';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderNumber } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation, useSetTaskListItemsMutation } from '../../../redux/api/slice';
@@ -60,6 +58,93 @@ type FlatItem =
 
 const HEADER_HEIGHT = 52;
 const TASK_HEIGHT = 88;
+
+type DispatchTaskRowProps = {
+  task: Task;
+  nextTask: Task | null;
+  index: number;
+  sectionId: string;
+  appendTaskListTestID?: string;
+  isUnassignedTaskList: boolean;
+  onTaskPress: (task: Task, isUnassignedTaskList: boolean) => void;
+  onOrderPress: (task: Task) => void;
+  onLongPress: (task: Task) => void;
+  onAssignOrder: (task: Task, isUnassignedTaskList: boolean) => void;
+  onAssignTask: (task: Task, isUnassignedTaskList: boolean) => void;
+  onSortBefore: (sectionId: string) => void;
+  onSort: (sectionId: string, index: number) => void;
+};
+
+/**
+ * One row, memoized on its props.
+ *
+ * The per-task closures are built here rather than in `renderItem`, and the
+ * section is passed as its id plus the two flags the row needs: handing the
+ * section object down would re-render every row whenever any section is
+ * rebuilt, and inline closures defeated the memo entirely.
+ */
+const DispatchTaskRow = memo(function DispatchTaskRow({
+  task,
+  nextTask,
+  index,
+  sectionId,
+  appendTaskListTestID,
+  isUnassignedTaskList,
+  onTaskPress,
+  onOrderPress,
+  onLongPress,
+  onAssignOrder,
+  onAssignTask,
+  onSortBefore,
+  onSort,
+}: DispatchTaskRowProps) {
+  const handlePress = useCallback(
+    () => onTaskPress(task, isUnassignedTaskList),
+    [onTaskPress, task, isUnassignedTaskList],
+  );
+  const handleOrderPress = useCallback(
+    () => onOrderPress(task),
+    [onOrderPress, task],
+  );
+  const handlePressLeft = useCallback(
+    () => onAssignOrder(task, isUnassignedTaskList),
+    [onAssignOrder, task, isUnassignedTaskList],
+  );
+  const handlePressRight = useCallback(
+    () => onAssignTask(task, isUnassignedTaskList),
+    [onAssignTask, task, isUnassignedTaskList],
+  );
+  const handleSortBefore = useCallback(
+    () => onSortBefore(sectionId),
+    [onSortBefore, sectionId],
+  );
+  const handleSort = useCallback(
+    () => onSort(sectionId, index),
+    [onSort, sectionId, index],
+  );
+
+  return (
+    <TaskListItem
+      taskListId={sectionId}
+      appendTaskListTestID={appendTaskListTestID}
+      task={task}
+      nextTask={nextTask}
+      index={index}
+      color={task.color}
+      onPress={handlePress}
+      onLongPress={onLongPress}
+      onOrderPress={handleOrderPress}
+      onSortBefore={handleSortBefore}
+      onSort={handleSort}
+      onPressLeft={handlePressLeft}
+      swipeOutLeftBackgroundColor={darkRedColor}
+      swipeOutLeftIcon={AssignOrderIcon}
+      onPressRight={handlePressRight}
+      swipeOutRightBackgroundColor={darkRedColor}
+      swipeOutRightIcon={AssignTaskIcon}
+    />
+  );
+});
 
 export default function GroupedTasks({
   isFetching,
@@ -316,21 +401,44 @@ export default function GroupedTasks({
     context?.clearSelectedTasks();
   }, [context, date, setTaskListItems]);
 
-  const swipeLeftConfiguration = useCallback(
-    (section, task) => ({
-      onPressLeft: () => assignTaskWithRelatedTasksHandler(section.isUnassignedTaskList, task),
-      swipeOutLeftBackgroundColor: darkRedColor,
-      swipeOutLeftIcon: AssignOrderIcon,
-    }),
+  // Rows are handed callbacks that take the task (or the section id) as an
+  // argument, so their identity survives a re-render and the memoized rows
+  // actually bail out. The sort handlers need the section's current tasks,
+  // which are read from a ref for the same reason.
+  const sectionsRef = useRef(sections);
+  sectionsRef.current = sections;
+
+  const getSectionData = useCallback((sectionId: string) => {
+    const section = sectionsRef.current.find(s => s.id === sectionId);
+    return section ? section.data : [];
+  }, []);
+
+  const handleSortBeforeSection = useCallback(
+    (sectionId: string) => handleSortBefore(getSectionData(sectionId)),
+    [handleSortBefore, getSectionData],
+  );
+
+  const handleSortSection = useCallback(
+    (sectionId: string, index: number) =>
+      handleSort(getSectionData(sectionId), index),
+    [handleSort, getSectionData],
+  );
+
+  const handleTaskPress = useCallback(
+    (task: Task, isUnassignedTaskList: boolean) =>
+      onTaskClick(isUnassignedTaskList)(task),
+    [onTaskClick],
+  );
+
+  const handleAssignOrder = useCallback(
+    (task: Task, isUnassignedTaskList: boolean) =>
+      assignTaskWithRelatedTasksHandler(isUnassignedTaskList, task),
     [assignTaskWithRelatedTasksHandler],
   );
 
-  const swipeRightConfiguration = useCallback(
-    (section, task) => ({
-      onPressRight: () => assignTaskHandler(section.isUnassignedTaskList, task),
-      swipeOutRightBackgroundColor: darkRedColor,
-      swipeOutRightIcon: AssignTaskIcon,
-    }),
+  const handleAssignTask = useCallback(
+    (task: Task, isUnassignedTaskList: boolean) =>
+      assignTaskHandler(isUnassignedTaskList, task),
     [assignTaskHandler],
   );
 
@@ -353,20 +461,20 @@ export default function GroupedTasks({
       const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
 
       return (
-        <TaskListItem
-          taskListId={section.id}
-          appendTaskListTestID={section.appendTaskListTestID}
+        <DispatchTaskRow
           task={task}
           nextTask={nextTask}
           index={index}
-          color={task.color}
-          onPress={() => onTaskClick(section.isUnassignedTaskList)(task)}
+          sectionId={section.id}
+          appendTaskListTestID={section.appendTaskListTestID}
+          isUnassignedTaskList={section.isUnassignedTaskList}
+          onTaskPress={handleTaskPress}
+          onOrderPress={onOrderClick}
           onLongPress={longPressHandler}
-          onSortBefore={() => handleSortBefore(tasks)}
-          onSort={() => handleSort(tasks, index)}
-          onOrderPress={() => onOrderClick(task)}
-          {...(swipeLeftConfiguration(section, task))}
-          {...(swipeRightConfiguration(section, task))}
+          onAssignOrder={handleAssignOrder}
+          onAssignTask={handleAssignTask}
+          onSortBefore={handleSortBeforeSection}
+          onSort={handleSortSection}
         />
       );
     },
@@ -374,12 +482,12 @@ export default function GroupedTasks({
       isExpandedSection,
       toggleSection,
       longPressHandler,
-      onTaskClick,
+      handleTaskPress,
       onOrderClick,
-      handleSort,
-      handleSortBefore,
-      swipeLeftConfiguration,
-      swipeRightConfiguration,
+      handleAssignOrder,
+      handleAssignTask,
+      handleSortSection,
+      handleSortBeforeSection,
     ],
   );
 

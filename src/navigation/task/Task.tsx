@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { createSelector } from '@reduxjs/toolkit';
 import { Text } from '@/components/ui/text';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
@@ -212,15 +213,24 @@ const styles = StyleSheet.create({
   },
 });
 
+/**
+ * Every task this screen might be showing, courier's own and dispatch's.
+ *
+ * Memoized because it is built in `mapStateToProps`: `uniqBy` returns a new
+ * array every time, so an unmemoized version handed `connect` a new `tasks`
+ * prop on *every* dispatched action, re-rendering the details and the map —
+ * and redoing the merge — each time.
+ */
+const selectAllKnownTasks = createSelector(
+  selectTasks,
+  selectAllDispatchTasks,
+  (courierTasks, dispatchTasks) =>
+    _.uniqBy(courierTasks.concat(dispatchTasks), '@id'),
+);
+
 function mapStateToProps(state) {
-  let allTasks = [];
-
-  const courierTasks = _.values(selectTasks(state));
-  allTasks = allTasks.concat(courierTasks);
-  allTasks = allTasks.concat(selectAllDispatchTasks(state));
-
   return {
-    tasks: _.uniqBy(allTasks, '@id'),
+    tasks: selectAllKnownTasks(state),
     isInternetReachable: state.app.isInternetReachable,
   };
 }
