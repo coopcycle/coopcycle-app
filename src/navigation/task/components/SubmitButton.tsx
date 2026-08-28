@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity } from 'react-native';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
 import { greenColor, yellowColor } from '@/src/styles/common';
 import { markTaskDone } from '@/src/redux/Courier';
@@ -20,6 +21,11 @@ import { reportIncidentFlow } from '@/src/redux/Courier/taskActions';
 import { useAppDispatch } from '@/src/redux/store';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigateOnSuccess } from '@/src/navigation/task/hooks/useNavigateOnSuccess';
+
+// How long a submission may run before we say something. The HTTP client
+// gives up at 30s; until then the courier is looking at a screen that used to
+// give no sign the tap had registered at all.
+const SLOW_SUBMIT_MS = 8000;
 
 type Props = {
   //TaskComplete
@@ -59,6 +65,29 @@ export const SubmitButton = ({
 
   const navigateOnSuccess = useNavigateOnSuccess();
   const pendingSubmitRef = useRef(false);
+
+  const isBusy = isSubmitting || isLoading;
+  const [isSlow, setIsSlow] = useState(false);
+
+  // `pendingSubmitRef` only has to bridge the gap between the tap and the
+  // submitting flags catching up. Clearing it here means a failed submission
+  // no longer leaves the button permanently dead.
+  useEffect(() => {
+    if (!isBusy) {
+      pendingSubmitRef.current = false;
+    }
+  }, [isBusy]);
+
+  useEffect(() => {
+    if (!isBusy) {
+      setIsSlow(false);
+      return;
+    }
+
+    const timeout = setTimeout(() => setIsSlow(true), SLOW_SUBMIT_MS);
+
+    return () => clearTimeout(timeout);
+  }, [isBusy]);
 
   const handlePress = () => {
     if (pendingSubmitRef.current || isSubmitting || isLoading) return;
@@ -143,11 +172,25 @@ export const SubmitButton = ({
       }}
       testID={`task:finishButton${currentTab ? '-' + currentTab : ''}`}
     >
-      <HStack className="py-3 items-center">
-        <Text style={{ fontWeight: 'bold', color: '#000' }}>
-          {success ? t('VALIDATE') : t('REPORT_INCIDENT')}
-        </Text>
-      </HStack>
+      <VStack className="py-3 items-center">
+        <HStack className="items-center" space="sm">
+          {isBusy && (
+            <ActivityIndicator
+              size="small"
+              color="#000"
+              testID="task:finishButtonSpinner"
+            />
+          )}
+          <Text style={{ fontWeight: 'bold', color: '#000' }}>
+            {success ? t('VALIDATE') : t('REPORT_INCIDENT')}
+          </Text>
+        </HStack>
+        {isSlow && (
+          <Text style={{ color: '#000', fontSize: 12 }}>
+            {t('TASK_SUBMIT_SLOW')}
+          </Text>
+        )}
+      </VStack>
     </TouchableOpacity>
   );
 };

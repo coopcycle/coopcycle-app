@@ -25,8 +25,13 @@ export default function Complete() {
     <Formik
       initialValues={initialValues}
       onSubmit={values => {
+        // The promise is returned so Formik clears `isSubmitting` once the
+        // request settles. That flag is what tells the courier the tap was
+        // registered, and without it the button stayed disabled for good —
+        // including when the request failed, or when the files were too big
+        // and the thunk bailed out before sending anything.
         if (tasks && tasks.length) {
-          dispatch(
+          return dispatch(
             markTasksDone(
               tasks,
               values.notes,
@@ -34,16 +39,16 @@ export default function Complete() {
               values.contactName,
             ),
           );
-        } else {
-          dispatch(
-            markTaskDone(
-              task,
-              values.notes,
-              navigateOnSuccess,
-              values.contactName,
-            ),
-          );
         }
+
+        return dispatch(
+          markTaskDone(
+            task,
+            values.notes,
+            navigateOnSuccess,
+            values.contactName,
+          ),
+        );
       }}
       validateOnBlur={false}
       validateOnChange={false}

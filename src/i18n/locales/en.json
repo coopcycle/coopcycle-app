@@ -25,6 +25,7 @@
     "TASKS_UPDATED": "Your tasks have been updated",
     "FAILED_TASK_LOAD": "Could not load your tasks",
     "FAILED_TASK_COMPLETE": "Could not complete this task",
+    "TASK_SUBMIT_SLOW": "Still sending…",
     "TRY_LATER": "Please try again later",
     "NET_FAILED": "Network request failed",
     "RETRY": "Retry",
