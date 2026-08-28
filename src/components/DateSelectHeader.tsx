@@ -13,7 +13,7 @@ import {
 } from '../styles/common';
 
 import { useTranslation } from 'react-i18next';
-import { loadTasks, selectTaskSelectedDate } from '../redux/Courier';
+import { selectTaskSelectedDate } from '../redux/Courier';
 import { changeDate } from '../redux/Courier/taskActions';
 
 let styles = StyleSheet.create({
@@ -78,8 +78,10 @@ export default function DateSelectHeader({ navigate }) {
   };
 
   const onChangeDate = (date: moment.Moment) => {
+    // Changing the selected date re-arms `useGetMyTasksQuery` with the new
+    // date, which loads it — dispatching `loadTasks` here as well issued a
+    // second, identical request for every date change.
     dispatch(changeDate(date.toISOString()));
-    dispatch(loadTasks(date));
   };
 
   const onFuturePress = () => {

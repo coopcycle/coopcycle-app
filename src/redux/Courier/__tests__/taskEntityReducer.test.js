@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import { _message } from '../../middlewares/CentrifugoMiddleware/actions';
 import {
+  changeDate,
   loadTasksFailure,
   loadTasksRequest,
   loadTasksSuccess,
@@ -226,6 +227,20 @@ describe('Redux | Tasks | Reducers', () => {
 
       expect(selectTasks(fullState)).toEqual(newTasks);
       expect(restOldState).toEqual(restNewState);
+    });
+
+    test(`${changeDate} | follows the date selected in the UI`, () => {
+      const prevState = { ...initialState, date: '2020-01-01' };
+      const newState = tasksEntityReducer(
+        prevState,
+        changeDate(moment('2020-02-03T14:30:00').toISOString()),
+      );
+
+      // `selectTasks` reads the bucket named by this date, and the RTK query
+      // serves an already-cached date without dispatching anything, so the
+      // date has to follow the selection rather than a request.
+      expect(newState.date).toEqual('2020-02-03');
+      expect(omit(newState, ['date'])).toEqual(omit(prevState, ['date']));
     });
 
     test(`${_message} | unrecognized message type`, () => {

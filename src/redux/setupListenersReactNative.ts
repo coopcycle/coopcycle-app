@@ -4,7 +4,10 @@ import { AppState } from 'react-native';
 let initialized = false;
 
 let appStateSubscription = null;
-let appState = AppState.currentState;
+
+// Whether the app has actually left the screen since the last focus event.
+// See `_handleAppStateChange`.
+let hasBeenBackgrounded = false;
 
 let netInfoUnsubscribe = null;
 
@@ -18,14 +21,22 @@ export function setupListenersReactNative(
   const handleOffline = () => dispatch(onOffline());
 
   const _handleAppStateChange = nextAppState => {
-    const foreground = !!(
-      appState.match(/inactive|background/) && nextAppState === 'active'
-    );
+    // A focus event refetches every query subscribed with `refetchOnFocus` —
+    // for a courier that means the whole task list. iOS reports 'inactive' for
+    // transient interruptions the user never actually left the app for (the
+    // camera, permission dialogs, alerts, control centre, a notification
+    // banner), and several of those happen during a single task completion, so
+    // only a real round trip through 'background' counts as a focus event.
+    if (nextAppState === 'background') {
+      hasBeenBackgrounded = true;
+      handleFocusLost();
+      return;
+    }
 
-    if (foreground) handleFocus();
-    else handleFocusLost();
-
-    appState = nextAppState;
+    if (nextAppState === 'active' && hasBeenBackgrounded) {
+      hasBeenBackgrounded = false;
+      handleFocus();
+    }
   };
 
   const _handleNetInfoChange = state => {

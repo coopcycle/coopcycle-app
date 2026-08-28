@@ -5,6 +5,7 @@ import { actionMatchCreator } from '../util';
 import {
   ADD_PICTURE,
   ADD_SIGNATURE,
+  CHANGE_DATE,
   CLEAR_FILES,
   DELETE_PICTURE,
   DELETE_SIGNATURE,
@@ -286,6 +287,16 @@ export const tasksEntityReducer = (
         ...state,
         signatures: [],
         pictures: [],
+      };
+
+    // Keep the date of the tasks we expose in sync with the date selected in
+    // the UI, without waiting for a request: the RTK query serves a date it
+    // already has in cache without dispatching anything, and `selectTasks`
+    // reads the bucket named by this date.
+    case CHANGE_DATE:
+      return {
+        ...state,
+        date: moment(action.payload).format('YYYY-MM-DD') as DateOnlyString,
       };
 
     case SET_USER:

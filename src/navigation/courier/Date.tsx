@@ -3,16 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 import { Calendar } from '../../components/Calendar';
-import { changeDate } from '../../redux/Dispatch/actions';
-import { loadTasks, selectTaskSelectedDate } from '../../redux/Courier';
+import { changeDate as changeDispatchDate } from '../../redux/Dispatch/actions';
+import { selectTaskSelectedDate } from '../../redux/Courier';
+import { changeDate } from '../../redux/Courier/taskActions';
 
 export default function DateScreen({ navigation }) {
   const selectedDate = useSelector(selectTaskSelectedDate);
   const dispatch = useDispatch();
 
   const onDateChange = (date: moment.Moment) => {
+    dispatch(changeDispatchDate(date.toISOString()));
+    // Selecting the date is enough to load it — `useGetMyTasksQuery` picks up
+    // the new date. `loadTasks` used to be dispatched here as well, which
+    // issued a second, identical request. It also set the courier's selected
+    // date as a side effect, so that now goes through `changeDate`.
     dispatch(changeDate(date.toISOString()));
-    dispatch(loadTasks(date));
     navigation.goBack();
   };
 

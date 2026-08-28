@@ -100,6 +100,10 @@ function TaskMapPage({
     selectedDate.format('YYYY-MM-DD') as DateOnlyString,
     {
       refetchOnFocus: true,
+      // Serve a date we already hold if it was loaded in the last 30s, so
+      // hopping between dates (or remounting) doesn't refetch the whole list
+      // every time.
+      refetchOnMountOrArgChange: 30,
     },
   );
 
