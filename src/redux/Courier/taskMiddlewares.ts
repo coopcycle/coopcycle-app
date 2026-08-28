@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { AppState } from 'react-native';
 
 import { LOGOUT_SUCCESS, addNotification } from '../App/actions';
@@ -43,17 +42,14 @@ export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
     const tasks = selectTasks(state);
 
     if (tasks !== prevTasks) {
-      const addedTasks = _.differenceWith(
-        tasks,
-        prevTasks,
-        (a, b) => a['@id'] === b['@id'],
-      );
+      // Compared through sets of ids: `_.differenceWith` runs its comparator
+      // for every pair, so this was quadratic in the size of the task list,
+      // twice, on every action that touched the tasks.
+      const prevIds = new Set(prevTasks.map(task => task['@id']));
+      const ids = new Set(tasks.map(task => task['@id']));
 
-      const removedTasks = _.differenceWith(
-        prevTasks,
-        tasks,
-        (a, b) => a['@id'] === b['@id'],
-      );
+      const addedTasks = tasks.filter(task => !prevIds.has(task['@id']));
+      const removedTasks = prevTasks.filter(task => !ids.has(task['@id']));
 
       if (addedTasks.length > 0 || removedTasks.length > 0) {
         dispatch(

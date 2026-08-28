@@ -23,7 +23,14 @@ const OfflineNotice = ({ message }) => (
   </View>
 );
 
+type TasksIndex = {
+  source: TaskType[];
+  index: Map<string, TaskType>;
+};
+
 class Task extends Component {
+  _tasksById: TasksIndex | null = null;
+
   constructor(props) {
     super(props);
 
@@ -63,6 +70,33 @@ class Task extends Component {
     ) {
       this.props.navigation.setParams({ task: currentTask });
     }
+  }
+
+  /**
+   * Resolves the ids of the surrounding task list (carried in the route
+   * params) against the tasks we hold, keeping their order and skipping any
+   * that are no longer loaded.
+   */
+  resolveTasks(taskIds: string[] | undefined) {
+    if (!taskIds || taskIds.length === 0) {
+      return [];
+    }
+
+    const { tasks } = this.props;
+
+    // `tasks` is memoized, so this index is rebuilt only when it really changes
+    if (!this._tasksById || this._tasksById.source !== tasks) {
+      this._tasksById = {
+        source: tasks,
+        index: new Map(tasks.map((t: TaskType) => [t['@id'], t])),
+      };
+    }
+
+    const { index } = this._tasksById;
+
+    return taskIds
+      .map(id => index.get(id))
+      .filter((task): task is TaskType => task !== undefined);
   }
 
   _onMapLayout(e) {
@@ -172,7 +206,7 @@ class Task extends Component {
 
   render() {
     const task = this.props.route.params?.task as TaskType | undefined;
-    const tasks = this.props.route.params?.tasks || [];
+    const tasks = this.resolveTasks(this.props.route.params?.taskIds);
 
     return (
       <View style={{ flex: 1 }}>

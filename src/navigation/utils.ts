@@ -14,14 +14,17 @@ export const navigateToOrder = (navigation, orderNumber: string, isFromCourier =
   navigation.navigate('Order', { screen: 'Order', params });
 };
 
-export const navigateToTask = (navigation, route, task: Task, tasks = []) => {
+export const navigateToTask = (navigation, route, task: Task, tasks: Task[] = []) => {
   if (route?.name !== 'TaskHome') {
     navigateAfter = route.name;
   }
 
   const params = {
     task,
-    tasks,
+    // Only the ids of the surrounding list: React Navigation holds params in
+    // its own state (and they are reported with navigation events), and this
+    // is a whole task list. `TaskHome` resolves them against the store.
+    taskIds: tasks.map(t => t['@id']),
     navigateAfter,
   };
 
