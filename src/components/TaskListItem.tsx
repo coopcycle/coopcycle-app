@@ -1,9 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-export type TaskListItemMethods = {
-  openLeft: () => void;
-  openRight: () => void;
-  close: () => void;
-};
 import { ArrowRightCircle, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
@@ -17,7 +12,13 @@ import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/Reanim
 
 import { HStack } from '@/components/ui/hstack';
 import { Icon } from '@/components/ui/icon';
-import { Task, TaskListItemProps } from '../types/task';
+import {
+  Task,
+  TaskListItemMethods,
+  TaskListItemProps,
+} from '../types/task';
+
+export type { TaskListItemMethods };
 
 import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
@@ -161,7 +162,7 @@ const SwipeButton = ({ icon, width, size = 42 }: ISwipeButtonProps) => (
   </View>
 );
 
-export default function TaskListItem({
+function TaskListItem({
   task,
   nextTask,
   color,
@@ -183,7 +184,7 @@ export default function TaskListItem({
   onSwipedToRight,
   onSwipeClosed,
   onRegisterRef,
-}) {
+}: TaskListItemProps) {
   const isPickup = task.type === 'PICKUP';
   const context = useTaskListsContext();
   const theme = useTheme();
@@ -316,7 +317,6 @@ export default function TaskListItem({
     if (!onSortCallback || !isAssignedToSameCourier || !isSortable) return null;
     const appendSortID = isFirstPosition ? `sort:previous` : `sort`;
     return (
-      // @ts-expect-error It doeson't like onPress={onSortCallback} (but it works)
       <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:${appendSortID}`}>
         <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
       </Pressable>
@@ -405,3 +405,7 @@ export default function TaskListItem({
     </View>
   );
 };
+
+// Rows are rendered by the hundred and each one mounts a swipeable with its
+// own gesture handlers, so bail out unless this task actually changed.
+export default React.memo(TaskListItem);

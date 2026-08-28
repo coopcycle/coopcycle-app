@@ -9,9 +9,13 @@ import { createSelector } from '@reduxjs/toolkit';
 import { isEqual, uniqWith } from 'lodash';
 import moment from 'moment';
 
-import { filterTasks } from '../logistics/utils';
+import { filterTasks, indexTasksByOrder } from '../logistics/utils';
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
 import { RootState } from '../store';
+
+// Shared empty result, so selectors returning "nothing" keep a stable
+// reference and don't re-render their subscribers.
+const EMPTY_TASKS = [];
 
 /* Simple Selectors */
 const _selectTaskSelectedDate = (state: RootState) =>
@@ -59,11 +63,21 @@ export const selectFilteredTasks = createSelector(
   (filters, tasks) => filterTasks(tasks, filters),
 );
 
-export const selectFilteredTasksByOrder = orderNumber =>
-  createSelector(selectFilteredTasks, filteredTasks =>
-    filteredTasks
-      .filter(task => task.metadata.order_number === orderNumber),
-  );
+export const selectFilteredTasksIndexedByOrder = createSelector(
+  selectFilteredTasks,
+  indexTasksByOrder,
+);
+
+/**
+ * Returns a plain lookup, *not* a factory of memoized selectors: building a
+ * `createSelector` on every render (this is called from the render body of
+ * every task row) defeats its memoization and hands `useSelector` a freshly
+ * filtered array each time, so every row re-filters the whole task list — and
+ * re-renders — on every dispatched action. Reading from a memoized index keeps
+ * the returned array reference stable between renders.
+ */
+export const selectFilteredTasksByOrder = orderNumber => state =>
+  selectFilteredTasksIndexedByOrder(state).get(orderNumber) ?? EMPTY_TASKS;
 
 export const selectAreCancelledTasksHidden = createSelector(
   selectTaskFilters,

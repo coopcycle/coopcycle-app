@@ -1,11 +1,118 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { FlatList } from 'react-native';
+import { LucideIcon } from 'lucide-react-native';
 
 import ItemsBulkFabButton from './ItemsBulkFabButton';
 import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
 import Task, { TaskListProps } from '../types/task';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
+
+type TaskRowProps = {
+  task: Task;
+  nextTask: Task | null;
+  index: number;
+  taskListId: string;
+  appendTaskListTestID: string;
+  onTaskClick: (task: Task) => void;
+  onOrderClick: (task: Task) => void;
+  onLongPress: (task: Task) => void;
+  onPressLeft: (task: Task) => void;
+  onPressRight: (task: Task) => void;
+  onSwipedToLeft: (task: Task) => void;
+  onSwipedToRight: (task: Task) => void;
+  onSwipeClosed: (task: Task) => void;
+  onSort?: (index: number) => void;
+  onSortBefore?: () => void;
+  swipeOutLeftBackgroundColor?: string;
+  swipeOutLeftIcon?: LucideIcon;
+  swipeOutRightBackgroundColor?: string;
+  swipeOutRightIcon?: LucideIcon;
+};
+
+/**
+ * One row, memoized on its props.
+ *
+ * `TaskListItem` renders a swipeable with gesture handlers, so re-rendering
+ * every visible row on every store update is expensive. All the per-task
+ * closures are built *here* rather than in `renderItem`, so the row only
+ * re-renders when its own task actually changes — the callbacks it receives
+ * take the task as an argument and are stable across renders.
+ */
+const TaskRow = React.memo(function TaskRow({
+  task,
+  nextTask,
+  index,
+  taskListId,
+  appendTaskListTestID,
+  onTaskClick,
+  onOrderClick,
+  onLongPress,
+  onPressLeft,
+  onPressRight,
+  onSwipedToLeft,
+  onSwipedToRight,
+  onSwipeClosed,
+  onSort,
+  onSortBefore,
+  swipeOutLeftBackgroundColor,
+  swipeOutLeftIcon,
+  swipeOutRightBackgroundColor,
+  swipeOutRightIcon,
+}: TaskRowProps) {
+  const handlePress = useCallback(() => onTaskClick(task), [onTaskClick, task]);
+  const handleOrderPress = useCallback(
+    () => onOrderClick(task),
+    [onOrderClick, task],
+  );
+  const handlePressLeft = useCallback(
+    () => onPressLeft(task),
+    [onPressLeft, task],
+  );
+  const handlePressRight = useCallback(
+    () => onPressRight(task),
+    [onPressRight, task],
+  );
+  const handleSwipedToLeft = useCallback(
+    () => onSwipedToLeft(task),
+    [onSwipedToLeft, task],
+  );
+  const handleSwipedToRight = useCallback(
+    () => onSwipedToRight(task),
+    [onSwipedToRight, task],
+  );
+  const handleSwipeClosed = useCallback(
+    () => onSwipeClosed(task),
+    [onSwipeClosed, task],
+  );
+  const handleSort = useCallback(() => onSort?.(index), [onSort, index]);
+  const handleSortBefore = useCallback(() => onSortBefore?.(), [onSortBefore]);
+
+  return (
+    <TaskListItem
+      taskListId={taskListId}
+      appendTaskListTestID={appendTaskListTestID}
+      task={task}
+      nextTask={nextTask}
+      index={index}
+      color={task.color}
+      onPress={handlePress}
+      onLongPress={onLongPress}
+      onOrderPress={handleOrderPress}
+      onSortBefore={onSortBefore ? handleSortBefore : undefined}
+      onSort={onSort ? handleSort : undefined}
+      onPressLeft={handlePressLeft}
+      onSwipedToLeft={handleSwipedToLeft}
+      swipeOutLeftBackgroundColor={swipeOutLeftBackgroundColor}
+      swipeOutLeftIcon={swipeOutLeftIcon}
+      onPressRight={handlePressRight}
+      onSwipedToRight={handleSwipedToRight}
+      onSwipeClosed={handleSwipeClosed}
+      swipeOutRightBackgroundColor={swipeOutRightBackgroundColor}
+      swipeOutRightIcon={swipeOutRightIcon}
+    />
+  );
+});
 
 const TaskList: React.FC<TaskListProps> = ({
   id,
@@ -31,6 +138,11 @@ const TaskList: React.FC<TaskListProps> = ({
 }) => {
   const bulkFabButton = useRef(null);
 
+  // The sort callbacks need the current list, but making them depend on
+  // `tasks` would invalidate every row on every list update.
+  const tasksRef = useRef(tasks);
+  tasksRef.current = tasks;
+
   const _handleSwipeToLeft = useCallback(
     (task: Task) => {
       bulkFabButton.current?.addItem(task);
@@ -54,23 +166,14 @@ const TaskList: React.FC<TaskListProps> = ({
     [onSwipeClosed],
   );
 
-  const swipeLeftConfiguration = useCallback((task: Task) => ({
-    onPressLeft: () => onPressLeft(task),
-    onSwipedToLeft: () => _handleSwipeToLeft(task),
-    swipeOutLeftBackgroundColor,
-    swipeOutLeftIcon,
-  }),
-    [onPressLeft, _handleSwipeToLeft, swipeOutLeftBackgroundColor, swipeOutLeftIcon],
+  const _handleSort = useCallback(
+    (index: number) => onSort?.(tasksRef.current, index),
+    [onSort],
   );
 
-  const swipeRightConfiguration = useCallback((task: Task) => ({
-    onPressRight: () => onPressRight(task),
-    onSwipedToRight: () => _handleSwipeToRight(task),
-    onSwipeClosed: () => _handleSwipeClosed(task),
-    swipeOutRightBackgroundColor,
-    swipeOutRightIcon,
-  }),
-    [onPressRight, _handleSwipeToRight, _handleSwipeClosed, swipeOutRightBackgroundColor, swipeOutRightIcon],
+  const _handleSortBefore = useCallback(
+    () => onSortBefore?.(tasksRef.current),
+    [onSortBefore],
   );
 
   // TODO Review this button with the incoming new design/layout..!
@@ -87,28 +190,56 @@ const TaskList: React.FC<TaskListProps> = ({
     bulkFabButton.current?.updateItems(doneTasks);
   }, [tasks]);
 
+  const keyExtractor = useCallback((item: Task) => item['@id'], []);
+
   const renderItem = useCallback(
     ({ item: task, index }) => {
       const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
       return (
-        <TaskListItem
-          taskListId={id}
-          appendTaskListTestID={appendTaskListTestID}
+        <TaskRow
           task={task}
           nextTask={nextTask}
           index={index}
-          color={task.color}
-          onPress={() => onTaskClick(task)}
+          taskListId={id}
+          appendTaskListTestID={appendTaskListTestID}
+          onTaskClick={onTaskClick}
+          onOrderClick={onOrderClick}
           onLongPress={onLongPress}
-          onSortBefore={onSortBefore ? () => onSortBefore(tasks) : undefined}
-          onSort={onSort ? () => onSort(tasks, index) : undefined}
-          onOrderPress={() => onOrderClick(task)}
-          {...swipeLeftConfiguration(task)}
-          {...swipeRightConfiguration(task)}
+          onPressLeft={onPressLeft}
+          onPressRight={onPressRight}
+          onSwipedToLeft={_handleSwipeToLeft}
+          onSwipedToRight={_handleSwipeToRight}
+          onSwipeClosed={_handleSwipeClosed}
+          onSort={onSort ? _handleSort : undefined}
+          onSortBefore={onSortBefore ? _handleSortBefore : undefined}
+          swipeOutLeftBackgroundColor={swipeOutLeftBackgroundColor}
+          swipeOutLeftIcon={swipeOutLeftIcon}
+          swipeOutRightBackgroundColor={swipeOutRightBackgroundColor}
+          swipeOutRightIcon={swipeOutRightIcon}
         />
       );
     },
-    [id, appendTaskListTestID, tasks, onTaskClick, onLongPress, onSortBefore, onSort, onOrderClick, swipeLeftConfiguration, swipeRightConfiguration]
+    [
+      tasks,
+      id,
+      appendTaskListTestID,
+      onTaskClick,
+      onOrderClick,
+      onLongPress,
+      onPressLeft,
+      onPressRight,
+      _handleSwipeToLeft,
+      _handleSwipeToRight,
+      _handleSwipeClosed,
+      onSort,
+      _handleSort,
+      onSortBefore,
+      _handleSortBefore,
+      swipeOutLeftBackgroundColor,
+      swipeOutLeftIcon,
+      swipeOutRightBackgroundColor,
+      swipeOutRightIcon,
+    ],
   );
 
   return (
@@ -116,10 +247,7 @@ const TaskList: React.FC<TaskListProps> = ({
       <FlatList
         testID={`${id}SwipeListView`}
         data={tasks}
-        keyExtractor={(item, index) => {
-          const tagNames = (item.tags || []).map(t => t.name);
-          return `${item['@id']}-${item.status}-${tagNames.length === 0 ? 'no_tag' : tagNames.join('-')}`;
-        }}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
         refreshing={refreshing}
         onRefresh={onRefresh}

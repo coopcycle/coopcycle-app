@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { ActivityIndicator, BackHandler, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -78,27 +78,44 @@ export default function TaskListPage({ navigation, route }) {
 
   const longPressHandler = useTaskLongPress();
 
-  const swipeLeftConfiguration = {
-    onPressLeft: task =>
-      navigateToCompleteTask(navigation, route, task),
-    swipeOutLeftBackgroundColor: greenColor,
-    swipeOutLeftIcon: DoneIcon,
-  };
+  // These are handed down to every row, so they have to keep a stable
+  // identity — otherwise the memoized rows re-render on every render of
+  // this screen.
+  const onPressLeft = useCallback(
+    task => navigateToCompleteTask(navigation, route, task),
+    [navigation, route],
+  );
 
-  const swipeRightConfiguration = {
-    onPressRight: task =>
-      navigateToReportTask(navigation, route, task),
-    swipeOutRightBackgroundColor: yellowColor,
-    swipeOutRightIcon: IncidentIcon,
-  };
+  const onPressRight = useCallback(
+    task => navigateToReportTask(navigation, route, task),
+    [navigation, route],
+  );
 
-  const completeSelectedTasks = selectedTasks => {
-    if (selectedTasks.length > 1) {
-      navigateToCompleteTask(navigation, route, null, selectedTasks);
-    } else if (selectedTasks.length === 1) {
-      navigateToCompleteTask(navigation, route, selectedTasks[0]);
-    }
-  };
+  const onTaskClick = useCallback(
+    task => navigateToTask(navigation, route, task, courierTaskList.items),
+    [navigation, route, courierTaskList.items],
+  );
+
+  const onOrderClick = useCallback(
+    task => navigateToOrder(navigation, getOrderNumber(task), true, task.status),
+    [navigation],
+  );
+
+  const onRefresh = useCallback(() => {
+    context?.clearSelectedTasks();
+    refetch();
+  }, [context, refetch]);
+
+  const completeSelectedTasks = useCallback(
+    selectedTasks => {
+      if (selectedTasks.length > 1) {
+        navigateToCompleteTask(navigation, route, null, selectedTasks);
+      } else if (selectedTasks.length === 1) {
+        navigateToCompleteTask(navigation, route, selectedTasks[0]);
+      }
+    },
+    [navigation, route],
+  );
 
   return (
     <View style={containerStyle}>
@@ -109,19 +126,16 @@ export default function TaskListPage({ navigation, route }) {
           // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
           tasks={courierTaskList.items}
           refreshing={isFetching}
-          onRefresh={() => {
-            context?.clearSelectedTasks()
-            refetch()
-          }}
-          onTaskClick={task =>
-            navigateToTask(navigation, route, task, courierTaskList.items)
-          }
-          onOrderClick={task =>
-            navigateToOrder(navigation, getOrderNumber(task), true, task.status)
-          }
+          onRefresh={onRefresh}
+          onTaskClick={onTaskClick}
+          onOrderClick={onOrderClick}
           onLongPress={longPressHandler}
-          {...swipeLeftConfiguration}
-          {...swipeRightConfiguration}
+          onPressLeft={onPressLeft}
+          swipeOutLeftBackgroundColor={greenColor}
+          swipeOutLeftIcon={DoneIcon}
+          onPressRight={onPressRight}
+          swipeOutRightBackgroundColor={yellowColor}
+          swipeOutRightIcon={IncidentIcon}
           onMultipleSelectionAction={completeSelectedTasks}
         />
       )}

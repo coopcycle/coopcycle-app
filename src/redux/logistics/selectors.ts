@@ -1,11 +1,23 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { selectAllTasks, selectTaskLists } from '../../shared/logistics/redux';
 import { Task } from '../../types/task';
+import { indexTasksByOrder } from './utils';
 
-export const selectTasksByOrder = (orderNumber: string) =>
-  createSelector(selectAllTasks, tasks =>
-    tasks.filter(t => t.metadata.order_number === orderNumber),
-  );
+// Shared empty result, so selectors returning "nothing" keep a stable
+// reference and don't re-render their subscribers.
+const EMPTY_TASKS: Task[] = [];
+
+export const selectAllTasksIndexedByOrder = createSelector(
+  selectAllTasks,
+  indexTasksByOrder,
+);
+
+/**
+ * Returns a plain lookup, *not* a factory of memoized selectors — see the note
+ * on `selectFilteredTasksByOrder` in `redux/Courier/taskSelectors`.
+ */
+export const selectTasksByOrder = (orderNumber: string) => state =>
+  selectAllTasksIndexedByOrder(state).get(orderNumber) ?? EMPTY_TASKS;
 
 // Reorder tasks by their position in taskLists
 export const selectAllIncomingTasksReordered = createSelector(
@@ -30,8 +42,12 @@ export const selectAllIncomingTasksReordered = createSelector(
   },
 );
 
+export const selectIncomingTasksReorderedIndexedByOrder = createSelector(
+  selectAllIncomingTasksReordered,
+  indexTasksByOrder,
+);
+
 // Tasks reordered for one order
-export const selectIncomingTasksReordered = (orderNumber: string) =>
-  createSelector(selectAllIncomingTasksReordered, tasks =>
-    tasks.filter(t => t.metadata?.order_number === orderNumber),
-  );
+export const selectIncomingTasksReordered = (orderNumber: string) => state =>
+  selectIncomingTasksReorderedIndexedByOrder(state).get(orderNumber) ??
+  EMPTY_TASKS;

@@ -211,6 +211,12 @@ export interface TaskListProps {
   swipeOutRightIcon?: LucideIcon;
 }
 
+export type TaskListItemMethods = {
+  openLeft: () => void;
+  openRight: () => void;
+  close: () => void;
+};
+
 export interface TaskListItemProps {
   task: Task;
   nextTask?: Task | null;
@@ -223,8 +229,10 @@ export interface TaskListItemProps {
   onOrderPress?: () => void;
   onPressLeft?: () => void;
   onPressRight?: () => void;
-  onSortBefore?: TaskListProps['onSortBefore'];
-  onSort?: TaskListProps['onSort'];
+  // Bound to the row's own task/index by the list, so the item calls them
+  // without arguments.
+  onSortBefore?: () => void;
+  onSort?: () => void;
   swipeOutLeftBackgroundColor?: string;
   swipeOutLeftIcon?: LucideIcon;
   swipeOutRightBackgroundColor?: string;
@@ -232,6 +240,7 @@ export interface TaskListItemProps {
   onSwipedToLeft?: () => void;
   onSwipedToRight?: () => void;
   onSwipeClosed?: () => void;
+  onRegisterRef?: (taskUri: string, methods: TaskListItemMethods | null) => void;
 }
 
 export default Task;

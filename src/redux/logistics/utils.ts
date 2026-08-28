@@ -48,3 +48,29 @@ export function isKeywordFilterNegative(filter) {
 function getKeywordFromNegativeFilter(filter) {
   return filter.keyword.slice(1);
 }
+
+/**
+ * Groups tasks by their order number, keeping the order they appear in.
+ *
+ * Tasks with no order number are grouped under the `undefined` key, which is
+ * what `getOrderNumber()` returns for them.
+ *
+ * @param   {Task[]}                 tasks List of tasks
+ * @returns {Map<string|undefined, Task[]>}
+ */
+export function indexTasksByOrder(tasks) {
+  const index = new Map();
+
+  for (const task of tasks) {
+    const orderNumber = task.metadata?.order_number;
+    const bucket = index.get(orderNumber);
+
+    if (bucket) {
+      bucket.push(task);
+    } else {
+      index.set(orderNumber, [task]);
+    }
+  }
+
+  return index;
+}
