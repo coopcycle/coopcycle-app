@@ -40,10 +40,17 @@ import {
 import { filterHasIncidents } from '../logistics/filters';
 import { LOGOUT_SUCCESS, SET_USER } from '../App/actions';
 import {
+  addColorToTask,
   getProcessedTasks,
   getTaskWithColor,
+  mapToColor,
 } from '../../shared/src/logistics/redux/taskUtils';
 import { DateOnlyString } from '../../utils/date-types';
+import Task from '../../types/task';
+
+// Tasks for one day, indexed by 'YYYY-MM-DD'.
+type TaskItems = Record<string, Task[]>;
+type TaskColors = Record<string, string>;
 
 /*
  * Intital state shape for the task entity reducer
@@ -108,14 +115,93 @@ function updateItem(prevItems, id, payload) {
   return prevItems;
 }
 
-function replaceItems(prevItems, items) {
-  return prevItems.map(prevItem => {
-    const toReplace = items.find(i => i['@id'] === prevItem['@id']);
-    if (toReplace) {
-      return getTaskWithColor(toReplace, prevItems);
+function replaceItems(prevItems: Task[], items: Task[]): Task[] {
+  const replacements = new Map();
+  for (const item of items) {
+    replacements.set(item['@id'], item);
+  }
+
+  // `getTaskWithColor` rebuilds the colour map of the whole bucket for the one
+  // task it is given, so calling it per replaced task made a bulk completion
+  // cost O(replaced × bucket²). The colours only depend on `prevItems`, so
+  // build the map once, and only when something is actually replaced.
+  let taskColors: TaskColors | null = null;
+  let hasReplaced = false;
+
+  const nextItems = prevItems.map((prevItem: Task) => {
+    const toReplace = replacements.get(prevItem['@id']);
+
+    if (!toReplace) {
+      return prevItem;
     }
-    return prevItem;
+
+    if (taskColors === null) {
+      taskColors = mapToColor(prevItems);
+    }
+
+    hasReplaced = true;
+
+    return addColorToTask(toReplace, taskColors);
   });
+
+  // Keep the same array when this bucket holds none of the replaced tasks, so
+  // the state (and everything memoized on it) stays untouched.
+  return hasReplaced ? nextItems : prevItems;
+}
+
+/**
+ * Applies `updateBucket` to every date bucket, preserving the identity of
+ * `items` — and of each bucket — when nothing changed.
+ *
+ * `_.mapValues` always allocated a new object, so any task update marked the
+ * whole persisted `items` tree dirty (redux-persist then re-serializes every
+ * retained day) and invalidated every selector memoized on it, even when the
+ * task belonged to a date that isn't loaded.
+ */
+function updateBuckets(
+  items: TaskItems,
+  updateBucket: (tasks: Task[]) => Task[],
+): TaskItems {
+  let hasChanged = false;
+  const nextItems: TaskItems = {};
+
+  for (const date of Object.keys(items)) {
+    const bucket = items[date];
+    const nextBucket = updateBucket(bucket);
+
+    if (nextBucket !== bucket) {
+      hasChanged = true;
+    }
+
+    nextItems[date] = nextBucket;
+  }
+
+  return hasChanged ? nextItems : items;
+}
+
+/**
+ * Stores a freshly loaded day, keeping the previous array when the day came
+ * back unchanged.
+ *
+ * Loading a list always produced brand new task objects, so an unremarkable
+ * refetch — and there are several per completion — re-rendered every list and
+ * made redux-persist re-serialize the retained days for nothing.
+ */
+function setBucket(
+  items: TaskItems,
+  date: string,
+  nextTasks: Task[],
+): TaskItems {
+  const prevTasks = items[date];
+
+  if (prevTasks && _.isEqual(prevTasks, nextTasks)) {
+    return items;
+  }
+
+  return {
+    ...items,
+    [date]: nextTasks,
+  };
 }
 
 export const tasksEntityReducer = (
@@ -148,7 +234,7 @@ export const tasksEntityReducer = (
     return {
       ...state,
       isFetching: false,
-      items: _.mapValues(state.items, tasks =>
+      items: updateBuckets(state.items, tasks =>
         replaceItem(tasks, action.payload),
       ),
     };
@@ -189,7 +275,7 @@ export const tasksEntityReducer = (
       return {
         ...state,
         isFetching: false,
-        items: _.mapValues(state.items, tasks =>
+        items: updateBuckets(state.items, tasks =>
           updateItem(tasks, action.payload.task, filterHasIncidents),
         ),
       };
@@ -198,7 +284,7 @@ export const tasksEntityReducer = (
       return {
         ...state,
         isFetching: false,
-        items: _.mapValues(state.items, tasks =>
+        items: updateBuckets(state.items, tasks =>
           replaceItem(tasks, action.payload),
         ),
       };
@@ -207,7 +293,7 @@ export const tasksEntityReducer = (
       return {
         ...state,
         isFetching: false,
-        items: _.mapValues(state.items, tasks =>
+        items: updateBuckets(state.items, tasks =>
           replaceItems(tasks, action.payload),
         ),
       };
@@ -216,7 +302,7 @@ export const tasksEntityReducer = (
       if (action.payload.assignedTo === state.username) {
         return {
           ...state,
-          items: _.mapValues(state.items, tasks =>
+          items: updateBuckets(state.items, tasks =>
             replaceItem(tasks, action.payload),
           ),
         };
@@ -227,7 +313,7 @@ export const tasksEntityReducer = (
       if (action.payload[0].assignedTo === state.username) {
         return {
           ...state,
-          items: _.mapValues(state.items, tasks =>
+          items: updateBuckets(state.items, tasks =>
             replaceItems(tasks, action.payload),
           ),
         };
@@ -235,6 +321,11 @@ export const tasksEntityReducer = (
       return state;
 
     case DEP_UNASSIGN_TASK_SUCCESS:
+      // FIXME This guard searches the *buckets* (arrays of tasks), not the
+      // tasks themselves, so `item['@id']` is always undefined and the branch
+      // below never runs. Left as-is: making it fire would start removing
+      // tasks from the courier's list, which is a behaviour change to verify
+      // separately.
       const task = _.find(
         state.items,
         item => item['@id'] === action.payload['@id'],
@@ -242,9 +333,15 @@ export const tasksEntityReducer = (
       if (task) {
         return {
           ...state,
-          items: _.mapValues(state.items, tasks =>
-            _.pickBy(tasks, item => item['@id'] !== action.payload['@id']),
-          ),
+          items: updateBuckets(state.items, tasks => {
+            // `_.pickBy` on an array returns an *object* keyed by index, which
+            // would turn the bucket into something `selectTasks` can't filter.
+            const nextTasks = tasks.filter(
+              item => item['@id'] !== action.payload['@id'],
+            );
+
+            return nextTasks.length === tasks.length ? tasks : nextTasks;
+          }),
         };
       }
       return state;
@@ -347,10 +444,11 @@ export const tasksEntityReducer = (
         loadTasksFetchError: false,
         isFetching: false,
         updatedAt: action.payload.updatedAt,
-        items: {
-          ...state.items,
-          [action.payload.date]: getProcessedTasks(action.payload.items, true),
-        },
+        items: setBucket(
+          state.items,
+          action.payload.date,
+          getProcessedTasks(action.payload.items, true),
+        ),
       };
     }
     //using rtk query
@@ -360,10 +458,11 @@ export const tasksEntityReducer = (
         loadTasksFetchError: false,
         isFetching: false,
         updatedAt: action.payload.updatedAt,
-        items: {
-          ...state.items,
-          [action.payload.date]: getProcessedTasks(action.payload.items, true),
-        },
+        items: setBucket(
+          state.items,
+          action.payload.date,
+          getProcessedTasks(action.payload.items, true),
+        ),
       };
 
     //using axios; FIXME: migrate to rtk query
@@ -401,10 +500,11 @@ const processWsMsg = (state, action) => {
 
         return {
           ...state,
-          items: {
-            ...state.items,
-            [taskList.date]: getProcessedTasks(taskList.items, true),
-          },
+          items: setBucket(
+            state.items,
+            taskList.date,
+            getProcessedTasks(taskList.items, true),
+          ),
         };
     }
   }

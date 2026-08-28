@@ -12,20 +12,25 @@ export const insertAt = (x, idx, xs) =>
  * @see https://github.com/rt2zz/redux-persist#transforms
  */
 export function createTaskItemsTransform(now) {
-  now = now || moment();
+  // Resolved per call rather than once when the transform is created: the
+  // transform is built at import time and lives for the whole process, so a
+  // fixed window went stale for anyone leaving the app open overnight.
+  const retainedKeys = () => {
+    const reference = now || moment();
 
-  const range = moment.range(
-    moment(now).subtract(3, 'days'),
-    moment(now).add(3, 'days'),
-  );
-  const days = Array.from(range.by('day'));
-  const keys = days.map(m => m.format('YYYY-MM-DD'));
+    const range = moment.range(
+      moment(reference).subtract(3, 'days'),
+      moment(reference).add(3, 'days'),
+    );
+
+    return Array.from(range.by('day')).map(m => m.format('YYYY-MM-DD'));
+  };
 
   return createTransform(
     // transform state on its way to being serialized and persisted.
-    (inboundState, key) => _.pick(inboundState, keys),
+    (inboundState, key) => _.pick(inboundState, retainedKeys()),
     // transform state being rehydrated
-    (outboundState, key) => _.pick(outboundState, keys),
+    (outboundState, key) => _.pick(outboundState, retainedKeys()),
     { whitelist: ['items'] },
   );
 }

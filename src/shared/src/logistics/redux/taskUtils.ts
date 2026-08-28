@@ -31,34 +31,41 @@ export function tasksSort(a, b) {
 const colorHash = new ColorHash();
 
 export function groupLinkedTasks(tasks) {
-  const copy = tasks.slice(0);
+  // Indexed once up front: resolving `previous` with a linear search made this
+  // quadratic, and it runs on every task update, for every date bucket.
+  const tasksById = new Map();
+  for (const task of tasks) {
+    // A linear search returned the first match, so keep the first one here too
+    if (!tasksById.has(task['@id'])) {
+      tasksById.set(task['@id'], task);
+    }
+  }
 
   const groups = {};
 
-  while (copy.length > 0) {
-    const task = copy.shift();
+  for (const task of tasks) {
+    if (!task.previous) {
+      continue;
+    }
 
-    if (task.previous) {
-      const prevTask = _.find(tasks, t => t['@id'] === task.previous);
+    const prevTask = tasksById.get(task.previous);
 
-      if (prevTask) {
-        if (groups[prevTask['@id']]) {
-          const newIris = _.reduce(
-            groups[prevTask['@id']],
-            function (result, value) {
-              return result.concat([value]);
-            },
-            [task['@id']],
-          );
+    if (!prevTask) {
+      continue;
+    }
 
-          newIris.forEach(iri => {
-            groups[iri] = newIris;
-          });
-        } else {
-          groups[task['@id']] = [prevTask['@id'], task['@id']];
-          groups[prevTask['@id']] = [prevTask['@id'], task['@id']];
-        }
-      }
+    const prevGroup = groups[prevTask['@id']];
+
+    if (prevGroup) {
+      const newIris = [task['@id'], ...prevGroup];
+
+      newIris.forEach(iri => {
+        groups[iri] = newIris;
+      });
+    } else {
+      const group = [prevTask['@id'], task['@id']];
+      groups[task['@id']] = group;
+      groups[prevTask['@id']] = group;
     }
   }
 
@@ -106,7 +113,7 @@ export function getTaskWithColor(task, tasks) {
   return addColorToTask(task, taskColors);
 }
 
-function addColorToTask(task, taskColors) {
+export function addColorToTask(task, taskColors) {
   const taskId = task['@id'];
   const color = task.color || taskColors[taskId] || '#ffffff';
 

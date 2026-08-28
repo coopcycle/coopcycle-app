@@ -8,6 +8,7 @@ import {
   loadTasksRequest,
   loadTasksSuccess,
 } from '../taskActions';
+import { markTasksDoneSuccess } from '../taskActions';
 import {
   markTaskDoneFailure,
   markTaskDoneRequest,
@@ -241,6 +242,84 @@ describe('Redux | Tasks | Reducers', () => {
       // date has to follow the selection rather than a request.
       expect(newState.date).toEqual('2020-02-03');
       expect(omit(newState, ['date'])).toEqual(omit(prevState, ['date']));
+    });
+
+    describe('state identity', () => {
+      const date = moment().format('YYYY-MM-DD');
+      const tasks = [
+        { '@id': '/api/tasks/1', id: 1, status: 'TODO', color: '#ffffff' },
+        { '@id': '/api/tasks/2', id: 2, status: 'TODO', color: '#ffffff' },
+      ];
+      const otherDate = moment().add(1, 'day').format('YYYY-MM-DD');
+      const otherTasks = [
+        { '@id': '/api/tasks/9', id: 9, status: 'TODO', color: '#ffffff' },
+      ];
+
+      const stateWithTasks = () => ({
+        ...initialState,
+        date,
+        items: { [date]: tasks, [otherDate]: otherTasks },
+      });
+
+      test(`${markTaskDoneSuccess} | leaves untouched days alone`, () => {
+        const prevState = stateWithTasks();
+        const newState = tasksEntityReducer(
+          prevState,
+          markTaskDoneSuccess({ ...tasks[0], status: 'DONE' }),
+        );
+
+        // The day holding the task is rebuilt...
+        expect(newState.items[date]).not.toBe(prevState.items[date]);
+        expect(newState.items[date][0].status).toEqual('DONE');
+        // ...every other day keeps its identity, so nothing memoized on it
+        // recomputes and redux-persist has nothing new to serialize for it.
+        expect(newState.items[otherDate]).toBe(prevState.items[otherDate]);
+      });
+
+      test(`${markTaskDoneSuccess} | unknown task leaves items untouched`, () => {
+        const prevState = stateWithTasks();
+        const newState = tasksEntityReducer(
+          prevState,
+          markTaskDoneSuccess({ '@id': '/api/tasks/404', id: 404 }),
+        );
+
+        expect(newState.items).toBe(prevState.items);
+      });
+
+      test(`${markTasksDoneSuccess} | replaces across a day in one pass`, () => {
+        const prevState = stateWithTasks();
+        const newState = tasksEntityReducer(
+          prevState,
+          markTasksDoneSuccess([
+            { ...tasks[0], status: 'DONE' },
+            { ...tasks[1], status: 'DONE' },
+          ]),
+        );
+
+        expect(newState.items[date].map(t => t.status)).toEqual([
+          'DONE',
+          'DONE',
+        ]);
+        expect(newState.items[otherDate]).toBe(prevState.items[otherDate]);
+      });
+
+      test(`${loadTasksSuccess} | an unchanged reload keeps items`, () => {
+        const prevState = stateWithTasks();
+        const loaded = tasksEntityReducer(
+          prevState,
+          loadTasksSuccess(date, tasks, moment().toISOString()),
+        );
+
+        // Loading the very same list again must not hand out new references:
+        // that is what re-rendered every list and rewrote the persisted state
+        // on each of the refetches around a completion.
+        const reloaded = tasksEntityReducer(
+          loaded,
+          loadTasksSuccess(date, tasks, moment().toISOString()),
+        );
+
+        expect(reloaded.items).toBe(loaded.items);
+      });
     });
 
     test(`${_message} | unrecognized message type`, () => {

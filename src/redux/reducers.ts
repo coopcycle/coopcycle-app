@@ -49,6 +49,11 @@ const taskEntitiesPersistConfig = {
   storage: AsyncStorage,
   whitelist: ['items'],
   transforms: [createTaskItemsTransform()],
+  // Serializing the retained days is not free, and a single completion moves
+  // this state several times (mutation, then the reload). Without a throttle
+  // redux-persist re-serializes on each one; with it, a burst collapses into a
+  // single write.
+  throttle: 1000,
 };
 
 const restaurantPersistConfig = {
