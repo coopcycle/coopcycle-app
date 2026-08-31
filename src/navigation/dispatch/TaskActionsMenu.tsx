@@ -1,17 +1,26 @@
 import { EllipsisVertical } from 'lucide-react-native';
-import { NavigationProp, useRoute } from '@react-navigation/native';
+import { NavigationProp, ParamListBase, useRoute } from '@react-navigation/native';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { AnyAction } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { cancelTask } from '@/src/redux/Courier/taskActions';
 import { navigateToCompleteTask, navigateToReportTask } from '../utils';
 import { startTask } from '@/src/redux/Courier';
 import TasksMenu from '../components/TasksMenu';
+import { useRelayTasksToWarehouseMutation } from '@/src/redux/api/slice';
+import { updateTaskSuccess } from '@/src/shared/logistics/redux';
 import { usePrimaryContentColor } from '@/src/styles/theme';
 import { Tasks } from '@/src/types/tasks';
+import { Task } from '@/src/types/task';
+import { Warehouse } from '@/src/redux/api/types';
+
+// The logistics actions live in an untyped JS module, where `createAction()`
+// without a generic infers a `void` payload.
+const upsertTask = updateTaskSuccess as unknown as (task: Task) => AnyAction;
 
 export interface TaskActionsMenuProps {
-  navigation: NavigationProp<object>;
+  navigation: NavigationProp<ParamListBase>;
   tasks: Tasks;
   showCounter?: boolean;
   enabledActions?: {
@@ -21,6 +30,7 @@ export interface TaskActionsMenuProps {
     reportIncident?: boolean;
     edit?: boolean;
     assign?: boolean;
+    sendToWarehouse?: boolean;
   };
   onClearSelection?: () => void;
   onAssign?: () => void;
@@ -47,6 +57,14 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
   const iconColor = usePrimaryContentColor();
   const dispatch = useDispatch();
   const route = useRoute();
+
+  const [relayTasksToWarehouse] = useRelayTasksToWarehouseMutation();
+
+  // The backend resolves each selected task to the (pickup, dropoff) pair it
+  // belongs to, so a single side of a pair is enough — but a task that belongs
+  // to no pair at all cannot be relayed.
+  const canSendToWarehouse =
+    tasks.length > 0 && tasks.every(task => task.previous || task.next);
 
   const options = [];
 
@@ -136,6 +154,41 @@ export const TaskActionsMenu: React.FC<TaskActionsMenuProps> = ({
             },
           ],
         );
+      },
+    });
+  }
+
+  // Send to warehouse option
+  if (enabledActions.sendToWarehouse && canSendToWarehouse) {
+    options.push({
+      key: 'SendToWarehouse',
+      text: t('SEND_TO_WAREHOUSE'),
+      action: () => {
+        navigation.navigate('DispatchPickWarehouse', {
+          onItemPress: async (warehouse: Warehouse) => {
+            try {
+              const result = await relayTasksToWarehouse({
+                warehouse: warehouse['@id'],
+                tasks: tasks.map(task => task['@id']),
+              }).unwrap();
+
+              // The response holds the original tasks (their previous/next
+              // chain changed) as well as the tasks created at the warehouse.
+              for (const task of result.tasks) {
+                dispatch(upsertTask(task));
+              }
+
+              navigation.goBack();
+              onClearSelection?.();
+            } catch (error) {
+              console.error('Send to warehouse error:', error);
+              Alert.alert(
+                t('SEND_TO_WAREHOUSE'),
+                t('SEND_TO_WAREHOUSE_ERROR_MESSAGE'),
+              );
+            }
+          },
+        });
       },
     });
   }

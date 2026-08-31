@@ -178,6 +178,7 @@ const HeaderRightBody = memo(({navigation}) => {
           assign: true,
           cancel: true,
           reportIncident: true,
+          sendToWarehouse: true,
         }}
       />
       :
@@ -267,6 +268,13 @@ export default function DispatchNavigator({ navigation }) {
             component={screens.DispatchPickUser}
             options={{
               title: i18n.t('DISPATCH_PICK_USER'),
+            }}
+          />
+          <RootStack.Screen
+            name="DispatchPickWarehouse"
+            component={screens.DispatchPickWarehouse}
+            options={{
+              title: i18n.t('DISPATCH_PICK_WAREHOUSE'),
             }}
           />
           <RootStack.Screen

@@ -4,6 +4,7 @@ import { baseQueryWithReauth } from './baseQuery';
 import { sortByName, sortByString } from '../util';
 import { fetchAllRecordsUsingFetchWithBQ } from './utils';
 import { DateOnlyString } from '../../utils/date-types';
+import { Task } from '../../types/task';
 import {
   Address,
   FailureReason,
@@ -17,6 +18,7 @@ import {
   TimeSlot,
   TimeSlotChoices,
   Uri,
+  Warehouse,
 } from './types';
 
 // Define our single API slice object
@@ -171,6 +173,37 @@ export const apiSlice = createApi({
         return { data: sortByName(result.data) };
       },
     }),
+    getWarehouses: builder.query<Warehouse[], void>({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ<Warehouse>(
+          fetchWithBQ,
+          '/api/warehouses',
+          100,
+        );
+
+        if (result.error) {
+          return result;
+        }
+        return { data: sortByName(result.data) };
+      },
+    }),
+    // Relays the selected tasks through a warehouse: the backend resolves each
+    // task to its (pickup, dropoff) pair and inserts two hub tasks per pair.
+    // It answers with the original *and* the created tasks.
+    relayTasksToWarehouse: builder.mutation<
+      { tasks: Task[] },
+      { warehouse: Uri; tasks: Uri[] }
+    >({
+      query: ({ warehouse, tasks }) => ({
+        url: `${warehouse}/relay`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+          Accept: 'application/ld+json',
+        },
+        body: JSON.stringify({ tasks }),
+      }),
+    }),
     getTimeSlots: builder.query<TimeSlot[], void>({
       queryFn: async (args, queryApi, extraOptions, baseQuery) => {
         return await fetchAllRecordsUsingFetchWithBQ(
@@ -313,6 +346,8 @@ export const {
   useGetStorePaymentMethodsQuery,
   useGetPricingRuleSetQuery,
   useGetTagsQuery,
+  useGetWarehousesQuery,
+  useRelayTasksToWarehouseMutation,
   useGetRestaurantsQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,

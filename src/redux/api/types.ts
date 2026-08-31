@@ -97,6 +97,12 @@ export type Store = JsonLdEntity & {
   multiPickupEnabled: boolean;
 };
 
+export type Warehouse = JsonLdEntity & {
+  id: number;
+  name: string;
+  address: Address;
+};
+
 export type PaymentMethod = {
   type: string;
 };

@@ -6,6 +6,7 @@ import DispatchAllTasks from './dispatch/AllTasks';
 import DispatchDate from './dispatch/Date';
 import DispatchKeywordsFilters from './dispatch/KeywordsFilters';
 import DispatchPickUser from './dispatch/PickUser';
+import DispatchPickWarehouse from './dispatch/PickWarehouse';
 import DispatchTasksFilters from './dispatch/TasksFilters';
 import DispatchTasksMap from './dispatch/TasksMap';
 import DispatchTasksSearchResults from './dispatch/TasksSearchResults';
@@ -136,6 +137,7 @@ export default {
   DispatchDate,
   DispatchKeywordsFilters,
   DispatchPickUser,
+  DispatchPickWarehouse,
   DispatchTasksFilters,
   DispatchTasksMap,
   DispatchTasksSearchResults,
