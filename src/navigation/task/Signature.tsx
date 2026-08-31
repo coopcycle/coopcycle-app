@@ -22,6 +22,10 @@ import { v4 } from 'uuid';
 import { addSignature } from '../../redux/Courier';
 import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 import { compressImage } from '../../utils/imageCompression';
+import {
+  discardTemporaryFile,
+  persistPendingUpload,
+} from '../../utils/pendingUploads';
 
 const STROKE_WIDTH = 3;
 
@@ -83,13 +87,23 @@ function Signature({ navigation, route, addSignature }) {
         return;
       }
       const base64 = image.encodeToBase64(ImageFormat.PNG, 100);
-      const directory = new Directory(Paths.document, 'pending_uploads');
+
+      // The snapshot is only an intermediate: it is written to the cache, and
+      // it is the compressed copy that gets kept — in the document directory,
+      // where it will still be there whenever the upload queue gets to it.
+      const directory = new Directory(Paths.cache, 'signatures');
       if (!directory.exists) directory.create();
       const file = directory.createFile(`${v4()}.png`, 'image/png');
       file.write(base64, { encoding: 'base64' });
+
       const compressed = await compressImage(file.uri);
+      const destUri = await persistPendingUpload(compressed);
+
+      await discardTemporaryFile(file.uri);
+      await discardTemporaryFile(compressed);
+
       const task = route.params?.task;
-      addSignature(task, compressed);
+      addSignature(task, destUri);
       navigateBackToCompleteTask(navigation, route);
     } catch (e) {
       console.error('saveSignature failed:', e);

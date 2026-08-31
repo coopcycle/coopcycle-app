@@ -41,7 +41,18 @@ const UPLOAD_START_DELAY_MS = 2000;
 
 async function findOversizedFiles(uris: string[]): Promise<string[]> {
   const results = await Promise.all(
-    uris.map(uri => FileSystem.getInfoAsync(uri)),
+    uris.map(async uri => {
+      try {
+        return await FileSystem.getInfoAsync(uri);
+      } catch (e) {
+        // A file we cannot even stat must not take the whole completion down
+        // with it. This runs before anything is sent, so throwing here left
+        // the courier with a screen that did nothing at all — no request, no
+        // error. A file that has gone missing is the upload queue's problem.
+        console.warn('Could not read file info', uri, e);
+        return null;
+      }
+    }),
   );
   return uris.filter((_, i) => {
     const info = results[i];
@@ -269,19 +280,35 @@ function uploadEntitiesImages(entities, url) {
     const attachTo = entities.map(entity => entity['@id']);
     const jobs = files.map(fileUri => ({ fileUri, uploadUrl: url, attachTo }));
 
-    UploadQueue.enqueue(jobs).then(() => {
-      dispatch(clearFiles());
+    return UploadQueue.enqueue(jobs)
+      .then(() => {
+        // Only once the jobs are written to the (persisted) queue: from here
+        // on the files are the queue's responsibility — it is drained on app
+        // start and by the OS background task, so they survive the app being
+        // killed. Clearing them any earlier would make them vanish from the
+        // screen with nothing left to upload them.
+        dispatch(clearFiles());
 
-      // Deliberately not started right away. The completion's own request and
-      // the task list reload that follows are what the courier is waiting on,
-      // and a proof-of-delivery photo is far heavier than either — starting
-      // the upload here made them share a (usually cellular) uplink. It runs
-      // once the screen transition is over and those have had time to finish;
-      // whatever is left is picked up by the background task anyway.
-      InteractionManager.runAfterInteractions(() => {
-        setTimeout(() => dispatch(processUploadQueue()), UPLOAD_START_DELAY_MS);
+        // Deliberately not started right away. The completion's own request
+        // and the task list reload that follows are what the courier waits on,
+        // and a proof-of-delivery photo is far heavier than either — starting
+        // the upload here made them share a (usually cellular) uplink. It runs
+        // once the screen transition is over and those have had time to
+        // finish; whatever is left is picked up by the background task anyway.
+        InteractionManager.runAfterInteractions(() => {
+          setTimeout(
+            () => dispatch(processUploadQueue()),
+            UPLOAD_START_DELAY_MS,
+          );
+        });
+      })
+      .catch(e => {
+        // The queue is the only record of these files, so if we could not
+        // write to it we keep them in the store — they stay on screen, and
+        // the courier can try again — rather than dropping them silently.
+        console.warn('Could not enqueue uploads', e);
+        alertUploadFailed();
       });
-    });
   };
 }
 
@@ -584,7 +611,6 @@ export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
 
     return httpClient.put('/api/tasks/done', payload)
       .then(res => {
-        dispatch(uploadEntitiesImages(tasks, '/api/task_images'));
         if (res.failed && Object.keys(res.failed).length) {
           showAlertAfterBulk(Object.values(res.failed));
           if (!res.success || !res.success.length) {
@@ -592,6 +618,11 @@ export function markTasksDone(tasks, notes = '', onSuccess, contactName = '') {
           }
         }
         if (res.success && res.success.length) {
+          // Queued only for the tasks the server actually completed, and only
+          // once we know it did. Enqueueing up front cleared the files off
+          // the screen even when every task had been refused — they were
+          // gone, and attached to nothing.
+          dispatch(uploadEntitiesImages(res.success, '/api/task_images'));
           dispatch(markTasksDoneSuccess(res.success));
           if (typeof onSuccess === 'function') {
             setTimeout(() => onSuccess(), 100);

@@ -10,13 +10,15 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
-import * as LegacyFS from 'expo-file-system/legacy';
-import { v4 as uuid } from 'uuid';
 import { Camera, useCameraDevice, useCameraPermission, useLocationPermission } from 'react-native-vision-camera';
 
 import { addPicture } from '../../redux/Courier';
 import { navigateBackToCompleteTask } from '@/src/navigation/utils';
 import { compressImage } from '../../utils/imageCompression';
+import {
+  discardTemporaryFile,
+  persistPendingUpload,
+} from '../../utils/pendingUploads';
 
 function Photo({ navigation, route, addPicture }) {
   const { t } = useTranslation();
@@ -52,10 +54,8 @@ function Photo({ navigation, route, addPicture }) {
     setIsSaving(true);
     try {
       const compressed = await compressImage(image);
-      const destDir = `${LegacyFS.documentDirectory}pending_uploads/`;
-      await LegacyFS.makeDirectoryAsync(destDir, { intermediates: true });
-      const destUri = `${destDir}${uuid()}.jpg`;
-      await LegacyFS.copyAsync({ from: compressed, to: destUri });
+      const destUri = await persistPendingUpload(compressed);
+      await discardTemporaryFile(compressed);
       addPicture(task, destUri);
       navigateBackToCompleteTask(navigation, route);
     } catch (e) {
@@ -96,7 +96,11 @@ function Photo({ navigation, route, addPicture }) {
         setIsSaving(true);
         const task = route.params?.task;
         const compressed = await compressImage(result.assets[0].uri);
-        addPicture(task, compressed);
+        // Same as above: `compressImage` writes to the cache directory, which
+        // is not a safe place to keep a file the upload queue still needs.
+        const destUri = await persistPendingUpload(compressed);
+        await discardTemporaryFile(compressed);
+        addPicture(task, destUri);
         navigateBackToCompleteTask(navigation, route);
       }
     } catch (e) {

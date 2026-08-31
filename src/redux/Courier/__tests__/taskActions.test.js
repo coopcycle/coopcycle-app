@@ -1,7 +1,10 @@
 import moment from 'moment';
 import { configureStore } from '@reduxjs/toolkit';
 
+import * as FileSystem from 'expo-file-system/legacy';
+
 import {
+  CLEAR_FILES,
   LOAD_TASKS_FAILURE,
   LOAD_TASKS_REQUEST,
   LOAD_TASKS_SUCCESS,
@@ -12,6 +15,7 @@ import {
   loadTasksSuccess,
   markTaskDone,
   markTaskFailed,
+  markTasksDone,
 } from '../taskActions';
 import {
   markTaskDoneFailure,
@@ -302,6 +306,98 @@ describe('Redux | Tasks | Actions', () => {
       { headers: { 'X-Attach-To': '/api/tasks/1' } },
     );
     expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes });
+  });
+
+  // A file we cannot stat used to reject the whole thunk before anything was
+  // dispatched: no request, no alert, and a submit button that stayed
+  // disabled because Formik never saw the promise settle.
+  test('markTaskDone | Unreadable file does not abort the completion', async () => {
+    const task = { '@id': '/api/tasks/1' };
+    const notes = 'notes';
+    const resolveValue = { ...task };
+
+    FileSystem.getInfoAsync.mockRejectedValueOnce(new Error('cannot stat'));
+
+    const client = {
+      put: jest.fn(),
+      getToken: () => '123456',
+      getBaseURL: () => 'https://test.coopcycle.org',
+      uploadFileAsync: jest.fn().mockResolvedValue({ status: 200 }),
+    };
+    client.put.mockResolvedValue(resolveValue);
+    httpClientService.setTestClient(client);
+
+    const { actionTracker, getActions } = actionTrackerMiddleware();
+    const store = configureStore({
+      reducer: reducers,
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(actionTracker),
+      preloadedState: {
+        entities: {
+          tasks: {
+            signatures: ['file:///gone.jpg'],
+            pictures: [],
+          },
+        },
+      },
+    });
+
+    await store.dispatch(markTaskDone(task, notes));
+
+    const actions = getActions();
+
+    expect(actions).toContainEqual(markTaskDoneRequest(task));
+    expect(actions).toContainEqual(markTaskDoneSuccess(resolveValue));
+    expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes });
+  });
+
+  // The files were enqueued (and so cleared off the screen) before we knew
+  // whether the server had accepted anything at all.
+  test('markTasksDone | Files are kept when every task is refused', async () => {
+    const tasks = [{ '@id': '/api/tasks/1' }, { '@id': '/api/tasks/2' }];
+
+    const client = {
+      put: jest.fn(),
+      getToken: () => '123456',
+      getBaseURL: () => 'https://test.coopcycle.org',
+      uploadFileAsync: jest.fn().mockResolvedValue({ status: 200 }),
+    };
+    client.put.mockResolvedValue({
+      success: [],
+      failed: { '/api/tasks/1': 'Not yours', '/api/tasks/2': 'Not yours' },
+    });
+    httpClientService.setTestClient(client);
+
+    const { actionTracker, getActions } = actionTrackerMiddleware();
+    const store = configureStore({
+      reducer: reducers,
+      middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(actionTracker),
+      preloadedState: {
+        entities: {
+          tasks: {
+            signatures: ['file:///signature.jpg'],
+            pictures: ['file:///picture.jpg'],
+          },
+        },
+      },
+    });
+
+    await store.dispatch(markTasksDone(tasks, 'notes'));
+
+    for (let i = 0; i < 10; i++) {
+      await Promise.resolve();
+    }
+    jest.runAllTimers();
+
+    expect(getActions()).not.toContainEqual(
+      expect.objectContaining({ type: CLEAR_FILES }),
+    );
+    expect(client.uploadFileAsync).not.toHaveBeenCalled();
+
+    const { signatures, pictures } = store.getState().entities.tasks;
+    expect(signatures).toEqual(['file:///signature.jpg']);
+    expect(pictures).toEqual(['file:///picture.jpg']);
   });
 
   test('markTaskDone | Failed request', () => {
