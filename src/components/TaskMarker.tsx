@@ -62,6 +62,43 @@ cssInterop(FAIcon, {
   },
 });
 
+/**
+ * Markers are deliberately not themed and not colour-scheme aware.
+ *
+ * A pin sits on Google's map tiles, not on an app surface: neither the
+ * instance's brand colour nor the app's dark mode says anything about what is
+ * behind it, so deriving the pin from them made contrast a matter of luck. It
+ * ran out for instances whose `theme.primary` is near-black — the generated
+ * dark ramp tops out well below a usable foreground, so `primary-800` came out
+ * at rgb(60 58 60) on a `background-0` pin of rgb(18 18 18): an invisible glyph
+ * on a pin that was itself lost against the dark map.
+ *
+ * These are the light-mode values the markers already used, frozen. A light
+ * pin reads on any tile, and the pin supplies the glyph's background, which is
+ * why map products converge on this.
+ */
+type MarkerPathProps = {
+  className: string;
+  style: { fill?: string };
+};
+
+type MarkerIconProps = {
+  color: string;
+};
+
+const MARKER_COLORS = {
+  assigned: {
+    background: '#ffffff',
+    border: '#a5a3a3',
+    icon: '#0d0d0d',
+  },
+  unassigned: {
+    background: '#f6f6f6',
+    border: '#dddcdb',
+    icon: '#292929',
+  },
+};
+
 function getWarnings(task: Task, count: number = 1): object[] {
 
   const warnings: object[] = [];
@@ -110,31 +147,36 @@ const TaskMarkerBadge = ({ count }) => {
   )
 }
 
-const getMarkerIconProps = (task: Task, count: number = 1) => {
+const getMarkerIconProps = (
+  task: Task,
+  count: number = 1,
+): [MarkerPathProps, MarkerPathProps, MarkerIconProps] => {
 
   const isUnassigned = !task?.assignedTo;
 
-  let backgroundProps = {
-    className: 'fill-background-0',
-    style: {}
+  let backgroundProps: MarkerPathProps = {
+    className: '',
+    style: { fill: MARKER_COLORS.assigned.background }
   }
-  let borderProps = {
-    className: 'fill-outline-400',
-    style: {}
+  let borderProps: MarkerPathProps = {
+    className: '',
+    style: { fill: MARKER_COLORS.assigned.border }
   }
-  let iconProps = {
-    className: 'text-primary-800'
+  let iconProps: MarkerIconProps = {
+    color: MARKER_COLORS.assigned.icon
   };
 
   if (count > 1) { // Cluster marker
 
+    // Clusters keep the semantic tokens: `info-*` is not overridden by the
+    // server theme and does invert correctly between light and dark.
     backgroundProps = {
-      ...backgroundProps,
-      className: 'fill-info-200'
+      className: 'fill-info-200',
+      style: {}
     }
     borderProps = {
-      ...borderProps,
-      className: 'fill-info-800'
+      className: 'fill-info-800',
+      style: {}
     }
 
   } else { // Single marker
@@ -162,15 +204,15 @@ const getMarkerIconProps = (task: Task, count: number = 1) => {
       // Allow to distinguish visually unassigned tasks
       if (isUnassigned) {
         backgroundProps = {
-          className: 'fill-background-50',
-          style: {}
+          className: '',
+          style: { fill: MARKER_COLORS.unassigned.background }
         }
         borderProps = {
-          className: 'fill-outline-200',
-          style: {}
+          className: '',
+          style: { fill: MARKER_COLORS.unassigned.border }
         }
         iconProps = {
-          className: 'text-primary-600'
+          color: MARKER_COLORS.unassigned.icon
         };
       }
     }
