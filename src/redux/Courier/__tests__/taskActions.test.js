@@ -270,10 +270,22 @@ describe('Redux | Tasks | Actions', () => {
 
     await store.dispatch(markTaskDone(task, notes));
 
-    // uploadFileAsync is now called asynchronously via the UploadQueue:
-    // enqueue (AsyncStorage.getItem → setItem) → processUploadQueue (AsyncStorage.getItem) → uploadFileAsync
-    // Each AsyncStorage operation resolves in one microtask tick, so we flush several times.
+    // The upload is enqueued during markTaskDone but deliberately not started
+    // until the screen transition is over and the requests the courier is
+    // waiting on have had the connection to themselves, so let the queue write
+    // settle, run the pending interactions, then let the grace period elapse.
     for (let i = 0; i < 5; i++) {
+      await Promise.resolve();
+    }
+
+    jest.runAllTimers();
+    await Promise.resolve();
+    jest.runAllTimers();
+
+    // enqueue (AsyncStorage.getItem → setItem) → processUploadQueue
+    // (AsyncStorage.getItem) → uploadFileAsync; each AsyncStorage operation
+    // resolves in one microtask tick, so we flush several times again.
+    for (let i = 0; i < 10; i++) {
       await Promise.resolve();
     }
 

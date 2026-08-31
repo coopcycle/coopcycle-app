@@ -1,7 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
-import { Alert } from 'react-native';
+import { Alert, InteractionManager } from 'react-native';
 import { createAction } from 'redux-actions';
 import * as FileSystem from 'expo-file-system/legacy';
 
@@ -34,6 +34,10 @@ import { Incident } from '@/src/redux/api/types';
 import { AppDispatch, RootState } from '@/src/redux/store';
 
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB — matches server limit
+
+// Grace period before a queued upload starts, so the request the courier is
+// actually waiting on gets the connection to itself first.
+const UPLOAD_START_DELAY_MS = 2000;
 
 async function findOversizedFiles(uris: string[]): Promise<string[]> {
   const results = await Promise.all(
@@ -267,62 +271,132 @@ function uploadEntitiesImages(entities, url) {
 
     UploadQueue.enqueue(jobs).then(() => {
       dispatch(clearFiles());
-      dispatch(processUploadQueue());
+
+      // Deliberately not started right away. The completion's own request and
+      // the task list reload that follows are what the courier is waiting on,
+      // and a proof-of-delivery photo is far heavier than either — starting
+      // the upload here made them share a (usually cellular) uplink. It runs
+      // once the screen transition is over and those have had time to finish;
+      // whatever is left is picked up by the background task anyway.
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => dispatch(processUploadQueue()), UPLOAD_START_DELAY_MS);
+      });
     });
   };
 }
 
+/**
+ * Whether a failed upload is worth keeping in the queue.
+ *
+ * No status means the request never got an answer (offline, timeout) — the
+ * usual case out on a round, and precisely when retrying later is right.
+ */
+function isRetryableUploadStatus(status?: number): boolean {
+  if (status === undefined) {
+    return true;
+  }
+
+  if (status === 408 || status === 429) {
+    return true;
+  }
+
+  return status >= 500;
+}
+
+function alertUploadFailed(status?: number) {
+  Alert.alert(
+    i18n.t('FAILED_TASK_COMPLETE'),
+    status === 413 ? i18n.t('FILE_TOO_LARGE') : i18n.t('AN_ERROR_OCCURRED'),
+    [{ text: 'OK' }],
+    { cancelable: false },
+  );
+}
+
+function discardUploadedFile(fileUri: string) {
+  try {
+    new File(fileUri).delete();
+  } catch (e) {
+    console.warn('Could not delete uploaded file', e);
+  }
+}
+
+// A drain in progress. App start, every completion and the OS background task
+// all ask for one, and concurrent drains read the same pending jobs and
+// uploaded each file more than once — doubling the traffic on the connection
+// the courier is already waiting on.
+let uploadDrain: Promise<void> | null = null;
+
+async function drainUploadQueue(getState) {
+  const httpClient = selectHttpClient(getState());
+  if (!httpClient) {
+    return;
+  }
+
+  const jobs = await UploadQueue.getPending();
+  if (jobs.length === 0) {
+    return;
+  }
+
+  console.log(`Processing ${jobs.length} pending upload job(s)`);
+
+  for (const job of jobs) {
+    let status: number | undefined;
+
+    try {
+      const response = await httpClient.uploadFileAsync(
+        job.uploadUrl,
+        job.fileUri,
+        { headers: { 'X-Attach-To': job.attachTo.join(';') } },
+      );
+
+      status = response?.status;
+    } catch (e) {
+      status = axios.isAxiosError(e) ? e.response?.status : undefined;
+      console.warn('Upload error, status:', status, e);
+    }
+
+    if (status && status >= 200 && status < 300) {
+      await UploadQueue.markDone(job.id);
+      discardUploadedFile(job.fileUri);
+      continue;
+    }
+
+    console.warn('Upload failed with status', status);
+
+    if (!isRetryableUploadStatus(status)) {
+      // The server will not take this file however often we offer it
+      await UploadQueue.markDone(job.id);
+      discardUploadedFile(job.fileUri);
+      alertUploadFailed(status);
+      continue;
+    }
+
+    const givenUp = await UploadQueue.recordFailedAttempt(job.id);
+
+    if (givenUp) {
+      discardUploadedFile(job.fileUri);
+      alertUploadFailed(status);
+      continue;
+    }
+
+    // The connection is the problem, so stop working through the queue —
+    // the remaining jobs keep their place and the background task retries
+    // them, rather than us hammering a link that is already struggling.
+    break;
+  }
+}
+
 export function processUploadQueue() {
-  return async function (dispatch, getState) {
-    const httpClient = selectHttpClient(getState());
-    if (!httpClient) {
-      return;
+  return function (dispatch, getState) {
+    if (uploadDrain) {
+      return uploadDrain;
     }
 
-    const jobs = await UploadQueue.getPending();
-    if (jobs.length === 0) {
-      return;
-    }
+    uploadDrain = drainUploadQueue(getState).finally(() => {
+      uploadDrain = null;
+    });
 
-    console.log(`Processing ${jobs.length} pending upload job(s)`);
-
-    for (const job of jobs) {
-      try {
-        const response = await httpClient.uploadFileAsync(
-          job.uploadUrl,
-          job.fileUri,
-          { headers: { 'X-Attach-To': job.attachTo.join(';') } },
-        );
-
-        if (response && response.status >= 200 && response.status < 300) {
-          await UploadQueue.markDone(job.id);
-          try {
-            new File(job.fileUri).delete();
-          } catch (e) {
-            console.warn('Could not delete uploaded file', e);
-          }
-        } else {
-          console.warn('Upload failed with status', response?.status);
-          await UploadQueue.markDone(job.id);
-          Alert.alert(
-            i18n.t('FAILED_TASK_COMPLETE'),
-            i18n.t('AN_ERROR_OCCURRED'),
-            [{ text: 'OK' }],
-            { cancelable: false },
-          );
-        }
-      } catch (e) {
-        const status = axios.isAxiosError(e) ? e.response?.status : undefined;
-        console.warn('Upload error, status:', status, e);
-        await UploadQueue.markDone(job.id);
-        Alert.alert(
-          i18n.t('FAILED_TASK_COMPLETE'),
-          status === 413 ? i18n.t('FILE_TOO_LARGE') : i18n.t('AN_ERROR_OCCURRED'),
-          [{ text: 'OK' }],
-          { cancelable: false },
-        );
-      }
-    }
+    return uploadDrain;
   };
 }
 
