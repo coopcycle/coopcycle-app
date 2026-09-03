@@ -268,7 +268,7 @@ export const selectBillingEmail = createSelector(
 
 export const selectAddresses = createSelector(
   state => state.account.addresses,
-  addresses => _.uniqWith(_.values(addresses), (o, ov) => Address.geoDiff(o, ov)),
+  addresses => _.uniqWith(_.values(addresses), (o, ov) => Address.isSameGeo(o, ov)),
 );
 
 export const selectAvailableRestaurants = createSelector(
