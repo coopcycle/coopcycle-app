@@ -12,7 +12,6 @@ import {
   setRestaurant,
 } from '../../redux/Checkout/actions';
 import { selectRestaurants } from '../../redux/Checkout/selectors';
-import Address from '../../utils/Address';
 
 class RestaurantsPage extends Component {
   constructor(props) {
@@ -37,10 +36,6 @@ class RestaurantsPage extends Component {
     } else {
       this.props.searchRestaurants();
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return Address.geoDiff(this.props.address, nextProps.address);
   }
 
   componentDidUpdate(prevProps, prevState) {

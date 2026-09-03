@@ -175,11 +175,17 @@ class AddressUtils {
     });
   }
 
-  static geoDiff(
-    { geo: { latitude, longitude } },
-    { geo: { latitude: latitude2, longitude: longitude2 } },
-  ) {
-    return latitude === latitude2 && longitude === longitude2;
+  // Returns true when both addresses point to the same coordinates.
+  // An address without coordinates is never considered the same as another one.
+  static isSameGeo(address, otherAddress) {
+    if (!address?.geo || !otherAddress?.geo) {
+      return false;
+    }
+
+    return (
+      address.geo.latitude === otherAddress.geo.latitude &&
+      address.geo.longitude === otherAddress.geo.longitude
+    );
   }
 
   static openMap({ latitude, longitude }, label) {

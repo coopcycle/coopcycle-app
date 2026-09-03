@@ -47,9 +47,12 @@ import {
 } from '../../shared/src/logistics/redux/taskUtils';
 import { DateOnlyString } from '../../utils/date-types';
 import Task from '../../types/task';
+import { ToursIndex, splitTaskListItems } from '../../utils/tours';
 
 // Tasks for one day, indexed by 'YYYY-MM-DD'.
 type TaskItems = Record<string, Task[]>;
+// Tours for one day, indexed by 'YYYY-MM-DD'.
+type TourItems = Record<string, ToursIndex>;
 type TaskColors = Record<string, string>;
 
 /*
@@ -84,6 +87,9 @@ const tasksEntityInitialState = {
     //   }
     // ]
   },
+  // Tours of the day, indexed by date. Stays empty against an instance that
+  // does not support tours yet, which renders exactly like it always did.
+  tours: {} as TourItems,
   username: null,
   pictures: [], // Array of base64 encoded pictures
   signatures: [], // Array of base64 encoded signatures
@@ -201,6 +207,32 @@ function setBucket(
   return {
     ...items,
     [date]: nextTasks,
+  };
+}
+
+/**
+ * Same as `setBucket`, for the tours of a day.
+ *
+ * Kept identity-stable for the same reason: the tour index is read by a
+ * memoized selector feeding the courier list, so handing back a new object on
+ * every refetch would rebuild every section.
+ */
+function setTourBucket(
+  tours: TourItems,
+  date: string,
+  nextTours: ToursIndex,
+): TourItems {
+  // `tours` is not in the persist whitelist, so a state rehydrated from a
+  // version that predates tours comes back without it.
+  const prevTours = tours?.[date];
+
+  if (prevTours && _.isEqual(prevTours, nextTours)) {
+    return tours;
+  }
+
+  return {
+    ...tours,
+    [date]: nextTours,
   };
 }
 
@@ -409,6 +441,7 @@ export const tasksEntityReducer = (
       return {
         ...state,
         items: {},
+        tours: {},
       };
   }
 
@@ -439,6 +472,8 @@ export const tasksEntityReducer = (
 
     //using axios; FIXME: migrate to rtk query
     case action.type === LOAD_TASKS_SUCCESS: {
+      const { tasks, tours } = splitTaskListItems(action.payload.items);
+
       return {
         ...state,
         loadTasksFetchError: false,
@@ -447,12 +482,17 @@ export const tasksEntityReducer = (
         items: setBucket(
           state.items,
           action.payload.date,
-          getProcessedTasks(action.payload.items, true),
+          getProcessedTasks(tasks, true),
         ),
+        tours: setTourBucket(state.tours, action.payload.date, tours),
       };
     }
     //using rtk query
-    case apiSlice.endpoints.getMyTasks.matchFulfilled(action):
+    case apiSlice.endpoints.getMyTasks.matchFulfilled(action): {
+      // `items` holds tours only when the server honoured "?tours=1"; against
+      // an older instance this is the flat list it always was.
+      const { tasks, tours } = splitTaskListItems(action.payload.items);
+
       return {
         ...state,
         loadTasksFetchError: false,
@@ -461,9 +501,11 @@ export const tasksEntityReducer = (
         items: setBucket(
           state.items,
           action.payload.date,
-          getProcessedTasks(action.payload.items, true),
+          getProcessedTasks(tasks, true),
         ),
+        tours: setTourBucket(state.tours, action.payload.date, tours),
       };
+    }
 
     //using axios; FIXME: migrate to rtk query
     case action.type === LOAD_TASKS_FAILURE: {
@@ -498,6 +540,15 @@ const processWsMsg = (state, action) => {
           break;
         }
 
+        // This payload is always flat: it is pushed from a Doctrine flush hook
+        // with no request behind it, so the server has no "?tours=1" to honour.
+        //
+        // We still apply the tasks, so the list stays correct even if the
+        // refetch triggered alongside (see `refetchMyTasksOnTaskListUpdated`)
+        // never lands — but we deliberately leave `tours` alone rather than
+        // clearing it, which would drop the grouping until that refetch
+        // answers. Entries pointing at tasks that just left the list are inert:
+        // the grouping is rebuilt by looking up each task, never the reverse.
         return {
           ...state,
           items: setBucket(

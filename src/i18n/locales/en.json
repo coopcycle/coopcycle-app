@@ -595,7 +595,7 @@
     "BARCODE_TASK_ALREADY_ASSIGNED_SELF_MESSAGE": "This task has already been assigned to you",
     "BARCODE_TASK_ALREADY_ASSIGNED_UNASSIGN": "Unassign",
     "BARCODE_TASK_ALREADY_ASSIGNED_ASSIGN_TO_ME": "Assign to me",
-    "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "The task has already been unassigned but the tour where it belogs to is not. Please solve this from the web app.",
+    "TASK_ALREADY_UNASSIGNED_SOLVE_FROM_WEB": "The task has already been unassigned but the tour where it belongs to is not. Please solve this from the web app.",
     "TASK_MULTIPLE_PACKAGES": "Multiple packages",
     "X_PACKAGES": "{{count}} packages",
     "NO_NEED_TO_SCAN_OTHERS": "No need to scan the others packages.",

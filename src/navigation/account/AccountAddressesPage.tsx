@@ -62,7 +62,7 @@ function AddressRow({ item, selectedAddress }) {
     }
   }
 
-  const isSameAddress = Address.geoDiff(selectedAddress, item)
+  const isSameAddress = Address.isSameGeo(selectedAddress, item)
 
   return (
     <TouchableOpacity onPress={handlePress}>
