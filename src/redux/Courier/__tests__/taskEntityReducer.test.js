@@ -123,18 +123,23 @@ describe('Redux | Tasks | Reducers', () => {
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'tours',
         'updatedAt',
       ]);
       const restNewState = omit(newState, [
         'loadTasksFetchError',
         'isFetching',
         'items',
+        'tours',
         'updatedAt',
       ]);
 
       expect(selectIsTasksLoading(fullState)).toBe(false);
       expect(selectIsTasksLoadingFailure(fullState)).toBe(false);
       expect(selectTasks(fullState)).toEqual(tasks);
+      // A flat payload — what an instance without tours support answers —
+      // leaves the day with no tour to group by.
+      expect(newState.tours[date]).toEqual({ tours: {}, tasks: {} });
 
       expect(restOldState).toEqual({ ...restNewState, date });
     });
@@ -319,6 +324,69 @@ describe('Redux | Tasks | Reducers', () => {
         );
 
         expect(reloaded.items).toBe(loaded.items);
+      });
+
+      test(`${loadTasksSuccess} | an unchanged reload keeps tours`, () => {
+        const items = [
+          {
+            '@id': '/api/tours/1',
+            '@type': 'Tour',
+            id: 1,
+            name: 'Centre-ville',
+            items: tasks,
+          },
+        ];
+
+        const loaded = tasksEntityReducer(
+          initialState,
+          loadTasksSuccess(date, items, moment().toISOString()),
+        );
+        const reloaded = tasksEntityReducer(
+          loaded,
+          loadTasksSuccess(date, items, moment().toISOString()),
+        );
+
+        expect(reloaded.tours).toBe(loaded.tours);
+      });
+    });
+
+    test(`${loadTasksSuccess} | nested tours`, () => {
+      const date = moment().format('YYYY-MM-DD');
+      const tasks = [
+        { '@id': '/api/tasks/1', id: 1, status: 'TODO' },
+        { '@id': '/api/tasks/2', id: 2, status: 'TODO' },
+      ];
+      const bareTask = { '@id': '/api/tasks/99', id: 99, status: 'TODO' };
+      const items = [
+        bareTask,
+        {
+          '@id': '/api/tours/1',
+          '@type': 'Tour',
+          id: 1,
+          name: 'Centre-ville',
+          items: tasks,
+        },
+      ];
+
+      const newState = tasksEntityReducer(
+        initialState,
+        loadTasksSuccess(date, items, moment().toISOString()),
+      );
+
+      // The tour is flattened into the day's tasks, so every selector, filter
+      // and map screen keeps seeing the shape it always saw...
+      expect(newState.items[date].map(t => t['@id'])).toEqual([
+        '/api/tasks/99',
+        ...tasks.map(t => t['@id']),
+      ]);
+
+      // ...and the grouping is kept alongside, for display only.
+      expect(newState.tours[date].tours).toEqual({
+        '/api/tours/1': { '@id': '/api/tours/1', name: 'Centre-ville' },
+      });
+      expect(newState.tours[date].tasks['/api/tasks/99']).toBeUndefined();
+      tasks.forEach(task => {
+        expect(newState.tours[date].tasks[task['@id']]).toEqual('/api/tours/1');
       });
     });
 

@@ -21,7 +21,10 @@ import HttpMiddleware from './middlewares/HttpMiddleware';
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware';
 import PushNotificationMiddleware from './middlewares/PushNotificationMiddleware';
 import SentryMiddleware from './middlewares/SentryMiddleware';
-import { ringOnTaskListUpdated } from './Courier/taskMiddlewares';
+import {
+  refetchMyTasksOnTaskListUpdated,
+  ringOnTaskListUpdated,
+} from './Courier/taskMiddlewares';
 import CentrifugoMiddleware from './middlewares/CentrifugoMiddleware';
 import { filterExpiredCarts } from './Checkout/middlewares';
 import SoundMiddleware from './middlewares/SoundMiddleware';
@@ -40,6 +43,7 @@ const middlewares = [
   ApiStateMiddleware,
   PushNotificationMiddleware,
   CentrifugoMiddleware,
+  refetchMyTasksOnTaskListUpdated,
   SentryMiddleware,
   filterExpiredCarts,
   SoundMiddleware,

@@ -1,10 +1,13 @@
 import { AppState } from 'react-native';
+import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 
 import { LOGOUT_SUCCESS, addNotification } from '../App/actions';
 import { LOAD_TASKS_SUCCESS } from './taskActions';
 import { selectTasks } from './taskSelectors';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../domain/TaskCollection';
 import { apiSlice } from '../api/slice';
+import { CENTRIFUGO_MESSAGE } from '../middlewares/CentrifugoMiddleware';
+import { RootState } from '../store';
 
 export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
   return next => action => {
@@ -61,6 +64,51 @@ export const ringOnTaskListUpdated = ({ getState, dispatch }) => {
         );
       }
     }
+
+    return result;
+  };
+};
+
+/**
+ * Refetches the courier's task list when the server pushes an update to it.
+ *
+ * The pushed payload is always flat — it is built in a Doctrine flush hook,
+ * with no request behind it, so there is no "?tours=1" for the server to
+ * honour and it cannot carry tours. Rather than teach the reducer a second
+ * payload shape, we let the push invalidate the cache and read the tours back
+ * from the one endpoint that can express them.
+ *
+ * The reducer still applies the pushed tasks (see `processWsMsg`), so the list
+ * is correct immediately and stays correct if this refetch never lands; the
+ * refetch only reconciles the tour grouping.
+ */
+export const refetchMyTasksOnTaskListUpdated = ({
+  getState,
+  dispatch,
+}: {
+  getState: () => RootState;
+  dispatch: Dispatch;
+}) => {
+  return (next: (action: AnyAction) => unknown) => (action: AnyAction) => {
+    const result = next(action);
+
+    if (action.type !== CENTRIFUGO_MESSAGE) {
+      return result;
+    }
+
+    const { name, data } = action.payload ?? {};
+
+    if (name !== 'task_list:updated' || !data?.task_list) {
+      return result;
+    }
+
+    // Other couriers' task lists are pushed on the same channel for users who
+    // are also dispatchers; they must not invalidate this courier's list.
+    if (data.task_list.username !== getState().entities.tasks.username) {
+      return result;
+    }
+
+    dispatch(apiSlice.util.invalidateTags(['MyTasks']));
 
     return result;
   };

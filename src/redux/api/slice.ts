@@ -25,6 +25,7 @@ import {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['MyTasks'],
   // The "endpoints" represent operations and requests for this server
   // nodeId is passed in JSON-LD '@id' key, https://www.w3.org/TR/2014/REC-json-ld-20140116/#node-identifiers
   endpoints: builder => ({
@@ -280,7 +281,12 @@ export const apiSlice = createApi({
       },
     }),
     getMyTasks: builder.query({
-      query: (date: DateOnlyString) => `api/me/tasks/${date}`,
+      // `tours=1` asks the server to nest tours instead of flattening them into
+      // bare tasks. Older instances simply ignore the parameter and answer with
+      // the flat list, which `splitTaskListItems` handles as the no-tour case —
+      // so this is safe to send unconditionally.
+      query: (date: DateOnlyString) => `api/me/tasks/${date}?tours=1`,
+      providesTags: ['MyTasks'],
     }),
     getTaskContext: builder.query({
       query: id => `api/tasks/${id}/context`,

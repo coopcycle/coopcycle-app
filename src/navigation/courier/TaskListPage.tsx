@@ -13,6 +13,7 @@ import {
 import {
   selectFilteredTasks,
   selectTaskSelectedDate,
+  selectTours,
 } from '../../redux/Courier';
 import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
@@ -23,6 +24,7 @@ import { createCurrentTaskList } from '../../shared/src/logistics/redux/taskList
 import { DateOnlyString } from '../../utils/date-types';
 import { useTaskLongPress } from '../dispatch/hooks/useTaskLongPress';
 import { useTaskListsContext } from './contexts/TaskListsContext';
+import { groupTasksByTour } from '../../utils/tours';
 
 const styles = StyleSheet.create({
   containerEmpty: {
@@ -41,6 +43,7 @@ export default function TaskListPage({ navigation, route }) {
   const context = useTaskListsContext();
   const selectedDate = useSelector(selectTaskSelectedDate);
   const tasks = useSelector(selectFilteredTasks);
+  const tours = useSelector(selectTours);
   const courierTaskList = useMemo(() => {
     const taskList = createCurrentTaskList(tasks);
     // Override color for courier
@@ -48,6 +51,13 @@ export default function TaskListPage({ navigation, route }) {
 
     return taskList;
   }, [tasks]);
+
+  // Grouped from `courierTaskList.items` rather than from `tasks`, so the rows
+  // carry the properties `createCurrentTaskList` adds.
+  const sections = useMemo(
+    () => groupTasksByTour(courierTaskList.items, tours),
+    [courierTaskList.items, tours],
+  );
 
   const isEditMode = context?.isEditMode;
   const clearSelectedTasks = context?.clearSelectedTasks;
@@ -129,6 +139,7 @@ export default function TaskListPage({ navigation, route }) {
           id="courierTaskList"
           // We use `courierTaskList.items` here so each task has the properties added at `createCurrentTaskList`
           tasks={courierTaskList.items}
+          sections={sections}
           refreshing={isFetching}
           onRefresh={onRefresh}
           onTaskClick={onTaskClick}

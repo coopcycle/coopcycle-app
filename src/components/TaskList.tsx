@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { LucideIcon } from 'lucide-react-native';
 
@@ -6,7 +6,21 @@ import ItemsBulkFabButton from './ItemsBulkFabButton';
 import ItemSeparatorComponent from './ItemSeparator';
 import TaskListItem from './TaskListItem';
 import Task, { TaskListProps } from '../types/task';
+import TourHeader from './TourHeader';
+import { TaskListSection, countCompletedTasks } from '../utils/tours';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
+
+/**
+ * One rendered line of the list: a tour header, or a task.
+ */
+type Row =
+  | {
+      kind: 'tour';
+      key: string;
+      section: Extract<TaskListSection, { type: 'tour' }>;
+      isExpanded: boolean;
+    }
+  | { kind: 'task'; key: string; task: Task; index: number };
 
 type TaskRowProps = {
   task: Task;
@@ -134,6 +148,10 @@ const TaskList: React.FC<TaskListProps> = ({
   swipeOutRightBackgroundColor,
   swipeOutRightIcon,
   tasks,
+  // Optional tour grouping. When omitted (dispatch, and any instance that does
+  // not support tours) the list renders exactly as it always did: one flat row
+  // per task.
+  sections = undefined,
   appendTaskListTestID = '',
 }) => {
   const bulkFabButton = useRef(null);
@@ -190,7 +208,65 @@ const TaskList: React.FC<TaskListProps> = ({
     bulkFabButton.current?.updateItems(doneTasks);
   }, [tasks]);
 
-  const keyExtractor = useCallback((item: Task) => item['@id'], []);
+  // Collapsed tours, keyed by section key. Absent means expanded, so a tour
+  // that has just appeared shows its tasks — same default as dispatch.
+  const [collapsedTours, setCollapsedTours] = useState<Record<string, boolean>>(
+    {},
+  );
+
+  const toggleTour = useCallback((key: string) => {
+    setCollapsedTours(prev => ({ ...prev, [key]: !prev[key] }));
+  }, []);
+
+  /**
+   * Flattens the sections into the rows the list actually renders.
+   *
+   * Every task keeps the index it has in the flat `tasks` array — including the
+   * ones hidden inside a collapsed tour — so `nextTask` and the sort callbacks
+   * keep pointing at the same tasks they did before tours existed.
+   */
+  const rows = useMemo(() => {
+    if (!sections) {
+      return null;
+    }
+
+    const out: Row[] = [];
+    let taskIndex = 0;
+
+    for (const section of sections) {
+      if (section.type === 'task') {
+        out.push({
+          kind: 'task',
+          key: section.key,
+          task: section.task,
+          index: taskIndex++,
+        });
+        continue;
+      }
+
+      out.push({
+        kind: 'tour',
+        key: section.key,
+        section,
+        isExpanded: !collapsedTours[section.key],
+      });
+
+      for (const task of section.tasks) {
+        const index = taskIndex++;
+
+        if (!collapsedTours[section.key]) {
+          out.push({ kind: 'task', key: task['@id'], task, index });
+        }
+      }
+    }
+
+    return out;
+  }, [sections, collapsedTours]);
+
+  const keyExtractor = useCallback(
+    (item: Task | Row) => (rows ? (item as Row).key : (item as Task)['@id']),
+    [rows],
+  );
 
   const renderItem = useCallback(
     ({ item: task, index }) => {
@@ -242,13 +318,35 @@ const TaskList: React.FC<TaskListProps> = ({
     ],
   );
 
+  // Defined after `renderItem`: it reads it, both as a dependency and when a
+  // row turns out to be a task.
+  const renderRow = useCallback(
+    ({ item }: { item: Row }) => {
+      if (item.kind === 'tour') {
+        return (
+          <TourHeader
+            tour={item.section.tour}
+            tasksCount={item.section.tasks.length}
+            completedCount={countCompletedTasks(item.section.tasks)}
+            isExpanded={item.isExpanded}
+            onToggle={() => toggleTour(item.key)}
+            testID={`${id}:tour:${item.section.tour['@id']}`}
+          />
+        );
+      }
+
+      return renderItem({ item: item.task, index: item.index });
+    },
+    [id, toggleTour, renderItem],
+  );
+
   return (
     <>
       <FlatList
         testID={`${id}SwipeListView`}
-        data={tasks}
+        data={rows ?? tasks}
         keyExtractor={keyExtractor}
-        renderItem={renderItem}
+        renderItem={rows ? renderRow : renderItem}
         refreshing={refreshing}
         onRefresh={onRefresh}
         ItemSeparatorComponent={ItemSeparatorComponent}

@@ -12,6 +12,7 @@ import moment from 'moment';
 import { filterTasks, indexTasksByOrder } from '../logistics/utils';
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
 import { RootState } from '../store';
+import { EMPTY_TOURS_INDEX } from '../../utils/tours';
 
 // Shared empty result, so selectors returning "nothing" keep a stable
 // reference and don't re-render their subscribers.
@@ -62,6 +63,20 @@ export const selectFilteredTasks = createSelector(
   selectTasks,
   (filters, tasks) => filterTasks(tasks, filters),
 );
+
+/**
+ * The tours of the selected day. Empty against an instance that does not
+ * support tours, which makes every task render as its own row.
+ */
+export const selectTours = createSelector(
+  state => state.entities.tasks.date,
+  state => state.entities.tasks.tours,
+  (date, tours) => {
+    const key = moment(date).format('YYYY-MM-DD');
+    return tours?.[key] || EMPTY_TOURS_INDEX;
+  },
+);
+
 
 export const selectFilteredTasksIndexedByOrder = createSelector(
   selectFilteredTasks,
