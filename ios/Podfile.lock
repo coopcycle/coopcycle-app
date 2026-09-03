@@ -2236,34 +2236,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-pager-view (6.9.1):
-    - boost
-    - DoubleConversion
-    - fast_float
-    - fmt
-    - glog
-    - hermes-engine
-    - RCT-Folly
-    - RCT-Folly/Fabric
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - SocketRocket
-    - Yoga
   - react-native-safe-area-context (5.8.0):
     - boost
     - DoubleConversion
@@ -3792,7 +3764,6 @@ DEPENDENCIES:
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
   - "react-native-sunmi-printer-library (from `../node_modules/@mitsuharu/react-native-sunmi-printer-library`)"
@@ -4041,8 +4012,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
-  react-native-pager-view:
-    :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-skia:
@@ -4274,7 +4243,6 @@ SPEC CHECKSUMS:
   react-native-keyboard-controller: 5f440feaf19e1fd91e70453cfd90034f3c8ef55d
   react-native-maps: 083974320819ff3f748605b09d6b131eee6d775d
   react-native-netinfo: 64f05e94821ee3f3adcd9b67b35c1480e5564915
-  react-native-pager-view: 0e228ec2dfdd87807d125c7bbfb83299edede19c
   react-native-safe-area-context: 7794f18549493f369e4ca4b3cd66843bd050ac66
   react-native-skia: c36832df4baa515feb3d3f20cf841af4d3539ca0
   react-native-sunmi-printer-library: 725882420f1aa4c43dc48ba426bd470d1e2abf16

@@ -7534,7 +7534,6 @@ __metadata:
     react-native-modal: "npm:13.0.2"
     react-native-modal-datetime-picker: "npm:^18.0.0"
     react-native-modal-selector: "npm:^2.1.2"
-    react-native-pager-view: "npm:^6.9.1"
     react-native-payment-icons: "npm:^1.0.11"
     react-native-picker-select: "npm:^9.3.1"
     react-native-pin-screen: "git+https://git@github.com/coopcycle/react-native-pin-screen.git#1.0.3"
@@ -7546,7 +7545,6 @@ __metadata:
     react-native-svg: "npm:15.12.1"
     react-native-svg-transformer: "npm:^1.5.1"
     react-native-swipe-list-view: "npm:^3.2.9"
-    react-native-tab-view: "npm:^4.2.0"
     react-native-vector-icons: "npm:^10.3.0"
     react-native-version-number: "npm:^0.3.6"
     react-native-vision-camera: "npm:^4.7.3"
@@ -17002,16 +17000,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-pager-view@npm:^6.9.1":
-  version: 6.9.1
-  resolution: "react-native-pager-view@npm:6.9.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/c5229d230734ad9dad0b1e296168f0eebc5cff1b4b63201266ee7d5ecadc2e9c584b426b4ef146718c2e581dfcf63914174133b3ed1657294ccd437c22dbbc05
-  languageName: node
-  linkType: hard
-
 "react-native-payment-icons@npm:^1.0.11":
   version: 1.0.11
   resolution: "react-native-payment-icons@npm:1.0.11"
@@ -17174,7 +17162,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-tab-view@npm:^4.2.0, react-native-tab-view@npm:^4.3.1":
+"react-native-tab-view@npm:^4.3.1":
   version: 4.3.1
   resolution: "react-native-tab-view@npm:4.3.1"
   dependencies:
