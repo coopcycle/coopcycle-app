@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 import ItemSeparator from '../../components/ItemSeparator';
 import ModalContent from '../../components/ModalContent';
 import { selectServer } from '../../redux/App/actions';
-import { selectServersWithoutRepeats } from '../../redux/App/selectors';
+import { selectServersWithURL } from '../../redux/App/selectors';
 
 const CONTACT_EMAIL = 'contact@coopcycle.org';
 
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    servers: selectServersWithoutRepeats(state),
+    servers: selectServersWithURL(state),
     hasError: !!state.app.selectServerError,
     message: state.app.selectServerError,
   };

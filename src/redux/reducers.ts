@@ -164,7 +164,6 @@ const checkoutPersistConfig = {
   key: 'checkout',
   storage: AsyncStorage,
   whitelist: [
-    'showMultipleServersInSameCityModal',
     'carts',
     'address',
     'stripePaymentMethods',

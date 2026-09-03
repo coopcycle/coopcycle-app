@@ -12,7 +12,6 @@ import {
   GET_RESTAURANT_SUCCESS,
   HIDE_ADDRESS_MODAL,
   HIDE_EXPIRED_SESSION_MODAL,
-  HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
   INIT_CART_FAILURE,
   INIT_CART_REQUEST,
   INIT_CART_SUCCESS,
@@ -95,7 +94,6 @@ const initialState = {
     displayed: false,
     message: null,
   },
-  showMultipleServersInSameCityModal: true,
   searchResultsLoaded: false,
   searchResults: null,
   stripePaymentMethodsLoaded: false,
@@ -484,12 +482,6 @@ export default (state = initialState, action = {}) => {
         };
       }
       break;
-
-    case HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL:
-      return {
-        ...state,
-        showMultipleServersInSameCityModal: false,
-      };
 
     case SEARCH_REQUEST:
       return {

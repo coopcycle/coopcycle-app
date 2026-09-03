@@ -132,8 +132,6 @@ export const UPDATE_CUSTOMER_GUEST = '@checkout/UPDATE_CUSTOMER_GUEST';
 
 export const SHOW_TIMING_MODAL = '@checkout/SHOW_TIMING_MODAL';
 
-export const HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL =
-  '@checkout/HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL';
 
 export const STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING =
   '@checkout/STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING';
@@ -240,9 +238,6 @@ export const loadStripeSavedPaymentMethodsFailure = createFsAction(
 
 export const showTimingModal = createFsAction(SHOW_TIMING_MODAL);
 
-export const hideMultipleServersInSameCityModal = createFsAction(
-  HIDE_MULTIPLE_SERVERS_IN_SAME_CITY_MODAL,
-);
 
 export const stopAskingToEnableReusablePackaging = createFsAction(
   STOP_ASKING_TO_ENABLE_REUSABLE_PACKAGING,

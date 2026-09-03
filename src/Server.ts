@@ -9,7 +9,7 @@ const CACHE_TTL = 24 * 60 * 60 * 1000; // 1 day
 // Don't block app startup for too long when the network is flaky
 const REQUEST_TIMEOUT = 5000;
 
-type City = { city: string; [key: string]: any };
+type City = { city: string; [key: string]: unknown };
 
 type Cache = {
   data: City[];
@@ -94,37 +94,24 @@ const isFresh = (cache: Cache): boolean =>
   Date.now() - cache.fetchedAt < CACHE_TTL &&
   cache.fetchedAt <= Date.now();
 
-function overrideCity(values: City[]): City[] {
-  return values.map(value => {
-    if (value.city.startsWith('Ciudad de México')) {
-      return {
-        ...value,
-        city: 'Ciudad de México',
-      };
-    }
-
-    return value;
-  });
-}
-
 class Server {
   static async loadAll(): Promise<City[]> {
     const cache = await load();
 
     if (isFresh(cache)) {
-      return overrideCity(cache.data);
+      return cache.data;
     }
 
     const remoteData = await fetchRemote();
 
     if (!remoteData) {
       // Server is not reachable, keep using the previously loaded data
-      return overrideCity(cache.data);
+      return cache.data;
     }
 
     await save(remoteData);
 
-    return overrideCity(remoteData);
+    return remoteData;
   }
 }
 

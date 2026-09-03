@@ -417,8 +417,6 @@
         "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Visto che hai deciso di ordinare come ospite, per favore verifica la tua email per seguire il tuo ordine",
         "MY_ORDER": "Il mio ordine",
         "OR": "o",
-        "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "C'è più di una cooperativa nella tua città, puoi navigare tra esse usando i tab o facendo swipe a sinistra o destra.",
-        "DO_NOT_SHOW_IT_AGAIN": "Non mostrare più",
         "total_packages": "Totale: {{count}} pacchetto",
         "total_packages_plural": "Totale: {{count}} pacchetti",
        "BARCODE_TASK_ALREADY_ASSIGNED_TITLE": "Attività già assegnata",

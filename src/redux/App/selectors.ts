@@ -149,47 +149,6 @@ export const selectServersWithURL = createSelector(
 
 export const selectBaseURL = state => state.app.baseURL;
 
-export const selectServersInSameCity = createSelector(
-  selectServersWithURL,
-  selectBaseURL,
-  (servers, baseURL) => {
-    if (!baseURL) {
-      return [];
-    }
-
-    const currentServer = _.find(
-      servers,
-      server => server.coopcycle_url === baseURL,
-    );
-
-    if (!currentServer) {
-      return [];
-    }
-
-    const serversInSameCity = _.filter(servers, server => {
-      return server.city === currentServer.city;
-    });
-
-    // order servers randomly to avoid always same server as the first option
-    return _.shuffle(serversInSameCity);
-  },
-);
-
-export const selectServersWithoutRepeats = createSelector(
-  selectServersWithURL,
-  servers => {
-    return servers.reduce((withoutRepeatsAcc, server) => {
-      const serverCityAlreadyExist = withoutRepeatsAcc.some(
-        nonRepeatedServer => nonRepeatedServer.city === server.city,
-      );
-      if (!serverCityAlreadyExist) {
-        withoutRepeatsAcc.push(server);
-      }
-      return withoutRepeatsAcc;
-    }, []);
-  },
-);
-
 export const selectIsBarcodeEnabled = state =>
   state.app.isBarcodeEnabled ?? true;
 

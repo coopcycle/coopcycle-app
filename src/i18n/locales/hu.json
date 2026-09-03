@@ -372,7 +372,6 @@
         "RESTAURANT_CLOSED_AND_NOT_AVAILABLE": "Ez az étterem bezárt és nem lesz elérhető eddig: {{ datetime }}.",
         "MY_ORDER": "Rendeléseim",
         "OR": "vagy",
-        "DO_NOT_SHOW_IT_AGAIN": "Ne mutasd újra",
         "total_packages": "Páratlan",
         "total_packages_plural": "Páros"
     }

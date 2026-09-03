@@ -102,12 +102,4 @@ describe('Server.loadAll', () => {
 
     expect(await Server.loadAll()).toEqual([]);
   });
-
-  it('overrides the city name for Ciudad de México', async () => {
-    axios.get.mockResolvedValue({
-      data: [{ city: 'Ciudad de México, CDMX, Mexico' }],
-    });
-
-    expect(await Server.loadAll()).toEqual([{ city: 'Ciudad de México' }]);
-  });
 });

@@ -401,12 +401,10 @@
     "GUEST_CHECK_EMAIL_FOR_ORDER_UPDATES": "Protože jste se rozhodli provést objednávku jako host, zkontrolujte prosím své e-maily a sledujte svou objednávku",
     "MY_ORDER": "Moje objednávka",
     "OR": "nebo",
-    "DO_NOT_SHOW_IT_AGAIN": "Už to neukazujte",
     "total_packages_0": "Celkem: {{count}} balíček",
     "total_packages_1": "Celkem: {{count}} balíčky",
     "total_packages_2": "Celkem: {{count}} balíčků",
     "RESTAURANT_CLOSED_BUT_OPENS": "Tato restaurace je nyní zavřená, ale otevírá se {{ datetime }}. Stále si však můžete objednat na později!",
-    "MULTIPLE_SERVERS_IN_SAME_CITY_MODAL_TEXT": "Ve vašem městě je více družstev, můžete mezi nimi přecházet pomocí karet nebo přejetím doleva či doprava.",
     "ORDER__SHIPPED_AT__NOT_AVAILABLE": "Datum dodání již není k dispozici",
     "ORDER__SHIPPED_AT__EXPIRED": "Datum dodání vypršelo",
     "ORDER__SHIPPING_TIME_RANGE__NOT_AVAILABLE": "V současné době není k dispozici"
