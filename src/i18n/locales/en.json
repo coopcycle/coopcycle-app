@@ -20,6 +20,8 @@
     "SHIFT_JOIN_WAITLIST": "Join waitlist",
     "SHIFT_LEAVE_WAITLIST": "Leave waitlist",
     "SHIFT_WAITLISTED": "Waitlisted",
+    "SHIFT_REMINDER_TITLE": "Upcoming shift",
+    "SHIFT_REMINDER_BODY": "Your {{activity}} shift starts in {{minutes}} minutes",
     "HOLIDAY_REQUESTS": "Holiday requests",
     "NEW_HOLIDAY_REQUEST": "New holiday request",
     "NO_HOLIDAY_REQUESTS": "You have no holiday requests",

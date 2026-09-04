@@ -15,6 +15,7 @@ import {
 import { useStackNavigatorScreenOptions } from '../styles';
 
 import DrawerContent from '../components/DrawerContent';
+import ShiftReminderSync from '../shift/components/ShiftReminderSync';
 
 import { HeaderBackButton } from '@react-navigation/elements';
 import About from '../home/About';
@@ -92,35 +93,44 @@ const DrawerNav = ({
   showShiftsDrawerItem,
 }) => {
   return (
-    <Drawer.Navigator
-      drawerContent={props => <DrawerContent {...props} />}
-      initialRouteName={initialRouteName}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Drawer.Screen name="CheckoutNav" component={CheckoutNavigator} />
-      <Drawer.Screen name="DeliveryNav" component={DeliveryNavigator} />
-      <Drawer.Screen name="AccountNav" component={AccountNavigator} />
-      <Drawer.Screen name="AboutNav" component={AboutNavigator} />
-      <Drawer.Screen name="FeatureFlagsNav" component={FeatureFlagsNavigator} />
+    <>
+      {showShiftsDrawerItem && <ShiftReminderSync />}
+      <Drawer.Navigator
+        drawerContent={props => <DrawerContent {...props} />}
+        initialRouteName={initialRouteName}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Drawer.Screen name="CheckoutNav" component={CheckoutNavigator} />
+        <Drawer.Screen name="DeliveryNav" component={DeliveryNavigator} />
+        <Drawer.Screen name="AccountNav" component={AccountNavigator} />
+        <Drawer.Screen name="AboutNav" component={AboutNavigator} />
+        <Drawer.Screen
+          name="FeatureFlagsNav"
+          component={FeatureFlagsNavigator}
+        />
 
-      {isAuthenticated && user.hasRole('ROLE_COURIER') && (
-        <Drawer.Screen name="CourierNav" component={CourierNavigator} />
-      )}
-      {showShiftsDrawerItem && (
-        <Drawer.Screen name="ShiftNav" component={ShiftNavigator} />
-      )}
-      {showRestaurantsDrawerItem && (
-        <Drawer.Screen name="RestaurantNav" component={RestaurantNavigator} />
-      )}
-      {isAuthenticated && user.hasRole('ROLE_STORE') && (
-        <Drawer.Screen name="StoreNav" component={StoreNavigator} />
-      )}
-      {isAuthenticated &&
-        (user.hasRole('ROLE_DISPATCHER') || user.hasRole('ROLE_ADMIN')) && (
-          <Drawer.Screen name="DispatchNav" component={DispatchNavigator} />
+        {isAuthenticated && user.hasRole('ROLE_COURIER') && (
+          <Drawer.Screen name="CourierNav" component={CourierNavigator} />
         )}
-    </Drawer.Navigator>
+        {showShiftsDrawerItem && (
+          <Drawer.Screen name="ShiftNav" component={ShiftNavigator} />
+        )}
+        {showRestaurantsDrawerItem && (
+          <Drawer.Screen
+            name="RestaurantNav"
+            component={RestaurantNavigator}
+          />
+        )}
+        {isAuthenticated && user.hasRole('ROLE_STORE') && (
+          <Drawer.Screen name="StoreNav" component={StoreNavigator} />
+        )}
+        {isAuthenticated &&
+          (user.hasRole('ROLE_DISPATCHER') || user.hasRole('ROLE_ADMIN')) && (
+            <Drawer.Screen name="DispatchNav" component={DispatchNavigator} />
+          )}
+      </Drawer.Navigator>
+    </>
   );
 };
 

@@ -15,13 +15,16 @@ import {
 import PushNotification from '../../../notifications';
 import { navigateToOrder } from '../../../navigation/utils';
 import { navigationRef } from '../../../NavigationHolder';
+import NavigationHolder from '../../../NavigationHolder';
 import { EVENT as EVENT_DELIVERY } from '../../../domain/Delivery';
 import { EVENT as EVENT_ORDER } from '../../../domain/Order';
 import tracker from '../../../analytics/Tracker';
 import analyticsEvent from '../../../analytics/Event';
 import { loadOrder, loadOrderAndNavigate } from '../../Restaurant/actions';
 import { EVENT as EVENT_TASK_COLLECTION } from '../../../domain/TaskCollection';
+import { EVENT as EVENT_SHIFT } from '../../../domain/Shift';
 import { loadTasks, navigateAndLoadTasks } from '../../Courier/taskActions';
+import { apiSlice } from '../../api/slice';
 
 // As remote push notifications are configured very early,
 // most of the time the user won't be authenticated
@@ -85,6 +88,11 @@ export default ({ getState, dispatch }) => {
         dispatch(navigateAndLoadTasks(moment(event.data.date)));
       }
     }
+
+    if (event && event.name === EVENT_SHIFT.SCHEDULE_PUBLISHED) {
+      dispatch(apiSlice.util.invalidateTags(['MyShifts', 'OpenShifts']));
+      NavigationHolder.navigate('ShiftNav', { screen: 'MyShifts' });
+    }
   };
 
   /**
@@ -125,6 +133,14 @@ export default ({ getState, dispatch }) => {
           );
           break;
         }
+        case EVENT_SHIFT.SCHEDULE_PUBLISHED:
+          dispatch(apiSlice.util.invalidateTags(['MyShifts', 'OpenShifts']));
+          dispatch(
+            foregroundPushNotification(event.name, {
+              weekStart: event.data.weekStart,
+            }),
+          );
+          break;
         default:
           break;
       }

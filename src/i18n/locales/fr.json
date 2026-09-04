@@ -20,6 +20,8 @@
     "SHIFT_JOIN_WAITLIST": "Rejoindre la liste d'attente",
     "SHIFT_LEAVE_WAITLIST": "Quitter la liste d'attente",
     "SHIFT_WAITLISTED": "En liste d'attente",
+    "SHIFT_REMINDER_TITLE": "Créneau à venir",
+    "SHIFT_REMINDER_BODY": "Votre créneau {{activity}} commence dans {{minutes}} minutes",
     "HOLIDAY_REQUESTS": "Demandes de congés",
     "NEW_HOLIDAY_REQUEST": "Nouvelle demande de congé",
     "NO_HOLIDAY_REQUESTS": "Vous n'avez aucune demande de congé",
