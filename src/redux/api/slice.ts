@@ -8,10 +8,14 @@ import { Task } from '../../types/task';
 import {
   Address,
   FailureReason,
+  HolidayRequest,
+  HolidayRequestPayload,
   HydraCollection,
   PaymentMethodsOutput,
   PricingRuleSet,
   PutDeliveryBody,
+  Shift,
+  ShiftActivity,
   Store,
   StorePackage,
   StoreTimeSlot,
@@ -25,7 +29,13 @@ import {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['MyTasks'],
+  tagTypes: [
+    'MyTasks',
+    'ShiftActivities',
+    'MyShifts',
+    'OpenShifts',
+    'MyHolidayRequests',
+  ],
   // The "endpoints" represent operations and requests for this server
   // nodeId is passed in JSON-LD '@id' key, https://www.w3.org/TR/2014/REC-json-ld-20140116/#node-identifiers
   endpoints: builder => ({
@@ -331,6 +341,84 @@ export const apiSlice = createApi({
         },
       }),
     }),
+    getShiftActivities: builder.query<ShiftActivity[], void>({
+      query: () => 'api/shift_activities',
+      transformResponse: (response: HydraCollection<ShiftActivity>) =>
+        response['hydra:member'],
+      providesTags: ['ShiftActivities'],
+    }),
+    getMyShifts: builder.query<
+      Shift[],
+      { after: DateOnlyString; before: DateOnlyString }
+    >({
+      query: ({ after, before }) =>
+        `api/me/shifts?date[after]=${after}&date[before]=${before}`,
+      transformResponse: (response: HydraCollection<Shift>) =>
+        response['hydra:member'],
+      providesTags: ['MyShifts'],
+    }),
+    getOpenShifts: builder.query<
+      Shift[],
+      { after: DateOnlyString; before: DateOnlyString }
+    >({
+      query: ({ after, before }) =>
+        `api/shifts/open?date[after]=${after}&date[before]=${before}`,
+      transformResponse: (response: HydraCollection<Shift>) =>
+        response['hydra:member'],
+      providesTags: ['OpenShifts'],
+    }),
+    applyToShift: builder.mutation<Shift, Uri>({
+      query: (shiftUri: Uri) => ({
+        url: `${shiftUri}/apply`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/ld+json',
+          Accept: 'application/ld+json',
+        },
+        body: JSON.stringify({}),
+      }),
+      invalidatesTags: ['MyShifts', 'OpenShifts'],
+    }),
+    unapplyFromShift: builder.mutation<Shift, Uri>({
+      query: (shiftUri: Uri) => ({
+        url: `${shiftUri}/unapply`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/ld+json',
+          Accept: 'application/ld+json',
+        },
+        body: JSON.stringify({}),
+      }),
+      invalidatesTags: ['MyShifts', 'OpenShifts'],
+    }),
+    getMyHolidayRequests: builder.query<HolidayRequest[], void>({
+      query: () => 'api/me/holiday_requests',
+      transformResponse: (response: HydraCollection<HolidayRequest>) =>
+        response['hydra:member'],
+      providesTags: ['MyHolidayRequests'],
+    }),
+    postHolidayRequest: builder.mutation<
+      HolidayRequest,
+      HolidayRequestPayload
+    >({
+      query: (payload: HolidayRequestPayload) => ({
+        url: 'api/holiday_requests',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+          Accept: 'application/ld+json',
+        },
+        body: JSON.stringify(payload),
+      }),
+      invalidatesTags: ['MyHolidayRequests'],
+    }),
+    deleteHolidayRequest: builder.mutation<void, Uri>({
+      query: (uri: Uri) => ({
+        url: uri,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['MyHolidayRequests'],
+    }),
   }),
 });
 
@@ -365,6 +453,14 @@ export const {
   useUpdateOrderMutation,
   usePostIncidentMutation,
   useRecurrenceRulesGenerateOrdersMutation,
+  useGetShiftActivitiesQuery,
+  useGetMyShiftsQuery,
+  useGetOpenShiftsQuery,
+  useApplyToShiftMutation,
+  useUnapplyFromShiftMutation,
+  useGetMyHolidayRequestsQuery,
+  usePostHolidayRequestMutation,
+  useDeleteHolidayRequestMutation,
 } = apiSlice;
 
 export const clearApiState = apiSlice.util.resetApiState;

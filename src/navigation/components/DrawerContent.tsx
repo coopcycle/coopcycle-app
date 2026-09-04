@@ -202,6 +202,12 @@ class DrawerContent extends Component {
                   onPress={() => this.props.navigation.navigate('CourierNav')}
                 />
               )}
+              {isAuthenticated && user.hasRole('ROLE_COURIER') && (
+                <DrawerItem
+                  label={this.props.t('SHIFTS')}
+                  onPress={() => this.props.navigation.navigate('ShiftNav')}
+                />
+              )}
               {isAuthenticated &&
                 (user.hasRole('ROLE_DISPATCHER') ||
                   user.hasRole('ROLE_ADMIN')) && (

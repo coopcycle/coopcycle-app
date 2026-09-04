@@ -269,3 +269,60 @@ export type IncidentMetadataSuggestion = {
   tasks: EditTaskPayload[];
   order: OrderPayload;
 };
+
+export type ShiftActivity = JsonLdEntity & {
+  id: number;
+  slug: string;
+  label: string;
+  color: string | null;
+};
+
+export type ShiftUser = {
+  '@id': Uri;
+  '@type': string;
+  username: string;
+};
+
+export type ShiftAssignment = JsonLdEntity & {
+  user: ShiftUser;
+  createdAt: string;
+};
+
+export type ShiftWaitlistEntry = JsonLdEntity & {
+  user: ShiftUser;
+  createdAt: string;
+};
+
+// A shift's own schedule week is not published/visible to couriers unless a
+// dispatcher has published it — see the web app's SchedulePublication entity.
+export type Shift = JsonLdEntity & {
+  id: number;
+  // Slug of a ShiftActivity (e.g. "delivery"), not an IRI — see the web app's
+  // Shift::$activity.
+  activity: string;
+  startsAt: string;
+  endsAt: string;
+  slots: number;
+  breakMinutes: number;
+  comment?: string | null;
+  assignments: ShiftAssignment[];
+  waitlist: ShiftWaitlistEntry[];
+  requiredSkills: Uri[];
+};
+
+export type HolidayRequestStatus = 'pending' | 'approved' | 'rejected';
+
+export type HolidayRequest = JsonLdEntity & {
+  id: number;
+  startDate: string;
+  endDate: string;
+  status: HolidayRequestStatus;
+  comment?: string | null;
+  createdAt: string;
+};
+
+export type HolidayRequestPayload = {
+  startDate: string;
+  endDate: string;
+  comment?: string;
+};

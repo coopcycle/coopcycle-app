@@ -26,6 +26,7 @@ import CourierNavigator from './CourierNavigator';
 import DeliveryNavigator from './DeliveryNavigator';
 import DispatchNavigator from './DispatchNavigator';
 import RestaurantNavigator from './RestaurantNavigator';
+import ShiftNavigator from './ShiftNavigator';
 import StoreNavigator from './StoreNavigator';
 
 const AboutStack = createStackNavigator();
@@ -102,6 +103,9 @@ const DrawerNav = ({
 
       {isAuthenticated && user.hasRole('ROLE_COURIER') && (
         <Drawer.Screen name="CourierNav" component={CourierNavigator} />
+      )}
+      {isAuthenticated && user.hasRole('ROLE_COURIER') && (
+        <Drawer.Screen name="ShiftNav" component={ShiftNavigator} />
       )}
       {showRestaurantsDrawerItem && (
         <Drawer.Screen name="RestaurantNav" component={RestaurantNavigator} />
