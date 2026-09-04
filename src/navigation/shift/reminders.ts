@@ -71,21 +71,9 @@ export function computeShiftReminderRequests(
 }
 
 /**
- * Cancels every previously-scheduled shift reminder and reschedules a fresh
- * set from the current shift list. Simpler and safer than diffing at this
- * scale (a courier has at most a handful of shifts in the reminder window).
+ * Cancels every previously-scheduled shift reminder, regardless of source.
  */
-export async function syncShiftReminders(
-  shifts: Shift[],
-  activities: ShiftActivity[],
-): Promise<void> {
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
-      name: i18n.t('SHIFT_REMINDER_TITLE'),
-      importance: Notifications.AndroidImportance.HIGH,
-    });
-  }
-
+export async function cancelAllShiftReminders(): Promise<void> {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   await Promise.all(
     scheduled
@@ -98,6 +86,33 @@ export async function syncShiftReminders(
         ),
       ),
   );
+}
+
+/**
+ * Cancels every previously-scheduled shift reminder and reschedules a fresh
+ * set from the current shift list. Simpler and safer than diffing at this
+ * scale (a courier has at most a handful of shifts in the reminder window).
+ *
+ * When `enabled` is false (the courier turned reminders off in Shift
+ * Settings), reminders are only cancelled, never rescheduled.
+ */
+export async function syncShiftReminders(
+  shifts: Shift[],
+  activities: ShiftActivity[],
+  enabled: boolean = true,
+): Promise<void> {
+  await cancelAllShiftReminders();
+
+  if (!enabled) {
+    return;
+  }
+
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
+      name: i18n.t('SHIFT_REMINDER_TITLE'),
+      importance: Notifications.AndroidImportance.HIGH,
+    });
+  }
 
   const requests = computeShiftReminderRequests(shifts, activities);
 

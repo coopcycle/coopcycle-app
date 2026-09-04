@@ -10,6 +10,7 @@ import MyShiftsPage from '../shift/MyShiftsPage';
 import OpenShiftsPage from '../shift/OpenShiftsPage';
 import HolidayRequestsPage from '../shift/HolidayRequestsPage';
 import NewHolidayRequest from '../shift/NewHolidayRequest';
+import ShiftSettingsPage from '../shift/ShiftSettingsPage';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,21 @@ export default () => {
         options={({ navigation }) => ({
           title: i18n.t('SHIFTS'),
           headerLeft: headerLeft(navigation, 'menuBtnShift'),
+          headerRight: () => (
+            <HeaderButtons>
+              <HeaderButton
+                iconName="settings-outline"
+                onPress={() => navigation.navigate('ShiftSettings')}
+                testID="shiftSettingsBtn"
+              />
+            </HeaderButtons>
+          ),
         })}
+      />
+      <Stack.Screen
+        name="ShiftSettings"
+        component={ShiftSettingsPage}
+        options={{ title: i18n.t('SHIFT_SETTINGS') }}
       />
       <Stack.Screen
         name="MyShifts"

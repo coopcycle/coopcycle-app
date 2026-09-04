@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   useGetMyShiftsQuery,
   useGetShiftActivitiesQuery,
 } from '../../../redux/api/slice';
+import { selectShiftRemindersEnabled } from '../../../redux/Shift/selectors';
 import { getShiftsDateRange } from '../utils';
 import { syncShiftReminders } from '../reminders';
 
@@ -11,16 +13,18 @@ import { syncShiftReminders } from '../reminders';
  * courier's current shifts. Re-runs whenever `MyShifts` is (re)fetched —
  * including after applying/withdrawing from a shift, or after receiving a
  * "schedule published" push (see PushNotificationMiddleware), which
- * invalidates the same RTK Query cache tag.
+ * invalidates the same RTK Query cache tag — and whenever the courier
+ * toggles reminders on/off in Shift Settings.
  */
 export function useShiftReminderSync(): void {
   const range = getShiftsDateRange();
   const { data: shifts } = useGetMyShiftsQuery(range);
   const { data: activities } = useGetShiftActivitiesQuery();
+  const remindersEnabled = useSelector(selectShiftRemindersEnabled);
 
   useEffect(() => {
     if (shifts && activities) {
-      syncShiftReminders(shifts, activities);
+      syncShiftReminders(shifts, activities, remindersEnabled);
     }
-  }, [shifts, activities]);
+  }, [shifts, activities, remindersEnabled]);
 }
