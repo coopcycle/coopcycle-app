@@ -136,6 +136,14 @@ export const selectShowRestaurantsDrawerItem = createSelector(
     restaurants.length > 0,
 );
 
+export const selectShowShiftsDrawerItem = createSelector(
+  selectUser,
+  selectIsAuthenticated,
+  state => state.app.settings.shift_planning_enabled,
+  (user, isAuthenticated, shiftPlanningEnabled) =>
+    isAuthenticated && user.hasRole('ROLE_COURIER') && !!shiftPlanningEnabled,
+);
+
 export const selectServersWithURL = createSelector(
   state => state.app.servers,
   servers => {

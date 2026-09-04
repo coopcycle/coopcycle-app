@@ -24,6 +24,7 @@ import Mailto from '../../components/Mailto';
 import {
   selectIsAuthenticated,
   selectShowRestaurantsDrawerItem,
+  selectShowShiftsDrawerItem,
   selectUser,
 } from '../../redux/App/selectors';
 
@@ -202,7 +203,7 @@ class DrawerContent extends Component {
                   onPress={() => this.props.navigation.navigate('CourierNav')}
                 />
               )}
-              {isAuthenticated && user.hasRole('ROLE_COURIER') && (
+              {this.props.showShiftsDrawerItem && (
                 <DrawerItem
                   label={this.props.t('SHIFTS')}
                   onPress={() => this.props.navigation.navigate('ShiftNav')}
@@ -299,6 +300,7 @@ function mapStateToProps(state) {
   return {
     user: selectUser(state),
     isAuthenticated: selectIsAuthenticated(state),
+    showShiftsDrawerItem: selectShowShiftsDrawerItem(state),
     restaurants: state.restaurant.myRestaurants,
     stores: state.store.myStores,
     brandName: state.app.settings.brand_name,

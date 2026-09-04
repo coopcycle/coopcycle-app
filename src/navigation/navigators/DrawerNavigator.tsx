@@ -9,6 +9,7 @@ import {
   selectInitialRouteName,
   selectIsAuthenticated,
   selectShowRestaurantsDrawerItem,
+  selectShowShiftsDrawerItem,
   selectUser,
 } from '../../redux/App/selectors';
 import { useStackNavigatorScreenOptions } from '../styles';
@@ -77,6 +78,7 @@ function mapStateToProps(state) {
     user,
     initialRouteName: selectInitialRouteName(state),
     showRestaurantsDrawerItem: selectShowRestaurantsDrawerItem(state),
+    showShiftsDrawerItem: selectShowShiftsDrawerItem(state),
   };
 }
 
@@ -87,6 +89,7 @@ const DrawerNav = ({
   user,
   isAuthenticated,
   showRestaurantsDrawerItem,
+  showShiftsDrawerItem,
 }) => {
   return (
     <Drawer.Navigator
@@ -104,7 +107,7 @@ const DrawerNav = ({
       {isAuthenticated && user.hasRole('ROLE_COURIER') && (
         <Drawer.Screen name="CourierNav" component={CourierNavigator} />
       )}
-      {isAuthenticated && user.hasRole('ROLE_COURIER') && (
+      {showShiftsDrawerItem && (
         <Drawer.Screen name="ShiftNav" component={ShiftNavigator} />
       )}
       {showRestaurantsDrawerItem && (
