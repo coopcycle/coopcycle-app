@@ -391,8 +391,19 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['MyShifts', 'OpenShifts'],
     }),
-    getMyHolidayRequests: builder.query<HolidayRequest[], void>({
-      query: () => 'api/me/holiday_requests',
+    getMyHolidayRequests: builder.query<
+      HolidayRequest[],
+      { after: DateOnlyString; before: DateOnlyString } | void
+    >({
+      // The range is optional, and honoured only by instances that support it:
+      // /api/me/holiday_requests has a custom provider, so an older backend
+      // ignores these params and answers with the courier's whole history.
+      // Consumers filter the result again client-side — see
+      // `filterHolidayRequestsByWeek`.
+      query: range =>
+        range
+          ? `api/me/holiday_requests?date[after]=${range.after}&date[before]=${range.before}`
+          : 'api/me/holiday_requests',
       transformResponse: (response: HydraCollection<HolidayRequest>) =>
         response['hydra:member'],
       providesTags: ['MyHolidayRequests'],

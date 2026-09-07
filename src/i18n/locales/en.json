@@ -12,8 +12,13 @@
     "SHIFTS": "Shifts",
     "MY_SHIFTS": "My shifts",
     "OPEN_SHIFTS": "Open shifts",
-    "NO_SHIFTS": "You have no shifts scheduled",
-    "NO_OPEN_SHIFTS": "There are no open shifts right now",
+    "NO_SHIFTS_THIS_WEEK": "No shifts this week",
+    "NO_OPEN_SHIFTS_THIS_WEEK": "No open shifts this week",
+    "SHIFT_PREVIOUS_WEEK": "Previous week",
+    "SHIFT_NEXT_WEEK": "Next week",
+    "SHIFT_THIS_WEEK": "This week",
+    "SHIFT_WORKED": "Worked",
+    "SHIFT_ENDED": "Ended",
     "SHIFT_SLOTS_TAKEN": "{{taken}}/{{total}} taken",
     "SHIFT_APPLY": "Apply",
     "SHIFT_WITHDRAW": "Withdraw",
@@ -27,7 +32,7 @@
     "SHIFT_REMINDERS_ENABLED_HELP": "Get a notification on this device shortly before one of your shifts starts.",
     "HOLIDAY_REQUESTS": "Holiday requests",
     "NEW_HOLIDAY_REQUEST": "New holiday request",
-    "NO_HOLIDAY_REQUESTS": "You have no holiday requests",
+    "NO_HOLIDAY_REQUESTS_THIS_WEEK": "No holiday requests this week",
     "HOLIDAY_START_DATE": "Start date",
     "HOLIDAY_END_DATE": "End date",
     "HOLIDAY_END_DATE_BEFORE_START_DATE": "End date must be after start date",
@@ -686,5 +691,5 @@
     "NO_THANKS": "No, thanks",
     "YES": "Yes",
     "FIND_ME": "Find me"
-}
+  }
 }

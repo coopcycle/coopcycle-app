@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -20,9 +21,15 @@ import {
   useGetMyHolidayRequestsQuery,
 } from '../../redux/api/slice';
 import { HolidayRequest, HolidayRequestStatus } from '../../redux/api/types';
+import { selectShiftSelectedWeek } from '../../redux/Shift/selectors';
 import { showAlert } from '../../utils/alert';
+import WeekSelectHeader from './components/WeekSelectHeader';
+import { filterHolidayRequestsByWeek, getWeekRange } from './utils';
 
-const statusAction: Record<HolidayRequestStatus, 'warning' | 'success' | 'error'> = {
+const statusAction: Record<
+  HolidayRequestStatus,
+  'warning' | 'success' | 'error'
+> = {
   pending: 'warning',
   approved: 'success',
   rejected: 'error',
@@ -36,13 +43,22 @@ const statusLabelKey: Record<HolidayRequestStatus, string> = {
 
 export default function HolidayRequestsPage() {
   const { t } = useTranslation();
+  const selectedWeek = useSelector(selectShiftSelectedWeek);
+  const range = getWeekRange(selectedWeek);
 
   const {
-    data: holidayRequests = [],
+    data: allHolidayRequests = [],
     isLoading,
     isFetching,
     refetch,
-  } = useGetMyHolidayRequestsQuery();
+  } = useGetMyHolidayRequestsQuery(range);
+
+  // Filtered again here: an instance that predates week filtering on this
+  // endpoint ignores the query params and returns everything.
+  const holidayRequests = filterHolidayRequestsByWeek(
+    allHolidayRequests,
+    range,
+  );
 
   const [deleteHolidayRequest] = useDeleteHolidayRequestMutation();
 
@@ -64,56 +80,58 @@ export default function HolidayRequestsPage() {
     );
   };
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
     <View style={{ flex: 1 }}>
-      <FlatList
-        contentContainerStyle={
-          holidayRequests.length === 0
-            ? { flex: 1, justifyContent: 'center' }
-            : undefined
-        }
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
-        data={holidayRequests}
-        keyExtractor={item => `${item['@id']}`}
-        ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => (
-          <Box className="px-3 py-3">
-            <HStack className="justify-between items-center">
-              <VStack space="xs" className="flex-1">
-                <Text className="font-bold">
-                  {moment(item.startDate).format('LL')}
-                  {' — '}
-                  {moment(item.endDate).format('LL')}
-                </Text>
-                {!!item.comment && <Text>{item.comment}</Text>}
-              </VStack>
-              <VStack space="xs" className="items-end">
-                <Badge action={statusAction[item.status]}>
-                  <BadgeText>{t(statusLabelKey[item.status])}</BadgeText>
-                </Badge>
-                {item.status === 'pending' && (
-                  <Pressable onPress={() => onDelete(item)}>
-                    <Text className="text-error-600">{t('CANCEL')}</Text>
-                  </Pressable>
-                )}
-              </VStack>
-            </HStack>
-          </Box>
-        )}
-        ListEmptyComponent={
-          <Text className="text-center">{t('NO_HOLIDAY_REQUESTS')}</Text>
-        }
-      />
+      {/* Outside the loading branch, so a slow week can still be navigated away from */}
+      <WeekSelectHeader />
+      {isLoading ? (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <FlatList
+          contentContainerStyle={
+            holidayRequests.length === 0
+              ? { flex: 1, justifyContent: 'center' }
+              : undefined
+          }
+          refreshControl={
+            <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+          }
+          data={holidayRequests}
+          keyExtractor={item => `${item['@id']}`}
+          ItemSeparatorComponent={ItemSeparator}
+          renderItem={({ item }) => (
+            <Box className="px-3 py-3">
+              <HStack className="justify-between items-center">
+                <VStack space="xs" className="flex-1">
+                  <Text className="font-bold">
+                    {moment(item.startDate).format('LL')}
+                    {' — '}
+                    {moment(item.endDate).format('LL')}
+                  </Text>
+                  {!!item.comment && <Text>{item.comment}</Text>}
+                </VStack>
+                <VStack space="xs" className="items-end">
+                  <Badge action={statusAction[item.status]}>
+                    <BadgeText>{t(statusLabelKey[item.status])}</BadgeText>
+                  </Badge>
+                  {item.status === 'pending' && (
+                    <Pressable onPress={() => onDelete(item)}>
+                      <Text className="text-error-600">{t('CANCEL')}</Text>
+                    </Pressable>
+                  )}
+                </VStack>
+              </HStack>
+            </Box>
+          )}
+          ListEmptyComponent={
+            <Text className="text-center">
+              {t('NO_HOLIDAY_REQUESTS_THIS_WEEK')}
+            </Text>
+          }
+        />
+      )}
     </View>
   );
 }
