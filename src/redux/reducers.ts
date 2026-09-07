@@ -41,6 +41,7 @@ import checkoutReducer from './Checkout/reducers';
 import deliveryReducer from './Delivery/reducers';
 import restaurantReducer from './Restaurant/reducers';
 import storeReducer from './Store/reducers';
+import { shiftUiReducer } from './Shift/uiReducer';
 import keywordFiltersReducer from './Dispatch/keywordFiltersSlice';
 import selectedTasksReducer from './Dispatch/updateSelectedTasksSlice';
 
@@ -170,6 +171,12 @@ const checkoutPersistConfig = {
   ],
 };
 
+const shiftUiPersistConfig = {
+  key: 'ui.shift',
+  storage: AsyncStorage,
+  whitelist: ['remindersEnabled'],
+};
+
 export default combineReducers({
   entities: combineReducers({
     tasks: persistReducer(taskEntitiesPersistConfig, tasksEntityReducer),
@@ -183,6 +190,7 @@ export default combineReducers({
   checkout: persistReducer(checkoutPersistConfig, checkoutReducer),
   ui: combineReducers({
     tasks: persistReducer(tasksUiPersistConfig, tasksUiReducer),
+    shift: persistReducer(shiftUiPersistConfig, shiftUiReducer),
   }),
   //todo move more properties from appDispatchReducer into `logistics` state
   dispatch: combineReducers({
