@@ -191,9 +191,11 @@ jobs:
         run: applesimutils --list
 
       - name: Run Detox tests
-        # --workers 2: Detox clones the simulator and runs suites in parallel.
+        # --maxWorkers 2: Detox clones the simulator and runs suites in parallel.
         # The macOS runner has enough cores/RAM for two; raise cautiously.
-        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info --workers 2
+        # Must be --maxWorkers, not --workers: Detox has no such option of its
+        # own, so it forwards the flag to Jest, which only knows --maxWorkers.
+        run: node node_modules/.bin/detox test -c ios.sim.release --headless --loglevel info --maxWorkers 2
 
       # See screenshot specifications
       # https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
