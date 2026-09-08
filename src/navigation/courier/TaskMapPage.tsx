@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { Component, useMemo, useCallback, useEffect } from 'react';
+import { Component, useMemo, useCallback, useEffect, useRef } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import RNPinScreen from 'react-native-pin-screen';
@@ -22,10 +22,7 @@ import {
   selectTaskSelectedDate,
   selectTaskFilters,
 } from '../../redux/Courier';
-import {
-  selectIsCentrifugoConnected,
-  selectSettingsLatLng,
-} from '../../redux/App/selectors';
+import { selectSettingsLatLng } from '../../redux/App/selectors';
 import { useGetMyTasksQuery } from '../../redux/api/slice';
 import DateSelectHeader from '../../components/DateSelectHeader';
 import TasksMapView from '../../components/TasksMapView';
@@ -70,7 +67,6 @@ function disableKeepAwake() {
 function TaskMapPage({
   navigation,
   route,
-  isCentrifugoConnected,
   keepAwake,
   connectCent
 }) {
@@ -114,11 +110,20 @@ function TaskMapPage({
     navigateToTask(navigation, route, task, taskListItems)
   }, [navigation, route, taskListItems]);
 
+  // Requested once per mount, and deliberately *not* re-run when
+  // `isCentrifugoConnected` flips: the client reconnects itself with backoff
+  // after a drop, so re-dispatching on every disconnect only stranded the
+  // reconnecting client and leaked a websocket per network blip.
+  const hasRequestedConnection = useRef(false);
+
   useEffect(() => {
-    if (!isCentrifugoConnected) {
-      connectCent()
+    if (hasRequestedConnection.current) {
+      return;
     }
-  }, [isCentrifugoConnected, connectCent]);
+
+    hasRequestedConnection.current = true;
+    connectCent();
+  }, [connectCent]);
 
   useFocusEffect(
     useCallback(() => {
@@ -163,7 +168,6 @@ function TaskMapPage({
 function mapStateToProps(state) {
   return {
     keepAwake: selectKeepAwake(state),
-    isCentrifugoConnected: selectIsCentrifugoConnected(state),
   };
 }
 

@@ -10,8 +10,23 @@ export const CENTRIFUGO_MESSAGE = '@centrifugo/MESSAGE';
 export const connectCentrifugo = createAction('@centrifugo/CONNECT');
 export const disconnectCentrifugo = createAction('@centrifugo/DISCONNECT');
 
-export const centrifugoConnected = createAction('@centrifugo/CONNECTED');
-export const centrifugoDisconnected = createAction('@centrifugo/DISCONNECTED');
+/**
+ * The context centrifuge-js hands to its `connect` / `disconnect` listeners,
+ * and which we also synthesise for a disconnect we asked for ourselves. Only
+ * `reason` is ever read, so the rest is left loose.
+ */
+export type CentrifugoContext = {
+  reason?: string;
+  reconnect?: boolean;
+  [key: string]: unknown;
+};
+
+export const centrifugoConnected = createAction<CentrifugoContext | undefined>(
+  '@centrifugo/CONNECTED',
+);
+export const centrifugoDisconnected = createAction<
+  CentrifugoContext | undefined
+>('@centrifugo/DISCONNECTED');
 
 export const _message = createAction(CENTRIFUGO_MESSAGE);
 
