@@ -37,6 +37,16 @@ datadogConfig.site = 'US1';
 datadogConfig.longTaskThresholdMs = 100;
 // Optional: enable or disable native crash reports
 datadogConfig.nativeCrashReportEnabled = true;
+// Report iOS app hangs, the equivalent of an Android ANR. Disabled by default,
+// which left us with no visibility at all into iOS freezes while Android ANRs
+// were being reported. 2s is Datadog's suggested starting threshold; lowering it
+// reports shorter hangs at the cost of much more noise.
+// @see https://docs.datadoghq.com/real_user_monitoring/error_tracking/mobile/ios/#configure-the-app-hang-threshold
+datadogConfig.appHangThreshold = 2;
+// Report iOS terminations by the watchdog, which is how an out-of-memory kill
+// surfaces. Without this an OOM ends the session silently and looks like the
+// user simply closed the app, hiding the outcome our Memory Warnings lead to.
+datadogConfig.trackWatchdogTerminations = true;
 // Optional: Sample RUM sessions (% of session are sent to Datadog. Default is 100%).
 datadogConfig.sessionSamplingRate = __DEV__ ? 100 : 20;
 // Optional: Sample tracing integrations for network calls between your app and your backend (% of calls to your instrumented backend are linked from the RUM view to the APM view. Default is 20%)
