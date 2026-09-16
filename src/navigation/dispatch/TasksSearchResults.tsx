@@ -18,18 +18,20 @@ export default function TasksSearchResults({ route }) {
   const tasksEntities = useSelector(selectTasksEntities);
   const taskLists = useSelector(selectTaskLists);
 
+  // `useNavigateOnSuccess` returns here with `navigation.navigate({ name })`
+  // and no params; when the route is no longer in the stack the router pushes a
+  // fresh one, so `route.params` is undefined.
+  const searchQuery = route.params?.searchQuery ?? '';
+
   const filteredUnassignedTasks = filterTasksByKeyword(
     unassignedTasks,
-    route.params.searchQuery,
+    searchQuery,
   );
   const filteredTasksLists = taskLists
     .map(taskList => {
       const filteredTaskList = { ...taskList };
       const tasks = getTaskListTasks(taskList, tasksEntities);
-      const filteredTasks = filterTasksByKeyword(
-        tasks,
-        route.params.searchQuery,
-      );
+      const filteredTasks = filterTasksByKeyword(tasks, searchQuery);
       filteredTaskList.tasksIds = filteredTasks.map(task => task['@id']);
       filteredTaskList.appendTaskListTestID = 'SearchResults';
 
@@ -41,7 +43,7 @@ export default function TasksSearchResults({ route }) {
     <BasicSafeAreaView>
       <View style={styles.view} testID="dispatchTasksSearchResults">
         <Text style={styles.text}>
-          Search results for '{route.params.searchQuery}'
+          Search results for '{searchQuery}'
         </Text>
       </View>
       <GroupedTasks

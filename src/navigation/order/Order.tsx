@@ -24,7 +24,11 @@ const Order = ({ route }: RouteType) => {
     () => getAspectRatio(mapDimensions),
     [mapDimensions],
   );
-  const { orderNumber, isFromCourier, orderDate, taskIds } = route.params;
+  // `Order` is the initial route of OrderNavigator, which is registered with no
+  // `initialParams`. Any mount that does not carry the `{ screen, params }`
+  // payload (deep link, state restoration, a push notification handled before
+  // the navigator is ready) lands here with no params at all.
+  const { orderNumber, isFromCourier, orderDate, taskIds } = route.params ?? {};
   const selectSelector = isFromCourier
     ? selectTasksByOrderCourier
     : selectTasksByOrderLogistics;
@@ -81,7 +85,13 @@ const Order = ({ route }: RouteType) => {
     setMapDimensions({ height, width });
   };
 
-  if (isLoading || taskCtxLoading || isFetching || taskCtxFetching) {
+  if (
+    !orderNumber ||
+    isLoading ||
+    taskCtxLoading ||
+    isFetching ||
+    taskCtxFetching
+  ) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator animating={true} size="large" />

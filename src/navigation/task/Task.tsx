@@ -154,7 +154,7 @@ class Task extends Component {
         success,
       },
     });
-    setTimeout(() => this.swipeRow.current.closeRow(), 250);
+    setTimeout(() => this.swipeRow.current?.closeRow(), 250);
   }
 
   normalizeTask(task: TaskType | undefined) {
