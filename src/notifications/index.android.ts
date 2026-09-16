@@ -33,6 +33,23 @@ export const parseNotification = (remoteMessage, isForeground) => {
   };
 };
 
+/**
+ * Push notifications need Google Play Services, which are absent on
+ * de-Googled Android builds (CalyxOS, /e/OS, LineageOS...). Every entry point
+ * below can reject or throw there; the app must keep working without push
+ * rather than surface an unhandled rejection.
+ * @see https://github.com/coopcycle/coopcycle-app/issues/2113
+ */
+const onPushUnavailable = (step: string, e: unknown) => {
+  console.log(`Push notifications unavailable (${step}):`, e);
+};
+
+const registerToken = (options: { onRegister: (token: string) => void }) => {
+  getToken(getMessaging())
+    .then(fcmToken => options.onRegister(fcmToken))
+    .catch(e => onPushUnavailable('getToken', e));
+};
+
 let notificationOpenedAppListener = () => {};
 let notificationListener = () => {};
 let dataListener = () => {};
@@ -67,26 +84,30 @@ class PushNotification {
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
       ).then(results => {
         if (PermissionsAndroid.RESULTS.GRANTED === results) {
-          getToken(getMessaging())
-            .then(fcmToken => {
-              options.onRegister(fcmToken);
-            });
+          registerToken(options);
         }
       });
     } else {
-      getToken(getMessaging())
-        .then(fcmToken => options.onRegister(fcmToken));
+      registerToken(options);
     }
 
-    tokenRefreshListener = onTokenRefresh(getMessaging(), fcmToken =>
-      options.onRegister(fcmToken),
-    );
+    try {
+      tokenRefreshListener = onTokenRefresh(getMessaging(), fcmToken =>
+        options.onRegister(fcmToken),
+      );
+    } catch (e) {
+      onPushUnavailable('onTokenRefresh', e);
+    }
   }
 
   static getInitialNotification() {
     return getInitialNotification(getMessaging())
       .then(remoteMessage => {
         return remoteMessage ? parseNotification(remoteMessage, false) : null;
+      })
+      .catch(e => {
+        onPushUnavailable('getInitialNotification', e);
+        return null;
       });
   }
 

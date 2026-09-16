@@ -18,6 +18,9 @@ import com.facebook.react.config.ReactFeatureFlags
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 
+import android.os.Handler
+import android.os.Looper
+import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.gms.security.ProviderInstaller.ProviderInstallListener
@@ -52,7 +55,12 @@ class MainApplication : MultiDexApplication(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    upgradeSecurityProvider()
+    // Deferred so it can never delay startup: despite its name,
+    // installIfNeededAsync binds to Google Play Services on the calling thread
+    // before going async, which stalls on de-Googled builds where GMS is
+    // absent or provided by microG.
+    // @see https://github.com/coopcycle/coopcycle-app/issues/2113
+    Handler(Looper.getMainLooper()).post { upgradeSecurityProvider() }
     try {
       DefaultNewArchitectureEntryPoint.releaseLevel = ReleaseLevel.valueOf(BuildConfig.REACT_NATIVE_RELEASE_LEVEL.uppercase())
     } catch (e: IllegalArgumentException) {
@@ -68,11 +76,23 @@ class MainApplication : MultiDexApplication(), ReactApplication {
   }
 
   private fun upgradeSecurityProvider() {
-    ProviderInstaller.installIfNeededAsync(this, object : ProviderInstallListener {
-      override fun onProviderInstalled() {}
-      override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent?) {
-        GoogleApiAvailability.getInstance().showErrorNotification(this@MainApplication, errorCode);
-      }
-    });
+    try {
+      ProviderInstaller.installIfNeededAsync(this, object : ProviderInstallListener {
+        override fun onProviderInstalled() {}
+        override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent?) {
+          // Only nag when Play Services are actually present but need attention.
+          // On a device without them the notification is pure noise: there is
+          // nothing the user can do about it.
+          if (errorCode != ConnectionResult.SERVICE_MISSING &&
+              errorCode != ConnectionResult.SERVICE_INVALID) {
+            GoogleApiAvailability.getInstance().showErrorNotification(this@MainApplication, errorCode)
+          }
+        }
+      })
+    } catch (e: Throwable) {
+      // The security provider is an optional upgrade; the app must still start
+      // when Play Services cannot supply one.
+      e.printStackTrace()
+    }
   }
 }

@@ -140,6 +140,15 @@ export default ({ getState, dispatch }) => {
             }
           });
         },
+        error => {
+          // The SDK relies on Google Play Services location APIs, which are
+          // absent on de-Googled Android builds. Without this callback the
+          // failure was silent and setBackgroundGeolocationEnabled never fired,
+          // leaving the UI to believe tracking was starting.
+          // @see https://github.com/coopcycle/coopcycle-app/issues/2113
+          console.log('BackgroundGeolocation is unavailable:', error);
+          dispatch(setBackgroundGeolocationEnabled(false));
+        },
       );
     } else {
       BackgroundGeolocation.stop();

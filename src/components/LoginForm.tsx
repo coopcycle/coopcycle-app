@@ -36,16 +36,53 @@ import {
 } from '../redux/App/actions';
 import FacebookButton from './FacebookButton';
 
-class LoginForm extends Component {
+type LoginFormProps = {
+  authenticationFailure: (message: string) => void;
+  clearErrors: () => void;
+  errors?: string[];
+  googleSignIn: (idToken: string) => void;
+  loginWithFacebook: (accessToken: string) => void;
+  onForgotPassword: () => void;
+  onSubmit: (email: string, password: string) => void;
+  signInWithApple: (identityToken: string) => void;
+  t: (key: string) => string;
+  withFacebook?: boolean;
+  withGoogle?: boolean;
+};
+
+type LoginFormState = {
+  hasPlayServices: boolean;
+};
+
+class LoginForm extends Component<LoginFormProps, LoginFormState> {
   constructor(props) {
     super(props);
 
     this._passwordInput = null;
+    // GoogleSigninButton is a native com.google.android.gms.common.SignInButton;
+    // mounting it without Play Services (de-Googled builds) is not safe, so the
+    // button stays hidden until availability is confirmed.
+    // @see https://github.com/coopcycle/coopcycle-app/issues/2113
+    this.state = { hasPlayServices: false };
   }
 
   componentDidMount() {
     if (Platform.OS === 'ios') {
       Settings.setAppID(Config.FACEBOOK_APP_ID);
+    }
+
+    if (this.props.withGoogle) {
+      GoogleSignin.configure({
+        scopes: [
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile',
+        ], // [Android] what API you want to access on behalf of the user, default is email and profile
+        webClientId: Config.GOOGLE_SIGN_IN_CLIENT_ID, // client ID of type WEB for your server (needed to verify user ID and offline access)
+      });
+
+      GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: false })
+        .then(() => this.setState({ hasPlayServices: true }))
+        .catch(e => console.log('Google Sign-In unavailable:', e));
     }
   }
 
@@ -77,21 +114,6 @@ class LoginForm extends Component {
   }
 
   render() {
-    GoogleSignin.configure({
-      scopes: [
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile',
-      ], // [Android] what API you want to access on behalf of the user, default is email and profile
-      webClientId: Config.GOOGLE_SIGN_IN_CLIENT_ID, // client ID of type WEB for your server (needed to verify user ID and offline access)
-      // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      // hostedDomain: '', // specifies a hosted domain restriction
-      // forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-      // accountName: '', // [Android] specifies an account name on the device that should be used
-      // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-      // googleServicePlistPath: '', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
-      // openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
-      // profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
-    });
 
     const initialValues = {
       email: '',
@@ -211,7 +233,7 @@ class LoginForm extends Component {
                     />
                   </Box>
                 ) : null}
-                {this.props.withGoogle ? (
+                {this.props.withGoogle && this.state.hasPlayServices ? (
                   <GoogleSigninButton
                     style={{
                       width: '100%',
