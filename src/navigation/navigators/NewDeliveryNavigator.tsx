@@ -7,12 +7,14 @@ import { useStackNavigatorScreenOptions } from '../styles';
 const NewDeliveryStack = createStackNavigator();
 
 export const NewDeliveryNavigator = () => {
-  const screenOptions = useStackNavigatorScreenOptions({
-    detachInactiveScreens: false,
-  });
+  const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <NewDeliveryStack.Navigator screenOptions={screenOptions}>
+    // `detachInactiveScreens` is a navigator prop, not a screen option; it used
+    // to be passed through `screenOptions` here, where it had no effect.
+    <NewDeliveryStack.Navigator
+      detachInactiveScreens={false}
+      screenOptions={screenOptions}>
       <NewDeliveryStack.Screen
         name="NewDeliveryStore"
         component={screens.NewDeliveryStore}

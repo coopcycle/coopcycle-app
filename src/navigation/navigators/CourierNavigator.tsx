@@ -26,6 +26,9 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator
+        // Map screens must not be detached/re-attached: see
+        // DrawerNavigator and https://github.com/coopcycle/coopcycle-app/issues/2113
+      detachInactiveScreens={false}
       screenOptions={({ navigation }) => ({
         ...screenOptions,
         tabBarShowLabel: false,
@@ -77,7 +80,9 @@ const MainNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <MainStack.Navigator screenOptions={screenOptions}>
+    <MainStack.Navigator
+      detachInactiveScreens={false}
+      screenOptions={screenOptions}>
       <MainStack.Screen
         name="CourierHome"
         component={Tabs}

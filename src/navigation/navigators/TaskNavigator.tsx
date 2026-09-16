@@ -74,7 +74,9 @@ export default () => {
   });
 
   return (
-    <RootStack.Navigator screenOptions={screenOptions}>
+    <RootStack.Navigator
+      detachInactiveScreens={false}
+      screenOptions={screenOptions}>
       <RootStack.Screen
         name="TaskHome"
         component={screens.TaskHome}

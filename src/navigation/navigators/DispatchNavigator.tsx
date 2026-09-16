@@ -107,6 +107,9 @@ function Tabs() {
   return (
     <KeyboardAdjustView style={{ flex: 1 }}>
       <Tab.Navigator
+        // Map screens must not be detached/re-attached: see
+        // DrawerNavigator and https://github.com/coopcycle/coopcycle-app/issues/2113
+        detachInactiveScreens={false}
         tabBar={props => <CustomTabBar {...props} />}
         screenOptions={{
           headerShown: false,
@@ -218,7 +221,9 @@ export default function DispatchNavigator({ navigation }) {
   return (
     <DeliveryCallbackProvider callback={deliveryCallback} options={deliveryCallbackOptions}>
       <TaskListsProvider defaultIsFromCourier={false}>
-        <RootStack.Navigator screenOptions={screenOptions}>
+        <RootStack.Navigator
+          detachInactiveScreens={false}
+          screenOptions={screenOptions}>
           <RootStack.Screen
             name="DispatchHome"
             component={Tabs}

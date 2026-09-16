@@ -90,7 +90,9 @@ export default function OrderNavigator() {
   });
 
   return (
-    <RootStack.Navigator screenOptions={screenOptions}>
+    <RootStack.Navigator
+      detachInactiveScreens={false}
+      screenOptions={screenOptions}>
       <RootStack.Screen
         name="Order"
         component={screens.Order}

@@ -96,6 +96,13 @@ const DrawerNav = ({
     <>
       {showShiftsDrawerItem && <ShiftReminderSync />}
       <Drawer.Navigator
+        // Keeping inactive screens attached is required for screens holding a
+        // native MapView: the drawer animation drives `activityState` through a
+        // synchronous Fabric props update, and detaching/re-attaching the map
+        // mid-animation deadlocks the UI thread on de-Googled devices, where
+        // microG backs the Google Maps API with Mapbox GL.
+        // @see https://github.com/coopcycle/coopcycle-app/issues/2113
+        detachInactiveScreens={false}
         drawerContent={props => <DrawerContent {...props} />}
         initialRouteName={initialRouteName}
         screenOptions={{
