@@ -22,7 +22,7 @@ import {
 
 function Photo({ navigation, route, addPicture }) {
   const { t } = useTranslation();
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
   const [canMountCamera, setCanMountCamera] = useState(false);
   const [flash, setFlash] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -46,6 +46,22 @@ function Photo({ navigation, route, addPicture }) {
     };
   }, [navigation]);
 
+  // Mirror the preview uri so the unmount cleanup below can read it without
+  // re-running on every capture.
+  const imageRef = useRef<string | null>(null);
+  imageRef.current = image;
+
+  // A capture the courier never saved is only ever a cache file; drop it when
+  // leaving so abandoned attempts don't pile up. `saveImage` clears the state
+  // once it has copied the file out, so this can never race the saved copy.
+  useEffect(() => {
+    return () => {
+      if (imageRef.current) {
+        discardTemporaryFile(imageRef.current);
+      }
+    };
+  }, []);
+
   const saveImage = async () => {
     const task = route.params?.task;
     if (!image || isSaving) {
@@ -53,9 +69,11 @@ function Photo({ navigation, route, addPicture }) {
     }
     setIsSaving(true);
     try {
-      const compressed = await compressImage(image);
-      const destUri = await persistPendingUpload(compressed);
-      await discardTemporaryFile(compressed);
+      // `image` was already compressed on capture, so it only needs moving out
+      // of the cache directory.
+      const destUri = await persistPendingUpload(image);
+      await discardTemporaryFile(image);
+      setImage(null);
       addPicture(task, destUri);
       navigateBackToCompleteTask(navigation, route);
     } catch (e) {
@@ -71,7 +89,19 @@ function Photo({ navigation, route, addPicture }) {
           flash: flash ? 'on' : 'off',
         });
         const uri = photo.path.startsWith('file://') ? photo.path : `file://${photo.path}`;
-        setImage(uri);
+        // Compress before showing the preview. The capture is a full-resolution
+        // 12MP JPEG, and rendering it — even into a thumbnail — decodes the
+        // whole bitmap into memory, which is what drives the iOS memory
+        // warnings on this screen. The compressed copy is the one we keep, so
+        // this also removes the compression step from saving.
+        const compressed = await compressImage(uri);
+        await discardTemporaryFile(uri);
+        // Drop the previous attempt so retakes neither keep its decoded bitmap
+        // alive nor leave the file behind in the cache directory.
+        if (image) {
+          await discardTemporaryFile(image);
+        }
+        setImage(compressed);
       } catch (e) {
         console.error('takePicture failed:', e);
       }
@@ -173,6 +203,10 @@ function Photo({ navigation, route, addPicture }) {
               <Image
                 style={{ width: previewSize, height: previewSize }}
                 source={{ uri: image }}
+                resizeMode="cover"
+                // Decode at thumbnail size on Android rather than loading the
+                // whole image just to shrink it.
+                resizeMethod="resize"
               />
             )}
           </View>
