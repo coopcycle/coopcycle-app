@@ -7627,7 +7627,7 @@ __metadata:
     jwt-decode: "npm:^3.1.2"
     libphonenumber-js: "npm:^1.13.13"
     lodash: "npm:^4.18.1"
-    lucide-react-native: "npm:^0.544.0"
+    lucide-react-native: "npm:1.47.0"
     mock-async-storage: "npm:^2.2.0"
     moment: "npm:^2.31.0"
     moment-business-days: "npm:^1.2.0"
@@ -14325,14 +14325,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react-native@npm:^0.544.0":
-  version: 0.544.0
-  resolution: "lucide-react-native@npm:0.544.0"
+"lucide-react-native@npm:1.47.0":
+  version: 1.47.0
+  resolution: "lucide-react-native@npm:1.47.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-native: "*"
     react-native-svg: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0
-  checksum: 10c0/050d3875af679eff153462d21ab68b8fc29d88c40e4110c7ec5e4ab3955283120984777c2978df849bc37b7e348f984c78462c8daa128032a20fb259d77f29ea
+  checksum: 10c0/df339c366924a442f54ead217ad755ac02894bb230eccbc4f8880162363428e175e8e293f6651605464bc804c82bb64b45dd983640c4e9ee8f165e509d3a1c26
   languageName: node
   linkType: hard
 
