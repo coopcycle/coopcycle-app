@@ -4216,7 +4216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/bottom-tabs@npm:7.19.1":
+"@react-navigation/bottom-tabs@npm:^7.19.1":
   version: 7.19.1
   resolution: "@react-navigation/bottom-tabs@npm:7.19.1"
   dependencies:
@@ -4250,7 +4250,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/drawer@npm:7.14.1":
+"@react-navigation/drawer@npm:^7.14.1":
   version: 7.14.1
   resolution: "@react-navigation/drawer@npm:7.14.1"
   dependencies:
@@ -4270,7 +4270,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:2.9.42, @react-navigation/elements@npm:^2.9.42":
+"@react-navigation/elements@npm:^2.9.42":
   version: 2.9.42
   resolution: "@react-navigation/elements@npm:2.9.42"
   dependencies:
@@ -4290,7 +4290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/material-top-tabs@npm:7.7.1":
+"@react-navigation/material-top-tabs@npm:^7.7.1":
   version: 7.7.1
   resolution: "@react-navigation/material-top-tabs@npm:7.7.1"
   dependencies:
@@ -4307,7 +4307,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native-stack@npm:7.19.1":
+"@react-navigation/native-stack@npm:^7.19.1":
   version: 7.19.1
   resolution: "@react-navigation/native-stack@npm:7.19.1"
   dependencies:
@@ -4325,7 +4325,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:7.4.1":
+"@react-navigation/native@npm:^7.4.1":
   version: 7.4.1
   resolution: "@react-navigation/native@npm:7.4.1"
   dependencies:
@@ -4351,7 +4351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/stack@npm:7.11.1":
+"@react-navigation/stack@npm:^7.11.1":
   version: 7.11.1
   resolution: "@react-navigation/stack@npm:7.11.1"
   dependencies:
@@ -7565,13 +7565,13 @@ __metadata:
     "@react-native/eslint-config": "npm:0.81.5"
     "@react-native/metro-config": "npm:0.81.5"
     "@react-native/typescript-config": "npm:0.81.5"
-    "@react-navigation/bottom-tabs": "npm:7.19.1"
-    "@react-navigation/drawer": "npm:7.14.1"
-    "@react-navigation/elements": "npm:2.9.42"
-    "@react-navigation/material-top-tabs": "npm:7.7.1"
-    "@react-navigation/native": "npm:7.4.1"
-    "@react-navigation/native-stack": "npm:7.19.1"
-    "@react-navigation/stack": "npm:7.11.1"
+    "@react-navigation/bottom-tabs": "npm:^7.19.1"
+    "@react-navigation/drawer": "npm:^7.14.1"
+    "@react-navigation/elements": "npm:^2.9.42"
+    "@react-navigation/material-top-tabs": "npm:^7.7.1"
+    "@react-navigation/native": "npm:^7.4.1"
+    "@react-navigation/native-stack": "npm:^7.19.1"
+    "@react-navigation/stack": "npm:^7.11.1"
     "@reduxjs/toolkit": "npm:^2.12.0"
     "@sentry/react-native": "npm:~7.2.0"
     "@shopify/flash-list": "npm:^2.3.1"
@@ -7618,7 +7618,7 @@ __metadata:
     formik: "npm:^2.4.9"
     fuse.js: "npm:^6.6.2"
     google-libphonenumber: "npm:^3.2.46"
-    i18next: "npm:26.4.2"
+    i18next: "npm:^26.4.2"
     intl-pluralrules: "npm:^2.0.1"
     jest: "npm:^29.6.3"
     jest-circus: "npm:29.3.1"
@@ -7626,7 +7626,7 @@ __metadata:
     jwt-decode: "npm:^3.1.2"
     libphonenumber-js: "npm:^1.13.13"
     lodash: "npm:^4.18.1"
-    lucide-react-native: "npm:1.47.0"
+    lucide-react-native: "npm:^1.47.0"
     mock-async-storage: "npm:^2.2.0"
     moment: "npm:^2.31.0"
     moment-business-days: "npm:^1.2.0"
@@ -7642,7 +7642,7 @@ __metadata:
     react: "npm:19.1.0"
     react-aria: "npm:^3.52.1"
     react-dom: "npm:19.1.0"
-    react-i18next: "npm:17.0.14"
+    react-i18next: "npm:^17.0.14"
     react-native: "npm:0.81.5"
     react-native-app-auth: "npm:^8.4.1"
     react-native-autocomplete-input: "npm:^5.5.6"
@@ -12253,7 +12253,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:26.4.2":
+"i18next@npm:^26.4.2":
   version: 26.4.2
   resolution: "i18next@npm:26.4.2"
   peerDependencies:
@@ -14310,7 +14310,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react-native@npm:1.47.0":
+"lucide-react-native@npm:^1.47.0":
   version: 1.47.0
   resolution: "lucide-react-native@npm:1.47.0"
   peerDependencies:
@@ -16687,7 +16687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:17.0.14":
+"react-i18next@npm:^17.0.14":
   version: 17.0.14
   resolution: "react-i18next@npm:17.0.14"
   dependencies:
