@@ -27,7 +27,9 @@ const CompleteNavigator = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <CompleteStack.Navigator screenOptions={screenOptions}>
+    <CompleteStack.Navigator
+      detachInactiveScreens={false}
+      screenOptions={screenOptions}>
       <CompleteStack.Screen
         name="ReportIncidentHome"
         component={screens.Report}

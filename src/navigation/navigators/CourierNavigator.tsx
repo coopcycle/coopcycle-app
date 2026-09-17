@@ -231,7 +231,11 @@ export default () => {
 
   return (
     <TaskListsProvider>
-      <RootStack.Navigator screenOptions={screenOptions}>
+      <RootStack.Navigator
+      // Map screens must not be detached/re-attached: see
+      // DrawerNavigator and https://github.com/coopcycle/coopcycle-app/issues/2113
+        detachInactiveScreens={false}
+        screenOptions={screenOptions}>
         <RootStack.Screen
           name="Main"
           component={MainNavigator}
