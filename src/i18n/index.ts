@@ -5,6 +5,11 @@
  *
  * See https://react.i18next.com/components/i18next-instance.html
  */
+// i18next resolves plurals entirely through Intl.PluralRules since v24 — there
+// is no internal fallback any more — and Hermes does not implement it. Without
+// this polyfill, languages with more than two plural forms (cs, pl) silently
+// collapse to English-style one/other. Must be imported before init().
+import 'intl-pluralrules';
 import i18next from 'i18next';
 import moment from 'moment';
 import { initReactI18next } from 'react-i18next';
@@ -145,7 +150,6 @@ i18next
     ns: ['common'],
     defaultNS: 'common',
     debug: process.env.DEBUG,
-    compatibilityJSON: 'v3',
   });
 
 export default i18next;
