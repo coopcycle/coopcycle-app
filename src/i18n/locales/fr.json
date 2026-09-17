@@ -470,7 +470,6 @@
     "PAYMENT_FORM_TITLE": "Vos informations de paiement",
     "STORES": "Magasins",
     "FILTER_BY_TAGS": "Filtrer par tags",
-    "CONNECT_WITH_FACEBOOK": "Se connecter avec Facebook",
     "RESTAURANT_PRE_ORDER": "Pré-commander",
     "RESTAURANT_CLOSED_BUT_OPENS": "Vous pouvez commander dans ce commerce pour son ouverture à {{ datetime }}.",
     "RESTAURANT_CLOSED_PRE_ORDER": "Vous pouvez commander dans ce commerce en pré-commande, pour une livraison à {{ datetime }} !",

@@ -757,35 +757,6 @@ export function resetServer() {
   };
 }
 
-export function loginWithFacebook(accessToken, navigate = true) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-
-    dispatch(authenticationRequest());
-
-    httpClient
-      .loginWithFacebook(accessToken)
-      .then(user => dispatch(authenticationSuccess(user)))
-      .then(() => {
-        if (navigate) {
-          // FIXME
-          // Use setTimeout() to let room for loader to hide
-          setTimeout(() => dispatch(navigateToHome()), 250);
-        }
-      })
-      .catch(err => {
-        let message = i18n.t('TRY_LATER');
-        if (err.hasOwnProperty('status') && err.status === 403) {
-          message = i18n.t('SOCIAL_SIGN_IN_UNKNOWN_EMAIL', {
-            provider: 'Facebook',
-          });
-        }
-
-        dispatch(authenticationFailure(message));
-      });
-  };
-}
-
 export function signInWithApple(identityToken, navigate = true) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());

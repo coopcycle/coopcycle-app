@@ -23,7 +23,6 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Platform, ScrollView, View } from 'react-native';
 import Config from 'react-native-config';
-import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
 import { connect } from 'react-redux';
 
 import i18n from '../i18n';
@@ -31,22 +30,18 @@ import {
   authenticationFailure,
   clearAuthenticationErrors,
   googleSignIn,
-  loginWithFacebook,
   signInWithApple,
 } from '../redux/App/actions';
-import FacebookButton from './FacebookButton';
 
 type LoginFormProps = {
   authenticationFailure: (message: string) => void;
   clearErrors: () => void;
   errors?: string[];
   googleSignIn: (idToken: string) => void;
-  loginWithFacebook: (accessToken: string) => void;
   onForgotPassword: () => void;
   onSubmit: (email: string, password: string) => void;
   signInWithApple: (identityToken: string) => void;
   t: (key: string) => string;
-  withFacebook?: boolean;
   withGoogle?: boolean;
 };
 
@@ -67,10 +62,6 @@ class LoginForm extends Component<LoginFormProps, LoginFormState> {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'ios') {
-      Settings.setAppID(Config.FACEBOOK_APP_ID);
-    }
-
     if (this.props.withGoogle) {
       GoogleSignin.configure({
         scopes: [
@@ -203,36 +194,6 @@ class LoginForm extends Component<LoginFormProps, LoginFormState> {
                 <Button block onPress={handleSubmit} testID="loginSubmit">
                   <ButtonText>{this.props.t('SUBMIT')}</ButtonText>
                 </Button>
-                {this.props.withFacebook ? (
-                  <Box className="mt-2 mb-2">
-                    <FacebookButton
-                      onPress={() => {
-                        LoginManager.logInWithPermissions([
-                          'public_profile',
-                          'email',
-                        ]).then(
-                          result => {
-                            if (result.isCancelled) {
-                              console.log('Login cancelled');
-                            } else {
-                              // Cross-platform way of retrieving email
-                              // https://github.com/thebergamo/react-native-fbsdk-next#get-profile-information
-                              // https://github.com/thebergamo/react-native-fbsdk-next/issues/78#issuecomment-888085735
-                              AccessToken.getCurrentAccessToken().then(data =>
-                                this.props.loginWithFacebook(
-                                  data.accessToken.toString(),
-                                ),
-                              );
-                            }
-                          },
-                          error => {
-                            console.log(error);
-                          },
-                        );
-                      }}
-                    />
-                  </Box>
-                ) : null}
                 {this.props.withGoogle && this.state.hasPlayServices ? (
                   <GoogleSigninButton
                     style={{
@@ -349,7 +310,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     clearErrors: () => dispatch(clearAuthenticationErrors()),
-    loginWithFacebook: accessToken => dispatch(loginWithFacebook(accessToken)),
     signInWithApple: identityToken => dispatch(signInWithApple(identityToken)),
     googleSignIn: idToken => dispatch(googleSignIn(idToken)),
     authenticationFailure: message => dispatch(authenticationFailure(message)),

@@ -7656,7 +7656,6 @@ __metadata:
     react-native-config: "npm:^1.6.1"
     react-native-dropdownalert: "npm:^4.5.1"
     react-native-email-link: "npm:^1.16.1"
-    react-native-fbsdk-next: "npm:^13.4.3"
     react-native-gesture-handler: "npm:^2.32.0"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-inappbrowser-reborn: "npm:^3.7.1"
@@ -16927,19 +16926,6 @@ __metadata:
     react: ">=16.8.0"
     react-native: ">=0.40.0"
   checksum: 10c0/656a1ba1280042d1d321ae7bf1a9599dd8be7a8e06f9e6f7adf3861d4ecc1552259c3bc7c6fd487c43d6dc237aca755249fb6c8dded6d72608cd1b8fb53531ae
-  languageName: node
-  linkType: hard
-
-"react-native-fbsdk-next@npm:^13.4.3":
-  version: 13.4.3
-  resolution: "react-native-fbsdk-next@npm:13.4.3"
-  peerDependencies:
-    expo: ">=47.0.0"
-    react-native: ">=0.63.3"
-  peerDependenciesMeta:
-    expo:
-      optional: true
-  checksum: 10c0/58ec2a0e9ff3befe0d17f5ddd93986fd7cba7afd114fc6f0fba62063276cad4866ea7736e0d83bfc7ca75a6164a7092f673d99b3b4300c9ae53892f2935c30bb
   languageName: node
   linkType: hard
 

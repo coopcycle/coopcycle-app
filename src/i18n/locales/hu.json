@@ -365,7 +365,6 @@
         },
         "CASH_ON_DELIVERY_DISCLAIMER": "A készpénzes fizetést válaszottad. Kérjük készülj elő a pontos összeggel és győződj meg arról, hogy elérhető vagy.",
         "FILTER_BY_TAGS": "Címkék szűrése",
-        "CONNECT_WITH_FACEBOOK": "Bejelentkezés Facebookkal",
         "RESTAURANT_PRODUCT_OPTIONS": "Termék opciók",
         "RESTAURANT_PRE_ORDER": "Előrendelés",
         "RESTAURANT_CLOSED_BUT_OPENS": "Az étterem bezárt, nyitás ekkor: {{ datetime }}. De tudsz előre rendelni!",

@@ -213,14 +213,10 @@
     <meta-data android:name="com.transistorsoft.locationmanager.license"
       android:value="${transistorsoftLicenseKey}" />
 
-    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/FACEBOOK_APP_ID" />
-    <meta-data android:name="com.facebook.sdk.ClientToken"
-      android:value="@string/FACEBOOK_CLIENT_TOKEN" />
-
   </application>
   <!--
     Opt out of the Advertising ID Permission
-    https://developers.facebook.com/docs/android/getting-started/#add-app_id
+    https://firebase.google.com/docs/analytics/configure-data-collection
     -->
   <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
 </manifest>

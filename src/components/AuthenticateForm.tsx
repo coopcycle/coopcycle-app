@@ -43,7 +43,6 @@ class AuthenticateForm extends Component {
       <LoginForm
         onSubmit={(email, password) => this.props.onLogin(email, password)}
         onForgotPassword={this.props.onForgotPassword}
-        withFacebook={Platform.OS !== 'ios'}
         withGoogle={Platform.OS !== 'ios'}
       />
     );

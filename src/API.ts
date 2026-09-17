@@ -385,15 +385,6 @@ Client.prototype.uploadFileAsync = async function (uri, file, options = {}) {
   }
 };
 
-Client.prototype.loginWithFacebook = function (accessToken) {
-  return loginWithFacebook(this.httpBaseURL, accessToken)
-    .then(credentialsToUser)
-    .then(user => {
-      this.onCredentialsUpdated(user);
-      return user;
-    });
-};
-
 Client.prototype.signInWithApple = function (identityToken) {
   return signInWithApple(this.httpBaseURL, identityToken)
     .then(credentialsToUser)
@@ -502,30 +493,6 @@ var refreshToken = function (baseURL, refreshToken) {
     data: qs.stringify({
       refresh_token: refreshToken,
     }),
-  });
-};
-
-var loginWithFacebook = function (baseURL, accessToken) {
-  const req = {
-    method: 'POST',
-    url: `${baseURL}/api/facebook/login`,
-    data: {
-      accessToken,
-    },
-  };
-
-  return new Promise((resolve, reject) => {
-    axios(req)
-      .then(response => {
-        resolve(response.data);
-      })
-      .catch(error => {
-        if (error.response) {
-          reject(error.response.data);
-        } else {
-          reject({ message: 'An error has occured' });
-        }
-      });
   });
 };
 
@@ -695,7 +662,6 @@ export type HttpClient = {
   resetPassword: (username: string) => Promise;
   setNewPassword: (token: string, password: string) => Promise;
   login: (username: string, password: string) => Promise;
-  loginWithFacebook: (accessToken: string) => Promise;
   signInWithApple: (identityToken: string) => Promise;
   googleSignIn: (idToken: string) => Promise;
 };
