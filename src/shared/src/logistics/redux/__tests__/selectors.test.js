@@ -119,7 +119,12 @@ describe('Selectors', () => {
 
   describe('selectSelectedDate', () => {
     it('should return selected date', () => {
-      expect(selectSelectedDate(baseState)).toEqual(moment(date));
+      // Compare the instant, not Moment's internals: `toEqual` walks private
+      // fields like `_a` (the parsed input array), which moment populates
+      // inconsistently between construction paths.
+      expect(selectSelectedDate(baseState).toISOString()).toEqual(
+        moment(date).toISOString(),
+      );
     });
   });
 
