@@ -11,6 +11,7 @@ import {
 } from '../taskUtils.ts';
 import {
   getTaskWithAssignedTo,
+  getTaskWithExternalReference,
   getTaskWithStoreName,
   getTaskWithTags,
 } from '../testsUtils.js';
@@ -463,6 +464,8 @@ describe('taskUtils', () => {
       getTaskWithTags(['A', 'AA', 'AAA']),
       getTaskWithTags(['B', 'BB', 'BBB']),
       getTaskWithTags(['C', 'CC', 'CCC']),
+      getTaskWithExternalReference('EXT-ALPHA'),
+      getTaskWithExternalReference('EXT-BRAVO'),
     ];
 
     it('should return all tasks if search string is empty', () => {
@@ -497,6 +500,15 @@ describe('taskUtils', () => {
         const result = filterTasksByKeyword(tasks, searchString);
 
         expect(result).toEqual(tasks.slice(7, 8));
+      },
+    );
+
+    it.each(['ext-bravo', 'EXT-BRAVO', 'bravo'])(
+      'should return tasks that have searchString in the external reference',
+      searchString => {
+        const result = filterTasksByKeyword(tasks, searchString);
+
+        expect(result).toEqual(tasks.slice(10, 11));
       },
     );
   });
@@ -548,6 +560,31 @@ describe('taskUtils', () => {
       const result = taskIncludesKeyword(task, keyword);
 
       expect(result).toBe(expected);
+    });
+
+    it.each([
+      ['ext-alpha', true],
+      ['alpha', true],
+      ['not', false],
+    ])(
+      'should return if keyword is included in the external reference',
+      (keyword, expected) => {
+        const task = getTaskWithExternalReference('EXT-ALPHA');
+
+        const result = taskIncludesKeyword(task, keyword);
+
+        expect(result).toBe(expected);
+      },
+    );
+
+    // Only deliveries that have one carry an external reference, so the
+    // common case is a task with no `metadata` bag at all
+    it('should return false when the task has no metadata', () => {
+      const task = getTaskWithAssignedTo('Assigned to Alba');
+
+      const result = taskIncludesKeyword(task, 'EXT-ALPHA');
+
+      expect(result).toBe(false);
     });
   });
 
