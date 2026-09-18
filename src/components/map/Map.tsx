@@ -146,7 +146,10 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
 
   return (
     <MapLibreMap
-      style={style ?? StyleSheet.absoluteFill}
+      // Markers are React Native views laid over the map, so without clipping
+      // one near the edge draws outside the map's bounds and over whatever sits
+      // next to it (the courier screen's date bar, for instance).
+      style={[{ overflow: 'hidden' }, style ?? StyleSheet.absoluteFill]}
       mapStyle={MAP_STYLE_URL}
       androidView={androidView}
       testID={testID}

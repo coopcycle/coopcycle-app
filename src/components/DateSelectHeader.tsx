@@ -47,7 +47,6 @@ let styles = StyleSheet.create({
     backgroundColor: whiteColor,
     alignItems: 'center',
     paddingVertical: 12,
-    marginBottom: 4,
   },
   todayButton: {
     color: primaryColor,
