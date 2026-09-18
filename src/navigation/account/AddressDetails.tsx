@@ -12,7 +12,11 @@ import { Divider } from '@/components/ui/divider';
 import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Dimensions, ScrollView, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { Marker } from '@maplibre/maplibre-react-native';
+
+import Map from '@/src/components/map/Map';
+import { toPosition } from '@/src/components/map/region';
+import AddressMarker from '@/src/components/map/AddressMarker';
 import { connect } from 'react-redux';
 import { loadAddresses, newAddress } from '../../redux/Account/actions';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
@@ -48,20 +52,23 @@ function AddressDetails({ address, navigation, newAddress: saveNewAddress, t }) 
       keyboardVerticalOffset={100}
       style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingBottom: insets.bottom, justifyContent: 'space-between' }}>
-        <MapView
+        <Map
           style={{
             height: width * 0.55,
             width: width,
           }}
-          liteMode={true}
+          // Decorative: this map only shows where the saved address is.
+          interactive={false}
           initialRegion={{
             latitude,
             longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}>
-          <Marker coordinate={{ latitude, longitude }} />
-        </MapView>
+          <Marker lngLat={toPosition({ latitude, longitude })}>
+            <AddressMarker />
+          </Marker>
+        </Map>
         <ScrollView style={{ padding: 15 }}>
           <Heading>{address.streetAddress}</Heading>
           <Divider className="my-3" />
