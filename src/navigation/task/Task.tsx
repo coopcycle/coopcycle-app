@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { selectAllTasks as selectAllDispatchTasks } from '../../coopcycle-frontend-js/logistics/redux';
 import { selectTasks, startTask } from '../../redux/Courier';
 import TaskCompleteButton from './components/CompleteButton';
+import TaskDeliveryNav from './components/DeliveryNav';
 import TaskDetails from './components/Details';
 import TaskMiniMap from './components/MiniMap';
 import TaskNav from './components/Nav';
@@ -212,7 +213,15 @@ class Task extends Component {
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <View style={{ height: '35%' }}>{this.renderMap()}</View>
-          <View style={{ height: '55%' }}>
+          <TaskDeliveryNav
+            task={task}
+            allTasks={this.props.tasks}
+            listTasks={tasks}
+          />
+          {/* `flex: 1` rather than a share of the height, so the strip above
+              takes its room from the details and not from the map or the
+              navigation bar. Without it, it lays out at the same 55%. */}
+          <View style={{ flex: 1 }}>
             <TaskDetails task={task} />
           </View>
           <View style={{ height: '10%' }}>
