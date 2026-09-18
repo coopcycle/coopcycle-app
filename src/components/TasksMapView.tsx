@@ -92,6 +92,7 @@ function TasksMapView(props) {
           key={key}
           id={key}
           lngLat={toPosition({ latitude, longitude })}
+          anchor="bottom"
           onPress={() => onMarkerPress(tasks)}
         >
           <TaskMarker

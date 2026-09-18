@@ -65,7 +65,7 @@ function AddressDetails({ address, navigation, newAddress: saveNewAddress, t }) 
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }}>
-          <Marker lngLat={toPosition({ latitude, longitude })}>
+          <Marker anchor="bottom" lngLat={toPosition({ latitude, longitude })}>
             <AddressMarker />
           </Marker>
         </Map>

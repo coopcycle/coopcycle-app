@@ -64,6 +64,7 @@ const MiniMap: React.FC<MiniMapProps> = ({
           <Marker
             id={t['@id']}
             key={t['@id']}
+            anchor="bottom"
             lngLat={toPosition(t.address.geo)}>
             <TaskMarker task={t} />
           </Marker>
