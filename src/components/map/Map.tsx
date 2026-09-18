@@ -44,6 +44,8 @@ type Props = {
   /** Fired once the viewport settles, with the region now visible. */
   onRegionChangeComplete?: (region: Region) => void;
   onPress?: (coordinate: Coordinate) => void;
+  /** Fired once the style and first frame are up. */
+  onMapReady?: () => void;
   onLayout?: React.ComponentProps<typeof MapLibreMap>['onLayout'];
   /** Disable gestures for decorative maps. */
   interactive?: boolean;
@@ -66,6 +68,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
     showsUserLocation = false,
     onRegionChangeComplete,
     onPress,
+    onMapReady,
     onLayout,
     interactive = true,
     style,
@@ -133,6 +136,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
       mapStyle={MAP_STYLE_URL}
       testID={testID}
       onLayout={onLayout}
+      onDidFinishLoadingMap={onMapReady}
       // MapLibre renders its own attribution control; OpenStreetMap data
       // requires it to stay visible.
       attribution
