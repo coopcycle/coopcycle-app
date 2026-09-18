@@ -1,4 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Camera,
@@ -28,6 +34,11 @@ type Props = {
   children?: React.ReactNode;
   /** Where to place the camera on first render. */
   initialRegion?: Region;
+  /**
+   * Keeps the camera on this region. Use for maps the app drives (a task's
+   * location), not for ones the user pans, or their gestures get undone.
+   */
+  region?: Region;
   /** Show the blue dot. Off by default, since it needs location permission. */
   showsUserLocation?: boolean;
   /** Fired once the viewport settles, with the region now visible. */
@@ -51,6 +62,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
   {
     children,
     initialRegion,
+    region,
     showsUserLocation = false,
     onRegionChangeComplete,
     onPress,
@@ -75,6 +87,24 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Follow the controlled region. initialViewState already covers the first
+  // render, so only later changes need to move the camera.
+  const isFirstRegion = useRef(true);
+  useEffect(() => {
+    if (!region) {
+      return;
+    }
+    if (isFirstRegion.current) {
+      isFirstRegion.current = false;
+      return;
+    }
+    cameraRef.current?.easeTo({
+      center: toPosition(region),
+      zoom: regionToZoom(region),
+      duration: 300,
+    });
+  }, [region]);
 
   useImperativeHandle(
     ref,

@@ -1,6 +1,9 @@
 import React from 'react';
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import { Marker } from '@maplibre/maplibre-react-native';
+import Map from '../../../components/map/Map';
+import Polyline from '../../../components/map/Polyline';
+import { toPosition } from '../../../components/map/region';
 import TaskMarker from '../../../components/TaskMarker';
 import { getCoordinates, getRegionForTasks } from './mapUtils';
 import Task from '../../../types/task';
@@ -40,8 +43,7 @@ const MiniMap: React.FC<MiniMapProps> = ({
 
     return (
       <Polyline
-        key={key}
-        testID={key}
+        id={key}
         coordinates={coords}
         strokeWidth={3}
         strokeColor={firstTask.color}
@@ -51,29 +53,24 @@ const MiniMap: React.FC<MiniMapProps> = ({
   };
 
   return (
-    <MapView
+    <Map
       style={styles.map}
-      zoomEnabled
       showsUserLocation
-      loadingEnabled
-      loadingIndicatorColor={'#666666'}
-      loadingBackgroundColor={'#858585'}
       initialRegion={region}
       region={region}
       onLayout={onLayout}>
       {tasks.map(t => {
         return (
           <Marker
-            identifier={t['@id']}
+            id={t['@id']}
             key={t['@id']}
-            coordinate={t.address.geo}
-            flat={true}>
+            lngLat={toPosition(t.address.geo)}>
             <TaskMarker task={t} />
           </Marker>
         );
       })}
       {renderPolyline()}
-    </MapView>
+    </Map>
   );
 };
 
