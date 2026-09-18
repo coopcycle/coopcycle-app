@@ -150,6 +150,11 @@
     <array>
       <string>com.transistorsoft.fetch</string>
     </array>
+    <!-- Substituted by the Info.plist preprocessor from the macros react-native-config
+         generates into GeneratedInfoPlistDotEnv.h. See INFOPLIST_PREPROCESS and
+         INFOPLIST_PREFIX_HEADER in the build settings of the CoopCycle target. -->
+    <key>TSLocationManagerLicense</key>
+    <string>TRANSISTORSOFT_JWT_LICENSE_KEY_IOS</string>
     <key>UIBackgroundModes</key>
     <array>
       <string>fetch</string>
