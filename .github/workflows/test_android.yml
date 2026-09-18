@@ -85,12 +85,10 @@ jobs:
         run: |
           cp .env.dist .env
           sed -i -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
-          sed -i -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
 
       - name: Build app for Detox
         run: node node_modules/.bin/detox build -c android.emu.release
         env:
-          googleMapsApiKey: ${{ secrets.googleMapsApiKey }}
           SENTRY_DISABLE_AUTO_UPLOAD: true
       - name: Upload App APK
         if: ${{ !cancelled() }}
