@@ -119,7 +119,9 @@ function TasksMapView(props) {
   return (
     <>
       <View
-        renderToHardwareTextureAndroid={true}
+        // No renderToHardwareTextureAndroid here: promoting this subtree to a
+        // hardware layer composites the map's GL SurfaceView into that layer and
+        // it renders black. It was a react-native-maps-era optimisation.
         collapsable={false}
         style={{ flex: 1 }}
         onLayout={(e) => setMapHeight(e.nativeEvent.layout.height)}

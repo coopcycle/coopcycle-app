@@ -49,6 +49,14 @@ type Props = {
   onLayout?: React.ComponentProps<typeof MapLibreMap>['onLayout'];
   /** Disable gestures for decorative maps. */
   interactive?: boolean;
+  /**
+   * Android rendering surface. We default to "texture": a SurfaceView lives in
+   * its own window, so it renders black when a parent promotes the subtree to a
+   * hardware layer, and it can paint black over sibling views when it is
+   * relaid out. A TextureView composites like an ordinary view and avoids both,
+   * at some GPU cost.
+   */
+  androidView?: 'surface' | 'texture';
   style?: React.ComponentProps<typeof MapLibreMap>['style'];
   testID?: string;
 };
@@ -71,6 +79,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
     onMapReady,
     onLayout,
     interactive = true,
+    androidView = 'texture',
     style,
     testID,
   },
@@ -134,6 +143,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
     <MapLibreMap
       style={style ?? StyleSheet.absoluteFill}
       mapStyle={MAP_STYLE_URL}
+      androidView={androidView}
       testID={testID}
       onLayout={onLayout}
       onDidFinishLoadingMap={onMapReady}
