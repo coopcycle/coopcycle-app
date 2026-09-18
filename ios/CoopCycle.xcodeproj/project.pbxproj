@@ -676,6 +676,9 @@
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
 				INFOPLIST_FILE = CoopCycle/Info.plist;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-Wno-trigraphs";
+				INFOPLIST_PREFIX_HEADER = "$(BUILD_DIR)/GeneratedInfoPlistDotEnv.h";
+				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -720,6 +723,9 @@
 					"$(SRCROOT)/../node_modules/react-native-locale-detector/RNI18n",
 				);
 				INFOPLIST_FILE = CoopCycle/Info.plist;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-Wno-trigraphs";
+				INFOPLIST_PREFIX_HEADER = "$(BUILD_DIR)/GeneratedInfoPlistDotEnv.h";
+				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

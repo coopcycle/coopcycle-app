@@ -93,7 +93,7 @@
     "react-native-autocomplete-input": "^5.5.6",
     "react-native-avoid-softinput": "^8.0.2",
     "react-native-background-fetch": "^4.4.2",
-    "react-native-background-geolocation": "^4.19.4",
+    "react-native-background-geolocation": "^5.6.0",
     "react-native-ble-manager": "^8.4.4",
     "react-native-calendars": "^1.1314.0",
     "react-native-communications": "^2.2.1",
