@@ -66,6 +66,7 @@ export interface TaskMetadata {
   delivery_position?: number;
   store?: Uri;
   order_number?: string;
+  external_reference?: string;
   order_total?: number;
   zero_waste?: boolean;
   payment_method?: string;

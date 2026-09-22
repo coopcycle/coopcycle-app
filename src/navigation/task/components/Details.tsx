@@ -9,7 +9,7 @@ import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import classNames from 'classnames';
-import { Box, Clock, File, Info, MapPin, MessageCircle, Phone, Recycle, Tag, Weight } from 'lucide-react-native';
+import { Box, Clock, File, Hash, Info, MapPin, MessageCircle, Phone, Recycle, Tag, Weight } from 'lucide-react-native';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
 import ItemSeparator from '../../../components/ItemSeparator';
@@ -71,6 +71,15 @@ const Details = ({ task, onTaskTitleClick, t }) => {
       text: timeframe,
     },
   ];
+
+  if (task.metadata?.external_reference) {
+    items.push({
+      icon: Hash,
+      text: t('TASK_EXTERNAL_REFERENCE', {
+        reference: task.metadata.external_reference,
+      }),
+    });
+  }
 
   if (task.address.telephone) {
     items.push({
