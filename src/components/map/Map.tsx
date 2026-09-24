@@ -13,7 +13,7 @@ import {
   type CameraRef,
 } from '@maplibre/maplibre-react-native';
 
-import { MAP_STYLE_URL } from './config';
+import { MAP_STYLE_URL, MAX_ZOOM } from './config';
 import {
   boundsForCoordinates,
   boundsToRegion,
@@ -22,6 +22,11 @@ import {
   type Coordinate,
   type Region,
 } from './region';
+
+// The camera's maxZoom clamps gestures and animations natively; clamping here
+// too keeps a tight region (a single point) from asking for more than that.
+const zoomForRegion = (region: Region) =>
+  Math.min(regionToZoom(region), MAX_ZOOM);
 
 export type MapHandle = {
   /** Centre on a region, matching react-native-maps' animateToRegion(). */
@@ -95,7 +100,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
     }
     return {
       center: toPosition(initialRegion),
-      zoom: regionToZoom(initialRegion),
+      zoom: zoomForRegion(initialRegion),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -113,7 +118,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
     }
     cameraRef.current?.easeTo({
       center: toPosition(region),
-      zoom: regionToZoom(region),
+      zoom: zoomForRegion(region),
       duration: 300,
     });
   }, [region]);
@@ -124,7 +129,7 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
       animateToRegion: (region, duration = 500) => {
         cameraRef.current?.easeTo({
           center: toPosition(region),
-          zoom: regionToZoom(region),
+          zoom: zoomForRegion(region),
           duration,
         });
       },
@@ -172,7 +177,11 @@ export const Map = forwardRef<MapHandle, Props>(function Map(
             }
           : undefined
       }>
-      <Camera ref={cameraRef} initialViewState={initialViewState} />
+      <Camera
+        ref={cameraRef}
+        initialViewState={initialViewState}
+        maxZoom={MAX_ZOOM}
+      />
       {showsUserLocation ? <UserLocation /> : null}
       {children}
     </MapLibreMap>

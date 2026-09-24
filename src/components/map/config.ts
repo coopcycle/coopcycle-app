@@ -27,3 +27,13 @@ export const MAP_STYLE_URL = 'https://tiles.openfreemap.org/styles/bright';
  * @see https://www.openstreetmap.org/copyright
  */
 export const MAP_ATTRIBUTION = '© OpenStreetMap contributors';
+
+/**
+ * Deepest zoom the camera allows. MapLibre Native's memory use climbs steeply
+ * past this and eventually crashes the app on Android, which has no zoom cap
+ * by default (iOS stops at 22). OpenFreeMap tiles stop at 14 and are overzoomed
+ * beyond it, so 19 already shows individual buildings and loses nothing.
+ *
+ * @see https://github.com/maplibre/maplibre-native/issues/3107
+ */
+export const MAX_ZOOM = 19;
