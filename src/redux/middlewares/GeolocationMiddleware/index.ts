@@ -1,5 +1,8 @@
 import { Alert, Platform } from 'react-native';
-import BackgroundGeolocation from 'react-native-background-geolocation';
+import BackgroundGeolocation, {
+  DesiredAccuracy,
+  LogLevel,
+} from 'react-native-background-geolocation';
 
 import i18n from '../../../i18n';
 import {
@@ -65,45 +68,29 @@ export default ({ getState, dispatch }) => {
       selectUser(state) &&
       selectUser(state).hasRole('ROLE_COURIER')
     ) {
-      BackgroundGeolocation.ready(
-        {
-          // Geolocation Config
-          desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+      // v5 groups the former flat config into `geolocation` / `app` / `http` /
+      // `logger` / `persistence`, and `ready()` is promise-only (no callbacks).
+      // @see node_modules/react-native-background-geolocation/help/MIGRATION-GUIDE-5.0.0.md
+      BackgroundGeolocation.ready({
+        geolocation: {
+          desiredAccuracy: DesiredAccuracy.High,
+          locationAuthorizationRequest: 'Any',
+          allowIdenticalLocations: true,
+        },
+        logger: {
           debug: __DEV__, // <-- enable this hear sounds for background-geolocation life-cycle.
-          logLevel: __DEV__
-            ? BackgroundGeolocation.LOG_LEVEL_VERBOSE
-            : BackgroundGeolocation.LOG_LEVEL_OFF,
+          logLevel: __DEV__ ? LogLevel.Verbose : LogLevel.Off,
+        },
+        app: {
           stopOnTerminate: true,
           startOnBoot: false,
-          url: `${state.app.baseURL}/api/me/location`,
-          // https://transistorsoft.github.io/react-native-background-geolocation/interfaces/_react_native_background_geolocation_.config.html#authorization
-          authorization: {
-            strategy: 'JWT',
-            accessToken: selectUser(state).token,
-            refreshToken: selectUser(state).refreshToken,
-            refreshUrl: `${state.app.baseURL}/api/token/refresh`,
-            refreshPayload: {
-              refresh_token: '{refreshToken}',
-            },
-          },
-          headers: defaultHeaders(),
-          batchSync: true,
-          locationTemplate:
-            '{"latitude":<%= latitude %>,"longitude":<%= longitude %>,"time":"<%= timestamp %>"}', // --> {"location":[[48.87586622822684,2.370307076470255,{}]]}
-          // Use an array payload
-          httpRootProperty: '.',
-          autoSyncThreshold: 5,
-          autoSync: true,
-          locationAuthorizationRequest: 'Any',
           // Android options
           notification: {
             title: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TITLE'),
             text: i18n.t('BACKGROUND_GEOLOCATION_NOTIFICATION_TEXT'),
           },
-          allowIdenticalLocations: true,
           // https://support.google.com/googleplay/android-developer/answer/9799150
           // https://github.com/transistorsoft/react-native-background-geolocation/issues/1149
-          // https://transistorsoft.github.io/react-native-background-geolocation-android/interfaces/_react_native_background_geolocation_android_.config.html#backgroundpermissionrationale
           // https://transistorsoft.medium.com/new-google-play-console-guidelines-for-sensitive-app-permissions-d9d2f4911353
           backgroundPermissionRationale: {
             title: i18n.t('BACKGROUND_PERMISSION_RATIONALE.title'),
@@ -114,6 +101,29 @@ export default ({ getState, dispatch }) => {
             negativeAction: i18n.t('CANCEL'),
           },
         },
+        http: {
+          url: `${state.app.baseURL}/api/me/location`,
+          headers: defaultHeaders(),
+          batchSync: true,
+          // Use an array payload
+          rootProperty: '.',
+          autoSyncThreshold: 5,
+          autoSync: true,
+        },
+        persistence: {
+          locationTemplate:
+            '{"latitude":<%= latitude %>,"longitude":<%= longitude %>,"time":"<%= timestamp %>"}', // --> {"location":[[48.87586622822684,2.370307076470255,{}]]}
+        },
+        authorization: {
+          strategy: 'JWT',
+          accessToken: selectUser(state).token,
+          refreshToken: selectUser(state).refreshToken,
+          refreshUrl: `${state.app.baseURL}/api/token/refresh`,
+          refreshPayload: {
+            refresh_token: '{refreshToken}',
+          },
+        },
+      }).then(
         bgState => {
           dispatch(setBackgroundGeolocationEnabled(bgState.enabled));
 
@@ -126,23 +136,31 @@ export default ({ getState, dispatch }) => {
             );
 
             if (didAcceptBackgroundGeolocation && !bgState.enabled) {
-              BackgroundGeolocation.start(function () {
-                if (__DEV__) {
-                  // Manually toggles the SDK's motion state between stationary and moving.
-                  // When provided a value of true, the plugin will engage location-services
-                  // and begin aggressively tracking the device's location immediately, bypassing stationary monitoring.
-                  setTimeout(
-                    () => BackgroundGeolocation.changePace(true),
-                    5000,
-                  );
-                }
-              });
+              BackgroundGeolocation.start()
+                .then(() => {
+                  if (__DEV__) {
+                    // Manually toggles the SDK's motion state between stationary and moving.
+                    // When provided a value of true, the plugin will engage location-services
+                    // and begin aggressively tracking the device's location immediately, bypassing stationary monitoring.
+                    setTimeout(
+                      () => BackgroundGeolocation.changePace(true),
+                      5000,
+                    );
+                  }
+                })
+                // start() rejects when the user denies the location permission.
+                // Without this the rejection surfaced in Sentry as an unhandled
+                // "Error: Permission denied" (APP-2YE) with no stack.
+                .catch(error => {
+                  console.log('BackgroundGeolocation.start() failed:', error);
+                  dispatch(setBackgroundGeolocationEnabled(false));
+                });
             }
           });
         },
         error => {
           // The SDK relies on Google Play Services location APIs, which are
-          // absent on de-Googled Android builds. Without this callback the
+          // absent on de-Googled Android builds. Without this handler the
           // failure was silent and setBackgroundGeolocationEnabled never fired,
           // leaving the UI to believe tracking was starting.
           // @see https://github.com/coopcycle/coopcycle-app/issues/2113

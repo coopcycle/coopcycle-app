@@ -6,9 +6,6 @@ PODS:
   - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
   - boost (1.84.0)
-  - CocoaLumberjack (3.8.5):
-    - CocoaLumberjack/Core (= 3.8.5)
-  - CocoaLumberjack/Core (3.8.5)
   - DatadogCore (2.30.2):
     - DatadogInternal (= 2.30.2)
   - DatadogCrashReporting (2.30.2):
@@ -2946,9 +2943,35 @@ PODS:
     - SocketRocket
     - TSBackgroundFetch (~> 4.1.0)
     - Yoga
-  - RNBackgroundGeolocation (4.19.4):
-    - CocoaLumberjack (~> 3.8.5)
+  - RNBackgroundGeolocation (5.6.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - TSLocationManager (~> 4.6.0)
+    - Yoga
   - RNCAsyncStorage (2.2.0):
     - boost
     - DoubleConversion
@@ -3651,6 +3674,8 @@ PODS:
   - StripeUICore (24.25.0):
     - StripeCore (= 24.25.0)
   - TSBackgroundFetch (4.1.1)
+  - TSLocationManager (4.6.1):
+    - TSBackgroundFetch (~> 4.1.0)
   - VisionCamera (4.7.3):
     - VisionCamera/Core (= 4.7.3)
     - VisionCamera/React (= 4.7.3)
@@ -3796,7 +3821,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
-    - CocoaLumberjack
     - DatadogCore
     - DatadogCrashReporting
     - DatadogInternal
@@ -3838,6 +3862,7 @@ SPEC REPOS:
     - StripePaymentsUI
     - StripeUICore
     - TSBackgroundFetch
+    - TSLocationManager
     - ZXingObjC
 
 EXTERNAL SOURCES:
@@ -4100,7 +4125,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
   DatadogCore: 8e50ad6cb68343f701707f7eeca16e0acb52ed8c
   DatadogCrashReporting: 34763d4276d4fce286c7e8729cfcd2ac04dca43b
   DatadogInternal: bd8672d506a7e67936ed5f7ca612169e49029b44
@@ -4229,7 +4253,7 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardManager: 5abe57da962b386508945888c75abee4b93f382d
   RNAppleAuthentication: a89c9804592b38ed4ab11f0aee68d05ba12ad432
   RNBackgroundFetch: 7d206d84b90932f47ff7a8a22dc1227cf52a40fa
-  RNBackgroundGeolocation: f4d90dd38ecc6a17a7ebdda0bf924d6d29f0d3bd
+  RNBackgroundGeolocation: 5110c2b660a271ef2273c58385d0583d44037ce8
   RNCAsyncStorage: fd44f4b03e007e642e98df6726737bc66e9ba609
   RNCMaskedView: d707a83784c67099b54b37d056ababb2767ce15e
   RNCPicker: 35fc66f352403cdfe99d53b541f5180482ca2bc5
@@ -4263,6 +4287,7 @@ SPEC CHECKSUMS:
   StripePaymentsUI: c15edfc7d7a8ac6d8547af5a990517aa9ccfdbb0
   StripeUICore: 55ebd4a7a2c12600645526bfdd6e5bd8ea1c5335
   TSBackgroundFetch: 18918b6449a1e3f01eb0f5b44d6d79ce6160a5a5
+  TSLocationManager: 4bd6418e2685152c0a787e1387928d8dbecd663a
   VisionCamera: 7187b3dac1ff3071234ead959ce311875748e14f
   Yoga: cc4a6600d61e4e9276e860d4d68eebb834a050ba
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5

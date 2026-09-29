@@ -1587,7 +1587,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.23.8, @babel/runtime@npm:^7.24.4, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.27.1, @babel/runtime@npm:^7.29.7, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.23.8, @babel/runtime@npm:^7.24.4, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.26.0, @babel/runtime@npm:^7.27.1, @babel/runtime@npm:^7.29.7, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.7":
   version: 7.29.7
   resolution: "@babel/runtime@npm:7.29.7"
   checksum: 10c0/ca11572f7146b21e0bde6a9ed4bb6a89eafbee5f0944c7eb54d0d8a2dac962c33638a1d611e14faa71dfbb92b4b5f9236232208568a6b7d5c6f3f39ddb91771e
@@ -5309,6 +5309,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@transistorsoft/background-geolocation-types@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "@transistorsoft/background-geolocation-types@npm:5.3.2"
+  checksum: 10c0/f659516c3be2d542cca2b25d53ffb366af2167cb1ad878b9a34eec5eceaaa10df9e1227a0d7ebf61b76eabe3242f43eac06df3a777daa1736cb3540a4650de90
+  languageName: node
+  linkType: hard
+
 "@turf/along@npm:^6.5.0":
   version: 6.5.0
   resolution: "@turf/along@npm:6.5.0"
@@ -7648,7 +7655,7 @@ __metadata:
     react-native-autocomplete-input: "npm:^5.5.6"
     react-native-avoid-softinput: "npm:^8.0.2"
     react-native-background-fetch: "npm:^4.4.2"
-    react-native-background-geolocation: "npm:^4.19.4"
+    react-native-background-geolocation: "npm:^5.6.0"
     react-native-ble-manager: "npm:^8.4.4"
     react-native-calendars: "npm:^1.1314.0"
     react-native-clean-project: "npm:^4.0.3"
@@ -16792,19 +16799,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-background-fetch@npm:~4.2.6":
-  version: 4.2.9
-  resolution: "react-native-background-fetch@npm:4.2.9"
-  checksum: 10c0/d1a31fc09f36e9561b980d0fca4d7ba67003824bd79973e43fc5a0d4d622a40c4cc3ae2f9f9f04d1a9a1b3ed41b965dd6acb7d79bc2676c48a365d39d018f824
-  languageName: node
-  linkType: hard
-
-"react-native-background-geolocation@npm:^4.19.4":
-  version: 4.19.4
-  resolution: "react-native-background-geolocation@npm:4.19.4"
+"react-native-background-geolocation@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "react-native-background-geolocation@npm:5.6.0"
   dependencies:
-    react-native-background-fetch: "npm:~4.2.6"
-  checksum: 10c0/8e11b35c3db31cb00bbd064d53d29f8ad34854fb7d99677a2dff90040ff340928216ca0dbfd46969ecac62dec5dba9a408b342fa6ae029b52dfa0f025e9f9550
+    "@babel/runtime": "npm:^7.26.0"
+    "@transistorsoft/background-geolocation-types": "npm:^5.3.2"
+    tslib: "npm:^2.6.3"
+  checksum: 10c0/fc748cdcc1adde1810cb8cd1896847058c6cae1559dbb2aa59ab7dc0d3d0c0efb88aef021f04c35aaedfd78ae6bea6c6fcfb788f2d4d9244ed7347a04ccabcd4
   languageName: node
   linkType: hard
 
@@ -19458,7 +19460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.3, tslib@npm:^2.8.0, tslib@npm:^2.8.1":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.3, tslib@npm:^2.6.3, tslib@npm:^2.8.0, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62

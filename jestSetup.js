@@ -35,15 +35,30 @@ jest.mock('@react-native-firebase/analytics', () => ({
 jest.mock('@react-native-firebase/messaging', () => ({}));
 
 jest.mock('react-native-background-geolocation', () => ({
-  DESIRED_ACCURACY_HIGH: -1,
-  LOG_LEVEL_VERBOSE: 5,
-  LOG_LEVEL_OFF: 0,
+  // v5 replaced the DESIRED_ACCURACY_* / LOG_LEVEL_* statics with named enum
+  // exports, and ready()/start()/stop()/changePace() are promise-only.
+  DesiredAccuracy: {
+    Navigation: -2,
+    High: -1,
+    Medium: 10,
+    Low: 100,
+    VeryLow: 1000,
+    Lowest: 3000,
+  },
+  LogLevel: {
+    Off: 0,
+    Error: 1,
+    Warning: 2,
+    Info: 3,
+    Debug: 4,
+    Verbose: 5,
+  },
   onEnabledChange: jest.fn(),
-  ready: jest.fn(),
-  start: jest.fn(),
-  stop: jest.fn(),
+  ready: jest.fn(() => Promise.resolve({ enabled: false })),
+  start: jest.fn(() => Promise.resolve({ enabled: true })),
+  stop: jest.fn(() => Promise.resolve({ enabled: false })),
   removeListeners: jest.fn(),
-  changePace: jest.fn(),
+  changePace: jest.fn(() => Promise.resolve({ enabled: true })),
 }));
 
 jest.mock('@stripe/stripe-react-native', () => ({}));
