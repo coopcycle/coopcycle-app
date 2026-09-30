@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import FAIcon from './Icon';
 import { Task } from '../types/task';
@@ -231,15 +231,18 @@ const TaskMarker = ({ task, count = 1, size = 45, testID }: TaskMarkerProps) => 
 
   const [backgroundProps, borderProps, iconProps] = getMarkerIconProps(task, count);
 
-  const getContainerTransform = () => {
-    if (Platform.OS === 'ios') {
-      return [{ translateY: -17 }, { translateX: 1 }];
-    }
-    return [{ translateY: 12 }];
-  };
+  // The pin art sits in a square 640 viewBox rendered into a size x size*1.4
+  // box, so preserveAspectRatio letterboxes it and the tip lands short of the
+  // view's bottom edge. Markers are anchored "bottom", so nudge the art down by
+  // that gap to put the tip itself on the coordinate:
+  //   scale     = size / 640
+  //   tip y     = 578 * scale            (the path's lowest point)
+  //   top pad   = (size * 1.4 - size) / 2
+  //   gap       = size * 1.4 - (top pad + tip y)
+  const tipOffset = size * 1.4 - ((size * 1.4 - size) / 2 + (578 / 640) * size);
 
   return (
-   <View style={[ styles.container, { transform: getContainerTransform(), opacity }]} testID={testID}>
+   <View style={[ styles.container, { transform: [{ translateY: tipOffset }], opacity }]} testID={testID}>
       <Svg width={size} height={size * 1.4} viewBox="0 0 640 640">
         <Path
           d="M320 64C214 64 128 148.4 128 252.6C128 371.9 248.2 514.9 298.4 569.4C310.2 582.2 329.8 582.2 341.6 569.4C391.8 514.9 512 371.9 512 252.6C512 148.4 426 64 320 64z"

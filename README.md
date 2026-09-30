@@ -74,7 +74,6 @@ A Google Maps API Key is needed at compilation time for Android (see `AndroidMan
 
 ```
 GOOGLE_MAPS_BROWSER_KEY=YOUR_API_KEY
-GOOGLE_MAPS_ANDROID_KEY=YOUR_API_KEY
 ```
 
 Those keys won't work for address autocomplete if you don't have [billing enabled in Google Cloud](https://cloud.google.com/billing/docs/how-to/manage-billing-account). Before enabling billing in your project, read and check the [the terms and conditions for the free trial](https://cloud.google.com/terms/free-trial/).

@@ -6,19 +6,17 @@ import React, {
   useState,
 } from 'react';
 import { View } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
-import { connect, useSelector } from 'react-redux';
+import { Marker } from '@maplibre/maplibre-react-native';
+import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
-import objectHash from 'object-hash';
 
+import Map from './map/Map';
+import { toPosition, type Region } from './map/region';
 import TaskMarker from './TaskMarker';
 import { filterTasks } from '../redux/logistics/utils';
 import { getTaskListTasks } from '../shared/src/logistics/redux/taskListUtils';
-import {
-  selectIsHideUnassignedFromMap,
-  selectIsPolylineOn,
-} from '../redux/Courier';
+import { selectIsHideUnassignedFromMap } from '../redux/Courier';
 import { selectTasksEntities } from '../shared/logistics/redux';
 
 import {
@@ -38,12 +36,9 @@ function TasksMapView(props) {
     isHideUnassignedFromMap,
   } = props;
 
-  const [marginBottom, setMarginBottom] = useState(1);
   const mapRef = useRef(null);
   const [mapHeight, setMapHeight] = useState(0);
   const [mapRegion, setMapRegion] = useState<Region>();
-
-  const showPolylines = useSelector(selectIsPolylineOn)
 
   //bottomsheet opening
   const { handleOpen } = useContext(BottomSheetContext || {});
@@ -95,9 +90,10 @@ function TasksMapView(props) {
       return (
         <Marker
           key={key}
-          coordinate={{ latitude, longitude }}
+          id={key}
+          lngLat={toPosition({ latitude, longitude })}
+          anchor="bottom"
           onPress={() => onMarkerPress(tasks)}
-          tracksViewChanges={false}
         >
           <TaskMarker
             task={firstTask}
@@ -109,13 +105,6 @@ function TasksMapView(props) {
     });
   }, [groupedByCoord, onMarkerPress]);
   ;
-
-  const mapKey = useMemo(() => {
-    return objectHash({
-      ...uiFilters,
-      showPolylines
-    })
-  }, [uiFilters, showPolylines]);
 
   // render bottomsheet
   const renderBottomSheet = useCallback(() => {
@@ -131,42 +120,32 @@ function TasksMapView(props) {
   return (
     <>
       <View
-        renderToHardwareTextureAndroid={true}
+        // No renderToHardwareTextureAndroid here: promoting this subtree to a
+        // hardware layer composites the map's GL SurfaceView into that layer and
+        // it renders black. It was a react-native-maps-era optimisation.
         collapsable={false}
         style={{ flex: 1 }}
         onLayout={(e) => setMapHeight(e.nativeEvent.layout.height)}
       >
         {mapHeight > 0 && (
-          <MapView
-            // https://github.com/react-native-maps/react-native-maps/issues/5840
-            // https://github.com/react-native-maps/react-native-maps/issues/5669
-            // https://github.com/react-native-maps/react-native-maps/issues/5798
-            // We use a key prop to force the map to re-render, and cleanup markers/polylines.
-            key={mapKey}
-            onRegionChangeComplete={onRegionChangeComplete}
+          <Map
             ref={mapRef}
-            style={{ flex: 1, marginBottom }}
+            style={{ flex: 1 }}
+            showsUserLocation
+            onRegionChangeComplete={onRegionChangeComplete}
+            onMapReady={onMapReady}
             initialRegion={mapRegion || {
               latitude: mapCenter[0],
               longitude: mapCenter[1],
               latitudeDelta: 0.1,
               longitudeDelta: 0.1,
             }}
-            onMapReady={() => {
-              setMarginBottom(0);
-              if (onMapReady) onMapReady();
-            }}
-            zoomEnabled={true}
-            zoomControlEnabled={true}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
-            loadingEnabled={true}
           >
             <TaskListPolylines
               taskLists={taskLists}
             />
             {renderMarkers}
-          </MapView>
+          </Map>
         )}
       </View>
       {renderBottomSheet()}

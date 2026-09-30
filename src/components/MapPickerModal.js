@@ -6,7 +6,9 @@ import React, {
   useEffect,
 } from 'react';
 import { View, StyleSheet, Dimensions, PermissionsAndroid, Image } from 'react-native';
-import MapView from 'react-native-maps';
+import { useCurrentPosition } from '@maplibre/maplibre-react-native';
+
+import Map from './map/Map';
 import { Button, ButtonText } from '@/components/ui/button'
 import { Text } from '@/components/ui/text'
 import { Box } from '@/components/ui/box'
@@ -72,6 +74,18 @@ function MapPickerScreen({
 
   const mapRef = useRef(null);
   const locationRef = useRef(null);
+
+  // Replaces react-native-maps' onUserLocationChange: MapLibre exposes the
+  // device position through the location manager rather than as a map event.
+  const currentPosition = useCurrentPosition();
+  useEffect(() => {
+    if (!currentPosition) {
+      return;
+    }
+    const { latitude, longitude } = currentPosition.coords;
+    locationRef.current = { latitude, longitude };
+    setIsLocated(true);
+  }, [currentPosition]);
 
   const initialRegion = useMemo(() => {
     if (!location) return null;
@@ -204,29 +218,13 @@ function MapPickerScreen({
           <FabIcon as={LocateFixed} />
         </Fab>
         {initialRegion && (
-          <MapView
+          <Map
             ref={mapRef}
             style={styles.map}
             initialRegion={initialRegion}
             onRegionChangeComplete={handleRegionChange}
-            moveOnMarkerPress={false}
-            // Keep this disabled, somehow if the MapView must keep
-            // a singleton instance in background.
-            // If a map with lite-mode is shown before loading this screen
-            // lite-mode will be enabled by default; even if this is set to false by default.
-            // So i force lite-mode and seems to work fine
-            liteMode={false}
-            showsCompass={false}
-            rotateEnabled={false}
-            pitchEnabled={false}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
-            onUserLocationChange={({ nativeEvent: { coordinate } }) => {
-              locationRef.current = coordinate;
-              setIsLocated(true);
-            }}
-          >
-          </MapView>
+            showsUserLocation
+          />
 
         )}
         <View style={styles.markerFixed}>

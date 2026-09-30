@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Polyline } from 'react-native-maps';
+import Polyline from './map/Polyline';
 import { useSelector } from 'react-redux';
 import { decode } from '@mapbox/polyline';
 
@@ -71,7 +71,7 @@ const TaskListPolylines: React.FC<TaskListPolylinesProps> = ({
       return (
         <Polyline
           key={key}
-          testID={key}
+          id={key}
           coordinates={coordinates}
           strokeWidth={2}
           strokeColor={strokeColor}

@@ -9,16 +9,20 @@ import { User, Phone, MapPin, MessageCircle, Clock } from 'lucide-react-native'
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { Marker } from 'react-native-maps';
+import { Marker } from '@maplibre/maplibre-react-native';
 import { connect } from 'react-redux';
 
-import NavigationAwareMap from '../../components/NavigationAwareMap';
+import Map, { type MapHandle } from '../../components/map/Map';
+import AddressMarker from '../../components/map/AddressMarker';
+import { toPosition } from '../../components/map/region';
 import { loadTasks } from '../../redux/Store/actions';
 import { selectDeliveries } from '../../redux/Store/selectors';
 import { stateColor } from '../../utils/delivery';
 import { humanizeTaskTime } from '../../utils/time-slots';
 
 class DeliveryDetail extends Component {
+  mapRef = React.createRef<MapHandle>();
+
   componentDidMount() {
     this.props.loadTasks(this.props.route.params?.delivery);
   }
@@ -76,11 +80,28 @@ class DeliveryDetail extends Component {
           </Text>
         </View>
         <View style={{ flex: 1 }}>
-          <NavigationAwareMap navigation={this.props.navigation}>
-            {markers.map((marker, index) => (
-              <Marker {...marker} key={`marker-${index}`} flat={true} />
+          <Map
+            ref={this.mapRef}
+            // Frame pickup and dropoff together once the map is up. This
+            // replaces NavigationAwareMap, which centred on the markers'
+            // centroid at a fixed zoom and showed a default world view when
+            // there was only one.
+            onMapReady={() =>
+              this.mapRef.current?.fitToCoordinates(
+                markers.map(marker => marker.coordinate),
+                0,
+              )
+            }>
+            {markers.map(marker => (
+              <Marker
+                key={marker.identifier}
+                id={marker.identifier}
+                anchor="bottom"
+                lngLat={toPosition(marker.coordinate)}>
+                <AddressMarker />
+              </Marker>
             ))}
-          </NavigationAwareMap>
+          </Map>
         </View>
         <View style={{ flex: 2 }}>
           <VStack className="p-3 justity-center">

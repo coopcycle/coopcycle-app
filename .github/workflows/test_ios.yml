@@ -92,7 +92,6 @@ jobs:
         run: |
           cp .env.dist .env
           sed -i '' -e 's/GOOGLE_MAPS_BROWSER_KEY=/GOOGLE_MAPS_BROWSER_KEY=${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}/' .env
-          sed -i '' -e 's/GOOGLE_MAPS_ANDROID_KEY=/GOOGLE_MAPS_ANDROID_KEY=${{ secrets.GOOGLE_MAPS_ANDROID_KEY }}/' .env
 
       # No derived data cache on purpose. It restored fine (3.5 GB, ~2 min) but
       # xcodebuild rebuilt everything anyway: Xcode decides staleness from file
