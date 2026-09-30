@@ -303,7 +303,7 @@ describe('Redux | Tasks | Actions', () => {
     expect(client.uploadFileAsync).toHaveBeenCalledWith(
       '/api/task_images',
       '123456',
-      { headers: { 'X-Attach-To': '/api/tasks/1' } },
+      { headers: { 'X-Attach-To': '/api/tasks/1', 'X-Pod-Type': 'signature' } },
     );
     expect(client.put).toHaveBeenCalledWith(`${task['@id']}/done`, { notes });
   });

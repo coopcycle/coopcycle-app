@@ -13,7 +13,7 @@ import tracker from '../../analytics/Tracker';
 import i18n from '../../i18n';
 import { selectPictures, selectSignatures } from './taskSelectors';
 import { selectCurrentRoute, selectHttpClient } from '../App/selectors';
-import UploadQueue from '../../services/UploadQueue';
+import UploadQueue, { UploadType } from '../../services/UploadQueue';
 import {
   cancelTaskFailure,
   cancelTaskSuccess,
@@ -269,7 +269,12 @@ function uploadEntitiesImages(entities, url) {
     const signatures = selectSignatures(getState());
     const pictures = selectPictures(getState());
 
-    const files = signatures.concat(pictures);
+    // The server needs to tell the signature from the photos, e.g. to put it
+    // in the signature box of the waybill
+    const files: { fileUri: string; type: UploadType }[] = [
+      ...signatures.map((fileUri: string) => ({ fileUri, type: 'signature' })),
+      ...pictures.map((fileUri: string) => ({ fileUri, type: 'photo' })),
+    ];
 
     console.log(`Got ${files.length} file(s) to upload`);
 
@@ -278,7 +283,12 @@ function uploadEntitiesImages(entities, url) {
     }
 
     const attachTo = entities.map(entity => entity['@id']);
-    const jobs = files.map(fileUri => ({ fileUri, uploadUrl: url, attachTo }));
+    const jobs = files.map(({ fileUri, type }) => ({
+      fileUri,
+      uploadUrl: url,
+      attachTo,
+      type,
+    }));
 
     return UploadQueue.enqueue(jobs)
       .then(() => {
@@ -370,10 +380,17 @@ async function drainUploadQueue(getState) {
     let status: number | undefined;
 
     try {
+      const headers: Record<string, string> = {
+        'X-Attach-To': job.attachTo.join(';'),
+      };
+      if (job.type) {
+        headers['X-Pod-Type'] = job.type;
+      }
+
       const response = await httpClient.uploadFileAsync(
         job.uploadUrl,
         job.fileUri,
-        { headers: { 'X-Attach-To': job.attachTo.join(';') } },
+        { headers },
       );
 
       status = response?.status;

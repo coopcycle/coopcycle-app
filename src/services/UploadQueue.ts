@@ -7,11 +7,15 @@ const QUEUE_KEY = 'upload_queue';
 // never accept cannot sit in the queue — and keep taking the uplink — forever.
 export const MAX_UPLOAD_ATTEMPTS = 5;
 
+export type UploadType = 'signature' | 'photo';
+
 export interface UploadJob {
   id: string;
   fileUri: string;
   uploadUrl: string;
   attachTo: string[];
+  // Optional: jobs queued by a previous version of the app don't have it
+  type?: UploadType;
   createdAt: string;
   attempts?: number;
 }

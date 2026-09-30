@@ -7,6 +7,7 @@ import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import FAIcon from './Icon';
+import LinkifiedText from './LinkifiedText';
 
 export interface IconTextProps {
   iconName: string;
@@ -17,6 +18,8 @@ export interface IconTextProps {
   textSize?: number;
   gap?: number;
   onPress?: () => void;
+  /* turn urls, emails & phone numbers found in `text` into tappable links */
+  linkify?: boolean;
   disabled?: boolean;
   testID?: string;
 }
@@ -29,6 +32,7 @@ const IconText: React.FC<IconTextProps> = ({
   iconSize = 18,
   textSize = 'lg',
   onPress,
+  linkify = false,
   disabled = false,
   testID,
 }) => {
@@ -54,12 +58,21 @@ const IconText: React.FC<IconTextProps> = ({
             {label}
           </Text>
         )}
-        <Text
-          size={textSize}
-          className="text-typography-950"
-          style={{ lineHeight: 22 }}>
-          {text}
-        </Text>
+        {linkify ? (
+          <LinkifiedText
+            size={textSize}
+            className="text-typography-950"
+            style={{ lineHeight: 22 }}>
+            {text}
+          </LinkifiedText>
+        ) : (
+          <Text
+            size={textSize}
+            className="text-typography-950"
+            style={{ lineHeight: 22 }}>
+            {text}
+          </Text>
+        )}
       </Box>
     </HStack>
   );

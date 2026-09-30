@@ -100,7 +100,8 @@ android {
 
         manifestPlaceholders = [
             tipsiStripeRedirectScheme: "coopcycle",
-            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_LICENSE_KEY"),
+            googleMapsApiKey: project.env.get("GOOGLE_MAPS_ANDROID_KEY"),
+            transistorsoftLicenseKey: project.env.get("TRANSISTORSOFT_JWT_LICENSE_KEY_ANDROID"),
             appAuthRedirectScheme: project.env.get("APP_AUTH_REDIRECT_SCHEME")
         ]
 

@@ -3,14 +3,13 @@ import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
 import { ArrowRightIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { FlatList, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { phonecall } from 'react-native-communications';
 import { showLocation } from 'react-native-map-link';
 import classNames from 'classnames';
 import { Box, Clock, File, Info, MapPin, MessageCircle, Phone, Recycle, Tag, Weight } from 'lucide-react-native';
-import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
 import ItemSeparator from '../../../components/ItemSeparator';
 import {
@@ -23,6 +22,7 @@ import { getAddress, getName, getPackagesSummary, getTimeFrame } from './utils';
 import { useSelector } from 'react-redux';
 import { selectTimezone } from '@/src/utils/timezone';
 import Detail from '../../../components/Detail';
+import { openUrl } from '../../../utils/url';
 
 const basename = (str: string) => str.substr(str.lastIndexOf('/') + 1)
 
@@ -34,10 +34,6 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
-
-const inAppBrowserOptions = {
-  dismissButtonStyle: 'cancel',
-};
 
 const Details = ({ task, onTaskTitleClick, t }) => {
   const timezone = useSelector(selectTimezone);
@@ -91,6 +87,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
     items.push({
       icon: Info,
       text: task.address.description,
+      linkify: true,
     });
   }
 
@@ -113,6 +110,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
     items.push({
       icon: MessageCircle,
       text: task.comments,
+      linkify: true,
     });
   }
 
@@ -163,18 +161,7 @@ const Details = ({ task, onTaskTitleClick, t }) => {
       items.push({
         icon: File,
         text: basename(url),
-        onPress: async () => {
-          try {
-            if (await InAppBrowser.isAvailable()) {
-              await InAppBrowser.close();
-              await InAppBrowser.open(url, inAppBrowserOptions);
-            } else {
-              Linking.openURL(url);
-            }
-          } catch (e) {
-            Linking.openURL(url);
-          }
-        }
+        onPress: () => openUrl(url),
       });
     })
   }

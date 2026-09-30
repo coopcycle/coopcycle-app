@@ -44,11 +44,27 @@ function toRgbString(color: Color): string {
  */
 const DARK_ANCHOR_MIN = 0.7;
 
+/**
+ * In light mode the ramp is anchored no lighter than this.
+ *
+ * The mirror of `DARK_ANCHOR_MIN`. In light mode the primary family is a
+ * *background* family — a solid button paints `primary-500` and writes
+ * `typography-0` (rgb(254 254 255)) on top of it. A brand colour that is
+ * light in its own right therefore produces a near-white button with
+ * near-white text: `#d9ceb4` anchored stop 500 at rgb(217 206 180), 1.55:1
+ * against its own label.
+ *
+ * 0.55 is where every brand colour we ship for — up to pure white — still
+ * clears 4.5:1 at stop 500. The ceiling lowers only those ramps: a brand
+ * colour already dark enough to carry white text is left exactly as it is.
+ */
+const LIGHT_ANCHOR_MAX = 0.55;
+
 function buildRamp(hex: string, invert: boolean): Record<string, string> {
   const base = new Color(hex).to('oklch');
   const anchor = invert
     ? Math.max(DARK_ANCHOR_MIN, base.coords[0])
-    : base.coords[0];
+    : Math.min(LIGHT_ANCHOR_MAX, base.coords[0]);
 
   const result: Record<string, string> = {};
 

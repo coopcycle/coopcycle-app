@@ -35,6 +35,27 @@ describe('Redux | Tasks | Upload queue', () => {
     alertSpy.mockRestore();
   });
 
+  test('the image type is sent along the file', async () => {
+    const client = makeClient();
+    client.uploadFileAsync.mockResolvedValue({ status: 201 });
+    httpClientService.setTestClient(client);
+
+    await UploadQueue.enqueue([
+      { fileUri: 'file:///a.jpg', uploadUrl: '/api/task_images', attachTo: ['/api/tasks/1'], type: 'photo' },
+      // Queued by a previous version of the app
+      { fileUri: 'file:///b.jpg', uploadUrl: '/api/task_images', attachTo: ['/api/tasks/1'] },
+    ]);
+
+    await makeStore().dispatch(processUploadQueue());
+
+    expect(client.uploadFileAsync).toHaveBeenNthCalledWith(1, '/api/task_images', 'file:///a.jpg', {
+      headers: { 'X-Attach-To': '/api/tasks/1', 'X-Pod-Type': 'photo' },
+    });
+    expect(client.uploadFileAsync).toHaveBeenNthCalledWith(2, '/api/task_images', 'file:///b.jpg', {
+      headers: { 'X-Attach-To': '/api/tasks/1' },
+    });
+  });
+
   test('a failure the connection is to blame for keeps the job queued', async () => {
     const client = makeClient();
     // No response at all: offline, or the request timed out

@@ -20,15 +20,17 @@ BackgroundGeolocation.onEnabledChange.mockImplementation(callback => {
 // @see https://jestjs.io/docs/en/timer-mocks.html
 jest.useFakeTimers({ legacyFakeTimers: true });
 
+// v5's ready()/start() are promise-only, so the middleware now does its work in
+// microtasks. Let them drain before asserting.
+const flushPromises = () => new Promise(resolve => process.nextTick(resolve));
+
 describe('GeolocationMiddleware', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('does not start background geolocation if already started', async () => {
-    BackgroundGeolocation.ready.mockImplementation((options, callback) => {
-      callback({ enabled: true });
-    });
+    BackgroundGeolocation.ready.mockResolvedValue({ enabled: true });
 
     const preloadedState = {
       app: {
@@ -53,6 +55,7 @@ describe('GeolocationMiddleware', () => {
       'ROLE_COURIER',
     ]);
     store.dispatch(setUser({ ...user }));
+    await flushPromises();
 
     expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1);
     expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(0);
@@ -62,7 +65,7 @@ describe('GeolocationMiddleware', () => {
     expect(newState.app.isBackgroundGeolocationEnabled).toBe(true);
   });
 
-  it('starts background geolocation if not started', () => {
+  it('starts background geolocation if not started', async () => {
     // Change Jest timeout limit,
     // because we are calling changePace with setTimeout
     jest.setTimeout(30000);
@@ -86,32 +89,31 @@ describe('GeolocationMiddleware', () => {
         getDefaultMiddleware().concat([middleware]),
     });
 
-    return new Promise((resolve, reject) => {
-      BackgroundGeolocation.ready.mockImplementation((options, callback) => {
-        callback({ enabled: false });
-      });
-      BackgroundGeolocation.start.mockImplementation(callback => {
-        onEnabledChangeCallback(true);
-        callback();
-        jest.runAllTimers();
-      });
-      BackgroundGeolocation.changePace.mockImplementation(moving => {
-        resolve();
-      });
-
-      const user = new AppUser('foo', 'foo@coopcycle.org', '123456', [
-        'ROLE_COURIER',
-      ]);
-
-      store.dispatch(setUser({ ...user }));
-    }).then(() => {
-      expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1);
-      expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(1);
-
-      const newState = store.getState();
-
-      expect(newState.app.isBackgroundGeolocationEnabled).toBe(true);
+    BackgroundGeolocation.ready.mockResolvedValue({ enabled: false });
+    BackgroundGeolocation.start.mockImplementation(() => {
+      onEnabledChangeCallback(true);
+      return Promise.resolve({ enabled: true });
     });
+
+    const user = new AppUser('foo', 'foo@coopcycle.org', '123456', [
+      'ROLE_COURIER',
+    ]);
+
+    store.dispatch(setUser({ ...user }));
+
+    // ready() -> willDiscloseBackgroundPermission() -> start()
+    await flushPromises();
+    // changePace() is called from a setTimeout in the start() continuation
+    jest.runAllTimers();
+    await flushPromises();
+
+    expect(BackgroundGeolocation.ready).toHaveBeenCalledTimes(1);
+    expect(BackgroundGeolocation.start).toHaveBeenCalledTimes(1);
+    expect(BackgroundGeolocation.changePace).toHaveBeenCalledWith(true);
+
+    const newState = store.getState();
+
+    expect(newState.app.isBackgroundGeolocationEnabled).toBe(true);
   });
 
   it('stops background geolocation on logout', async () => {

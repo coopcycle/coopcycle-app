@@ -122,7 +122,9 @@ class AddressUtils {
   static getAddressFromCurrentPosition() {
     return new Promise((resolve, reject) => {
       BackgroundGeolocation.setConfig({
-        locationAuthorizationRequest: 'WhenInUse',
+        geolocation: {
+          locationAuthorizationRequest: 'WhenInUse',
+        },
       });
 
       BackgroundGeolocation.getCurrentPosition().then(position => {
