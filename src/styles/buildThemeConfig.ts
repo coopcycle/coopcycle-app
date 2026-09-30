@@ -22,6 +22,15 @@ function mapScaleToVars(
   return result;
 }
 
+/**
+ * Only the `primary` and `secondary` families are returned here. The rest of
+ * the palette comes from the static config, which `GluestackUIProvider` puts
+ * earlier in the same style array — these override it by position.
+ *
+ * Spreading `staticConfig` in as a base would not work: `vars()` returns an
+ * opaque marker object and keeps the variables in a side-table keyed by its
+ * identity, so the spread yields nothing.
+ */
 export function buildThemeConfig(theme: ServerTheme | null): {
   light: ReturnType<typeof vars>;
   dark: ReturnType<typeof vars>;
@@ -33,12 +42,10 @@ export function buildThemeConfig(theme: ServerTheme | null): {
 
   return {
     light: vars({
-      ...staticConfig.light,
       ...(primaryScale ? mapScaleToVars('primary', primaryScale.light) : {}),
       ...(secondaryScale ? mapScaleToVars('secondary', secondaryScale.light) : {}),
     }),
     dark: vars({
-      ...staticConfig.dark,
       ...(primaryScale ? mapScaleToVars('primary', primaryScale.dark) : {}),
       ...(secondaryScale ? mapScaleToVars('secondary', secondaryScale.dark) : {}),
     }),
