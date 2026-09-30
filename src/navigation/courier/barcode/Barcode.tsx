@@ -25,6 +25,7 @@ import { CommonActions, StackActions } from '@react-navigation/native';
 import NavigationHolder from '../../../NavigationHolder';
 import { phonecall } from 'react-native-communications';
 import BottomModal from '../../../components/BottomModal';
+import LinkifiedText from '../../../components/LinkifiedText';
 import { navigateToTask } from '../../utils';
 import { selectTasks } from '../../../redux/Courier';
 import { shouldNotificationBeDisplayed } from '../../../redux/App/actions';
@@ -84,12 +85,17 @@ async function _unassignTask(httpClient, task_id, token) {
   }
 }
 
-function TextSection({ title, value, variant = 'data' }) {
+function TextSection({ title, value, variant = 'data', linkify = false }) {
   const colorScheme = useColorScheme();
+  const textStyle = [styles[variant], styles[colorScheme]];
   return (
     <View style={styles.section}>
       <Text style={styles.title}>{title}</Text>
-      <Text style={[styles[variant], styles[colorScheme]]}>{value ?? '-'}</Text>
+      {linkify && value ? (
+        <LinkifiedText style={textStyle}>{value}</LinkifiedText>
+      ) : (
+        <Text style={textStyle}>{value ?? '-'}</Text>
+      )}
     </View>
   );
 }
@@ -370,6 +376,7 @@ function BarcodePage({
             title={t('TASK_FORM_COMMENTS_LABEL')}
             value={entity?.comments}
             variant="note"
+            linkify
           />
         </ScrollView>
         <View

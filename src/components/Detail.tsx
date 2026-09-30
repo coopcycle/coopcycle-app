@@ -3,9 +3,10 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { TouchableOpacity } from 'react-native';
+import LinkifiedText from './LinkifiedText';
 
 const Detail = ({ item }) => {
-  const { icon, text, component, onPress } = item;
+  const { icon, text, component, onPress, linkify } = item;
 
   let touchableOpacityProps = {};
   if (onPress) {
@@ -14,7 +15,13 @@ const Detail = ({ item }) => {
 
   const body = (
     <Box flex={1} className="p-2">
-      {text ? <Text className="text-md">{text}</Text> : null}
+      {text ? (
+        linkify ? (
+          <LinkifiedText className="text-md">{text}</LinkifiedText>
+        ) : (
+          <Text className="text-md">{text}</Text>
+        )
+      ) : null}
       {component && component}
     </Box>
   );

@@ -110,6 +110,7 @@ const ContentText = ({
             label={t('ORDER_COMMENTS')}
             text={comments}
             iconName="comments"
+            linkify
           />
         </>
       )}

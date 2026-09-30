@@ -109,6 +109,7 @@ const OrderDetail = ({ tasks }: { tasks: Tasks }) => {
             label={t('ORDER_COMMENTS')}
             text={comments.join('\n\n')}
             iconName="comments"
+            linkify
           />
         </>
       )}
