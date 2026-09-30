@@ -173,6 +173,7 @@ export function taskIncludesKeyword(task, keyword: string): boolean {
     standardIncludes(task.assignedTo, keyword) ||
     standardIncludes(task.orgName, keyword) ||
     standardIncludes(task.metadata?.order_number, keyword) ||
+    standardIncludes(task.metadata?.external_reference, keyword) ||
     standardIncludes(task.address?.name, keyword) ||
     standardIncludes(task.address?.contactName, keyword) ||
     standardIncludes(task.address?.firstName, keyword) ||

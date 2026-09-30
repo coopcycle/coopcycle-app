@@ -59,6 +59,12 @@ export function getTaskWithTags(tags) {
   });
 }
 
+export function getTaskWithExternalReference(externalReference) {
+  return Task({
+    metadata: { external_reference: externalReference },
+  });
+}
+
 export function getTaskWithStatus(status) {
   return Task({
     status,
