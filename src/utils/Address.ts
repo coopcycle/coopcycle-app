@@ -2,8 +2,9 @@ import axios from 'axios';
 import _ from 'lodash';
 import qs from 'qs';
 import { Linking, Platform } from 'react-native';
-import BackgroundGeolocation from 'react-native-background-geolocation';
 import Config from 'react-native-config';
+
+import { getBackgroundGeolocation } from './backgroundGeolocation';
 
 export type AutocompleteAddress = {
   geo: { latitude: number; longitude: number };
@@ -121,6 +122,14 @@ class AddressUtils {
 
   static getAddressFromCurrentPosition() {
     return new Promise((resolve, reject) => {
+      // Absent in custom apps, where the native module is not linked.
+      const BackgroundGeolocation = getBackgroundGeolocation();
+
+      if (!BackgroundGeolocation) {
+        reject(new Error('Background geolocation is not available'));
+        return;
+      }
+
       BackgroundGeolocation.setConfig({
         geolocation: {
           locationAuthorizationRequest: 'WhenInUse',

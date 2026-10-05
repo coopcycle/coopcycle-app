@@ -15,7 +15,6 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import Config from 'react-native-config';
 
 import reducers from './reducers';
-import GeolocationMiddleware from './middlewares/GeolocationMiddleware';
 import BluetoothMiddleware from './middlewares/BluetoothMiddleware';
 import HttpMiddleware from './middlewares/HttpMiddleware';
 import NetInfoMiddleware from './middlewares/NetInfoMiddleware';
@@ -52,7 +51,10 @@ const middlewares = [
 if (!Config.DEFAULT_SERVER) {
   middlewares.push(
     ...[
-      GeolocationMiddleware,
+      // Required lazily: custom apps have no background-geolocation native
+      // module, and the package throws from module scope when it is missing.
+      // @see src/utils/backgroundGeolocation.ts
+      require('./middlewares/GeolocationMiddleware').default,
       BluetoothMiddleware,
       notifyOnNewOrderCreated,
       ringOnTaskListUpdated,
