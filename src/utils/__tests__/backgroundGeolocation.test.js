@@ -29,7 +29,6 @@ describe('backgroundGeolocation guard', () => {
 
       // Reproduces the real failure: evaluating the package throws.
       jest.doMock('react-native-background-geolocation', () => {
-        evaluations += 1;
         throw new Error(
           '[react-native-background-geolocation] Native module "RNBackgroundGeolocation" not found. ' +
             'Make sure the library is properly installed and linked for your platform.',
