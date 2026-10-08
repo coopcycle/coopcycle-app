@@ -1,12 +1,14 @@
-import Centrifuge from 'centrifuge';
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
-import parseUrl from 'url-parse';
 
 import { logout, setLoading } from '../App/actions';
 import { selectHttpClient, selectIsAuthenticated } from '../App/selectors';
 import { selectCheckoutAuthorizationHeaders } from '../Checkout/selectors';
 import { selectOrderAccessTokensById } from './selectors';
+import {
+  createCentrifuge,
+  subscribe as subscribeToChannel,
+} from '../../utils/centrifugo';
 
 /*
  * Action Types
@@ -202,24 +204,16 @@ export function subscribe(order, onMessage) {
         ),
       })
       .then(res => {
-        const url = parseUrl(baseURL);
-        const protocol = url.protocol === 'https:' ? 'wss' : 'ws';
+        // No getToken: this token is scoped to one order and whoever is
+        // watching may have no account to issue a new one to, so the connection
+        // simply ends when it expires. (It used to carry an empty onRefresh,
+        // which amounted to the same thing.)
+        const centrifuge = createCentrifuge(baseURL, res.token, {
+          onConnected: context => dispatch(connected(context)),
+          onDisconnected: context => dispatch(disconnected(context)),
+        });
 
-        const centrifuge = new Centrifuge(
-          `${protocol}://${url.hostname}/centrifugo/connection/websocket`,
-          {
-            debug: __DEV__,
-            onRefresh: function (ctx, cb) {
-              // FIXME Implement refresh
-            },
-          },
-        );
-        centrifuge.setToken(res.token);
-
-        centrifuge.on('connect', context => dispatch(connected(context)));
-        centrifuge.on('disconnect', context => dispatch(disconnected(context)));
-
-        centrifuge.subscribe(res.channel, msg => onMessage(msg.data.event));
+        subscribeToChannel(centrifuge, res.channel, data => onMessage(data.event));
 
         centrifuge.connect();
 
