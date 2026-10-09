@@ -1,5 +1,8 @@
-import Centrifuge from 'centrifuge';
-import parseUrl from 'url-parse';
+import {
+  createCentrifuge,
+  isConnected,
+  subscribe,
+} from '../../../utils/centrifugo';
 
 import {
   CENTRIFUGO_MESSAGE,
@@ -84,6 +87,10 @@ function teardown() {
   if (subscription) {
     subscription.unsubscribe();
     subscription.removeAllListeners();
+    // From v3 on the client keeps a registry of subscriptions and refuses a
+    // second one for the same channel, so an unsubscribed subscription still
+    // has to be handed back before the next connect can take its place.
+    centrifuge?.removeSubscription(subscription);
     subscription = null;
   }
 
@@ -117,7 +124,7 @@ export default ({ getState, dispatch }) => {
         return next(action);
       }
 
-      if (centrifuge && centrifuge.isConnected()) {
+      if (isConnected(centrifuge)) {
         return next(action);
       }
 
@@ -145,40 +152,24 @@ export default ({ getState, dispatch }) => {
             return;
           }
 
-          const url = parseUrl(baseURL);
-          const protocol = url.protocol === 'https:' ? 'wss' : 'ws';
+          centrifuge = createCentrifuge(baseURL, tokenResponse.token, {
+            // Returning the token keeps the connection; throwing ends it. The
+            // v2 callback signalled the same thing with a status code.
+            getToken: async () => {
+              const refreshResponse = await httpClient.post(
+                '/api/centrifugo/token/refresh',
+              );
 
-          centrifuge = new Centrifuge(
-            `${protocol}://${url.hostname}/centrifugo/connection/websocket`,
-            {
-              debug: __DEV__,
-              onRefresh: function (ctx, cb) {
-                httpClient
-                  .post('/api/centrifugo/token/refresh')
-                  .then(refreshResponse => {
-                    // @see https://github.com/centrifugal/centrifuge-js#refreshendpoint
-                    // Data must be like {"status": 200, "data": {"token": "JWT"}} - see
-                    // type definitions in dist folder. Note that setting status to 200 is
-                    // required at moment. Any other status will result in refresh process
-                    // failure so client will eventually be disconnected by server.
-                    cb({ status: 200, data: { token: refreshResponse.token } });
-                  });
-              },
+              return refreshResponse.token;
             },
-          );
+            onConnected: context => dispatch(centrifugoConnected(context)),
+            onDisconnected: context => dispatch(centrifugoDisconnected(context)),
+          });
 
-          centrifuge.setToken(tokenResponse.token);
-
-          centrifuge.on('connect', context =>
-            dispatch(centrifugoConnected(context)),
-          );
-          centrifuge.on('disconnect', context =>
-            dispatch(centrifugoDisconnected(context)),
-          );
-
-          subscription = centrifuge.subscribe(
+          subscription = subscribe(
+            centrifuge,
             `${tokenResponse.namespace}_events#${user.username}`,
-            msg => dispatch(message(msg.data.event)),
+            data => dispatch(message(data.event)),
           );
 
           centrifuge.connect();

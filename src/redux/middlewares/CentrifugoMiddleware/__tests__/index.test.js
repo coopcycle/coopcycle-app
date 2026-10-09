@@ -11,27 +11,43 @@ jest.mock('../../../../services/httpClientService', () => ({
 let mockClients = [];
 
 jest.mock('centrifuge', () => {
-  return jest.fn().mockImplementation(() => {
+  const State = { Disconnected: 'disconnected', Connecting: 'connecting', Connected: 'connected' };
+
+  const Centrifuge = jest.fn().mockImplementation(() => {
+    const subscriptions = {};
+
     const client = {
-      connected: false,
+      // From v3 on the client reports a state rather than answering
+      // isConnected().
+      state: State.Disconnected,
       listeners: {},
-      isConnected: jest.fn(function () {
-        return this.connected;
-      }),
-      setToken: jest.fn(),
       on: jest.fn(function (event, cb) {
         this.listeners[event] = cb;
       }),
-      subscribe: jest.fn(() => ({
-        unsubscribe: jest.fn(),
-        removeAllListeners: jest.fn(),
-      })),
+      getSubscription: jest.fn(channel => subscriptions[channel] ?? null),
+      newSubscription: jest.fn(channel => {
+        subscriptions[channel] = {
+          on: jest.fn(),
+          subscribe: jest.fn(),
+          unsubscribe: jest.fn(),
+          removeAllListeners: jest.fn(),
+        };
+
+        return subscriptions[channel];
+      }),
+      removeSubscription: jest.fn(sub => {
+        Object.keys(subscriptions).forEach(channel => {
+          if (subscriptions[channel] === sub) {
+            delete subscriptions[channel];
+          }
+        });
+      }),
       connect: jest.fn(function () {
-        this.connected = true;
-        this.listeners.connect?.({});
+        this.state = State.Connected;
+        this.listeners.connected?.({ client: 'a-client-id' });
       }),
       disconnect: jest.fn(function () {
-        this.connected = false;
+        this.state = State.Disconnected;
       }),
       removeAllListeners: jest.fn(),
     };
@@ -40,6 +56,8 @@ jest.mock('centrifuge', () => {
 
     return client;
   });
+
+  return { Centrifuge, State, __esModule: true };
 });
 
 // Lets the middleware's `/api/centrifugo/token` promise settle.
@@ -53,8 +71,8 @@ function flush() {
  * connected while still being very much alive.
  */
 function drop(client) {
-  client.connected = false;
-  client.listeners.disconnect?.({
+  client.state = 'disconnected';
+  client.listeners.disconnected?.({
     reason: 'connection closed',
     reconnect: true,
   });
