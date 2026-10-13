@@ -25,7 +25,9 @@ export const loadTaskListsFailure = createAction(
   '@dispatch/LOAD_TASK_LISTS_FAILURE',
 );
 
-export const changeDate = createAction(DEP_CHANGE_DATE);
+// The payload is an ISO date string; typing it keeps the screens that select
+// a date (dispatch, courier) from being told they may not pass one.
+export const changeDate = createAction<string>(DEP_CHANGE_DATE);
 export const initialized = createAction('@dispatch/DISPATCH_INITIALIZE');
 
 export function initialize() {

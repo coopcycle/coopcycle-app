@@ -1,6 +1,7 @@
 import {
   displayPricePerOrder,
   filterTasksByKeyword,
+  findItemsNotDoableOn,
   getAssignedTask,
   getTasksWithColor,
   getToursToUpdate,
@@ -683,4 +684,52 @@ describe('taskUtils', () => {
   });
 });
 
+describe('findItemsNotDoableOn', () => {
+  const SERVER_TZ = 'America/Mexico_City';
 
+  // The shape that made a dispatcher on paynal wipe a whole day: the board had
+  // moved on to 12 Oct while the tasks picked up came from the 8th.
+  const tasksEntities = {
+    '/api/tasks/23116': {
+      doneAfter: '2026-10-08T10:00:00-06:00',
+      doneBefore: '2026-10-08T18:00:00-06:00',
+    },
+    '/api/tasks/23277': {
+      doneAfter: '2026-10-12T10:00:00-06:00',
+      doneBefore: '2026-10-12T18:00:00-06:00',
+    },
+  };
+
+  it('returns nothing when every task belongs to the date', () => {
+    expect(
+      findItemsNotDoableOn(
+        ['/api/tasks/23277'],
+        tasksEntities,
+        '2026-10-12',
+        SERVER_TZ,
+      ),
+    ).toEqual([]);
+  });
+
+  it('returns the tasks that belong to another day', () => {
+    expect(
+      findItemsNotDoableOn(
+        ['/api/tasks/23277', '/api/tasks/23116'],
+        tasksEntities,
+        '2026-10-12',
+        SERVER_TZ,
+      ),
+    ).toEqual(['/api/tasks/23116']);
+  });
+
+  it('leaves tours and unknown items to the server', () => {
+    expect(
+      findItemsNotDoableOn(
+        ['/api/tours/42', '/api/tasks/99999'],
+        tasksEntities,
+        '2026-10-12',
+        SERVER_TZ,
+      ),
+    ).toEqual([]);
+  });
+});

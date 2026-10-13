@@ -297,6 +297,8 @@
     "DISPATCH_TASKS_FILTERS": "Filters",
     "DISPATCH_KEYWORDS_FILTERS": "Filter by keywords",
     "DISPATCH_UNASSIGN": "Unassign",
+    "DISPATCH_ASSIGN_FAILED_TITLE": "Assignment failed",
+    "DISPATCH_ASSIGN_FAILED_MESSAGE": "These tasks could not be assigned. Check that the screen is on the right day, then try again.",
     "DISPATCH_ASSIGN_TO_ME": "Assign to me",
     "SEND_TO_WAREHOUSE": "Send to warehouse",
     "SEND_TO_WAREHOUSE_ERROR_MESSAGE": "The tasks could not be sent to the warehouse.",
