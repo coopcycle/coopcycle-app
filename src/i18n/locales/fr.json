@@ -291,6 +291,8 @@
     "DISPATCH_TASKS_FILTERS": "Filtres",
     "DISPATCH_KEYWORDS_FILTERS": "Filtrer par mot-clé",
     "DISPATCH_UNASSIGN": "Désassigner",
+    "DISPATCH_ASSIGN_FAILED_TITLE": "L'assignation a échoué",
+    "DISPATCH_ASSIGN_FAILED_MESSAGE": "Ces tâches n'ont pas pu être assignées. Vérifiez que l'écran est sur le bon jour, puis réessayez.",
     "DISPATCH_ASSIGN_TO_ME": "M'assigner la tâche",
     "SEND_TO_WAREHOUSE": "Envoyer vers un entrepôt",
     "SEND_TO_WAREHOUSE_ERROR_MESSAGE": "Les tâches n'ont pas pu être envoyées vers l'entrepôt.",

@@ -34,3 +34,28 @@ export const isSameDayInTimezone = (
   timezone?: string,
 ): boolean =>
   timezoneMoment(a, timezone).isSame(timezoneMoment(b, timezone), 'day');
+
+/**
+ * Whether the calendar day `day` falls inside the `[start, end]` window, with
+ * all three expressed in `timezone`.
+ *
+ * This mirrors the rule the API applies when it decides whether a task may be
+ * filed on a given day's task list (`TaskListManager::rejectItemsFromOtherDays`
+ * server-side, which is itself the rule of `TaskDateFilter`). Keep the two in
+ * step: a task the app lets through but the server rejects is silently dropped
+ * from the payload, and `set_items` then unassigns whatever the payload no
+ * longer mentions.
+ */
+export const isDayWithinRangeInTimezone = (
+  day: moment.MomentInput,
+  start: moment.MomentInput,
+  end: moment.MomentInput,
+  timezone?: string,
+): boolean => {
+  const target = timezoneMoment(day, timezone).startOf('day');
+
+  return (
+    !timezoneMoment(start, timezone).startOf('day').isAfter(target) &&
+    !timezoneMoment(end, timezone).startOf('day').isBefore(target)
+  );
+};

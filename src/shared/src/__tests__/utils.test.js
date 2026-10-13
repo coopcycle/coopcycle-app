@@ -1,6 +1,11 @@
 import moment from 'moment-timezone';
 
-import { isSameDayTask, isSameDayTaskList, isSameDayTour } from '../utils';
+import {
+  canTaskBeDoneOn,
+  isSameDayTask,
+  isSameDayTaskList,
+  isSameDayTour,
+} from '../utils';
 
 describe('isSameDayTask', () => {
   const SERVER_TZ = 'America/Vancouver';
@@ -38,5 +43,61 @@ describe('isSameDayTask', () => {
     );
     expect(isSameDayTour({ date: '2020-01-07' }, date, SERVER_TZ)).toBe(true);
     expect(isSameDayTour({ date: '2020-01-08' }, date, SERVER_TZ)).toBe(false);
+  });
+});
+
+describe('canTaskBeDoneOn', () => {
+  // America/Mexico_City is the case this was written for: a tenant whose
+  // dispatchers work several hours behind the server's own timezone.
+  const SERVER_TZ = 'America/Mexico_City';
+
+  const task = (doneAfter, doneBefore) => ({ doneAfter, doneBefore });
+
+  it('accepts the only day of a single-day task', () => {
+    expect(
+      canTaskBeDoneOn(
+        task('2026-10-08T10:00:00-06:00', '2026-10-08T18:00:00-06:00'),
+        '2026-10-08',
+        SERVER_TZ,
+      ),
+    ).toBe(true);
+  });
+
+  it('rejects a task filed on another day, in either direction', () => {
+    const t = task('2026-10-08T10:00:00-06:00', '2026-10-08T18:00:00-06:00');
+
+    expect(canTaskBeDoneOn(t, '2026-10-12', SERVER_TZ)).toBe(false);
+    expect(canTaskBeDoneOn(t, '2026-10-07', SERVER_TZ)).toBe(false);
+  });
+
+  it('accepts every day of a multi-day window', () => {
+    const t = task('2026-10-08T10:00:00-06:00', '2026-10-10T18:00:00-06:00');
+
+    expect(canTaskBeDoneOn(t, '2026-10-08', SERVER_TZ)).toBe(true);
+    expect(canTaskBeDoneOn(t, '2026-10-09', SERVER_TZ)).toBe(true);
+    expect(canTaskBeDoneOn(t, '2026-10-10', SERVER_TZ)).toBe(true);
+    expect(canTaskBeDoneOn(t, '2026-10-11', SERVER_TZ)).toBe(false);
+  });
+
+  it('uses the server day boundaries, not the device ones', () => {
+    // 2026-10-08 20:00 in Mexico City is already 2026-10-09 04:00 in Paris
+    const t = task('2026-10-08T19:00:00-06:00', '2026-10-08T20:00:00-06:00');
+
+    expect(canTaskBeDoneOn(t, '2026-10-08', SERVER_TZ)).toBe(true);
+    expect(canTaskBeDoneOn(t, '2026-10-09', SERVER_TZ)).toBe(false);
+  });
+
+  it('falls back to after/before when the done window is absent', () => {
+    const t = {
+      after: '2026-10-08T10:00:00-06:00',
+      before: '2026-10-08T18:00:00-06:00',
+    };
+
+    expect(canTaskBeDoneOn(t, '2026-10-08', SERVER_TZ)).toBe(true);
+    expect(canTaskBeDoneOn(t, '2026-10-12', SERVER_TZ)).toBe(false);
+  });
+
+  it('lets an undatable task through, the server has the last word', () => {
+    expect(canTaskBeDoneOn({}, '2026-10-08', SERVER_TZ)).toBe(true);
   });
 });

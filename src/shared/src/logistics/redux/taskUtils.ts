@@ -2,6 +2,7 @@ import _, { mapValues } from 'lodash';
 import ColorHash from 'color-hash';
 import moment from 'moment';
 
+import { canTaskBeDoneOn } from '../../utils';
 import { getUserTaskList } from './taskListUtils';
 // WHEN TASK IS ADDED, uncomment the following line
 // import { Task } from '../../../../types/Task';
@@ -133,6 +134,42 @@ export function getTaskListItemIds(username: string, allTaskLists) {
   const userTaskList = getUserTaskList(username, allTaskLists);
 
   return userTaskList ? userTaskList.itemIds : [];
+}
+
+type DatedTask = {
+  doneAfter?: string;
+  doneBefore?: string;
+  after?: string;
+  before?: string;
+};
+
+/**
+ * The subset of `itemIds` holding tasks that cannot be carried out on `date`,
+ * and which therefore have no business on that day's task list.
+ *
+ * `set_items` is a PUT: the server unassigns every task on the list the payload
+ * does not mention, and it silently drops the items whose day does not match
+ * before applying it. A payload built for another date than the one in the URL
+ * is therefore not a no-op, it wipes the list — see the guard in the caller.
+ *
+ * Only tasks are checked. Tour IRIs, and tasks we hold no local copy of, are
+ * left to the server, which knows their dates.
+ */
+export function findItemsNotDoableOn(
+  itemIds: string[],
+  tasksEntities: Record<string, DatedTask | undefined>,
+  date: moment.MomentInput,
+  timezone?: string,
+): string[] {
+  return itemIds.filter(itemId => {
+    const task = tasksEntities[itemId];
+
+    if (!task) {
+      return false;
+    }
+
+    return canTaskBeDoneOn(task, date, timezone) !== true;
+  });
 }
 
 export function getAssignedTask(task, username: string) {
