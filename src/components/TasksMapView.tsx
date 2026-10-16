@@ -1,12 +1,14 @@
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
-import { View } from 'react-native';
+import { LayoutChangeEvent, View } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
+import { useIsFocused } from '@react-navigation/native';
 import { connect, useSelector } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
@@ -42,8 +44,37 @@ function TasksMapView(props) {
   const mapRef = useRef(null);
   const [mapHeight, setMapHeight] = useState(0);
   const [mapRegion, setMapRegion] = useState<Region>();
+  const [hasBeenReady, setHasBeenReady] = useState(false);
+
+  // Only ever latch a non-zero height. An inactive tab is hidden with
+  // `display: none` (react-native-screens does that for every screen when the
+  // navigator keeps inactive screens attached), and a hidden view lays out at
+  // zero height — which used to unmount the native map on every tab switch,
+  // dropping the markers and replaying the map's loading state on the way back.
+  const onContainerLayout = useCallback((e: LayoutChangeEvent) => {
+    const { height } = e.nativeEvent.layout;
+    if (height > 0) {
+      setMapHeight(height);
+    }
+  }, []);
 
   const showPolylines = useSelector(selectIsPolylineOn)
+
+  // A tab screen holding a map is hidden rather than unmounted when it loses
+  // focus (`detachInactiveScreens={false}`, see CourierNavigator and #2113).
+  // The native map drops its annotations while hidden, and React has no reason
+  // to put them back: the marker elements never changed, so nothing is
+  // re-inserted and the map comes back empty. Bumping a token on every focus
+  // re-creates everything drawn on the map — without re-creating the map
+  // itself, so the camera and the loaded tiles are kept.
+  const isFocused = useIsFocused();
+  const [focusToken, setFocusToken] = useState(0);
+
+  useEffect(() => {
+    if (isFocused) {
+      setFocusToken(token => token + 1);
+    }
+  }, [isFocused]);
 
   //bottomsheet opening
   const { handleOpen } = useContext(BottomSheetContext || {});
@@ -134,7 +165,7 @@ function TasksMapView(props) {
         renderToHardwareTextureAndroid={true}
         collapsable={false}
         style={{ flex: 1 }}
-        onLayout={(e) => setMapHeight(e.nativeEvent.layout.height)}
+        onLayout={onContainerLayout}
       >
         {mapHeight > 0 && (
           <MapView
@@ -154,18 +185,27 @@ function TasksMapView(props) {
             }}
             onMapReady={() => {
               setMarginBottom(0);
+              setHasBeenReady(true);
               if (onMapReady) onMapReady();
             }}
             zoomEnabled={true}
             zoomControlEnabled={true}
             showsUserLocation={true}
             showsMyLocationButton={true}
-            loadingEnabled={true}
+            // Only while the map has never been ready. The native map resets
+            // its rendering when the screen is hidden, and leaving this on
+            // flashed the loading view over an already-loaded map on every tab
+            // switch.
+            loadingEnabled={!hasBeenReady}
           >
-            <TaskListPolylines
-              taskLists={taskLists}
-            />
-            {renderMarkers}
+            {/* Keyed on the focus token so everything drawn on the map is
+                re-created when the screen comes back — see `focusToken`. */}
+            <React.Fragment key={focusToken}>
+              <TaskListPolylines
+                taskLists={taskLists}
+              />
+              {renderMarkers}
+            </React.Fragment>
           </MapView>
         )}
       </View>
