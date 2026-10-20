@@ -202,8 +202,6 @@ export interface TaskListProps {
   onLongPress?: (task: Task) => void;
   onTaskClick: (task: Task) => void;
   onOrderClick: (task: Task) => void;
-  onSortBefore?: (tasks: Task[]) => void;
-  onSort?: (tasks: Task[], index: number) => void;
   refreshing?: boolean;
   swipeOutLeftBackgroundColor?: string;
   swipeOutLeftIcon?: LucideIcon;
@@ -229,10 +227,14 @@ export interface TaskListItemProps {
   onOrderPress?: () => void;
   onPressLeft?: () => void;
   onPressRight?: () => void;
-  // Bound to the row's own task/index by the list, so the item calls them
-  // without arguments.
-  onSortBefore?: () => void;
-  onSort?: () => void;
+  // Reordering. Bound to the row's own task by the list, so the item calls
+  // them without arguments. A row is only movable when it is itself an item
+  // of a task list — a task the board is showing because the tour holding it
+  // is on the list is not, since its item is the tour.
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
   swipeOutLeftBackgroundColor?: string;
   swipeOutLeftIcon?: LucideIcon;
   swipeOutRightBackgroundColor?: string;

@@ -195,6 +195,39 @@ export const apiSlice = createApi({
       }),
     }),
     /**
+     * Reorder a task list, without changing which items are on it.
+     *
+     * The one whole-list write that survives the split, because ordering is
+     * the one thing that genuinely has to be expressed as a whole. It is safe
+     * because the API refuses any payload that would add or drop an item, and
+     * because `If-Match` is mandatory here — a reorder built from a list that
+     * has since changed is answered with 409 rather than applied.
+     *
+     * `items` is every item currently on the list, tasks and tours alike, in
+     * the wanted order.
+     *
+     * @see https://github.com/coopcycle/coopcycle-web/issues/5372
+     */
+    setTaskListOrder: builder.mutation({
+      query: ({
+        taskListUrl,
+        items,
+        version,
+      }: {
+        taskListUrl: Uri;
+        items: string[];
+        version: number;
+      }) => ({
+        url: `${taskListUrl}/order`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/ld+json',
+          'If-Match': `"${version}"`,
+        },
+        body: JSON.stringify({ items }),
+      }),
+    }),
+    /**
      * A tour is replaced wholesale, so this drops every task it does not
      * mention — the same shape of write as `set_items`, against the other
      * collection. `version` is the tour's, as it was read; sending it as
@@ -550,6 +583,7 @@ export const {
   useCreateTaskListMutation,
   useAddTaskListItemsMutation,
   useRemoveTaskListItemsMutation,
+  useSetTaskListOrderMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
   usePostIncidentMutation,

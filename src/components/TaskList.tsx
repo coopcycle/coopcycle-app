@@ -36,8 +36,6 @@ type TaskRowProps = {
   onSwipedToLeft: (task: Task) => void;
   onSwipedToRight: (task: Task) => void;
   onSwipeClosed: (task: Task) => void;
-  onSort?: (index: number) => void;
-  onSortBefore?: () => void;
   swipeOutLeftBackgroundColor?: string;
   swipeOutLeftIcon?: LucideIcon;
   swipeOutRightBackgroundColor?: string;
@@ -67,8 +65,6 @@ const TaskRow = React.memo(function TaskRow({
   onSwipedToLeft,
   onSwipedToRight,
   onSwipeClosed,
-  onSort,
-  onSortBefore,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIcon,
   swipeOutRightBackgroundColor,
@@ -99,8 +95,6 @@ const TaskRow = React.memo(function TaskRow({
     () => onSwipeClosed(task),
     [onSwipeClosed, task],
   );
-  const handleSort = useCallback(() => onSort?.(index), [onSort, index]);
-  const handleSortBefore = useCallback(() => onSortBefore?.(), [onSortBefore]);
 
   return (
     <TaskListItem
@@ -113,8 +107,6 @@ const TaskRow = React.memo(function TaskRow({
       onPress={handlePress}
       onLongPress={onLongPress}
       onOrderPress={handleOrderPress}
-      onSortBefore={onSortBefore ? handleSortBefore : undefined}
-      onSort={onSort ? handleSort : undefined}
       onPressLeft={handlePressLeft}
       onSwipedToLeft={handleSwipedToLeft}
       swipeOutLeftBackgroundColor={swipeOutLeftBackgroundColor}
@@ -140,8 +132,6 @@ const TaskList: React.FC<TaskListProps> = ({
   onLongPress = () => {},
   onTaskClick = () => {},
   onOrderClick = () => {},
-  onSort = undefined,
-  onSortBefore = undefined,
   refreshing = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIcon,
@@ -155,11 +145,6 @@ const TaskList: React.FC<TaskListProps> = ({
   appendTaskListTestID = '',
 }) => {
   const bulkFabButton = useRef(null);
-
-  // The sort callbacks need the current list, but making them depend on
-  // `tasks` would invalidate every row on every list update.
-  const tasksRef = useRef(tasks);
-  tasksRef.current = tasks;
 
   const _handleSwipeToLeft = useCallback(
     (task: Task) => {
@@ -184,15 +169,7 @@ const TaskList: React.FC<TaskListProps> = ({
     [onSwipeClosed],
   );
 
-  const _handleSort = useCallback(
-    (index: number) => onSort?.(tasksRef.current, index),
-    [onSort],
-  );
 
-  const _handleSortBefore = useCallback(
-    () => onSortBefore?.(tasksRef.current),
-    [onSortBefore],
-  );
 
   // TODO Review this button with the incoming new design/layout..!
   // The use of context here is to avoid incorrectly being parsed in dispatch screen
@@ -286,8 +263,6 @@ const TaskList: React.FC<TaskListProps> = ({
           onSwipedToLeft={_handleSwipeToLeft}
           onSwipedToRight={_handleSwipeToRight}
           onSwipeClosed={_handleSwipeClosed}
-          onSort={onSort ? _handleSort : undefined}
-          onSortBefore={onSortBefore ? _handleSortBefore : undefined}
           swipeOutLeftBackgroundColor={swipeOutLeftBackgroundColor}
           swipeOutLeftIcon={swipeOutLeftIcon}
           swipeOutRightBackgroundColor={swipeOutRightBackgroundColor}
@@ -307,10 +282,6 @@ const TaskList: React.FC<TaskListProps> = ({
       _handleSwipeToLeft,
       _handleSwipeToRight,
       _handleSwipeClosed,
-      onSort,
-      _handleSort,
-      onSortBefore,
-      _handleSortBefore,
       swipeOutLeftBackgroundColor,
       swipeOutLeftIcon,
       swipeOutRightBackgroundColor,
