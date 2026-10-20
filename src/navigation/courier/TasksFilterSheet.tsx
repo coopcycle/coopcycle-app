@@ -13,7 +13,7 @@ import React, {
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { Badge, BadgeText } from '@/components/ui/badge';
 import { Heading } from '@/components/ui/heading';
@@ -23,18 +23,21 @@ import { Switch } from '@/components/ui/switch';
 import { Text } from '@/components/ui/text';
 
 import ItemSeparator from '../../components/ItemSeparator';
+import { soloTagState } from './tagFilters';
 import {
   clearTasksFilter,
   filterTasks,
   selectAreDoneTasksHidden,
   selectIsTagHidden,
   selectTags,
+  selectTaskFilters,
 } from '../../redux/Courier';
 import { selectAreIncidentsHidden } from '../../redux/Courier/taskSelectors';
 import {
   filterByTag,
   filterHasIncidents,
   filterStatusDone,
+  filterUntagged,
 } from '../../redux/logistics/filters';
 import { DoneIcon, IncidentIcon } from '../task/styles/common';
 import {
@@ -127,6 +130,7 @@ function TagRow({ tag, isShown, onToggle, onSolo }) {
 function TasksFilterSheetContent() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const store = useStore();
   const insets = useSafeAreaInsets();
 
   const areDoneTasksHidden = useSelector(selectAreDoneTasksHidden);
@@ -141,26 +145,51 @@ function TasksFilterSheetContent() {
   );
 
   // Long-pressing an already soloed tag brings every tag back, so the gesture
-  // is its own way out. Only the tag exclusions are touched, so the done and
+  // is its own way out. Only the tag rules are touched, so the done and
   // incident filters above are left as they were.
   const soloTag = useCallback(
     name => {
-      const isSoloed = tags.every(tag =>
-        tag.name === name ? !isTagHidden(tag.name) : isTagHidden(tag.name),
+      // Read the filters as they are at press time: the handler was attached by
+      // an earlier render, and this sheet is mounted through a portal, so the
+      // values that render captured are not a safe basis for the sequence below.
+      const state = store.getState();
+      const filters = selectTaskFilters(state);
+      const tagNames = selectTags(state).map(tag => tag.name);
+      const hiddenTagNames = filters
+        .filter(filter => filter.tags !== undefined)
+        .map(filter => filter.tags);
+      const isUntaggedHidden = filters.some(filter => filter.untagged);
+
+      const target = soloTagState(
+        tagNames,
+        hiddenTagNames,
+        isUntaggedHidden,
+        name,
       );
 
-      tags.forEach(tag => {
-        const isHidden = isTagHidden(tag.name);
-        const shouldHide = !isSoloed && tag.name !== name;
+      tagNames.forEach(tagName => {
+        const shouldHide = target.hiddenTags.includes(tagName);
 
-        if (shouldHide && !isHidden) {
-          dispatch(filterTasks(filterByTag(tag.name)));
-        } else if (!shouldHide && isHidden) {
-          dispatch(clearTasksFilter(filterByTag(tag.name)));
+        if (shouldHide === hiddenTagNames.includes(tagName)) {
+          return;
         }
+
+        dispatch(
+          shouldHide
+            ? filterTasks(filterByTag(tagName))
+            : clearTasksFilter(filterByTag(tagName)),
+        );
       });
+
+      if (target.isUntaggedHidden !== isUntaggedHidden) {
+        dispatch(
+          target.isUntaggedHidden
+            ? filterTasks(filterUntagged)
+            : clearTasksFilter(filterUntagged),
+        );
+      }
     },
-    [dispatch, isTagHidden, tags],
+    [dispatch, store],
   );
 
   return (

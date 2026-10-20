@@ -3,6 +3,8 @@ import {
   getTaskWithStatus,
 } from '../../../shared/src/logistics/redux/testsUtils';
 import {
+  filterByTag,
+  filterUntagged,
   filterHasIncidents,
   filterStatusDone,
   filterStatusFailed,
@@ -62,5 +64,61 @@ describe('Logistics - utils', () => {
         expect(result).toEqual(expectedResult);
       },
     );
+  });
+
+  describe('filterTasks, by tag', () => {
+    const task = (id, ...tagNames) => ({
+      id,
+      status: 'TODO',
+      tags: tagNames.map(name => ({ name })),
+    });
+
+    const tasks = [
+      task(1, 'CLIENTS'),
+      task(2, 'HOPE'),
+      task(3, 'CLIENTS', 'HOPE'),
+      task(4),
+    ];
+
+    const idsLeft = filters => filterTasks(tasks, filters).map(t => t.id);
+
+    it('hides the tasks carrying the hidden tag', () => {
+      expect(idsLeft([filterByTag('HOPE')])).toEqual([1, 3, 4]);
+    });
+
+    it('keeps a task as long as one of its tags is shown', () => {
+      expect(idsLeft([filterByTag('HOPE')])).toContain(3);
+    });
+
+    it('hides a task once all of its tags are hidden', () => {
+      expect(idsLeft([filterByTag('HOPE'), filterByTag('CLIENTS')])).toEqual([
+        4,
+      ]);
+    });
+
+    it('never hides an untagged task on tag rules alone', () => {
+      expect(idsLeft([filterByTag('HOPE'), filterByTag('CLIENTS')])).toContain(
+        4,
+      );
+    });
+
+    it('hides the untagged tasks on the untagged rule', () => {
+      expect(idsLeft([filterByTag('HOPE'), filterUntagged])).toEqual([1, 3]);
+    });
+
+    it('leaves a soloed tag on its own', () => {
+      expect(
+        idsLeft([filterByTag('HOPE'), filterByTag('BIOCOOP'), filterUntagged]),
+      ).toEqual([1, 3]);
+    });
+
+    it('still applies the other filters', () => {
+      expect(
+        filterTasks(
+          [...tasks, { id: 5, status: 'DONE', tags: [] }],
+          [filterStatusDone, filterByTag('HOPE')],
+        ).map(t => t.id),
+      ).toEqual([1, 3, 4]);
+    });
   });
 });

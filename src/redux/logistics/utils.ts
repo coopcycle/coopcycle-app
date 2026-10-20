@@ -8,9 +8,41 @@ import { taskIncludesKeyword } from '../../shared/src/logistics/redux/taskUtils'
  * @returns {Task[]}            List of tasks not excluded by filters
  */
 export function filterTasks(tasks, filters) {
-  return _.reject(tasks, task =>
-    filters.some(filter => doesFilterMatch(filter, task)),
+  // Tag rules are applied as a group rather than one by one: a task carrying
+  // several tags would otherwise be dropped as soon as any one of them was
+  // hidden, even while another of its tags was still shown.
+  const hiddenTags = filters
+    .filter(filter => filter.tags !== undefined)
+    .map(filter => filter.tags);
+  const isUntaggedHidden = filters.some(filter => filter.untagged);
+  const otherFilters = filters.filter(
+    filter => filter.tags === undefined && !filter.untagged,
   );
+
+  return _.reject(
+    tasks,
+    task =>
+      otherFilters.some(filter => doesFilterMatch(filter, task)) ||
+      isHiddenByTags(task, hiddenTags, isUntaggedHidden),
+  );
+}
+
+/**
+ * @param   {Task}     task             Plain object describing task
+ * @param   {String[]} hiddenTags       Names of the tags being filtered out
+ * @param   {Boolean}  isUntaggedHidden Are the tasks carrying no tag excluded?
+ * @returns {Boolean}                   Is the task hidden by the tag filters?
+ */
+function isHiddenByTags(task, hiddenTags, isUntaggedHidden) {
+  const taskTags = (task.tags || []).map(tag => tag.name);
+
+  // A task with no tags at all is only hidden by the untagged rule, and one
+  // shown tag is enough to keep a tagged task.
+  if (taskTags.length === 0) {
+    return isUntaggedHidden;
+  }
+
+  return taskTags.every(name => hiddenTags.includes(name));
 }
 
 /**
@@ -22,10 +54,6 @@ function doesFilterMatch(filter, task) {
   return Object.keys(filter).reduce((acc, filterKey) => {
     if (acc) {
       return acc;
-    }
-
-    if (filterKey === 'tags') {
-      return task.tags.map(t => t.name).includes(filter.tags);
     }
 
     if (filterKey === 'keyword') {
