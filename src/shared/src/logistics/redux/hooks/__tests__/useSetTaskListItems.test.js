@@ -218,6 +218,61 @@ describe('when the write fails', () => {
   });
 });
 
+// The board mounts before its data arrives, so the first render sees no task
+// lists at all and therefore no evidence of the items endpoints. Whatever the
+// hook decided then must not outlive the lists loading.
+describe('when the task lists arrive after the first render', () => {
+  it('uses the items endpoints once they are there', async () => {
+    const lists = [taskList({ id: 1, username: 'bob', itemIds: ['/api/tasks/10'] })];
+
+    const { result, rerender } = renderHook(
+      props => useSetTaskListItems(props),
+      { initialProps: setup([]) },
+    );
+
+    rerender(setup(lists));
+
+    await result.current.assignTask(task(11), { username: 'bob' });
+
+    await waitFor(() => expect(mockAddTaskListItems).toHaveBeenCalled());
+
+    expect(mockSetTaskListItems).not.toHaveBeenCalled();
+  });
+
+  // The destructive half of the same staleness: falling back to set_items is
+  // survivable, but only if the base list is the one the courier actually
+  // holds. Built from an empty board it names just the new task, and the PUT
+  // unassigns everything else — which is how assigning tasks one at a time
+  // left only the last one.
+  it('still sends the whole list if it does fall back', async () => {
+    const lists = [
+      taskList({
+        id: 1,
+        username: 'bob',
+        itemIds: ['/api/tasks/10'],
+        version: null,
+      }),
+    ];
+
+    const { result, rerender } = renderHook(
+      props => useSetTaskListItems(props),
+      { initialProps: setup([]) },
+    );
+
+    rerender(setup(lists));
+
+    await result.current.assignTask(task(11), { username: 'bob' });
+
+    await waitFor(() => expect(mockSetTaskListItems).toHaveBeenCalled());
+
+    expect(mockSetTaskListItems).toHaveBeenCalledWith({
+      items: ['/api/tasks/10', '/api/tasks/11'],
+      username: 'bob',
+      date: '2026-10-20',
+    });
+  });
+});
+
 describe('on an instance that predates them', () => {
   it('falls back to set_items, sending the whole list', async () => {
     const lists = [

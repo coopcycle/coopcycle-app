@@ -48,6 +48,24 @@ import i18n from '../../../../../i18n';
 export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
   const allTasksRef = useRef([]);
   const tasksEntitiesRef = useRef({});
+  // Read through this, never off the prop, anywhere a callback needs the task
+  // lists.
+  //
+  // The callbacks below are memoized in use-before-declare order, so each one
+  // lists a dependency that is still undefined when its own `useCallback`
+  // runs. That makes every level of the chain pick up its dependency a render
+  // late, and the board mounts before its data arrives — so a `bulkEditTasks`
+  // built during the empty first render went on calling a writer that had
+  // decided, correctly at the time, that there were no task lists and
+  // therefore no evidence of the items endpoints. It stayed on `set_items`
+  // for the rest of the session, and sent an empty base list with it, which
+  // is what made it destructive rather than merely old-fashioned.
+  //
+  // Assigned during render rather than in an effect: these are only ever read
+  // from callbacks, which run later, and an effect would leave the ref behind
+  // for the render in which the lists arrive.
+  const allTaskListsRef = useRef(allTaskLists);
+  allTaskListsRef.current = allTaskLists;
   const allTours = useSelector(selectAllTours);
   const timezone = useSelector(selectTimezone);
   const toursTasksIndex = useSelector(selectToursTasksIndex);
@@ -96,16 +114,6 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
     },
   ] = useRemoveTaskListItemsMutation();
 
-  /**
-   * Whether this instance serves the items endpoints. Decided from the lists
-   * on the board rather than configured, because the app meets instances on
-   * either side of the upgrade.
-   */
-  const useItemsApi = useMemo(
-    () => supportsTaskListItemsApi(allTaskLists),
-    [allTaskLists],
-  );
-
   const isLoading = useMemo(
     () =>
       isLoadingSetTaskListItems ||
@@ -122,15 +130,14 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
 
   const isSuccess = useMemo(
     () =>
-      (useItemsApi
-        ? isSuccessAddItems || isSuccessRemoveItems
-        : isSuccessSetTaskListItems) && isSuccessSetTourItems,
+      (isSuccessAddItems ||
+        isSuccessRemoveItems ||
+        isSuccessSetTaskListItems) && isSuccessSetTourItems,
     [
       isSuccessAddItems,
       isSuccessRemoveItems,
       isSuccessSetTaskListItems,
       isSuccessSetTourItems,
-      useItemsApi,
     ],
   );
 
@@ -173,10 +180,10 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const unassignTask = useCallback(
     async task => {
-      const selectedTasks = buildSelectedTasks([], [task], allTaskLists);
+      const selectedTasks = buildSelectedTasks([], [task], allTaskListsRef.current);
       return bulkEditTasks(selectedTasks);
     },
-    [allTaskLists, bulkEditTasks],
+    [bulkEditTasks],
   );
 
   /**
@@ -185,10 +192,10 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const unassignTaskWithRelatedTasks = useCallback(
     async task => {
-      const selectedTasks = buildSelectedTasks([task], [], allTaskLists);
+      const selectedTasks = buildSelectedTasks([task], [], allTaskListsRef.current);
       return bulkEditTasks(selectedTasks);
     },
-    [allTaskLists, bulkEditTasks],
+    [bulkEditTasks],
   );
 
   /**
@@ -198,10 +205,10 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const assignTask = useCallback(
     async (task, user) => {
-      const selectedTasks = buildSelectedTasks([], [task], allTaskLists);
+      const selectedTasks = buildSelectedTasks([], [task], allTaskListsRef.current);
       return bulkEditTasks(selectedTasks, user);
     },
-    [allTaskLists, bulkEditTasks],
+    [bulkEditTasks],
   );
 
   /**
@@ -211,10 +218,10 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const assignTaskWithRelatedTasks = useCallback(
     async (task, user) => {
-      const selectedTasks = buildSelectedTasks([task], [], allTaskLists);
+      const selectedTasks = buildSelectedTasks([task], [], allTaskListsRef.current);
       return bulkEditTasks(selectedTasks, user);
     },
-    [allTaskLists, bulkEditTasks],
+    [bulkEditTasks],
   );
 
   /**
@@ -224,10 +231,10 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const reassignTask = useCallback(
     async (task, user) => {
-      const selectedTasks = buildSelectedTasks([], [task], allTaskLists);
+      const selectedTasks = buildSelectedTasks([], [task], allTaskListsRef.current);
       return bulkEditTasks(selectedTasks, user);
     },
-    [allTaskLists, bulkEditTasks],
+    [bulkEditTasks],
   );
 
   /**
@@ -237,10 +244,10 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const reassignTaskWithRelatedTasks = useCallback(
     async (task, user) => {
-      const selectedTasks = buildSelectedTasks([task], [], allTaskLists);
+      const selectedTasks = buildSelectedTasks([task], [], allTaskListsRef.current);
       return bulkEditTasks(selectedTasks, user);
     },
-    [allTaskLists, bulkEditTasks],
+    [bulkEditTasks],
   );
 
   /**
@@ -254,13 +261,13 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
       const taskListToEdit = getTasksListsToEdit(
         selectedTasks,
         allTasksRef.current,
-        allTaskLists,
+        allTaskListsRef.current,
       );
       const taskListToUnassign = { ...taskListToEdit };
 
       if (user) {
         // Skip unassigning the user that is going to be assigned later
-        const userTaskList = allTaskLists.find(
+        const userTaskList = allTaskListsRef.current.find(
           taskList => taskList.username === user.username,
         );
         if (userTaskList) {
@@ -299,7 +306,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
         setTimeout(() => dispatch(restoreCentrifugoUpdate()), 500);
       }
     },
-    [_assignTasks, _unassignTasks, allTaskLists, dispatch],
+    [_assignTasks, _unassignTasks, dispatch],
   );
 
   /**
@@ -418,7 +425,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const _openTaskList = useCallback(
     async (user, date) => {
-      const existing = getUserTaskList(user.username, allTaskLists);
+      const existing = getUserTaskList(user.username, allTaskListsRef.current);
 
       if (isServerTaskList(existing)) {
         return existing['@id'];
@@ -450,7 +457,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
 
       return data['@id'];
     },
-    [allTaskLists, courierUsers, createTaskList],
+    [courierUsers, createTaskList],
   );
 
   /**
@@ -466,8 +473,12 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
   const _writeAssignment = useCallback(
     async (addedItemIds, user) => {
       const date = selectedDate.format('YYYY-MM-DD');
+      const allTaskLists = allTaskListsRef.current;
 
-      if (!useItemsApi) {
+      // Asked now, against the lists the board holds now. A flag worked out
+      // earlier would answer for the board as it was when this callback was
+      // built, which on the first render is empty.
+      if (!supportsTaskListItemsApi(allTaskLists)) {
         const userItemIds = getTaskListItemIds(user.username, allTaskLists);
 
         return _requireTaskList(
@@ -497,9 +508,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
       _requireTaskList,
       _updateAssignedItems,
       addTaskListItems,
-      allTaskLists,
       selectedDate,
-      useItemsApi,
     ],
   );
 
@@ -512,7 +521,9 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const _writeUnassignment = useCallback(
     async (removedItemIds, user) => {
-      if (!useItemsApi) {
+      const allTaskLists = allTaskListsRef.current;
+
+      if (!supportsTaskListItemsApi(allTaskLists)) {
         const userItemIds = getTaskListItemIds(user.username, allTaskLists);
         const removed = new Set(removedItemIds);
 
@@ -541,13 +552,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
         `Could not take ${removedItemIds.join(', ')} off ${user.username}'s task list`,
       );
     },
-    [
-      _requireTaskList,
-      _updateAssignedItems,
-      allTaskLists,
-      removeTaskListItems,
-      useItemsApi,
-    ],
+    [_requireTaskList, _updateAssignedItems, removeTaskListItems],
   );
 
   /**
@@ -576,7 +581,9 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
    */
   const _assertItemsBelongOn = useCallback(
     (addedItemIds, user, date) => {
-      const datedTaskLists = allTaskLists.filter(taskList => !!taskList.date);
+      const datedTaskLists = allTaskListsRef.current.filter(
+        taskList => !!taskList.date,
+      );
 
       const holdsAnotherDay =
         datedTaskLists.length > 0 &&
@@ -606,7 +613,7 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
         );
       }
     },
-    [allTaskLists, timezone],
+    [timezone],
   );
 
   /**
