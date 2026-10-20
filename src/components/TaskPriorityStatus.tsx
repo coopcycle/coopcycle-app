@@ -4,13 +4,7 @@ import { whiteColor } from '../styles/common';
 import { View } from 'react-native';
 import { minutes } from '../utils/dates';
 
-export const TaskPriorityStatus = ({
-  task,
-  cardBorderRadius,
-}: {
-  task: Task;
-  cardBorderRadius: number;
-}) => {
+export const TaskPriorityStatus = ({ task }: { task: Task }) => {
   if (task.status === 'DONE' || task.status === 'FAILED') {
     return null;
   }
@@ -28,12 +22,13 @@ export const TaskPriorityStatus = ({
 
   return (
     <View
+      // No corner radius of its own: the row's wrapper clips to the card
+      // shape, so rounding here only ever rounded against the card edge it
+      // was already inside.
       style={{
         width: 6,
         height: '100%',
         backgroundColor: backgroundColor,
-        borderTopRightRadius: cardBorderRadius,
-        borderBottomRightRadius: cardBorderRadius,
       }}
     />
   );

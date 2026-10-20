@@ -443,7 +443,7 @@ function TaskListItem({
                 right edge. It used to be the final element of TaskInfo, which
                 put it in the middle of the row once the reorder column was
                 added beside it. */}
-            <TaskPriorityStatus task={task} cardBorderRadius={cardBorderRadius} />
+            <TaskPriorityStatus task={task} />
           </HStack>
           {isSelectedTask && (
             <View
