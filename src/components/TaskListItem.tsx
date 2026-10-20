@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { ChevronDown, ChevronUp, LucideIcon } from 'lucide-react-native';
+import { ArrowDown, ArrowUp, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
   Pressable,
@@ -40,7 +40,10 @@ const cardBorderRadius = 2.5;
 // they are tapped repeatedly, so landing on the wrong one has to be hard.
 const REORDER_BUTTON_SIZE = 28;
 const REORDER_BUTTON_GAP = 14;
-const REORDER_WIDTH = REORDER_BUTTON_SIZE + 10;
+// Clear space either side, so the buttons are not crowded against the task
+// text on one side or the time-status stripe on the other.
+const REORDER_BUTTON_PADDING_H = 8;
+const REORDER_WIDTH = REORDER_BUTTON_SIZE + REORDER_BUTTON_PADDING_H * 2;
 
 
 export const styles = StyleSheet.create({
@@ -78,7 +81,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: REORDER_BUTTON_GAP,
-    paddingRight: 4,
+    paddingHorizontal: REORDER_BUTTON_PADDING_H,
   },
   reorderButton: {
     width: REORDER_BUTTON_SIZE,
@@ -336,7 +339,7 @@ function TaskListItem({
     const circle = (
       enabled: boolean,
       onPress: (() => void) | undefined,
-      Chevron: LucideIcon,
+      Arrow: LucideIcon,
       label: string,
       testIDSuffix: string,
     ) => (
@@ -353,7 +356,7 @@ function TaskListItem({
           !enabled && styles.reorderButtonDisabled,
         ]}
         testID={`${taskTestId}:${testIDSuffix}`}>
-        <Chevron color={arrowColor} size={16} />
+        <Arrow color={arrowColor} size={16} />
       </Pressable>
     );
 
@@ -367,11 +370,11 @@ function TaskListItem({
           // showed through the chevrons.
           { backgroundColor: rowColor },
         ]}>
-        {circle(canMoveUp, onMoveUp, ChevronUp, 'DISPATCH_MOVE_TASK_UP', 'moveUp')}
+        {circle(canMoveUp, onMoveUp, ArrowUp, 'DISPATCH_MOVE_TASK_UP', 'moveUp')}
         {circle(
           canMoveDown,
           onMoveDown,
-          ChevronDown,
+          ArrowDown,
           'DISPATCH_MOVE_TASK_DOWN',
           'moveDown',
         )}
