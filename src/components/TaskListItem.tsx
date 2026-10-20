@@ -34,9 +34,11 @@ const cardBorderRadius = 2.5;
 
 // Two stacked circular buttons, with the column's width taken off the task's
 // own so the row keeps its shape. `hitSlop` does the rest of the work of
-// making them comfortable to hit without widening the column.
+// making them comfortable to hit without widening the column. The gap is
+// wider than it needs to be to separate them: they do opposite things, and
+// they are tapped repeatedly, so landing on the wrong one has to be hard.
 const REORDER_BUTTON_SIZE = 28;
-const REORDER_BUTTON_GAP = 6;
+const REORDER_BUTTON_GAP = 14;
 const REORDER_WIDTH = REORDER_BUTTON_SIZE + 10;
 
 
