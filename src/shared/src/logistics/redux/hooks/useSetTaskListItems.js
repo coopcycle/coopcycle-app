@@ -634,7 +634,14 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
 
       return Promise.all(
         Object.entries(toursToUpdate).map(([tourUrl, tourTasks]) =>
-          setTourItems({ tourUrl, tourTasks }),
+          setTourItems({
+            tourUrl,
+            tourTasks,
+            // The version this payload was built from. Without it the write
+            // replaces the tour with whatever this screen last saw, dropping
+            // any task added to it since.
+            version: allTours.find(tour => tour['@id'] === tourUrl)?.version,
+          }),
         ),
       ).then(() => {
         Object.entries(toursToUpdate).forEach(([tourId, tourTasks]) => {

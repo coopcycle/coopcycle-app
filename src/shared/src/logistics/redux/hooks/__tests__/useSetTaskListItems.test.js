@@ -19,10 +19,12 @@ jest.mock('react-redux', () => ({
   useSelector: selector => selector(mockState),
 }));
 
+const mockTours = { all: [], index: { tasks: {}, tours: {} } };
+
 jest.mock('../../selectors', () => ({
-  selectAllTours: () => [],
+  selectAllTours: () => mockTours.all,
   selectSelectedDate: () => require('moment')('2026-10-20'),
-  selectToursTasksIndex: () => ({ tasks: {}, tours: {} }),
+  selectToursTasksIndex: () => mockTours.index,
 }));
 
 // Only the selector: the rest of the module is real date arithmetic that the
@@ -87,6 +89,8 @@ const setup = allTaskLists => {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  mockTours.all = [];
+  mockTours.index = { tasks: {}, tours: {} };
   mockSetTaskListItems.mockResolvedValue({ data: { '@id': '/api/task_lists/1', items: [] } });
   mockAddTaskListItems.mockResolvedValue({ data: { '@id': '/api/task_lists/1', items: [] } });
   mockRemoveTaskListItems.mockResolvedValue({ data: { '@id': '/api/task_lists/1', items: [] } });
@@ -144,6 +148,50 @@ describe('on an instance that has the items endpoints', () => {
       taskListUrl: '/api/task_lists/9',
       items: ['/api/tasks/11'],
     });
+  });
+});
+
+describe('pulling a task out of its tour', () => {
+  // A tour is replaced wholesale, so this write drops every task it does not
+  // mention — the same shape as set_items, against the other collection.
+  const withTourHolding = (tourId, taskIds, version) => {
+    mockTours.all = [{ '@id': tourId, items: taskIds, ...(version === undefined ? {} : { version }) }];
+    mockTours.index = {
+      tasks: Object.fromEntries(taskIds.map(id => [id, tourId])),
+      tours: { [tourId]: taskIds },
+    };
+  };
+
+  it('tells the API which version of the tour it built the payload from', async () => {
+    withTourHolding('/api/tours/3', ['/api/tasks/11', '/api/tasks/12'], 6);
+
+    const lists = [taskList({ id: 1, username: 'bob', itemIds: [] })];
+    const { result } = renderHook(() => useSetTaskListItems(setup(lists)));
+
+    await result.current.assignTask(task(11), { username: 'bob' });
+
+    await waitFor(() => expect(mockSetTourItems).toHaveBeenCalled());
+
+    expect(mockSetTourItems).toHaveBeenCalledWith({
+      tourUrl: '/api/tours/3',
+      tourTasks: ['/api/tasks/12'],
+      version: 6,
+    });
+  });
+
+  // An instance that predates tour versioning serves none; sending
+  // If-Match: "undefined" there would fail every write.
+  it('sends no version when the tour carries none', async () => {
+    withTourHolding('/api/tours/3', ['/api/tasks/11'], undefined);
+
+    const lists = [taskList({ id: 1, username: 'bob', itemIds: [] })];
+    const { result } = renderHook(() => useSetTaskListItems(setup(lists)));
+
+    await result.current.assignTask(task(11), { username: 'bob' });
+
+    await waitFor(() => expect(mockSetTourItems).toHaveBeenCalled());
+
+    expect(mockSetTourItems.mock.calls[0][0].version).toBeUndefined();
   });
 });
 

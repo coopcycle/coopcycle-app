@@ -194,13 +194,28 @@ export const apiSlice = createApi({
         body: JSON.stringify({ items }),
       }),
     }),
+    /**
+     * A tour is replaced wholesale, so this drops every task it does not
+     * mention — the same shape of write as `set_items`, against the other
+     * collection. `version` is the tour's, as it was read; sending it as
+     * `If-Match` has the API refuse a write built from a tour that has since
+     * changed, instead of letting it quietly win.
+     *
+     * Optional, because instances that predate tour versioning serve no
+     * version to send. There the write stays last-one-wins.
+     *
+     * @see https://github.com/coopcycle/coopcycle-web/issues/5372
+     */
     setTourItems: builder.mutation({
-      query: ({ tourUrl, tourTasks }) => {
+      query: ({ tourUrl, tourTasks, version }) => {
         const mutation = {
           url: tourUrl,
           method: 'PUT',
           headers: {
             'Content-Type': 'application/ld+json',
+            ...(version === undefined || version === null
+              ? {}
+              : { 'If-Match': `"${version}"` }),
           },
           body: JSON.stringify({ tasks: tourTasks }),
         };
