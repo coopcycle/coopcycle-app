@@ -24,6 +24,7 @@ import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import TaskInfo from './TaskInfo';
+import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 import { useTheme } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -438,6 +439,11 @@ function TaskListItem({
               <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
             </ItemTouchable>
             {renderReorderButtons()}
+            {/* Last, so the overdue/due-soon stripe stays against the card's
+                right edge. It used to be the final element of TaskInfo, which
+                put it in the middle of the row once the reorder column was
+                added beside it. */}
+            <TaskPriorityStatus task={task} cardBorderRadius={cardBorderRadius} />
           </HStack>
           {isSelectedTask && (
             <View
