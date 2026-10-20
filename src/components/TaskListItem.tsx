@@ -20,10 +20,6 @@ import {
 
 export type { TaskListItemMethods };
 
-// Wide enough for two stacked chevrons with a comfortable tap target, and
-// taken off the task's own width so the row keeps its shape.
-const REORDER_WIDTH = 36;
-
 import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
@@ -35,6 +31,14 @@ import { Uri } from '@/src/redux/api/types';
 
 const cardBorderWidth = 4;
 const cardBorderRadius = 2.5;
+
+// Two stacked circular buttons, with the column's width taken off the task's
+// own so the row keeps its shape. `hitSlop` does the rest of the work of
+// making them comfortable to hit without widening the column.
+const REORDER_BUTTON_SIZE = 28;
+const REORDER_BUTTON_GAP = 6;
+const REORDER_WIDTH = REORDER_BUTTON_SIZE + 10;
+
 
 export const styles = StyleSheet.create({
   text: {
@@ -67,11 +71,14 @@ export const styles = StyleSheet.create({
     width: REORDER_WIDTH,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 2,
+    gap: REORDER_BUTTON_GAP,
+    paddingRight: 4,
   },
   reorderButton: {
-    flex: 1,
-    width: '100%',
+    width: REORDER_BUTTON_SIZE,
+    height: REORDER_BUTTON_SIZE,
+    borderRadius: REORDER_BUTTON_SIZE / 2,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -317,30 +324,40 @@ function TaskListItem({
   const renderReorderButtons = () => {
     if (!isReorderable) return null;
 
+    const circle = (
+      enabled: boolean,
+      onPress: (() => void) | undefined,
+      Chevron: LucideIcon,
+      label: string,
+      testIDSuffix: string,
+    ) => (
+      <Pressable
+        onPress={enabled ? onPress : undefined}
+        disabled={!enabled}
+        hitSlop={6}
+        accessibilityRole="button"
+        accessibilityLabel={t(label)}
+        accessibilityState={{ disabled: !enabled }}
+        style={[
+          styles.reorderButton,
+          { borderColor: arrowColor },
+          !enabled && styles.reorderButtonDisabled,
+        ]}
+        testID={`${taskTestId}:${testIDSuffix}`}>
+        <Chevron color={arrowColor} size={16} />
+      </Pressable>
+    );
+
     return (
       <View style={styles.reorderColumn}>
-        <Pressable
-          onPress={canMoveUp ? onMoveUp : undefined}
-          disabled={!canMoveUp}
-          hitSlop={4}
-          accessibilityRole="button"
-          accessibilityLabel={t('DISPATCH_MOVE_TASK_UP')}
-          accessibilityState={{ disabled: !canMoveUp }}
-          style={[styles.reorderButton, !canMoveUp && styles.reorderButtonDisabled]}
-          testID={`${taskTestId}:moveUp`}>
-          <ChevronUp color={arrowColor} size={20} />
-        </Pressable>
-        <Pressable
-          onPress={canMoveDown ? onMoveDown : undefined}
-          disabled={!canMoveDown}
-          hitSlop={4}
-          accessibilityRole="button"
-          accessibilityLabel={t('DISPATCH_MOVE_TASK_DOWN')}
-          accessibilityState={{ disabled: !canMoveDown }}
-          style={[styles.reorderButton, !canMoveDown && styles.reorderButtonDisabled]}
-          testID={`${taskTestId}:moveDown`}>
-          <ChevronDown color={arrowColor} size={20} />
-        </Pressable>
+        {circle(canMoveUp, onMoveUp, ChevronUp, 'DISPATCH_MOVE_TASK_UP', 'moveUp')}
+        {circle(
+          canMoveDown,
+          onMoveDown,
+          ChevronDown,
+          'DISPATCH_MOVE_TASK_DOWN',
+          'moveDown',
+        )}
       </View>
     );
   };
