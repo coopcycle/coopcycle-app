@@ -44,6 +44,16 @@ describe('isSameDayTask', () => {
     expect(isSameDayTour({ date: '2020-01-07' }, date, SERVER_TZ)).toBe(true);
     expect(isSameDayTour({ date: '2020-01-08' }, date, SERVER_TZ)).toBe(false);
   });
+
+  it('does not read an undated task list as today', () => {
+    // `moment.tz(undefined)` is *now*, so an undated list used to match
+    // whichever day happened to be today — turning the cross-day assignment
+    // guard into a "the board must be on today" rule.
+    const today = moment().tz(SERVER_TZ);
+
+    expect(isSameDayTaskList({}, today, SERVER_TZ)).toBe(false);
+    expect(isSameDayTaskList({ date: null }, today, SERVER_TZ)).toBe(false);
+  });
 });
 
 describe('canTaskBeDoneOn', () => {

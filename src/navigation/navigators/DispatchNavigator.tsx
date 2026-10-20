@@ -29,6 +29,7 @@ import TaskNavigator from './TaskNavigator';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
+import { useResetDateOnDayChange } from '../../hooks/useResetDateOnDayChange';
 
 const Tab = createBottomTabNavigator();
 
@@ -195,6 +196,10 @@ const HeaderRightBody = memo(({navigation}) => {
 export default function DispatchNavigator({ navigation }) {
   const taskListsContext = useTaskListsContext();
   const dispatch = useDispatch();
+
+  // The board must not still be on the day this session was opened on.
+  useResetDateOnDayChange();
+
   const screenOptions = useStackNavigatorScreenOptions({
     // Do *NOT* use presentation = modal,
     // to avoid conflicting with gestures to close the modal when signing proofs of delivery.

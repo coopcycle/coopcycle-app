@@ -345,9 +345,17 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
       //
       // Holding no list at all is not a symptom: a courier has none until the
       // first assignment of the day, and `set_items` creates it.
+      //
+      // Neither is holding a list we cannot date. Only a list that states a
+      // day is evidence of which day we are looking at, so undated ones are
+      // left out of the question entirely rather than counted as a mismatch —
+      // otherwise a payload the server dates perfectly well would be refused
+      // here over a field the client happens not to have.
+      const datedTaskLists = allTaskLists.filter(taskList => !!taskList.date);
+
       const holdsAnotherDay =
-        allTaskLists.length > 0 &&
-        !allTaskLists.some(taskList =>
+        datedTaskLists.length > 0 &&
+        !datedTaskLists.some(taskList =>
           isSameDayTaskList(taskList, date, timezone),
         );
 

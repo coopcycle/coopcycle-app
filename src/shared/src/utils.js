@@ -32,7 +32,20 @@ export function canTaskBeDoneOn(task, date, timezone) {
   return isDayWithinRangeInTimezone(date, after, before, timezone);
 }
 
+/**
+ * Whether `taskList` is the list of `date`.
+ *
+ * A list that carries no date answers `false`, never "today": `moment.tz`
+ * reads a missing input as *now*, which silently turned every caller into a
+ * "is the selected date today?" test. That is how the cross-day guard in
+ * `useSetTaskListItems` came to refuse every assignment made from a board
+ * showing any day but the current one.
+ */
 export function isSameDayTaskList(taskList, date, timezone) {
+  if (!taskList?.date) {
+    return false;
+  }
+
   return isSameDayInTimezone(taskList.date, date, timezone);
 }
 

@@ -17,6 +17,7 @@ import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
+import { useResetDateOnDayChange } from '../../hooks/useResetDateOnDayChange';
 
 const Tab = createBottomTabNavigator();
 
@@ -228,6 +229,9 @@ export default () => {
   const screenOptions = useStackNavigatorScreenOptions({
     presentation: 'modal',
   });
+
+  // The task list must not still be on the day this session was opened on.
+  useResetDateOnDayChange();
 
   return (
     <TaskListsProvider>
