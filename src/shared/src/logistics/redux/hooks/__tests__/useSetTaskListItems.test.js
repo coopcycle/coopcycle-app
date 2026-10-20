@@ -147,6 +147,29 @@ describe('on an instance that has the items endpoints', () => {
   });
 });
 
+describe('when the write fails', () => {
+  // RTK Query resolves to { error } rather than throwing. Reading `data` off
+  // that without looking is how a failed unassignment used to reach the board
+  // as a successful one.
+  it('does not report the tasks as unassigned', async () => {
+    mockRemoveTaskListItems.mockResolvedValue({ error: { status: 500 } });
+
+    const lists = [
+      taskList({ id: 1, username: 'bob', itemIds: ['/api/tasks/10'] }),
+    ];
+    const { result } = renderHook(() => useSetTaskListItems(setup(lists)));
+
+    await result.current.unassignTask(task(10, 'bob'));
+
+    await waitFor(() => expect(mockRemoveTaskListItems).toHaveBeenCalled());
+
+    const dispatched = mockDispatch.mock.calls.map(([action]) => action?.type);
+
+    expect(dispatched).toContain('@logistics/ASSIGN_TASKS_FAILURE');
+    expect(dispatched).not.toContain('@logistics/UNASSIGN_TASKS_WITH_UI_UPDATE_SUCCESS');
+  });
+});
+
 describe('on an instance that predates them', () => {
   it('falls back to set_items, sending the whole list', async () => {
     const lists = [

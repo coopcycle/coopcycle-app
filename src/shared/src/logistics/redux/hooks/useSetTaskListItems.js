@@ -393,6 +393,23 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
   );
 
   /**
+   * The task list a mutation answered with, or a rejection carrying `reason`.
+   *
+   * RTK Query resolves to `{ error }` rather than throwing, and the chain that
+   * follows used to read `data` off that without looking: a failed write
+   * reached the board as an undefined task list, and an unassignment went on
+   * to mark the tasks unassigned in the UI as though it had worked. Refusing
+   * here puts those on the failure path, where the dispatcher is told.
+   */
+  const _requireTaskList = useCallback(({ data, error }, reason) => {
+    if (error || !data) {
+      throw new Error(reason);
+    }
+
+    return data;
+  }, []);
+
+  /**
    * The task list to write to, opening one if the courier holds none yet.
    *
    * The items endpoints are keyed by task list id, where `set_items` was
@@ -453,13 +470,14 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
       if (!useItemsApi) {
         const userItemIds = getTaskListItemIds(user.username, allTaskLists);
 
-        const { data } = await _updateAssignedItems(
-          _.uniq([...userItemIds, ...addedItemIds]),
-          user,
-          addedItemIds,
+        return _requireTaskList(
+          await _updateAssignedItems(
+            _.uniq([...userItemIds, ...addedItemIds]),
+            user,
+            addedItemIds,
+          ),
+          `Could not put ${addedItemIds.join(', ')} on ${user.username}'s task list`,
         );
-
-        return data;
       }
 
       _assertItemsBelongOn(addedItemIds, user, date);
@@ -468,22 +486,15 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
 
       // No position: the app has no way to order a list, so it should not
       // claim a place in one. The server appends.
-      const { data, error } = await addTaskListItems({
-        taskListUrl,
-        items: addedItemIds,
-      });
-
-      if (error) {
-        throw new Error(
-          `Could not put ${addedItemIds.join(', ')} on ${user.username}'s task list`,
-        );
-      }
-
-      return data;
+      return _requireTaskList(
+        await addTaskListItems({ taskListUrl, items: addedItemIds }),
+        `Could not put ${addedItemIds.join(', ')} on ${user.username}'s task list`,
+      );
     },
     [
       _assertItemsBelongOn,
       _openTaskList,
+      _requireTaskList,
       _updateAssignedItems,
       addTaskListItems,
       allTaskLists,
@@ -505,10 +516,13 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
         const userItemIds = getTaskListItemIds(user.username, allTaskLists);
         const removed = new Set(removedItemIds);
 
-        return _updateAssignedItems(
-          userItemIds.filter(itemId => !removed.has(itemId)),
-          user,
-        ).then(({ data }) => data);
+        return _requireTaskList(
+          await _updateAssignedItems(
+            userItemIds.filter(itemId => !removed.has(itemId)),
+            user,
+          ),
+          `Could not take ${removedItemIds.join(', ')} off ${user.username}'s task list`,
+        );
       }
 
       const taskList = getUserTaskList(user.username, allTaskLists);
@@ -519,20 +533,16 @@ export default function useSetTaskListItems({ allTaskLists, tasksEntities }) {
         return undefined;
       }
 
-      const { data, error } = await removeTaskListItems({
-        taskListUrl: taskList['@id'],
-        items: removedItemIds,
-      });
-
-      if (error) {
-        throw new Error(
-          `Could not take ${removedItemIds.join(', ')} off ${user.username}'s task list`,
-        );
-      }
-
-      return data;
+      return _requireTaskList(
+        await removeTaskListItems({
+          taskListUrl: taskList['@id'],
+          items: removedItemIds,
+        }),
+        `Could not take ${removedItemIds.join(', ')} off ${user.username}'s task list`,
+      );
     },
     [
+      _requireTaskList,
       _updateAssignedItems,
       allTaskLists,
       removeTaskListItems,
