@@ -326,6 +326,9 @@ function TaskListItem({
   // turned up under some rows and not others.
   const isReorderable = !!(onMoveUp || onMoveDown);
   const arrowColor = theme.dark ? '#ffffff' : '#444444';
+  // What ItemTouchable paints the row with. Anything sitting beside it needs
+  // the same, or the swipe action shows through.
+  const rowColor = theme.dark ? 'black' : 'white';
 
   const renderReorderButtons = () => {
     if (!isReorderable) return null;
@@ -362,7 +365,7 @@ function TaskListItem({
           // beside it rather than inside it. Left transparent it is a window:
           // swiping the row reveals the action behind it, and the action
           // showed through the chevrons.
-          { backgroundColor: theme.dark ? 'black' : 'white' },
+          { backgroundColor: rowColor },
         ]}>
         {circle(canMoveUp, onMoveUp, ChevronUp, 'DISPATCH_MOVE_TASK_UP', 'moveUp')}
         {circle(
@@ -443,7 +446,7 @@ function TaskListItem({
                 right edge. It used to be the final element of TaskInfo, which
                 put it in the middle of the row once the reorder column was
                 added beside it. */}
-            <TaskPriorityStatus task={task} />
+            <TaskPriorityStatus task={task} rowColor={rowColor} />
           </HStack>
           {isSelectedTask && (
             <View
