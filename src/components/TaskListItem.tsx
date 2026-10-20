@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown, ChevronUp, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
@@ -71,6 +71,9 @@ export const styles = StyleSheet.create({
   },
   reorderColumn: {
     width: REORDER_WIDTH,
+    // Never give this width up to the task next to it; the row is laid out
+    // around it.
+    flexShrink: 0,
     justifyContent: 'center',
     alignItems: 'center',
     gap: REORDER_BUTTON_GAP,
@@ -246,6 +249,12 @@ function TaskListItem({
 
   const swipeableRef = useRef<SwipeableMethods | null>(null);
   const isOpenRef = useRef(false);
+  // The reorder column is part of the swipeable content, and the content view
+  // lets its children overflow, so once the row is dragged the column ends up
+  // drawn over the action revealed behind it. There is nothing to reorder
+  // with while a row is open anyway, so take it out of the row for as long as
+  // it is.
+  const [isSwipedOpen, setIsSwipedOpen] = useState(false);
 
   useEffect(() => {
     if (task.status === 'DONE') {
@@ -320,7 +329,7 @@ function TaskListItem({
   // another row. The old arrows appeared under the *other* tasks once one was
   // selected and meant "put the selected one after me", which is why they
   // turned up under some rows and not others.
-  const isReorderable = !!(onMoveUp || onMoveDown);
+  const isReorderable = !!(onMoveUp || onMoveDown) && !isSwipedOpen;
   const arrowColor = theme.dark ? '#ffffff' : '#444444';
 
   const renderReorderButtons = () => {
@@ -378,12 +387,15 @@ function TaskListItem({
         friction={2}
         renderLeftActions={allowSwipeLeft ? renderLeftActions : undefined}
         renderRightActions={allowSwipeRight ? renderRightActions : undefined}
+        onSwipeableWillOpen={() => setIsSwipedOpen(true)}
+        onSwipeableWillClose={() => setIsSwipedOpen(false)}
         onSwipeableOpen={(direction) => {
           isOpenRef.current = true;
           if (direction === 'right' && onSwipedToLeft) onSwipedToLeft();
           else if (direction === 'left' && onSwipedToRight) onSwipedToRight();
         }}
         onSwipeableClose={() => {
+          setIsSwipedOpen(false);
           if (!isOpenRef.current) return; // guard against re-entrant close cascade
           isOpenRef.current = false;
           if (onSwipeClosed) onSwipeClosed();
@@ -417,8 +429,11 @@ function TaskListItem({
                 borderBottomRightRadius: cardBorderRadius,
                 borderTopRightRadius: cardBorderRadius,
                 paddingLeft: 6,
-                width:
-                  cardWidth - buttonWidth - (isReorderable ? REORDER_WIDTH : 0),
+                // No explicit width: `flex: 1` takes whatever the order block
+                // and the reorder column leave. Setting both made the task
+                // grow back over the column, which then painted outside the
+                // row — on top of the swipe action, since the content view
+                // lets its children overflow.
                 flex: 1,
               }}>
               <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
