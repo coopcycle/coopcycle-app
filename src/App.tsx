@@ -193,18 +193,25 @@ const App = () => {
 
   return (
     <DatadogWrapper>
-      <BottomSheetModalProvider>
-        <RootView>
-          <Provider store={store}>
-            <UIProvider>
-              <PersistGate
-                loading={
-                  <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
-                }
-                persistor={persistor}>
-                <I18nextProvider i18n={i18n}>
-                  <QueryClientProvider client={queryClient}>
-                    <SafeAreaProvider>
+      <Provider store={store}>
+        <UIProvider>
+          <PersistGate
+            loading={
+              <FullScreenLoadingIndicator debugHint="Initialising the Redux state ..." />
+            }
+            persistor={persistor}>
+            <I18nextProvider i18n={i18n}>
+              <QueryClientProvider client={queryClient}>
+                <SafeAreaProvider>
+                  {/*
+                  RootView owns the GestureHandlerRootView, and
+                  BottomSheetModalProvider has to sit inside it: modal sheets are
+                  teleported to its host, so a host outside the gesture root (or
+                  outside the Redux/i18n providers) breaks their gestures and
+                  their hooks.
+                  */}
+                  <RootView>
+                    <BottomSheetModalProvider>
                       {/*
                       We have to use statusBarTranslucent = true on Android >= 35,
                       or it will add an extra top padding
@@ -229,14 +236,14 @@ const App = () => {
                         }}
                       />
                       <NotificationHandler />
-                    </SafeAreaProvider>
-                  </QueryClientProvider>
-                </I18nextProvider>
-              </PersistGate>
-            </UIProvider>
-          </Provider>
-        </RootView>
-      </BottomSheetModalProvider>
+                    </BottomSheetModalProvider>
+                  </RootView>
+                </SafeAreaProvider>
+              </QueryClientProvider>
+            </I18nextProvider>
+          </PersistGate>
+        </UIProvider>
+      </Provider>
     </DatadogWrapper>
   );
 };
