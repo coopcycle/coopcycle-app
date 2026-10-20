@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { ChevronDown, ChevronUp, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
@@ -249,12 +249,6 @@ function TaskListItem({
 
   const swipeableRef = useRef<SwipeableMethods | null>(null);
   const isOpenRef = useRef(false);
-  // The reorder column is part of the swipeable content, and the content view
-  // lets its children overflow, so once the row is dragged the column ends up
-  // drawn over the action revealed behind it. There is nothing to reorder
-  // with while a row is open anyway, so take it out of the row for as long as
-  // it is.
-  const [isSwipedOpen, setIsSwipedOpen] = useState(false);
 
   useEffect(() => {
     if (task.status === 'DONE') {
@@ -329,7 +323,7 @@ function TaskListItem({
   // another row. The old arrows appeared under the *other* tasks once one was
   // selected and meant "put the selected one after me", which is why they
   // turned up under some rows and not others.
-  const isReorderable = !!(onMoveUp || onMoveDown) && !isSwipedOpen;
+  const isReorderable = !!(onMoveUp || onMoveDown);
   const arrowColor = theme.dark ? '#ffffff' : '#444444';
 
   const renderReorderButtons = () => {
@@ -360,7 +354,15 @@ function TaskListItem({
     );
 
     return (
-      <View style={styles.reorderColumn}>
+      <View
+        style={[
+          styles.reorderColumn,
+          // ItemTouchable paints the row's background, and this column sits
+          // beside it rather than inside it. Left transparent it is a window:
+          // swiping the row reveals the action behind it, and the action
+          // showed through the chevrons.
+          { backgroundColor: theme.dark ? 'black' : 'white' },
+        ]}>
         {circle(canMoveUp, onMoveUp, ChevronUp, 'DISPATCH_MOVE_TASK_UP', 'moveUp')}
         {circle(
           canMoveDown,
@@ -387,15 +389,12 @@ function TaskListItem({
         friction={2}
         renderLeftActions={allowSwipeLeft ? renderLeftActions : undefined}
         renderRightActions={allowSwipeRight ? renderRightActions : undefined}
-        onSwipeableWillOpen={() => setIsSwipedOpen(true)}
-        onSwipeableWillClose={() => setIsSwipedOpen(false)}
         onSwipeableOpen={(direction) => {
           isOpenRef.current = true;
           if (direction === 'right' && onSwipedToLeft) onSwipedToLeft();
           else if (direction === 'left' && onSwipedToRight) onSwipedToRight();
         }}
         onSwipeableClose={() => {
-          setIsSwipedOpen(false);
           if (!isOpenRef.current) return; // guard against re-entrant close cascade
           isOpenRef.current = false;
           if (onSwipeClosed) onSwipeClosed();
