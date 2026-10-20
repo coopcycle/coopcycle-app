@@ -10,6 +10,7 @@ import { isEqual, uniqWith } from 'lodash';
 import moment from 'moment';
 
 import { filterTasks, indexTasksByOrder } from '../logistics/utils';
+import { filterStatusCancelled } from '../logistics/filters';
 import { taskUtils } from '../../coopcycle-frontend-js/logistics/redux';
 import { RootState } from '../store';
 import { EMPTY_TOURS_INDEX } from '../../utils/tours';
@@ -120,6 +121,18 @@ export const selectAreFailedTasksHidden = createSelector(
 export const selectAreIncidentsHidden = createSelector(
   selectTaskFilters,
   filters => filters.some(f => f.hasIncidents),
+);
+
+/**
+ * Cancelled tasks are excluded out of the box, so they are not what makes the
+ * filters "custom": any other exclusion rule is one the courier added.
+ *
+ * @param   {State}   state Redux state
+ * @returns {Boolean}       Are any filters set beyond the default ones?
+ */
+export const selectHasCustomTaskFilters = createSelector(
+  selectTaskFilters,
+  filters => filters.some(f => !isEqual(f, filterStatusCancelled)),
 );
 
 /**

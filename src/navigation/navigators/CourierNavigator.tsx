@@ -14,10 +14,32 @@ import OrderNavigator from './OrderNavigator';
 import TaskNavigator from './TaskNavigator';
 import { useSelector } from 'react-redux';
 import { selectIsBarcodeEnabled } from '../../redux/App/selectors';
+import { selectHasCustomTaskFilters } from '../../redux/Courier';
+import { redColor, whiteColor } from '../../styles/common';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 import { useResetDateOnDayChange } from '../../hooks/useResetDateOnDayChange';
+import {
+  TasksFilterSheetProvider,
+  useTasksFilterSheet,
+} from '../courier/TasksFilterSheet';
+
+const styles = StyleSheet.create({
+  // Sits on the corner of the funnel icon; the border keeps it readable
+  // whatever colour the header happens to be.
+  filtersChip: {
+    backgroundColor: redColor,
+    borderColor: whiteColor,
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 10,
+    position: 'absolute',
+    right: 2,
+    top: 0,
+    width: 10,
+  },
+});
 
 const Tab = createBottomTabNavigator();
 
@@ -26,40 +48,42 @@ const Tabs = () => {
   const screenOptions = useStackNavigatorScreenOptions();
 
   return (
-    <Tab.Navigator
+    <TasksFilterSheetProvider>
+      <Tab.Navigator
         // Map screens must not be detached/re-attached: see
         // DrawerNavigator and https://github.com/coopcycle/coopcycle-app/issues/2113
-      detachInactiveScreens={false}
-      screenOptions={({ navigation }) => ({
-        ...screenOptions,
-        tabBarShowLabel: false,
-        headerTitle: i18n.t('COURIER'),
-        headerLeft: () => <HeaderLeftButton navigation={navigation} />,
-        headerRight: () => <HeaderRightBody navigation={navigation}/>,
-      })}>
-      <Tab.Screen
-        name="CourierTaskMap"
-        component={screens.CourierTaskMapPage}
-        options={({ navigation }) => ({
-          tabBarLabel: i18n.t('TASKS'),
-          tabBarButtonTestID: 'messengerTabMap',
-          tabBarIcon: ({ color }) => {
-            return <Icon as={Map} size="xl" style={{ color }} />;
-          },
-        })}
-      />
-      <Tab.Screen
-        name="CourierTaskList"
-        component={screens.CourierTaskListPage}
-        options={({ navigation }) => ({
-          tabBarLabel: i18n.t('TASK_LIST'),
-          tabBarButtonTestID: 'messengerTabList',
-          tabBarIcon: ({ color }) => {
-            return <Icon as={List} size="xl" style={{ color }} />;
-          },
-        })}
-      />
-    </Tab.Navigator>
+        detachInactiveScreens={false}
+        screenOptions={({ navigation }) => ({
+          ...screenOptions,
+          tabBarShowLabel: false,
+          headerTitle: i18n.t('COURIER'),
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
+          headerRight: () => <HeaderRightBody navigation={navigation} />,
+        })}>
+        <Tab.Screen
+          name="CourierTaskMap"
+          component={screens.CourierTaskMapPage}
+          options={({ navigation }) => ({
+            tabBarLabel: i18n.t('TASKS'),
+            tabBarButtonTestID: 'messengerTabMap',
+            tabBarIcon: ({ color }) => {
+              return <Icon as={Map} size="xl" style={{ color }} />;
+            },
+          })}
+        />
+        <Tab.Screen
+          name="CourierTaskList"
+          component={screens.CourierTaskListPage}
+          options={({ navigation }) => ({
+            tabBarLabel: i18n.t('TASK_LIST'),
+            tabBarButtonTestID: 'messengerTabList',
+            tabBarIcon: ({ color }) => {
+              return <Icon as={List} size="xl" style={{ color }} />;
+            },
+          })}
+        />
+      </Tab.Navigator>
+    </TasksFilterSheetProvider>
   );
 };
 
@@ -67,11 +91,31 @@ const MainStack = createStackNavigator();
 
 function HeaderCourierButtons({ navigation }) {
   const isBarcodeEnabled = useSelector(selectIsBarcodeEnabled);
+  const hasCustomFilters = useSelector(selectHasCustomTaskFilters);
+  const filterSheet = useTasksFilterSheet();
 
   return (
     <HeaderButtons>
       {isBarcodeEnabled &&
       <HeaderButton iconName="scan" onPress={() => navigation.navigate('CourierBarcode')} /> }
+      {/*
+      Tasks can be filtered out of a screen that otherwise looks complete, so
+      the button says when any filter beyond the defaults is on.
+      */}
+      <View>
+        <HeaderButton
+          iconName={hasCustomFilters ? 'funnel' : 'funnel-outline'}
+          onPress={() => filterSheet?.openFilters()}
+          testID="courierFiltersBtn"
+        />
+        {hasCustomFilters && (
+          <View
+            style={styles.filtersChip}
+            pointerEvents="none"
+            testID="courierFiltersChip"
+          />
+        )}
+      </View>
       <HeaderButton iconName="settings-outline" onPress={() => navigation.navigate('CourierSettings')} />
     </HeaderButtons>
   )
@@ -164,13 +208,6 @@ const SettingsNavigator = () => {
         options={{
           title: i18n.t('SETTINGS'),
           headerLeft: () => <CloseButton />,
-        }}
-      />
-      <SettingsStack.Screen
-        name="CourierSettingsTags"
-        component={screens.CourierSettingsTags}
-        options={{
-          title: i18n.t('FILTER_BY_TAGS'),
         }}
       />
     </SettingsStack.Navigator>

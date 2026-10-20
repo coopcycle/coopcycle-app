@@ -191,6 +191,7 @@
     "KEYWORD_FILTERS_SEARCH_EXPLANATION": "Entrez un tag, un magasin/restaurant/boutiques..\n(tapez \"-\" pour exclure)",
     "KEYWORD_FILTERS_APPLY_FILTERS": "Appliquer des filtres",
     "HIDE_TASKS_TAGGED_WITH": "Masquer les tâches marquées avec",
+    "NO_TAGS_TO_FILTER": "Aucune tâche étiquetée ce jour-là",
     "RESTAURANT_LIST_CLICK_BELOW": "Cliquez sur un restaurant dans la liste ci-dessous",
     "RESTAURANT_ORDER_LIST_NEW_ORDERS": "Nouvelles commandes ({{count}})",
     "RESTAURANT_ORDER_LIST_ACCEPTED_ORDERS": "Commandes acceptées ({{count}})",

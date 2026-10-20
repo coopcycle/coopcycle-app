@@ -44,7 +44,6 @@ import AccountResetPasswordNewPassword from './account/ResetPasswordNewPassword'
 
 import CourierDate from './courier/Date';
 import CourierSettings from './courier/Settings';
-import CourierSettingsTags from './courier/Tags';
 import CourierTaskListPage from './courier/TaskListPage';
 import CourierTaskMapPage from './courier/TaskMapPage';
 import CourierBarcodePage from './courier/barcode/Barcode';
@@ -115,7 +114,6 @@ export default {
   CourierBarcodeIncidentPage,
   CourierTaskListPage,
   CourierSettings,
-  CourierSettingsTags,
   CourierDate,
   CheckoutPaymentMethodCard,
   CheckoutPaymentMethodCashOnDelivery,

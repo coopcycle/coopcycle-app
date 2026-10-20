@@ -30,15 +30,17 @@ const HeaderButtonsWrapper = ({ children }) => {
 };
 
 const ItemWrapper = (props) => {
-  const color = usePrimaryContentColor();
-  const { disabled, style, ...restProps } = props;
+  const defaultColor = usePrimaryContentColor();
+  const { color, disabled, style, ...restProps } = props;
   const opacity = disabled ? 0.4 : 1;
 
   return (
     <Item
       {...restProps}
       disabled={disabled}
-      color={color}
+      // A caller may highlight a button (an active filter, say); otherwise it
+      // takes the header's content color.
+      color={color ?? defaultColor}
       style={{ ...style, opacity }}
     />
   );
