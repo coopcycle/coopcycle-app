@@ -100,6 +100,15 @@ export const apiSlice = createApi({
         );
       },
     }),
+    /**
+     * @deprecated Replaces the whole list, so a task the payload leaves out is
+     *   unassigned — and a client that has simply not heard of a task sends
+     *   exactly what one deliberately removing it sends. Kept only for
+     *   instances that predate the items endpoints below; see
+     *   `supportsTaskListItemsApi`.
+     *
+     * @see https://github.com/coopcycle/coopcycle-web/issues/5372
+     */
     setTaskListItems: builder.mutation({
       query: ({
         items,
@@ -121,6 +130,69 @@ export const apiSlice = createApi({
 
         return mutation;
       },
+    }),
+    /**
+     * Open a courier's task list for a day, handing back the one that is
+     * already there if it exists. Idempotent, so it is safe to call before an
+     * assignment rather than tracking whether the list has been created.
+     */
+    createTaskList: builder.mutation({
+      query: ({ courier, date }: { courier: Uri; date: DateOnlyString }) => ({
+        url: '/api/task_lists',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+        },
+        body: JSON.stringify({ courier, date }),
+      }),
+    }),
+    /**
+     * Put tasks and tours on a list, naming them, and leave the rest alone.
+     *
+     * Items already held by another courier are moved, not duplicated.
+     * `position` appends when absent, which is what the app wants: it has no
+     * ordering UI, so it should never claim a place in the list.
+     */
+    addTaskListItems: builder.mutation({
+      query: ({
+        taskListUrl,
+        items,
+        position = null,
+      }: {
+        taskListUrl: Uri;
+        items: string[];
+        position?: number | null;
+      }) => ({
+        url: `${taskListUrl}/items`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+        },
+        body: JSON.stringify({ items, position }),
+      }),
+    }),
+    /**
+     * Take named tasks and tours off a list, and unassign them.
+     *
+     * One request for the whole batch: removing an item renumbers the ones
+     * that remain, so several concurrent single removals contend for the same
+     * rows. Items that are not on the list are ignored.
+     */
+    removeTaskListItems: builder.mutation({
+      query: ({
+        taskListUrl,
+        items,
+      }: {
+        taskListUrl: Uri;
+        items: string[];
+      }) => ({
+        url: `${taskListUrl}/items/remove`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+        },
+        body: JSON.stringify({ items }),
+      }),
     }),
     setTourItems: builder.mutation({
       query: ({ tourUrl, tourTasks }) => {
@@ -460,6 +532,9 @@ export const {
   useGetToursQuery,
   useSetTourItemsMutation,
   useSetTaskListItemsMutation,
+  useCreateTaskListMutation,
+  useAddTaskListItemsMutation,
+  useRemoveTaskListItemsMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
   usePostIncidentMutation,
