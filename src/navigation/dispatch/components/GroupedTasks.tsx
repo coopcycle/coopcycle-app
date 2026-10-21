@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -66,6 +66,7 @@ type DispatchTaskRowProps = {
   sectionId: string;
   appendTaskListTestID?: string;
   isUnassignedTaskList: boolean;
+  isScreenFocused: boolean;
   onTaskPress: (task: Task, isUnassignedTaskList: boolean) => void;
   onOrderPress: (task: Task) => void;
   onLongPress: (task: Task) => void;
@@ -90,6 +91,7 @@ const DispatchTaskRow = memo(function DispatchTaskRow({
   sectionId,
   appendTaskListTestID,
   isUnassignedTaskList,
+  isScreenFocused,
   onTaskPress,
   onOrderPress,
   onLongPress,
@@ -127,6 +129,7 @@ const DispatchTaskRow = memo(function DispatchTaskRow({
     <TaskListItem
       taskListId={sectionId}
       appendTaskListTestID={appendTaskListTestID}
+      isScreenFocused={isScreenFocused}
       task={task}
       nextTask={nextTask}
       index={index}
@@ -444,6 +447,11 @@ export default function GroupedTasks({
 
   const longPressHandler = useTaskLongPress();
 
+  // The drawer keeps blurred screens mounted (see `detachInactiveScreens` in
+  // DrawerNavigator), and their gesture handlers keep firing, so the rows have
+  // to go inert when this screen is not the one being looked at.
+  const isScreenFocused = useIsFocused();
+
   const renderItem = useCallback(
     ({ item }: { item: FlatItem }) => {
       if (item.type === 'header') {
@@ -468,6 +476,7 @@ export default function GroupedTasks({
           sectionId={section.id}
           appendTaskListTestID={section.appendTaskListTestID}
           isUnassignedTaskList={section.isUnassignedTaskList}
+          isScreenFocused={isScreenFocused}
           onTaskPress={handleTaskPress}
           onOrderPress={onOrderClick}
           onLongPress={longPressHandler}
@@ -481,6 +490,7 @@ export default function GroupedTasks({
     [
       isExpandedSection,
       toggleSection,
+      isScreenFocused,
       longPressHandler,
       handleTaskPress,
       onOrderClick,

@@ -169,6 +169,7 @@ function TaskListItem({
   index,
   taskListId,
   appendTaskListTestID = '',
+  isScreenFocused = true,
   onPress = () => {},
   onLongPress = () => {},
   onOrderPress = () => {},
@@ -270,8 +271,14 @@ function TaskListItem({
     onPress();
   }
 
-  const allowSwipeLeft = task.status !== 'DONE' && !context?.isEditMode;
-  const allowSwipeRight = task.status !== 'DONE' && !context?.isEditMode;
+  // A row on a blurred screen must not keep a live swipe action: the drawer
+  // keeps inactive screens mounted, and their gesture handlers still fire, so a
+  // tap meant for the screen on top also reaches the action buttons underneath
+  // and runs the *other* navigator's handler.
+  const allowSwipe =
+    isScreenFocused && task.status !== 'DONE' && !context?.isEditMode;
+  const allowSwipeLeft = allowSwipe;
+  const allowSwipeRight = allowSwipe;
 
   const renderLeftActions = useCallback(() => (
     <SwipeButtonContainer

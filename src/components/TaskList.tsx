@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { LucideIcon } from 'lucide-react-native';
 
 import ItemsBulkFabButton from './ItemsBulkFabButton';
@@ -28,6 +29,7 @@ type TaskRowProps = {
   index: number;
   taskListId: string;
   appendTaskListTestID: string;
+  isScreenFocused: boolean;
   onTaskClick: (task: Task) => void;
   onOrderClick: (task: Task) => void;
   onLongPress: (task: Task) => void;
@@ -59,6 +61,7 @@ const TaskRow = React.memo(function TaskRow({
   index,
   taskListId,
   appendTaskListTestID,
+  isScreenFocused,
   onTaskClick,
   onOrderClick,
   onLongPress,
@@ -106,6 +109,7 @@ const TaskRow = React.memo(function TaskRow({
     <TaskListItem
       taskListId={taskListId}
       appendTaskListTestID={appendTaskListTestID}
+      isScreenFocused={isScreenFocused}
       task={task}
       nextTask={nextTask}
       index={index}
@@ -155,6 +159,11 @@ const TaskList: React.FC<TaskListProps> = ({
   appendTaskListTestID = '',
 }) => {
   const bulkFabButton = useRef(null);
+
+  // The drawer keeps blurred screens mounted (see `detachInactiveScreens` in
+  // DrawerNavigator), and their gesture handlers keep firing, so the rows have
+  // to go inert when this screen is not the one being looked at.
+  const isScreenFocused = useIsFocused();
 
   // The sort callbacks need the current list, but making them depend on
   // `tasks` would invalidate every row on every list update.
@@ -278,6 +287,7 @@ const TaskList: React.FC<TaskListProps> = ({
           index={index}
           taskListId={id}
           appendTaskListTestID={appendTaskListTestID}
+          isScreenFocused={isScreenFocused}
           onTaskClick={onTaskClick}
           onOrderClick={onOrderClick}
           onLongPress={onLongPress}
@@ -299,6 +309,7 @@ const TaskList: React.FC<TaskListProps> = ({
       tasks,
       id,
       appendTaskListTestID,
+      isScreenFocused,
       onTaskClick,
       onOrderClick,
       onLongPress,
