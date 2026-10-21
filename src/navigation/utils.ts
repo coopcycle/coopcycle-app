@@ -53,13 +53,22 @@ const findRouteNameInState = (
   return undefined;
 };
 
+// What the resolver reads off whatever the caller hands it, which ranges from a
+// screen's navigation prop to the container ref.
+type RouteResolvable = {
+  getState?: () => NavigationState | undefined;
+  getParent?: () => RouteResolvable | undefined;
+  getRootState?: () => NavigationState | undefined;
+};
+
 /**
  * The first of `candidates` that one of the navigators enclosing `navigation`
  * declares — so a screen always reaches the copy it actually sits in.
  */
-// `any`: the callers hand over anything from a screen's navigation prop to the
-// container ref, and only `getState`/`getParent` are read off it.
-const resolveRouteName = (navigation: any, candidates: string[]): string => {
+const resolveRouteName = (
+  navigation: RouteResolvable | undefined,
+  candidates: string[],
+): string => {
   for (let nav = navigation; nav; nav = nav.getParent?.()) {
     const match = candidates.find(name =>
       nav.getState?.()?.routeNames?.includes(name),
