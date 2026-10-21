@@ -267,7 +267,8 @@ export default function DispatchNavigator({ navigation }) {
             })}
           />
           <RootStack.Screen
-            name="Task"
+            // Unique per branch — see the note on `CourierTask`.
+            name="DispatchTask"
             component={TaskNavigator}
             options={{
               headerShown: false,
@@ -309,7 +310,7 @@ export default function DispatchNavigator({ navigation }) {
             }}
           />
           <RootStack.Screen
-            name="Order"
+            name="DispatchOrder"
             component={OrderNavigator}
             options={{
               headerShown: false,
