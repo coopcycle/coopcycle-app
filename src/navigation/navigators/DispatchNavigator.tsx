@@ -27,6 +27,7 @@ import screens, { headerLeft } from '..';
 import SearchInput from '../../components/SearchInput';
 import TaskNavigator from './TaskNavigator';
 import { TaskListsProvider, useTaskListsContext } from '../courier/contexts/TaskListsContext';
+import { useBulkAssignTasks } from '../dispatch/hooks/useBulkAssignTasks';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
 import { TaskActionsMenu } from '../dispatch/TaskActionsMenu';
 import { useResetDateOnDayChange } from '../../hooks/useResetDateOnDayChange';
@@ -167,6 +168,7 @@ const HeaderLeftButton = memo(({navigation}) => {
 const HeaderRightBody = memo(({navigation}) => {
   const context = useTaskListsContext();
   const selectedTasks = context?.selectedTasksToEdit || [];
+  const bulkAssignTasks = useBulkAssignTasks();
 
   return (
     <>
@@ -175,6 +177,7 @@ const HeaderRightBody = memo(({navigation}) => {
         navigation={navigation}
         tasks={selectedTasks}
         onClearSelection={context?.clearSelectedTasks}
+        onAssign={() => bulkAssignTasks(selectedTasks)}
         showCounter={true}
         enabledActions={{
           start: true,
@@ -194,7 +197,6 @@ const HeaderRightBody = memo(({navigation}) => {
 });
 
 export default function DispatchNavigator({ navigation }) {
-  const taskListsContext = useTaskListsContext();
   const dispatch = useDispatch();
 
   // The board must not still be on the day this session was opened on.
@@ -235,11 +237,7 @@ export default function DispatchNavigator({ navigation }) {
             options={({ navigation }) => ({
               title: i18n.t('DISPATCH'),
               headerLeft: () => <HeaderLeftButton navigation={navigation} />,
-              headerRight: () => (
-                <HeaderRightBody
-                  isEditMode={taskListsContext?.isEditMode}
-                  navigation={navigation}/>
-              ),
+              headerRight: () => <HeaderRightBody navigation={navigation} />,
             })}
           />
           <RootStack.Screen
@@ -267,7 +265,8 @@ export default function DispatchNavigator({ navigation }) {
             })}
           />
           <RootStack.Screen
-            name="Task"
+            // Unique per branch — see the note on `CourierTask`.
+            name="DispatchTask"
             component={TaskNavigator}
             options={{
               headerShown: false,
@@ -309,7 +308,7 @@ export default function DispatchNavigator({ navigation }) {
             }}
           />
           <RootStack.Screen
-            name="Order"
+            name="DispatchOrder"
             component={OrderNavigator}
             options={{
               headerShown: false,

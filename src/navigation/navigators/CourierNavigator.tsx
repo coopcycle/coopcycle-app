@@ -136,7 +136,10 @@ const MainNavigator = () => {
         })}
       />
       <MainStack.Screen
-        name="Task"
+        // Unique per branch: the dispatch tree holds its own copy of this
+        // navigator, and `navigationInChildEnabled` would otherwise let a
+        // `navigate()` from here land in that one.
+        name="CourierTask"
         component={TaskNavigator}
         options={{
           headerShown: false,
@@ -299,7 +302,7 @@ export default () => {
           }}
         />
         <RootStack.Screen
-          name="Order"
+          name="CourierOrder"
           component={OrderNavigator}
           options={{
             headerShown: false,

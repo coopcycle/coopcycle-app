@@ -94,7 +94,10 @@ export default function OrderNavigator() {
       detachInactiveScreens={false}
       screenOptions={screenOptions}>
       <RootStack.Screen
-        name="Order"
+        // Not "Order": that was also the name of the navigator holding it, and
+        // React Navigation warns about a screen nested inside one of its own
+        // name.
+        name="OrderHome"
         component={screens.Order}
         options={({ route }) => {
           const { orderNumber, isFromCourier, status } = route.params ?? {};

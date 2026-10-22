@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,6 @@ import { AssignOrderIcon, AssignTaskIcon } from '../../task/styles/common';
 import {
   createTempTaskList,
   createUnassignedTaskLists,
-  getTaskListByTask,
   getTaskListTasks,
   getUserTaskList,
 } from '../../../shared/src/logistics/redux/taskListUtils';
@@ -32,6 +31,7 @@ import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSe
 import { getOrderNumber } from '../../../utils/tasks';
 import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
+import { useBulkAssignTasks } from '../hooks/useBulkAssignTasks';
 import { useTaskLongPress } from '../hooks/useTaskLongPress';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import Task from '@/src/types/task';
@@ -69,6 +69,7 @@ type DispatchTaskRowProps = {
   sectionId: string;
   appendTaskListTestID?: string;
   isUnassignedTaskList: boolean;
+  isScreenFocused: boolean;
   onTaskPress: (task: Task, isUnassignedTaskList: boolean) => void;
   onOrderPress: (task: Task) => void;
   onLongPress: (task: Task) => void;
@@ -94,6 +95,7 @@ const DispatchTaskRow = memo(function DispatchTaskRow({
   sectionId,
   appendTaskListTestID,
   isUnassignedTaskList,
+  isScreenFocused,
   onTaskPress,
   onOrderPress,
   onLongPress,
@@ -130,6 +132,7 @@ const DispatchTaskRow = memo(function DispatchTaskRow({
     <TaskListItem
       taskListId={sectionId}
       appendTaskListTestID={appendTaskListTestID}
+      isScreenFocused={isScreenFocused}
       task={task}
       index={index}
       color={task.color}
@@ -341,41 +344,7 @@ export default function GroupedTasks({
     ],
   );
 
-  const handleBulkAssignButtonPress = useCallback(
-    (tasks: Task[]) => {
-      const tasksByList: Record<string, Task[]> = {};
-      for (const task of tasks) {
-        const taskList = getTaskListByTask(task, allTaskLists);
-        const key = taskList ? taskList['@id'] : UNASSIGNED_TASKS_LIST_ID;
-        if (!tasksByList[key]) tasksByList[key] = [];
-        tasksByList[key].push(task);
-      }
-      // Bucket the long-tap selection into the `orders` slot so linked tasks
-      // are assigned/unassigned together — matching the left-swipe behavior
-      // (getTasksListsToEdit only expands linked tasks for the `orders` bucket).
-      const selectedTasks = { orders: tasksByList, tasks: {} };
-      const showUnassignButton = Object.keys(tasksByList).some(
-        id => id !== UNASSIGNED_TASKS_LIST_ID,
-      );
-
-      navigation.navigate('DispatchPickUser', {
-        onItemPress: user => {
-          onSelectNewAssignation(async () => {
-            await bulkEditTasks(selectedTasks, user);
-            context?.clearSelectedTasks();
-          });
-        },
-        showUnassignButton,
-        onUnassignButtonPress: () => {
-          onSelectNewAssignation(async () => {
-            await bulkEditTasks(selectedTasks);
-            context?.clearSelectedTasks();
-          });
-        },
-      });
-    },
-    [onSelectNewAssignation, bulkEditTasks, context, allTaskLists, navigation],
-  );
+  const handleBulkAssignButtonPress = useBulkAssignTasks();
 
   const { moveTask, isLoading: isReordering } = useReorderTaskList({
     allTaskLists,
@@ -413,6 +382,11 @@ export default function GroupedTasks({
 
   const longPressHandler = useTaskLongPress();
 
+  // The drawer keeps blurred screens mounted (see `detachInactiveScreens` in
+  // DrawerNavigator), and their gesture handlers keep firing, so the rows have
+  // to go inert when this screen is not the one being looked at.
+  const isScreenFocused = useIsFocused();
+
   const renderItem = useCallback(
     ({ item }: { item: FlatItem }) => {
       if (item.type === 'header') {
@@ -433,6 +407,7 @@ export default function GroupedTasks({
           sectionId={section.id}
           appendTaskListTestID={section.appendTaskListTestID}
           isUnassignedTaskList={section.isUnassignedTaskList}
+          isScreenFocused={isScreenFocused}
           onTaskPress={handleTaskPress}
           onOrderPress={onOrderClick}
           onLongPress={longPressHandler}
@@ -448,6 +423,7 @@ export default function GroupedTasks({
     [
       isExpandedSection,
       toggleSection,
+      isScreenFocused,
       longPressHandler,
       handleTaskPress,
       onOrderClick,

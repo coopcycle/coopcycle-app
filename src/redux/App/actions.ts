@@ -397,7 +397,15 @@ export function selectServer(server) {
             dispatch(setBaseURL(baseURL));
           })
           .then(() => dispatch(_clearSelectServerError()))
-          .then(() => dispatch(setLoading(false))),
+          .then(() => dispatch(setLoading(false)))
+          // Never swallow: the spinner is cleared either on the happy path
+          // above or by the handler below, so an error caught and dropped here
+          // leaves the app spinning for good — the server is selected, the
+          // settings are in, and nothing ever tells the user what went wrong.
+          .catch(e => {
+            console.error(e);
+            throw e;
+          }),
       )
       .catch(err => {
         setTimeout(() => {

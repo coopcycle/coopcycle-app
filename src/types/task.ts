@@ -222,6 +222,12 @@ export interface TaskListItemProps {
   index: number;
   taskListId: string;
   appendTaskListTestID?: string;
+  // False while the screen holding this row is blurred. A blurred screen stays
+  // mounted (the drawer sets `detachInactiveScreens={false}` for the maps), and
+  // its gesture handlers keep receiving touches, so the swipe actions have to be
+  // taken down rather than merely hidden.
+  // @see https://github.com/coopcycle/coopcycle-app/issues/2113
+  isScreenFocused?: boolean;
   onPress?: () => void;
   onLongPress?: TaskListProps['onLongPress'];
   onOrderPress?: () => void;
