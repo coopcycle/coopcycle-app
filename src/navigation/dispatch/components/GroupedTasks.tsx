@@ -29,13 +29,17 @@ import BulkEditTasksFloatingButton from './BulkEditTasksFloatingButton';
 import TaskListItem from '../../../components/TaskListItem';
 import useSetTaskListItems from '../../../shared/src/logistics/redux/hooks/useSetTaskListItems';
 import { getOrderNumber } from '../../../utils/tasks';
-import { useRecurrenceRulesGenerateOrdersMutation, useSetTaskListItemsMutation } from '../../../redux/api/slice';
+import { useRecurrenceRulesGenerateOrdersMutation } from '../../../redux/api/slice';
 import { SectionHeader } from './SectionHeader';
 import { useBulkAssignTasks } from '../hooks/useBulkAssignTasks';
 import { useTaskLongPress } from '../hooks/useTaskLongPress';
 import { useTaskListsContext } from '../../courier/contexts/TaskListsContext';
 import Task from '@/src/types/task';
-import { moveAfter } from '../../task/components/utils';
+import useReorderTaskList, {
+  canMove,
+  MOVE_DOWN,
+  MOVE_UP,
+} from '../../../shared/src/logistics/redux/hooks/useReorderTaskList';
 
 type SectionData = {
   id: string;
@@ -61,7 +65,6 @@ const TASK_HEIGHT = 88;
 
 type DispatchTaskRowProps = {
   task: Task;
-  nextTask: Task | null;
   index: number;
   sectionId: string;
   appendTaskListTestID?: string;
@@ -72,8 +75,10 @@ type DispatchTaskRowProps = {
   onLongPress: (task: Task) => void;
   onAssignOrder: (task: Task, isUnassignedTaskList: boolean) => void;
   onAssignTask: (task: Task, isUnassignedTaskList: boolean) => void;
-  onSortBefore: (sectionId: string) => void;
-  onSort: (sectionId: string, index: number) => void;
+  onMoveUp: (task: Task) => void;
+  onMoveDown: (task: Task) => void;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
 };
 
 /**
@@ -86,7 +91,6 @@ type DispatchTaskRowProps = {
  */
 const DispatchTaskRow = memo(function DispatchTaskRow({
   task,
-  nextTask,
   index,
   sectionId,
   appendTaskListTestID,
@@ -97,8 +101,10 @@ const DispatchTaskRow = memo(function DispatchTaskRow({
   onLongPress,
   onAssignOrder,
   onAssignTask,
-  onSortBefore,
-  onSort,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp,
+  canMoveDown,
 }: DispatchTaskRowProps) {
   const handlePress = useCallback(
     () => onTaskPress(task, isUnassignedTaskList),
@@ -116,13 +122,10 @@ const DispatchTaskRow = memo(function DispatchTaskRow({
     () => onAssignTask(task, isUnassignedTaskList),
     [onAssignTask, task, isUnassignedTaskList],
   );
-  const handleSortBefore = useCallback(
-    () => onSortBefore(sectionId),
-    [onSortBefore, sectionId],
-  );
-  const handleSort = useCallback(
-    () => onSort(sectionId, index),
-    [onSort, sectionId, index],
+  const handleMoveUp = useCallback(() => onMoveUp(task), [onMoveUp, task]);
+  const handleMoveDown = useCallback(
+    () => onMoveDown(task),
+    [onMoveDown, task],
   );
 
   return (
@@ -131,14 +134,15 @@ const DispatchTaskRow = memo(function DispatchTaskRow({
       appendTaskListTestID={appendTaskListTestID}
       isScreenFocused={isScreenFocused}
       task={task}
-      nextTask={nextTask}
       index={index}
       color={task.color}
       onPress={handlePress}
       onLongPress={onLongPress}
       onOrderPress={handleOrderPress}
-      onSortBefore={handleSortBefore}
-      onSort={handleSort}
+      onMoveUp={handleMoveUp}
+      onMoveDown={handleMoveDown}
+      canMoveUp={canMoveUp}
+      canMoveDown={canMoveDown}
       onPressLeft={handlePressLeft}
       swipeOutLeftBackgroundColor={darkRedColor}
       swipeOutLeftIcon={AssignOrderIcon}
@@ -342,57 +346,22 @@ export default function GroupedTasks({
 
   const handleBulkAssignButtonPress = useBulkAssignTasks();
 
-  const [setTaskListItems, {isLoading}] = useSetTaskListItemsMutation();
+  const { moveTask, isLoading: isReordering } = useReorderTaskList({
+    allTaskLists,
+  });
 
-  const handleSortBefore = useCallback((tasks: Task[]) => {
-    const itemsIDs = [...tasks.map(t => t['@id'])];
-    const selectedTask = context?.selectedTasksToEdit[0];
-    const selectedTaskID = selectedTask['@id'];
-
-    const filteredIDs = itemsIDs.filter(id => id !== selectedTaskID);
-
-    filteredIDs.unshift(selectedTaskID);
-
-    setTaskListItems({items: filteredIDs, username: selectedTask.assignedTo, date: date.format('YYYY-MM-DD')});
-    context?.clearSelectedTasks();
-  }, [context, date, setTaskListItems]);
-
-  const handleSort = useCallback((tasks: Task[], index: number) => {
-    const itemsIDs = [...tasks.map(t => t['@id'])];
-    const selectedTask = context?.selectedTasksToEdit[0];
-
-    const fromIndex = itemsIDs.indexOf(selectedTask['@id']);
-    const toIndex = index;
-
-    const reordered = moveAfter(itemsIDs, fromIndex, toIndex);
-
-    setTaskListItems({items: reordered, username: selectedTask.assignedTo, date: date.format('YYYY-MM-DD')});
-    context?.clearSelectedTasks();
-  }, [context, date, setTaskListItems]);
-
-  // Rows are handed callbacks that take the task (or the section id) as an
-  // argument, so their identity survives a re-render and the memoized rows
-  // actually bail out. The sort handlers need the section's current tasks,
-  // which are read from a ref for the same reason.
-  const sectionsRef = useRef(sections);
-  sectionsRef.current = sections;
-
-  const getSectionData = useCallback((sectionId: string) => {
-    const section = sectionsRef.current.find(s => s.id === sectionId);
-    return section ? section.data : [];
-  }, []);
-
-  const handleSortBeforeSection = useCallback(
-    (sectionId: string) => handleSortBefore(getSectionData(sectionId)),
-    [handleSortBefore, getSectionData],
+  const handleMoveUp = useCallback(
+    (task: Task) => moveTask(task, MOVE_UP),
+    [moveTask],
   );
 
-  const handleSortSection = useCallback(
-    (sectionId: string, index: number) =>
-      handleSort(getSectionData(sectionId), index),
-    [handleSort, getSectionData],
+  const handleMoveDown = useCallback(
+    (task: Task) => moveTask(task, MOVE_DOWN),
+    [moveTask],
   );
 
+  // Rows are handed callbacks that take the task as an argument, so their
+  // identity survives a re-render and the memoized rows actually bail out.
   const handleTaskPress = useCallback(
     (task: Task, isUnassignedTaskList: boolean) =>
       onTaskClick(isUnassignedTaskList)(task),
@@ -431,13 +400,9 @@ export default function GroupedTasks({
       }
 
       const { task, section, index } = item;
-      const tasks = section.data;
-      const nextTask = index < tasks.length - 1 ? tasks[index + 1] : null;
-
       return (
         <DispatchTaskRow
           task={task}
-          nextTask={nextTask}
           index={index}
           sectionId={section.id}
           appendTaskListTestID={section.appendTaskListTestID}
@@ -448,8 +413,10 @@ export default function GroupedTasks({
           onLongPress={longPressHandler}
           onAssignOrder={handleAssignOrder}
           onAssignTask={handleAssignTask}
-          onSortBefore={handleSortBeforeSection}
-          onSort={handleSortSection}
+          onMoveUp={handleMoveUp}
+          onMoveDown={handleMoveDown}
+          canMoveUp={canMove(task, allTaskLists, MOVE_UP)}
+          canMoveDown={canMove(task, allTaskLists, MOVE_DOWN)}
         />
       );
     },
@@ -462,14 +429,15 @@ export default function GroupedTasks({
       onOrderClick,
       handleAssignOrder,
       handleAssignTask,
-      handleSortSection,
-      handleSortBeforeSection,
+      handleMoveUp,
+      handleMoveDown,
+      allTaskLists,
     ],
   );
 
   return (
     <>
-      {isLoading && (
+      {isReordering && (
         <View style={{
           position: 'absolute',
           top: 0,

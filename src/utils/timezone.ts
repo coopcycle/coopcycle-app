@@ -42,9 +42,11 @@ export const isSameDayInTimezone = (
  * This mirrors the rule the API applies when it decides whether a task may be
  * filed on a given day's task list (`TaskListManager::rejectItemsFromOtherDays`
  * server-side, which is itself the rule of `TaskDateFilter`). Keep the two in
- * step: a task the app lets through but the server rejects is silently dropped
- * from the payload, and `set_items` then unassigns whatever the payload no
- * longer mentions.
+ * step: a task the app lets through but the server rejects is silently
+ * dropped before the write is applied. On the items endpoints that leaves the
+ * drag doing nothing; on `set_items`, still used against instances that
+ * predate them, the surviving payload is taken as the whole list and
+ * everything it no longer mentions is unassigned.
  */
 export const isDayWithinRangeInTimezone = (
   day: moment.MomentInput,

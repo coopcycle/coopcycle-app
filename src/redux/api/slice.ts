@@ -100,6 +100,15 @@ export const apiSlice = createApi({
         );
       },
     }),
+    /**
+     * @deprecated Replaces the whole list, so a task the payload leaves out is
+     *   unassigned — and a client that has simply not heard of a task sends
+     *   exactly what one deliberately removing it sends. Kept only for
+     *   instances that predate the items endpoints below; see
+     *   `supportsTaskListItemsApi`.
+     *
+     * @see https://github.com/coopcycle/coopcycle-web/issues/5372
+     */
     setTaskListItems: builder.mutation({
       query: ({
         items,
@@ -122,13 +131,124 @@ export const apiSlice = createApi({
         return mutation;
       },
     }),
+    /**
+     * Open a courier's task list for a day, handing back the one that is
+     * already there if it exists. Idempotent, so it is safe to call before an
+     * assignment rather than tracking whether the list has been created.
+     */
+    createTaskList: builder.mutation({
+      query: ({ courier, date }: { courier: Uri; date: DateOnlyString }) => ({
+        url: '/api/task_lists',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+        },
+        body: JSON.stringify({ courier, date }),
+      }),
+    }),
+    /**
+     * Put tasks and tours on a list, naming them, and leave the rest alone.
+     *
+     * Items already held by another courier are moved, not duplicated.
+     * `position` appends when absent, which is what the app wants: it has no
+     * ordering UI, so it should never claim a place in the list.
+     */
+    addTaskListItems: builder.mutation({
+      query: ({
+        taskListUrl,
+        items,
+        position = null,
+      }: {
+        taskListUrl: Uri;
+        items: string[];
+        position?: number | null;
+      }) => ({
+        url: `${taskListUrl}/items`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+        },
+        body: JSON.stringify({ items, position }),
+      }),
+    }),
+    /**
+     * Take named tasks and tours off a list, and unassign them.
+     *
+     * One request for the whole batch: removing an item renumbers the ones
+     * that remain, so several concurrent single removals contend for the same
+     * rows. Items that are not on the list are ignored.
+     */
+    removeTaskListItems: builder.mutation({
+      query: ({
+        taskListUrl,
+        items,
+      }: {
+        taskListUrl: Uri;
+        items: string[];
+      }) => ({
+        url: `${taskListUrl}/items/remove`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/ld+json',
+        },
+        body: JSON.stringify({ items }),
+      }),
+    }),
+    /**
+     * Reorder a task list, without changing which items are on it.
+     *
+     * The one whole-list write that survives the split, because ordering is
+     * the one thing that genuinely has to be expressed as a whole. It is safe
+     * because the API refuses any payload that would add or drop an item, and
+     * because `If-Match` is mandatory here — a reorder built from a list that
+     * has since changed is answered with 409 rather than applied.
+     *
+     * `items` is every item currently on the list, tasks and tours alike, in
+     * the wanted order.
+     *
+     * @see https://github.com/coopcycle/coopcycle-web/issues/5372
+     */
+    setTaskListOrder: builder.mutation({
+      query: ({
+        taskListUrl,
+        items,
+        version,
+      }: {
+        taskListUrl: Uri;
+        items: string[];
+        version: number;
+      }) => ({
+        url: `${taskListUrl}/order`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/ld+json',
+          'If-Match': `"${version}"`,
+        },
+        body: JSON.stringify({ items }),
+      }),
+    }),
+    /**
+     * A tour is replaced wholesale, so this drops every task it does not
+     * mention — the same shape of write as `set_items`, against the other
+     * collection. `version` is the tour's, as it was read; sending it as
+     * `If-Match` has the API refuse a write built from a tour that has since
+     * changed, instead of letting it quietly win.
+     *
+     * Optional, because instances that predate tour versioning serve no
+     * version to send. There the write stays last-one-wins.
+     *
+     * @see https://github.com/coopcycle/coopcycle-web/issues/5372
+     */
     setTourItems: builder.mutation({
-      query: ({ tourUrl, tourTasks }) => {
+      query: ({ tourUrl, tourTasks, version }) => {
         const mutation = {
           url: tourUrl,
           method: 'PUT',
           headers: {
             'Content-Type': 'application/ld+json',
+            ...(version === undefined || version === null
+              ? {}
+              : { 'If-Match': `"${version}"` }),
           },
           body: JSON.stringify({ tasks: tourTasks }),
         };
@@ -460,6 +580,10 @@ export const {
   useGetToursQuery,
   useSetTourItemsMutation,
   useSetTaskListItemsMutation,
+  useCreateTaskListMutation,
+  useAddTaskListItemsMutation,
+  useRemoveTaskListItemsMutation,
+  useSetTaskListOrderMutation,
   useSubscriptionGenerateOrdersMutation,
   useUpdateOrderMutation,
   usePostIncidentMutation,
