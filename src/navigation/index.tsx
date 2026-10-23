@@ -62,6 +62,7 @@ import CheckoutPaygreenCancel from './checkout/PaygreenCancel';
 import CheckoutLoopeat from './checkout/Loopeat';
 import CheckoutRestaurant from './checkout/Restaurant';
 import RestaurantsPage from './checkout/Search';
+import RestaurantsListPage from './checkout/Restaurants';
 import SearchForm from './checkout/SearchForm';
 
 import AddressDetails from './account/AddressDetails';
@@ -87,6 +88,7 @@ import { Report } from './task/Report';
 
 export default {
   RestaurantsPage,
+  RestaurantsListPage,
   CheckoutRestaurant,
   RestaurantList,
   RestaurantDashboard,

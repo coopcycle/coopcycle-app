@@ -129,7 +129,6 @@ export default function ShopCollections({ onItemClick }: Props) {
           onItemClick={onItemClick}
         />
       ))}
-      <Text style={styles.title}>{t('ALL_RESTAURANTS')}</Text>
     </View>
   );
 }

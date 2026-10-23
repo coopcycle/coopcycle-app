@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Dimensions, InteractionManager, View } from 'react-native';
+import { InteractionManager, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
-import RestaurantList from '../../components/RestaurantList';
-import RestaurantSearch from '../../components/RestaurantSearch';
 import ShopCollections from '../../components/ShopCollections';
 import {
-  resetSearch,
   searchRestaurants,
   searchRestaurantsForAddress,
   setRestaurant,
 } from '../../redux/Checkout/actions';
-import { selectRestaurants } from '../../redux/Checkout/selectors';
+import ShopsScreenLayout from './components/ShopsScreenLayout';
 
+/**
+ * The home screen: the collections of the custom homepage.
+ *
+ * It is the tab navigator's initial route, so this is also where the shops are
+ * loaded for the whole checkout flow — the restaurants list screen reads them
+ * from the store.
+ */
 class RestaurantsPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      width: Dimensions.get('window').width,
-      searchText: '',
-    };
-  }
-
   _onAddressSelect(address) {
     if (address) {
       this.props.searchRestaurantsForAddress(address);
@@ -39,7 +35,7 @@ class RestaurantsPage extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const prevAddress = prevProps.route.params?.address;
     const addressAsParam = this.props.route.params?.address;
 
@@ -51,64 +47,26 @@ class RestaurantsPage extends Component {
   }
 
   render() {
-    const { restaurants, addressAsText, isFetching } = this.props;
-
-    const onItemClick = restaurant => {
-      this.props.setRestaurant(restaurant['@id']);
-      this.props.navigation.navigate('CheckoutRestaurant', {
-        restaurant,
-      });
-    };
-
     return (
-      <View
-        style={{ flex: 1, paddingTop: 70 }}
-        testID="checkoutSearch"
-        onLayout={event =>
-          this.setState({ width: event.nativeEvent.layout.width })
-        }>
-        <View style={{ flexGrow: 1 }}>
-          <RestaurantList
-            restaurants={restaurants}
-            addressAsText={addressAsText}
-            isFetching={isFetching}
-            onItemClick={onItemClick}
-            ListHeaderComponent={
-              <ShopCollections onItemClick={onItemClick} />
-            }
+      <ShopsScreenLayout testID="checkoutHome">
+        <ScrollView>
+          <ShopCollections
+            onItemClick={restaurant => {
+              this.props.setRestaurant(restaurant['@id']);
+              this.props.navigation.navigate('CheckoutRestaurant', {
+                restaurant,
+              });
+            }}
           />
-        </View>
-        {/* This component needs to be rendered *ABOVE* the list */}
-        {/* This is why it should be the last child component */}
-        {/* Use a "key" prop to make sure component renders */}
-        <RestaurantSearch
-          country={this.props.country}
-          onSelect={address => this._onAddressSelect(address)}
-          onReset={() => {
-            this.props.resetSearch();
-          }}
-          defaultValue={this.props.address}
-          width={this.state.width}
-          key={this.props.addressAsText}
-          savedAddresses={this.props.savedAddresses}
-        />
-      </View>
+        </ScrollView>
+      </ShopsScreenLayout>
     );
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    location: state.app.settings.latlng,
-    country: state.app.settings.country,
-    restaurants: selectRestaurants(state),
     address: state.checkout.address,
-    addressAsText: state.checkout.address
-      ? state.checkout.address.streetAddress
-      : '',
-    savedAddresses: state.account.addresses.slice(0, 3),
-    baseURL: state.app.baseURL,
-    isFetching: state.checkout.isFetching || state.app.loading,
   };
 }
 
@@ -118,7 +76,6 @@ function mapDispatchToProps(dispatch) {
     searchRestaurantsForAddress: (address, options) =>
       dispatch(searchRestaurantsForAddress(address, options)),
     setRestaurant: id => dispatch(setRestaurant(id)),
-    resetSearch: options => dispatch(resetSearch(options)),
   };
 }
 

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { Icon } from '@/components/ui/icon';
-import { User, House, Search, ShoppingCart } from 'lucide-react-native';
+import { User, House, List, Search, ShoppingCart } from 'lucide-react-native';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { TouchableOpacity, Alert } from 'react-native';
@@ -34,14 +34,30 @@ const MyOrderButton = ({ navigation }) => {
   );
 };
 
+// Opens the search modal; shown on both screens that list shops.
+const SearchButton = ({ navigation }) => (
+  <HeaderButtons>
+    <HeaderButton
+      iconName="search"
+      onPress={() => navigation.navigate('CheckoutSearchForm')}
+      testID="checkoutSearchButton"
+    />
+  </HeaderButtons>
+);
+
 function getNestedOptions(navigation, route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
 
   switch (routeName) {
     case 'Home':
-      return {};
+      return {
+        headerRight: () => <SearchButton navigation={navigation} />,
+      };
     case 'Search':
-      return {};
+      return {
+        title: i18n.t('RESTAURANTS'),
+        headerRight: () => <SearchButton navigation={navigation} />,
+      };
     case 'Cart':
       return {
         title: i18n.t('CART'),
@@ -94,11 +110,11 @@ function Tabs({ rootNavigation: navigation }) {
         name="Search"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon as={Search} style={{ color }} />
+            <Icon as={List} style={{ color }} />
           ),
-          title: i18n.t('SEARCH_TAB'),
+          title: i18n.t('RESTAURANTS'),
         }}
-        component={screens.SearchForm}
+        component={screens.RestaurantsListPage}
       />
       <Tab.Screen
         name="Cart"
@@ -140,6 +156,14 @@ const MainNavigator = () => {
           headerLeft: headerLeft(navigation),
           ...getNestedOptions(navigation, route),
         })}
+      />
+      <MainStack.Screen
+        name="CheckoutSearchForm"
+        component={screens.SearchForm}
+        options={{
+          title: i18n.t('SEARCH'),
+          ...TransitionPresets.ModalTransition,
+        }}
       />
       <MainStack.Screen
         name="CheckoutRestaurant"
