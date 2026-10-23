@@ -140,7 +140,9 @@ export const RestaurantCard = ({ restaurant, style }: Props) => {
       </View>
       <View style={styles.content}>
         <View>
-          <Text style={styles.name}>{restaurant.name}</Text>
+          <Text style={styles.name} numberOfLines={2} ellipsizeMode="tail">
+            {restaurant.name}
+          </Text>
         </View>
         <View>
           <TimingBadge restaurant={restaurant} />
