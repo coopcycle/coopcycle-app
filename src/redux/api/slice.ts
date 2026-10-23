@@ -10,12 +10,14 @@ import {
   FailureReason,
   HolidayRequest,
   HolidayRequestPayload,
+  HomepageBlock,
   HydraCollection,
   PaymentMethodsOutput,
   PricingRuleSet,
   PutDeliveryBody,
   Shift,
   ShiftActivity,
+  ShopCollectionEntity,
   Store,
   StorePackage,
   StoreTimeSlot,
@@ -263,6 +265,20 @@ export const apiSlice = createApi({
     getPricingRuleSet: builder.query<PricingRuleSet, Uri>({
       query: (uri: string) => uri,
     }),
+    getHomepageBlocks: builder.query<HomepageBlock[], void>({
+      query: () => 'api/ui/homepage/blocks',
+      transformResponse: (response: HydraCollection<HomepageBlock>) =>
+        response['hydra:member'] ?? [],
+    }),
+    getShopCollections: builder.query<ShopCollectionEntity[], void>({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        return await fetchAllRecordsUsingFetchWithBQ(
+          fetchWithBQ,
+          '/api/shop_collections',
+          100,
+        );
+      },
+    }),
     getRestaurants: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -453,7 +469,9 @@ export const {
   useGetTagsQuery,
   useGetWarehousesQuery,
   useRelayTasksToWarehouseMutation,
+  useGetHomepageBlocksQuery,
   useGetRestaurantsQuery,
+  useGetShopCollectionsQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,

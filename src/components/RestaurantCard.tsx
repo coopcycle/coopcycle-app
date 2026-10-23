@@ -1,7 +1,14 @@
 import React from 'react';
 import { Text } from '@/components/ui/text';
 import { Box } from '@/components/ui/box';
-import { Image, StyleSheet, TextProps, View } from 'react-native';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  TextProps,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
 import { isRestaurantOrderingAvailable } from '../utils/checkout';
 import { RestaurantBadge } from './RestaurantBadge';
@@ -89,7 +96,8 @@ const styles = StyleSheet.create({
   },
 });
 
-type Restaurant = {
+export type Restaurant = {
+  '@id': string;
   name: string;
   description: string | null;
   address: {
@@ -103,13 +111,15 @@ type Restaurant = {
 
 type Props = {
   restaurant: Restaurant;
+  // Lets callers override the card's own margins, e.g. inside a horizontal row.
+  style?: StyleProp<ViewStyle>;
 };
 
-export const RestaurantCard = ({ restaurant }: Props) => {
+export const RestaurantCard = ({ restaurant, style }: Props) => {
   const isAvailable = isRestaurantOrderingAvailable(restaurant);
 
   return (
-    <Box className="bg-background-50" style={ styles.item }>
+    <Box className="bg-background-50" style={[styles.item, style]}>
       <View style={styles.images}>
         <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
         {restaurant.badges && (

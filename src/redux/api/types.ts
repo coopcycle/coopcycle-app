@@ -326,3 +326,29 @@ export type HolidayRequestPayload = {
   endDate: string;
   comment?: string;
 };
+
+/**
+ * A block of the custom homepage, as configured in the web admin
+ * (`/api/ui/homepage/blocks`). Only `shop_collection` blocks are rendered by
+ * the app for now; `banner`, `slider` and `delivery_form` are web-only.
+ */
+export type HomepageBlock = {
+  type: 'shop_collection' | 'banner' | 'slider' | 'delivery_form' | string;
+  data: {
+    // `shop_collection` only: which kind of collection to render.
+    component?: string;
+    // Arguments of the collection, e.g. `{ cuisine: 'italian' }`.
+    args?: Record<string, string>;
+    [key: string]: unknown;
+  };
+};
+
+/**
+ * A shop collection curated in the web admin (`/api/shop_collections`).
+ * `shops` holds restaurant IRIs, not embedded restaurants.
+ */
+export type ShopCollectionEntity = JsonLdEntity & {
+  title: string;
+  slug: string;
+  shops: Uri[];
+};

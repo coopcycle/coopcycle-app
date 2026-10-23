@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import { FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { shouldShowPreOrder } from '../utils/checkout';
-import { RestaurantCard } from './RestaurantCard';
+import { Restaurant, RestaurantCard } from './RestaurantCard';
 
 const styles = StyleSheet.create({
   item: {
@@ -40,13 +40,22 @@ const styles = StyleSheet.create({
   },
 });
 
-class RestaurantList extends Component {
-  constructor(props) {
+type Props = {
+  restaurants: Restaurant[];
+  addressAsText?: string;
+  isFetching?: boolean;
+  onItemClick: (restaurant: Restaurant) => void;
+  ListHeaderComponent?: React.ReactElement | null;
+  t: (key: string) => string;
+};
+
+class RestaurantList extends Component<Props> {
+  constructor(props: Props) {
     super(props);
     this._renderEmptyState = this._renderEmptyState.bind(this);
   }
 
-  renderItem(restaurant, index) {
+  renderItem(restaurant: Restaurant & { testID: string }, index: number) {
     const showPreOrder = shouldShowPreOrder(restaurant);
 
     return (
@@ -125,6 +134,7 @@ class RestaurantList extends Component {
         data={restaurantsWithTestIDs}
         keyExtractor={(item, index) => item['@id']}
         renderItem={({ item, index }) => this.renderItem(item, index)}
+        ListHeaderComponent={this.props.ListHeaderComponent}
         ListEmptyComponent={this._renderEmptyState}
       />
     );

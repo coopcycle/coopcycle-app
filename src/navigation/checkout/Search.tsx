@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import RestaurantList from '../../components/RestaurantList';
 import RestaurantSearch from '../../components/RestaurantSearch';
+import ShopCollections from '../../components/ShopCollections';
 import {
   resetSearch,
   searchRestaurants,
@@ -52,6 +53,13 @@ class RestaurantsPage extends Component {
   render() {
     const { restaurants, addressAsText, isFetching } = this.props;
 
+    const onItemClick = restaurant => {
+      this.props.setRestaurant(restaurant['@id']);
+      this.props.navigation.navigate('CheckoutRestaurant', {
+        restaurant,
+      });
+    };
+
     return (
       <View
         style={{ flex: 1, paddingTop: 70 }}
@@ -64,12 +72,10 @@ class RestaurantsPage extends Component {
             restaurants={restaurants}
             addressAsText={addressAsText}
             isFetching={isFetching}
-            onItemClick={restaurant => {
-              this.props.setRestaurant(restaurant['@id']);
-              this.props.navigation.navigate('CheckoutRestaurant', {
-                restaurant,
-              });
-            }}
+            onItemClick={onItemClick}
+            ListHeaderComponent={
+              <ShopCollections onItemClick={onItemClick} />
+            }
           />
         </View>
         {/* This component needs to be rendered *ABOVE* the list */}
