@@ -14,10 +14,9 @@ const guestCheckoutEndpoints = [
   'updateOrder',
 ];
 
-// Endpoints that anyone can call. They still send the token when there is one
-// (the server may tailor the response to the user), but a missing token is
-// expected and not worth warning about.
-const publicEndpoints = ['getHomepageBlocks', 'getShopCollections'];
+// Endpoints the server lets anyone call. They still send the token when there
+// is one, but a missing token is expected and not worth warning about.
+const publicEndpoints = ['getShopCollections'];
 
 // create a new mutex
 const mutex = new Mutex();
