@@ -352,3 +352,16 @@ export type ShopCollectionEntity = JsonLdEntity & {
   slug: string;
   shops: Uri[];
 };
+
+/**
+ * A shop as the home screen sees it: every shop the instance has, regardless
+ * of the delivery address, with the `timing` the cards need. The restaurants
+ * list screen shows the address-filtered shops from `state.checkout` instead.
+ */
+export type Shop = JsonLdEntity & {
+  name: string;
+  timing?: {
+    delivery: unknown;
+    collection: unknown;
+  };
+};

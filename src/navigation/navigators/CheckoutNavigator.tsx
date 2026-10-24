@@ -20,6 +20,7 @@ import {
 } from '../../styles/theme';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
+import useLoadShops from '../checkout/useLoadShops';
 import { useStackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
@@ -88,6 +89,9 @@ const Tab = createBottomTabNavigator();
 
 function Tabs({ rootNavigation: navigation }) {
   const primaryColor = usePrimaryColor();
+
+  useLoadShops();
+
   const screenOptions = useStackNavigatorScreenOptions({
     headerShown: false,
     tabBarActiveTintColor: primaryColor,

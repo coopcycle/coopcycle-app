@@ -7,14 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import { Text } from '@/components/ui/text';
 import {
   useGetHomepageBlocksQuery,
   useGetShopCollectionsQuery,
+  useGetShopsQuery,
 } from '../redux/api/slice';
-import { selectRestaurants } from '../redux/Checkout/selectors';
 import {
   CollectableRestaurant,
   resolveShopCollections,
@@ -104,16 +103,23 @@ type Props = {
  */
 export default function ShopCollections({ onItemClick }: Props) {
   const { t } = useTranslation();
-  const restaurants: CollectionRestaurant[] = useSelector(selectRestaurants);
 
-  // Both endpoints are public; a server without a custom homepage simply
-  // answers with an empty collection.
   const { data: blocks } = useGetHomepageBlocksQuery();
   const { data: shopCollections } = useGetShopCollectionsQuery();
+  const { data: shops } = useGetShopsQuery();
 
   const collections = useMemo(
-    () => resolveShopCollections(blocks, restaurants, shopCollections, t),
-    [blocks, restaurants, shopCollections, t],
+    () =>
+      resolveShopCollections(
+        blocks,
+        // `Shop` is deliberately loose, since the endpoint hands back what the
+        // API serializes; these are the same objects the cards are given on
+        // the restaurants list screen.
+        (shops ?? []) as unknown as CollectionRestaurant[],
+        shopCollections,
+        t,
+      ),
+    [blocks, shops, shopCollections, t],
   );
 
   if (collections.length === 0) {

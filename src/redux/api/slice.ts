@@ -17,6 +17,7 @@ import {
   PutDeliveryBody,
   Shift,
   ShiftActivity,
+  Shop,
   ShopCollectionEntity,
   Store,
   StorePackage,
@@ -270,6 +271,42 @@ export const apiSlice = createApi({
       transformResponse: (response: HydraCollection<HomepageBlock>) =>
         response['hydra:member'] ?? [],
     }),
+    // Every shop, regardless of the delivery address. The home screen shows
+    // these, so that its collections are not narrowed down by the address the
+    // customer happens to have picked.
+    getShops: builder.query<Shop[], void>({
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+        const result = await fetchAllRecordsUsingFetchWithBQ<Shop>(
+          fetchWithBQ,
+          '/api/restaurants',
+          100,
+        );
+
+        if (result.error) {
+          return result;
+        }
+
+        // The cards need each shop's next delivery slot, which the collection
+        // does not carry. A shop whose timing cannot be fetched is kept and
+        // shown as unavailable, as it would be by the checkout screens.
+        const timings = await Promise.all(
+          result.data.map(shop =>
+            fetchWithBQ(`${shop['@id']}/timing`).then(timing =>
+              timing.error
+                ? { delivery: null, collection: null }
+                : (timing.data as Shop['timing']),
+            ),
+          ),
+        );
+
+        return {
+          data: result.data.map((shop, index) => ({
+            ...shop,
+            timing: timings[index],
+          })),
+        };
+      },
+    }),
     getShopCollections: builder.query<ShopCollectionEntity[], void>({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
         return await fetchAllRecordsUsingFetchWithBQ(
@@ -472,6 +509,7 @@ export const {
   useGetHomepageBlocksQuery,
   useGetRestaurantsQuery,
   useGetShopCollectionsQuery,
+  useGetShopsQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,
