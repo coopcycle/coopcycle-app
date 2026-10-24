@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import ShopCollections from '../../components/ShopCollections';
@@ -20,13 +20,13 @@ export default function RestaurantsPage({ navigation }: Props) {
   const dispatch = useDispatch();
 
   return (
-    <ScrollView testID="checkoutHome">
+    <View style={{ flex: 1 }} testID="checkoutHome">
       <ShopCollections
         onItemClick={restaurant => {
           dispatch(setRestaurant(restaurant['@id']));
           navigation.navigate('CheckoutRestaurant', { restaurant });
         }}
       />
-    </ScrollView>
+    </View>
   );
 }

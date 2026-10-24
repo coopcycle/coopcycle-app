@@ -360,8 +360,14 @@ export type ShopCollectionEntity = JsonLdEntity & {
  */
 export type Shop = JsonLdEntity & {
   name: string;
-  timing?: {
-    delivery: unknown;
-    collection: unknown;
-  };
+};
+
+/**
+ * A shop's next delivery and collection slots, as served by
+ * `GET /api/restaurants/{id}/timing`. It is fetched per shop, lazily, because
+ * computing it for a whole list at once proved too slow server side.
+ */
+export type RestaurantTiming = {
+  delivery: { range?: [string, string]; diff?: string } | null;
+  collection: { range?: [string, string]; diff?: string } | null;
 };

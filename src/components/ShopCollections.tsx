@@ -20,6 +20,7 @@ import {
   ShopCollection,
 } from '../utils/homepage';
 import { Restaurant, RestaurantCard } from './RestaurantCard';
+import { useVisibleItems, VisibleItemsProvider } from './VisibleItems';
 
 // Leave a bit of the next card visible, so the row reads as scrollable.
 const CARD_WIDTH = Math.min(Dimensions.get('window').width * 0.8, 320);
@@ -61,6 +62,9 @@ type RowProps = {
 };
 
 const ShopCollectionRow = ({ collection, onItemClick }: RowProps) => {
+  // Cards fetch their own timing, so the row has to say which are on screen.
+  const { seen, listProps } = useVisibleItems();
+
   const renderItem = useCallback(
     ({ item }: { item: CollectionRestaurant }) => (
       <TouchableOpacity
@@ -75,15 +79,18 @@ const ShopCollectionRow = ({ collection, onItemClick }: RowProps) => {
   return (
     <View style={styles.collection}>
       <Text style={styles.title}>{collection.title}</Text>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.row}
-        data={collection.restaurants}
-        keyExtractor={item => item['@id']}
-        renderItem={renderItem}
-        testID={`shopCollection:${collection.key}`}
-      />
+      <VisibleItemsProvider seen={seen}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.row}
+          data={collection.restaurants}
+          keyExtractor={item => item['@id']}
+          renderItem={renderItem}
+          testID={`shopCollection:${collection.key}`}
+          {...listProps}
+        />
+      </VisibleItemsProvider>
     </View>
   );
 };
@@ -126,15 +133,16 @@ export default function ShopCollections({ onItemClick }: Props) {
     return null;
   }
 
+  // A list rather than a plain View: the rows off the bottom of the screen
+  // then stay unmounted, and their cards ask for no timing until scrolled to.
   return (
-    <View testID="shopCollections">
-      {collections.map(collection => (
-        <ShopCollectionRow
-          key={collection.key}
-          collection={collection}
-          onItemClick={onItemClick}
-        />
-      ))}
-    </View>
+    <FlatList
+      testID="shopCollections"
+      data={collections}
+      keyExtractor={collection => collection.key}
+      renderItem={({ item }) => (
+        <ShopCollectionRow collection={item} onItemClick={onItemClick} />
+      )}
+    />
   );
 }

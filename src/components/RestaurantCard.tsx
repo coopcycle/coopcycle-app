@@ -10,7 +10,12 @@ import {
   ViewStyle,
 } from 'react-native';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
-import { isRestaurantOrderingAvailable } from '../utils/checkout';
+import { useGetRestaurantTimingQuery } from '../redux/api/slice';
+import {
+  hasShippingTime,
+  isRestaurantOrderingAvailable,
+} from '../utils/checkout';
+import { useHasBeenVisible } from './VisibleItems';
 import { RestaurantBadge } from './RestaurantBadge';
 import { RestaurantTag } from './RestaurantTag';
 import { RestaurantBanner } from './RestaurantBanner';
@@ -99,6 +104,8 @@ const styles = StyleSheet.create({
 export type Restaurant = {
   '@id': string;
   name: string;
+  // Set only when the shop was loaded with its timing already attached.
+  timing?: object;
   description: string | null;
   address: {
     streetAddress: string;
@@ -116,7 +123,20 @@ type Props = {
 };
 
 export const RestaurantCard = ({ restaurant, style }: Props) => {
-  const isAvailable = isRestaurantOrderingAvailable(restaurant);
+  // Timing is a request per shop, so it is only worth making for a card the
+  // customer actually sees. Once fetched it stays cached, and the card keeps
+  // showing it after scrolling away and back.
+  const isVisible = useHasBeenVisible(restaurant['@id']);
+  const { data: timing } = useGetRestaurantTimingQuery(restaurant['@id'], {
+    skip: !isVisible || Boolean(restaurant.timing),
+  });
+
+  const shop = timing ? { ...restaurant, timing } : restaurant;
+
+  // Until the timing is known, a shop is neither open nor closed; showing the
+  // "unavailable" overlay before then would make every card flash shut.
+  const isAvailable =
+    !hasShippingTime(shop) || isRestaurantOrderingAvailable(shop);
 
   return (
     <Box className="bg-background-50" style={[styles.item, style]}>
@@ -145,7 +165,7 @@ export const RestaurantCard = ({ restaurant, style }: Props) => {
           </Text>
         </View>
         <View>
-          <TimingBadge restaurant={restaurant} />
+          <TimingBadge restaurant={shop} />
         </View>
         <View style={styles.details}>
           {restaurant.tags?.length > 0 ? (

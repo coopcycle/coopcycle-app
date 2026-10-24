@@ -8,6 +8,7 @@ import Svg, { Path } from 'react-native-svg';
 import { useColorModeValue } from '../../../styles/theme';
 import {
   getNextShippingTimeAsText,
+  hasShippingTime,
   isRestaurantOrderingAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
@@ -47,6 +48,17 @@ export const CategoryBadge = ({ label }) => {
 
 export const TimingBadge = ({ restaurant }) => {
   const color = useColorModeValue('rgb(23 23 23)', 'rgb(254 254 255)');
+
+  if (!hasShippingTime(restaurant)) {
+    // Timing is still on its way. Lay the badge out as usual but hide it, so
+    // that the card keeps its height and nothing jumps once it lands.
+    return (
+      <HStack className="items-center" style={{ opacity: 0 }}>
+        <IconBike color={color} />
+        <Text style={styles.badgeText} />
+      </HStack>
+    );
+  }
 
   const isAvailable = isRestaurantOrderingAvailable(restaurant);
   const showPreOrder = shouldShowPreOrder(restaurant);

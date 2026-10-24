@@ -37,7 +37,10 @@ function timingAsText(timing, now) {
 }
 
 export function getNextShippingTime(restaurant) {
-  const timing = restaurant.timing.delivery || restaurant.timing.collection;
+  // Timing is fetched separately from the shop itself, so it may not be there
+  // yet; callers tell that apart from "no slot" via hasShippingTime().
+  const timing =
+    restaurant.timing?.delivery || restaurant.timing?.collection;
 
   if (!timing) {
     return null;
@@ -76,6 +79,14 @@ export function getRestaurantCaption(restaurant) {
  * While the restaurant might be available (for ordering)
  * it might be either opened or closed at the moment
  */
+/**
+ * Whether this shop's timing has been loaded. A shop without it yet is not
+ * the same as a shop with no slot available.
+ */
+export function hasShippingTime(restaurant) {
+  return Boolean(restaurant.timing);
+}
+
 export function isRestaurantOrderingAvailable(restaurant) {
   const timing = getNextShippingTime(restaurant);
   return Boolean(timing);

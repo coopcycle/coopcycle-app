@@ -214,39 +214,10 @@ export const selectShippingTimeRangeLabel = createSelector(
   },
 );
 
-const TIMING_DIFF_REGEX = /([0-9]+) - ([0-9]+)/;
-const NEXT_YEAR = 60 * 24 * 365;
-
-const timingToInteger = timing => {
-  // FIXME
-  // This hotfixes a bug on the API
-  // https://github.com/coopcycle/coopcycle-web/issues/2213
-  if (timing.range[0] === timing.range[1]) {
-    return NEXT_YEAR;
-  }
-
-  const matches = timing.diff.match(TIMING_DIFF_REGEX);
-
-  return parseInt(matches[1], 10);
-};
-
-export const selectRestaurants = createSelector(
-  state => state.checkout.restaurants,
-  restaurants =>
-    _.sortBy(restaurants, [
-      restaurant => {
-        if (restaurant.timing.delivery) {
-          return timingToInteger(restaurant.timing.delivery);
-        }
-
-        if (restaurant.timing.collection) {
-          return timingToInteger(restaurant.timing.collection);
-        }
-
-        return NEXT_YEAR;
-      },
-    ]),
-);
+// The API already returns the shops ordered by their next available slot
+// (SortableRestaurantIterator, server side), and the app no longer holds the
+// timing it would take to redo that sort, so take the order as given.
+export const selectRestaurants = state => state.checkout.restaurants;
 
 export const cartItemsCountBadge = createSelector(
   state => Object.keys(state.checkout.carts),

@@ -884,30 +884,6 @@ export function setAddress(address, cart = null) {
   };
 }
 
-function wrapRestaurantsWithTiming(restaurants) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-
-    const promises = restaurants.map(
-      restaurant =>
-        new Promise(resolve => {
-          httpClient
-            .get(restaurant['@id'] + '/timing', { anonymous: true })
-            .then(res => resolve(res))
-            .catch(e => resolve({ delivery: null, collection: null }));
-        }),
-    );
-
-    Promise.all(promises).then(values => {
-      const restaurantsWithTiming = _.map(restaurants, (restaurant, index) => ({
-        ...restaurant,
-        timing: values[index],
-      }));
-      dispatch(loadRestaurantsSuccess(restaurantsWithTiming));
-    });
-  };
-}
-
 export function searchRestaurantsForAddress(address, options = {}) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
@@ -924,7 +900,7 @@ export function searchRestaurantsForAddress(address, options = {}) {
       .get(uri + (queryString ? `?${queryString}` : ''), { anonymous: true })
       .then(res => {
         dispatch(_setAddress(address));
-        dispatch(wrapRestaurantsWithTiming(res['hydra:member']));
+        dispatch(loadRestaurantsSuccess(res['hydra:member']));
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));
@@ -958,7 +934,7 @@ export function searchRestaurants(options = {}) {
           }));
           dispatch(loadAddressesSuccess(addresses));
         }
-        dispatch(wrapRestaurantsWithTiming(values[0]['hydra:member']));
+        dispatch(loadRestaurantsSuccess(values[0]['hydra:member']));
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));
