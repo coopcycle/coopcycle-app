@@ -37,16 +37,11 @@ const styles = StyleSheet.create({
   },
   row: {
     paddingRight: 16,
-    // Stretch every card to the height of the tallest one in the row, so a
-    // two-line shop name does not make its neighbours look ragged.
-    alignItems: 'stretch',
   },
   cardWrapper: {
     width: CARD_WIDTH,
   },
   card: {
-    // Fill the stretched wrapper; the wrapper is what sets the card's width.
-    flex: 1,
     // The next card's own left margin provides the gap.
     marginRight: 0,
   },

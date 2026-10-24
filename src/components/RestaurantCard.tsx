@@ -68,9 +68,17 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     gap: 12,
   },
+  nameWrapper: {
+    // Two lines' worth, always. The banner is a fixed ratio and the rest of
+    // the card is single-line, so pinning the name is what makes every card
+    // the same height — without it, cards in a row have to stretch to match,
+    // and a stretched card has no height of its own to be measured from.
+    height: 48,
+  },
   name: {
     fontWeight: '600',
     fontSize: 18,
+    lineHeight: 24,
   },
   timing: {
     alignItems: 'center',
@@ -159,7 +167,7 @@ export const RestaurantCard = ({ restaurant, style }: Props) => {
         </Box>
       </View>
       <View style={styles.content}>
-        <View>
+        <View style={styles.nameWrapper}>
           <Text style={styles.name} numberOfLines={2} ellipsizeMode="tail">
             {restaurant.name}
           </Text>
