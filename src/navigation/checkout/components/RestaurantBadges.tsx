@@ -2,6 +2,7 @@ import { IconClock, IconPlugX } from '@tabler/icons-react-native';
 import { Badge } from '@/components/ui/badge';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
+import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
@@ -50,12 +51,13 @@ export const TimingBadge = ({ restaurant }) => {
   const color = useColorModeValue('rgb(23 23 23)', 'rgb(254 254 255)');
 
   if (!hasShippingTime(restaurant)) {
-    // Timing is still on its way. Lay the badge out as usual but hide it, so
-    // that the card keeps its height and nothing jumps once it lands.
+    // Timing is a separate request, made as the card scrolls into view. Stand
+    // in for the icon and the text at their own size, so that the card keeps
+    // its height and nothing jumps once the slots land.
     return (
-      <HStack className="items-center" style={{ opacity: 0 }}>
-        <IconBike color={color} />
-        <Text style={styles.badgeText} />
+      <HStack className="h-5 items-center" testID="timingBadgeSkeleton">
+        <Skeleton variant="rounded" className="h-[17px] w-[19px]" />
+        <SkeletonText className="ml-1 h-3 w-24" />
       </HStack>
     );
   }
