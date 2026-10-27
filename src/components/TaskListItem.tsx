@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { ArrowRightCircle, LucideIcon } from 'lucide-react-native';
+import { ArrowDown, ArrowUp, LucideIcon } from 'lucide-react-native';
 import {
   Dimensions,
   Pressable,
@@ -24,12 +24,27 @@ import { redColor, yellowColor } from '../styles/common';
 import { ItemTouchable } from './ItemTouchable';
 import { OrderInfo } from './OrderInfo';
 import TaskInfo from './TaskInfo';
+import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 import { useTheme } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { Uri } from '@/src/redux/api/types';
 
 const cardBorderWidth = 4;
 const cardBorderRadius = 2.5;
+
+// Two stacked circular buttons, with the column's width taken off the task's
+// own so the row keeps its shape. `hitSlop` does the rest of the work of
+// making them comfortable to hit without widening the column. The gap is
+// wider than it needs to be to separate them: they do opposite things, and
+// they are tapped repeatedly, so landing on the wrong one has to be hard.
+const REORDER_BUTTON_SIZE = 28;
+const REORDER_BUTTON_GAP = 14;
+// Clear space either side, so the buttons are not crowded against the task
+// text on one side or the time-status stripe on the other.
+const REORDER_BUTTON_PADDING_H = 8;
+const REORDER_WIDTH = REORDER_BUTTON_SIZE + REORDER_BUTTON_PADDING_H * 2;
+
 
 export const styles = StyleSheet.create({
   text: {
@@ -58,9 +73,26 @@ export const styles = StyleSheet.create({
   iconDanger: {
     color: redColor,
   },
-  sortButton: {
-    marginLeft: 12,
-    marginVertical: 4,
+  reorderColumn: {
+    width: REORDER_WIDTH,
+    // Never give this width up to the task next to it; the row is laid out
+    // around it.
+    flexShrink: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: REORDER_BUTTON_GAP,
+    paddingHorizontal: REORDER_BUTTON_PADDING_H,
+  },
+  reorderButton: {
+    width: REORDER_BUTTON_SIZE,
+    height: REORDER_BUTTON_SIZE,
+    borderRadius: REORDER_BUTTON_SIZE / 2,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  reorderButtonDisabled: {
+    opacity: 0.25,
   },
   cancelledTask: {
     position: 'absolute',
@@ -164,7 +196,6 @@ const SwipeButton = ({ icon, width, size = 42 }: ISwipeButtonProps) => (
 
 function TaskListItem({
   task,
-  nextTask,
   color,
   index,
   taskListId,
@@ -175,8 +206,10 @@ function TaskListItem({
   onOrderPress = () => {},
   onPressLeft = () => {},
   onPressRight = () => {},
-  onSortBefore = undefined,
-  onSort = undefined,
+  onMoveUp = undefined,
+  onMoveDown = undefined,
+  canMoveUp = false,
+  canMoveDown = false,
   swipeOutLeftBackgroundColor,
   swipeOutLeftIcon,
   swipeOutRightBackgroundColor,
@@ -189,10 +222,7 @@ function TaskListItem({
   const isPickup = task.type === 'PICKUP';
   const context = useTaskListsContext();
   const theme = useTheme();
-
-  const isAssignedToSameCourier = useMemo(() => {
-    return task.isAssigned && task.assignedTo === context?.selectedTasksToEdit[0]?.assignedTo;
-  }, [context?.selectedTasksToEdit, task]);
+  const { t } = useTranslation();
 
   const isSelectedTask = useMemo(() => {
     if (!context?.selectedTasksToEdit?.length || !task['@id']) {
@@ -202,14 +232,6 @@ function TaskListItem({
       selectedTask => selectedTask['@id'] === task['@id']
     );
   }, [context?.selectedTasksToEdit, task]);
-
-  const isSortable = useMemo(() => {
-    return context?.selectedTasksToEdit?.length === 1 && !isSelectedTask;
-  }, [context?.selectedTasksToEdit, isSelectedTask]);
-
-  const isPreviousToSelectedTask = useMemo(() => {
-    return nextTask?.['@id'] === context?.selectedTasksToEdit[0]?.['@id'];
-  }, [nextTask, context]);
 
   const taskTestId = `${taskListId}${appendTaskListTestID}:task:${index}`;
   const textStyle = [styles.text];
@@ -308,31 +330,67 @@ function TaskListItem({
     </SwipeButtonContainer>
   ), [swipeOutRightBackgroundColor, swipeOutRightIcon, onPressRight, buttonWidth, visibleButtonWidth, taskTestId]);
 
-  const renderPrevSortButton = () => {
-    if (index === 0) {
-      return sortButton(onSortBefore, true);
-    }
-  };
+  // Shown on every row that can be moved, rather than behind a long press on
+  // another row. The old arrows appeared under the *other* tasks once one was
+  // selected and meant "put the selected one after me", which is why they
+  // turned up under some rows and not others.
+  const isReorderable = !!(onMoveUp || onMoveDown);
+  const arrowColor = theme.dark ? '#ffffff' : '#444444';
+  // What ItemTouchable paints the row with. Anything sitting beside it needs
+  // the same, or the swipe action shows through.
+  const rowColor = theme.dark ? 'black' : 'white';
 
-  const renderSortButton = () => {
-    if (!isPreviousToSelectedTask) {
-      return sortButton(onSort);
-    }
-  }
+  const renderReorderButtons = () => {
+    if (!isReorderable) return null;
 
-  const sortButton = (onSortCallback: TaskListItemProps['onSort'] | TaskListItemProps['onSortBefore'], isFirstPosition: boolean = false) => {
-    if (!onSortCallback || !isAssignedToSameCourier || !isSortable) return null;
-    const appendSortID = isFirstPosition ? `sort:previous` : `sort`;
-    return (
-      <Pressable onPress={onSortCallback} style={styles.sortButton} testID={`${taskTestId}:${appendSortID}`}>
-        <ArrowRightCircle color={theme.dark ? '#ffffff' : '#444444'}/>
+    const circle = (
+      enabled: boolean,
+      onPress: (() => void) | undefined,
+      Arrow: LucideIcon,
+      label: string,
+      testIDSuffix: string,
+    ) => (
+      <Pressable
+        onPress={enabled ? onPress : undefined}
+        disabled={!enabled}
+        hitSlop={6}
+        accessibilityRole="button"
+        accessibilityLabel={t(label)}
+        accessibilityState={{ disabled: !enabled }}
+        style={[
+          styles.reorderButton,
+          { borderColor: arrowColor },
+          !enabled && styles.reorderButtonDisabled,
+        ]}
+        testID={`${taskTestId}:${testIDSuffix}`}>
+        <Arrow color={arrowColor} size={16} />
       </Pressable>
     );
-  }
+
+    return (
+      <View
+        style={[
+          styles.reorderColumn,
+          // ItemTouchable paints the row's background, and this column sits
+          // beside it rather than inside it. Left transparent it is a window:
+          // swiping the row reveals the action behind it, and the action
+          // showed through the chevrons.
+          { backgroundColor: rowColor },
+        ]}>
+        {circle(canMoveUp, onMoveUp, ArrowUp, 'DISPATCH_MOVE_TASK_UP', 'moveUp')}
+        {circle(
+          canMoveDown,
+          onMoveDown,
+          ArrowDown,
+          'DISPATCH_MOVE_TASK_DOWN',
+          'moveDown',
+        )}
+      </View>
+    );
+  };
 
   return (
     <View>
-      {renderPrevSortButton()}
       <View style={{
         borderRadius: cardBorderRadius,
         marginVertical: 1.5,
@@ -384,11 +442,21 @@ function TaskListItem({
                 borderBottomRightRadius: cardBorderRadius,
                 borderTopRightRadius: cardBorderRadius,
                 paddingLeft: 6,
-                width: cardWidth - buttonWidth,
+                // No explicit width: `flex: 1` takes whatever the order block
+                // and the reorder column leave. Setting both made the task
+                // grow back over the column, which then painted outside the
+                // row — on top of the swipe action, since the content view
+                // lets its children overflow.
                 flex: 1,
               }}>
               <TaskInfo task={task} isPickup={isPickup} taskTestId={taskTestId} />
             </ItemTouchable>
+            {renderReorderButtons()}
+            {/* Last, so the overdue/due-soon stripe stays against the card's
+                right edge. It used to be the final element of TaskInfo, which
+                put it in the middle of the row once the reorder column was
+                added beside it. */}
+            <TaskPriorityStatus task={task} rowColor={rowColor} />
           </HStack>
           {isSelectedTask && (
             <View
@@ -408,7 +476,6 @@ function TaskListItem({
         </View>
       </Swipeable>
       </View>
-      {renderSortButton()}
     </View>
   );
 };
