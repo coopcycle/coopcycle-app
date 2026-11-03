@@ -1,9 +1,12 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, LayoutChangeEvent, View } from 'react-native';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FlashList } from '@shopify/flash-list';
+
+import { Center } from '@/components/ui/center';
+import { Text } from '@/components/ui/text';
 
 import { AssignOrderIcon, AssignTaskIcon } from '../../task/styles/common';
 import {
@@ -187,6 +190,14 @@ export default function GroupedTasks({
     allTaskLists,
     tasksEntities,
   });
+
+  // Measured so the empty state fills the viewport rather than collapsing to
+  // the height of its own text.
+  const [listHeight, setListHeight] = useState(0);
+  const handleListLayout = useCallback(
+    (event: LayoutChangeEvent) => setListHeight(event.nativeEvent.layout.height),
+    [],
+  );
 
   // Section expansion — local UI state, default all expanded
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
@@ -453,21 +464,34 @@ export default function GroupedTasks({
           <ActivityIndicator animating={true} size="large" />
         </View>
       )}
-      <FlashList
-        data={flatData}
-        getItemType={item => item.type}
-        renderItem={renderItem}
-        keyExtractor={(item, index) =>
-          item.type === 'header'
-            ? `header-${item.section.id}`
-            : `${item.task['@id']}-${index}`
-        }
-        stickyHeaderIndices={stickyHeaderIndices}
-        estimatedItemSize={TASK_HEIGHT}
-        refreshing={!!isFetching}
-        onRefresh={() => refetch && refetch()}
-        testID="dispatchTaskLists"
-      />
+      {/* The list is measured so that a short day — one collapsed "unassigned"
+          header, or nothing at all — still fills the viewport, and the pull
+          gesture keeps a surface to act on. */}
+      <View style={{ flex: 1 }} onLayout={handleListLayout}>
+        <FlashList
+          data={flatData}
+          getItemType={item => item.type}
+          renderItem={renderItem}
+          keyExtractor={(item, index) =>
+            item.type === 'header'
+              ? `header-${item.section.id}`
+              : `${item.task['@id']}-${index}`
+          }
+          stickyHeaderIndices={stickyHeaderIndices}
+          estimatedItemSize={TASK_HEIGHT}
+          ListEmptyComponent={
+            <Center style={{ height: listHeight }}>
+              <Text>{t('DISPATCH_NO_TASKS')}</Text>
+            </Center>
+          }
+          // Keeps the pull gesture alive on iOS when the day's content is
+          // shorter than the screen; Android's refresh layout always has it.
+          alwaysBounceVertical
+          refreshing={!!isFetching}
+          onRefresh={refetch}
+          testID="dispatchTaskLists"
+        />
+      </View>
       <BulkEditTasksFloatingButton onPress={handleBulkAssignButtonPress} />
     </>
   );

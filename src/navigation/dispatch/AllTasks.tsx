@@ -1,5 +1,6 @@
 import { ActivityIndicator, BackHandler, InteractionManager, View } from 'react-native';
 import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
 import { Center } from '@/components/ui/center';
 import { Heading } from '@/components/ui/heading';
 import { Text } from '@/components/ui/text';
@@ -59,11 +60,21 @@ export default function AllTasks({ navigation, route }) {
     return () => handle.cancel();
   }, [dispatch]);
 
+  // Any of the four queries failing lands here, and a dropped connection is
+  // routine on the road, so the screen has to offer a way back: without the
+  // button the only way out is restarting the app.
   if (isError) {
     return (
       <Center flex={1}>
         <Heading>{t('AN_ERROR_OCCURRED')} </Heading>
         <Text>{t('TRY_LATER')}</Text>
+        <Button
+          className="mt-4"
+          isDisabled={isFetching}
+          onPress={handleRefetch}
+          testID="dispatchRetry">
+          <ButtonText>{t('RETRY')}</ButtonText>
+        </Button>
       </Center>
     );
   }
