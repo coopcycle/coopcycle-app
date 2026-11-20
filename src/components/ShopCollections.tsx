@@ -1,5 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -10,15 +9,10 @@ import {
 
 import { Text } from '@/components/ui/text';
 import {
-  useGetHomepageBlocksQuery,
-  useGetShopCollectionsQuery,
-  useGetShopsQuery,
+  useGetShopFiltersQuery,
+  useGetShopsByFilterQuery,
 } from '../redux/api/slice';
-import {
-  CollectableRestaurant,
-  resolveShopCollections,
-  ShopCollection,
-} from '../utils/homepage';
+import { ShopFilter } from '../redux/api/types';
 import { Restaurant, RestaurantCard } from './RestaurantCard';
 import { useVisibleItems, VisibleItemsProvider } from './VisibleItems';
 
@@ -47,21 +41,28 @@ const styles = StyleSheet.create({
   },
 });
 
-// What the homepage blocks are resolved against: a restaurant of the list,
-// plus the facets the collections are matched on.
-type CollectionRestaurant = Restaurant & CollectableRestaurant;
-
 type RowProps = {
-  collection: ShopCollection<CollectionRestaurant>;
-  onItemClick: (restaurant: CollectionRestaurant) => void;
+  filter: ShopFilter;
+  onItemClick: (restaurant: Restaurant) => void;
 };
 
-const ShopCollectionRow = ({ collection, onItemClick }: RowProps) => {
+/**
+ * One filter, rendered as a horizontally scrollable row of shops.
+ *
+ * The shops are asked for per row rather than filtered out of one big list:
+ * which shops a filter covers is the server's to decide — "new" depends on a
+ * per-instance number of days, and the collections are curated in the admin —
+ * and the facets the app receives are translated for display, so matching on
+ * them client side would only ever work in the instance's own language.
+ */
+const ShopCollectionRow = ({ filter, onItemClick }: RowProps) => {
   // Cards fetch their own timing, so the row has to say which are on screen.
   const { seen, listProps } = useVisibleItems();
 
+  const { data: shops } = useGetShopsByFilterQuery(filter);
+
   const renderItem = useCallback(
-    ({ item }: { item: CollectionRestaurant }) => (
+    ({ item }: { item: Restaurant }) => (
       <TouchableOpacity
         style={styles.cardWrapper}
         onPress={() => onItemClick(item)}>
@@ -71,18 +72,24 @@ const ShopCollectionRow = ({ collection, onItemClick }: RowProps) => {
     [onItemClick],
   );
 
+  // A filter the server offers may still have nothing behind it right now, and
+  // an empty row would read as a broken one.
+  if (!shops || shops.length === 0) {
+    return null;
+  }
+
   return (
     <View style={styles.collection}>
-      <Text style={styles.title}>{collection.title}</Text>
+      <Text style={styles.title}>{filter.label}</Text>
       <VisibleItemsProvider seen={seen}>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.row}
-          data={collection.restaurants}
+          data={shops as unknown as Restaurant[]}
           keyExtractor={item => item['@id']}
           renderItem={renderItem}
-          testID={`shopCollection:${collection.key}`}
+          testID={`shopCollection:${filter.id}`}
           {...listProps}
         />
       </VisibleItemsProvider>
@@ -91,52 +98,34 @@ const ShopCollectionRow = ({ collection, onItemClick }: RowProps) => {
 };
 
 type Props = {
-  onItemClick: (restaurant: CollectionRestaurant) => void;
+  onItemClick: (restaurant: Restaurant) => void;
 };
 
 /**
- * The collections of the custom homepage, as horizontally scrollable rows.
+ * The shop collections of the home screen, as horizontally scrollable rows.
  *
- * Meant to be rendered as the header of the restaurant list: the blocks only
- * say *which* collections to show, so they are resolved against the
- * restaurants already in the store, which keeps them in sync with the address
- * the customer searched for. Renders nothing when the server has no custom
- * homepage, or when none of its collections could be resolved.
+ * Both which collections to show and what to call them come from
+ * `GET /api/shop_filters`: the same list drives the website's /shops page, so
+ * the app and the website cannot drift apart, and an instance that customized
+ * its homepage gets its own collections, in its own order. Renders nothing
+ * when the server offers no filters.
  */
 export default function ShopCollections({ onItemClick }: Props) {
-  const { t } = useTranslation();
+  const { data: filters } = useGetShopFiltersQuery();
 
-  const { data: blocks } = useGetHomepageBlocksQuery();
-  const { data: shopCollections } = useGetShopCollectionsQuery();
-  const { data: shops } = useGetShopsQuery();
-
-  const collections = useMemo(
-    () =>
-      resolveShopCollections(
-        blocks,
-        // `Shop` is deliberately loose, since the endpoint hands back what the
-        // API serializes; these are the same objects the cards are given on
-        // the restaurants list screen.
-        (shops ?? []) as unknown as CollectionRestaurant[],
-        shopCollections,
-        t,
-      ),
-    [blocks, shops, shopCollections, t],
-  );
-
-  if (collections.length === 0) {
+  if (!filters || filters.length === 0) {
     return null;
   }
 
   // A list rather than a plain View: the rows off the bottom of the screen
-  // then stay unmounted, and their cards ask for no timing until scrolled to.
+  // then stay unmounted, and ask the server for nothing until scrolled to.
   return (
     <FlatList
       testID="shopCollections"
-      data={collections}
-      keyExtractor={collection => collection.key}
+      data={filters}
+      keyExtractor={filter => filter.id}
       renderItem={({ item }) => (
-        <ShopCollectionRow collection={item} onItemClick={onItemClick} />
+        <ShopCollectionRow filter={item} onItemClick={onItemClick} />
       )}
     />
   );

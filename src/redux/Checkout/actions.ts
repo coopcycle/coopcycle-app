@@ -16,6 +16,7 @@ import * as Sentry from '@sentry/react-native';
 import i18next from 'i18next';
 import Share from 'react-native-share';
 import NavigationHolder from '../../NavigationHolder';
+import { fetchAllRecordsUsingHttpClient } from '../api/utils';
 import i18n from '../../i18n';
 import { isFree } from '../../utils/order';
 import {
@@ -884,11 +885,13 @@ export function setAddress(address, cart = null) {
   };
 }
 
+// Shops come back a page at a time; this is just how big a bite to take.
+const SHOPS_PER_PAGE = 100;
+
 export function searchRestaurantsForAddress(address, options = {}) {
   return (dispatch, getState) => {
     const httpClient = selectHttpClient(getState());
 
-    let queryString = `coordinate=${address.geo.latitude},${address.geo.longitude}`;
     dispatch(loadRestaurantsRequest());
 
     const uri =
@@ -896,11 +899,12 @@ export function searchRestaurantsForAddress(address, options = {}) {
         ? `${options.baseURL}/api/restaurants`
         : '/api/restaurants';
 
-    httpClient
-      .get(uri + (queryString ? `?${queryString}` : ''), { anonymous: true })
-      .then(res => {
+    fetchAllRecordsUsingHttpClient(httpClient, uri, SHOPS_PER_PAGE, {
+      coordinate: `${address.geo.latitude},${address.geo.longitude}`,
+    })
+      .then(shops => {
         dispatch(_setAddress(address));
-        dispatch(loadRestaurantsSuccess(res['hydra:member']));
+        dispatch(loadRestaurantsSuccess(shops));
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));
@@ -919,22 +923,23 @@ export function searchRestaurants(options = {}) {
         ? `${options.baseURL}/api/restaurants`
         : '/api/restaurants';
 
-    const reqs = [httpClient.get(uri, { anonymous: true })];
+    const me = selectIsAuthenticated(getState())
+      ? httpClient.get('/api/me')
+      : Promise.resolve(null);
 
-    if (selectIsAuthenticated(getState())) {
-      reqs.push(httpClient.get('/api/me'));
-    }
-
-    Promise.all(reqs)
-      .then(values => {
-        if (values.length === 2) {
-          const addresses = values[1].addresses.map(address => ({
+    Promise.all([
+      fetchAllRecordsUsingHttpClient(httpClient, uri, SHOPS_PER_PAGE),
+      me,
+    ])
+      .then(([shops, user]) => {
+        if (user) {
+          const addresses = user.addresses.map(address => ({
             ...address,
             isPrecise: true,
           }));
           dispatch(loadAddressesSuccess(addresses));
         }
-        dispatch(loadRestaurantsSuccess(values[0]['hydra:member']));
+        dispatch(loadRestaurantsSuccess(shops));
       })
       .catch(e => {
         dispatch(loadRestaurantsFailure(e));

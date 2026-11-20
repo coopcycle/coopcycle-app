@@ -328,35 +328,32 @@ export type HolidayRequestPayload = {
 };
 
 /**
- * A block of the custom homepage, as configured in the web admin
- * (`/api/ui/homepage/blocks`). Only `shop_collection` blocks are rendered by
- * the app for now; `banner`, `slider` and `delivery_form` are web-only.
+ * One filter offered by the server (`GET /api/shop_filters`), already
+ * translated. When the instance has a custom homepage, these mirror its shop
+ * collections, in the same order; otherwise the server builds a default set
+ * out of what it actually has.
+ *
+ * `filter` and `value` are the query parameter to send to
+ * `GET /api/restaurants` to get the shops behind it.
  */
-export type HomepageBlock = {
-  type: 'shop_collection' | 'banner' | 'slider' | 'delivery_form' | string;
-  data: {
-    // `shop_collection` only: which kind of collection to render.
-    component?: string;
-    // Arguments of the collection, e.g. `{ cuisine: 'italian' }`.
-    args?: Record<string, string>;
-    [key: string]: unknown;
-  };
+export type ShopFilter = {
+  // "category|featured", "cuisine|italian"… unique across the list.
+  id: string;
+  filter: 'category' | 'cuisine' | 'type' | 'collection';
+  value: string;
+  label: string;
+};
+
+export type ShopFiltersResource = JsonLdEntity & {
+  filters: ShopFilter[];
 };
 
 /**
- * A shop collection curated in the web admin (`/api/shop_collections`).
- * `shops` holds restaurant IRIs, not embedded restaurants.
- */
-export type ShopCollectionEntity = JsonLdEntity & {
-  title: string;
-  slug: string;
-  shops: Uri[];
-};
-
-/**
- * A shop as the home screen sees it: every shop the instance has, regardless
- * of the delivery address, with the `timing` the cards need. The restaurants
- * list screen shows the address-filtered shops from `state.checkout` instead.
+ * A shop as the home screen sees it: one of the shops behind a filter,
+ * regardless of the delivery address — the collections give an overview of
+ * what is on offer, not of what delivers to the address the customer picked.
+ * The restaurants list screen shows the address-filtered shops from
+ * `state.checkout` instead.
  */
 export type Shop = JsonLdEntity & {
   name: string;

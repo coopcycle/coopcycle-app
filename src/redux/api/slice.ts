@@ -10,7 +10,6 @@ import {
   FailureReason,
   HolidayRequest,
   HolidayRequestPayload,
-  HomepageBlock,
   HydraCollection,
   PaymentMethodsOutput,
   PricingRuleSet,
@@ -19,7 +18,8 @@ import {
   Shift,
   ShiftActivity,
   Shop,
-  ShopCollectionEntity,
+  ShopFilter,
+  ShopFiltersResource,
   Store,
   StorePackage,
   StoreTimeSlot,
@@ -28,6 +28,10 @@ import {
   Uri,
   Warehouse,
 } from './types';
+
+// How many shops one collection row holds. The rows are teasers, so this is
+// about what a customer will swipe through, not about showing everything.
+const SHOPS_PER_COLLECTION = 20;
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -387,32 +391,34 @@ export const apiSlice = createApi({
     getPricingRuleSet: builder.query<PricingRuleSet, Uri>({
       query: (uri: string) => uri,
     }),
-    getHomepageBlocks: builder.query<HomepageBlock[], void>({
-      query: () => 'api/ui/homepage/blocks',
-      transformResponse: (response: HydraCollection<HomepageBlock>) =>
+    // Which collections to show, and what to call them, is decided server
+    // side: the same list drives the website's /shops page, so the two cannot
+    // drift apart, and the labels come back already translated.
+    getShopFilters: builder.query<ShopFilter[], void>({
+      query: () => 'api/shop_filters',
+      transformResponse: (response: ShopFiltersResource) =>
+        response.filters ?? [],
+    }),
+    // The shops behind one filter, regardless of the delivery address: the
+    // collections are meant to give an overview of what is on offer, not of
+    // what happens to deliver to the address the customer picked. Each shop's
+    // timing is fetched separately, by the card that displays it.
+    //
+    // Only the first page: a collection is a horizontal teaser row, not a
+    // browsable list, so there is nothing to scroll the rest into view with.
+    getShopsByFilter: builder.query<Shop[], ShopFilter>({
+      query: ({ filter, value }) => {
+        const params = new URLSearchParams({
+          pagination: 'true',
+          page: '1',
+          itemsPerPage: SHOPS_PER_COLLECTION.toString(),
+          [filter]: value,
+        });
+
+        return `api/restaurants?${params.toString()}`;
+      },
+      transformResponse: (response: HydraCollection<Shop>) =>
         response['hydra:member'] ?? [],
-    }),
-    // Every shop, regardless of the delivery address. The home screen shows
-    // these, so that its collections are not narrowed down by the address the
-    // customer happens to have picked. Each shop's timing is fetched
-    // separately, by the card that displays it.
-    getShops: builder.query<Shop[], void>({
-      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        return await fetchAllRecordsUsingFetchWithBQ<Shop>(
-          fetchWithBQ,
-          '/api/restaurants',
-          100,
-        );
-      },
-    }),
-    getShopCollections: builder.query<ShopCollectionEntity[], void>({
-      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        return await fetchAllRecordsUsingFetchWithBQ(
-          fetchWithBQ,
-          '/api/shop_collections',
-          100,
-        );
-      },
     }),
     getRestaurants: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
@@ -608,11 +614,10 @@ export const {
   useGetTagsQuery,
   useGetWarehousesQuery,
   useRelayTasksToWarehouseMutation,
-  useGetHomepageBlocksQuery,
   useGetRestaurantsQuery,
-  useGetShopCollectionsQuery,
   useGetRestaurantTimingQuery,
-  useGetShopsQuery,
+  useGetShopFiltersQuery,
+  useGetShopsByFilterQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,
