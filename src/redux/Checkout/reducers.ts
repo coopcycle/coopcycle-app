@@ -16,8 +16,6 @@ import {
   INIT_CART_REQUEST,
   INIT_CART_SUCCESS,
   INIT_FAILURE,
-  INIT_REQUEST,
-  INIT_SUCCESS,
   LOAD_PAYMENT_DETAILS_FAILURE,
   LOAD_PAYMENT_DETAILS_REQUEST,
   LOAD_PAYMENT_DETAILS_SUCCESS,
@@ -31,7 +29,6 @@ import {
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST,
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS,
   REMOVE_ITEM,
-  RESET_RESTAURANT,
   SEARCH_FAILURE,
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
@@ -69,10 +66,11 @@ const initialState = {
   addressModalMessage: '',
   date: null,
   restaurants: [],
-  restaurant: null,
-  // The shop the customer picked, kept whole. `restaurant` is only its IRI,
-  // and resolving that IRI means finding the shop in a list the app happens
-  // to hold -- which it may not: see selectRestaurant().
+  // Always the IRI of the shop the customer is ordering from, and written by
+  // SET_RESTAURANT alone.
+  restaurant: null as string | null,
+  // That same shop, kept whole. Resolving the IRI means finding the shop in a
+  // list the app happens to hold -- which it may not: see selectRestaurant().
   selectedRestaurant: null,
   menu: null,
   isFetching: false,
@@ -160,36 +158,6 @@ export default (state = initialState, action: CheckoutAction = {}) => {
         ...state,
         errors,
         isFetching: false,
-      };
-
-    case INIT_REQUEST:
-      return {
-        ...state,
-        isFetching: true,
-        isSessionExpired: false,
-        restaurant: action.payload.restaurant,
-        cart: null,
-        menu: null, // For better navigation through restaurants
-      };
-
-    case RESET_RESTAURANT:
-      return {
-        ...state,
-        restaurant: action.payload.restaurant,
-        cart: null,
-        menu: null, // For better navigation through restaurants
-        timingModal: initialState.timingModal, // Be sure to reset the timingModal
-      };
-
-    case INIT_SUCCESS:
-      return {
-        ...state,
-        cart: state.carts[action.payload.restaurant['@id']].cart,
-        token: state.carts[action.payload.restaurant['@id']].token,
-        isFetching: false,
-        restaurant: action.payload.restaurant,
-        isAddressOK: null, // We don't know if it's valid
-        itemRequestStack: [],
       };
 
     // Callers that have the shop at hand pass it whole; the ones that only
@@ -440,13 +408,13 @@ export default (state = initialState, action: CheckoutAction = {}) => {
       };
 
     case HIDE_EXPIRED_SESSION_MODAL:
-
-      const cartsWithoutExpiredCart = _.omit(state.carts, state.restaurant.id);
-
       return {
         ...state,
         isExpiredSessionModalVisible: false,
-        carts: cartsWithoutExpiredCart,
+        // Carts are keyed by the shop's IRI, which is what `restaurant` holds.
+        // This read `state.restaurant.id`, which is never set, so the expired
+        // cart was kept and the customer was sent back to it.
+        carts: _.omit(state.carts, state.restaurant ?? []),
       };
 
     case SESSION_EXPIRED:

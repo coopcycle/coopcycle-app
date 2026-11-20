@@ -60,13 +60,10 @@ export const SET_ADDRESS_OK = '@checkout/SET_ADDRESS_OK';
 export const SET_TIMING = '@checkout/SET_TIMING';
 export const SET_CART_VALIDATION = '@checkout/SET_CART_VALIDATION';
 export const CLEAR = '@checkout/CLEAR';
-export const RESET_RESTAURANT = '@checkout/RESET_RESTAURANT';
 export const SET_RESTAURANT = '@checkout/SET_RESTAURANT';
 export const SET_TOKEN = '@checkout/SET_TOKEN';
 export const CLEAR_ADDRESS = '@checkout/CLEAR_ADDRESS';
 
-export const INIT_REQUEST = '@checkout/INIT_REQUEST';
-export const INIT_SUCCESS = '@checkout/INIT_SUCCESS';
 export const INIT_FAILURE = '@checkout/INIT_FAILURE';
 export const INIT_CART_REQUEST = '@checkout/INIT_CART_REQUEST';
 export const INIT_CART_SUCCESS = '@checkout/INIT_CART_SUCCESS';
@@ -150,19 +147,11 @@ export const setCartValidation = createFsAction(
 );
 export const clearAddress = createFsAction(CLEAR_ADDRESS);
 
-export const initRequest = createFsAction(INIT_REQUEST);
-export const initSuccess = createFsAction(
-  INIT_SUCCESS,
-  (restaurant = null) => ({
-    restaurant,
-  }),
-);
 export const initFailure = createFsAction(INIT_FAILURE);
 export const initCartRequest = createFsAction(INIT_CART_REQUEST);
 export const initCartSuccess = createFsAction(INIT_CART_SUCCESS);
 export const initCartFailure = createFsAction(INIT_CART_FAILURE);
 export const updateCarts = createFsAction(UPDATE_CARTS);
-export const resetRestaurant = createFsAction(RESET_RESTAURANT);
 export const setRestaurant = createFsAction(SET_RESTAURANT);
 export const setToken = createFsAction(SET_TOKEN);
 
@@ -276,10 +265,6 @@ function replaceListeners(cb) {
   listeners = [cb];
 }
 
-function addListener(cb) {
-  listeners.push(cb);
-}
-
 function notifyListeners(address) {
   listeners.forEach(cb => {
     if (typeof cb === 'function') {
@@ -351,122 +336,6 @@ export function addItemV2(item, quantity = 1, restaurant, options) {
   // Check if address is valid ?
   // Check if cart for this restaurant isset, else init it
   // Add the item to the cart
-}
-
-// This action may be dispatched several times "recursively"
-export function addItem(restaurant, item, quantity = 1, options) {
-  return (dispatch, getState) => {
-    const httpClient = selectHttpClient(getState());
-    const { address, cart, token, isAddressOK } = getState().checkout;
-
-    const fulfillmentMethod = selectCartFulfillmentMethod(getState());
-
-    if (!token || cart?.restaurant !== restaurant['@id']) {
-      httpClient
-        .post('/api/carts/session', {
-          restaurant: restaurant['@id'],
-        })
-        .then(res => {
-          dispatch(initSuccess(res.cart, res.token, restaurant));
-          dispatch(addItem(restaurant, item, quantity, options));
-        });
-
-      return;
-    }
-
-    if (fulfillmentMethod === 'delivery' && (!address || !isAddressOK)) {
-      // We don't have an adress
-      // Stop here an ask for address
-      if (!address) {
-        // When the address is set,
-        // re-dispatch the same action
-        replaceListeners(() =>
-          dispatch(addItem(restaurant, item, quantity, options)),
-        );
-        dispatch(showAddressModal(i18n.t('CHECKOUT_PLEASE_ENTER_ADDRESS')));
-        return;
-      }
-
-      // When isAddressOK === null,
-      // it means we have an address, but it hasn't been validated yet
-      if (isAddressOK === null) {
-        dispatch(addItemRequest(item));
-
-        validateAddress(httpClient, cart, address)
-          // When the address is valid,
-          // re-dispatch the same action
-          .then(() => {
-            dispatch(_setAddress(address));
-            dispatch(setAddressOK(true));
-
-            addListener(() => {
-              dispatch(addItemRequestFinished(item));
-              dispatch(addItem(restaurant, item, quantity, options));
-            });
-            dispatch(syncAddress());
-          })
-          .catch(reason => {
-            dispatch(setAddressOK(false));
-            dispatch(addItemRequestFinished(item));
-
-            replaceListeners(() =>
-              dispatch(addItem(restaurant, item, quantity, options)),
-            );
-            dispatch(showAddressModal(reason));
-          });
-
-        return;
-      }
-
-      dispatch(showAddressModal());
-      return;
-    }
-
-    dispatch(addItemRequest(item));
-    dispatch(queueAddItem(item, quantity, options));
-  };
-}
-
-function queueAddItem(item, quantity = 1, options = []) {
-  return {
-    queue: 'ADD_ITEM',
-    callback: (next, dispatch, getState) => {
-      const { cart, token } = getState().checkout;
-      const httpClient = selectHttpClient(getState());
-
-      dispatch(setCheckoutLoading(true));
-
-      httpClient
-        .post(
-          `${cart['@id']}/items`,
-          {
-            product: item.identifier,
-            quantity,
-            options,
-          },
-          {
-            headers: selectCheckoutAuthorizationHeaders(
-              getState(),
-              cart,
-              token,
-            ),
-          },
-        )
-        .then(res => {
-          dispatch(setCheckoutLoading(false));
-          dispatch(addItemRequestFinished(item));
-          dispatch(updateCartSuccess(res));
-        })
-        .catch(e => {
-          dispatch(setCheckoutLoading(false));
-          dispatch(addItemRequestFinished(item));
-          if (e.response?.status === 401) {
-            dispatch(sessionExpired());
-          }
-        })
-        .finally(next);
-    },
-  };
 }
 
 const _getTiming = (dispatch, getState, cart, token) => {
