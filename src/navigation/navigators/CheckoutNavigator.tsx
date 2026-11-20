@@ -46,8 +46,16 @@ const SearchButton = ({ navigation }) => (
   </HeaderButtons>
 );
 
+// The name of the tab the navigator opens on. Until the customer has changed
+// tabs at least once the nested navigator has no state of its own, so
+// `getFocusedRouteNameFromRoute` has nothing to report and this stands in for
+// it. It has to match the first Tab.Screen below: a name no tab answers to
+// falls through to the default options, and the home screen renders its first
+// time without the search button.
+const INITIAL_TAB = 'Home';
+
 function getNestedOptions(navigation, route) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? INITIAL_TAB;
 
   switch (routeName) {
     case 'Home':
