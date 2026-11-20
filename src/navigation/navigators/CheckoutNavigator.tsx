@@ -107,6 +107,7 @@ function Tabs({ rootNavigation: navigation }) {
             return <Icon as={House} style={{ color }} />
           }
           ,
+          title: i18n.t('HOME'),
         }}
         component={screens.RestaurantsPage}
       />

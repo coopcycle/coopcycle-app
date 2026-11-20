@@ -1840,7 +1840,7 @@ export function loadAndNavigateToRestaurante(id) {
           });
       })
       .then(restaurantWithTiming => {
-        dispatch(setRestaurant(restaurantWithTiming['@id']));
+        dispatch(setRestaurant(restaurantWithTiming));
         dispatch(getRestaurantSuccess());
         NavigationHolder.navigate('CheckoutRestaurant', {
           restaurant: restaurantWithTiming,

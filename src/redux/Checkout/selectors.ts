@@ -76,13 +76,26 @@ export const selectRestaurant = createSelector(
   state => state.checkout.restaurants,
   _selectCarts,
   state => state.checkout.restaurant,
-  (restaurants, carts, restaurant) => {
+  state => state.checkout.selectedRestaurant,
+  (restaurants, carts, restaurant, selectedRestaurant) => {
     const restaurantsWithCarts = Object.values(carts).map(c => c.restaurant);
-    return (
-      _.find(_.uniqBy(restaurants.concat(restaurantsWithCarts), '@id'), {
-        '@id': restaurant,
-      }) ?? null
+    const found = _.find(
+      _.uniqBy(restaurants.concat(restaurantsWithCarts), '@id'),
+      { '@id': restaurant },
     );
+
+    if (found) {
+      return found;
+    }
+
+    // Neither list is exhaustive: `restaurants` only holds the shops that
+    // deliver to the current address, while the home screen's collections
+    // show every shop the instance has, and a deep link can point at any shop
+    // at all. Falling back to the shop that was handed over when it was
+    // picked keeps those reachable instead of rendering the screen on null.
+    return selectedRestaurant?.['@id'] === restaurant
+      ? selectedRestaurant
+      : null;
   },
 );
 

@@ -70,6 +70,10 @@ const initialState = {
   date: null,
   restaurants: [],
   restaurant: null,
+  // The shop the customer picked, kept whole. `restaurant` is only its IRI,
+  // and resolving that IRI means finding the shop in a list the app happens
+  // to hold -- which it may not: see selectRestaurant().
+  selectedRestaurant: null,
   menu: null,
   isFetching: false,
   errors: [],
@@ -102,7 +106,16 @@ const initialState = {
   isTimeRangeChangedModalVisible: false,
 };
 
-export default (state = initialState, action = {}) => {
+// The actions here are plain FSA-style objects from a mix of .ts and .js
+// call sites, so the payload stays untyped; naming it at least spares every
+// read of it an error.
+type CheckoutAction = {
+  type?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any;
+};
+
+export default (state = initialState, action: CheckoutAction = {}) => {
   switch (action.type) {
     case LOAD_RESTAURANTS_REQUEST:
     case CHECKOUT_REQUEST:
@@ -179,10 +192,17 @@ export default (state = initialState, action = {}) => {
         itemRequestStack: [],
       };
 
+    // Callers that have the shop at hand pass it whole; the ones that only
+    // know its IRI (resuming a checkout after activation) pass a string.
     case SET_RESTAURANT:
       return {
         ...state,
-        restaurant: action.payload,
+        restaurant:
+          typeof action.payload === 'string'
+            ? action.payload
+            : action.payload['@id'],
+        selectedRestaurant:
+          typeof action.payload === 'string' ? null : action.payload,
         timingModal: initialState.timingModal, // Be sure to reset the timingModal
         isValid: null,
         violations: [],

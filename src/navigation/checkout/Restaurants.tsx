@@ -43,7 +43,7 @@ export default function RestaurantsListPage({ navigation }: Props) {
           addressAsText={addressAsText}
           isFetching={isFetching}
           onItemClick={restaurant => {
-            dispatch(setRestaurant(restaurant['@id']));
+            dispatch(setRestaurant(restaurant));
             navigation.navigate('CheckoutRestaurant', { restaurant });
           }}
         />

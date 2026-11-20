@@ -23,7 +23,7 @@ export default function RestaurantsPage({ navigation }: Props) {
     <View style={{ flex: 1 }} testID="checkoutHome">
       <ShopCollections
         onItemClick={restaurant => {
-          dispatch(setRestaurant(restaurant['@id']));
+          dispatch(setRestaurant(restaurant));
           navigation.navigate('CheckoutRestaurant', { restaurant });
         }}
       />
