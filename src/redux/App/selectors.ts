@@ -105,12 +105,16 @@ export const selectInitialRouteName = createSelector(
   state => state.restaurant.myRestaurants,
   (user, restaurants) => {
     if (user && user.isAuthenticated()) {
-      if (user.hasRole('ROLE_COURIER')) {
-        return 'CourierNav';
-      }
-
+      // Dispatch before courier: the accounts that hold both are dispatchers
+      // who are occasionally given a round, and they open the app to run the
+      // board. A courier-only account is unaffected, and either screen is a
+      // tap away in the drawer.
       if (user.hasRole('ROLE_DISPATCHER') || user.hasRole('ROLE_ADMIN')) {
         return 'DispatchNav';
+      }
+
+      if (user.hasRole('ROLE_COURIER')) {
+        return 'CourierNav';
       }
 
       if (user.hasRole('ROLE_RESTAURANT') || user.hasRole('ROLE_STORE')) {

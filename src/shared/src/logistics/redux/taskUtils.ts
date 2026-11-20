@@ -147,10 +147,11 @@ type DatedTask = {
  * The subset of `itemIds` holding tasks that cannot be carried out on `date`,
  * and which therefore have no business on that day's task list.
  *
- * `set_items` is a PUT: the server unassigns every task on the list the payload
- * does not mention, and it silently drops the items whose day does not match
- * before applying it. A payload built for another date than the one in the URL
- * is therefore not a no-op, it wipes the list — see the guard in the caller.
+ * The server silently drops the items whose day does not match before applying
+ * a write, so naming one is at best a no-op — see the guard in the caller. On
+ * `set_items`, still used against instances that predate the items endpoints,
+ * it is worse than that: the surviving payload is taken as the whole list, so
+ * a payload built for another date wipes the one in the URL.
  *
  * Only tasks are checked. Tour IRIs, and tasks we hold no local copy of, are
  * left to the server, which knows their dates.

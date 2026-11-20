@@ -15,7 +15,6 @@ import {
 } from '../navigation/task/styles/common';
 import { getDropoffCount, getDropoffPosition } from '../shared/src/utils';
 import { greyColor, yellowColor } from '../styles/common';
-import { TaskPriorityStatus } from './TaskPriorityStatus';
 import { TaskStatusIcon } from './TaskStatusIcon';
 import TaskTagsList from './TaskTagsList';
 import { useSelector } from 'react-redux';
@@ -27,7 +26,6 @@ import { getTimeFrame } from '../navigation/task/components/utils';
 import { selectTimezone } from '../utils/timezone';
 import { useTaskListsContext } from '../navigation/courier/contexts/TaskListsContext';
 
-const cardBorderRadius = 2.5;
 const maxDropoffArrowsToShow = 3;
 
 export const styles = StyleSheet.create({
@@ -167,8 +165,6 @@ export default function TaskInfo({ task, isPickup, taskTestId }: ITaskInfoProps)
           </View>
         ) : null}
       </VStack>
-
-      <TaskPriorityStatus task={task} cardBorderRadius={cardBorderRadius} />
     </HStack>
   );
 };

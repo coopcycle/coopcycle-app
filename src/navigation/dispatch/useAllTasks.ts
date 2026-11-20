@@ -33,6 +33,7 @@ export function useAllTasks(date: moment.Moment) {
     isError: isErrorCourierUsers,
     isLoading: isLoadingCourierUsers,
     isFetching: isFetchingCourierUsers,
+    refetch: refetchCourierUsers,
   } = useGetCourierUsersQuery(undefined, {
       refetchOnFocus: true,
       // @TODO SEE IF WE CAN GIVE A CACHE TTL...!
@@ -104,11 +105,14 @@ export function useAllTasks(date: moment.Moment) {
     isError,
     isLoading,
     isFetching,
+    // All four, not just the three that change through the day: the error
+    // state is shown as soon as any of them fails, so leaving one out would
+    // make a retry a no-op whenever that one is the one that broke.
     refetch: () => {
       refetchTasks();
       refetchTaskLists();
       refetchTours();
-      // Add refetchCourierUsers when needed..!
+      refetchCourierUsers();
     },
   };
 }

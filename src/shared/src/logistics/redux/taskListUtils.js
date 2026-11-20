@@ -208,3 +208,40 @@ export function buildSelectedTasks(orders, tasks, allTaskLists) {
 
   return baseResponse;
 }
+
+/**
+ * A task list that exists server-side, as opposed to the placeholder ones the
+ * board builds for couriers who hold nothing yet and for unassigned tasks.
+ * Only these can be addressed by the items endpoints, which are keyed by id.
+ */
+const SERVER_TASK_LIST_IRI = /^\/api\/task_lists\/\d+$/;
+
+export function isServerTaskList(taskList) {
+  return SERVER_TASK_LIST_IRI.test(taskList?.['@id'] ?? '');
+}
+
+/**
+ * Whether this instance serves the task list items endpoints.
+ *
+ * Instances upgrade on their own schedule, so the app meets both kinds and
+ * has to tell them apart. The release that added the items endpoints also
+ * started serializing a task list's `version`, in the same group the board
+ * already reads lists under — so the lists we are holding answer the question
+ * by themselves. No probe request, and no inferring it from a 404 that could
+ * equally mean the list in the URL is gone.
+ *
+ * One list carrying a version is enough: they all come from the same
+ * instance, and a cached list from before an upgrade should not outvote a
+ * fresh one.
+ *
+ * With no server-side list to look at we cannot tell, and say so. The caller
+ * then falls back to `set_items`, which is harmless in exactly that case: a
+ * day with no lists on it has nothing that could be unassigned by omission.
+ *
+ * @see https://github.com/coopcycle/coopcycle-web/issues/5372
+ */
+export function supportsTaskListItemsApi(allTaskLists) {
+  return (allTaskLists ?? []).some(
+    taskList => isServerTaskList(taskList) && taskList.version !== undefined,
+  );
+}

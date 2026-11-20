@@ -81,10 +81,10 @@ export default function DateSelectHeader({ navigate }) {
   const onChangeDate = (date: moment.Moment) => {
     // Keep the logistics date in step with the courier one, as the calendar
     // screen (`courier/Date`) already does. `logistics.date` is the date task
-    // assignments are PUT against (`useSetTaskListItems`), and these arrows
-    // used not to touch it: a courier screen paged back to another day still
-    // assigned the tasks it showed to today's list, and `set_items` unassigned
-    // everything that list held.
+    // assignments are written against (`useSetTaskListItems`), and these
+    // arrows used not to touch it: a courier screen paged back to another day
+    // still assigned the tasks it showed to today's list, and `set_items`
+    // unassigned everything that list held.
     dispatch(changeDispatchDate(date.toISOString()));
     // Changing the selected date re-arms `useGetMyTasksQuery` with the new
     // date, which loads it — dispatching `loadTasks` here as well issued a
