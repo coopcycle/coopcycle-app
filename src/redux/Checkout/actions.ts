@@ -64,7 +64,6 @@ export const SET_RESTAURANT = '@checkout/SET_RESTAURANT';
 export const SET_TOKEN = '@checkout/SET_TOKEN';
 export const CLEAR_ADDRESS = '@checkout/CLEAR_ADDRESS';
 
-export const INIT_FAILURE = '@checkout/INIT_FAILURE';
 export const INIT_CART_REQUEST = '@checkout/INIT_CART_REQUEST';
 export const INIT_CART_SUCCESS = '@checkout/INIT_CART_SUCCESS';
 export const INIT_CART_FAILURE = '@checkout/INIT_CART_FAILURE';
@@ -147,7 +146,6 @@ export const setCartValidation = createFsAction(
 );
 export const clearAddress = createFsAction(CLEAR_ADDRESS);
 
-export const initFailure = createFsAction(INIT_FAILURE);
 export const initCartRequest = createFsAction(INIT_CART_REQUEST);
 export const initCartSuccess = createFsAction(INIT_CART_SUCCESS);
 export const initCartFailure = createFsAction(INIT_CART_FAILURE);
