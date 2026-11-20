@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 import { Skeleton } from '@/components/ui/skeleton';
@@ -148,11 +148,17 @@ export default function CuisineFilter({
       const isSelected = selected.includes(item.value);
 
       return (
-        <TouchableOpacity
+        <Pressable
           accessibilityRole="button"
           accessibilityState={{ selected: isSelected }}
           accessibilityLabel={item.label}
-          className={isSelected ? 'bg-background-100' : undefined}
+          // Pressable rather than TouchableOpacity: the state of a filter is
+          // shown by its background, not by an opacity the row animates. A
+          // TouchableOpacity fades on press and fades back on release, and when
+          // the row re-renders in between — which toggling a cuisine makes it
+          // do — the fade back can be dropped, leaving the cuisine looking
+          // permanently disabled.
+          className={isSelected ? 'bg-background-300' : undefined}
           onPress={() => onToggle(item.value)}
           style={styles.item}
           testID={`cuisineFilter:${item.value}`}>
@@ -177,7 +183,7 @@ export default function CuisineFilter({
             bold={isSelected}>
             {item.label}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       );
     },
     [onToggle, selected],

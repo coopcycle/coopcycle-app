@@ -134,4 +134,26 @@ describe('CuisineFilter', () => {
       screen.getByTestId('cuisineFilter:japanese').props.accessibilityState,
     ).toEqual({ selected: false });
   });
+
+  it('tells a selected cuisine apart by its background, not by fading it', () => {
+    render(
+      <CuisineFilter
+        cuisines={[ITALIAN, JAPANESE]}
+        selected={['italian']}
+        onToggle={jest.fn()}
+      />,
+    );
+
+    const selected = screen.getByTestId('cuisineFilter:italian');
+    const other = screen.getByTestId('cuisineFilter:japanese');
+
+    expect(selected.props.className).toMatch(/^bg-/);
+    expect(other.props.className).toBeUndefined();
+
+    // No opacity on either, selected or not: a cuisine that reads as faded
+    // reads as disabled, which is what made the strip look broken once a
+    // cuisine had been tapped.
+    expect(selected.props.style.opacity).toBeUndefined();
+    expect(other.props.style.opacity).toBeUndefined();
+  });
 });
