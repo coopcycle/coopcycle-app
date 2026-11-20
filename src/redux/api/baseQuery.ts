@@ -16,7 +16,11 @@ const guestCheckoutEndpoints = [
 
 // Endpoints the server lets anyone call. They still send the token when there
 // is one, but a missing token is expected and not worth warning about.
-const publicEndpoints = ['getShopFilters', 'getShopsByFilter'];
+const publicEndpoints = [
+  'getShopCuisines',
+  'getShopFilters',
+  'getShopsByFilter',
+];
 
 // create a new mutex
 const mutex = new Mutex();

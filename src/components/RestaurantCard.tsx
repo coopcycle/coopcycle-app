@@ -121,7 +121,11 @@ export type Restaurant = {
   image: string;
   bannerImage: string;
   badges: string[];
+  // Translated cuisine names, for display.
   tags: string[];
+  // The same cuisines, by name, which is what a cuisine filter matches on.
+  // Absent on a shop that came from an older server.
+  cuisines?: string[];
 };
 
 type Props = {

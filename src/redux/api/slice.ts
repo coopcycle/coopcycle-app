@@ -18,6 +18,8 @@ import {
   Shift,
   ShiftActivity,
   Shop,
+  ShopCuisine,
+  ShopCuisinesResource,
   ShopFilter,
   ShopFiltersResource,
   Store,
@@ -399,6 +401,14 @@ export const apiSlice = createApi({
       transformResponse: (response: ShopFiltersResource) =>
         response.filters ?? [],
     }),
+    // The cuisines to offer above the shops list, with their icons, in the
+    // order they should be shown. Same source as the website's /shops strip,
+    // so the two cannot drift apart.
+    getShopCuisines: builder.query<ShopCuisine[], void>({
+      query: () => 'api/shop_cuisines',
+      transformResponse: (response: ShopCuisinesResource) =>
+        response.cuisines ?? [],
+    }),
     // The shops behind one filter, regardless of the delivery address: the
     // collections are meant to give an overview of what is on offer, not of
     // what happens to deliver to the address the customer picked. Each shop's
@@ -616,6 +626,7 @@ export const {
   useRelayTasksToWarehouseMutation,
   useGetRestaurantsQuery,
   useGetRestaurantTimingQuery,
+  useGetShopCuisinesQuery,
   useGetShopFiltersQuery,
   useGetShopsByFilterQuery,
   useGetTaskListsQuery,

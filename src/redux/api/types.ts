@@ -349,6 +349,22 @@ export type ShopFiltersResource = JsonLdEntity & {
 };
 
 /**
+ * One cuisine of the strip shown above the shops list.
+ *
+ * A ShopFilter with an icon, so it can be sent to `GET /api/restaurants` the
+ * same way; `icon` is the SVG markup itself, rendered by the server from the
+ * same icon the website shows, and is null for a cuisine with no icon set.
+ */
+export type ShopCuisine = ShopFilter & {
+  filter: 'cuisine';
+  icon: string | null;
+};
+
+export type ShopCuisinesResource = JsonLdEntity & {
+  cuisines: ShopCuisine[];
+};
+
+/**
  * A shop as the home screen sees it: one of the shops behind a filter,
  * regardless of the delivery address — the collections give an overview of
  * what is on offer, not of what delivers to the address the customer picked.

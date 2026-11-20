@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useAppSelector } from '../../redux/store';
 
+import CuisineFilter, {
+  availableCuisines,
+  filterByCuisine,
+} from '../../components/CuisineFilter';
 import RestaurantList from '../../components/RestaurantList';
 import RestaurantSearch from '../../components/RestaurantSearch';
 import { setRestaurant } from '../../redux/Checkout/actions';
+import { useGetShopCuisinesQuery } from '../../redux/api/slice';
 import { selectRestaurants } from '../../redux/Checkout/selectors';
 
 type Props = {
@@ -32,6 +37,39 @@ export default function RestaurantsListPage({ navigation }: Props) {
 
   const addressAsText = address ? address.streetAddress : '';
 
+  const { data: allCuisines } = useGetShopCuisinesQuery();
+  const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
+
+  // Only the cuisines these shops actually serve, so that no icon in the
+  // strip can lead to an empty list.
+  const cuisines = useMemo(
+    () => availableCuisines(allCuisines ?? [], restaurants),
+    [allCuisines, restaurants],
+  );
+
+  const toggleCuisine = useCallback((value: string) => {
+    setSelectedCuisines(previous =>
+      previous.includes(value)
+        ? previous.filter(cuisine => cuisine !== value)
+        : [...previous, value],
+    );
+  }, []);
+
+  // A cuisine the address no longer offers would otherwise keep filtering
+  // invisibly once the customer moves to another address.
+  const selected = useMemo(
+    () =>
+      selectedCuisines.filter(value =>
+        cuisines.some(cuisine => cuisine.value === value),
+      ),
+    [cuisines, selectedCuisines],
+  );
+
+  const shown = useMemo(
+    () => filterByCuisine(restaurants, selected),
+    [restaurants, selected],
+  );
+
   return (
     <View
       style={{ flex: 1, paddingTop: 70 }}
@@ -39,9 +77,16 @@ export default function RestaurantsListPage({ navigation }: Props) {
       onLayout={event => setWidth(event.nativeEvent.layout.width)}>
       <View style={{ flexGrow: 1 }}>
         <RestaurantList
-          restaurants={restaurants}
+          restaurants={shown}
           addressAsText={addressAsText}
           isFetching={isFetching}
+          ListHeaderComponent={
+            <CuisineFilter
+              cuisines={cuisines}
+              selected={selected}
+              onToggle={toggleCuisine}
+            />
+          }
           onItemClick={restaurant => {
             dispatch(setRestaurant(restaurant));
             navigation.navigate('CheckoutRestaurant', { restaurant });
