@@ -64,6 +64,32 @@ describe('CuisineFilter', () => {
     expect(screen.queryByTestId('cuisineFilter')).toBeNull();
   });
 
+  it('outlines the strip while the cuisines are on their way', () => {
+    render(
+      <CuisineFilter
+        cuisines={[]}
+        selected={[]}
+        onToggle={jest.fn()}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByTestId('cuisineFilterLoading')).toBeTruthy();
+  });
+
+  it('drops the outline once the cuisines are in', () => {
+    render(
+      <CuisineFilter
+        cuisines={[ITALIAN]}
+        selected={[]}
+        onToggle={jest.fn()}
+      />,
+    );
+
+    expect(screen.queryByTestId('cuisineFilterLoading')).toBeNull();
+    expect(screen.getByText('Italienne')).toBeTruthy();
+  });
+
   it('shows a cuisine by its label, icon or not', () => {
     render(
       <CuisineFilter

@@ -37,7 +37,8 @@ export default function RestaurantsListPage({ navigation }: Props) {
 
   const addressAsText = address ? address.streetAddress : '';
 
-  const { data: allCuisines } = useGetShopCuisinesQuery();
+  const { data: allCuisines, isLoading: isLoadingCuisines } =
+    useGetShopCuisinesQuery();
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
 
   // Only the cuisines these shops actually serve, so that no icon in the
@@ -85,6 +86,10 @@ export default function RestaurantsListPage({ navigation }: Props) {
               cuisines={cuisines}
               selected={selected}
               onToggle={toggleCuisine}
+              // The strip is narrowed against the shops, so it is only
+              // settled once they are in too; outlining it until then is
+              // what keeps it from appearing after the first cards.
+              isLoading={isLoadingCuisines || isFetching}
             />
           }
           onItemClick={restaurant => {

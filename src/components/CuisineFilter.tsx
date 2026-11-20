@@ -2,11 +2,22 @@ import React, { useCallback } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from '@/components/ui/text';
 import { ShopCuisine } from '../redux/api/types';
 import { Restaurant } from './RestaurantCard';
 
 const ICON_SIZE = 36;
+
+// The label's own box, so a placeholder label takes exactly the room the real
+// one will. It is also why the label has an explicit line height: without one
+// the two differ by whatever the platform's default happens to be.
+const LABEL_HEIGHT = 16;
+
+// How many cuisines to outline before the server has said how many there are.
+// Enough to run past the right edge of a phone, which is what makes the strip
+// read as scrollable.
+const PLACEHOLDER_CUISINES = 6;
 
 const styles = StyleSheet.create({
   row: {
@@ -29,9 +40,45 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 11,
+    lineHeight: LABEL_HEIGHT,
     textAlign: 'center',
   },
+  labelPlaceholder: {
+    alignItems: 'center',
+    height: LABEL_HEIGHT,
+    justifyContent: 'center',
+  },
+  placeholderRow: {
+    flexDirection: 'row',
+    // The last icon runs past the right edge by design.
+    overflow: 'hidden',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
 });
+
+/**
+ * The strip before the cuisines are in: circles where the icons will be, and
+ * a bar under each where the label will be.
+ *
+ * Every size comes from a class or from a wrapping View, never from a `style`
+ * prop on Skeleton: Skeleton spreads its props over the Animated.View it
+ * pulses with, so a `style` would overwrite the animation.
+ */
+const CuisineFilterSkeleton = () => (
+  <View style={styles.placeholderRow} testID="cuisineFilterLoading">
+    {Array.from({ length: PLACEHOLDER_CUISINES }, (_, index) => (
+      <View key={index} style={styles.item}>
+        <View style={styles.icon}>
+          <Skeleton className="rounded-full" />
+        </View>
+        <View style={styles.labelPlaceholder}>
+          <Skeleton className="h-3 w-12 rounded-md" />
+        </View>
+      </View>
+    ))}
+  </View>
+);
 
 /**
  * The cuisines worth offering for a given set of shops: those the server
@@ -76,6 +123,9 @@ type Props = {
   cuisines: ShopCuisine[];
   selected: string[];
   onToggle: (value: string) => void;
+  // True until both the cuisines and the shops they are narrowed against are
+  // in, since neither alone says what the strip holds.
+  isLoading?: boolean;
 };
 
 /**
@@ -87,7 +137,12 @@ type Props = {
  * address, so the answer is already here, and working out which shops reach
  * an address costs the server a routing query per shop.
  */
-export default function CuisineFilter({ cuisines, selected, onToggle }: Props) {
+export default function CuisineFilter({
+  cuisines,
+  selected,
+  onToggle,
+  isLoading,
+}: Props) {
   const renderItem = useCallback(
     ({ item }: { item: ShopCuisine }) => {
       const isSelected = selected.includes(item.value);
@@ -127,6 +182,10 @@ export default function CuisineFilter({ cuisines, selected, onToggle }: Props) {
     },
     [onToggle, selected],
   );
+
+  if (isLoading) {
+    return <CuisineFilterSkeleton />;
+  }
 
   if (cuisines.length === 0) {
     return null;
