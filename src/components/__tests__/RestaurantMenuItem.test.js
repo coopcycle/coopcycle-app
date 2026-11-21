@@ -1,4 +1,5 @@
 import React from 'react';
+import { IconToolsKitchen2 } from '@tabler/icons-react-native';
 import { Image } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
 
@@ -68,8 +69,32 @@ describe('RestaurantMenuItem', () => {
     expect(screen.queryByTestId('menuItemBadges')).toBeNull();
   });
 
+  it('stands in for a picture the product does not have', () => {
+    renderItem(item(DIETS.slice(0, 1), { images: [] }));
+
+    expect(screen.UNSAFE_queryByType(IconToolsKitchen2)).toBeTruthy();
+    expect(screen.UNSAFE_queryByType(Image)).toBeNull();
+  });
+
+  it('keeps the image column even when there is no picture', () => {
+    const columnWidth = () =>
+      screen.getByTestId('menuItemImageColumn').props.style.width;
+
+    const { unmount } = renderItem(item(DIETS.slice(0, 1)));
+    const withImage = columnWidth();
+    unmount();
+
+    renderItem(item(DIETS.slice(0, 1), { images: [] }));
+
+    // A card with no picture used to collapse its column to nothing, so its
+    // name started where its neighbours' pictures did.
+    expect(withImage).toBeGreaterThan(0);
+    expect(columnWidth()).toBe(withImage);
+  });
+
   it('gives the image the same width whatever the card holds', () => {
-    const imageColumn = () => screen.UNSAFE_getByType(Image).parent.props.style;
+    const imageColumn = () =>
+      screen.getByTestId('menuItemImageColumn').props.style;
 
     const { unmount } = renderItem(item(DIETS.slice(0, 1)));
     const narrow = imageColumn();

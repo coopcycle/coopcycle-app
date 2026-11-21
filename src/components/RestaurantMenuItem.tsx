@@ -1,8 +1,10 @@
+import { IconToolsKitchen2 } from '@tabler/icons-react-native';
 import _ from 'lodash';
 import { Text } from '@/components/ui/text';
 import { Pressable } from '@/components/ui/pressable';
 import React from 'react';
 import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useColorModeValue } from '../styles/theme';
 import { formatPrice } from '../utils/formatting';
 import { DietBadge, MoreBadge, ZeroWasteBadge } from './RestaurantProductBadge';
 
@@ -15,6 +17,10 @@ const IMAGE_WIDTH = 120;
 // what the product is without the row growing taller than its image; the
 // product screen lists them all.
 const MAX_BADGES = 5;
+
+// Big enough to read as a drawing of a plate rather than as a speck, small
+// enough not to be mistaken for the product's own picture.
+const PLACEHOLDER_ICON_SIZE = 40;
 
 const styles = StyleSheet.create({
   menuItem: {
@@ -94,6 +100,13 @@ const styles = StyleSheet.create({
 const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
   const enabled = item.hasOwnProperty('enabled') ? item.enabled : true;
 
+  // The column is already a wash over the card; the drawing sits on it just
+  // firmly enough to be seen, without competing with a neighbour's photo.
+  const placeholderColor = useColorModeValue(
+    'rgba(0, 0, 0, 0.25)',
+    'rgba(255, 255, 255, 0.25)',
+  );
+
   const diets = item.suitableForDiet
     ? item.suitableForDiet.map(element =>
         element.replace('http://schema.org/', ''),
@@ -117,12 +130,21 @@ const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
       ]}
       onPress={enabled ? () => onPress(item) : null}
       testID={testID}>
-      <View style={image1x1 ? styles.imageWrapper : { width: 0 }}>
-        {image1x1 && (
+      {/* The column is there whether or not the product has a picture, so
+          that the names and prices of a section line up with each other
+          instead of each starting wherever its own card happens to. */}
+      <View style={styles.imageWrapper} testID="menuItemImageColumn">
+        {image1x1 ? (
           <Image
             source={{ uri: image1x1.url }}
             alt="Product"
             style={styles.image}
+          />
+        ) : (
+          <IconToolsKitchen2
+            size={PLACEHOLDER_ICON_SIZE}
+            stroke={placeholderColor}
+            strokeWidth={1.5}
           />
         )}
       </View>
