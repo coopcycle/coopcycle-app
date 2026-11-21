@@ -93,6 +93,34 @@ const styles = StyleSheet.create({
   },
 });
 
+/**
+ * A date as it reads inside a sentence, e.g. "aujourd'hui à 15:20".
+ *
+ * `calendar()` capitalises the relative day in a number of locales — French
+ * gives "Aujourd'hui à 15:20" — which is right when it stands on its own, as
+ * it does next to the delivery icon, but not in the middle of a sentence.
+ *
+ * Only the relative wording is lowered. Past moment's own calendar window the
+ * fallback is an absolute date, and lowering that would be wrong wherever a
+ * day or month name is a noun: German's "So., 24. Nov. 2026" is not "so.".
+ */
+function datetimeInSentence(value: moment.MomentInput): string {
+  const when = moment(value);
+
+  // moment picks a relative wording from -6 days to the end of the 6th day
+  // ahead, and the absolute `sameElse` format outside that.
+  const days = when.diff(moment().startOf('day'), 'days', true);
+  const isRelative = days >= -6 && days < 7;
+
+  const text = when.calendar(moment(), { sameElse: 'llll' });
+
+  // The whole date is kept on one line: broken across two it reads as two
+  // separate times.
+  const unbroken = text.replace(/\s/g, '\u00A0');
+
+  return isRelative ? unbroken.charAt(0).toLowerCase() + unbroken.slice(1) : unbroken;
+}
+
 function OpeningHoursWarning({
   openingHoursSpecification,
   isOrderingAvailable,
@@ -122,11 +150,7 @@ function OpeningHoursWarning({
     return (
       <DangerAlert
         text={`${i18n.t('RESTAURANT_CLOSED_AND_NOT_AVAILABLE', {
-          datetime: moment(nextOpeningHours[0])
-            .calendar(moment(), {
-              sameElse: 'llll',
-            })
-            .replace(/\s/g, '\u00A0'),
+          datetime: datetimeInSentence(nextOpeningHours[0]),
         })}`}
       />
     );
@@ -137,11 +161,7 @@ function OpeningHoursWarning({
       <DangerAlert
         adjustsFontSizeToFit={true}
         text={`${i18n.t('RESTAURANT_CLOSED_PRE_ORDER', {
-          datetime: moment(nextShippingTime.range[0])
-            .calendar(moment(), {
-              sameElse: 'llll',
-            })
-            .replace(/\s/g, '\u00A0'),
+          datetime: datetimeInSentence(nextShippingTime.range[0]),
         })}`}
       />
     );
