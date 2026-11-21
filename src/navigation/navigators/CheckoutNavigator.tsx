@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { Icon } from '@/components/ui/icon';
-import { User, House, Search, ShoppingCart } from 'lucide-react-native';
+import { User, House, List, Search, ShoppingCart } from 'lucide-react-native';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { TouchableOpacity, Alert } from 'react-native';
@@ -20,6 +20,7 @@ import {
 } from '../../styles/theme';
 import CartsBadge from '../checkout/components/CartsBadge';
 import AskAddress from '../home/AskAddress';
+import useLoadShops from '../checkout/useLoadShops';
 import { useStackNavigatorScreenOptions } from '../styles';
 import AccountNavigator from './AccountNavigator';
 import { HeaderButtons, HeaderButton } from '../../components/HeaderButton';
@@ -34,14 +35,38 @@ const MyOrderButton = ({ navigation }) => {
   );
 };
 
+// Opens the search modal; shown on both screens that list shops.
+const SearchButton = ({ navigation }) => (
+  <HeaderButtons>
+    <HeaderButton
+      iconName="search"
+      onPress={() => navigation.navigate('CheckoutSearchForm')}
+      testID="checkoutSearchButton"
+    />
+  </HeaderButtons>
+);
+
+// The name of the tab the navigator opens on. Until the customer has changed
+// tabs at least once the nested navigator has no state of its own, so
+// `getFocusedRouteNameFromRoute` has nothing to report and this stands in for
+// it. It has to match the first Tab.Screen below: a name no tab answers to
+// falls through to the default options, and the home screen renders its first
+// time without the search button.
+const INITIAL_TAB = 'Home';
+
 function getNestedOptions(navigation, route) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? INITIAL_TAB;
 
   switch (routeName) {
     case 'Home':
-      return {};
+      return {
+        headerRight: () => <SearchButton navigation={navigation} />,
+      };
     case 'Search':
-      return {};
+      return {
+        title: i18n.t('RESTAURANTS'),
+        headerRight: () => <SearchButton navigation={navigation} />,
+      };
     case 'Cart':
       return {
         title: i18n.t('CART'),
@@ -72,6 +97,9 @@ const Tab = createBottomTabNavigator();
 
 function Tabs({ rootNavigation: navigation }) {
   const primaryColor = usePrimaryColor();
+
+  useLoadShops();
+
   const screenOptions = useStackNavigatorScreenOptions({
     headerShown: false,
     tabBarActiveTintColor: primaryColor,
@@ -87,6 +115,7 @@ function Tabs({ rootNavigation: navigation }) {
             return <Icon as={House} style={{ color }} />
           }
           ,
+          title: i18n.t('HOME'),
         }}
         component={screens.RestaurantsPage}
       />
@@ -94,11 +123,11 @@ function Tabs({ rootNavigation: navigation }) {
         name="Search"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon as={Search} style={{ color }} />
+            <Icon as={List} style={{ color }} />
           ),
-          title: i18n.t('SEARCH_TAB'),
+          title: i18n.t('RESTAURANTS'),
         }}
-        component={screens.SearchForm}
+        component={screens.RestaurantsListPage}
       />
       <Tab.Screen
         name="Cart"
@@ -140,6 +169,14 @@ const MainNavigator = () => {
           headerLeft: headerLeft(navigation),
           ...getNestedOptions(navigation, route),
         })}
+      />
+      <MainStack.Screen
+        name="CheckoutSearchForm"
+        component={screens.SearchForm}
+        options={{
+          title: i18n.t('SEARCH'),
+          ...TransitionPresets.ModalTransition,
+        }}
       />
       <MainStack.Screen
         name="CheckoutRestaurant"

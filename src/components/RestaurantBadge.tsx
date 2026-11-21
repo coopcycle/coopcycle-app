@@ -1,5 +1,6 @@
 import {
   IconDiamondFilled,
+  IconGift,
   IconRecycle,
   IconSparkles,
 } from '@tabler/icons-react-native';
@@ -8,12 +9,15 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-export function RestaurantBadge({ type }) {
+export function RestaurantBadge({ type }: { type: string }) {
   let backgroundColor = '#00F';
   let textColor = '#fff';
   let iconColor = '#fff';
   const iconSize = 17;
   let Icon;
+  // Most badges are named after their type; 'promotion' is the exception, so
+  // that the app and the website both say "On sale".
+  let labelKey = type.toUpperCase().replace(/-/g, '_');
 
   const ExclusiveIcon = (
     <IconDiamondFilled fill={iconColor} color={'none'} size={iconSize} />
@@ -25,6 +29,10 @@ export function RestaurantBadge({ type }) {
 
   const NewIcon = (
     <IconSparkles color={iconColor} size={iconSize} strokeWidth={2.5} />
+  );
+
+  const PromotionIcon = (
+    <IconGift color={iconColor} size={iconSize} strokeWidth={2.5} />
   );
 
   const EdenredIcon = (
@@ -74,6 +82,15 @@ export function RestaurantBadge({ type }) {
       textColor = '#f72717';
       iconColor = '#fff';
       break;
+    // The server sends 'promotion' for a shop whose featured promotion is
+    // still running; the label says "On sale", as it does on the website.
+    case 'promotion':
+      backgroundColor = '#d45113';
+      textColor = '#fff';
+      iconColor = '#fff';
+      Icon = PromotionIcon;
+      labelKey = 'ON_SALE';
+      break;
   }
 
   const padding = 1;
@@ -115,7 +132,7 @@ export function RestaurantBadge({ type }) {
     },
   });
 
-  const text = i18next.t(type.toUpperCase().replace(/-/, '_'));
+  const text = i18next.t(labelKey);
 
   return (
     <View style={styles.badge}>

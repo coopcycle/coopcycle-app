@@ -1,9 +1,21 @@
 import React from 'react';
 import { Text } from '@/components/ui/text';
 import { Box } from '@/components/ui/box';
-import { Image, StyleSheet, TextProps, View } from 'react-native';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  TextProps,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { TimingBadge } from '../navigation/checkout/components/RestaurantBadges';
-import { isRestaurantOrderingAvailable } from '../utils/checkout';
+import { useGetRestaurantTimingQuery } from '../redux/api/slice';
+import {
+  hasShippingTime,
+  isRestaurantOrderingAvailable,
+} from '../utils/checkout';
+import { useHasBeenVisible } from './VisibleItems';
 import { RestaurantBadge } from './RestaurantBadge';
 import { RestaurantTag } from './RestaurantTag';
 import { RestaurantBanner } from './RestaurantBanner';
@@ -56,9 +68,17 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     gap: 12,
   },
+  nameWrapper: {
+    // Two lines' worth, always. The banner is a fixed ratio and the rest of
+    // the card is single-line, so pinning the name is what makes every card
+    // the same height — without it, cards in a row have to stretch to match,
+    // and a stretched card has no height of its own to be measured from.
+    height: 48,
+  },
   name: {
     fontWeight: '600',
     fontSize: 18,
+    lineHeight: 24,
   },
   timing: {
     alignItems: 'center',
@@ -89,8 +109,11 @@ const styles = StyleSheet.create({
   },
 });
 
-type Restaurant = {
+export type Restaurant = {
+  '@id': string;
   name: string;
+  // Set only when the shop was loaded with its timing already attached.
+  timing?: object;
   description: string | null;
   address: {
     streetAddress: string;
@@ -98,18 +121,37 @@ type Restaurant = {
   image: string;
   bannerImage: string;
   badges: string[];
+  // Translated cuisine names, for display.
   tags: string[];
+  // The same cuisines, by name, which is what a cuisine filter matches on.
+  // Absent on a shop that came from an older server.
+  cuisines?: string[];
 };
 
 type Props = {
   restaurant: Restaurant;
+  // Lets callers override the card's own margins, e.g. inside a horizontal row.
+  style?: StyleProp<ViewStyle>;
 };
 
-export const RestaurantCard = ({ restaurant }: Props) => {
-  const isAvailable = isRestaurantOrderingAvailable(restaurant);
+export const RestaurantCard = ({ restaurant, style }: Props) => {
+  // Timing is a request per shop, so it is only worth making for a card the
+  // customer actually sees. Once fetched it stays cached, and the card keeps
+  // showing it after scrolling away and back.
+  const isVisible = useHasBeenVisible(restaurant['@id']);
+  const { data: timing } = useGetRestaurantTimingQuery(restaurant['@id'], {
+    skip: !isVisible || Boolean(restaurant.timing),
+  });
+
+  const shop = timing ? { ...restaurant, timing } : restaurant;
+
+  // Until the timing is known, a shop is neither open nor closed; showing the
+  // "unavailable" overlay before then would make every card flash shut.
+  const isAvailable =
+    !hasShippingTime(shop) || isRestaurantOrderingAvailable(shop);
 
   return (
-    <Box className="bg-background-50" style={ styles.item }>
+    <Box className="bg-background-50" style={[styles.item, style]}>
       <View style={styles.images}>
         <RestaurantBanner src={restaurant.bannerImage ?? restaurant.image} />
         {restaurant.badges && (
@@ -129,11 +171,13 @@ export const RestaurantCard = ({ restaurant }: Props) => {
         </Box>
       </View>
       <View style={styles.content}>
-        <View>
-          <Text style={styles.name}>{restaurant.name}</Text>
+        <View style={styles.nameWrapper}>
+          <Text style={styles.name} numberOfLines={2} ellipsizeMode="tail">
+            {restaurant.name}
+          </Text>
         </View>
         <View>
-          <TimingBadge restaurant={restaurant} />
+          <TimingBadge restaurant={shop} />
         </View>
         <View style={styles.details}>
           {restaurant.tags?.length > 0 ? (

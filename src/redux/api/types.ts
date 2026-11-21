@@ -326,3 +326,61 @@ export type HolidayRequestPayload = {
   endDate: string;
   comment?: string;
 };
+
+/**
+ * One filter offered by the server (`GET /api/shop_filters`), already
+ * translated. When the instance has a custom homepage, these mirror its shop
+ * collections, in the same order; otherwise the server builds a default set
+ * out of what it actually has.
+ *
+ * `filter` and `value` are the query parameter to send to
+ * `GET /api/restaurants` to get the shops behind it.
+ */
+export type ShopFilter = {
+  // "category|featured", "cuisine|italian"… unique across the list.
+  id: string;
+  filter: 'category' | 'cuisine' | 'type' | 'collection';
+  value: string;
+  label: string;
+};
+
+export type ShopFiltersResource = JsonLdEntity & {
+  filters: ShopFilter[];
+};
+
+/**
+ * One cuisine of the strip shown above the shops list.
+ *
+ * A ShopFilter with an icon, so it can be sent to `GET /api/restaurants` the
+ * same way; `icon` is the SVG markup itself, rendered by the server from the
+ * same icon the website shows, and is null for a cuisine with no icon set.
+ */
+export type ShopCuisine = ShopFilter & {
+  filter: 'cuisine';
+  icon: string | null;
+};
+
+export type ShopCuisinesResource = JsonLdEntity & {
+  cuisines: ShopCuisine[];
+};
+
+/**
+ * A shop as the home screen sees it: one of the shops behind a filter,
+ * regardless of the delivery address — the collections give an overview of
+ * what is on offer, not of what delivers to the address the customer picked.
+ * The restaurants list screen shows the address-filtered shops from
+ * `state.checkout` instead.
+ */
+export type Shop = JsonLdEntity & {
+  name: string;
+};
+
+/**
+ * A shop's next delivery and collection slots, as served by
+ * `GET /api/restaurants/{id}/timing`. It is fetched per shop, lazily, because
+ * computing it for a whole list at once proved too slow server side.
+ */
+export type RestaurantTiming = {
+  delivery: { range?: [string, string]; diff?: string } | null;
+  collection: { range?: [string, string]; diff?: string } | null;
+};

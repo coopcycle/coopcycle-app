@@ -244,6 +244,38 @@ describe('Redux | Checkout | Selectors', () => {
             }),
           ).toEqual(null);
         });
+
+        it('should return the restaurant it was handed when it was picked', () => {
+          expect(
+            selectRestaurant({
+              checkout: {
+                restaurants: [],
+                restaurant: '/api/restaurants/1',
+                selectedRestaurant: {
+                  '@id': '/api/restaurants/1',
+                },
+                carts: {},
+              },
+            }),
+          ).toEqual({
+            '@id': '/api/restaurants/1',
+          });
+        });
+
+        it('should ignore a stale picked restaurant', () => {
+          expect(
+            selectRestaurant({
+              checkout: {
+                restaurants: [],
+                restaurant: '/api/restaurants/1',
+                selectedRestaurant: {
+                  '@id': '/api/restaurants/2',
+                },
+                carts: {},
+              },
+            }),
+          ).toEqual(null);
+        });
       });
     });
 
