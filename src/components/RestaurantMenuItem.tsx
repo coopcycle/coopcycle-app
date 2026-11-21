@@ -4,13 +4,23 @@ import { Pressable } from '@/components/ui/pressable';
 import React from 'react';
 import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { formatPrice } from '../utils/formatting';
-import { DietBadge, ZeroWasteBadge } from './RestaurantProductBadge';
+import { DietBadge, MoreBadge, ZeroWasteBadge } from './RestaurantProductBadge';
+
+// The image column is the same width on every card. It used to be a share of
+// the row, which made a card with many badges — and so a tall row — hold a
+// wider image than its neighbours.
+const IMAGE_WIDTH = 120;
+
+// How many diet badges a card shows before counting the rest. Enough to say
+// what the product is without the row growing taller than its image; the
+// product screen lists them all.
+const MAX_BADGES = 5;
 
 const styles = StyleSheet.create({
   menuItem: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'left',
+    justifyContent: 'flex-start',
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 16,
@@ -24,7 +34,7 @@ const styles = StyleSheet.create({
     textDecorationStyle: 'solid',
   },
   content: {
-    flex: 5,
+    flex: 1,
     paddingVertical: 8,
     paddingHorizontal: 16,
     gap: 8,
@@ -46,10 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 4,
-    flex: 1,
-    overflow: 'hidden',
-    alignContent: 'flex-end',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
   },
   priceWrapper: {
     flex: 0,
@@ -66,16 +73,21 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    flex: 4,
-    height: '100%',
-    display: 'flex',
+    width: IMAGE_WIDTH,
+    // The row is as tall as its text, which can be taller than the image is
+    // wide. The image fills the column and is cropped to it rather than
+    // keeping a square and spilling over the text, which is what a fixed
+    // aspect ratio did here.
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
     width: '100%',
-    aspectRatio: 1,
     height: '100%',
+    // Also what tells StyleSheet this one is an image style rather than a
+    // view's: width and height alone fit either.
+    resizeMode: 'cover',
   },
 });
 
@@ -87,6 +99,9 @@ const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
         element.replace('http://schema.org/', ''),
       )
     : [];
+
+  const shownDiets = diets.slice(0, MAX_BADGES);
+  const hiddenDiets = diets.length - shownDiets.length;
 
   const image1x1 =
     item.images &&
@@ -105,11 +120,9 @@ const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
       <View style={image1x1 ? styles.imageWrapper : { width: 0 }}>
         {image1x1 && (
           <Image
-            // size="lg"
-            // resizeMode="cover"
             source={{ uri: image1x1.url }}
             alt="Product"
-            style={[styles.image, { aspectRatio: 1 }]}
+            style={styles.image}
           />
         )}
       </View>
@@ -126,35 +139,24 @@ const RestaurantMenuItem = ({ testID, item, onPress, isLoading }) => {
           </Text>
         ) : null}
         <View style={styles.details}>
-          {/* {diets.map((badge, i) => (
-            <Text key={i}>{badge}</Text>
-          ))} */}
-          {diets.length > 1 ? (
-            <View style={styles.badges}>
-              {diets.map((badge, i) => {
-                if (i !== diets.length - 1) {
-                  return <DietBadge key={i} name={badge} />;
-                }
-              })}
+          {shownDiets.length > 0 ? (
+            <View style={styles.badges} testID="menuItemBadges">
+              {shownDiets.map((badge, i) => (
+                <DietBadge key={i} name={badge} />
+              ))}
+              {hiddenDiets > 0 ? <MoreBadge count={hiddenDiets} /> : null}
             </View>
           ) : null}
 
           <View style={styles.priceWrapper}>
-            {diets.length > 1 ? (
-              <>
-                <DietBadge name={diets[diets.length - 1]} />
-              </>
-            ) : diets.length > 0 ? (
-              <>
-                <DietBadge name={diets[0]} />
-              </>
-            ) : null}
             {item.reusablePackagingEnabled ? (
               <>
                 <ZeroWasteBadge />
               </>
             ) : null}
-            <Text pr="2" fontSize="lg" style={styles.price}>{`${formatPrice(
+            {/* `pr` and `fontSize` used to be here, left over from NativeBase:
+                gluestack's Text takes neither, so they never did anything. */}
+            <Text style={styles.price}>{`${formatPrice(
               item.offers.price,
             )}`}</Text>
           </View>

@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingLeft: 4,
   },
+  // Without an icon the badge needs its left padding back: the icon's own
+  // gap is what makes the tighter padding look even.
+  badgeNoIcon: {
+    paddingLeft: 6,
+  },
   badgeText: {
     marginTop: -1,
     fontWeight: 'bold',
@@ -41,7 +46,16 @@ const allergenIcon = color => (
 );
 const zeroWasteIcon = color => <IconRecycle stroke={color} size={iconSize} />;
 
-function RestaurantProductBadge({ name, color, icon }) {
+type BadgeProps = {
+  // A translation key, for the badges that are named; `label` instead for the
+  // ones that are not, such as the overflow count.
+  name?: string;
+  label?: string;
+  color: string;
+  icon?: ((color: string) => React.ReactNode) | null;
+};
+
+function RestaurantProductBadge({ name, label, color, icon }: BadgeProps) {
   color = useColorModeValue(
     color,
     color
@@ -53,16 +67,17 @@ function RestaurantProductBadge({ name, color, icon }) {
     color.replace(/hsl/, 'hsla').replace(/\)$/, ', 0.15)'),
   );
 
-  const value = i18next.t(name);
+  const value = label ?? i18next.t(name ?? '');
   return (
-    <View style={[styles.badge, { backgroundColor }]}>
-      {icon(color)}
+    <View
+      style={[styles.badge, { backgroundColor }, icon ? null : styles.badgeNoIcon]}>
+      {icon ? icon(color) : null}
       <Text style={[styles.badgeText, { color }]}>{value}</Text>
     </View>
   );
 }
 
-export function DietBadge({ name }) {
+export function DietBadge({ name }: { name: string }) {
   return (
     <RestaurantProductBadge
       name={`RESTRICTED_DIET.${name}`}
@@ -72,7 +87,7 @@ export function DietBadge({ name }) {
   );
 }
 
-export function AllergenBadge({ name }) {
+export function AllergenBadge({ name }: { name: string }) {
   return (
     <RestaurantProductBadge
       name={`ALLERGEN.${name}`}
@@ -89,5 +104,17 @@ export function ZeroWasteBadge() {
       color={zeroWasteColor}
       icon={zeroWasteIcon}
     />
+  );
+}
+
+/**
+ * Stands in for the badges a card had no room for, as "+3".
+ *
+ * No icon and no wording: it is a count, and the product screen is where the
+ * customer reads what it stands for.
+ */
+export function MoreBadge({ count }: { count: number }) {
+  return (
+    <RestaurantProductBadge label={`+${count}`} color={dietColor} icon={null} />
   );
 }
