@@ -1,3 +1,4 @@
+import { HttpClient } from '../../API';
 import { HydraCollection } from './types';
 import {
   BaseQueryFn,
@@ -103,4 +104,47 @@ export async function fetchAllRecordsUsingFetchWithBQ<T>(
         },
       };
     });
+}
+
+/**
+ * The same walk as above, for the screens still on the legacy http client.
+ *
+ * `GET /api/restaurants` paginates since it gained its filters, so taking
+ * `hydra:member` out of the first response would silently drop every record
+ * past the first page.
+ */
+export async function fetchAllRecordsUsingHttpClient<T>(
+  httpClient: HttpClient,
+  url: string,
+  itemsPerPage: number,
+  otherParams: Record<string, string> = {},
+): Promise<T[]> {
+  const fetchPage = (page: number): Promise<HydraCollection<T>> => {
+    const params = new URLSearchParams({
+      ...otherParams,
+      pagination: 'true',
+      page: page.toString(),
+      itemsPerPage: itemsPerPage.toString(),
+    });
+
+    return httpClient.get(`${url}?${params.toString()}`, { anonymous: true });
+  };
+
+  const first = await fetchPage(1);
+  const records = first['hydra:member'] ?? [];
+  const totalItems = first['hydra:totalItems'] ?? records.length;
+
+  if (records.length >= totalItems) {
+    return records;
+  }
+
+  const pages = Math.ceil(totalItems / itemsPerPage);
+  const rest = await Promise.all(
+    Array.from({ length: pages - 1 }, (_, index) => fetchPage(index + 2)),
+  );
+
+  return rest.reduce(
+    (acc: T[], page) => acc.concat(page['hydra:member'] ?? []),
+    records,
+  );
 }

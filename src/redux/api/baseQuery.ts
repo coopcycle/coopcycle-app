@@ -14,6 +14,14 @@ const guestCheckoutEndpoints = [
   'updateOrder',
 ];
 
+// Endpoints the server lets anyone call. They still send the token when there
+// is one, but a missing token is expected and not worth warning about.
+const publicEndpoints = [
+  'getShopCuisines',
+  'getShopFilters',
+  'getShopsByFilter',
+];
+
 // create a new mutex
 const mutex = new Mutex();
 
@@ -43,7 +51,7 @@ const buildBaseQuery = (baseUrl, anonymous = false) => {
         } else {
           if (loggedInUser) {
             headers.set('Authorization', `Bearer ${loggedInUser.token}`);
-          } else {
+          } else if (!publicEndpoints.includes(endpoint)) {
             console.warn(`No token found for endpoint ${endpoint}`);
           }
         }

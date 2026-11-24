@@ -1,5 +1,12 @@
 import moment from 'moment';
-import { getNextShippingTimeAsText, orderToStep } from '../checkout';
+import {
+  getNextShippingTime,
+  getNextShippingTimeAsText,
+  hasShippingTime,
+  isRestaurantOrderingAvailable,
+  orderToStep,
+  shouldShowPreOrder,
+} from '../checkout';
 
 const createTiming = (type, range, fast, diff) => ({
   [type]: { range, fast, diff },
@@ -123,5 +130,22 @@ describe('OrderTracking', () => {
         events: [{ type: 'order:picked' }, { type: 'order:accepted' }],
       }),
     ).toEqual({ error: 0, index: 2, legacy: false });
+  });
+});
+
+describe('a shop whose timing has not been fetched yet', () => {
+  // Timing is loaded per shop, as its card scrolls into view, so every helper
+  // has to cope with a shop that does not carry it yet.
+  const pending = { '@id': '/api/restaurants/1', name: 'Pending' };
+
+  it('is told apart from a shop with no slot', () => {
+    expect(hasShippingTime(pending)).toBe(false);
+    expect(hasShippingTime({ ...pending, timing: {} })).toBe(true);
+  });
+
+  it('does not throw from the timing helpers', () => {
+    expect(getNextShippingTime(pending)).toBeNull();
+    expect(isRestaurantOrderingAvailable(pending)).toBe(false);
+    expect(shouldShowPreOrder(pending)).toBe(false);
   });
 });

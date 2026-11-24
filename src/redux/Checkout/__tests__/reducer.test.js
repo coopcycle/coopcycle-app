@@ -1,4 +1,9 @@
-import { initCartFailure, updateCartSuccess } from '../actions';
+import {
+  hideExpiredSessionModal,
+  initCartFailure,
+  setRestaurant,
+  updateCartSuccess,
+} from '../actions';
 import reducer from '../reducers';
 
 // As we may be using setTimeout(), we need to mock timers
@@ -26,6 +31,42 @@ describe('Redux | Checkout | Reducers', () => {
         ...initialState,
         loadingCarts: ['/api/restaurants/11'],
       });
+    });
+
+    test(`setRestaurant keeps the shop whole, and its IRI`, () => {
+      const restaurant = { '@id': '/api/restaurants/10', name: 'Nodaiwa' };
+
+      const newState = reducer(initialState, setRestaurant(restaurant));
+
+      expect(newState.restaurant).toEqual('/api/restaurants/10');
+      expect(newState.selectedRestaurant).toEqual(restaurant);
+    });
+
+    test(`setRestaurant still accepts a bare IRI`, () => {
+      const newState = reducer(
+        initialState,
+        setRestaurant('/api/restaurants/10'),
+      );
+
+      expect(newState.restaurant).toEqual('/api/restaurants/10');
+      expect(newState.selectedRestaurant).toEqual(null);
+    });
+
+    test(`hideExpiredSessionModal drops the expired cart`, () => {
+      const prevState = {
+        ...initialState,
+        restaurant: '/api/restaurants/10',
+        isExpiredSessionModalVisible: true,
+        carts: {
+          '/api/restaurants/10': { cart: {}, token: 'a' },
+          '/api/restaurants/11': { cart: {}, token: 'b' },
+        },
+      };
+
+      const newState = reducer(prevState, hideExpiredSessionModal());
+
+      expect(newState.isExpiredSessionModalVisible).toBe(false);
+      expect(Object.keys(newState.carts)).toEqual(['/api/restaurants/11']);
     });
 
     test(`updateCartSuccess`, () => {

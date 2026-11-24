@@ -96,7 +96,7 @@ const ListItem = ({ item, deleteCart, setRestaurant }) => {
         <TouchableOpacity
           onPress={() => {
 
-            setRestaurant(item.restaurant['@id']);
+            setRestaurant(item.restaurant);
 
             // Push the routes, so that user can go to restaurant screen
             navigation.push('CheckoutRestaurant', {
@@ -163,7 +163,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setRestaurant: id => dispatch(setRestaurant(id)),
+    setRestaurant: restaurant => dispatch(setRestaurant(restaurant)),
     deleteCart: id => dispatch(deleteCart(id)),
   };
 }

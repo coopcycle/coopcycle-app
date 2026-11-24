@@ -13,9 +13,15 @@ import {
   HydraCollection,
   PaymentMethodsOutput,
   PricingRuleSet,
+  RestaurantTiming,
   PutDeliveryBody,
   Shift,
   ShiftActivity,
+  Shop,
+  ShopCuisine,
+  ShopCuisinesResource,
+  ShopFilter,
+  ShopFiltersResource,
   Store,
   StorePackage,
   StoreTimeSlot,
@@ -24,6 +30,10 @@ import {
   Uri,
   Warehouse,
 } from './types';
+
+// How many shops one collection row holds. The rows are teasers, so this is
+// about what a customer will swipe through, not about showing everything.
+const SHOPS_PER_COLLECTION = 20;
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -383,6 +393,43 @@ export const apiSlice = createApi({
     getPricingRuleSet: builder.query<PricingRuleSet, Uri>({
       query: (uri: string) => uri,
     }),
+    // Which collections to show, and what to call them, is decided server
+    // side: the same list drives the website's /shops page, so the two cannot
+    // drift apart, and the labels come back already translated.
+    getShopFilters: builder.query<ShopFilter[], void>({
+      query: () => 'api/shop_filters',
+      transformResponse: (response: ShopFiltersResource) =>
+        response.filters ?? [],
+    }),
+    // The cuisines to offer above the shops list, with their icons, in the
+    // order they should be shown. Same source as the website's /shops strip,
+    // so the two cannot drift apart.
+    getShopCuisines: builder.query<ShopCuisine[], void>({
+      query: () => 'api/shop_cuisines',
+      transformResponse: (response: ShopCuisinesResource) =>
+        response.cuisines ?? [],
+    }),
+    // The shops behind one filter, regardless of the delivery address: the
+    // collections are meant to give an overview of what is on offer, not of
+    // what happens to deliver to the address the customer picked. Each shop's
+    // timing is fetched separately, by the card that displays it.
+    //
+    // Only the first page: a collection is a horizontal teaser row, not a
+    // browsable list, so there is nothing to scroll the rest into view with.
+    getShopsByFilter: builder.query<Shop[], ShopFilter>({
+      query: ({ filter, value }) => {
+        const params = new URLSearchParams({
+          pagination: 'true',
+          page: '1',
+          itemsPerPage: SHOPS_PER_COLLECTION.toString(),
+          [filter]: value,
+        });
+
+        return `api/restaurants?${params.toString()}`;
+      },
+      transformResponse: (response: HydraCollection<Shop>) =>
+        response['hydra:member'] ?? [],
+    }),
     getRestaurants: builder.query({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
         const result = await fetchAllRecordsUsingFetchWithBQ(
@@ -429,6 +476,10 @@ export const apiSlice = createApi({
     }),
     getOrderTiming: builder.query({
       query: nodeId => `${nodeId}/timing`,
+    }),
+    // One shop's next slots. Cards ask for this as they scroll into view.
+    getRestaurantTiming: builder.query<RestaurantTiming, Uri>({
+      query: (nodeId: Uri) => `${nodeId}/timing`,
     }),
     getOrderValidate: builder.query({
       query: nodeId => `${nodeId}/validate`,
@@ -574,6 +625,10 @@ export const {
   useGetWarehousesQuery,
   useRelayTasksToWarehouseMutation,
   useGetRestaurantsQuery,
+  useGetRestaurantTimingQuery,
+  useGetShopCuisinesQuery,
+  useGetShopFiltersQuery,
+  useGetShopsByFilterQuery,
   useGetTaskListsQuery,
   useGetTaskListsV2Query,
   useGetTasksQuery,

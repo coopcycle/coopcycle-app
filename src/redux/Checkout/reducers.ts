@@ -15,9 +15,6 @@ import {
   INIT_CART_FAILURE,
   INIT_CART_REQUEST,
   INIT_CART_SUCCESS,
-  INIT_FAILURE,
-  INIT_REQUEST,
-  INIT_SUCCESS,
   LOAD_PAYMENT_DETAILS_FAILURE,
   LOAD_PAYMENT_DETAILS_REQUEST,
   LOAD_PAYMENT_DETAILS_SUCCESS,
@@ -31,7 +28,6 @@ import {
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_REQUEST,
   LOAD_STRIPE_SAVED_PAYMENT_METHODS_SUCCESS,
   REMOVE_ITEM,
-  RESET_RESTAURANT,
   SEARCH_FAILURE,
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
@@ -69,7 +65,12 @@ const initialState = {
   addressModalMessage: '',
   date: null,
   restaurants: [],
-  restaurant: null,
+  // Always the IRI of the shop the customer is ordering from, and written by
+  // SET_RESTAURANT alone.
+  restaurant: null as string | null,
+  // That same shop, kept whole. Resolving the IRI means finding the shop in a
+  // list the app happens to hold -- which it may not: see selectRestaurant().
+  selectedRestaurant: null,
   menu: null,
   isFetching: false,
   errors: [],
@@ -102,7 +103,16 @@ const initialState = {
   isTimeRangeChangedModalVisible: false,
 };
 
-export default (state = initialState, action = {}) => {
+// The actions here are plain FSA-style objects from a mix of .ts and .js
+// call sites, so the payload stays untyped; naming it at least spares every
+// read of it an error.
+type CheckoutAction = {
+  type?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any;
+};
+
+export default (state = initialState, action: CheckoutAction = {}) => {
   switch (action.type) {
     case LOAD_RESTAURANTS_REQUEST:
     case CHECKOUT_REQUEST:
@@ -120,7 +130,6 @@ export default (state = initialState, action = {}) => {
       };
 
     case LOAD_RESTAURANTS_FAILURE:
-    case INIT_FAILURE:
     case LOAD_PAYMENT_METHODS_FAILURE:
     case LOAD_PAYMENT_DETAILS_FAILURE:
     case SEARCH_FAILURE:
@@ -149,40 +158,17 @@ export default (state = initialState, action = {}) => {
         isFetching: false,
       };
 
-    case INIT_REQUEST:
-      return {
-        ...state,
-        isFetching: true,
-        isSessionExpired: false,
-        restaurant: action.payload.restaurant,
-        cart: null,
-        menu: null, // For better navigation through restaurants
-      };
-
-    case RESET_RESTAURANT:
-      return {
-        ...state,
-        restaurant: action.payload.restaurant,
-        cart: null,
-        menu: null, // For better navigation through restaurants
-        timingModal: initialState.timingModal, // Be sure to reset the timingModal
-      };
-
-    case INIT_SUCCESS:
-      return {
-        ...state,
-        cart: state.carts[action.payload.restaurant['@id']].cart,
-        token: state.carts[action.payload.restaurant['@id']].token,
-        isFetching: false,
-        restaurant: action.payload.restaurant,
-        isAddressOK: null, // We don't know if it's valid
-        itemRequestStack: [],
-      };
-
+    // Callers that have the shop at hand pass it whole; the ones that only
+    // know its IRI (resuming a checkout after activation) pass a string.
     case SET_RESTAURANT:
       return {
         ...state,
-        restaurant: action.payload,
+        restaurant:
+          typeof action.payload === 'string'
+            ? action.payload
+            : action.payload['@id'],
+        selectedRestaurant:
+          typeof action.payload === 'string' ? null : action.payload,
         timingModal: initialState.timingModal, // Be sure to reset the timingModal
         isValid: null,
         violations: [],
@@ -420,13 +406,13 @@ export default (state = initialState, action = {}) => {
       };
 
     case HIDE_EXPIRED_SESSION_MODAL:
-
-      const cartsWithoutExpiredCart = _.omit(state.carts, state.restaurant.id);
-
       return {
         ...state,
         isExpiredSessionModalVisible: false,
-        carts: cartsWithoutExpiredCart,
+        // Carts are keyed by the shop's IRI, which is what `restaurant` holds.
+        // This read `state.restaurant.id`, which is never set, so the expired
+        // cart was kept and the customer was sent back to it.
+        carts: _.omit(state.carts, state.restaurant ?? []),
       };
 
     case SESSION_EXPIRED:

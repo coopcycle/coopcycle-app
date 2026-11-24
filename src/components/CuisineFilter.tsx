@@ -1,0 +1,211 @@
+import React, { useCallback } from 'react';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+
+import { Skeleton } from '@/components/ui/skeleton';
+import { Text } from '@/components/ui/text';
+import { ShopCuisine } from '../redux/api/types';
+import { Restaurant } from './RestaurantCard';
+
+const ICON_SIZE = 36;
+
+// The label's own box, so a placeholder label takes exactly the room the real
+// one will. It is also why the label has an explicit line height: without one
+// the two differ by whatever the platform's default happens to be.
+const LABEL_HEIGHT = 16;
+
+// How many cuisines to outline before the server has said how many there are.
+// Enough to run past the right edge of a phone, which is what makes the strip
+// read as scrollable.
+const PLACEHOLDER_CUISINES = 6;
+
+const styles = StyleSheet.create({
+  row: {
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  item: {
+    alignItems: 'center',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    // Wide enough for two short words, so the icons keep an even rhythm
+    // whatever the labels are; longer ones are cut rather than wrapped.
+    width: 80,
+  },
+  icon: {
+    height: ICON_SIZE,
+    marginBottom: 4,
+    width: ICON_SIZE,
+  },
+  label: {
+    fontSize: 11,
+    lineHeight: LABEL_HEIGHT,
+    textAlign: 'center',
+  },
+  labelPlaceholder: {
+    alignItems: 'center',
+    height: LABEL_HEIGHT,
+    justifyContent: 'center',
+  },
+  placeholderRow: {
+    flexDirection: 'row',
+    // The last icon runs past the right edge by design.
+    overflow: 'hidden',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+});
+
+/**
+ * The strip before the cuisines are in: circles where the icons will be, and
+ * a bar under each where the label will be.
+ *
+ * Every size comes from a class or from a wrapping View, never from a `style`
+ * prop on Skeleton: Skeleton spreads its props over the Animated.View it
+ * pulses with, so a `style` would overwrite the animation.
+ */
+const CuisineFilterSkeleton = () => (
+  <View style={styles.placeholderRow} testID="cuisineFilterLoading">
+    {Array.from({ length: PLACEHOLDER_CUISINES }, (_, index) => (
+      <View key={index} style={styles.item}>
+        <View style={styles.icon}>
+          <Skeleton className="rounded-full" />
+        </View>
+        <View style={styles.labelPlaceholder}>
+          <Skeleton className="h-3 w-12 rounded-md" />
+        </View>
+      </View>
+    ))}
+  </View>
+);
+
+/**
+ * The cuisines worth offering for a given set of shops: those the server
+ * lists *and* at least one of the shops serves.
+ *
+ * The shops on screen are the ones delivering to the customer's address,
+ * which is a smaller set than the instance as a whole, so offering every
+ * cuisine would mean offering ones that can only lead to an empty list.
+ *
+ * It also takes care of a server too old to send a shop's `cuisines`: nothing
+ * intersects, so the strip is simply not shown.
+ */
+export function availableCuisines(
+  cuisines: ShopCuisine[],
+  restaurants: Restaurant[],
+): ShopCuisine[] {
+  const served = new Set(
+    restaurants.flatMap(restaurant => restaurant.cuisines ?? []),
+  );
+
+  return cuisines.filter(cuisine => served.has(cuisine.value));
+}
+
+/**
+ * The shops serving any of the selected cuisines, or all of them when none is
+ * selected. Any rather than all, which is how the website reads a selection.
+ */
+export function filterByCuisine(
+  restaurants: Restaurant[],
+  selected: string[],
+): Restaurant[] {
+  if (selected.length === 0) {
+    return restaurants;
+  }
+
+  return restaurants.filter(restaurant =>
+    (restaurant.cuisines ?? []).some(cuisine => selected.includes(cuisine)),
+  );
+}
+
+type Props = {
+  cuisines: ShopCuisine[];
+  selected: string[];
+  onToggle: (value: string) => void;
+  // True until both the cuisines and the shops they are narrowed against are
+  // in, since neither alone says what the strip holds.
+  isLoading?: boolean;
+};
+
+/**
+ * The strip of cuisine icons above the shops list, as on the website's /shops
+ * page: tap one to narrow the list to it, tap it again to let it go.
+ *
+ * The filtering is done on the shops already loaded rather than by asking the
+ * server for each selection: the list holds every shop that delivers to the
+ * address, so the answer is already here, and working out which shops reach
+ * an address costs the server a routing query per shop.
+ */
+export default function CuisineFilter({
+  cuisines,
+  selected,
+  onToggle,
+  isLoading,
+}: Props) {
+  const renderItem = useCallback(
+    ({ item }: { item: ShopCuisine }) => {
+      const isSelected = selected.includes(item.value);
+
+      return (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityState={{ selected: isSelected }}
+          accessibilityLabel={item.label}
+          // Pressable rather than TouchableOpacity: the state of a filter is
+          // shown by its background, not by an opacity the row animates. A
+          // TouchableOpacity fades on press and fades back on release, and when
+          // the row re-renders in between — which toggling a cuisine makes it
+          // do — the fade back can be dropped, leaving the cuisine looking
+          // permanently disabled.
+          className={isSelected ? 'bg-background-300' : undefined}
+          onPress={() => onToggle(item.value)}
+          style={styles.item}
+          testID={`cuisineFilter:${item.value}`}>
+          {/* A cuisine with no icon still takes the same room, so selecting
+              one does not shift the rest of the strip. */}
+          <View style={styles.icon}>
+            {item.icon ? (
+              <SvgXml
+                xml={item.icon}
+                width={ICON_SIZE}
+                height={ICON_SIZE}
+                // The markup comes from the server with fill="currentColor",
+                // which only the monochrome icons rely on.
+                color="#666"
+              />
+            ) : null}
+          </View>
+          <Text
+            style={styles.label}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            bold={isSelected}>
+            {item.label}
+          </Text>
+        </Pressable>
+      );
+    },
+    [onToggle, selected],
+  );
+
+  if (isLoading) {
+    return <CuisineFilterSkeleton />;
+  }
+
+  if (cuisines.length === 0) {
+    return null;
+  }
+
+  return (
+    <FlatList
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.row}
+      data={cuisines}
+      keyExtractor={cuisine => cuisine.id}
+      renderItem={renderItem}
+      testID="cuisineFilter"
+    />
+  );
+}
