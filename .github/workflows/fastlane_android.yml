@@ -80,7 +80,15 @@ jobs:
       # warm, so a cold release build still restores them.
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v4
-      - uses: mfinelli/setup-imagemagick@v8
+      # fastlane-plugin-appicon, which the build lane uses to generate a
+      # custom instance's launcher icons, shells out to ImageMagick through
+      # mini_magick. From apt rather than mfinelli/setup-imagemagick, which
+      # downloads an AppImage from the ImageMagick repo by a filename upstream
+      # dropped the "gcc-" out of in 7.1.2-36, and so 404s on every run now
+      # that the action always takes the latest release:
+      # https://github.com/mfinelli/setup-imagemagick/issues/574
+      - name: Install ImageMagick
+        run: sudo apt-get install -y imagemagick
       - name: Find Metro cache
         id: metro-cache-dir-path
         uses: actions/github-script@v4
