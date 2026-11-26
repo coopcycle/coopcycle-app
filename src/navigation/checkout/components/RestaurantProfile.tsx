@@ -55,9 +55,6 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     shadowOffset: { height: 8, width: 0 },
   },
-  description: {
-    marginTop: 8,
-  },
   tags: {
     display: 'flex',
     flexDirection: 'row',
@@ -232,13 +229,6 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
           <IconMapPin size={20} stroke={stroke} strokeWidth={1.5} />
           <Text>{restaurant.address.streetAddress}</Text>
         </View>
-        {restaurant.description ? (
-          <View style={styles.description}>
-            <Text className="text-typography-500">
-              {restaurant.description}
-            </Text>
-          </View>
-        ) : null}
         {restaurant.tags?.length > 0 ? (
           <View style={styles.tags}>
             {restaurant.tags.map((tag, i) => (
