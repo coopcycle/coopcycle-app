@@ -7,6 +7,7 @@ import { Animated, View } from 'react-native';
 
 import { formatPrice } from '../../../utils/formatting';
 import {
+  hasShippingTime,
   isRestaurantOrderingAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
@@ -63,7 +64,11 @@ const CartFooterButton = ({ cart, restaurant, onPress, testID, loading, disabled
 
   useEffect(animate, [cart.total, animate]);
 
-  const isAvailable = isRestaurantOrderingAvailable(restaurant);
+  // Until the shop's timing has been fetched it is neither open nor closed;
+  // hiding the cart button before then would lose the customer the cart they
+  // have just filled.
+  const isAvailable =
+    !hasShippingTime(restaurant) || isRestaurantOrderingAvailable(restaurant);
   const showPreOrder = shouldShowPreOrder(restaurant);
 
   if (!cart || cart.items.length === 0 || !isAvailable) {

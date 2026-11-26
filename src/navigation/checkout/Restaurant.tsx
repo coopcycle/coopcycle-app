@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import _ from 'lodash';
 import { Icon } from '@/components/ui/icon';
 import { Map, Phone } from 'lucide-react-native'
@@ -42,6 +42,7 @@ import AddressUtils from '../../utils/Address';
 import OpeningHours from './components/OpeningHours';
 import RestaurantProfile from './components/RestaurantProfile';
 import { selectHttpClient } from '../../redux/App/selectors';
+import { useGetRestaurantTimingQuery } from '../../redux/api/slice';
 
 function Restaurant(props) {
   const { navigate } = props.navigation;
@@ -59,6 +60,21 @@ function Restaurant(props) {
     }
   });
   const screenHeight = Dimensions.get('window').height;
+
+  // The shop the customer tapped comes from a list that does not carry its
+  // timing (it is one request per shop, made by the card that shows it), so
+  // fetch it here. Everything that tells open from closed -- the profile, the
+  // cart footer, the screens this one opens -- reads it off the shop, so it is
+  // merged in once, here, rather than in each of them. The answer is already
+  // cached when the card the customer came from had fetched it.
+  const { data: timing } = useGetRestaurantTimingQuery(restaurant['@id'], {
+    skip: Boolean(restaurant.timing),
+  });
+  const shop = useMemo(
+    () =>
+      !restaurant.timing && timing ? { ...restaurant, timing } : restaurant,
+    [restaurant, timing],
+  );
 
   const { isLoading, isError, data } = useQuery(
     ['menus', restaurant.hasMenu],
@@ -103,7 +119,7 @@ function Restaurant(props) {
   const renderRestaurantProfile = () => (
     <RestaurantProfile
       onInfo={() => setInfoModal(true)}
-      restaurant={restaurant}
+      restaurant={shop}
       openingHoursSpecification={openingHoursSpecification}
     />
   );
@@ -139,7 +155,7 @@ function Restaurant(props) {
             onPress={menuItem =>
               navigate('CheckoutProductDetails', {
                 product: menuItem,
-                restaurant,
+                restaurant: shop,
               })
             }
           />
@@ -184,8 +200,8 @@ function Restaurant(props) {
       {showFooter ? (
         <SafeAreaView edges={['bottom']}>
           <CartFooter
-            onSubmit={() => navigate('CheckoutSummary', { restaurant })}
-            restaurant={restaurant}
+            onSubmit={() => navigate('CheckoutSummary', { restaurant: shop })}
+            restaurant={shop}
             cart={props.cart}
             initLoading={props.cartLoading}
             testID="cartSubmit"

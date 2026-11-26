@@ -18,7 +18,6 @@ import {
   isRestaurantOrderingAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
-import { useGetRestaurantTimingQuery } from '../../../redux/api/slice';
 import OpeningHoursSpecification from '../../../utils/OpeningHoursSpecification';
 import { RestaurantBanner } from '../../../components/RestaurantBanner';
 import {
@@ -170,32 +169,20 @@ function BannerOverlay({ isOrderingAvailable, showPreOrder }) {
 function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
   const stroke = useColorModeValue('rgb(23 23 23)', 'rgb(254 254 255)');
 
-  // The shop the customer tapped comes from a list that does not carry its
-  // timing, so fetch it here as the cards do; the answer is already cached
-  // when the card they came from had it.
-  const { data: timing } = useGetRestaurantTimingQuery(restaurant['@id'], {
-    skip: Boolean(restaurant.timing),
-  });
-
-  const shop = useMemo(
-    () => (!restaurant.timing && timing ? { ...restaurant, timing } : restaurant),
-    [restaurant, timing],
-  );
-
   // Until the timing is known, the shop is neither open nor closed; saying it
   // is unavailable before then contradicts the card it was opened from.
-  const isTimingKnown = hasShippingTime(shop);
+  const isTimingKnown = hasShippingTime(restaurant);
   const isOrderingAvailable = useMemo(
-    () => !isTimingKnown || isRestaurantOrderingAvailable(shop),
-    [isTimingKnown, shop],
+    () => !isTimingKnown || isRestaurantOrderingAvailable(restaurant),
+    [isTimingKnown, restaurant],
   );
   const showPreOrder = useMemo(
-    () => isTimingKnown && shouldShowPreOrder(shop),
-    [isTimingKnown, shop],
+    () => isTimingKnown && shouldShowPreOrder(restaurant),
+    [isTimingKnown, restaurant],
   );
   const nextShippingTime = useMemo(
-    () => getNextShippingTime(shop),
-    [shop],
+    () => getNextShippingTime(restaurant),
+    [restaurant],
   );
 
   return (
@@ -236,7 +223,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
           nextShippingTime={nextShippingTime}
         />
         <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-          <TimingBadge restaurant={shop} />
+          <TimingBadge restaurant={restaurant} />
           <Button size="sm" variant="link" onPress={onInfo}>
             <ButtonText>{i18next.t('RESTAURANT_MORE_INFOS')}</ButtonText>
           </Button>
