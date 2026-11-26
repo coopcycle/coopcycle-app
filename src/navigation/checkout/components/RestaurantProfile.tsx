@@ -14,9 +14,12 @@ import i18n from '../../../i18n';
 import moment from 'moment/moment';
 import {
   getNextShippingTime,
+  hasShippingTime,
   isRestaurantOrderingAvailable,
   shouldShowPreOrder,
 } from '../../../utils/checkout';
+import { useGetRestaurantTimingQuery } from '../../../redux/api/slice';
+import OpeningHoursSpecification from '../../../utils/OpeningHoursSpecification';
 import { RestaurantBanner } from '../../../components/RestaurantBanner';
 import {
   PreOrderBannerOverlay,
@@ -103,7 +106,16 @@ function OpeningHoursWarning({
   if (!isOrderingAvailable) {
     //FIXME: this is based on the regular opening hours
     // and does not take closing rules ("Holidays") into account
-    const nextOpeningHours = openingHoursSpecification.currentTimeSlot.timeSlot;
+    const currentTimeSlot = openingHoursSpecification.currentTimeSlot;
+
+    if (currentTimeSlot.state === OpeningHoursSpecification.STATE.Opened) {
+      // The shop is within its opening hours, yet has no slot to deliver in:
+      // announcing it as "closed until <this morning>" would be wrong, and the
+      // banner already says it is unavailable.
+      return null;
+    }
+
+    const nextOpeningHours = currentTimeSlot.timeSlot;
 
     if (!nextOpeningHours) {
       // when restaurant is disabled it will be shown on the banner
@@ -158,17 +170,32 @@ function BannerOverlay({ isOrderingAvailable, showPreOrder }) {
 function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
   const stroke = useColorModeValue('rgb(23 23 23)', 'rgb(254 254 255)');
 
+  // The shop the customer tapped comes from a list that does not carry its
+  // timing, so fetch it here as the cards do; the answer is already cached
+  // when the card they came from had it.
+  const { data: timing } = useGetRestaurantTimingQuery(restaurant['@id'], {
+    skip: Boolean(restaurant.timing),
+  });
+
+  const shop = useMemo(
+    () => (!restaurant.timing && timing ? { ...restaurant, timing } : restaurant),
+    [restaurant, timing],
+  );
+
+  // Until the timing is known, the shop is neither open nor closed; saying it
+  // is unavailable before then contradicts the card it was opened from.
+  const isTimingKnown = hasShippingTime(shop);
   const isOrderingAvailable = useMemo(
-    () => isRestaurantOrderingAvailable(restaurant),
-    [restaurant],
+    () => !isTimingKnown || isRestaurantOrderingAvailable(shop),
+    [isTimingKnown, shop],
   );
   const showPreOrder = useMemo(
-    () => shouldShowPreOrder(restaurant),
-    [restaurant],
+    () => isTimingKnown && shouldShowPreOrder(shop),
+    [isTimingKnown, shop],
   );
   const nextShippingTime = useMemo(
-    () => getNextShippingTime(restaurant),
-    [restaurant],
+    () => getNextShippingTime(shop),
+    [shop],
   );
 
   return (
@@ -209,7 +236,7 @@ function RestaurantProfile({ restaurant, openingHoursSpecification, onInfo }) {
           nextShippingTime={nextShippingTime}
         />
         <View style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-          <TimingBadge restaurant={restaurant} />
+          <TimingBadge restaurant={shop} />
           <Button size="sm" variant="link" onPress={onInfo}>
             <ButtonText>{i18next.t('RESTAURANT_MORE_INFOS')}</ButtonText>
           </Button>
