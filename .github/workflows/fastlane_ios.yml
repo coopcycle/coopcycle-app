@@ -43,7 +43,7 @@ jobs:
           cache: 'yarn'
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.4'
           bundler-cache: true
       - name: Use XCode 26.x
         uses: maxim-lobanov/setup-xcode@v1

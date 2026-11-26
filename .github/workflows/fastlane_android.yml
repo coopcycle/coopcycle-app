@@ -65,9 +65,10 @@ jobs:
           cache: 'yarn'
       - uses: ruby/setup-ruby@v1
         with:
-          # 3.2+ is required by the current Gemfile.lock (connection_pool etc.);
-          # the iOS workflows already use 3.2 with this same lockfile.
-          ruby-version: '3.2'
+          # 3.3+ is required by the current Gemfile.lock (excon 1.12); it was
+          # resolved on 3.4, which is what the lockfile's RUBY VERSION says and
+          # what .ruby-version pins for local work.
+          ruby-version: '3.4'
           # Gemfile lives at the repo root (the later steps reach it from
           # android/ via Bundler's upward search); cache the gems from there.
           bundler-cache: true
